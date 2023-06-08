@@ -1,0 +1,15 @@
+{
+  "name": "spotify-electron",
+  "version": "1.0.0",
+  "description": "A Spotify clone made with Electron",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "test"
+  },
+  "author": "Antonio Martinez Fernandez",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "25.1.0"
+  }
+}

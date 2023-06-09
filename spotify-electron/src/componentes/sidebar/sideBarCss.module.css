@@ -1,4 +1,35 @@
-.clase{
+.wrapperNavbar{
 
-    background-color: green
+    width: 18svw;
+    height: 85svh;
+    padding: 1%;
+
+    display: flex;
+    flex-direction: column;
+
+
+}
+
+.header{
+
+    display: flex;
+    flex-direction: column;
+
+
+}
+
+.headerLi{
+
+
+
+}
+
+.ul{
+
+    padding: 0 !important;
+}
+
+.headerI{
+
+    margin: 1%;
 }

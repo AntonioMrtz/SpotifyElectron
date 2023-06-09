@@ -1,5 +1,5 @@
 import logo from './logo.svg';
-import './App.css';
+import styles from './AppCss.module.css';
 import Sidebar from './componentes/sidebar/Sidebar'
 import Home from './componentes/home/Home'
 
@@ -22,7 +22,7 @@ function App() {
 
 
   return (
-    <div className="App d-flex flex-row">
+    <div className={`App d-flex flex-row ${styles.appBackground}`}>
 
       <Sidebar />
 

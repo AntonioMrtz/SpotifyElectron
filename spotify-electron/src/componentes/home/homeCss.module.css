@@ -1,9 +1,54 @@
-.clase{
+.principal{
+    margin: 0.5%;
+    background-color: var(--secondary-black) !important;
+}
 
-    background-color: black
+.columnOfListas{
+
+    padding-left: 0.5% !important;
+    margin-top: 1%;
+    margin-bottom: 1%;
+}
+
+.columnTitle{
+
+    color: white;
+    padding-bottom: 1%;
+    
+}
+
+.mostrarT{
+
+    justify-content: flex-end;
+    padding-top: 0.6%;
+    padding-right: 2%;
+    color: gray;
 }
 
 .card{
+    
+    padding: 1.5%;
+    margin-right: 2%;
+    background-color: var(--third-black) !important;
+}
 
-    background-color: gray !important;
+.card:hover{
+
+    background-color: #272727;
+}
+
+.card_body{
+
+    padding-top: 5% !important;
+    padding-left: 0% !important;
+}
+
+.tituloLista{
+
+    color: white;
+}
+
+.autorLista{
+
+    color: gray;
 }

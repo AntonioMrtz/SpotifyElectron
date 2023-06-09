@@ -1,9 +1,25 @@
-.clase{
+.column{
+    margin-left: 1%;
+    margin-right: 1%;
+    background-color: black;
+}
 
-    background-color: black
+.row{
+    margin-top: 1%;
+    margin-bottom: 1%;
+    
 }
 
 .card{
-
+    
+    padding: 1.5%;
+    margin-right: 1%;
+    margin-left: 1%;
     background-color: gray !important;
+}
+
+.card_body{
+
+    padding-top: 5% !important;
+    padding-left: 0% !important;
 }

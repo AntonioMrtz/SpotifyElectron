@@ -1,4 +1,5 @@
 const { app, BrowserWindow, ipcMain, net } = require('electron')
+const isDev = require('electron-is-dev');
 
 const path = require('path')
 
@@ -8,7 +9,10 @@ app.commandLine.appendSwitch('disable-features', 'OutOfBlinkCors')
 const createWindow = () => {
     const win = new BrowserWindow({
         width: 1200,
-        height: 800, webPreferences: {
+        height: 800,
+        maxWidth: 1400,
+        maxHeight: 1200, 
+        webPreferences: {
             nodeIntegration: false, // is default value after Electron v5
             contextIsolation: true, // protect against prototype pollution
             enableRemoteModule: false, // turn off remote
@@ -17,7 +21,13 @@ const createWindow = () => {
         }
     })
 
-    win.loadFile('views/index.html')
+    //win.loadFile('spotify-electron/public/index.html')
+    win.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`);
+    if (isDev) {
+      // Open the DevTools.
+      //BrowserWindow.addDevToolsExtension('<location to your react chrome extension>');
+      win.webContents.openDevTools();
+    }
 }
 
 app.whenReady().then(() => {

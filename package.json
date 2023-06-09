@@ -5,15 +5,19 @@
   "main": "index.js",
   "scripts": {
     "start": "electron .",
-    "test": "test"
+    "test": "test",
+    "dev": "concurrently \"electron .\" \"cd spotify-electron/src && npm start"
   },
   "author": "Antonio Martinez Fernandez",
   "license": "MIT",
   "devDependencies": {
-    "electron": "25.1.0"
+    "concurrently": "^8.2.0",
+    "electron": "25.1.0",
+    "wait-on": "^7.0.1"
   },
   "dependencies": {
     "bootstrap": "^5.3.0",
+    "electron-is-dev": "^2.0.0",
     "jquery": "^3.7.0"
   }
 }

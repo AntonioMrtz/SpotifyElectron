@@ -6,7 +6,7 @@
 $ git clone https://github.com/AntonioMrtz/SpotifyElectron.git
 $ cd SpotifyElectron
 $ npm install
-$ npm start
+$ npm run dev // modo desarrollo  | $ npm start // modo aplicacion final tras construir aplicacion
 ```
 
 *Para refrescar la ventana del programa sin reiniciar basta con hacer **CRTL+R***

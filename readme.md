@@ -6,6 +6,9 @@
 $ git clone https://github.com/AntonioMrtz/SpotifyElectron.git
 $ cd SpotifyElectron
 $ npm install
+$ cd spotify-electron
+$ npm install
+$ cd ..
 $ npm run dev // modo desarrollo  | $ npm start // modo aplicacion final tras construir aplicacion
 ```
 

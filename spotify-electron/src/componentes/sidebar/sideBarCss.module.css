@@ -17,7 +17,9 @@
     
     background-color: var(--secondary-black);
     border-radius: 12px;
-    padding: 8%;
+    padding-top: 5%;
+    padding-bottom: 5%;
+    padding-left:6%;
 
 
 }
@@ -29,10 +31,10 @@
 
 }
 
-.aHeader{
+/* .aHeader{
 
 
-}
+} */
 
 
 
@@ -44,7 +46,7 @@
 }
 
 .headerI{
-    padding-right: 3vw;
+    padding-right: 2vw;
     font-size: 1.15rem !important;
     color: var(--secondary-white);
     

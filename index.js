@@ -28,6 +28,7 @@ const createWindow = () => {
 
     //win.loadFile('spotify-electron/public/index.html')
     win.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`);
+    win.setMenuBarVisibility(false);
     if (isDev) {
       win.webContents.openDevTools();
     }

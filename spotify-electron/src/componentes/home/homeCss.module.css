@@ -1,25 +1,54 @@
-.column{
-    margin-left: 1%;
-    margin-right: 1%;
-    background-color: black;
+.principal{
+    margin: 0.5%;
+    background-color: var(--secondary-black) !important;
 }
 
-.row{
+.columnOfListas{
+
+    padding-left: 0.5% !important;
     margin-top: 1%;
     margin-bottom: 1%;
+}
+
+.columnTitle{
+
+    color: white;
+    padding-bottom: 1%;
     
+}
+
+.mostrarT{
+
+    justify-content: flex-end;
+    padding-top: 0.6%;
+    padding-right: 2%;
+    color: gray;
 }
 
 .card{
     
     padding: 1.5%;
-    margin-right: 1%;
-    margin-left: 1%;
-    background-color: gray !important;
+    margin-right: 2%;
+    background-color: var(--third-black) !important;
+}
+
+.card:hover{
+
+    background-color: #272727;
 }
 
 .card_body{
 
     padding-top: 5% !important;
     padding-left: 0% !important;
+}
+
+.tituloLista{
+
+    color: white;
+}
+
+.autorLista{
+
+    color: gray;
 }

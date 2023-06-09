@@ -38,8 +38,9 @@ ul{
 
   --primary-black: #000000;
   --secondary-black:#121212;
+  --pure-white:#00000;
   --primary-white:#dfdfdf;
-  --secondary-white:#aeb0b3;
+  --secondary-white:#b3b3b3;
   --third-black :#161616;
 
 }

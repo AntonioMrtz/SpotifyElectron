@@ -37,6 +37,10 @@ ul{
   /* Colores globales de la aplicacion */
 
   --primary-black: #000000;
-  --secondary-black:##121212;
+  --secondary-black:#121212;
+  --pure-white:#00000;
+  --primary-white:#dfdfdf;
+  --secondary-white:#b3b3b3;
+  --third-black :#161616;
 
 }

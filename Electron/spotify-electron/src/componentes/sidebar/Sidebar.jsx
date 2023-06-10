@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import styles from "./sideBarCss.module.css";
-import variables from "./../../index.css";
 
 export default function Sidebar() {
 
@@ -46,7 +45,7 @@ export default function Sidebar() {
                         onMouseOver={handleMouseOverInicio}
                         onMouseOut={handleMouseOutInicio}
                     >
-                        <a href="">
+                        <a href="/">
                             <i
                                 className={`fa-solid fa-house fa-fw ${styles.headerI}`}
                             ></i>

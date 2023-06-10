@@ -2,15 +2,13 @@ import React, { useEffect, useState } from "react";
 import styles from "./sideBarCss.module.css";
 
 export default function Sidebar() {
-
-	//* MENU HOVER
+    //* MENU HOVER
 
     let [listItemInicio, setHoverInicio] = useState("");
     let [listItemBuscar, setHoverBuscar] = useState("");
 
-
     const [isHoveredInicio, setIsHovered] = useState(false);
-	const [isHoveredBuscar, setIsHoveredBuscar] = useState(false);
+    const [isHoveredBuscar, setIsHoveredBuscar] = useState(false);
 
     const handleMouseOverInicio = () => {
         setIsHovered(true);
@@ -33,17 +31,57 @@ export default function Sidebar() {
         setHoverBuscar(isHoveredBuscar ? styles.linksubtle : "");
     }, [isHoveredBuscar, isHoveredInicio]);
 
+    
+
+    /*  HIGHLIGHT CURRENT SECTION LI */
 
 
+    const [selectedID, setSelectedID] = useState(); // you could set a default id as well
+
+    const getSelectedClass = (id) => (selectedID === id ?  styles.linksubtleClicked : "");
+
+    const [url,setUrl] = useState("");
+
+    useEffect(() => {
+
+        if(url === ""){
+
+            setSelectedID("li-inicio")
+
+        }else if( url=== "explorar" ){
+
+            setSelectedID("li-buscar")
+
+        }
+   
+    }, [url])
+    
+    // handle Button Clicked by looking at the Current Url
+    useEffect(() => {
+
+
+        const url = window.location.href;
+       
+        let splitBySlash = url.split("/")
+        
+        setUrl(splitBySlash[splitBySlash.length-1])
+        
+    }, []);
+    
+
+    
 
     return (
         <div className={`container-fluid ${styles.wrapperNavbar}`}>
             <header className={`${styles.header}`}>
                 <ul className={`${styles.ul}`}>
                     <li
-                        className={`${styles.headerLi} ${listItemInicio}`}
+                        className={`${
+                            styles.headerLi
+                        } ${listItemInicio} ${getSelectedClass("li-inicio")} `}
                         onMouseOver={handleMouseOverInicio}
                         onMouseOut={handleMouseOutInicio}
+                        id="li-inicio"
                     >
                         <a href="/">
                             <i
@@ -53,9 +91,13 @@ export default function Sidebar() {
                         </a>
                     </li>
                     <li
-                        className={`${styles.headerLi} ${listItemBuscar}`}
+                        className={`${
+                            styles.headerLi
+                        } ${listItemBuscar} ${getSelectedClass("li-buscar")}`}
                         onMouseOver={handleMouseOverBuscar}
                         onMouseOut={handleMouseOutBuscar}
+                        id="li-buscar"
+                        
                     >
                         <a className={`${styles.aHeader}`} href="/explorar">
                             <i

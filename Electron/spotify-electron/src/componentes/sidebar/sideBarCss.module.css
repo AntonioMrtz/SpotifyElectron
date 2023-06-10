@@ -1,8 +1,8 @@
 .wrapperNavbar{
 
     width: 18svw;
-    height: 85svh;
-    padding: 1%;
+    height: 90svh;
+    padding: 0.5%;
 
     display: flex;
     flex-direction: column;
@@ -26,7 +26,7 @@
 
 .headerLi{
 
-    margin: 2%;
+    margin: 4%;
     color: var(--secondary-white);
 
 
@@ -58,6 +58,16 @@
 
 
 .linksubtle {
+    color: var(--pure-white) !important;
+    -webkit-transition-duration: .0s;
+    transition-duration: .2s;
+    -webkit-transition-property: color;
+    transition-property: color;
+    -webkit-transition-timing-function: linear;
+    transition-timing-function: linear
+}
+
+.linksubtleClicked {
     color: var(--pure-white) !important;
     -webkit-transition-duration: .0s;
     transition-duration: .2s;

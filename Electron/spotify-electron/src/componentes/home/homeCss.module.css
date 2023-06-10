@@ -1,6 +1,9 @@
 .principal{
-    margin: 0.5%;
+    
     background-color: var(--secondary-black) !important;
+    border-radius: 12px;
+    margin: 0.5% 0.5% 0.5% 0;
+
 }
 
 .columnOfListas{

@@ -20,8 +20,6 @@ $ npm run dev [modo desarrollo]  | $ npm start [modo aplicacion final tras const
 $ cd Backend API
 $ pip install -r requirements.txt / pip3 install -r requirements.txt [ Dependiendo de la versión de Python ]
 $ python3 -m uvicorn main:app --reload [ Lanzar API en http://127.0.0.1:8000/ ]
-
-
 ```
 
 

@@ -17,6 +17,12 @@ a{
 
   text-decoration: none;
   color: inherit;
+  
+}
+
+a:hover{
+
+  color: inherit;
 }
 
 ul{
@@ -38,7 +44,7 @@ ul{
 
   --primary-black: #000000;
   --secondary-black:#121212;
-  --pure-white:#00000;
+  --pure-white:#ffffff;
   --primary-white:#dfdfdf;
   --secondary-white:#b3b3b3;
   --third-black :#161616;

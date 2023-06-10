@@ -27,14 +27,15 @@
 .headerLi{
 
     margin: 2%;
+    color: var(--secondary-white);
 
 
 }
 
-/* .aHeader{
+.aHeader{
 
-
-} */
+    color: inherit;
+}
 
 
 
@@ -49,5 +50,19 @@
     padding-right: 2vw;
     font-size: 1.15rem !important;
     color: var(--secondary-white);
+    color: inherit !important;
     
+}
+
+
+
+
+.linksubtle {
+    color: var(--pure-white) !important;
+    -webkit-transition-duration: .0s;
+    transition-duration: .2s;
+    -webkit-transition-property: color;
+    transition-property: color;
+    -webkit-transition-timing-function: linear;
+    transition-timing-function: linear
 }

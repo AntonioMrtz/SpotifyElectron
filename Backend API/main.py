@@ -3,11 +3,6 @@ from fastapi import FastAPI
 import services.song_service as song_service
 import services.list_service as list_service
 
-import json
-
-import logging
-
-logging.basicConfig(level=logging.DEBUG)
 
 
 app = FastAPI(title="SpotifyElectronAPI",
@@ -20,4 +15,17 @@ app = FastAPI(title="SpotifyElectronAPI",
 @app.get("/listas/")
 def get_listas():
 
-    song_service.prueba()
+    pass
+
+# Devuelve todas las canciones
+@app.get("/canciones/")
+def get_canciones():
+
+    pass
+
+# Sube una cancion
+@app.post("/canciones/")
+def get_canciones():
+
+    song_service.create_song()
+

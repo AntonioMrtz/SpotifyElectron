@@ -16,6 +16,12 @@ async def get_listas():
 
     pass
 
+# Devuelve la cancion
+@app.get("/canciones/{id}")
+async def get_canciones(id : str):
+    song_service.get_song(id)
+
+
 # Devuelve todas las canciones
 @app.get("/canciones/")
 async def get_canciones():

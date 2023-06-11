@@ -5,7 +5,8 @@ import json
 formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
 logging.basicConfig(level=logging.DEBUG)
 
-song_collection = Database().song_collection
+list_collection = Database.get_list_collection
+song_files_collection = Database.get_song_collection
 
 
 

@@ -14,12 +14,14 @@ $ npm run dev [modo desarrollo]  | $ npm start [modo aplicacion final tras const
 
 *Para refrescar la ventana del programa sin reiniciar basta con hacer **CRTL+R***
 
-## Iniciar proyecto Electron
+## Iniciar Backend Python
 
 ```
 $ cd Backend API
 $ pip install -r requirements.txt / pip3 install -r requirements.txt [ Dependiendo de la versión de Python ]
 $ python3 -m uvicorn main:app --reload [ Lanzar API en http://127.0.0.1:8000/ ]
+
+*Para acceder a la documentacion y gestor gráfico de la API acceder a **http://127.0.0.1:8000/docs***
 ```
 
 

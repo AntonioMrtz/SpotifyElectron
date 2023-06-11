@@ -1,8 +1,7 @@
-from fastapi import FastAPI
+from fastapi import FastAPI,UploadFile,status
 
 import services.song_service as song_service
 import services.list_service as list_service
-
 
 
 app = FastAPI(title="SpotifyElectronAPI",
@@ -13,19 +12,18 @@ app = FastAPI(title="SpotifyElectronAPI",
 
 # Devuelve todas las listas
 @app.get("/listas/")
-def get_listas():
+async def get_listas():
 
     pass
 
 # Devuelve todas las canciones
 @app.get("/canciones/")
-def get_canciones():
-
+async def get_canciones():
     pass
 
 # Sube una cancion
-@app.post("/canciones/")
-def get_canciones():
-
-    song_service.create_song()
+@app.post("/canciones/",status_code=status.HTTP_201_CREATED)
+async def post_canciones(nombre : str, artista : str,genero : str,file : UploadFile):
+    readFile = await file.read()
+    return song_service.create_song(nombre,artista,genero,readFile)
 

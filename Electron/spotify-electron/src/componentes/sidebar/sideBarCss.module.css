@@ -1,5 +1,9 @@
 .wrapperNavbar{
 
+    position: fixed;
+    top: 0;
+    left: 0;
+  
     width: 18svw;
     height: 90svh;
     padding: 0.5%;

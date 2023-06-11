@@ -1,0 +1,10 @@
+.wrapperFooter{
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    margin-top: var(--sidebar-height);
+    height: 100svh;
+    background-color: green;
+
+}

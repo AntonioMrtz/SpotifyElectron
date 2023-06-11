@@ -51,4 +51,10 @@ ul{
   --third-black :#161616;
   --hover-white : #272727;
 
+  /* Sidebar default width */
+  --sidebar-width:18svw;
+  --sidebar-height:95svh;
+
+  --footer-height:10svh;
+
 }

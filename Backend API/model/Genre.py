@@ -31,3 +31,10 @@ class Genre(Enum):
     GRUNGE = "Grunge"
     TRAP = "Trap"
     REGGAETON="Reggaeton"
+
+    def checkValidGenre(genre : str) -> bool:
+        """ Checks if the genre is valid """
+        if Genre(genre) is None:
+            return False
+        return True
+        

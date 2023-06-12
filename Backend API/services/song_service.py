@@ -1,10 +1,11 @@
 import logging
-import json
+from services.utils import checkValidParameterString
 from database.Database import Database
 from gridfs import GridFS
 from bson import ObjectId
-from fastapi import  HTTPException
-from fastapi.responses import StreamingResponse
+from fastapi import HTTPException
+from fastapi.responses import Response
+from model.Genre import Genre
 
 
 
@@ -12,34 +13,37 @@ formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
 logging.basicConfig(level=logging.DEBUG)
 
 
-""" Insert songs with format files,chunks https://www.mongodb.com/docs/manual/core/gridfs/"""
+""" Insert songs with format [files,chunks] https://www.mongodb.com/docs/manual/core/gridfs/"""
 gridFsSong = GridFS(Database().connection, collection='cancion')
 
 
 
-#TODO
-""" Como devolver cancion mediante respuesta HTTP """
-async def get_song(nombre : str):
+def get_song(nombre: str) -> Response:
+
+
+    if nombre is None or nombre=="":
+        raise HTTPException(status_code=400, detail="El nombre de la canción es vacío") 
+
+
+    song_bytes = gridFsSong.find_one({'nombre':nombre})
+
+    if song_bytes is None:
+        raise HTTPException(status_code=404, detail="La canción con ese nombre no existe") 
     
-    file = gridFsSong.get(ObjectId("64865b35c37038b371e94775")).read().decode('latin-1')
+    return Response(song_bytes.read(),media_type="audio/mp3",status_code=200)
 
-    print(type(file))
-    return file
-            
-    #return StreamingResponse(file_data, media_type="audio/mpeg")
 
     
+def create_song(nombre : str, artista : str,genero : Genre,file) -> Response:
 
-""" Nombre atrribute of song is his ID ( cannot be duplicate , checked on insert)"""
-def create_song(nombre : str, artista : str,genero : str,file) -> str:
+    if not checkValidParameterString(nombre) or not checkValidParameterString(nombre) or not checkValidParameterString(nombre) or not Genre.checkValidGenre(genero.value): 
+        raise HTTPException(status_code=400, detail="Parámetros no válidos o vacíos")
 
-    
+    """ FindOne returns the bytes of the song if finded, this is  sub-optimal but the times it
+        happens are not too many
+    """
+    if gridFsSong.find_one({"nombre":nombre}) is not None:    
+        raise HTTPException(status_code=400, detail="La canción no se pudo agregar o ya existía")
 
-    if gridFsSong.find_one({"nombre":nombre}) is None:    
-
-        file_id = gridFsSong.put(file, nombre=nombre,artista=artista,genero=genero)
-        print(file_id)
-        #return file_id
-        return {"id":str(file_id)}
-
-    raise HTTPException(status_code=400, detail="La canción no se pudo agregar o ya existía")
+    file_id = gridFsSong.put(file, nombre=nombre,artista=artista,genero=str(genero.value))
+    return Response(None,201)

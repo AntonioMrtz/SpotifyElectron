@@ -13,7 +13,27 @@ load_dotenv()
 """ Singleton instance of the MongoDb connection """
 
 
-class Database():
+class DatabaseMeta(type):
+    """
+    The Singleton class can be implemented in different ways in Python. Some
+    possible methods include: base class, decorator, metaclass. We will use the
+    metaclass because it is best suited for this purpose.
+    """
+
+    _instances = {}
+
+    def __call__(cls, *args, **kwargs):
+        """
+        Possible changes to the value of the `__init__` argument do not affect
+        the returned instance.
+        """
+        if cls not in cls._instances:
+            instance = super().__call__(*args, **kwargs)
+            cls._instances[cls] = instance
+        return cls._instances[cls]
+
+
+class Database(metaclass=DatabaseMeta):
 
     """ Direct connection to the MongoDB client """
     connection = None
@@ -22,17 +42,15 @@ class Database():
     """ Connection to the song database """
     song_collection = None
 
-    @staticmethod
+    
     def get_connection():
         return connection
 
-    @staticmethod
     def get_list_collection():
-        return list_collection
+        return Database.list_collection
 
-    @staticmethod
     def get_song_collection():
-        return song_collection
+        return Database.song_collection
 
 
     def __init__(self):
@@ -53,5 +71,3 @@ class Database():
                     "Error: Connection not established {}".format(error))
             else:
                 logging.info("Connection established")
-
-

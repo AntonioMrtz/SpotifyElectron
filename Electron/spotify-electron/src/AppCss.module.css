@@ -1,4 +1,6 @@
 .appBackground{
 
     background-color: var(--primary-black);
+    font-family: "CircularStd-Medium", 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif !important;
+
 }

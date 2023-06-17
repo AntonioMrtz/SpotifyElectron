@@ -1,61 +1,62 @@
-body {
-  margin: 0;
-  /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif; */
-  font-family: "CircularStd-Medium",'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
-
-a{
-
-
-  text-decoration: none;
-  color: inherit;
-  
-}
-
-a:hover{
-
-  color: inherit;
-}
-
-ul{
-
-  list-style: none;
-}
-
-
-:root{
+:root {
 
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
-  font-family: 'Montserrat', sans-serif;
-
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 
   /* Colores globales de la aplicacion */
 
   --primary-black: #000000;
-  --secondary-black:#121212;
-  --pure-white:#ffffff;
-  --primary-white:#dfdfdf;
-  --secondary-white:#b3b3b3;
-  --third-black :#161616;
-  --hover-white : #272727;
+  --secondary-black: #121212;
+  --pure-white: #ffffff;
+  --primary-white: #dfdfdf;
+  --secondary-white: #b3b3b3;
+  --third-black: #161616;
+  --hover-white: #272727;
 
   /* Sidebar default width */
-  --sidebar-width:18svw;
-  --sidebar-height:90svh;
+  --sidebar-width: 18svw;
+  --sidebar-height: 87svh;
 
-  --footer-height:10svh;
+  /* Footer default height */
+  --footer-height: 13svh;
 
 }
 
+
+body {
+  margin: 0;
+
+}
+
+a {
+
+
+  text-decoration: none;
+  color: inherit;
+
+}
+
+a:hover {
+
+  color: inherit;
+}
+
+ul {
+
+  list-style: none;
+}
+
+@media (min-width: 1600px) {
+
+  :root {
+    --sidebar-height: 90svh;
+
+    /* Footer default height */
+    --footer-height: 10svh;
+
+  }
+}

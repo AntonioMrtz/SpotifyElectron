@@ -1,11 +1,11 @@
-.wrapperNavbar{
+.wrapperNavbar {
 
     position: fixed;
     top: 0;
     left: 0;
-  
+
     width: 18svw;
-    height:calc(var(--sidebar-height)- 1svh);
+    height: calc(var(--sidebar-height)- 1svh);
     padding: 0.5%;
 
     display: flex;
@@ -14,21 +14,21 @@
 
 }
 
-.header{
+.header {
 
     display: flex;
     flex-direction: column;
-    
+
     background-color: var(--secondary-black);
     border-radius: 12px;
     padding-top: 5%;
     padding-bottom: 5%;
-    padding-left:6%;
+    padding-left: 6%;
 
 
 }
 
-.headerLi{
+.headerLi {
 
     margin: 4%;
     color: var(--secondary-white);
@@ -36,7 +36,7 @@
 
 }
 
-.aHeader{
+.aHeader {
 
     color: inherit;
 }
@@ -44,18 +44,18 @@
 
 
 
-.ul{
+.ul {
 
     padding: 0 !important;
     margin: 0 !important;
 }
 
-.headerI{
-    padding-right: 2vw;
+.headerI {
+    padding-right: 2rem;
     font-size: 1.15rem !important;
     color: var(--secondary-white);
     color: inherit !important;
-    
+
 }
 
 

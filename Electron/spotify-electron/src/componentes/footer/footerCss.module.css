@@ -4,7 +4,9 @@
     top: 0;
     left: 0;
     margin-top: var(--sidebar-height);
+    margin-bottom: 0;
+    padding-bottom: 0;
     height: 100svh;
-    background-color: green;
+    background-color: var(--primary-black);
 
 }

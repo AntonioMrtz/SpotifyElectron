@@ -5,7 +5,7 @@
     left: 0;
   
     width: 18svw;
-    height: 90svh;
+    height:calc(var(--sidebar-height)- 1svh);
     padding: 0.5%;
 
     display: flex;

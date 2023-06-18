@@ -14,6 +14,7 @@ const createWindow = () => {
         height: 800,
         minWidth:800,
         minHeight: 600,
+        icon:"",
         webPreferences: {
             nodeIntegration: false, // is default value after Electron v5
             contextIsolation: true, // protect against prototype pollution
@@ -29,6 +30,7 @@ const createWindow = () => {
     //win.loadFile('spotify-electron/public/index.html')
     win.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`);
     win.setMenuBarVisibility(false);
+    //win.setIcon("./favicon.ico")
     if (isDev) {
       win.webContents.openDevTools();
     }

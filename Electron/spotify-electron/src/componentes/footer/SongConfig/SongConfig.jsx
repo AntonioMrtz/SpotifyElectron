@@ -1,6 +1,7 @@
 import React from "react";
 
 import styles from "./songConfig.module.css";
+import VolumeSlider from "./VolumeSlider/VolumeSlider";
 
 export default function SongConfig() {
     return (
@@ -16,9 +17,8 @@ export default function SongConfig() {
             <a href="">
                 <i class="fa-solid fa-desktop fa-fw"></i>
             </a>
-            <a href="">
-                <i class="fa-solid fa-volume-low fa-fw"></i>
-            </a>
+            <VolumeSlider/>
+
             <a href="">
                 <i class="fa-solid fa-up-right-and-down-left-from-center fa-fw"></i>
             </a>

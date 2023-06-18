@@ -1,11 +1,12 @@
-import * as React from "react";
+import { useState } from "react";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
 import styles from "./volumeSlider.module.css";
 
 
-export default function VolumeSlider() {
-  const [isHovered, setIsHovered] = React.useState(false);
+export default function VolumeSlider(props) {
+
+  const [isHovered, setIsHovered] = useState(false);
 
   const handleMouseEnter = () => {
     setIsHovered(true);
@@ -13,6 +14,12 @@ export default function VolumeSlider() {
 
   const handleMouseLeave = () => {
     setIsHovered(false);
+  };
+
+
+  const handleVolume = (event, newValue) => {
+
+    props.changeVolume(newValue)
   };
 
   return (
@@ -29,11 +36,15 @@ export default function VolumeSlider() {
       </span>
       <Slider
         size="small"
+        min={1}
+        max={100}
+        step={1}
         defaultValue={50}
         aria-label="Small"
         valueLabelDisplay="off"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
+        onChange={handleVolume}
         sx={{
           "& .MuiSlider-track": {
             backgroundColor: isHovered ? "var(--primary-green)" : "var(--primary-white)",

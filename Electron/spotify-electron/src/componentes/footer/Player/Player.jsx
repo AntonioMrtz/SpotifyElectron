@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import styles from "./player.module.css";
 import cancion from "./cancion.mp3";
 
-export default function Player() {
+export default function Player(props) {
 
     /* Player */
 
@@ -27,6 +27,12 @@ export default function Player() {
         }
     };
 
+    const setVolume = () => {
+
+        props.volume==0 ? audio.volume=0 : audio.volume=props.volume/100
+
+    }
+
     const [isPlaying, setPlaying] = useState(false);
 
     /* Play button */
@@ -35,6 +41,18 @@ export default function Player() {
     const [displayNonePause, setDisplayNonePause] = useState(
         styles.displayNonePlay
     );
+
+
+    /* Manages volume given from parent */
+
+    useEffect(() => {
+      
+        setVolume(props.volume)
+        //console.log(props.volume)
+
+    }, [props.volume])
+    
+
 
     return (
         <div

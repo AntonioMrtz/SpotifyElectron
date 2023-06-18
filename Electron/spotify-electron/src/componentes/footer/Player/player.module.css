@@ -19,7 +19,7 @@ p{
     align-items: center;
 }
 
-.buttonsPlayerContainer a {
+.buttonsPlayerContainer span {
 
     color: var(--secondary-white);
     padding: 0 1.25% 0 1.25%;
@@ -27,13 +27,13 @@ p{
 
 }
 
-.buttonsPlayerContainer a:hover {
+.buttonsPlayerContainer span:hover {
 
     color: var(--pure-white);
 
 }
 
-.buttonsPlayerContainer a:nth-child(3){
+.buttonsPlayerContainer span:nth-child(3),span:nth-child(4){
 
     color: var(--pure-white);
     font-size: 2rem;
@@ -45,4 +45,15 @@ p{
     white-space: nowrap;
     padding-bottom: 1%;
 
+}
+
+
+.displayNonePlay{
+
+    display: none;
+}
+
+.displayNonePause{
+
+    display: none;
 }

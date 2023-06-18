@@ -1,7 +1,7 @@
 import styles from './AppCss.module.css';
-import Sidebar from './componentes/sidebar/Sidebar'
-import Home from './componentes/home/Home'
-import Explorar from './componentes/explorar/Explorar';
+import Sidebar from './componentes/Sidebar/Sidebar'
+import Home from './componentes/Home/Home'
+import Explorar from './componentes/Explorar/Explorar';
 import Footer from './componentes/footer/Footer';
 
 

@@ -1,6 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState ,useRef } from "react";
 import styles from "./player.module.css";
 import cancion from "./cancion.mp3";
+import TimeSlider from "./TimeSlider/TimeSlider";
+
 
 export default function Player(props) {
 
@@ -43,6 +45,29 @@ export default function Player(props) {
     );
 
 
+    /* Get current time */
+
+    let [playTime,setPlayTime] = useState(0.00)
+
+    const SECOND_MS = 500;
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            //console.log("Logs every second");
+            console.log(audio.currentTime)
+            
+            if(audio.currentTime!=undefined){
+                
+                
+                setPlayTime( Math.trunc(audio.currentTime/60) +(audio.currentTime % 60)/100 )
+
+            }
+        }, SECOND_MS);
+
+        return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
+    }, []);
+
+
     /* Manages volume given from parent */
 
     useEffect(() => {
@@ -82,19 +107,8 @@ export default function Player(props) {
                 </span>
             </div>
 
-            <div
-                className={`d-flex container-fluid flex-row ${styles.barPlayerContainer}`}
-            >
-                <p>1:26</p>
-
-                <div
-                    className={`d-flex container-fluid ${styles.playerContainer}`}
-                >
-                    --------------------------------------------------------------------------------------------
-                </div>
-
-                <p>3:46</p>
-            </div>
+            <TimeSlider song={cancion} playTime={playTime} songDuration={Math.trunc(audio.duration/60) +(audio.duration % 60)/100}/>
+            
         </div>
     );
 }

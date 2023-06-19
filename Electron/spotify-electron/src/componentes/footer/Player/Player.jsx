@@ -3,29 +3,37 @@ import styles from "./player.module.css";
 import cancion from "./cancion.mp3";
 import TimeSlider from "./TimeSlider/TimeSlider";
 
-
+/**
+ * 
+ * @param {Number} volume
+ *  
+ */
 export default function Player(props) {
+    /*
+     * PLAYER
+     */
 
-    /* Player */
-
+    /* Global audio variable for the component, has the logic of playing the songs */
     const [audio, setAudio] = useState(new Audio(cancion));
+    /** Control variable for knowing when music is being played or not*/
+    const [isPlaying, setPlaying] = useState(false);
+
+    /*
+     * PLAYER BUTTON HANDLERS
+     */
 
     const play = () => {
         if (!isPlaying) {
             audio.play();
-            setPlaying(true);
-            setDisplayNonePlay(styles.displayNonePlay);
-            setDisplayNonePause("");
-            setSongDuration(audio.duration); // not updating every 0.5s as playTime
+            handlePlay();
+            setSongDuration(audio.duration); // not updating every 0.5s as playback time
         }
     };
 
     const pause = () => {
         if (isPlaying) {
             audio.pause();
-            setPlaying(false);
-            setDisplayNonePlay("");
-            setDisplayNonePause(styles.displayNonePause);
+            handlePause();
         }
     };
 
@@ -35,27 +43,53 @@ export default function Player(props) {
             : (audio.volume = props.volume / 100);
     };
 
-    const [isPlaying, setPlaying] = useState(false);
+    /**
+     * Modifies buttons and control variables when the play button is clicked
+     */
+    const handlePlay = () => {
+        setPlaying(true);
+        setDisplayNonePlay(styles.displayNonePlay);
+        setDisplayNonePause("");
+    };
 
-    /* Play button */
+    /**
+     * Modifies buttons and control variables when the pause button is clicked
+     */
+    const handlePause = () => {
+        setPlaying(false);
+        setDisplayNonePlay("");
+        setDisplayNonePause(styles.displayNonePause);
+    };
 
+    /* Play/Pause Button manager */
     const [displayNonePlay, setDisplayNonePlay] = useState("");
     const [displayNonePause, setDisplayNonePause] = useState(
         styles.displayNonePlay
     );
 
+    
+    /*
+     * PLAYBACK TIME MANAGING
+     */
 
-    /* Get current time */
-
-    let [playTime, setPlayTime] = useState(0);
+    /* Hooks for updating the children Playbar */
+    let [playBackTime, setPlayBackTime] = useState(0);
     let [songDuration, setSongDuration] = useState(0);
-
+    
+    /* Update playback time  */
+    const changePlayBackTime = (value) => {
+        audio.currentTime = value;
+    };
     const SECOND_MS = 500;
-
+    
     useEffect(() => {
         const interval = setInterval(() => {
             if (audio.currentTime != undefined) {
-                setPlayTime(audio.currentTime);
+                setPlayBackTime(audio.currentTime);
+
+                if (audio.currentTime === audio.duration) {
+                    handlePause();
+                }
             }
         }, SECOND_MS);
 
@@ -64,22 +98,9 @@ export default function Player(props) {
 
 
     /* Manages volume given from parent */
-
     useEffect(() => {
-      
-        setVolume(props.volume)
-
-    }, [props.volume])
-
-
-    /* Manages playTime  */
-
-    const changePlayTime = (value) => {
-
-        audio.currentTime=value;
-    }
-    
-
+        setVolume(props.volume);
+    }, [props.volume]);
 
     return (
         <div
@@ -109,8 +130,12 @@ export default function Player(props) {
                 </span>
             </div>
 
-            <TimeSlider song={cancion} playTime={playTime} songDuration={songDuration} changePlayTime={changePlayTime}/>
-            
+            <TimeSlider
+                song={cancion}
+                playbacktime={playBackTime}
+                songDuration={songDuration}
+                changePlayBackTime={changePlayBackTime}
+            />
         </div>
     );
 }

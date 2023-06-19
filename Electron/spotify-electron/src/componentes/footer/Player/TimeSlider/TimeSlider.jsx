@@ -4,27 +4,31 @@ import Slider from "@mui/material/Slider";
 import styles from "./timeSlider.module.css";
 import { useEffect } from "react";
 
-
+/**
+ * 
+ * @param {function} changePlayBackTime()
+ * @param {seconds} playbacktime
+ * @param {seconds} songDuration 
+ *  
+ */
 export default function TimeSlider(props) {
 
 
-    /* Song PLAYTIME */
+    /* Song PLAYBACK TIME */
 
-    const [songPlayTime,setsongPlayTime] = useState( 0 )
-    const [songPlayTimeMinutesSeconds,setSongPlayTimeMinutesSeconds] = useState( 0.00 )
+    const [songPlayBackTime,setSongPlayBackTime] = useState( 0 )
+    const [songPlayBackTimeMinutesSeconds,setSongPlayBackTimeMinutesSeconds] = useState( 0.00 )
     
     
-    const handlePlayTime = (event, value) => {
-        console.log("cambio con value = " + value);
-        
-        setsongPlayTime(value);
-        props.changePlayTime(value);
+    const handleplaybacktime = (event, value) => {        
+        setSongPlayBackTime(value);
+        props.changePlayBackTime(value);
     };
 
     useEffect(() => {
-        setsongPlayTime(props.playTime);
-        setSongPlayTimeMinutesSeconds(secondsToMinutesSeconds(props.playTime));
-    }, [props.playTime]);
+        setSongPlayBackTime(props.playbacktime);
+        setSongPlayBackTimeMinutesSeconds(secondsToMinutesSeconds(props.playbacktime));
+    }, [props.playbacktime]);
     
     
     /* Song DURATION */
@@ -43,7 +47,7 @@ export default function TimeSlider(props) {
 
     return (
         <Box width="100%" paddingRight="2%" display="flex">
-            <p>{songPlayTimeMinutesSeconds}</p>
+            <p>{songPlayBackTimeMinutesSeconds}</p>
 
             <Slider
                 size="small"
@@ -53,8 +57,8 @@ export default function TimeSlider(props) {
                 defaultValue={0}
                 aria-label="Medium"
                 valueLabelDisplay="off"
-                onChange={handlePlayTime}
-                value={songPlayTime===undefined ?  0 : songPlayTime }
+                onChange={handleplaybacktime}
+                value={songPlayBackTime===undefined ?  0 : songPlayBackTime }
                 sx={{
                     "& .MuiSlider-track": {
                         backgroundColor: 

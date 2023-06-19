@@ -7,18 +7,45 @@ import { useEffect } from "react";
 export default function TimeSlider(props) {
 
 
-    const [songDuration,setSongDuration] = useState( +(0.00.toFixed(2)))
-    const [songPlayTime,setsongPlayTime] = useState( +(0.00.toFixed(2)))
+    const minutesSecondsToSeconds = (minutesSeconds) => {
 
-    const handlePlayTime = (event,value) => {
-        //console.log(value)
-        setsongPlayTime(value)
+        let result= Math.round(minutesSeconds)*60 + (((minutesSeconds % 1)*100).toFixed(2) )
+        
+        //console.log("RESULT "+Math.round(minutesSeconds)*60+"    "+(((minutesSeconds % 1)*100).toFixed(2)))
+        return result
     }
 
+    const secondsToMinutesSeconds = (secs) => {
+
+
+        let minutes = Math.floor(secs / 60);
+        let seconds = (secs - minutes * 60 ) / 100 ;
+
+        return (minutes+seconds).toFixed(2)
+    }
+
+
+    const [songDuration,setSongDuration] = useState( 0 )
+    const [songPlayTime,setsongPlayTime] = useState( 0 )
+    const [songPlayTimeMinutesSeconds,setSongPlayTimeMinutesSeconds] = useState( +(0.00.toFixed(2)))
+
+
+    const handlePlayTime = (event,value) => {
+
+        console.log("cambio con value = " + value);
+
+
+        setsongPlayTime(value);
+        props.changePlayTime(value);
+        console.log("cambio con songPlayTime = " + songPlayTime);
+        console.log("duration = " + props.songDuration);
+
+    }
+    
     useEffect(() => {
         
         setsongPlayTime(props.playTime)
-        console.log(songPlayTime)
+        setSongPlayTimeMinutesSeconds(secondsToMinutesSeconds(props.playTime))
        
     },[props.playTime])
     
@@ -26,18 +53,18 @@ export default function TimeSlider(props) {
 
     return (
         <Box width="100%" paddingRight="2%" display="flex">
-            <p>{songPlayTime===undefined ?  (0.00.toFixed(2)) : songPlayTime.toFixed(2)}</p>
+            <p>{songPlayTime===undefined ?  (0.00.toFixed(2)) : songPlayTimeMinutesSeconds}</p>
 
             <Slider
                 size="small"
-                min={0.00}
+                min={0}
                 max={props.songDuration}
-                step={0.01}
+                step={1}
                 defaultValue={0}
                 aria-label="Medium"
                 valueLabelDisplay="off"
-                /* onChange={handlePlayTime} */
-                value={songPlayTime===undefined ?  +(0.00.toFixed(2)) : songPlayTime.toFixed(2)}
+                onChange={handlePlayTime}
+                value={songPlayTime===undefined ?  0 : songPlayTime }
                 sx={{
                     "& .MuiSlider-track": {
                         backgroundColor: 
@@ -60,7 +87,7 @@ export default function TimeSlider(props) {
                 }}
             />
 
-            <p>{props.songDuration.toFixed(2)}</p>
+            <p>{secondsToMinutesSeconds(props.songDuration)}</p>
         </Box>
     );
 }

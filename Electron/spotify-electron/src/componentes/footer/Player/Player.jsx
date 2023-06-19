@@ -47,19 +47,19 @@ export default function Player(props) {
 
     /* Get current time */
 
-    let [playTime,setPlayTime] = useState(0.00)
+    let [playTime,setPlayTime] = useState(0)
 
     const SECOND_MS = 500;
 
     useEffect(() => {
         const interval = setInterval(() => {
             //console.log("Logs every second");
-            console.log(audio.currentTime)
+            //console.log(audio.currentTime)
             
             if(audio.currentTime!=undefined){
                 
                 
-                setPlayTime( Math.trunc(audio.currentTime/60) +(audio.currentTime % 60)/100 )
+                setPlayTime( audio.currentTime )
 
             }
         }, SECOND_MS);
@@ -76,6 +76,17 @@ export default function Player(props) {
         //console.log(props.volume)
 
     }, [props.volume])
+
+
+    /* Manages playTime  */
+
+    const changePlayTime = (value) => {
+
+        //audio.pause()
+        audio.currentTime=value;
+        //audio.play()
+        console.log("audio duration "+audio.duration)
+    }
     
 
 
@@ -107,7 +118,7 @@ export default function Player(props) {
                 </span>
             </div>
 
-            <TimeSlider song={cancion} playTime={playTime} songDuration={Math.trunc(audio.duration/60) +(audio.duration % 60)/100}/>
+            <TimeSlider song={cancion} playTime={playTime} songDuration={audio.duration} changePlayTime={changePlayTime}/>
             
         </div>
     );

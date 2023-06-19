@@ -4,61 +4,51 @@ import Slider from "@mui/material/Slider";
 import styles from "./timeSlider.module.css";
 import { useEffect } from "react";
 
+
 export default function TimeSlider(props) {
 
 
-    const minutesSecondsToSeconds = (minutesSeconds) => {
+    /* Song PLAYTIME */
 
-        let result= Math.round(minutesSeconds)*60 + (((minutesSeconds % 1)*100).toFixed(2) )
-        
-        //console.log("RESULT "+Math.round(minutesSeconds)*60+"    "+(((minutesSeconds % 1)*100).toFixed(2)))
-        return result
-    }
-
-    const secondsToMinutesSeconds = (secs) => {
-
-
-        let minutes = Math.floor(secs / 60);
-        let seconds = (secs - minutes * 60 ) / 100 ;
-
-        return (minutes+seconds).toFixed(2)
-    }
-
-
-    const [songDuration,setSongDuration] = useState( 0 )
     const [songPlayTime,setsongPlayTime] = useState( 0 )
-    const [songPlayTimeMinutesSeconds,setSongPlayTimeMinutesSeconds] = useState( +(0.00.toFixed(2)))
-
-
-    const handlePlayTime = (event,value) => {
-
+    const [songPlayTimeMinutesSeconds,setSongPlayTimeMinutesSeconds] = useState( 0.00 )
+    
+    
+    const handlePlayTime = (event, value) => {
         console.log("cambio con value = " + value);
-
-
+        
         setsongPlayTime(value);
         props.changePlayTime(value);
-        console.log("cambio con songPlayTime = " + songPlayTime);
-        console.log("duration = " + props.songDuration);
+    };
 
-    }
-    
     useEffect(() => {
-        
-        setsongPlayTime(props.playTime)
-        setSongPlayTimeMinutesSeconds(secondsToMinutesSeconds(props.playTime))
-       
-    },[props.playTime])
+        setsongPlayTime(props.playTime);
+        setSongPlayTimeMinutesSeconds(secondsToMinutesSeconds(props.playTime));
+    }, [props.playTime]);
+    
+    
+    /* Song DURATION */
+    
+    const [songDuration,setSongDuration] = useState( 0 )
+    const [songDurationMinutesSeconds,setsongDurationMinutesSeconds] = useState( 0.00 )
+
+    useEffect(() => {
+        setsongDurationMinutesSeconds(
+            secondsToMinutesSeconds(props.songDuration)
+        );
+        setSongDuration(props.songDuration);
+    }, [props.songDuration]);
     
 
 
     return (
         <Box width="100%" paddingRight="2%" display="flex">
-            <p>{songPlayTime===undefined ?  (0.00.toFixed(2)) : songPlayTimeMinutesSeconds}</p>
+            <p>{songPlayTimeMinutesSeconds}</p>
 
             <Slider
                 size="small"
                 min={0}
-                max={props.songDuration}
+                max={songDuration}
                 step={1}
                 defaultValue={0}
                 aria-label="Medium"
@@ -87,7 +77,24 @@ export default function TimeSlider(props) {
                 }}
             />
 
-            <p>{secondsToMinutesSeconds(props.songDuration)}</p>
+            <p>{songDurationMinutesSeconds}</p>
         </Box>
     );
+}
+
+
+/* Utils */
+const minutesSecondsToSeconds = (minutesSeconds) => {
+
+    let result= Math.round(minutesSeconds)*60 + (((minutesSeconds % 1)*100).toFixed(2) )
+    return result
+}
+
+const secondsToMinutesSeconds = (secs) => {
+
+
+    let minutes = Math.floor(secs / 60);
+    let seconds = (secs - minutes * 60 ) / 100 ;
+
+    return (minutes+seconds).toFixed(2)
 }

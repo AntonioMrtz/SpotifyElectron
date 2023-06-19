@@ -8,7 +8,7 @@ export default function Player(props) {
 
     /* Player */
 
-    const [audio, setAudio] = useState( new Audio(cancion) )
+    const [audio, setAudio] = useState(new Audio(cancion));
 
     const play = () => {
         if (!isPlaying) {
@@ -16,6 +16,7 @@ export default function Player(props) {
             setPlaying(true);
             setDisplayNonePlay(styles.displayNonePlay);
             setDisplayNonePause("");
+            setSongDuration(audio.duration); // not updating every 0.5s as playTime
         }
     };
 
@@ -25,15 +26,14 @@ export default function Player(props) {
             setPlaying(false);
             setDisplayNonePlay("");
             setDisplayNonePause(styles.displayNonePause);
-            
         }
     };
 
     const setVolume = () => {
-
-        props.volume==0 ? audio.volume=0 : audio.volume=props.volume/100
-
-    }
+        props.volume == 0
+            ? (audio.volume = 0)
+            : (audio.volume = props.volume / 100);
+    };
 
     const [isPlaying, setPlaying] = useState(false);
 
@@ -47,20 +47,15 @@ export default function Player(props) {
 
     /* Get current time */
 
-    let [playTime,setPlayTime] = useState(0)
+    let [playTime, setPlayTime] = useState(0);
+    let [songDuration, setSongDuration] = useState(0);
 
     const SECOND_MS = 500;
 
     useEffect(() => {
         const interval = setInterval(() => {
-            //console.log("Logs every second");
-            //console.log(audio.currentTime)
-            
-            if(audio.currentTime!=undefined){
-                
-                
-                setPlayTime( audio.currentTime )
-
+            if (audio.currentTime != undefined) {
+                setPlayTime(audio.currentTime);
             }
         }, SECOND_MS);
 
@@ -73,7 +68,6 @@ export default function Player(props) {
     useEffect(() => {
       
         setVolume(props.volume)
-        //console.log(props.volume)
 
     }, [props.volume])
 
@@ -82,10 +76,7 @@ export default function Player(props) {
 
     const changePlayTime = (value) => {
 
-        //audio.pause()
         audio.currentTime=value;
-        //audio.play()
-        console.log("audio duration "+audio.duration)
     }
     
 
@@ -118,7 +109,7 @@ export default function Player(props) {
                 </span>
             </div>
 
-            <TimeSlider song={cancion} playTime={playTime} songDuration={audio.duration} changePlayTime={changePlayTime}/>
+            <TimeSlider song={cancion} playTime={playTime} songDuration={songDuration} changePlayTime={changePlayTime}/>
             
         </div>
     );

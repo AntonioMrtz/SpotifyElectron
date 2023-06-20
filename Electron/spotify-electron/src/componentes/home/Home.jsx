@@ -26,7 +26,7 @@ export default function Home() {
                 <section
                     className={`container-fluid d-flex flex-row ${styles.row}`}
                 >
-                    <div className={`rounded ${styles.card}`}>
+                    <a href="#" className={`rounded ${styles.card}`}>
                         <img
                             src={"/assets/imgs/quedate.jpg"}
                             className={`card-img-top rounded`}
@@ -35,9 +35,8 @@ export default function Home() {
                             <h5 className={`${styles.tituloLista}`}>Quedate</h5>
                             <p className={`${styles.autorLista}`}>Quevedo</p>
                         </div>
-                    </div>
-
-                    <div className={`rounded ${styles.card}`}>
+                    </a>
+                    <a href="#" className={`rounded ${styles.card}`}>
                         <img
                             src={"/assets/imgs/quedate.jpg"}
                             className={`card-img-top rounded`}
@@ -46,7 +45,7 @@ export default function Home() {
                             <h5 className={`${styles.tituloLista}`}>Quedate</h5>
                             <p className={`${styles.autorLista}`}>Quevedo</p>
                         </div>
-                    </div>
+                    </a>
                 </section>
             </div>
 
@@ -74,7 +73,7 @@ export default function Home() {
                     <section
                         className={`container-fluid d-flex flex-row ${styles.row}`}
                     >
-                        <div className={`rounded ${styles.card}`}>
+                        <a href="#" className={`rounded ${styles.card}`}>
                             <img
                                 src={"/assets/imgs/quedate.jpg"}
                                 className={`card-img-top rounded`}
@@ -87,9 +86,8 @@ export default function Home() {
                                     Quevedo
                                 </p>
                             </div>
-                        </div>
-
-                        <div className={`rounded ${styles.card}`}>
+                        </a>{" "}
+                        <a href="#" className={`rounded ${styles.card}`}>
                             <img
                                 src={"/assets/imgs/quedate.jpg"}
                                 className={`card-img-top rounded`}
@@ -102,8 +100,8 @@ export default function Home() {
                                     Quevedo
                                 </p>
                             </div>
-                        </div>
-                        <div className={`rounded ${styles.card}`}>
+                        </a>{" "}
+                        <a href="#" className={`rounded ${styles.card}`}>
                             <img
                                 src={"/assets/imgs/quedate.jpg"}
                                 className={`card-img-top rounded`}
@@ -116,8 +114,8 @@ export default function Home() {
                                     Quevedo
                                 </p>
                             </div>
-                        </div>
-                        <div className={`rounded ${styles.card}`}>
+                        </a>{" "}
+                        <a href="#" className={`rounded ${styles.card}`}>
                             <img
                                 src={"/assets/imgs/quedate.jpg"}
                                 className={`card-img-top rounded`}
@@ -130,8 +128,8 @@ export default function Home() {
                                     Quevedo
                                 </p>
                             </div>
-                        </div>
-                        <div className={`rounded ${styles.card}`}>
+                        </a>{" "}
+                        <a href="#" className={`rounded ${styles.card}`}>
                             <img
                                 src={"/assets/imgs/quedate.jpg"}
                                 className={`card-img-top rounded`}
@@ -144,8 +142,8 @@ export default function Home() {
                                     Quevedo
                                 </p>
                             </div>
-                        </div>
-                        <div className={`rounded ${styles.card}`}>
+                        </a>{" "}
+                        <a href="#" className={`rounded ${styles.card}`}>
                             <img
                                 src={"/assets/imgs/quedate.jpg"}
                                 className={`card-img-top rounded`}
@@ -158,8 +156,7 @@ export default function Home() {
                                     Quevedo
                                 </p>
                             </div>
-                        </div>
-                        
+                        </a>{" "}
                     </section>
                 </div>
             </div>
@@ -185,7 +182,7 @@ export default function Home() {
                 <section
                     className={`container-fluid d-flex flex-row ${styles.row}`}
                 >
-                    <div className={`rounded ${styles.card}`}>
+                    <a href="#" className={`rounded ${styles.card}`}>
                         <img
                             src={"/assets/imgs/quedate.jpg"}
                             className={`card-img-top rounded`}
@@ -194,9 +191,8 @@ export default function Home() {
                             <h5 className={`${styles.tituloLista}`}>Quedate</h5>
                             <p className={`${styles.autorLista}`}>Quevedo</p>
                         </div>
-                    </div>
-
-                    <div className={`rounded ${styles.card}`}>
+                    </a>
+                    <a href="#" className={`rounded ${styles.card}`}>
                         <img
                             src={"/assets/imgs/quedate.jpg"}
                             className={`card-img-top rounded`}
@@ -205,7 +201,7 @@ export default function Home() {
                             <h5 className={`${styles.tituloLista}`}>Quedate</h5>
                             <p className={`${styles.autorLista}`}>Quevedo</p>
                         </div>
-                    </div>
+                    </a>
                 </section>
             </div>
         </div>

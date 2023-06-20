@@ -4,7 +4,7 @@ import styles from "./playlist.module.css";
 
 export default function Playlist() {
   return (
-    <span className={`container-fluid d-flex flex-row ${styles.wrapperPlaylist}`}>
+    <a href="" className={`container-fluid d-flex flex-row ${styles.wrapperPlaylist}`}>
 
         <img src={"/assets/imgs/quedate.jpg"} alt="" className="img-fluid img-border-2" />
 
@@ -15,6 +15,6 @@ export default function Playlist() {
 
         </div>
 
-    </span>
+    </a>
   )
 }

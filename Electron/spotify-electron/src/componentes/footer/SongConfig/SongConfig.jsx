@@ -1,5 +1,3 @@
-import React from "react";
-
 import styles from "./songConfig.module.css";
 import VolumeSlider from "./VolumeSlider/VolumeSlider";
 

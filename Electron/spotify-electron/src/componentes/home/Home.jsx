@@ -1,4 +1,3 @@
-import React from "react";
 import styles from "./homeCss.module.css";
 
 export default function Home() {
@@ -29,7 +28,7 @@ export default function Home() {
                 >
                     <div className={`rounded ${styles.card}`}>
                         <img
-                            src={require(`./quedate.jpg`)}
+                            src={"/assets/imgs/quedate.jpg"}
                             className={`card-img-top rounded`}
                         />
                         <div className={`${styles.card_body}`}>
@@ -40,7 +39,7 @@ export default function Home() {
 
                     <div className={`rounded ${styles.card}`}>
                         <img
-                            src={require(`./quedate.jpg`)}
+                            src={"/assets/imgs/quedate.jpg"}
                             className={`card-img-top rounded`}
                         />
                         <div className={`${styles.card_body}`}>
@@ -77,7 +76,7 @@ export default function Home() {
                     >
                         <div className={`rounded ${styles.card}`}>
                             <img
-                                src={require(`./quedate.jpg`)}
+                                src={"/assets/imgs/quedate.jpg"}
                                 className={`card-img-top rounded`}
                             />
                             <div className={`${styles.card_body}`}>
@@ -92,7 +91,7 @@ export default function Home() {
 
                         <div className={`rounded ${styles.card}`}>
                             <img
-                                src={require(`./quedate.jpg`)}
+                                src={"/assets/imgs/quedate.jpg"}
                                 className={`card-img-top rounded`}
                             />
                             <div className={`${styles.card_body}`}>
@@ -106,7 +105,7 @@ export default function Home() {
                         </div>
                         <div className={`rounded ${styles.card}`}>
                             <img
-                                src={require(`./quedate.jpg`)}
+                                src={"/assets/imgs/quedate.jpg"}
                                 className={`card-img-top rounded`}
                             />
                             <div className={`${styles.card_body}`}>
@@ -120,7 +119,7 @@ export default function Home() {
                         </div>
                         <div className={`rounded ${styles.card}`}>
                             <img
-                                src={require(`./quedate.jpg`)}
+                                src={"/assets/imgs/quedate.jpg"}
                                 className={`card-img-top rounded`}
                             />
                             <div className={`${styles.card_body}`}>
@@ -134,7 +133,7 @@ export default function Home() {
                         </div>
                         <div className={`rounded ${styles.card}`}>
                             <img
-                                src={require(`./quedate.jpg`)}
+                                src={"/assets/imgs/quedate.jpg"}
                                 className={`card-img-top rounded`}
                             />
                             <div className={`${styles.card_body}`}>
@@ -148,7 +147,7 @@ export default function Home() {
                         </div>
                         <div className={`rounded ${styles.card}`}>
                             <img
-                                src={require(`./quedate.jpg`)}
+                                src={"/assets/imgs/quedate.jpg"}
                                 className={`card-img-top rounded`}
                             />
                             <div className={`${styles.card_body}`}>
@@ -188,7 +187,7 @@ export default function Home() {
                 >
                     <div className={`rounded ${styles.card}`}>
                         <img
-                            src={require(`./quedate.jpg`)}
+                            src={"/assets/imgs/quedate.jpg"}
                             className={`card-img-top rounded`}
                         />
                         <div className={`${styles.card_body}`}>
@@ -199,7 +198,7 @@ export default function Home() {
 
                     <div className={`rounded ${styles.card}`}>
                         <img
-                            src={require(`./quedate.jpg`)}
+                            src={"/assets/imgs/quedate.jpg"}
                             className={`card-img-top rounded`}
                         />
                         <div className={`${styles.card_body}`}>

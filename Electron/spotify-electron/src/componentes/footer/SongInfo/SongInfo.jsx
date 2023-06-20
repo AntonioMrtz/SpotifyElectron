@@ -1,4 +1,3 @@
-import React from "react";
 import styles from "./songInfo.module.css";
 
 export default function SongInfo() {
@@ -8,7 +7,7 @@ export default function SongInfo() {
         >
             <img
                 className="img-rounded"
-                src={require(`./quedate.jpg`)}
+                src={"assets/imgs/quedate.jpg"}
                 alt=""
             />
 

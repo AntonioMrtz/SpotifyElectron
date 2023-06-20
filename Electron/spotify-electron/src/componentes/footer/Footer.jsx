@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import styles from "./footerCss.module.css";
 import SongInfo from "./SongInfo/SongInfo";
 import SongConfig from "./SongConfig/SongConfig";

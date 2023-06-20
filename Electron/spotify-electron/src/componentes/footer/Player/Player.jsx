@@ -1,6 +1,5 @@
 import { useEffect, useState ,useRef } from "react";
 import styles from "./player.module.css";
-import cancion from "./cancion.mp3";
 import TimeSlider from "./TimeSlider/TimeSlider";
 
 /**
@@ -14,7 +13,7 @@ export default function Player(props) {
      */
 
     /* Global audio variable for the component, has the logic of playing the songs */
-    const [audio, setAudio] = useState(new Audio(cancion));
+    const [audio, setAudio] = useState(new Audio("assets/audio/cancion.mp3"));
     /** Control variable for knowing when music is being played or not*/
     const [isPlaying, setPlaying] = useState(false);
 
@@ -131,7 +130,6 @@ export default function Player(props) {
             </div>
 
             <TimeSlider
-                song={cancion}
                 playbacktime={playBackTime}
                 songDuration={songDuration}
                 changePlayBackTime={changePlayBackTime}

@@ -8,7 +8,7 @@
 
 .columnTitle{
 
-    color: white;
+    color: var(--pure-white);
     padding-bottom: 1%;
     
     
@@ -19,7 +19,7 @@
     justify-content: flex-end;
     padding-top: 0.6%;
     padding-right: 2%;
-    color: gray;
+    color: var(--grey);
 }
 
 .card{
@@ -31,7 +31,7 @@
 
 .card:hover{
 
-    background-color: #272727;
+    background-color: var(--hover-white);
 }
 
 .card_body{
@@ -42,10 +42,10 @@
 
 .tituloLista{
 
-    color: white;
+    color: var(--pure-white);
 }
 
 .autorLista{
 
-    color: gray;
+    color: var(--grey);
 }

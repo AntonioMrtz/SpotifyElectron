@@ -46,8 +46,8 @@ export default function TimeSlider(props) {
 
 
     return (
-        <Box width="100%" paddingRight="2%" display="flex">
-            <p>{songPlayBackTimeMinutesSeconds}</p>
+        <Box width="100%" paddingRight="2%" display="flex" alignItems={"center"}>
+            <p className={styles.pSlider}>{songPlayBackTimeMinutesSeconds}</p>
 
             <Slider
                 size="small"
@@ -81,7 +81,7 @@ export default function TimeSlider(props) {
                 }}
             />
 
-            <p>{songDurationMinutesSeconds}</p>
+            <p className={styles.pSlider}>{songDurationMinutesSeconds}</p>
         </Box>
     );
 }

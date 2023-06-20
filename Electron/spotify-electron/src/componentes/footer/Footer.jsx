@@ -1,4 +1,4 @@
-import  { useState } from "react";
+import  { useEffect, useState } from "react";
 import styles from "./footerCss.module.css";
 import SongInfo from "./SongInfo/SongInfo";
 import SongConfig from "./SongConfig/SongConfig";
@@ -15,6 +15,8 @@ export default function Footer() {
        setVolume(volume);
 
     }
+
+    
 
     return (
         <div

@@ -1,8 +1,9 @@
-p{
+.playerBarContainer p{
 
     margin-bottom: 0 !important;
     font-size: 0.75rem;
     color: var(--primary-white);
+    padding:0 4% 0 4%!important;
 }
 
 .playerBarContainer{
@@ -33,7 +34,7 @@ p{
 
 }
 
-.buttonsPlayerContainer span:nth-child(3),span:nth-child(4){
+.buttonsPlayerContainer span:nth-child(3),.buttonsPlayerContainer span:nth-child(4){
 
     color: var(--pure-white);
     font-size: 2rem;

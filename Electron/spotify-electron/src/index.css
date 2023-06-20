@@ -18,8 +18,10 @@
   --hover-white: #272727;
   --primary-green:#1db954;
 
+  --grey:#888;
+
   /* Sidebar default width */
-  --sidebar-width: 18svw;
+  --sidebar-width: 25svw;
   --sidebar-height: 87svh;
 
   /* Footer default height */
@@ -49,6 +51,14 @@ a:hover {
 ul {
 
   list-style: none;
+}
+
+h5{
+  margin: 0;
+}
+
+p{
+  margin: 0;
 }
 
 @media (min-width: 1600px) {

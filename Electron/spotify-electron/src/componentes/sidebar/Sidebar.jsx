@@ -1,5 +1,6 @@
 import  { useEffect, useState } from "react";
 import styles from "./sideBarCss.module.css";
+import Playlist from "./Playlist/Playlist";
 
 export default function Sidebar() {
     //* MENU HOVER
@@ -108,6 +109,45 @@ export default function Sidebar() {
                     </li>
                 </ul>
             </header>
+
+
+            <div className={`container-fluid d-flex flex-column ${styles.libraryWrapper}`}>
+                <header className={`container-fluid d-flex flex-column`}>
+
+
+                </header>
+                <div className={`container-fluid d-flex flex-column ${styles.playlistUlWrapper}`}>
+                    <header>
+
+                    </header>
+                    <ul className={`container-fluid d-flex flex-column ${styles.ulPlaylist}`}>
+
+                        
+                    <Playlist/>
+                    <Playlist/>
+                    <Playlist/>
+                    <Playlist/>
+                    <Playlist/>
+                    <Playlist/>
+                    <Playlist/>
+                    <Playlist/>
+                    <Playlist/>
+                    <Playlist/>
+                    <Playlist/>
+                    <Playlist/>
+                    <Playlist/>
+                    <Playlist/>
+                    <Playlist/>
+                    <Playlist/>
+                    <Playlist/>
+
+
+                    </ul>
+                </div>
+            </div>
+
+
+
         </div>
     );
 }

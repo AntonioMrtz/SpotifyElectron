@@ -4,7 +4,7 @@
     top: 0;
     left: 0;
 
-    width: 18svw;
+    width: var(--sidebar-width);
     height: calc(var(--sidebar-height)- 1svh);
     padding: 0.5%;
 
@@ -79,4 +79,30 @@
     transition-property: color;
     -webkit-transition-timing-function: linear;
     transition-timing-function: linear
+}
+
+
+/* LIBRARY */
+
+.libraryWrapper{
+
+    background-color: var(--secondary-black);
+    margin-top: 4%;
+    border-radius: 12px;
+    padding-left: 0%;
+    padding-right: 0%;
+
+}
+
+.playlistUlWrapper{
+
+    color: var(--primary-white);
+    padding: 0 !important;
+}
+
+.ulPlaylist{
+
+    padding: 5% 1.5% 5% 5%!important;
+    margin: 0 !important;
+    overflow-x: hidden;
 }

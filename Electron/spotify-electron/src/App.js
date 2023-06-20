@@ -28,8 +28,10 @@ function App() {
       <div className='d-flex flex-row'>
 
       <Sidebar />
+      <div className={`App d-flex container-fluid ${styles.mainContentWrapper}`}>
+        <RouterProvider router={router} />
 
-      <RouterProvider router={router} />
+      </div>
 
       </div>
 

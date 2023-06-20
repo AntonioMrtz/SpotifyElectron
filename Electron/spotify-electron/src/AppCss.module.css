@@ -1,6 +1,18 @@
-.appBackground{
+.appBackground {
 
     background-color: var(--primary-black);
     font-family: "CircularStd-Medium", 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif !important;
+
+}
+
+.mainContentWrapper {
+
+
+
+    background-color: var(--secondary-black) !important;
+    border-radius: 14px;
+    margin: 0.5% 0 calc(100svh - var(--sidebar-height)) var(--sidebar-width);
+
+
 
 }

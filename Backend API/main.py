@@ -45,13 +45,15 @@ async def get_canciones():
 
 # Sube una cancion
 @app.post("/canciones/")
-async def post_cancion(nombre : str, artista : str,genero : Genre,file : UploadFile) -> Response:
+async def post_cancion(nombre : str, artista : str,genero : Genre,foto : str,file : UploadFile) -> Response:
     """ Registra la canción con los parámetros "nombre","artista" y "género"
 
     Args:
         nombre (str): Nombre de la canción
         artista (str): Artista de la canción
         genero (Genre): Género musical de la canción
+        foto (url): Género musical de la canción
+
    
     Returns:
         Response 201 Created
@@ -61,5 +63,5 @@ async def post_cancion(nombre : str, artista : str,genero : Genre,file : UploadF
         Internal Server Error?
     """
     readFile = await file.read()
-    return song_service.create_song(nombre,artista,genero,readFile)
+    return song_service.create_song(nombre,artista,genero,foto,readFile)
 

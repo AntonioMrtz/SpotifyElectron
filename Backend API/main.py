@@ -2,7 +2,7 @@ from fastapi import FastAPI,UploadFile,status
 import services.song_service as song_service
 import services.list_service as list_service
 from fastapi.responses import Response
-
+import json
 from model.Genre import Genre
 
 
@@ -20,7 +20,7 @@ async def get_listas():
     pass
 
 @app.get("/canciones/{nombre}")
-async def get_cancion(nombre : str) -> Response:
+def get_cancion(nombre : str) -> Response:
     """ Devuelve la canción con nombre "nombre"
 
     Args:
@@ -35,13 +35,19 @@ async def get_cancion(nombre : str) -> Response:
 
 
     """
-    return await song_service.get_song(id)
+    song = song_service.get_song(nombre)
+
+    song_json = json.dumps(song.__dict__)
+
+    return Response(song_json, media_type="application/json", status_code=200)
+    
+    #return Response(song, media_type="audio/mp3", status_code=200)
 
 
 # Devuelve todas las canciones
 @app.get("/canciones/")
 async def get_canciones():
-    pass
+    await song_service.get_songs()
 
 # Sube una cancion
 @app.post("/canciones/")
@@ -63,5 +69,6 @@ async def post_cancion(nombre : str, artista : str,genero : Genre,foto : str,fil
         Internal Server Error?
     """
     readFile = await file.read()
-    return song_service.create_song(nombre,artista,genero,foto,readFile)
+    song_service.create_song(nombre,artista,genero,foto,readFile)
+    return Response(None, 201)
 

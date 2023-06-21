@@ -42,21 +42,9 @@ class Database(metaclass=DatabaseMeta):
     """ Connection to the song database """
     song_collection = None
 
-    
-    def get_connection():
-        return connection
-
-    def get_list_collection():
-        return Database.list_collection
-
-    def get_song_collection():
-        return Database.song_collection
-
-
     def __init__(self):
         if Database.connection is None:
             try:
-
                 password = os.getenv("MONGO_PASS")
                 uri = 'mongodb+srv://arso:' + \
                     str(password) + \

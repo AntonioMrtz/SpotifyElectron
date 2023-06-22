@@ -1,7 +1,6 @@
 import {useEffect} from 'react'
 import styles from "./playlist.module.css";
 
-
 export default function Playlist() {
   return (
     <a href="" className={`container-fluid d-flex flex-row ${styles.wrapperPlaylist}`}>

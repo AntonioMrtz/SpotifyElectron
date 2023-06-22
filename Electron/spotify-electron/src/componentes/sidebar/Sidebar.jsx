@@ -2,6 +2,7 @@ import  { useEffect, useState } from "react";
 import styles from "./sideBarCss.module.css";
 import Playlist from "./Playlist/Playlist";
 
+
 export default function Sidebar() {
     //* MENU HOVER
 

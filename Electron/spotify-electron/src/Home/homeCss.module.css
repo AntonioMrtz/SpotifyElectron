@@ -1,0 +1,51 @@
+
+.columnOfListas{
+
+    padding-left: 0.5% !important;
+    margin-top: 1%;
+    margin-bottom: 1.5%;
+}
+
+.columnTitle{
+
+    color: var(--pure-white);
+    padding-bottom: 1%;
+    
+    
+}
+
+.mostrarT{
+
+    justify-content: flex-end;
+    padding-top: 0.6%;
+    padding-right: 2%;
+    color: var(--grey);
+}
+
+.card{
+    
+    padding: 1.5%;
+    margin-right: 2%;
+    background-color: var(--third-black) !important;
+}
+
+.card:hover{
+
+    background-color: var(--hover-white);
+}
+
+.card_body{
+
+    padding-top: 5% !important;
+    padding-left: 0% !important;
+}
+
+.tituloLista{
+
+    color: var(--pure-white);
+}
+
+.autorLista{
+
+    color: var(--grey);
+}

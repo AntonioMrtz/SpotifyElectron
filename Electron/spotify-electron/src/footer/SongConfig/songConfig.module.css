@@ -1,0 +1,22 @@
+.settingsContainer {
+
+    
+    justify-content: center;
+    align-items: center;
+    padding-left: 0 !important; 
+
+}
+
+.settingsContainer a {
+
+    color: var(--secondary-white);
+    padding: 1.25%;
+    font-size: 1rem;
+
+}
+
+.settingsContainer a:hover {
+
+    color: var(--pure-white);
+
+}

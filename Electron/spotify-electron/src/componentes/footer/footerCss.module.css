@@ -1,0 +1,13 @@
+.wrapperFooter{
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    margin-top: var(--sidebar-height);
+    margin-bottom: 0;
+    height: var(--footer-height);
+    background-color: var(--primary-black);
+    padding: 0.5% 0 0.5% 0;
+
+}
+

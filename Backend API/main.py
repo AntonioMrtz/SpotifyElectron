@@ -4,6 +4,7 @@ import services.list_service as list_service
 from fastapi.responses import Response
 import json
 from model.Genre import Genre
+from fastapi.middleware.cors import CORSMiddleware
 
 
 app = FastAPI(title="SpotifyElectronAPI",
@@ -11,13 +12,23 @@ app = FastAPI(title="SpotifyElectronAPI",
               version="0.0.1",
 
               )
+""" Cors disabled """
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["POST", "GET"],
+		allow_headers=["*"],
+    max_age=3600,
+)
 
 
 # Devuelve todas las listas
 @app.get("/listas/")
 async def get_listas():
 
-    pass
+    prueba = {"prueba":"prueba"}
+    return Response(json.dumps(prueba) , 201)
 
 @app.get("/canciones/{nombre}")
 def get_cancion(nombre : str) -> Response:

@@ -1,62 +1,57 @@
-import { useEffect, useState ,useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import styles from "./player.module.css";
 import TimeSlider from "./TimeSlider/TimeSlider";
 import { useFetch } from "../../../hooks/useFetch";
 
 /**
- * 
+ *
  * @param {Number} volume
- *  
+ *
  */
 export default function Player(props) {
-    /*
-     * PLAYER
-     */
+    
+    
+    //* PLAYER AUDIO DATA
 
     /* Global audio variable for the component, has the logic of playing the songs */
-    //const [audio, setAudio] = useState(new Audio("assets/audio/cancion.mp3"));
     const [audio, setAudio] = useState(new Audio());
+
+    // Listener that handles the time update of playbacktime
+    audio.addEventListener("timeupdate", function () {
+        let time = this.currentTime;
+        setPlayBackTime(time.toFixed(2));
+
+        if (audio.currentTime === audio.duration) {
+            handlePause();
+        }
+    });
 
     /** Control variable for knowing when music is being played or not*/
     const [isPlaying, setPlaying] = useState(false);
 
-    /* let audiobytes = useFetch(
-        "http://127.0.0.1:8000/canciones/p3",
-        "file"
-    ) */
-    
+    /* Loads the song */
     useEffect(() => {
-        fetch("http://127.0.0.1:8000/canciones/p3").then(res => res.json()).then(res => res["file"]).then((res) => {
-        
-        //let audiobytes_string = res["data"];
-        let audiobytes_string = res;
+        fetch("http://127.0.0.1:8000/canciones/p3")
+            .then((res) => res.json())
+            .then((res) => res["file"])
+            .then((res) => {
+                let audiobytes_string = res;
 
-        if (audiobytes_string !== undefined) {
-            audiobytes_string = audiobytes_string.replace('"', "");
-            audiobytes_string = audiobytes_string.replace("b", "");
-            audiobytes_string = audiobytes_string.replace("'", "");
-            audiobytes_string = audiobytes_string.slice(0, -1);
+                if (audiobytes_string !== undefined) {
 
-            var base64regex =
-                /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/;
+                    audiobytes_string = audiobytes_string.replace('"', "").replace("b", "").replace("'", "").slice(0, -1);
+                    let dataURI = "data:audio/mp3;base64," + audiobytes_string;
+                    setAudio(new Audio(dataURI));
 
-            console.log("Audio set");
-           
-            let dataURI = "data:audio/mp3;base64," + audiobytes_string;
-            setAudio(new Audio(dataURI));
-            console.log(audio.duration)
+                    //console.log("Audio set");
+                    //console.log("duration " + audio.duration);
+                }
+            });
+    }, []);
 
-            
-        }
-    });
-    }, [])
     
-    
-
-    /*
-     * PLAYER BUTTON HANDLERS
-     */
-
+    //* PLAYER BUTTON HANDLERS
+     
     const play = () => {
         if (!isPlaying) {
             audio.play();
@@ -103,35 +98,18 @@ export default function Player(props) {
     );
 
     
-    /*
-     * PLAYBACK TIME MANAGING
-     */
-
+    //* PLAYBACK TIME MANAGING
+     
     /* Hooks for updating the children Playbar */
     let [playBackTime, setPlayBackTime] = useState(0);
     let [songDuration, setSongDuration] = useState(0);
-    
+
     /* Update playback time  */
     const changePlayBackTime = (value) => {
         audio.currentTime = value;
     };
-    const SECOND_MS = 500;
-    
-    useEffect(() => {
-        const interval = setInterval(() => {
-            if (audio.currentTime != undefined) {
-                console.log(audio.currentTime)
-                setPlayBackTime(audio.currentTime);
 
-                if (audio.currentTime === audio.duration) {
-                    handlePause();
-                }
-            }
-        }, SECOND_MS);
-
-        return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
-    }, []);
-
+    //* VOLUME
 
     /* Manages volume given from parent */
     useEffect(() => {

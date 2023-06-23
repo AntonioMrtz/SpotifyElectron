@@ -1,20 +1,24 @@
-import { useState,useEffect } from "react";
+import { useState, useEffect } from 'react';
 
-export const useFetch = (url,field) => {
-    const [data, setData] = useState();
+export const useFetch = (url) => {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-    
-    useEffect(() => {
-        fetch(url,{"Access-Control-Allow-Origin": "*"})
-            .then((res) => res.json())
-            .then((res) => {
-                setData(res[field]);
-                //console.log(res)
-            })
-            .catch(console.log);
-    }, []);
-
-    return {
-        data,
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(url,{"Access-Control-Allow-Origin": "*"});
+        const jsonData = await response.json();
+        setData(jsonData);
+        setLoading(false);
+      } catch (error) {
+        // Handle error here
+      }
     };
+
+    fetchData();
+  }, []); // Empty dependency array ensures this effect runs only once
+
+  return { data, loading };
 };
+

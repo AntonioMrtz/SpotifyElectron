@@ -1,6 +1,7 @@
 import { useEffect, useState ,useRef } from "react";
 import styles from "./player.module.css";
 import TimeSlider from "./TimeSlider/TimeSlider";
+import { useFetch } from "../../../hooks/useFetch";
 
 /**
  * 
@@ -13,9 +14,44 @@ export default function Player(props) {
      */
 
     /* Global audio variable for the component, has the logic of playing the songs */
-    const [audio, setAudio] = useState(new Audio("assets/audio/cancion.mp3"));
+    //const [audio, setAudio] = useState(new Audio("assets/audio/cancion.mp3"));
+    const [audio, setAudio] = useState(new Audio());
+
     /** Control variable for knowing when music is being played or not*/
     const [isPlaying, setPlaying] = useState(false);
+
+    /* let audiobytes = useFetch(
+        "http://127.0.0.1:8000/canciones/p3",
+        "file"
+    ) */
+    
+    useEffect(() => {
+        fetch("http://127.0.0.1:8000/canciones/p3").then(res => res.json()).then(res => res["file"]).then((res) => {
+        
+        //let audiobytes_string = res["data"];
+        let audiobytes_string = res;
+
+        if (audiobytes_string !== undefined) {
+            audiobytes_string = audiobytes_string.replace('"', "");
+            audiobytes_string = audiobytes_string.replace("b", "");
+            audiobytes_string = audiobytes_string.replace("'", "");
+            audiobytes_string = audiobytes_string.slice(0, -1);
+
+            var base64regex =
+                /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/;
+
+            console.log("Audio set");
+           
+            let dataURI = "data:audio/mp3;base64," + audiobytes_string;
+            setAudio(new Audio(dataURI));
+            console.log(audio.duration)
+
+            
+        }
+    });
+    }, [])
+    
+    
 
     /*
      * PLAYER BUTTON HANDLERS
@@ -84,6 +120,7 @@ export default function Player(props) {
     useEffect(() => {
         const interval = setInterval(() => {
             if (audio.currentTime != undefined) {
+                console.log(audio.currentTime)
                 setPlayBackTime(audio.currentTime);
 
                 if (audio.currentTime === audio.duration) {

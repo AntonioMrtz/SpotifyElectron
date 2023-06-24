@@ -13,11 +13,11 @@ export default function Explorar() {
 
   return (
     <div className={`container-fluid d-flex flex-column`}>
-      <p>
+     {/*  <p>
 
       {data} hola
 
-      </p>
+      </p> */}
     </div>
   )
 }

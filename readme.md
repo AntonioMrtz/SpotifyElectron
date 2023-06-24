@@ -1,37 +1,32 @@
 # Spotify Electron Clone
 
-## Iniciar proyecto Electron
+## Start Electron App
 
 ```
-$ git clone https://github.com/AntonioMrtz/SpotifyElectron.git
-$ cd Electron/SpotifyElectron
-$ npm install
-$ cd spotify-electron
-$ npm install
-$ cd ..
-$ npm run dev [modo desarrollo]  | $ npm start [modo aplicacion final tras construir aplicacion]
-```
+$ git clone https://github.com/AntonioMrtz/SpotifyElectron.git && cd SpotifyElectron && npm install && npm start
 
-*Para refrescar la ventana del programa sin reiniciar basta con hacer **CRTL+R***
-
-## Iniciar Backend Python
 
 ```
-$ cd Backend API
-$ pip install -r requirements.txt / pip3 install -r requirements.txt [ Dependiendo de la versión de Python ]
-$ python3 -m uvicorn main:app --reload [ Lanzar API en http://127.0.0.1:8000/ ]
 
-*Para acceder a la documentacion y gestor gráfico de la API acceder a **http://127.0.0.1:8000/docs***
+## Start Python Backend API
+
+```
+$ cd Backend API && pip install -r requirements.txt && python3 -m uvicorn main:app --reload
+**.env file is needed to access the DB**
+
+*pip install -r requirements.txt / pip3 install -r requirements.txt [ Depends on python version installed ]*
+*python3 -m uvicorn main:app --reload [ API is being deployed at http://127.0.0.1:8000/ ]*
+*Access visual API swagger documentation at  **http://127.0.0.1:8000/docs***
 ```
 
 
 
-## Objetivos del proyecto
+## Project's goals
 
-* Desarrollar un clon de Spotify usando el framework
-electron , React y una API usando FastApi Python.
-* Añadir funcionalidades extra que pudieran mejorar la aplicación original.
+* Develop a Spotify Clone using Electron framework, Python API backend with FastAPI and React Interface.
+* Add new extra functionality that could improve the original app.
+* Works as a team managing Github branches, pull requests and Trello Board to organize tasks in different stages.
 
-## Contribuir al proyecto
+## How to Contribute to the project
 
 [CONTRIBUTING readme](https://github.com/AntonioMrtz/SpotifyElectron/blob/master/CONTRIBUTING.md)

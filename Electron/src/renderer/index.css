@@ -1,0 +1,75 @@
+:root {
+
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  
+    /* Colores globales de la aplicacion */
+  
+    --primary-black: #000000;
+    --secondary-black: #121212;
+    --pure-white: #ffffff;
+    --primary-white: #dfdfdf;
+    --secondary-white: #b3b3b3;
+    --third-black: #161616;
+    --hover-white: #272727;
+    --primary-green:#1db954;
+  
+    --grey:#888;
+  
+    /* Sidebar default width */
+    --sidebar-width: 25svw;
+    --sidebar-height: 87svh;
+  
+    /* Footer default height */
+    --footer-height: 13svh;
+  
+  }
+  
+  
+  body {
+    margin: 0;
+  
+  }
+  
+  a {
+  
+  
+    text-decoration: none;
+    color: inherit;
+  
+  }
+  
+  a:hover {
+  
+    color: inherit;
+  }
+  
+  ul {
+  
+    list-style: none;
+  }
+  
+  h5{
+    margin: 0;
+  }
+  
+  p{
+    margin: 0;
+  }
+  
+  @media (min-width: 1600px) {
+  
+    :root {
+      --sidebar-height: 90svh;
+  
+      /* Footer default height */
+      --footer-height: 10svh;
+  
+    }
+  }
+  
+  

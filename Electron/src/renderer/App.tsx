@@ -5,14 +5,14 @@ import Explorar from '../componentes/Explorar/Explorar';
 import Footer from '../componentes/footer/Footer';
 
 
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { RouterProvider, createHashRouter } from 'react-router-dom';
 
 function App() {
 
 
-  const router = createBrowserRouter([
+  const router = createHashRouter([
     {
-      path: '/',
+      path: '',
       element: <Home />,
     },
     {

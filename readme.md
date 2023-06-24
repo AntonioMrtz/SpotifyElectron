@@ -16,7 +16,7 @@ $ cd Backend API && pip install -r requirements.txt && python3 -m uvicorn main:a
 **.env file is needed to access the DB**
 
 *pip install -r requirements.txt / pip3 install -r requirements.txt [ Depends on python version installed ]*
-*python3 -m uvicorn main:app --reload [ API is being deployed at http://127.0.0.1:8000/ ]*
+*python3 -m uvicorn main:app --reload [ API is being deployed at http://127.0.0.1:8000/ ]* <br/>
 *Access visual API swagger documentation at  **http://127.0.0.1:8000/docs***
 
 

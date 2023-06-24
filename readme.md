@@ -12,12 +12,12 @@ $ git clone https://github.com/AntonioMrtz/SpotifyElectron.git && cd SpotifyElec
 
 ```
 $ cd Backend API && pip install -r requirements.txt && python3 -m uvicorn main:app --reload
+```
 **.env file is needed to access the DB**
 
 *pip install -r requirements.txt / pip3 install -r requirements.txt [ Depends on python version installed ]*
 *python3 -m uvicorn main:app --reload [ API is being deployed at http://127.0.0.1:8000/ ]*
 *Access visual API swagger documentation at  **http://127.0.0.1:8000/docs***
-```
 
 
 

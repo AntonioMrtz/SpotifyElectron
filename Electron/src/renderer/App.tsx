@@ -1,50 +1,44 @@
-import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
-import icon from '../../assets/icon.svg';
-import './App.css';
+import styles from './AppCss.module.css';
+import Sidebar from '../componentes/Sidebar/Sidebar'
+import Home from '../componentes/Home/Home'
+import Explorar from '../componentes/Explorar/Explorar';
+import Footer from '../componentes/footer/Footer';
 
-function Hello() {
+
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+
+function App() {
+
+
+  const router = createBrowserRouter([
+    {
+      path: '/',
+      element: <Home />,
+    },
+    {
+      path: '/explorar',
+      element:  <Explorar/>,
+    }
+  ]);
+
+
   return (
-    <div>
-      <div className="Hello">
-        <img width="200" alt="icon" src={icon} />
+    <div className={`App d-flex flex-column ${styles.appBackground}`}>
+
+      <div className='d-flex flex-row'>
+
+      <Sidebar />
+      <div className={`App d-flex container-fluid ${styles.mainContentWrapper}`}>
+        <RouterProvider router={router} />
+
       </div>
-      <h1>electron-react-boilerplate</h1>
-      <div className="Hello">
-        <a
-          href="https://electron-react-boilerplate.js.org/"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <button type="button">
-            <span role="img" aria-label="books">
-              📚
-            </span>
-            Read our docs
-          </button>
-        </a>
-        <a
-          href="https://github.com/sponsors/electron-react-boilerplate"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <button type="button">
-            <span role="img" aria-label="folded hands">
-              🙏
-            </span>
-            Donate
-          </button>
-        </a>
+
       </div>
+
+      <Footer/>
+
     </div>
   );
 }
 
-export default function App() {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Hello />} />
-      </Routes>
-    </Router>
-  );
-}
+export default App;

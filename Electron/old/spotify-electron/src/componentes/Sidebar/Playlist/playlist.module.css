@@ -1,0 +1,28 @@
+.wrapperPlaylist{
+
+    padding: 5px 0 5px 10px !important;
+    border-radius: 6px;
+}
+
+.wrapperPlaylist:hover{
+
+    background-color: var(--hover-white);
+}
+
+.wrapperPlaylist img{
+
+    border-radius:8px;
+    width: 48px;
+    height: 48px;
+    
+}
+
+.wrapperPlaylist label{
+
+    font-size: 1.15rem;
+}
+
+.wrapperPlaylist p{
+
+    color: var(--grey);
+}

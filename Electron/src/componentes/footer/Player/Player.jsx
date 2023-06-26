@@ -9,8 +9,6 @@ import { useFetch } from '../../../hooks/useFetch';
  *
  */
 export default function Player(props) {
-
-
   //* PLAYER AUDIO DATA
 
   /* Global audio variable for the component, has the logic of playing the songs */
@@ -32,20 +30,18 @@ export default function Player(props) {
             .slice(0, -1);
           let dataURI = 'data:audio/mp3;base64,' + audiobytes_string;
           audio.current = new Audio(dataURI);
-
         }
       })
       .then(() => {
         // Listener that handles the time update of playbacktime
         audio.current.addEventListener('timeupdate', function () {
           let time = audio.current.currentTime;
-          setPlayBackTime(+(time.toFixed(2)));
+          setPlayBackTime(+time.toFixed(2));
 
           if (audio.current.currentTime === audio.current.duration) {
             handlePause();
           }
         });
-
 
         // set play and pause functions
 
@@ -74,7 +70,6 @@ export default function Player(props) {
   /* Methods are declared when song is fetched */
   const [play, setPlay] = useState();
   const [pause, setPause] = useState();
-
 
   /**
    * Modifies buttons and control variables when the play button is clicked
@@ -113,22 +108,16 @@ export default function Player(props) {
 
   /* Manages volume given from parent */
   useEffect(() => {
-
     setVolume(props.volume);
-
   }, [props.volume]);
 
   const setVolume = () => {
-
-    if(audio.current!==undefined){
-
+    if (audio.current !== undefined) {
       props.volume == 0
-      ? (audio.current.volume = 0)
-      : (audio.current.volume = props.volume / 100);
+        ? (audio.current.volume = 0)
+        : (audio.current.volume = props.volume / 100);
     }
-
   };
-  
 
   return (
     <div

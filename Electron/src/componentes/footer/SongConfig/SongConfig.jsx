@@ -7,18 +7,18 @@ export default function SongConfig(props) {
       className={`d-flex container-fluid justify-content-end ${styles.settingsContainer} `}
     >
       <a href="">
-        <i class="fa-solid fa-microphone fa-fw"></i>
+        <i className="fa-solid fa-microphone fa-fw"></i>
       </a>
       <a href="">
-        <i class="fa-solid fa-bars fa-fw"></i>
+        <i className="fa-solid fa-bars fa-fw"></i>
       </a>
       <a href="">
-        <i class="fa-solid fa-desktop fa-fw"></i>
+        <i className="fa-solid fa-desktop fa-fw"></i>
       </a>
       <VolumeSlider changeVolume={props.changeVolume} />
 
       <a href="">
-        <i class="fa-solid fa-up-right-and-down-left-from-center fa-fw"></i>
+        <i className="fa-solid fa-up-right-and-down-left-from-center fa-fw"></i>
       </a>
     </div>
   );

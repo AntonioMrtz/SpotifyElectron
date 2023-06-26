@@ -9,27 +9,18 @@ import { useFetch } from '../../../hooks/useFetch';
  *
  */
 export default function Player(props) {
+
+
   //* PLAYER AUDIO DATA
 
   /* Global audio variable for the component, has the logic of playing the songs */
-  const [audio, setAudio] = useState(new Audio());
-
-  // Listener that handles the time update of playbacktime
-  audio.addEventListener('timeupdate', function () {
-    let time = this.currentTime;
-    setPlayBackTime(time.toFixed(2));
-
-    if (audio.currentTime === audio.duration) {
-      handlePause();
-    }
-  });
+  let audio = useRef();
 
   /** Control variable for knowing when music is being played or not*/
-  const [isPlaying, setPlaying] = useState(false);
 
   /* Loads the song */
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/canciones/p3')
+    fetch('http://127.0.0.1:8000/canciones/loquillo')
       .then((res) => res.json())
       .then((res) => res['file'])
       .then((res) => {
@@ -42,42 +33,68 @@ export default function Player(props) {
             .replace("'", '')
             .slice(0, -1);
           let dataURI = 'data:audio/mp3;base64,' + audiobytes_string;
-          setAudio(new Audio(dataURI));
+          audio.current = new Audio(dataURI);
 
-          //console.log("Audio set");
-          //console.log("duration " + audio.duration);
         }
+      })
+      .then(() => {
+        // Listener that handles the time update of playbacktime
+        audio.current.addEventListener('timeupdate', function () {
+          let time = audio.current.currentTime;
+          setPlayBackTime(+(time.toFixed(2)));
+
+          if (audio.current.currentTime === audio.current.duration) {
+            handlePause();
+          }
+        });
+
+
+        // set play and pause functions
+
+
+        let playWhenFetched = () => {
+          return function returns() {
+            audio.current.play();
+            handlePlay();
+            setSongDuration(audio.current.duration); // not updating every 0.5s as playback time
+          };
+        };
+
+        let pauseWhenFetched = () => {
+          return function returns() {
+            audio.current.pause();
+            handlePause();
+          };
+        };
+
+        setPlay(playWhenFetched);
+        setPause(pauseWhenFetched);
       });
   }, []);
 
   //* PLAYER BUTTON HANDLERS
 
-  const play = () => {
-    if (!isPlaying) {
-      audio.play();
-      handlePlay();
-      setSongDuration(audio.duration); // not updating every 0.5s as playback time
-    }
-  };
+  /* Methods are declared when song is fetched */
+  const [play, setPlay] = useState();
+  const [pause, setPause] = useState();
 
-  const pause = () => {
-    if (isPlaying) {
-      audio.pause();
-      handlePause();
-    }
-  };
+  //let volume = useRef(null);
 
   const setVolume = () => {
-    props.volume == 0
-      ? (audio.volume = 0)
-      : (audio.volume = props.volume / 100);
+
+    if(audio.current!==undefined){
+
+      props.volume == 0
+      ? (audio.current.volume = 0)
+      : (audio.current.volume = props.volume / 100);
+    }
+
   };
 
   /**
    * Modifies buttons and control variables when the play button is clicked
    */
   const handlePlay = () => {
-    setPlaying(true);
     setDisplayNonePlay(styles.displayNonePlay);
     setDisplayNonePause('');
   };
@@ -86,7 +103,6 @@ export default function Player(props) {
    * Modifies buttons and control variables when the pause button is clicked
    */
   const handlePause = () => {
-    setPlaying(false);
     setDisplayNonePlay('');
     setDisplayNonePause(styles.displayNonePause);
   };
@@ -105,15 +121,27 @@ export default function Player(props) {
 
   /* Update playback time  */
   const changePlayBackTime = (value) => {
-    audio.currentTime = value;
+    audio.current.currentTime = value;
   };
 
   //* VOLUME
 
   /* Manages volume given from parent */
   useEffect(() => {
+
     setVolume(props.volume);
+
   }, [props.volume]);
+
+  useEffect(() => {
+  
+
+   /*  if(audio.current!==undefined){
+
+      console.log(audio.current.volume)
+    } */
+  })
+  
 
   return (
     <div
@@ -123,23 +151,23 @@ export default function Player(props) {
         className={`d-flex container-fluid flex-row ${styles.buttonsPlayerContainer}`}
       >
         <span>
-          <i class="fa-solid fa-shuffle fa-fw"></i>
+          <i className="fa-solid fa-shuffle fa-fw"></i>
         </span>
         <span>
-          <i class="fa-solid fa-backward-step fa-fw"></i>
+          <i className="fa-solid fa-backward-step fa-fw"></i>
         </span>
         <span onClick={play} className={`${displayNonePlay}`}>
-          <i class="fa-solid fa-circle-play fa-fw"></i>
+          <i className="fa-solid fa-circle-play fa-fw"></i>
         </span>
         <span onClick={pause} className={`${displayNonePause}`}>
-          <i class="fa-solid fa-circle-pause fa-fw"></i>
+          <i className="fa-solid fa-circle-pause fa-fw"></i>
         </span>
         <span>
-          <i class="fa-solid fa-forward-step fa-fw"></i>
+          <i className="fa-solid fa-forward-step fa-fw"></i>
         </span>
 
         <span>
-          <i class="fa-solid fa-repeat fa-fw"></i>
+          <i className="fa-solid fa-repeat fa-fw"></i>
         </span>
       </div>
 

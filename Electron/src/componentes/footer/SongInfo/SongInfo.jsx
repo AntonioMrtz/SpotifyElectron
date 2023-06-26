@@ -21,7 +21,7 @@ export default function SongInfo() {
 
             <div className={`d-flex flex-column ${styles.likeContainer}`}>
                 <a href="">
-                    <i class="fa-regular fa-heart"></i>
+                    <i className="fa-regular fa-heart"></i>
                 </a>
             </div>
         </div>

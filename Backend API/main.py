@@ -9,7 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(title="SpotifyElectronAPI",
               description="API created with FastAPI Python to serve as backend for SpotifyElectron App",
-              version="0.0.1",
+              version="0.0.1"
 
               )
 """ Cors disabled """
@@ -27,8 +27,9 @@ app.add_middleware(
 @app.get("/listas/")
 async def get_listas():
 
-    prueba = {"prueba":"prueba"}
-    return Response(json.dumps(prueba) , 201)
+    list_service.hola()
+    """ prueba = {"prueba":"prueba"}
+    return Response(json.dumps(prueba) , 201) """
 
 @app.get("/canciones/{nombre}")
 def get_cancion(nombre : str) -> Response:

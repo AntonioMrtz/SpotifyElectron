@@ -1,4 +1,3 @@
-import logging
 from services.utils import checkValidParameterString
 from database.Database import Database
 from gridfs import GridFS
@@ -8,8 +7,6 @@ from model.Genre import Genre
 from model.Song import Song
 import base64
 
-formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
-logging.basicConfig(level=logging.DEBUG)
 
 """ Insert songs with format [files,chunks] https://www.mongodb.com/docs/manual/core/gridfs/"""
 gridFsSong = GridFS(Database().connection, collection='cancion')

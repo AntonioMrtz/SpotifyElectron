@@ -1,9 +1,8 @@
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 import os
-import logging
 from dotenv import load_dotenv
-
+import logging
 
 formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
 logging.basicConfig(level=logging.WARNING)

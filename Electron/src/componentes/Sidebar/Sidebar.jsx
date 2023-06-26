@@ -116,11 +116,16 @@ export default function Sidebar() {
             <Playlist />
             <Playlist />
             <Playlist />
+
             <Playlist />
             <Playlist />
             <Playlist />
             <Playlist />
             <Playlist />
+            <Playlist />
+            <Playlist />
+            <Playlist />
+
           </ul>
         </div>
       </div>

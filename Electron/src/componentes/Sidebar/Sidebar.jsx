@@ -83,7 +83,7 @@ export default function Sidebar() {
             onMouseOut={handleMouseOutBuscar}
             id="li-buscar"
           >
-            <a className={`${styles.aHeader}`} href="/explorar">
+            <a className={`${styles.aHeader}`} href="explorar">
               <i
                 className={`fa-solid fa-magnifying-glass fa-fw ${styles.headerI}`}
               ></i>

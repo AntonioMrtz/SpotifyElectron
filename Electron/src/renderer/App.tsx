@@ -1,42 +1,32 @@
 import styles from './AppCss.module.css';
-import Sidebar from '../componentes/Sidebar/Sidebar'
-import Home from '../componentes/Home/Home'
+import Sidebar from '../componentes/Sidebar/Sidebar';
+import Home from '../componentes/Home/Home';
 import Explorar from '../componentes/Explorar/Explorar';
 import Footer from '../componentes/footer/Footer';
-
-
-import { RouterProvider, createHashRouter } from 'react-router-dom';
+import { BrowserRouter, Route,Routes } from 'react-router-dom';
 
 function App() {
-
-
-  const router = createHashRouter([
-    {
-      path: '',
-      element: <Home />,
-    },
-    {
-      path: '/explorar',
-      element:  <Explorar/>,
-    }
-  ]);
-
-
+ 
   return (
     <div className={`App d-flex flex-column ${styles.appBackground}`}>
+      <div className="d-flex flex-row">
+        <Sidebar />
+        <div
+          className={`App d-flex container-fluid ${styles.mainContentWrapper}`}
+        >
+          <BrowserRouter>
+          <Routes>
 
-      <div className='d-flex flex-row'>
+            <Route path="/" Component={Home} />
+            <Route path="/explorar" Component={Explorar} />
+            <Route path="*" Component={Home} />
+          </Routes>
 
-      <Sidebar />
-      <div className={`App d-flex container-fluid ${styles.mainContentWrapper}`}>
-        <RouterProvider router={router} />
-
+          </BrowserRouter>
+        </div>
       </div>
 
-      </div>
-
-      <Footer/>
-
+      <Footer />
     </div>
   );
 }

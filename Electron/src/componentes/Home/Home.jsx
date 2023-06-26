@@ -1,7 +1,9 @@
 import styles from './homeCss.module.css';
 import foto from '../../assets/imgs/quedate.jpg';
 
+
 export default function Home() {
+  
   return (
     <div className={`container-fluid d-flex flex-column ${styles.principal}`}>
       <div

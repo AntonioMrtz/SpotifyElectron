@@ -16,11 +16,9 @@ export default function Player(props) {
   /* Global audio variable for the component, has the logic of playing the songs */
   let audio = useRef();
 
-  /** Control variable for knowing when music is being played or not*/
-
   /* Loads the song */
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/canciones/loquillo')
+    fetch('http://127.0.0.1:8000/canciones/p3')
       .then((res) => res.json())
       .then((res) => res['file'])
       .then((res) => {
@@ -51,7 +49,6 @@ export default function Player(props) {
 
         // set play and pause functions
 
-
         let playWhenFetched = () => {
           return function returns() {
             audio.current.play();
@@ -78,18 +75,6 @@ export default function Player(props) {
   const [play, setPlay] = useState();
   const [pause, setPause] = useState();
 
-  //let volume = useRef(null);
-
-  const setVolume = () => {
-
-    if(audio.current!==undefined){
-
-      props.volume == 0
-      ? (audio.current.volume = 0)
-      : (audio.current.volume = props.volume / 100);
-    }
-
-  };
 
   /**
    * Modifies buttons and control variables when the play button is clicked
@@ -133,14 +118,16 @@ export default function Player(props) {
 
   }, [props.volume]);
 
-  useEffect(() => {
-  
+  const setVolume = () => {
 
-   /*  if(audio.current!==undefined){
+    if(audio.current!==undefined){
 
-      console.log(audio.current.volume)
-    } */
-  })
+      props.volume == 0
+      ? (audio.current.volume = 0)
+      : (audio.current.volume = props.volume / 100);
+    }
+
+  };
   
 
   return (

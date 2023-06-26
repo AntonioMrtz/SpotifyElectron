@@ -27,9 +27,9 @@ app.add_middleware(
 @app.get("/listas/")
 async def get_listas():
 
-    list_service.hola()
-    """ prueba = {"prueba":"prueba"}
-    return Response(json.dumps(prueba) , 201) """
+    
+    prueba = {"prueba":"prueba"}
+    return Response(json.dumps(prueba) , 201)
 
 @app.get("/canciones/{nombre}")
 def get_cancion(nombre : str) -> Response:

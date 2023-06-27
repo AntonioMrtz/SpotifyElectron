@@ -58,6 +58,14 @@ export default function Sidebar() {
     setUrl(splitBySlash[splitBySlash.length - 1]);
   }, []);
 
+
+  /* Handle add playlist button */
+
+  const handleAddPlaylist = () => {
+
+    
+  }
+
   return (
     <div className={`container-fluid ${styles.wrapperNavbar}`}>
       <header className={`${styles.header}`}>
@@ -98,9 +106,23 @@ export default function Sidebar() {
       >
         <header className={`container-fluid d-flex flex-column`}></header>
         <div
-          className={`container-fluid d-flex flex-column ${styles.playlistUlWrapper}`}
+          className={`container-fluid d-flex flex-column p-0 ${styles.playlistUlWrapper}`}
         >
-          <header></header>
+          <header
+            className={`container-fluid d-flex flex-row pb-4 ${styles.headerTuBiblioteca}`}
+          >
+            <div className={`container-fluid d-flex justify-content-start p-0`} style={{marginInlineEnd:1}}>
+              <label>
+                <i class="fa-solid fa-swatchbook fa-fw"></i>Tu biblioteca
+              </label>
+            </div>
+
+            <div 
+              className={`container-fluid d-flex justify-content-end p-0`} style={{width:"25%"}}
+            >
+              <button className={`btn`} onClick={handleAddPlaylist}><i className="fa-solid fa-plus fa-fw"></i></button>
+            </div>
+          </header>
           <ul
             className={`container-fluid d-flex flex-column ${styles.ulPlaylist}`}
           >
@@ -116,7 +138,6 @@ export default function Sidebar() {
             <Playlist />
             <Playlist />
             <Playlist />
-
             <Playlist />
             <Playlist />
             <Playlist />
@@ -125,7 +146,6 @@ export default function Sidebar() {
             <Playlist />
             <Playlist />
             <Playlist />
-
           </ul>
         </div>
       </div>

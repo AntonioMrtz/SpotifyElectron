@@ -101,13 +101,16 @@
     color: var(--primary-white);
     padding: 0 !important;
     overflow: hidden;
+    padding: 5% 0 5% 1.75%!important;
+
 }
 
 .ulPlaylist{
 
     /* padding: 5% 1.5% 5% 1.75%!important; */
-    padding: 5% 0 5% 1.75%!important;
-    margin: 0 !important;
+/*     padding: 5% 0 5% 1.75%!important;
+ */    margin: 0 !important;
+ padding: 0;
     overflow-x: hidden;
     max-height: 78svh;
     overflow-y: auto;
@@ -116,4 +119,38 @@
 
 .ulPlaylist::-webkit-scrollbar { 
     display: none;  /* Safari and Chrome */
+}
+
+
+/* TU BIBLIOTECA */
+
+
+.headerTuBiblioteca div label i{
+
+    padding-right: 3%;
+    color: var(--secondary-white);
+}
+
+.headerTuBiblioteca div label{
+
+    color: var(--secondary-white);
+}
+
+.headerTuBiblioteca button{
+
+    color: var(--secondary-white);
+    border-radius: 25px;
+    padding: 0 5px 0 5px !important;
+}
+.headerTuBiblioteca button:hover{
+
+    color: var(--primary-white);
+    background-color: var(--hover-white);
+}
+
+.headerTuBiblioteca button:focus{
+
+    color: var(--primary-white);
+    background-color: var(--hover-white);
+    box-shadow: var(--primary-black);
 }

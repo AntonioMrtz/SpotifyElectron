@@ -16,7 +16,7 @@ export default function Player(props: PropsPlayer) {
 
   let songName = props.songName;
 
-  /* Loads the song */
+  /* Loads the song and metadata to the Player*/
   useEffect(() => {
     if (audio.current) {
       audio.current.pause();

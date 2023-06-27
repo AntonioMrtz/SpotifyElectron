@@ -2,7 +2,19 @@ import styles from './homeCss.module.css';
 import foto from '../../assets/imgs/quedate.jpg';
 
 
-export default function Home() {
+export default function Home(props) {
+
+  const handleDoubleClick = () =>{
+
+    props.changeSongName("p3")
+
+  }
+
+  const handleDoubleClickBeta = () =>{
+
+    props.changeSongName("loquillo")
+
+  }
   
   return (
     <div className={`container-fluid d-flex flex-column ${styles.principal}`}>
@@ -21,20 +33,20 @@ export default function Home() {
         </header>
 
         <section className={`container-fluid d-flex flex-row ${styles.row}`}>
-          <a href="#" className={`rounded ${styles.card}`}>
+          <span onClick={handleDoubleClick} name="p3" className={`rounded ${styles.card}`}>
             <img src={foto} className={`card-img-top rounded`} />
             <div className={`${styles.card_body}`}>
               <h5 className={`${styles.tituloLista}`}>Quedate</h5>
               <p className={`${styles.autorLista}`}>Quevedo</p>
             </div>
-          </a>
-          <a href="#" className={`rounded ${styles.card}`}>
+          </span>
+          <span onClick={handleDoubleClickBeta} name="p3" className={`rounded ${styles.card}`}>
             <img src={foto} className={`card-img-top rounded`} />
             <div className={`${styles.card_body}`}>
               <h5 className={`${styles.tituloLista}`}>Quedate</h5>
               <p className={`${styles.autorLista}`}>Quevedo</p>
             </div>
-          </a>
+          </span>
         </section>
       </div>
 

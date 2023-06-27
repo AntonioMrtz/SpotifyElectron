@@ -15,9 +15,17 @@ export default function Player(props : PropsPlayer) {
   /* Global audio variable for the component, has the logic of playing the songs */
   let audio = useRef<HTMLAudioElement | null>(null);
 
+  let songName = props.songName
+
   /* Loads the song */
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/canciones/p3')
+
+    if(audio.current){
+
+      audio.current.pause()
+    }
+
+    fetch('http://127.0.0.1:8000/canciones/'+songName,{"headers":{ 'Access-Control-Allow-Origin': '*' }})
       .then((res) => res.json())
       .then((res) => res['file'])
       .then((res) => {
@@ -52,6 +60,20 @@ export default function Player(props : PropsPlayer) {
             }
           });
 
+          // When metadata such as duration,etc is loaded
+          audio.current.addEventListener('loadedmetadata', function () {
+
+            if(audio.current){
+
+              audio.current.play()
+              handlePlay();
+              setSongDuration(audio.current.duration); // not updating every 0.5s as playback time
+
+            }
+            
+
+          });
+
 
         }
 
@@ -84,8 +106,9 @@ export default function Player(props : PropsPlayer) {
 
         setPlay(playWhenFetched);
         setPause(pauseWhenFetched);
+        
       });
-  }, []);
+  }, [props.songName]);
 
   //* PLAYER BUTTON HANDLERS
 
@@ -137,7 +160,8 @@ export default function Player(props : PropsPlayer) {
   }, [props.volume]);
 
   const setVolume = () => {
-    if (audio.current && audio.current.volume) {
+
+    if (audio.current && audio.current.volume!==undefined) {
       props.volume == 0
         ? (audio.current.volume = 0)
         : (audio.current.volume = props.volume / 100);

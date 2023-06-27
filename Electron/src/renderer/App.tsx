@@ -4,8 +4,18 @@ import Home from '../componentes/Home/Home';
 import Explorar from '../componentes/Explorar/Explorar';
 import Footer from '../componentes/footer/Footer';
 import { BrowserRouter, Route,Routes } from 'react-router-dom';
+import { useState } from 'react';
+
+
 
 function App() {
+
+  const [songName, setSongName] = useState('none');
+
+  const changeSongName = (songName:string) : void => {
+    setSongName(songName);
+  };
+
  
   return (
     <div className={`App d-flex flex-column ${styles.appBackground}`}>
@@ -17,16 +27,16 @@ function App() {
           <BrowserRouter>
           <Routes>
 
-            <Route path="/" Component={Home} />
-            <Route path="/explorar" Component={Explorar} />
-            <Route path="*" Component={Home} />
+            <Route path="/" element=<Home changeSongName={changeSongName}/>/>
+            <Route path="/explorar" element=<Explorar changeSongName={changeSongName}/>/>
+            <Route path="*" element=<Home changeSongName={changeSongName}/>/>
           </Routes>
 
           </BrowserRouter>
         </div>
       </div>
 
-      <Footer />
+      <Footer songName={songName}/>
     </div>
   );
 }

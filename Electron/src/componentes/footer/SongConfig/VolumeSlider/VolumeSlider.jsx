@@ -36,7 +36,7 @@ export default function VolumeSlider(props) {
       </span>
       <Slider
         size="small"
-        min={1}
+        min={0}
         max={100}
         step={1}
         defaultValue={50}

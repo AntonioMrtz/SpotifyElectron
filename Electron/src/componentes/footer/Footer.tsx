@@ -4,12 +4,19 @@ import SongInfo from './SongInfo/SongInfo';
 import SongConfig from './SongConfig/SongConfig';
 import Player from './Player/Player';
 
-export default function Footer() {
-  const [volume, setVolume] = useState(50);
+interface PropsFooter{
 
-  const changeVolumeParent = (volume) => {
+  songName: string
+
+}
+
+export default function Footer(props:PropsFooter) {
+  const [volume, setVolume] = useState(50);
+  
+  const changeVolumeParent = (volume:number) : void => {
     setVolume(volume);
   };
+
 
   return (
     <div
@@ -17,7 +24,7 @@ export default function Footer() {
     >
       <SongInfo />
 
-      <Player volume={volume} />
+      <Player volume={volume} songName={props.songName}/>
 
       <SongConfig changeVolume={changeVolumeParent} />
     </div>

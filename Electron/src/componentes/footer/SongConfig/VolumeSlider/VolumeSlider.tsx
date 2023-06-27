@@ -4,7 +4,13 @@ import Slider from "@mui/material/Slider";
 import styles from "./volumeSlider.module.css";
 
 
-export default function VolumeSlider(props) {
+interface PropsVolumeSlider{
+
+  changeVolume : (volume:number) => void 
+
+}
+
+export default function VolumeSlider(props:PropsVolumeSlider) {
 
   const [isHovered, setIsHovered] = useState(false);
 
@@ -17,9 +23,12 @@ export default function VolumeSlider(props) {
   };
 
 
-  const handleVolume = (event, newValue) => {
+  const handleVolume = (event:Event, newValue:number | number[] ,activeThumb:number) : void => {
 
-    props.changeVolume(newValue)
+    if(typeof(newValue)=== "number"){
+
+      props.changeVolume(newValue)
+    }
   };
 
   return (

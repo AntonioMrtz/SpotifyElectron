@@ -186,7 +186,7 @@ export default function Player(props: PropsPlayer) {
       </div>
 
       <TimeSlider
-        playbacktime={playBackTime}
+        playBackTime={playBackTime}
         songDuration={songDuration}
         changePlayBackTime={changePlayBackTime}
       />

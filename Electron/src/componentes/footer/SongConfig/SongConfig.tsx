@@ -1,7 +1,12 @@
 import styles from './songConfig.module.css';
 import VolumeSlider from './VolumeSlider/VolumeSlider';
 
-export default function SongConfig(props) {
+interface PropsSongConfig{
+
+  changeVolume : (volume:number) => void 
+}
+
+export default function SongConfig(props:PropsSongConfig) {
   return (
     <div
       className={`d-flex container-fluid justify-content-end ${styles.settingsContainer} `}

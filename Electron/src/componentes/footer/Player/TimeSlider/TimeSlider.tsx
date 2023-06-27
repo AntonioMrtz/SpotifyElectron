@@ -4,31 +4,36 @@ import Slider from '@mui/material/Slider';
 import styles from './timeSlider.module.css';
 import { useEffect } from 'react';
 
-/**
- *
- * @param {function} changePlayBackTime()
- * @param {seconds} playbacktime
- * @param {seconds} songDuration
- *
- */
-export default function TimeSlider(props) {
+interface PropsTimeSlider {
+  playBackTime: number;
+  songDuration: number;
+  changePlayBackTime: (playBackTime: number) => void;
+}
+
+export default function TimeSlider(props: PropsTimeSlider) {
   /* Song PLAYBACK TIME */
 
   const [songPlayBackTime, setSongPlayBackTime] = useState(0);
   const [songPlayBackTimeMinutesSeconds, setSongPlayBackTimeMinutesSeconds] =
     useState(0.0);
 
-  const handleplaybacktime = (event, value) => {
-    setSongPlayBackTime(value);
-    props.changePlayBackTime(value);
+  const handleplaybacktime = (
+    event: Event,
+    value: number | number[],
+    activeThumb: number
+  ) => {
+    if (typeof value === 'number') {
+      setSongPlayBackTime(value);
+      props.changePlayBackTime(value);
+    }
   };
 
   useEffect(() => {
-    setSongPlayBackTime(props.playbacktime);
+    setSongPlayBackTime(props.playBackTime);
     setSongPlayBackTimeMinutesSeconds(
-      secondsToMinutesSeconds(props.playbacktime)
+      secondsToMinutesSeconds(props.playBackTime)
     );
-  }, [props.playbacktime]);
+  }, [props.playBackTime]);
 
   /* Song DURATION */
 
@@ -80,13 +85,13 @@ export default function TimeSlider(props) {
 }
 
 /* Utils */
-const minutesSecondsToSeconds = (minutesSeconds) => {
+const minutesSecondsToSeconds = (minutesSeconds: number) => {
   let result =
     Math.round(minutesSeconds) * 60 + ((minutesSeconds % 1) * 100).toFixed(2);
   return result;
 };
 
-const secondsToMinutesSeconds = (secs) => {
+const secondsToMinutesSeconds: Function = (secs: number) => {
   let minutes = Math.floor(secs / 60);
   let seconds = (secs - minutes * 60) / 100;
 

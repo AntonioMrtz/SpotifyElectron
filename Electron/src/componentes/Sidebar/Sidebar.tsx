@@ -34,9 +34,9 @@ export default function Sidebar() {
 
   /*  HIGHLIGHT CURRENT SECTION LI */
 
-  const [selectedID, setSelectedID] = useState(); // you could set a default id as well
+  const [selectedID, setSelectedID] = useState<string>(); // you could set a default id as well
 
-  const getSelectedClass = (id) =>
+  const getSelectedClass = (id:string) =>
     selectedID === id ? styles.linksubtleClicked : '';
 
   const [url, setUrl] = useState('');
@@ -113,7 +113,7 @@ export default function Sidebar() {
           >
             <div className={`container-fluid d-flex justify-content-start p-0`} >
               <div className={`container-fluid ps-0`}>
-                <i class="fa-solid fa-swatchbook fa-fw"></i>Tu biblioteca
+                <i className="fa-solid fa-swatchbook fa-fw"></i>Tu biblioteca
               </div>
             </div>
 

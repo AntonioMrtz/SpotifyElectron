@@ -32,7 +32,7 @@
     --border-radius-thumbnails:8px;
 
 
-    --font-size-song-footer:1rem;
+    --font-size-song-footer:1.05rem;
   
   }
   
@@ -81,7 +81,7 @@
       /* Footer default height */
       --footer-height: 12svh !important;
 
-      /* --font-size-song-footer:0.85rem; */
+       --font-size-song-footer:0.85rem; 
   
     }
   }

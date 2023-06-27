@@ -38,7 +38,7 @@ def get_song(nombre: str) -> bytes:
     song_bytes = song_bytes.read()
     encoded_bytes = str(base64.b64encode(song_bytes))  # b'ZGF0YSB0byBiZSBlbmNvZGVk'
 
-    song_metadata = fileSongCollection.find_one({'name': "p3"})
+    song_metadata = fileSongCollection.find_one({'name': nombre})
 
     song = Song(nombre,song_metadata["artist"],song_metadata["photo"],Genre(song_metadata["genre"]).name,encoded_bytes)
 

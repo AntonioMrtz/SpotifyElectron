@@ -22,10 +22,17 @@
   
     /* Sidebar default width */
     --sidebar-width: 25svw;
-    --sidebar-height: 87svh;
+    --sidebar-height: 90svh;
   
     /* Footer default height */
-    --footer-height: 13svh;
+    --footer-height: 10svh;
+
+    /* Border radius thumbnail images */
+
+    --border-radius-thumbnails:8px;
+
+
+    --font-size-song-footer:1rem;
   
   }
   
@@ -66,13 +73,15 @@
     margin: 0;
   }
   
-  @media (min-width: 1600px) {
+  @media (max-width: 1600px) {
   
     :root {
-      --sidebar-height: 90svh;
+      --sidebar-height: 88svh;
   
       /* Footer default height */
-      --footer-height: 10svh;
+      --footer-height: 12svh !important;
+
+      /* --font-size-song-footer:0.85rem; */
   
     }
   }

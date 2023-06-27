@@ -16,6 +16,15 @@
 
 }
 
+.songInfoContainer img{
+
+    width: 64px;
+    border-radius: var(--border-radius-thumbnails);
+    margin-top:auto ;
+    margin-bottom:auto ;
+
+}
+
 .infoCancionContainer a:hover{
 
     color: var(--primary-white) !important;
@@ -33,7 +42,7 @@
 
 .infoCancionContainer a:first-child{
 
-    font-size: 0.85rem;
+    font-size: var(--font-size-song-footer);
     color: var(--primary-white);
 
 }

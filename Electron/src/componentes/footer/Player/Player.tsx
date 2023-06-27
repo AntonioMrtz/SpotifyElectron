@@ -2,32 +2,35 @@ import { useEffect, useState, useRef, MouseEventHandler } from 'react';
 import styles from './player.module.css';
 import TimeSlider from './TimeSlider/TimeSlider';
 
-
 interface PropsPlayer {
-  volume : number,
-  songName : string
+  volume: number;
+  songName: string;
+  changeThumbnail : (url:string) => void
 }
 
+export default function Player(props: PropsPlayer) {
 
-export default function Player(props : PropsPlayer) {
   //* PLAYER AUDIO DATA
 
   /* Global audio variable for the component, has the logic of playing the songs */
   let audio = useRef<HTMLAudioElement | null>(null);
 
-  let songName = props.songName
+  let songName = props.songName;
 
   /* Loads the song */
   useEffect(() => {
-
-    if(audio.current){
-
-      audio.current.pause()
+    if (audio.current) {
+      audio.current.pause();
     }
 
-    fetch('http://127.0.0.1:8000/canciones/'+songName,{"headers":{ 'Access-Control-Allow-Origin': '*' }})
+    fetch('http://127.0.0.1:8000/canciones/' + songName, {
+      headers: { 'Access-Control-Allow-Origin': '*' },
+    })
       .then((res) => res.json())
-      .then((res) => res['file'])
+      .then((res) => {
+        props.changeThumbnail(res["photo"]);
+        return res['file'];
+      })
       .then((res) => {
         let audiobytes_string = res;
 
@@ -42,71 +45,57 @@ export default function Player(props : PropsPlayer) {
         }
       })
       .then(() => {
-
-        if(audio.current){
-
+        if (audio.current) {
           // Listener that handles the time update of playbacktime
           audio.current.addEventListener('timeupdate', function () {
-            
-            if(audio.current && audio.current.currentTime && audio.current.duration){
-              
+            if (
+              audio.current &&
+              audio.current.currentTime &&
+              audio.current.duration
+            ) {
               let time = audio.current.currentTime;
               setPlayBackTime(+time.toFixed(2));
-    
+
               if (audio.current.currentTime === audio.current.duration) {
                 handlePause();
               }
-
             }
           });
 
           // When metadata such as duration,etc is loaded
           audio.current.addEventListener('loadedmetadata', function () {
-
-            if(audio.current){
-
-              audio.current.play()
+            if (audio.current) {
+              audio.current.play();
               handlePlay();
               setSongDuration(audio.current.duration); // not updating every 0.5s as playback time
-              setVolume()
+              setVolume();
             }
-            
-
           });
-
-
         }
 
         // set play and pause functions
 
         let playWhenFetched = () => {
           return function returns() {
-
-            if(audio.current){
+            if (audio.current) {
               audio.current.play();
               handlePlay();
               setSongDuration(audio.current.duration); // not updating every 0.5s as playback time
-
             }
           };
         };
 
         let pauseWhenFetched = () => {
           return function returns() {
-
-            if(audio.current){
-
+            if (audio.current) {
               audio.current.pause();
               handlePause();
-
             }
-
           };
         };
 
         setPlay(playWhenFetched);
         setPause(pauseWhenFetched);
-        
       });
   }, [props.songName]);
 
@@ -145,9 +134,8 @@ export default function Player(props : PropsPlayer) {
   let [songDuration, setSongDuration] = useState(0);
 
   /* Update playback time  */
-  const changePlayBackTime = (value:number) => {
-    if(audio.current && audio.current.currentTime){
-
+  const changePlayBackTime = (value: number) => {
+    if (audio.current && audio.current.currentTime) {
       audio.current.currentTime = value;
     }
   };
@@ -160,8 +148,7 @@ export default function Player(props : PropsPlayer) {
   }, [props.volume]);
 
   const setVolume = () => {
-
-    if (audio.current && audio.current.volume!==undefined) {
+    if (audio.current && audio.current.volume !== undefined) {
       props.volume == 0
         ? (audio.current.volume = 0)
         : (audio.current.volume = props.volume / 100);

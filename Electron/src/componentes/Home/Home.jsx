@@ -5,7 +5,7 @@ import foto from '../../assets/imgs/quedate.jpg';
 export default function Home(props) {
 
   const handleDoubleClick = () =>{
-
+    
     props.changeSongName("p3")
 
   }

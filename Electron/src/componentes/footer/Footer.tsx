@@ -11,10 +11,15 @@ interface PropsFooter{
 }
 
 export default function Footer(props:PropsFooter) {
-  const [volume, setVolume] = useState(50);
+  const [volume, setVolume] = useState<number>(50);
+  const [thumbnailUrl , setThumbnailUrl] = useState<string>('');
   
   const changeVolumeParent = (volume:number) : void => {
     setVolume(volume);
+  };
+
+  const changeThumbnail = (url:string) : void => {
+    setThumbnailUrl(url);
   };
 
 
@@ -22,9 +27,9 @@ export default function Footer(props:PropsFooter) {
     <div
       className={`container-fluid d-flex flex-row space-evenly ${styles.wrapperFooter}`}
     >
-      <SongInfo />
+      <SongInfo thumbnailUrl={thumbnailUrl}/>
 
-      <Player volume={volume} songName={props.songName}/>
+      <Player volume={volume} songName={props.songName} changeThumbnail={changeThumbnail}/>
 
       <SongConfig changeVolume={changeVolumeParent} />
     </div>

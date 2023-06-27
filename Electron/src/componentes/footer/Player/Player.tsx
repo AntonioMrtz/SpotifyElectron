@@ -68,7 +68,7 @@ export default function Player(props : PropsPlayer) {
               audio.current.play()
               handlePlay();
               setSongDuration(audio.current.duration); // not updating every 0.5s as playback time
-
+              setVolume()
             }
             
 

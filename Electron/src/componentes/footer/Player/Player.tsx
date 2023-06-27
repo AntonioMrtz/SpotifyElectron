@@ -5,11 +5,10 @@ import TimeSlider from './TimeSlider/TimeSlider';
 interface PropsPlayer {
   volume: number;
   songName: string;
-  changeThumbnail : (url:string) => void
+  changeThumbnail: (url: string) => void;
 }
 
 export default function Player(props: PropsPlayer) {
-
   //* PLAYER AUDIO DATA
 
   /* Global audio variable for the component, has the logic of playing the songs */
@@ -28,7 +27,7 @@ export default function Player(props: PropsPlayer) {
     })
       .then((res) => res.json())
       .then((res) => {
-        props.changeThumbnail(res["photo"]);
+        props.changeThumbnail(res['photo']);
         return res['file'];
       })
       .then((res) => {
@@ -96,6 +95,9 @@ export default function Player(props: PropsPlayer) {
 
         setPlay(playWhenFetched);
         setPause(pauseWhenFetched);
+      })
+      .catch((res) => {
+        console.log('Unable to fetch the song');
       });
   }, [props.songName]);
 

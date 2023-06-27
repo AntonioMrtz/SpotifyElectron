@@ -1,18 +1,19 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, MouseEventHandler } from 'react';
 import styles from './player.module.css';
 import TimeSlider from './TimeSlider/TimeSlider';
-import { useFetch } from '../../../hooks/useFetch';
 
-/**
- *
- * @param {Number} volume
- *
- */
-export default function Player(props) {
+
+interface PropsPlayer {
+  volume : number,
+  songName : string
+}
+
+
+export default function Player(props : PropsPlayer) {
   //* PLAYER AUDIO DATA
 
   /* Global audio variable for the component, has the logic of playing the songs */
-  let audio = useRef();
+  let audio = useRef<HTMLAudioElement | null>(null);
 
   /* Loads the song */
   useEffect(() => {
@@ -33,30 +34,51 @@ export default function Player(props) {
         }
       })
       .then(() => {
-        // Listener that handles the time update of playbacktime
-        audio.current.addEventListener('timeupdate', function () {
-          let time = audio.current.currentTime;
-          setPlayBackTime(+time.toFixed(2));
 
-          if (audio.current.currentTime === audio.current.duration) {
-            handlePause();
-          }
-        });
+        if(audio.current){
+
+          // Listener that handles the time update of playbacktime
+          audio.current.addEventListener('timeupdate', function () {
+            
+            if(audio.current && audio.current.currentTime && audio.current.duration){
+              
+              let time = audio.current.currentTime;
+              setPlayBackTime(+time.toFixed(2));
+    
+              if (audio.current.currentTime === audio.current.duration) {
+                handlePause();
+              }
+
+            }
+          });
+
+
+        }
 
         // set play and pause functions
 
         let playWhenFetched = () => {
           return function returns() {
-            audio.current.play();
-            handlePlay();
-            setSongDuration(audio.current.duration); // not updating every 0.5s as playback time
+
+            if(audio.current){
+              audio.current.play();
+              handlePlay();
+              setSongDuration(audio.current.duration); // not updating every 0.5s as playback time
+
+            }
           };
         };
 
         let pauseWhenFetched = () => {
           return function returns() {
-            audio.current.pause();
-            handlePause();
+
+            if(audio.current){
+
+              audio.current.pause();
+              handlePause();
+
+            }
+
           };
         };
 
@@ -68,8 +90,8 @@ export default function Player(props) {
   //* PLAYER BUTTON HANDLERS
 
   /* Methods are declared when song is fetched */
-  const [play, setPlay] = useState();
-  const [pause, setPause] = useState();
+  const [play, setPlay] = useState<MouseEventHandler>();
+  const [pause, setPause] = useState<MouseEventHandler>();
 
   /**
    * Modifies buttons and control variables when the play button is clicked
@@ -100,19 +122,22 @@ export default function Player(props) {
   let [songDuration, setSongDuration] = useState(0);
 
   /* Update playback time  */
-  const changePlayBackTime = (value) => {
-    audio.current.currentTime = value;
+  const changePlayBackTime = (value:number) => {
+    if(audio.current && audio.current.currentTime){
+
+      audio.current.currentTime = value;
+    }
   };
 
   //* VOLUME
 
   /* Manages volume given from parent */
   useEffect(() => {
-    setVolume(props.volume);
+    setVolume();
   }, [props.volume]);
 
   const setVolume = () => {
-    if (audio.current !== undefined) {
+    if (audio.current && audio.current.volume) {
       props.volume == 0
         ? (audio.current.volume = 0)
         : (audio.current.volume = props.volume / 100);

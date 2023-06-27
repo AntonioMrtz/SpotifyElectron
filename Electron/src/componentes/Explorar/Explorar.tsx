@@ -10,7 +10,7 @@ export default function Explorar() {
 
   return (
     <div className={`container-fluid d-flex flex-column`}>
-      {data!==null && data.prueba}
+      {data && data.prueba}
 
     </div>
   )

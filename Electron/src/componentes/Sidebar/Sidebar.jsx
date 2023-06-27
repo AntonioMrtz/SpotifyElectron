@@ -63,7 +63,7 @@ export default function Sidebar() {
 
   const handleAddPlaylist = () => {
 
-    
+
   }
 
   return (
@@ -111,10 +111,10 @@ export default function Sidebar() {
           <header
             className={`container-fluid d-flex flex-row pb-4 ${styles.headerTuBiblioteca}`}
           >
-            <div className={`container-fluid d-flex justify-content-start p-0`} style={{marginInlineEnd:1}}>
-              <label>
+            <div className={`container-fluid d-flex justify-content-start p-0`} >
+              <div className={`container-fluid ps-0`}>
                 <i class="fa-solid fa-swatchbook fa-fw"></i>Tu biblioteca
-              </label>
+              </div>
             </div>
 
             <div 

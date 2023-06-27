@@ -5,6 +5,7 @@
     left: 0;
 
     width: var(--sidebar-width);
+    min-width: 200px;
     max-width: var(--sidebar-width);
     height: calc(var(--sidebar-height));
     padding:0.5% 0.5% 0 0.5% ;
@@ -127,7 +128,7 @@
 
 .headerTuBiblioteca div label i{
 
-    padding-right: 3%;
+    /* margin-right: 5%; */
     color: var(--secondary-white);
 }
 

@@ -1,89 +1,96 @@
 :root {
 
-    scroll-behavior: smooth;
-    -webkit-font-smoothing: antialiased;
-    font-synthesis: none;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  
-    /* Colores globales de la aplicacion */
-  
-    --primary-black: #000000;
-    --secondary-black: #121212;
-    --pure-white: #ffffff;
-    --primary-white: #dfdfdf;
-    --secondary-white: #b3b3b3;
-    --third-black: #161616;
-    --hover-white: #272727;
-    --primary-green:#1db954;
-  
-    --grey:#888;
-  
-    /* Sidebar default width */
-    --sidebar-width: 25svw;
-    --sidebar-height: 90svh;
-  
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Colores globales de la aplicacion */
+
+  --primary-black: #000000;
+  --secondary-black: #121212;
+
+  --pure-white: #ffffff;
+  --primary-white: #dfdfdf;
+  --secondary-white: #b3b3b3;
+  --third-black: #161616;
+  --hover-white: #272727;
+
+  --primary-green: #1db954;
+  --secondary-green: #1b731b;
+
+  --grey: #888;
+
+  /* Sidebar default width */
+  --sidebar-width: 25svw;
+  --sidebar-height: 90svh;
+
+  /* Footer default height */
+  --footer-height: 10svh;
+
+  /* Border radius thumbnail images */
+
+  --border-radius-thumbnails: 8px;
+
+
+  --font-size-song-footer: 1.05rem;
+
+}
+
+html {
+
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  height: 100%;
+
+}
+
+a {
+
+
+  text-decoration: none;
+  color: inherit;
+
+}
+
+a:hover {
+
+  color: inherit;
+}
+
+ul {
+
+  list-style: none;
+}
+
+h5 {
+  margin: 0;
+}
+
+p {
+  margin: 0;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+
+@media (max-width: 1600px) {
+
+  :root {
+    --sidebar-height: 88svh;
+
     /* Footer default height */
-    --footer-height: 10svh;
+    --footer-height: 12svh !important;
 
-    /* Border radius thumbnail images */
+    --font-size-song-footer: 0.85rem;
 
-    --border-radius-thumbnails:8px;
+  }
+}
 
-
-    --font-size-song-footer:1.05rem;
-  
-  }
-  
-  html{
-
-    height: 100%;
-  }
-  
-  body {
-    margin: 0;
-    height: 100%;
-  
-  }
-  
-  a {
-  
-  
-    text-decoration: none;
-    color: inherit;
-  
-  }
-  
-  a:hover {
-  
-    color: inherit;
-  }
-  
-  ul {
-  
-    list-style: none;
-  }
-  
-  h5{
-    margin: 0;
-  }
-  
-  p{
-    margin: 0;
-  }
-  
-  @media (max-width: 1600px) {
-  
-    :root {
-      --sidebar-height: 88svh;
-  
-      /* Footer default height */
-      --footer-height: 12svh !important;
-
-       --font-size-song-footer:0.85rem; 
-  
-    }
-  }
-  
-  

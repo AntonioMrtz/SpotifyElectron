@@ -4,11 +4,14 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import LibraryMusicRoundedIcon from '@mui/icons-material/LibraryMusicRounded';
+import AudiotrackIcon from '@mui/icons-material/Audiotrack';
 
 export default function SimpleAccordion() {
   return (
 
     <Fragment>
+
       <Accordion style={{backgroundColor:"var(--secondary-black)",borderColor:'#ffffff'}}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
@@ -16,7 +19,8 @@ export default function SimpleAccordion() {
           id="panel1a-header"
           style={{border:'1px solid var(--primary-black)'}}
         >
-          <Typography style={{color:"var(--primary-green)",fontWeight:'700'}}>AÑADIR CANCIÓN</Typography>
+          <Typography style={{color:"var(--primary-green)",fontWeight:'700',textTransform:"uppercase"}}>
+          <LibraryMusicRoundedIcon/> Crear lista de reproducción</Typography>
         </AccordionSummary>
         <AccordionDetails>
         <Typography style={{color:'var(--primary-white'}}>            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
@@ -24,17 +28,21 @@ export default function SimpleAccordion() {
           </Typography>
         </AccordionDetails>
       </Accordion>
-      <Accordion style={{backgroundColor:"var(--secondary-black)"}}>
+
+
+
+      <Accordion style={{backgroundColor:"var(--secondary-black)",borderColor:'#ffffff'}}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
           id="panel1a-header"
+          style={{border:'1px solid var(--primary-black)'}}
         >
-          <Typography style={{color:"var(--primary-green)",fontWeight:'700'}}>CREAR LISTA</Typography>
+          <Typography style={{color:"var(--primary-green)",fontWeight:'700',textTransform:"uppercase"}}>
+          <AudiotrackIcon/> Subir canción</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography style={{color:'var(--primary-white'}}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+        <Typography style={{color:'var(--primary-white'}}>            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
             malesuada lacus ex, sit amet blandit leo lobortis eget.
           </Typography>
         </AccordionDetails>

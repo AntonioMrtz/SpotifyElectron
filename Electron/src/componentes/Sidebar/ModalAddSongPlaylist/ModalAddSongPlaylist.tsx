@@ -2,7 +2,7 @@ import { useState,Fragment } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
-import CustomizedAccordions from './Accordion/CustomizedAccordions';
+import CustomizedAccordions from './Accordion/SimpleAccordion';
 import styles from './modal.module.css';
 
 const style = {

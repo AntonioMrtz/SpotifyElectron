@@ -3,28 +3,37 @@ import VolumeSlider from './VolumeSlider/VolumeSlider';
 
 interface PropsSongConfig{
 
-  changeVolume : (volume:number) => void 
+  changeVolume : (volume:number) => void
 }
 
 export default function SongConfig(props:PropsSongConfig) {
+
+  const handleFullScreen = () : void =>{
+
+    window.electron.ipcRenderer.sendMessage('toogle-fullscreen');
+
+
+  }
+
+
   return (
     <div
       className={`d-flex container-fluid justify-content-end ${styles.settingsContainer} `}
     >
-      <a href="">
+      <button className='btn'>
         <i className="fa-solid fa-microphone fa-fw"></i>
-      </a>
-      <a href="">
+      </button>
+      <button className='btn'>
         <i className="fa-solid fa-bars fa-fw"></i>
-      </a>
-      <a href="">
+      </button>
+      <button className='btn'>
         <i className="fa-solid fa-desktop fa-fw"></i>
-      </a>
+      </button>
       <VolumeSlider changeVolume={props.changeVolume} />
 
-      <a href="">
+      <button onClick={handleFullScreen} className='btn'>
         <i className="fa-solid fa-up-right-and-down-left-from-center fa-fw"></i>
-      </a>
+      </button>
     </div>
   );
 }

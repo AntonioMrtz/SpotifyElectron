@@ -36,7 +36,7 @@ export default function Sidebar() {
 
   const [selectedID, setSelectedID] = useState<string>(); // you could set a default id as well
 
-  const getSelectedClass = (id:string) =>
+  const getSelectedClass = (id: string) =>
     selectedID === id ? styles.linksubtleClicked : '';
 
   const [url, setUrl] = useState('');
@@ -58,13 +58,9 @@ export default function Sidebar() {
     setUrl(splitBySlash[splitBySlash.length - 1]);
   }, []);
 
-
   /* Handle add playlist button */
 
-  const handleAddPlaylist = () => {
-
-
-  }
+  const handleAddPlaylist = () => {};
 
   return (
     <div className={`container-fluid ${styles.wrapperNavbar}`}>
@@ -111,16 +107,19 @@ export default function Sidebar() {
           <header
             className={`container-fluid d-flex flex-row pb-4 ${styles.headerTuBiblioteca}`}
           >
-            <div className={`container-fluid d-flex justify-content-start p-0`} >
+            <div className={`container-fluid d-flex justify-content-start p-0`}>
               <div className={`container-fluid ps-0`}>
                 <i className="fa-solid fa-swatchbook fa-fw"></i>Tu biblioteca
               </div>
             </div>
 
-            <div 
-              className={`container-fluid d-flex justify-content-end p-0`} style={{width:"25%"}}
+            <div
+              className={`container-fluid d-flex justify-content-end p-0`}
+              style={{ width: '25%' }}
             >
-              <button className={`btn`} onClick={handleAddPlaylist}><i className="fa-solid fa-plus fa-fw"></i></button>
+              <button className={`btn`} onClick={handleAddPlaylist}>
+                <i className="fa-solid fa-plus fa-fw"></i>
+              </button>
             </div>
           </header>
           <ul

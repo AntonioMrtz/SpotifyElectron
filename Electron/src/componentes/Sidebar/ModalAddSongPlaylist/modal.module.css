@@ -1,0 +1,11 @@
+.wrapperAccordion{
+
+  border-radius: var(--border-radius-thumbnails) ;
+  background-color: var(--hover-white) !important;
+
+}
+
+.wrapperAccordion svg{
+
+  color: var(--secondary-green);
+}

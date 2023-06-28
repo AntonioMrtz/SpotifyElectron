@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import styles from './sideBarCss.module.css';
 import Playlist from './Playlist/Playlist';
+import ModalAddSongPlaylist from './ModalAddSongPlaylist/ModalAddSongPlaylist';
 
 export default function Sidebar() {
   //* MENU HOVER
@@ -32,7 +33,7 @@ export default function Sidebar() {
     setHoverBuscar(isHoveredBuscar ? styles.linksubtle : '');
   }, [isHoveredBuscar, isHoveredInicio]);
 
-  /*  HIGHLIGHT CURRENT SECTION LI */
+  //* HIGHLIGHT CURRENT SECTION LI
 
   const [selectedID, setSelectedID] = useState<string>(); // you could set a default id as well
 
@@ -49,7 +50,7 @@ export default function Sidebar() {
     }
   }, [url]);
 
-  // handle Button Clicked by looking at the Current Url
+  //* handle Button Clicked by looking at the Current Url
   useEffect(() => {
     const url = window.location.href;
 
@@ -58,12 +59,13 @@ export default function Sidebar() {
     setUrl(splitBySlash[splitBySlash.length - 1]);
   }, []);
 
-  /* Handle add playlist button */
+  //*  Handle add playlist button
 
-  const handleAddPlaylist = () => {};
 
   return (
+
     <div className={`container-fluid ${styles.wrapperNavbar}`}>
+
       <header className={`${styles.header}`}>
         <ul className={`${styles.ul}`}>
           <li
@@ -117,9 +119,9 @@ export default function Sidebar() {
               className={`container-fluid d-flex justify-content-end p-0`}
               style={{ width: '25%' }}
             >
-              <button className={`btn`} onClick={handleAddPlaylist}>
-                <i className="fa-solid fa-plus fa-fw"></i>
-              </button>
+
+              <ModalAddSongPlaylist/>
+
             </div>
           </header>
           <ul

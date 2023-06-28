@@ -49,7 +49,7 @@
 
     padding: 0 !important;
     margin: 0 !important;
-    
+
 }
 
 .headerI {
@@ -118,7 +118,7 @@
     scrollbar-width: none;  /* Firefox */
 }
 
-.ulPlaylist::-webkit-scrollbar { 
+.ulPlaylist::-webkit-scrollbar {
     display: none;  /* Safari and Chrome */
 }
 
@@ -152,6 +152,6 @@
 .headerTuBiblioteca button:focus{
 
     color: var(--primary-white);
-    background-color: var(--hover-white);
+    background-color: var(--secondary-black);
     box-shadow: var(--primary-black);
 }

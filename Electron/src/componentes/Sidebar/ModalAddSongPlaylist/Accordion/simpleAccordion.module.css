@@ -4,7 +4,7 @@ input {
   background: transparent !important;
   border-bottom: 1px solid var(--secondary-white) !important;
   color: var(--primary-white) !important;
-  padding: 5px;
+  padding: 5px !important;
 }
 
 input:focus {

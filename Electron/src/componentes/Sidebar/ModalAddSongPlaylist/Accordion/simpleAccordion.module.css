@@ -1,0 +1,54 @@
+input {
+  border: 0 !important;
+  outline: 0 !important;
+  background: transparent !important;
+  border-bottom: 1px solid var(--secondary-white) !important;
+  color: var(--primary-white) !important;
+  padding: 5px;
+}
+
+input:focus {
+  box-shadow: 0 0rem !important;
+
+
+}
+
+select{
+
+  color: var(--primary-white) !important;
+  background: transparent !important;
+
+
+}
+
+
+.option{
+  background-color: var(--third-black) !important;
+  color: var(--primary-white) !important;
+}
+
+.btnSend{
+
+  background-color: var(--secondary-green);
+  border-color: var(--secondary-green);
+  color: var(--primary-white);
+
+}
+
+.btnSend:hover{
+
+  background-color: var(--primary-green);
+  border-color: var(--secondary-green);
+  color: var(--primary-white);
+
+
+}
+
+.btnSend:focus{
+
+  background-color: var(--secondary-green);
+  border-color: var(--secondary-green);
+  box-shadow: 0 0rem !important;
+
+
+}

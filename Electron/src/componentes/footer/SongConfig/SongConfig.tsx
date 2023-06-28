@@ -8,12 +8,9 @@ interface PropsSongConfig{
 
 export default function SongConfig(props:PropsSongConfig) {
 
-  const handleFullScreen = () : void =>{
-
-    window.electron.ipcRenderer.sendMessage('toogle-fullscreen');
-
-
-  }
+  const handleFullScreen = (): void => {
+    window.electron.toogleFullScreen.sendMessage('toogle-fullscreen');
+  };
 
 
   return (

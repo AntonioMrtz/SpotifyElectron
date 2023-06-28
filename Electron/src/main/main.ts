@@ -15,14 +15,14 @@ import { resolveHtmlPath } from './util';
 
 let mainWindow: BrowserWindow | null = null;
 
-ipcMain.on('toogle-fullscreen', async () => {
+/* Events */
+
+ipcMain.on('toogle-fullscreen', async (event) => {
 
   if(mainWindow && mainWindow.isFullScreen())
     mainWindow.setFullScreen(false)
   else if(mainWindow)
     mainWindow.setFullScreen(true)
-
-
 
 });
 

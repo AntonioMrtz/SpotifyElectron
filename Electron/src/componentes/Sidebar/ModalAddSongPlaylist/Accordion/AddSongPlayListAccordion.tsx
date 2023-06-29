@@ -18,8 +18,9 @@ interface PropsSimpleAccordion{
 
 export default function SimpleAccordion(props:PropsSimpleAccordion) {
 
-  const formRef = useRef<HTMLFormElement>(null);
   const [songFile,setSongFile] = useState<File>()
+
+  const [thumbnailUpload,setThumbnailUpload] = useState<string>()
 
   const [formData, setFormData] = useState({
     nombre: '',
@@ -32,6 +33,11 @@ export default function SimpleAccordion(props:PropsSimpleAccordion) {
   const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
 
     if(event.target && event.target.name ){
+
+      if(event.target.name==="foto"){
+
+        setThumbnailUpload(event.target.value)
+      }
 
       setFormData({
         ...formData,
@@ -162,7 +168,7 @@ export default function SimpleAccordion(props:PropsSimpleAccordion) {
         </AccordionSummary>
         <AccordionDetails className={`p-4 d-flex flex-row ${styles.accordionDetails}`}>
 
-            <form className={`container-fluid d-flex flex-column p-0 ${styles.formAddSong}`} ref={formRef}>
+            <form className={`container-fluid d-flex flex-column p-0 ${styles.formAddSong}`}>
               <div className={`container-fluid d-flex flex-row p-0`}>
                 <div className="p-0 mb-3 me-3">
                   <input
@@ -262,7 +268,7 @@ export default function SimpleAccordion(props:PropsSimpleAccordion) {
 
             </form>
 
-            <div className={`${styles.containerThumbNailUpload}`}><img className='img-fluid' src="https://yt3.googleusercontent.com/ytc/AGIKgqMkBG_XYWbuPAO-vNPIFAwQNASRNV2w8eMWif_cVw=s900-c-k-c0x00ffffff-no-rj" alt="" /></div>
+            <div className={`${styles.containerThumbNailUpload}`}><img className='img-fluid' src={thumbnailUpload} alt="" /></div>
         </AccordionDetails>
       </Accordion>
     </Fragment>

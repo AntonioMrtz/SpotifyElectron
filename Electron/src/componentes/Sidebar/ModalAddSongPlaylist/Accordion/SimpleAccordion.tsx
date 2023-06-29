@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import { ChangeEvent, ChangeEventHandler, FormEvent, FormEventHandler, Fragment } from 'react';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -7,8 +7,62 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import LibraryMusicRoundedIcon from '@mui/icons-material/LibraryMusicRounded';
 import AudiotrackIcon from '@mui/icons-material/Audiotrack';
 import styles from './simpleAccordion.module.css';
+import { useState,useRef } from 'react';
 
 export default function SimpleAccordion() {
+
+  const formRef = useRef<HTMLFormElement>(null);
+
+
+  const [formData, setFormData] = useState({
+    name: '',
+    artist: '',
+    genre:'',
+    file:''
+  });
+
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+
+    if(event.target && event.target.name ){
+
+      setFormData({
+        ...formData,
+        [event.target.name]: event.target.value,
+      });
+    }
+  };
+
+  const handleChangeFile = (event: ChangeEvent<HTMLInputElement>) => {
+
+    if(event.target && event.target.files ){
+
+      let path :string = event.target.files[0].path
+
+      setFormData({
+        ...formData,
+        [event.target.name]: event.target.value,
+        file:path
+      });
+
+
+    }
+  };
+
+  const handleSubmitSong = (event:FormEvent<HTMLButtonElement>) => {
+
+    event.preventDefault()
+
+    if(formData){
+      window.electron.submitSong.sendMessage('submit-song',formData)
+    }
+
+    //formRef.current?.submit()
+  };
+
+
+
+
   return (
     <Fragment>
       <Accordion
@@ -65,33 +119,41 @@ export default function SimpleAccordion() {
           </Typography>
         </AccordionSummary>
         <AccordionDetails className="p-4">
-          <Typography style={{ color: 'var(--primary-white' }}>
-            {' '}
-            <div className={`container-fluid d-flex flex-column p-0`}>
+
+            <form className={`container-fluid d-flex flex-column p-0`} ref={formRef}>
               <div className={`container-fluid d-flex flex-row p-0`}>
                 <div className="p-0 mb-3 me-3">
                   <input
-                    type="email"
+                    type="text"
                     id="name"
+                    name='name'
                     placeholder="Nombre de la cancion"
                     className={` ${styles.input}`}
+                    onChange={handleChange}
+                    required
                   ></input>
                 </div>
                 <div className="mb-3">
                   <input
-                    type="email"
+                    type="text"
                     id="artist"
                     placeholder="Artista"
                     className={` ${styles.input}`}
+                    onChange={handleChange}
+                    name='artist'
+                    required
                   ></input>
                 </div>
               </div>
               <div className="p-0 mb-3 me-2">
                 <input
-                  type="email"
+                  type="text"
                   id="photo"
                   placeholder="URL de la miniatura"
                   className={` form-control w-75 ${styles.input}`}
+                  onChange={handleChange}
+                  name='photo'
+                  required
                 ></input>
               </div>
 
@@ -100,9 +162,11 @@ export default function SimpleAccordion() {
                   <select
                     className="form-select-sm mb-3"
                     aria-label="Default select example"
+                    onChange={handleChange}
+                    name='genre'
+                    required
                   >
-                    <option className={` ${styles.option}`} selected>Género</option>
-                    <option className={` ${styles.option}`} value="Pop">Pop</option>
+                    <option className={` ${styles.option}`} defaultValue={"Pop"}>Pop</option>
                     <option className={` ${styles.option}`} value="Rock">Rock</option>
                     <option className={` ${styles.option}`} value="Hip-hop">Hip-hop</option>
                     <option className={` ${styles.option}`} value="R&B (Ritmo y Blues)">
@@ -141,14 +205,17 @@ export default function SimpleAccordion() {
                   className={`form-control-md ${styles.input}`}
                     type="file"
                     id="file"
+                    name='file'
+                    onChange={handleChangeFile}
+                    accept="audio/mp3"
+                    required
                   ></input>
                 </div>
               </div>
 
-              <button type="button" className={`btn ${styles.btnSend}`}>Subir</button>
+              <button type="button" onClick={handleSubmitSong} className={`btn ${styles.btnSend}`}>Subir</button>
 
-            </div>
-          </Typography>
+            </form>
         </AccordionDetails>
       </Accordion>
     </Fragment>

@@ -61,6 +61,13 @@ def get_cancion(nombre : str) -> Response:
 async def get_canciones():
     await song_service.get_songs()
 
+
+@app.post("/listas/")
+async def get_listas(file : UploadFile):
+
+    pass    
+
+
 # Sube una cancion
 @app.post("/canciones/")
 async def post_cancion(nombre : str, artista : str,genero : Genre,foto : str,file : UploadFile) -> Response:

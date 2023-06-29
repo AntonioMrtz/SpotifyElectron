@@ -12,6 +12,10 @@ import path from 'path';
 import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import log from 'electron-log';
 import { resolveHtmlPath } from './util';
+const fs = require('fs');
+
+
+const backendBasePath = new URL("http://127.0.0.1:8000/");
 
 let mainWindow: BrowserWindow | null = null;
 
@@ -23,6 +27,51 @@ ipcMain.on('toogle-fullscreen', async (event) => {
     mainWindow.setFullScreen(false)
   else if(mainWindow)
     mainWindow.setFullScreen(true)
+
+});
+
+ipcMain.on('submit-song', async (event,formData) => {
+
+  let url = new URL(backendBasePath + 'listas/');
+
+ /*  for (let [key, value] of Object.entries(formData)) {
+    if (key !== 'file' && typeof value === 'string') {
+      url.searchParams.set(key, value);
+    }
+  } */
+
+  try {
+    // Read the file from the file system
+    const fileStream = fs.createReadStream(formData.file);
+
+    // Create a new FormData object
+    const formDataInput = new FormData();
+
+    // Append the file to the FormData object
+    formDataInput.append('file', fileStream);
+
+    const requestOptions = {
+      method: 'POST',
+      body:formDataInput
+
+    };
+
+    fetch(url, requestOptions)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+
+  } catch (error) {
+    console.error('Error uploading file:', error);
+  }
+
+
+
+
 
 });
 

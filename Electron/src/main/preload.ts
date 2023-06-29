@@ -3,11 +3,15 @@
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
 
 export type ChannelToogleFullScreen = 'toogle-fullscreen';
+export type ChannelSubmitSong = 'submit-song';
+
 
 
 const electronHandler = {
-  ipcRenderer: {
-
+  submitSong: {
+    sendMessage(channel: ChannelSubmitSong, ...args: unknown[]) {
+      ipcRenderer.send(channel, ...args);
+    },
   },
   toogleFullScreen : {
     sendMessage(channel: ChannelToogleFullScreen, ...args: unknown[]) {

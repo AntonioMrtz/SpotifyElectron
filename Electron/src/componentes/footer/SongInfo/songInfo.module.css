@@ -1,8 +1,4 @@
-.songInfoContainer img{
 
-    padding: 1.2% 0 1.2% 0;
-
-}
 
 .songInfoContainer{
 
@@ -20,8 +16,8 @@
 
     width: 64px;
     border-radius: var(--border-radius-thumbnails);
-    margin-top:1.75% ;
-    margin-bottom:1.75% ;
+    margin-top:2% ;
+    margin-bottom:2% ;
 
 }
 
@@ -37,7 +33,7 @@
 
 .infoCancionContainer a:nth-child(2){
 
-    font-size: 1rem;
+    font-size: 0.85rem;
     color: var(--secondary-white);
 
 }
@@ -46,6 +42,8 @@
 
     font-size: var(--font-size-song-footer);
     color: var(--primary-white);
+    font-size: 1.25rem;
+
 
 }
 

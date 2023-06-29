@@ -19,7 +19,7 @@ export default function SongInfo(props:PropsSongInfo | any) {
 
       if(props.songInfo){
 
-        console.log(props.songInfo)
+        //console.log(props.songInfo)
         setName(props.songInfo["name"])
         setThumbnail(props.songInfo["photo"])
         setArtist(props.songInfo["artist"])

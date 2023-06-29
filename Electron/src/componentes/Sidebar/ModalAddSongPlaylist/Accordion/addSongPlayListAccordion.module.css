@@ -32,6 +32,8 @@ select{
   background-color: var(--secondary-green);
   border-color: var(--secondary-green);
   color: var(--primary-white);
+  margin-top: 5%;
+
 
 }
 
@@ -52,3 +54,77 @@ select{
 
 
 }
+
+
+.containerThumbNailUpload{
+  display: flex;
+  margin-left: 0%;
+  overflow-x: hidden;
+}
+
+
+.containerThumbNailUpload img{
+
+  max-height: 30svh;
+  padding: 5%;
+}
+
+.accordionDetails{
+
+  overflow-x: hidden;
+}
+
+.formAddSong{
+
+  margin-right: 5%;
+}
+
+
+@media (max-width: 870px) {
+
+  .containerThumbNailUpload{
+
+    display: none;
+  }
+
+  .containerSelectAndFileSelector{
+
+    flex-direction: column !important;
+  }
+
+}
+
+
+@media (max-width: 1300px) {
+
+
+  .containerSelectAndFileSelector{
+
+    flex-direction: column !important;
+    justify-content: start;
+    align-items: flex-start !important;
+  }
+
+  .formAddSong{
+
+    margin-right: 10%;
+  }
+
+}
+
+
+@media (min-width: 1300px) {
+
+
+    .containerThumbNailUpload {
+
+      margin-right: 5%;
+    }
+
+    .btnSend {
+
+      margin-top: 2%;
+    }
+
+}
+

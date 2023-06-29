@@ -160,9 +160,9 @@ export default function SimpleAccordion(props:PropsSimpleAccordion) {
             <AudiotrackIcon /> Subir canción
           </Typography>
         </AccordionSummary>
-        <AccordionDetails className="p-4">
+        <AccordionDetails className={`p-4 d-flex flex-row ${styles.accordionDetails}`}>
 
-            <form className={`container-fluid d-flex flex-column p-0`} ref={formRef}>
+            <form className={`container-fluid d-flex flex-column p-0 ${styles.formAddSong}`} ref={formRef}>
               <div className={`container-fluid d-flex flex-row p-0`}>
                 <div className="p-0 mb-3 me-3">
                   <input
@@ -199,7 +199,7 @@ export default function SimpleAccordion(props:PropsSimpleAccordion) {
                 ></input>
               </div>
 
-              <div className={`d-flex flex-row overflow-hidden align-items-center`}>
+              <div className={`d-flex flex-row overflow-hidden align-items-center ${styles.containerSelectAndFileSelector}`}>
                 <div className={`me-5`}>
                   <select
                     className="form-select-sm mb-3"
@@ -257,9 +257,12 @@ export default function SimpleAccordion(props:PropsSimpleAccordion) {
                 </div>
               </div>
 
-              <button type="button" onClick={handleSubmitSong} className={`btn ${styles.btnSend}`}>Subir</button>
+
+                <button type="button" onClick={handleSubmitSong} className={`btn btn-lg ${styles.btnSend}`}>Subir</button>
 
             </form>
+
+            <div className={`${styles.containerThumbNailUpload}`}><img className='img-fluid' src="https://yt3.googleusercontent.com/ytc/AGIKgqMkBG_XYWbuPAO-vNPIFAwQNASRNV2w8eMWif_cVw=s900-c-k-c0x00ffffff-no-rj" alt="" /></div>
         </AccordionDetails>
       </Accordion>
     </Fragment>

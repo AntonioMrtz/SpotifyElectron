@@ -53,11 +53,11 @@ def get_songs( nombres : list):
 
 def create_song(nombre: str, artista: str, genero: Genre, foto: str, file) -> bool:
 
-    if not checkValidParameterString(nombre) or not checkValidParameterString(nombre) or not checkValidParameterString(nombre) or not Genre.checkValidGenre(genero.value):
+    if not checkValidParameterString(nombre) or not checkValidParameterString(foto) or not checkValidParameterString(nombre) or not checkValidParameterString(nombre) or not Genre.checkValidGenre(genero.value):
         raise HTTPException(
             status_code=400, detail="Parámetros no válidos o vacíos")
 
-    if gridFsSong.exists({"nombre": nombre}):
+    if fileSongCollection.find_one({'name': nombre}):
         raise HTTPException(status_code=400, detail="La canción ya existe")
 
     file_id = gridFsSong.put(

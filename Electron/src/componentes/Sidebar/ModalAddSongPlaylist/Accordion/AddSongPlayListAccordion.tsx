@@ -6,19 +6,26 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import LibraryMusicRoundedIcon from '@mui/icons-material/LibraryMusicRounded';
 import AudiotrackIcon from '@mui/icons-material/Audiotrack';
-import styles from './simpleAccordion.module.css';
+import styles from './addSongPlayListAccordion.module.css';
 import { useState,useRef } from 'react';
 
-export default function SimpleAccordion() {
+
+interface PropsSimpleAccordion{
+
+  handleClose : Function
+
+}
+
+export default function SimpleAccordion(props:PropsSimpleAccordion) {
 
   const formRef = useRef<HTMLFormElement>(null);
-
+  const [songFile,setSongFile] = useState<File>()
 
   const [formData, setFormData] = useState({
-    name: '',
-    artist: '',
-    genre:'',
-    file:''
+    nombre: '',
+    artista: '',
+    genero:'',
+    foto:'',
   });
 
 
@@ -37,25 +44,60 @@ export default function SimpleAccordion() {
 
     if(event.target && event.target.files ){
 
-      let path :string = event.target.files[0].path
-
-      setFormData({
-        ...formData,
-        [event.target.name]: event.target.value,
-        file:path
-      });
-
+      setSongFile(event.target.files[0])
 
     }
   };
 
   const handleSubmitSong = (event:FormEvent<HTMLButtonElement>) => {
 
+    const backendBasePath = new URL("http://127.0.0.1:8000/");
+
+    let url = new URL(backendBasePath + 'canciones/');
+
     event.preventDefault()
 
-    if(formData){
-      window.electron.submitSong.sendMessage('submit-song',formData)
+
+    if(formData && songFile){
+      //window.electron.submitSong.sendMessage('submit-song',formData)
+
+      for (let [key, value] of Object.entries(formData)) {
+        if (key !== 'file' && typeof value === 'string') {
+          url.searchParams.set(key, value);
+        }
+      }
+      const formDataFile = new FormData();
+      formDataFile.append('file', songFile);
+
+
+      const requestOptions = {
+        method: 'POST',
+        body:formDataFile
+
+      };
+
+      fetch(url, requestOptions)
+        .then((response) =>
+
+          {
+
+            if(response.status==201){
+
+              console.log("Cancion creada")
+
+            }else{
+
+              console.log("No se a creado la cancion")
+            }
+          }
+
+        )
+        .catch((error) => {
+          console.error('Error:', error);
+        });
     }
+
+    props.handleClose()
 
     //formRef.current?.submit()
   };
@@ -125,8 +167,8 @@ export default function SimpleAccordion() {
                 <div className="p-0 mb-3 me-3">
                   <input
                     type="text"
-                    id="name"
-                    name='name'
+                    id="nombre"
+                    name='nombre'
                     placeholder="Nombre de la cancion"
                     className={` ${styles.input}`}
                     onChange={handleChange}
@@ -136,11 +178,11 @@ export default function SimpleAccordion() {
                 <div className="mb-3">
                   <input
                     type="text"
-                    id="artist"
+                    id="artista"
                     placeholder="Artista"
                     className={` ${styles.input}`}
                     onChange={handleChange}
-                    name='artist'
+                    name='artista'
                     required
                   ></input>
                 </div>
@@ -148,11 +190,11 @@ export default function SimpleAccordion() {
               <div className="p-0 mb-3 me-2">
                 <input
                   type="text"
-                  id="photo"
+                  id="foto"
                   placeholder="URL de la miniatura"
                   className={` form-control w-75 ${styles.input}`}
                   onChange={handleChange}
-                  name='photo'
+                  name='foto'
                   required
                 ></input>
               </div>
@@ -163,10 +205,12 @@ export default function SimpleAccordion() {
                     className="form-select-sm mb-3"
                     aria-label="Default select example"
                     onChange={handleChange}
-                    name='genre'
+                    name='genero'
                     required
+                    defaultValue={"Elige un género"}
                   >
-                    <option className={` ${styles.option}`} defaultValue={"Pop"}>Pop</option>
+                    <option className={` ${styles.option}`} value={"Elige un género"} disabled>❗ Elige un género</option>
+                    <option className={` ${styles.option}`} value={"Pop"}>Pop</option>
                     <option className={` ${styles.option}`} value="Rock">Rock</option>
                     <option className={` ${styles.option}`} value="Hip-hop">Hip-hop</option>
                     <option className={` ${styles.option}`} value="R&B (Ritmo y Blues)">

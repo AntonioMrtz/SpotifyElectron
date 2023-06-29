@@ -198,7 +198,7 @@ export default function SimpleAccordion(props:PropsSimpleAccordion) {
                   type="text"
                   id="foto"
                   placeholder="URL de la miniatura"
-                  className={` form-control w-75 ${styles.input}`}
+                  className={` form-control ${styles.input}`}
                   onChange={handleChange}
                   name='foto'
                   required

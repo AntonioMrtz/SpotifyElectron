@@ -5,7 +5,7 @@ import TimeSlider from './TimeSlider/TimeSlider';
 interface PropsPlayer {
   volume: number;
   songName: string;
-  changeThumbnail: (url: string) => void;
+  changeSongInfo: (data: JSON) => void;
 }
 
 export default function Player(props: PropsPlayer) {
@@ -27,7 +27,7 @@ export default function Player(props: PropsPlayer) {
     })
       .then((res) => res.json())
       .then((res) => {
-        props.changeThumbnail(res['photo']);
+        props.changeSongInfo(res);
         return res['file'];
       })
       .then((res) => {

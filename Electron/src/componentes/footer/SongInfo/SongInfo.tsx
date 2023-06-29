@@ -4,41 +4,50 @@ import { useEffect, useState } from "react";
 
 interface PropsSongInfo{
 
-    thumbnailUrl : string;
+  songInfo : JSON | undefined;
 
 }
 
-export default function SongInfo(props:PropsSongInfo) {
+export default function SongInfo(props:PropsSongInfo | any) {
 
-    const [thumbNail,setThumbNail] = useState<any>();
+    const [name,setName] = useState<string>();
+    const [thumbnail,setThumbnail] = useState<string>();
+    const [artist,setArtist] = useState<string>();
 
-    const fetchImage = async () => {
-        const res = await fetch(props.thumbnailUrl);
-            const imageBlob = await res.blob();
-            const imageObjectURL = URL.createObjectURL(imageBlob);
-            setThumbNail(imageObjectURL);
+
+    const updateSongInfo = async () => {
+
+      if(props.songInfo){
+
+        console.log(props.songInfo)
+        setName(props.songInfo["name"])
+        setThumbnail(props.songInfo["photo"])
+        setArtist(props.songInfo["artist"])
+
       };
-    
+
+    }
+
       useEffect(() => {
-        fetchImage();
-      }, [props.thumbnailUrl]);
-    
-    
+        updateSongInfo();
+      }, [props.songInfo]);
+
+
 
     return (
         <div
             className={`d-flex flex-row justify-content-start container-fluid ${styles.songInfoContainer}`}
         >
             <img
-                src={thumbNail}
+                src={thumbnail}
                 alt=""
             />
 
             <div
                 className={`d-flex flex-column ${styles.infoCancionContainer}`}
             >
-                <a href="">Quedate</a>
-                <a href="">Francisco Quevedo</a>
+                <a href="">{name}</a>
+                <a href="">{artist}</a>
             </div>
 
             <div className={`d-flex flex-column ${styles.likeContainer}`}>

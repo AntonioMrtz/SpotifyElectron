@@ -12,14 +12,14 @@ interface PropsFooter{
 
 export default function Footer(props:PropsFooter) {
   const [volume, setVolume] = useState<number>(50);
-  const [thumbnailUrl , setThumbnailUrl] = useState<string>('');
-  
+  const [songInfo , setSongInfo] = useState<JSON | undefined>();
+
   const changeVolumeParent = (volume:number) : void => {
     setVolume(volume);
   };
 
-  const changeThumbnail = (url:string) : void => {
-    setThumbnailUrl(url);
+  const changeSongInfo = (data:JSON) : void => {
+    setSongInfo(data);
   };
 
 
@@ -27,9 +27,9 @@ export default function Footer(props:PropsFooter) {
     <div
       className={`container-fluid d-flex flex-row space-evenly ${styles.wrapperFooter}`}
     >
-      <SongInfo thumbnailUrl={thumbnailUrl}/>
+      <SongInfo songInfo={songInfo}/>
 
-      <Player volume={volume} songName={props.songName} changeThumbnail={changeThumbnail}/>
+      <Player volume={volume} songName={props.songName} changeSongInfo={changeSongInfo}/>
 
       <SongConfig changeVolume={changeVolumeParent} />
     </div>

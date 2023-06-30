@@ -5,7 +5,7 @@ import foto from '../../assets/imgs/quedate.jpg';
 export default function Home(props) {
 
   const handleDoubleClick = () =>{
-    
+
     props.changeSongName("p3")
 
   }
@@ -15,7 +15,13 @@ export default function Home(props) {
     props.changeSongName("loquillo")
 
   }
-  
+
+  const handleDoubleClickP3 = () =>{
+
+    props.changeSongName("The Battle For Everyone's Soul")
+
+  }
+
   return (
     <div className={`container-fluid d-flex flex-column ${styles.principal}`}>
       <div
@@ -33,14 +39,21 @@ export default function Home(props) {
         </header>
 
         <section className={`container-fluid d-flex flex-row ${styles.row}`}>
-          <span onClick={handleDoubleClick} name="p3" className={`rounded ${styles.card}`}>
+          <span onClick={handleDoubleClick} className={`rounded ${styles.card}`}>
             <img src={foto} className={`card-img-top rounded`} />
             <div className={`${styles.card_body}`}>
               <h5 className={`${styles.tituloLista}`}>Quedate</h5>
               <p className={`${styles.autorLista}`}>Quevedo</p>
             </div>
           </span>
-          <span onClick={handleDoubleClickBeta} name="p3" className={`rounded ${styles.card}`}>
+          <span onClick={handleDoubleClickBeta} className={`rounded ${styles.card}`}>
+            <img src={foto} className={`card-img-top rounded`} />
+            <div className={`${styles.card_body}`}>
+              <h5 className={`${styles.tituloLista}`}>Quedate</h5>
+              <p className={`${styles.autorLista}`}>Quevedo</p>
+            </div>
+          </span>
+          <span onClick={handleDoubleClickP3} className={`rounded ${styles.card}`}>
             <img src={foto} className={`card-img-top rounded`} />
             <div className={`${styles.card_body}`}>
               <h5 className={`${styles.tituloLista}`}>Quedate</h5>

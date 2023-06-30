@@ -23,15 +23,13 @@ app.add_middleware(
 )
 
 
-
-
 @app.get("/canciones/{nombre}")
 def get_cancion(nombre: str) -> Response:
     """ Devuelve la canción con nombre "nombre"
 
     Args:
         nombre (str): Nombre de la canción
-        
+
     Returns:
         Response 200 OK: Cancion en el body de la respuesta
 
@@ -42,8 +40,7 @@ def get_cancion(nombre: str) -> Response:
 
     """
     song = song_service.get_song(nombre)
-
-    song_json = json.dumps(song.__dict__)
+    song_json = song.get_json()
 
     return Response(song_json, media_type="application/json", status_code=200)
 
@@ -55,6 +52,8 @@ def get_canciones():
     song_service.get_songs() """
 
 # Devuelve todas las canciones
+
+
 @app.get("/canciones/")
 def get_canciones():
 
@@ -67,33 +66,16 @@ def get_lista(nombre: str):
 
     playlist = playlist_service.get_playlist(nombre)
 
-
-
-    playlist_dict = playlist.__dict__
-    # Eliminar el atributo song_names del diccionario , hay que serializar song primero
-
-    songs_json = []
-
-    for song in playlist.songs:
-        song_json = json.dumps(song.__dict__)
-        songs_json.append(song_json)
-
-    playlist_dict.pop('songs', None)
-    # Convertir el diccionario en una cadena JSON
-    playlist_dict['songs'] = songs_json
-    playlist_json = json.dumps(playlist_dict)
-
+    playlist_json = playlist.get_json()
 
     return Response(playlist_json, media_type="application/json", status_code=200)
 
 
-
 @app.post("/playlists/")
-def post_playlist(nombre: str, foto: str,nombres_canciones:list):
+def post_playlist(nombre: str, foto: str, nombres_canciones: list):
 
     result = playlist_service.create_playlist(nombre, foto, nombres_canciones)
     return Response(None, 201)
-
 
 
 # Sube una cancion
@@ -107,7 +89,7 @@ async def post_cancion(nombre: str, artista: str, genero: Genre, foto: str, file
         genero (Genre): Género musical de la canción
         foto (url): Género musical de la canción
 
-   
+
     Returns:
         Response 201 Created
 
@@ -118,4 +100,3 @@ async def post_cancion(nombre: str, artista: str, genero: Genre, foto: str, file
     readFile = await file.read()
     song_service.create_song(nombre, artista, genero, foto, readFile)
     return Response(None, 201)
-    

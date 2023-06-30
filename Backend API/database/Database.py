@@ -47,7 +47,7 @@ class Database(metaclass=DatabaseMeta):
                 password = os.getenv("MONGO_PASS")
                 uri = 'mongodb+srv://arso:' + \
                     str(password) + \
-                        '@cluster0.ktobcwq.mongodb.net/?retryWrites=true&w=majority'
+                    '@cluster0.ktobcwq.mongodb.net/?retryWrites=true&w=majority'
                 Database.connection = MongoClient(uri, server_api=ServerApi('1'))[
                     "SpotifyElectron"]
                 Database.list_collection = Database.connection["playlist"]

@@ -13,14 +13,12 @@ gridFsSong = GridFS(Database().connection, collection='cancion')
 fileSongCollection = Database().connection["cancion.files"]
 
 
-
 def get_song(nombre: str) -> bytes:
-
     """ Returns a Song file with attributes and a song encoded in base64 "
 
     Args:
         nombre (str): Song's name
-        
+
     Returns:
         Song object
 
@@ -36,25 +34,26 @@ def get_song(nombre: str) -> bytes:
             status_code=404, detail="La canción con ese nombre no existe")
 
     song_bytes = song_bytes.read()
-    encoded_bytes = str(base64.b64encode(song_bytes))  # b'ZGF0YSB0byBiZSBlbmNvZGVk'
+    # b'ZGF0YSB0byBiZSBlbmNvZGVk'
+    encoded_bytes = str(base64.b64encode(song_bytes))
 
     song_metadata = fileSongCollection.find_one({'name': nombre})
 
-    song = Song(nombre,song_metadata["artist"],song_metadata["photo"],Genre(song_metadata["genre"]).name,encoded_bytes)
+    song = Song(nombre, song_metadata["artist"], song_metadata["photo"], Genre(
+        song_metadata["genre"]).name, encoded_bytes)
 
     return song
 
 
-def get_songs( nombres : list) -> list:
+def get_songs(nombres: list) -> list:
 
-    songs : list = []
+    songs: list = []
 
     for song_name in nombres:
 
         songs.append(get_song(song_name))
 
     return songs
-
 
 
 def create_song(nombre: str, artista: str, genero: Genre, foto: str, file) -> bool:

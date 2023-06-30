@@ -10,8 +10,8 @@
 
     color: var(--pure-white);
     padding-bottom: 1%;
-    
-    
+
+
 }
 
 .mostrarT{
@@ -23,7 +23,7 @@
 }
 
 .card{
-    
+
     padding: 1.5%;
     margin-right: 2%;
     background-color: var(--third-black) !important;
@@ -31,7 +31,7 @@
 
 .card:hover{
 
-    background-color: var(--hover-white);
+    background-color: var(--hover-white) !important;
 }
 
 .card_body{

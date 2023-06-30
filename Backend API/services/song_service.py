@@ -16,13 +16,13 @@ fileSongCollection = Database().connection["cancion.files"]
 
 def get_song(nombre: str) -> bytes:
 
-    """ Returns a Json file with attributes and a song encoded in base64 "
+    """ Returns a Song file with attributes and a song encoded in base64 "
 
     Args:
         nombre (str): Song's name
         
     Returns:
-        Json file
+        Song object
 
     """
 
@@ -45,9 +45,15 @@ def get_song(nombre: str) -> bytes:
     return song
 
 
-def get_songs( nombres : list):
+def get_songs( nombres : list) -> list:
 
-    """ result =  """
+    songs : list = []
+
+    for song_name in nombres:
+
+        songs.append(get_song(song_name))
+
+    return songs
 
 
 

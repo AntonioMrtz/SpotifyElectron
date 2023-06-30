@@ -50,7 +50,7 @@ class Database(metaclass=DatabaseMeta):
                         '@cluster0.ktobcwq.mongodb.net/?retryWrites=true&w=majority'
                 Database.connection = MongoClient(uri, server_api=ServerApi('1'))[
                     "SpotifyElectron"]
-                Database.list_collection = Database.connection["list"]
+                Database.list_collection = Database.connection["playlist"]
                 Database.song_collection = Database.connection["song"]
 
             except Exception as error:

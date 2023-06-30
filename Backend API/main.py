@@ -1,6 +1,6 @@
-from fastapi import FastAPI,UploadFile,status
+from fastapi import FastAPI, UploadFile, status
 import services.song_service as song_service
-import services.list_service as list_service
+import services.playlist_service as playlist_service
 from fastapi.responses import Response
 import json
 from model.Genre import Genre
@@ -17,22 +17,16 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
     allow_credentials=True,
-    allow_methods=["POST", "GET","PUT","DELETE"],
-		allow_headers=["*"],
+    allow_methods=["POST", "GET", "PUT", "DELETE"],
+  		allow_headers=["*"],
     max_age=3600,
 )
 
 
-# Devuelve todas las listas
-@app.get("/listas/")
-async def get_listas():
 
-    
-    prueba = {"prueba":"prueba"}
-    return Response(json.dumps(prueba) , 201)
 
 @app.get("/canciones/{nombre}")
-def get_cancion(nombre : str) -> Response:
+def get_cancion(nombre: str) -> Response:
     """ Devuelve la canción con nombre "nombre"
 
     Args:
@@ -52,25 +46,59 @@ def get_cancion(nombre : str) -> Response:
     song_json = json.dumps(song.__dict__)
 
     return Response(song_json, media_type="application/json", status_code=200)
-    
-    #return Response(song, media_type="audio/mp3", status_code=200)
 
+
+""" # Devuelve todas las canciones
+@app.get("/canciones/")
+def get_canciones():
+
+    song_service.get_songs() """
 
 # Devuelve todas las canciones
 @app.get("/canciones/")
-async def get_canciones():
-    await song_service.get_songs()
+def get_canciones():
+
+    #song_service.get_songs()
+    pass
 
 
-@app.post("/listas/")
-async def get_listas(file : UploadFile):
+@app.get("/playlists/{nombre}")
+def get_lista(nombre: str):
 
-    pass    
+    playlist = playlist_service.get_playlist(nombre)
+
+
+
+    playlist_dict = playlist.__dict__
+    # Eliminar el atributo song_names del diccionario , hay que serializar song primero
+
+    songs_json = []
+
+    for song in playlist.songs:
+        song_json = json.dumps(song.__dict__)
+        songs_json.append(song_json)
+
+    playlist_dict.pop('songs', None)
+    # Convertir el diccionario en una cadena JSON
+    playlist_dict['songs'] = songs_json
+    playlist_json = json.dumps(playlist_dict)
+
+
+    return Response(playlist_json, media_type="application/json", status_code=200)
+
+
+
+@app.post("/playlists/")
+def post_playlist(nombre: str, foto: str,nombres_canciones:list):
+
+    result = playlist_service.create_playlist(nombre, foto, nombres_canciones)
+    return Response(None, 201)
+
 
 
 # Sube una cancion
 @app.post("/canciones/")
-async def post_cancion(nombre : str, artista : str,genero : Genre,foto : str,file : UploadFile) -> Response:
+async def post_cancion(nombre: str, artista: str, genero: Genre, foto: str, file: UploadFile) -> Response:
     """ Registra la canción con los parámetros "nombre","artista" y "género"
 
     Args:
@@ -88,6 +116,6 @@ async def post_cancion(nombre : str, artista : str,genero : Genre,foto : str,fil
         Internal Server Error?
     """
     readFile = await file.read()
-    song_service.create_song(nombre,artista,genero,foto,readFile)
+    song_service.create_song(nombre, artista, genero, foto, readFile)
     return Response(None, 201)
-
+    

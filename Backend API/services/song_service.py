@@ -6,6 +6,7 @@ from fastapi.responses import Response
 from model.Genre import Genre
 from model.Song import Song
 import base64
+import json
 
 
 """ Insert songs with format [files,chunks] https://www.mongodb.com/docs/manual/core/gridfs/"""
@@ -68,7 +69,7 @@ def get_songs() -> list:
     return songs
 
 
-def create_song(nombre: str, artista: str, genero: Genre, foto: str, file):
+def create_song(nombre: str, artista: str, genero: Genre, foto: str, file) -> None:
 
     if not checkValidParameterString(nombre) or not checkValidParameterString(foto) or not checkValidParameterString(nombre) or not checkValidParameterString(nombre) or not Genre.checkValidGenre(genero.value):
         raise HTTPException(
@@ -79,3 +80,14 @@ def create_song(nombre: str, artista: str, genero: Genre, foto: str, file):
 
     file_id = gridFsSong.put(
         file, name=nombre, artist=artista, genre=str(genero.value), photo=foto)
+
+
+def get_genres() -> json:
+
+    # Obtener todas las propiedades de la clase Genre
+    genre_properties = [(g.name, g.value) for g in Genre]
+
+    genre_dict = dict(genre_properties)
+    genre_json = json.dumps(genre_dict)
+
+    return genre_json

@@ -202,3 +202,11 @@ def get_lista_dto(nombre: str) -> Response:
     playlist_json = playlist.get_json()
 
     return Response(playlist_json, media_type="application/json", status_code=200)
+
+
+@app.get("/generos/")
+def get_generos() -> Response:
+
+    genres = song_service.get_genres()
+
+    return Response(genres, media_type="application/json", status_code=200)

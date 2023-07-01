@@ -3,7 +3,6 @@ from model.DTO.PlaylistDTO import PlaylistDTO
 from database.Database import Database
 from model.Genre import Genre
 
-
 fileSongCollection = Database().connection["cancion.files"]
 playlistCollection = Database().connection["playlist"]
 

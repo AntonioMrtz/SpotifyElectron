@@ -4,7 +4,6 @@ from model.Playlist import Playlist
 from model.Song import Song
 from fastapi import HTTPException
 from services.utils import checkValidParameterString
-import json
 
 playlistCollection = Database().connection["playlist"]
 
@@ -32,7 +31,7 @@ def get_playlist(name: str) -> Playlist:
     return playlist
 
 
-def create_playlist(name: str, photo: str, song_names: list):
+def create_playlist(name: str, photo: str, song_names: list) -> None:
 
     if not checkValidParameterString(name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
@@ -49,7 +48,7 @@ def create_playlist(name: str, photo: str, song_names: list):
     return True if result.acknowledged else False
 
 
-def update_playlist(name: str, photo: str, song_names: list):
+def update_playlist(name: str, photo: str, song_names: list) -> None:
 
     if not checkValidParameterString(name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")

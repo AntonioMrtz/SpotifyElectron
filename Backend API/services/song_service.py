@@ -13,7 +13,7 @@ gridFsSong = GridFS(Database().connection, collection='cancion')
 fileSongCollection = Database().connection["cancion.files"]
 
 
-def get_song(nombre: str) -> bytes:
+def get_song(nombre: str) -> Song:
     """ Returns a Song file with attributes and a song encoded in base64 "
 
     Args:
@@ -68,7 +68,7 @@ def get_songs() -> list:
     return songs
 
 
-def create_song(nombre: str, artista: str, genero: Genre, foto: str, file) -> bool:
+def create_song(nombre: str, artista: str, genero: Genre, foto: str, file):
 
     if not checkValidParameterString(nombre) or not checkValidParameterString(foto) or not checkValidParameterString(nombre) or not checkValidParameterString(nombre) or not Genre.checkValidGenre(genero.value):
         raise HTTPException(
@@ -79,4 +79,3 @@ def create_song(nombre: str, artista: str, genero: Genre, foto: str, file) -> bo
 
     file_id = gridFsSong.put(
         file, name=nombre, artist=artista, genre=str(genero.value), photo=foto)
-    return True

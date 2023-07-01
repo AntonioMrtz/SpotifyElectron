@@ -1,6 +1,7 @@
 from fastapi import FastAPI, UploadFile, status
 import services.song_service as song_service
 import services.playlist_service as playlist_service
+import services.dto_service as dto_service
 from fastapi.responses import Response
 import json
 from model.Genre import Genre
@@ -22,6 +23,7 @@ app.add_middleware(
     max_age=3600,
 )
 
+#* CANCIONES
 
 @app.get("/canciones/{nombre}")
 def get_cancion(nombre: str) -> Response:
@@ -42,6 +44,29 @@ def get_cancion(nombre: str) -> Response:
     song_json = song.get_json()
 
     return Response(song_json, media_type="application/json", status_code=200)
+
+
+@app.post("/canciones/")
+async def post_cancion(nombre: str, artista: str, genero: Genre, foto: str, file: UploadFile) -> Response:
+    """ Registra la canción con los parámetros "nombre","artista" y "género"
+
+    Args:
+        nombre (str): Nombre de la canción
+        artista (str): Artista de la canción
+        genero (Genre): Género musical de la canción
+        foto (url): Género musical de la canción
+
+
+    Returns:
+        Response 201 Created
+
+    Raises:
+        Bad Request 400: Parámetros introducidos no són válidos o vacíos
+    """
+
+    readFile = await file.read()
+    song_service.create_song(nombre, artista, genero, foto, readFile)
+    return Response(None, 201)
 
 
 @app.get("/canciones/")
@@ -68,6 +93,7 @@ def get_canciones() -> Response:
 
     return Response(songs_json, media_type="application/json", status_code=200)
 
+#* PLAYLISTS
 
 @app.get("/playlists/{nombre}")
 def get_lista(nombre: str) -> Response:
@@ -112,29 +138,6 @@ def post_playlist(nombre: str, foto: str, nombres_canciones: list) -> Response:
     return Response(None, 201)
 
 
-@app.post("/canciones/")
-async def post_cancion(nombre: str, artista: str, genero: Genre, foto: str, file: UploadFile) -> Response:
-    """ Registra la canción con los parámetros "nombre","artista" y "género"
-
-    Args:
-        nombre (str): Nombre de la canción
-        artista (str): Artista de la canción
-        genero (Genre): Género musical de la canción
-        foto (url): Género musical de la canción
-
-
-    Returns:
-        Response 201 Created
-
-    Raises:
-        Bad Request 400: Parámetros introducidos no són válidos o vacíos
-    """
-
-    readFile = await file.read()
-    song_service.create_song(nombre, artista, genero, foto, readFile)
-    return Response(None, 201)
-
-
 @app.put("/playlists/{nombre}")
 def update_playlist(nombre: str, nombres_canciones: list, foto: str = "") -> Response:
     """ Actualiza los parámetros de la playlist con nombre "nombre""
@@ -154,3 +157,48 @@ def update_playlist(nombre: str, nombres_canciones: list, foto: str = "") -> Res
 
     playlist_service.update_playlist(nombre, foto, nombres_canciones)
     return Response(None, 204)
+
+#* DTO
+""" Objects with only the data the user needs to visualize """
+
+
+@app.get("/canciones/dto/{nombre}")
+def get_cancion_dto(nombre: str) -> Response:
+    """ Devuelve la canción con nombre "nombre" con los dato necesarios para previsualizacion sin carga el contenido de la canción
+
+    Args:
+        nombre (str): Nombre de la canción
+
+    Returns:
+        Response 200 OK
+
+    Raises:
+        Bad Request 400: "nombre" es vacío o nulo
+        Not Found 404: No existe una canción con el nombre "nombre"
+    """
+
+    song = dto_service.get_song(nombre)
+    song_json = song.get_json()
+
+    return Response(song_json, media_type="application/json", status_code=200)
+
+
+@app.get("/playlists/dto/{nombre}")
+def get_lista_dto(nombre: str) -> Response:
+    """ Devuelve la playlist con nombre "nombre" con los datos necesarios para previsualización , sin el contenido de las canciones
+
+    Args:
+        nombre (str): Nombre de la playlist
+
+    Returns:
+        Response 200 OK
+
+    Raises:
+        Bad Request 400: "nombre" es vacío o nulo
+        Not Found 404: No existe una playlist con el nombre "nombre"
+    """
+
+    playlist = dto_service.get_playlist(nombre)
+    playlist_json = playlist.get_json()
+
+    return Response(playlist_json, media_type="application/json", status_code=200)

@@ -55,6 +55,18 @@ def get_songs(nombres: list) -> list:
 
     return songs
 
+def get_songs() -> list:
+
+    songs: list = []
+
+    songsFiles = fileSongCollection.find()
+
+    for songFile in songsFiles:
+
+        songs.append(get_song(songFile["name"]))
+
+    return songs
+
 
 def create_song(nombre: str, artista: str, genero: Genre, foto: str, file) -> bool:
 

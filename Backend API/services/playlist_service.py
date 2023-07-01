@@ -38,8 +38,6 @@ def create_playlist(name: str, photo: str, song_names: list):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
     songs = song_service.get_songs(song_names)
-    playlist = Playlist(name=name, photo=photo, songs=songs)
-
     result_playlist_exists = playlistCollection.find_one({'name': name})
 
     if result_playlist_exists:

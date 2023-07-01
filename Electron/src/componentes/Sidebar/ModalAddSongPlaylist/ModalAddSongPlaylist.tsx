@@ -1,8 +1,8 @@
-import { useState,Fragment } from 'react';
+import { useState, Fragment } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
-import SimpleAccordion from './Accordion/AddSongPlayListAccordion';
+import PropsAddSongPlayListAccordion from './Accordion/AddSongPlayListAccordion';
 import styles from './modal.module.css';
 
 const style = {
@@ -25,8 +25,8 @@ export default function ModalAddSongPlaylist() {
   return (
     <Fragment>
       <button className={`btn`} onClick={handleOpen}>
-                <i className="fa-solid fa-plus fa-fw"></i>
-              </button>
+        <i className="fa-solid fa-plus fa-fw"></i>
+      </button>
       <Modal
         open={open}
         onClose={handleClose}
@@ -34,7 +34,7 @@ export default function ModalAddSongPlaylist() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style} className={` ${styles.wrapperAccordion}`}>
-          <SimpleAccordion handleClose={handleClose} />
+          <PropsAddSongPlayListAccordion handleClose={handleClose} />
         </Box>
       </Modal>
     </Fragment>

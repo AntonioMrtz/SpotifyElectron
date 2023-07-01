@@ -32,13 +32,13 @@
 
     font-size: var(--font-size-song-footer);
     color: var(--primary-white);
-    font-size: 1.10rem;
+    font-size: var(--font-size-song-footer);
 
 
 }
 .infoCancionContainer a:nth-child(2){
 
-    font-size: 0.95rem;
+    font-size: var(--font-size-artist-footer);
     color: var(--secondary-white);
 
 }
@@ -62,23 +62,3 @@
 
 }
 
-
-@media (max-width: 1300px) {
-
-
-  .infoCancionContainer a:first-child{
-
-    font-size: var(--font-size-song-footer);
-    color: var(--primary-white);
-    font-size: 1rem;
-
-
-  }
-  .infoCancionContainer a:nth-child(2){
-
-    font-size: 0.85rem;
-    color: var(--secondary-white);
-
-}
-
-}

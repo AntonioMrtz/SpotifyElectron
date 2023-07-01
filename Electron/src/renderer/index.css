@@ -36,6 +36,7 @@
 
 
   --font-size-song-footer: 1.05rem;
+  --font-size-artist-footer : 0.85rem;
 
 }
 
@@ -89,7 +90,8 @@ p {
     /* Footer default height */
     --footer-height: 12svh !important;
 
-    --font-size-song-footer: 0.85rem;
+    --font-size-song-footer: 0.85rem !important;
+    --font-size-artist-footer : 0.65rem !important;
 
   }
 }

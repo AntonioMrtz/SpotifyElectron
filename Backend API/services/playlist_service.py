@@ -3,12 +3,16 @@ import services.song_service as song_service
 from model.Playlist import Playlist
 from model.Song import Song
 from fastapi import HTTPException
+from services.utils import checkValidParameterString
 import json
 
 playlistCollection = Database().connection["playlist"]
 
 
 def get_playlist(name: str) -> Playlist:
+
+    if not checkValidParameterString(name):
+        raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
     playlist_data = playlistCollection.find_one({'name': name})
 
@@ -30,6 +34,9 @@ def get_playlist(name: str) -> Playlist:
 
 def create_playlist(name: str, photo: str, song_names: list):
 
+    if not checkValidParameterString(name):
+        raise HTTPException(status_code=400, detail="Parámetros no válidos")
+
     songs = song_service.get_songs(song_names)
     playlist = Playlist(name=name, photo=photo, songs=songs)
 
@@ -42,3 +49,17 @@ def create_playlist(name: str, photo: str, song_names: list):
         {'name': name, 'photo': photo, 'song_names': song_names})
 
     return True if result.acknowledged else False
+
+
+def update_playlist(name: str, photo: str, song_names: list):
+
+    if not checkValidParameterString(name):
+        raise HTTPException(status_code=400, detail="Parámetros no válidos")
+
+    result_playlist_exists = playlistCollection.find_one({'name': name})
+
+    if not result_playlist_exists:
+        raise HTTPException(status_code=404, detail="La playlist no existe")
+
+    playlistCollection.update_one({'name': name}, {
+                                  "$set": {'name': name, 'photo': photo, 'song_names': song_names}})

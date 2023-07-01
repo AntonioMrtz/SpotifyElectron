@@ -62,7 +62,7 @@ def get_canciones():
 
 
 @app.get("/playlists/{nombre}")
-def get_lista(nombre: str):
+def get_lista(nombre: str) -> Response:
 
     playlist = playlist_service.get_playlist(nombre)
 
@@ -72,13 +72,12 @@ def get_lista(nombre: str):
 
 
 @app.post("/playlists/")
-def post_playlist(nombre: str, foto: str, nombres_canciones: list):
+def post_playlist(nombre: str, foto: str, nombres_canciones: list) -> Response:
 
     result = playlist_service.create_playlist(nombre, foto, nombres_canciones)
     return Response(None, 201)
 
 
-# Sube una cancion
 @app.post("/canciones/")
 async def post_cancion(nombre: str, artista: str, genero: Genre, foto: str, file: UploadFile) -> Response:
     """ Registra la canción con los parámetros "nombre","artista" y "género"
@@ -100,3 +99,10 @@ async def post_cancion(nombre: str, artista: str, genero: Genre, foto: str, file
     readFile = await file.read()
     song_service.create_song(nombre, artista, genero, foto, readFile)
     return Response(None, 201)
+
+
+@app.put("/playlists/{nombre}")
+def update_playlist(nombre: str, song_names: list, foto: str = "") -> Response:
+
+    playlist_service.update_playlist(nombre, foto, song_names)
+    return Response(None, 204)

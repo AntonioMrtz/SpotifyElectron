@@ -2,7 +2,7 @@ import { useState, Fragment } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
-import PropsAddSongPlayListAccordion from './Accordion/AddSongPlayListAccordion';
+import AddSongPlayListAccordion from './Accordion/AddSongPlayListAccordion';
 import styles from './modal.module.css';
 
 const style = {
@@ -34,7 +34,7 @@ export default function ModalAddSongPlaylist() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style} className={` ${styles.wrapperAccordion}`}>
-          <PropsAddSongPlayListAccordion handleClose={handleClose} />
+          <AddSongPlayListAccordion handleClose={handleClose} />
         </Box>
       </Modal>
     </Fragment>

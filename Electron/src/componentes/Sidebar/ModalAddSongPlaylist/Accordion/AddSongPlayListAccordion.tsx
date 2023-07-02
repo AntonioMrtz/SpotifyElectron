@@ -13,30 +13,30 @@ interface PropsAddSongPlayListAccordion {
   handleClose: Function;
 }
 
-export default function AddSongPlayListAccordion(
-  props: PropsAddSongPlayListAccordion
-) {
+export default function AddSongPlayListAccordion(props: PropsAddSongPlayListAccordion) {
+
+  /* SONG */
+
   const [songFile, setSongFile] = useState<File>();
+  const [thumbnailUploadSong, setThumbnailUploadSong] = useState<string>();
 
-  const [thumbnailUpload, setThumbnailUpload] = useState<string>();
-
-  const [formData, setFormData] = useState({
+  const [formDataSong, setFormDataSong] = useState({
     nombre: '',
     artista: '',
     genero: '',
     foto: '',
   });
 
-  const handleChange = (
+  const handleChangeSong = (
     event: ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     if (event.target && event.target.name) {
       if (event.target.name === 'foto') {
-        setThumbnailUpload(event.target.value);
+        setThumbnailUploadSong(event.target.value);
       }
 
-      setFormData({
-        ...formData,
+      setFormDataSong({
+        ...formDataSong,
         [event.target.name]: event.target.value,
       });
     }
@@ -49,24 +49,23 @@ export default function AddSongPlayListAccordion(
   };
 
   const handleSubmitSong = (event: FormEvent<HTMLButtonElement>) => {
-    const backendBasePath = new URL('http://127.0.0.1:8000/');
+    let backendBasePath = new URL('http://127.0.0.1:8000/');
 
     let url = new URL(backendBasePath + 'canciones/');
 
     event.preventDefault();
 
-    if (formData && songFile) {
-      //window.electron.submitSong.sendMessage('submit-song',formData)
+    if (formDataSong && songFile) {
 
-      for (let [key, value] of Object.entries(formData)) {
+      for (let [key, value] of Object.entries(formDataSong)) {
         if (key !== 'file' && typeof value === 'string') {
           url.searchParams.set(key, value);
         }
       }
-      const formDataFile = new FormData();
+      let formDataFile = new FormData();
       formDataFile.append('file', songFile);
 
-      const requestOptions = {
+      let requestOptions = {
         method: 'POST',
         body: formDataFile,
       };
@@ -86,6 +85,77 @@ export default function AddSongPlayListAccordion(
 
     props.handleClose();
   };
+
+
+  /* PLAYLIST */
+
+
+  const [thumbnailUploadPlaylist, setThumbnailUploadPlaylist] = useState<string>();
+
+  const [formDataPlaylist, setFormDataPlaylist] = useState({
+    nombre: '',
+    foto:''
+  });
+
+  const handleChangePlaylist = (
+    event: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    if (event.target && event.target.name) {
+      if (event.target.name === 'foto') {
+        setThumbnailUploadPlaylist(event.target.value);
+      }
+
+      setFormDataPlaylist({
+        ...formDataPlaylist,
+        [event.target.name]: event.target.value,
+      });
+    }
+  };
+
+
+  const handleSubmitPlaylist = (event: FormEvent<HTMLButtonElement>) => {
+    let backendBasePath = new URL('http://127.0.0.1:8000/');
+
+    let url = new URL(backendBasePath + 'playlists/');
+
+    event.preventDefault();
+
+    if (formDataPlaylist ) {
+
+      for (let [key, value] of Object.entries(formDataPlaylist)) {
+        if (typeof value === 'string') {
+          url.searchParams.set(key, value);
+        }
+      }
+
+
+
+      let requestOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify([])
+      };
+
+      fetch(url, requestOptions)
+        .then((response) => {
+          if (response.status == 201) {
+            console.log('Playlist creada');
+          } else {
+            console.log('No se a creado la playlist');
+          }
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+    }
+
+    props.handleClose();
+  };
+
+
+  /* GENRES */
 
   const [genres, setGenres] = useState<{}>();
 
@@ -127,12 +197,49 @@ export default function AddSongPlayListAccordion(
             <LibraryMusicRoundedIcon /> Crear lista de reproducción
           </Typography>
         </AccordionSummary>
-        <AccordionDetails>
-          <Typography style={{ color: 'var(--primary-white' }}>
-            {' '}
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
+        <AccordionDetails
+          className={`p-4 d-flex flex-row ${styles.accordionDetails}`}
+        >
+
+            <form
+              className={`container-fluid d-flex flex-column p-0 ${styles.formAddSong}`}
+            >
+              <div className={`container-fluid d-flex flex-row p-0`}>
+                <div className="p-0 mb-3 me-3">
+                  <input
+                    type="text"
+                    id="nombre"
+                    name="nombre"
+                    placeholder="Nombre de la playlist"
+                    className={` ${styles.input}`}
+                    onChange={handleChangePlaylist}
+                    required
+                  ></input>
+                </div>
+                <div className="mb-3">
+                  <input
+                    type="text"
+                    id="foto"
+                    name="foto"
+                    placeholder="URL de la miniatura"
+                    className={` ${styles.input}`}
+                    onChange={handleChangePlaylist}
+                    required
+                  ></input>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={handleSubmitPlaylist}
+                className={`btn btn-lg ${styles.btnSend}`}
+              >
+                Subir
+              </button>
+            </form>
+            <div className={`${styles.containerThumbNailUpload}`}>
+              <img className="img-fluid" src={thumbnailUploadPlaylist} alt="" />
+            </div>
         </AccordionDetails>
       </Accordion>
 
@@ -172,7 +279,7 @@ export default function AddSongPlayListAccordion(
                   name="nombre"
                   placeholder="Nombre de la cancion"
                   className={` ${styles.input}`}
-                  onChange={handleChange}
+                  onChange={handleChangeSong}
                   required
                 ></input>
               </div>
@@ -182,7 +289,7 @@ export default function AddSongPlayListAccordion(
                   id="artista"
                   placeholder="Artista"
                   className={` ${styles.input}`}
-                  onChange={handleChange}
+                  onChange={handleChangeSong}
                   name="artista"
                   required
                 ></input>
@@ -194,7 +301,7 @@ export default function AddSongPlayListAccordion(
                 id="foto"
                 placeholder="URL de la miniatura"
                 className={` form-control ${styles.input}`}
-                onChange={handleChange}
+                onChange={handleChangeSong}
                 name="foto"
                 required
               ></input>
@@ -207,7 +314,7 @@ export default function AddSongPlayListAccordion(
                 <select
                   className="form-select-sm mb-3"
                   aria-label="Default select example"
-                  onChange={handleChange}
+                  onChange={handleChangeSong}
                   name="genero"
                   required
                   defaultValue={'Elige un género'}
@@ -251,7 +358,7 @@ export default function AddSongPlayListAccordion(
           </form>
 
           <div className={`${styles.containerThumbNailUpload}`}>
-            <img className="img-fluid" src={thumbnailUpload} alt="" />
+            <img className="img-fluid" src={thumbnailUploadSong} alt="" />
           </div>
         </AccordionDetails>
       </Accordion>

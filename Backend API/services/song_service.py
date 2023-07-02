@@ -56,7 +56,7 @@ def get_songs(nombres: list) -> list:
 
     return songs
 
-def get_songs() -> list:
+def get_all_songs() -> list:
 
     songs: list = []
 

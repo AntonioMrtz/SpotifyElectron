@@ -81,7 +81,7 @@ def get_canciones() -> Response:
     Raises:
     """
 
-    songs = song_service.get_songs()
+    songs = song_service.get_all_songs()
 
     songs_list = []
     [songs_list.append(song.get_json()) for song in songs]
@@ -119,7 +119,7 @@ def get_lista(nombre: str) -> Response:
 
 @app.post("/playlists/")
 def post_playlist(nombre: str, foto: str, nombres_canciones: list) -> Response:
-    """ Registra la canción con los parámetros "nombre","artista" y "género"
+    """ Registra la playlist con los parámetros "nombre" y "artista"
 
     Args:
         nombre (str): Nombre de la playlist

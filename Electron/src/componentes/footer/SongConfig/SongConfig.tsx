@@ -1,3 +1,4 @@
+import { ClassNames } from '@emotion/react';
 import styles from './songConfig.module.css';
 import VolumeSlider from './VolumeSlider/VolumeSlider';
 
@@ -18,7 +19,7 @@ export default function SongConfig(props:PropsSongConfig) {
       className={`d-flex container-fluid justify-content-end ${styles.settingsContainer} `}
     >
       <button className='btn'>
-        <i className="fa-solid fa-microphone fa-fw"></i>
+        <i className="fa-solid fa-microphone fa-fw"></i> 
       </button>
       <button className='btn'>
         <i className="fa-solid fa-bars fa-fw"></i>

@@ -31,18 +31,23 @@ export default function VolumeSlider(props:PropsVolumeSlider) {
     }
   };
 
+  const handelMute = ():void=> {
+      props.changeVolume(0)
+  } 
+
   return (
     <Box width="30%" paddingRight="2%" display="flex">
-      <span
+      <button
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         style={{
             color: isHovered ? "var(--pure-white)" : "var(--primary-white)",
         }}
-        className={` ${styles.volumeSpan} `}
+        className={`btn`} //clase de todos los botones 
+        onClick={handelMute}
       >
         <i className="fa-solid fa-volume-low fa-fw"></i>
-      </span>
+      </button>
       <Slider
         size="small"
         min={0}

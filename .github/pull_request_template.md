@@ -39,7 +39,7 @@ test: Indicates changes to unit tests or test configuration.
 
 ## Tests Performed
 
-- [] Test performed
+- [] Test performed <!-- Check if performed  - [✅ | ❎] Test performed -->
 ## Screenshots
 
 <!-- If applicable, provide screenshots that help visualize the changes made. -->

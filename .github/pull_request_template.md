@@ -6,7 +6,7 @@
 
 <!-- 
 
-CHECK ONE !
+!!CHECK ONE!!
 
 feat: Indicates the addition of a new feature or functionality to the project.
 fix: Used when fixing a bug or error in the code.

@@ -206,7 +206,15 @@ def get_lista_dto(nombre: str) -> Response:
 
 @app.get("/generos/")
 def get_generos() -> Response:
+    """ Devuelve el enumerado Género
 
+    Args:
+
+    Returns:
+        Response 200 OK
+
+    Raises:
+    """
     genres = song_service.get_genres()
 
     return Response(genres, media_type="application/json", status_code=200)

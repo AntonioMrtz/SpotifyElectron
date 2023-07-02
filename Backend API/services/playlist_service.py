@@ -9,6 +9,18 @@ playlistCollection = Database().connection["playlist"]
 
 
 def get_playlist(name: str) -> Playlist:
+    """ Returns a Playlist with his songs"
+
+    Args:
+        name (str): Playlists's name
+
+    Raises:
+        400 : Bad Request
+        404 : Playlist not found
+
+    Returns:
+        Playlist object
+    """
 
     if not checkValidParameterString(name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
@@ -32,6 +44,18 @@ def get_playlist(name: str) -> Playlist:
 
 
 def create_playlist(name: str, photo: str, song_names: list) -> None:
+    """ Create a playlist with name, url of thumbnail and list of song names
+
+    Args:
+        name (str): Playlists's name
+        photo (str): Url of playlist thumbnail
+        song_names (list<str>): List of song names of the playlist
+
+    Raises:
+        400 : Bad Request
+
+    Returns:
+    """
 
     if not checkValidParameterString(name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
@@ -49,6 +73,19 @@ def create_playlist(name: str, photo: str, song_names: list) -> None:
 
 
 def update_playlist(name: str, photo: str, song_names: list) -> None:
+    """ Updates a playlist with name, url of thumbnail and list of song names
+
+    Args:
+        name (str): Playlists's name
+        photo (str): Url of playlist thumbnail
+        song_names (list<str>): List of song names of the playlist
+
+    Raises:
+        400 : Bad Request
+        404 : Playlist Not Found
+
+    Returns:
+    """
 
     if not checkValidParameterString(name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")

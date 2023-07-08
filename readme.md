@@ -9,7 +9,6 @@
 ```
 git clone https://github.com/AntonioMrtz/SpotifyElectron.git && cd SpotifyElectron
 && npm install && npm start
-
 ```
 
 ## Start Python Backend API

@@ -44,7 +44,6 @@ export default function Sidebar() {
   const [url, setUrl] = useState('/');
 
   useEffect(() => {
-
     //console.log(url)
     if (url === '/') {
       setSelectedID('li-inicio');
@@ -54,11 +53,8 @@ export default function Sidebar() {
   }, [url]);
 
   const handleUrl = () => {
-
     setUrl(url === '/' ? '/explorar' : '/');
-
-  }
-
+  };
 
   return (
     <div className={`container-fluid ${styles.wrapperNavbar}`}>

@@ -1,51 +1,50 @@
+.columnOfListas {
 
-.columnOfListas{
-
-    padding-left: 0.5% !important;
-    margin-top: 1%;
-    margin-bottom: 1.5%;
+  padding-left: 0.5% !important;
+  margin-top: 1%;
+  margin-bottom: 1.5%;
 }
 
-.columnTitle{
+.columnTitle {
 
-    color: var(--pure-white);
-    padding-bottom: 1%;
+  color: var(--pure-white);
+  padding-bottom: 1%;
 
 
 }
 
-.mostrarT{
+.mostrarT {
 
-    justify-content: flex-end;
-    padding-top: 0.6%;
-    padding-right: 2%;
-    color: var(--grey);
+  justify-content: flex-end;
+  padding-top: 0.6%;
+  padding-right: 2%;
+  color: var(--grey);
 }
 
-.card{
+.card {
 
-    padding: 1.5%;
-    margin-right: 2%;
-    background-color: var(--third-black) !important;
+  padding: 1.5%;
+  margin-right: 2%;
+  background-color: var(--third-black) !important;
 }
 
-.card:hover{
+.card:hover {
 
-    background-color: var(--hover-white) !important;
+  background-color: var(--hover-white) !important;
 }
 
-.card_body{
+.card_body {
 
-    padding-top: 5% !important;
-    padding-left: 0% !important;
+  padding-top: 5% !important;
+  padding-left: 0% !important;
 }
 
-.tituloLista{
+.tituloLista {
 
-    color: var(--pure-white);
+  color: var(--pure-white);
 }
 
-.autorLista{
+.autorLista {
 
-    color: var(--grey);
+  color: var(--grey);
 }

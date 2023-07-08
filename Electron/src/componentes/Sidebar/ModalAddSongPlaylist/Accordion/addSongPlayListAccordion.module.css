@@ -13,7 +13,7 @@ input:focus {
 
 }
 
-select{
+select {
 
   color: var(--primary-white) !important;
   background: transparent !important;
@@ -22,12 +22,12 @@ select{
 }
 
 
-.option{
+.option {
   background-color: var(--third-black) !important;
   color: var(--primary-white) !important;
 }
 
-.btnSend{
+.btnSend {
 
   background-color: var(--secondary-green);
   border-color: var(--secondary-green);
@@ -37,7 +37,7 @@ select{
 
 }
 
-.btnSend:hover{
+.btnSend:hover {
 
   background-color: var(--primary-green);
   border-color: var(--secondary-green);
@@ -46,7 +46,7 @@ select{
 
 }
 
-.btnSend:focus{
+.btnSend:focus {
 
   background-color: var(--secondary-green);
   border-color: var(--secondary-green);
@@ -56,25 +56,25 @@ select{
 }
 
 
-.containerThumbNailUpload{
+.containerThumbNailUpload {
   display: flex;
   margin-left: 0%;
   overflow-x: hidden;
 }
 
 
-.containerThumbNailUpload img{
+.containerThumbNailUpload img {
 
   max-height: 30svh;
   padding: 5%;
 }
 
-.accordionDetails{
+.accordionDetails {
 
   overflow-x: hidden;
 }
 
-.formAddSong{
+.formAddSong {
 
   margin-right: 5%;
 }
@@ -82,12 +82,12 @@ select{
 
 @media (max-width: 870px) {
 
-  .containerThumbNailUpload{
+  .containerThumbNailUpload {
 
     display: none;
   }
 
-  .containerSelectAndFileSelector{
+  .containerSelectAndFileSelector {
 
     flex-direction: column !important;
   }
@@ -98,14 +98,14 @@ select{
 @media (max-width: 1300px) {
 
 
-  .containerSelectAndFileSelector{
+  .containerSelectAndFileSelector {
 
     flex-direction: column !important;
     justify-content: start;
     align-items: flex-start !important;
   }
 
-  .formAddSong{
+  .formAddSong {
 
     margin-right: 10%;
   }
@@ -116,15 +116,14 @@ select{
 @media (min-width: 1300px) {
 
 
-    .containerThumbNailUpload {
+  .containerThumbNailUpload {
 
-      margin-right: 5%;
-    }
+    margin-right: 5%;
+  }
 
-    .btnSend {
+  .btnSend {
 
-      margin-top: 2%;
-    }
+    margin-top: 2%;
+  }
 
 }
-

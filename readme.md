@@ -1,6 +1,5 @@
 # Spotify Electron Clone
 
-
 ## Software Architecture
 
 ![Spotify_Electron_Software_Diagram](assets/images/Spotify_Electron_Software_Diagram.png)

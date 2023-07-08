@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import styles from './sideBarCss.module.css';
 import Playlist from './Playlist/Playlist';
 import ModalAddSongPlaylist from './ModalAddSongPlaylist/ModalAddSongPlaylist';
+import { Link } from 'react-router-dom';
 
 export default function Sidebar() {
   //* MENU HOVER
@@ -40,32 +41,27 @@ export default function Sidebar() {
   const getSelectedClass = (id: string) =>
     selectedID === id ? styles.linksubtleClicked : '';
 
-  const [url, setUrl] = useState('');
+  const [url, setUrl] = useState('/');
 
   useEffect(() => {
-    if (url === '') {
+
+    //console.log(url)
+    if (url === '/') {
       setSelectedID('li-inicio');
-    } else if (url === 'explorar') {
+    } else if (url === '/explorar') {
       setSelectedID('li-buscar');
     }
   }, [url]);
 
-  //* handle Button Clicked by looking at the Current Url
-  useEffect(() => {
-    const url = window.location.href;
+  const handleUrl = () => {
 
-    let splitBySlash = url.split('/');
+    setUrl(url === '/' ? '/explorar' : '/');
 
-    setUrl(splitBySlash[splitBySlash.length - 1]);
-  }, []);
-
-  //*  Handle add playlist button
+  }
 
 
   return (
-
     <div className={`container-fluid ${styles.wrapperNavbar}`}>
-
       <header className={`${styles.header}`}>
         <ul className={`${styles.ul}`}>
           <li
@@ -74,12 +70,13 @@ export default function Sidebar() {
             )} `}
             onMouseOver={handleMouseOverInicio}
             onMouseOut={handleMouseOutInicio}
+            onClick={handleUrl}
             id="li-inicio"
           >
-            <a href="/">
+            <Link to="/">
               <i className={`fa-solid fa-house fa-fw ${styles.headerI}`}></i>
               <span className={`${styles.headerI}`}>Inicio</span>
-            </a>
+            </Link>
           </li>
           <li
             className={`${styles.headerLi} ${listItemBuscar} ${getSelectedClass(
@@ -87,14 +84,15 @@ export default function Sidebar() {
             )}`}
             onMouseOver={handleMouseOverBuscar}
             onMouseOut={handleMouseOutBuscar}
+            onClick={handleUrl}
             id="li-buscar"
           >
-            <a className={`${styles.aHeader}`} href="explorar">
+            <Link to="/explorar" className={`${styles.aHeader}`}>
               <i
                 className={`fa-solid fa-magnifying-glass fa-fw ${styles.headerI}`}
               ></i>
               <span className={`${styles.headerI}`}>Buscar</span>
-            </a>
+            </Link>
           </li>
         </ul>
       </header>
@@ -119,9 +117,7 @@ export default function Sidebar() {
               className={`container-fluid d-flex justify-content-end p-0`}
               style={{ width: '25%' }}
             >
-
-              <ModalAddSongPlaylist/>
-
+              <ModalAddSongPlaylist />
             </div>
           </header>
           <ul

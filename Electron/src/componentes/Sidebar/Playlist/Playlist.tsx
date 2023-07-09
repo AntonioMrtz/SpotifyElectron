@@ -13,18 +13,6 @@ export default function Playlist(props: PropsPlaylist) {
     //TODO
   }
 
- /*  useEffect(() => {
-
-    if(props.photo === ''){
-      import foto from '../../../assets/imgs/quedate.jpg';
-      props.photo= {foto};
-
-
-    }
-
-  }, []) */
-
-
   return (
     <span
       className={`container-fluid d-flex flex-row ${styles.wrapperPlaylist}`}
@@ -34,6 +22,7 @@ export default function Playlist(props: PropsPlaylist) {
 
       <div className="container-fluid d-flex flex-column p-0 ms-2">
         <label>{props.name}</label>
+        <p>Lista</p>
       </div>
     </span>
   );

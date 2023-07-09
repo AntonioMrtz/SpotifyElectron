@@ -29,4 +29,5 @@
 .wrapperPlaylist p {
 
   color: var(--grey);
+  font-size: 0.85rem;
 }

@@ -65,6 +65,10 @@ export default function Sidebar() {
     } else if (url === '/explorar') {
       setSelectedID('li-buscar');
     }
+    else{
+      setSelectedID('');
+    }
+
   }, [url]);
 
   const handleUrlInicioClicked = () => {

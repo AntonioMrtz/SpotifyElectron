@@ -68,7 +68,7 @@ def create_playlist(name: str, photo: str, song_names: list) -> None:
         raise HTTPException(status_code=400, detail="La playlist ya existe")
 
     result = playlistCollection.insert_one(
-        {'name': name, 'photo': photo, 'song_names': song_names})
+        {'name': name, 'photo': photo if 'http' in photo else '', 'song_names': song_names})
 
     return True if result.acknowledged else False
 

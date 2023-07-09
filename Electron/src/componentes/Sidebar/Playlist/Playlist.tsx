@@ -1,6 +1,4 @@
-import { useState,useEffect } from 'react';
 import styles from './playlist.module.css';
-import foto from '../../../assets/imgs/quedate.jpg';
 
 interface PropsPlaylist {
 

@@ -4,17 +4,8 @@ import Playlist from './Playlist/Playlist';
 import ModalAddSongPlaylist from './ModalAddSongPlaylist/ModalAddSongPlaylist';
 import { Link } from 'react-router-dom';
 
-/* class PropsPlaylist {
-  name: string;
-  photo: string;
 
-  constructor(name: string, photo: string) {
-    this.name = name;
-    this.photo = photo;
-  }
-} */
-
-type PropsPlaylist ={
+interface PropsPlaylist{
 
   name : string,
   photo : string,
@@ -92,22 +83,22 @@ export default function Sidebar() {
 
         if(res["playlists"]){
 
-          let playlistsData:PropsPlaylist[] = []
+          let propsPlaylists:PropsPlaylist[] = []
 
           for(let obj of res["playlists"]){
             obj = JSON.parse(obj)
-            let playlistData:PropsPlaylist = {
+            let propsPlaylist:PropsPlaylist = {
 
               name:obj["name"],
               photo:obj["photo"],
 
             }
 
-            playlistsData.push(playlistData)
+            propsPlaylists.push(propsPlaylist)
 
           }
 
-          setPlaylists(playlistsData);
+          setPlaylists(propsPlaylists);
 
         }
       })

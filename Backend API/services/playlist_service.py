@@ -1,5 +1,6 @@
 from database.Database import Database
 import services.song_service as song_service
+import services.dto_service as dto_service
 from model.Playlist import Playlist
 from model.Song import Song
 from fastapi import HTTPException
@@ -97,3 +98,22 @@ def update_playlist(name: str, photo: str, song_names: list) -> None:
 
     playlistCollection.update_one({'name': name}, {
                                   "$set": {'name': name, 'photo': photo, 'song_names': song_names}})
+
+def get_all_playlist() -> list:
+    """ Returns all playlists in a DTO object"
+
+    Args:
+
+    Raises:
+
+    Returns:
+        List<PlaylistDTO>
+    """
+
+    playlists : list = []
+    playlists_files = playlistCollection.find()
+
+    for playlist_file in playlists_files:
+        playlists.append(dto_service.get_playlist(playlist_file["name"]))
+
+    return playlists

@@ -96,7 +96,7 @@ def get_canciones() -> Response:
 #* PLAYLISTS
 
 @app.get("/playlists/{nombre}")
-def get_lista(nombre: str) -> Response:
+def get_playlist(nombre: str) -> Response:
     """ Devuelve la playlist con nombre "nombre"
 
     Args:
@@ -158,6 +158,32 @@ def update_playlist(nombre: str, nombres_canciones: list, foto: str = "") -> Res
     playlist_service.update_playlist(nombre, foto, nombres_canciones)
     return Response(None, 204)
 
+@app.get("/playlists/")
+def get_playlists() -> Response:
+
+    """ Devuelve todas las playlists [ SOLO nombres canciones , no el archivo de audio ]
+
+    Args:
+
+    Returns:
+        Response 200 OK
+
+    Raises:
+    """
+
+    playlists = playlist_service.get_all_playlist()
+
+    playlist_list = []
+    [playlist_list.append(playlist.get_json()) for playlist in playlists]
+
+    playlist_dict = {}
+
+    playlist_dict["playlists"] = playlist_list
+    playlist_json = json.dumps(playlist_dict)
+
+    return Response(playlist_json, media_type="application/json", status_code=200)
+
+
 #* DTO
 """ Objects with only the data the user needs to visualize """
 
@@ -184,7 +210,7 @@ def get_cancion_dto(nombre: str) -> Response:
 
 
 @app.get("/playlists/dto/{nombre}")
-def get_lista_dto(nombre: str) -> Response:
+def get_playlist_dto(nombre: str) -> Response:
     """ Devuelve la playlist con nombre "nombre" con los datos necesarios para previsualización , sin el contenido de las canciones
 
     Args:

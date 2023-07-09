@@ -11,6 +11,7 @@ import GenreOption from './GenreOption/GenreOption';
 
 interface PropsAddSongPlayListAccordion {
   handleClose: Function;
+  reloadSidebar : Function;
 }
 
 export default function AddSongPlayListAccordion(props: PropsAddSongPlayListAccordion) {
@@ -82,8 +83,6 @@ export default function AddSongPlayListAccordion(props: PropsAddSongPlayListAcco
           console.error('Error:', error);
         });
     }
-
-    props.handleClose();
   };
 
 
@@ -151,6 +150,7 @@ export default function AddSongPlayListAccordion(props: PropsAddSongPlayListAcco
         });
     }
 
+    props.reloadSidebar()
     props.handleClose();
   };
 

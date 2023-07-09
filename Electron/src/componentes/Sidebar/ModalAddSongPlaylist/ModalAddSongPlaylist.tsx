@@ -17,7 +17,13 @@ const style = {
   p: 2,
 };
 
-export default function ModalAddSongPlaylist() {
+interface PropsModalAddSongPlaylist{
+
+  reloadSidebar : Function
+}
+
+
+export default function ModalAddSongPlaylist(props:PropsModalAddSongPlaylist) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -34,7 +40,7 @@ export default function ModalAddSongPlaylist() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style} className={` ${styles.wrapperAccordion}`}>
-          <AddSongPlayListAccordion handleClose={handleClose} />
+          <AddSongPlayListAccordion reloadSidebar={props.reloadSidebar} handleClose={handleClose} />
         </Box>
       </Modal>
     </Fragment>

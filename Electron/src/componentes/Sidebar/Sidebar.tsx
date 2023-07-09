@@ -11,6 +11,19 @@ interface PropsPlaylist {
 }
 
 export default function Sidebar() {
+  //* RELOAD SIDEBAR
+
+  const reloadSideBar = () => {
+    /* Force reload by changing reload variable */
+    const delay = 500;
+
+    const timer = setTimeout(() => {
+      handlePlaylists();
+    }, delay);
+
+    return () => clearTimeout(timer);
+  };
+
   //* MENU HOVER
 
   let [listItemInicio, setHoverInicio] = useState('');
@@ -83,14 +96,12 @@ export default function Sidebar() {
             obj = JSON.parse(obj);
             let propsPlaylist: PropsPlaylist = {
               name: obj['name'],
-
-             /*  photo: obj['photo'], */
-             photo : obj['photo']==='' ? defaultThumbnailPlaylist : obj['photo']
+              photo:
+                obj['photo'] === '' ? defaultThumbnailPlaylist : obj['photo'],
             };
 
             propsPlaylists.push(propsPlaylist);
           }
-
           setPlaylists(propsPlaylists);
         }
       })
@@ -161,7 +172,7 @@ export default function Sidebar() {
               className={`container-fluid d-flex justify-content-end p-0`}
               style={{ width: '25%' }}
             >
-              <ModalAddSongPlaylist />
+              <ModalAddSongPlaylist reloadSidebar={reloadSideBar} />
             </div>
           </header>
           <ul

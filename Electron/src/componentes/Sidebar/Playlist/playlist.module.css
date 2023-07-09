@@ -1,29 +1,32 @@
-.wrapperPlaylist{
+.wrapperPlaylist {
 
-    padding: 5px 0 5px 10px !important;
-    border-radius: 6px;
-    height: 64px;
+  padding: 5px 0 5px 10px !important;
+  border-radius: 6px;
+  height: 64px;
+  cursor: pointer;
 }
 
-.wrapperPlaylist:hover{
+.wrapperPlaylist:hover {
 
-    background-color: var(--hover-white);
+  background-color: var(--hover-white);
 }
 
-.wrapperPlaylist img{
+.wrapperPlaylist img {
 
-    border-radius:var(--border-radius-thumbnails);
-    width: 48px;
-    height: 48px;
-    
+  border-radius: var(--border-radius-thumbnails);
+  width: 48px;
+  height: 48px;
+
 }
 
-.wrapperPlaylist label{
+.wrapperPlaylist label {
 
-    font-size: 1.15rem;
+  font-size: 1.15rem;
+  cursor : pointer
+
 }
 
-.wrapperPlaylist p{
+.wrapperPlaylist p {
 
-    color: var(--grey);
+  color: var(--grey);
 }

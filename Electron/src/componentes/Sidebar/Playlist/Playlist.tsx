@@ -1,20 +1,40 @@
-import {useEffect} from 'react'
-import styles from "./playlist.module.css";
-import foto from "../../../assets/imgs/quedate.jpg"
+import styles from './playlist.module.css';
+import { useEffect } from 'react';
 
-export default function Playlist() {
+interface PropsPlaylist {
+  name: string;
+  photo: string;
+}
+
+export default function Playlist(props: PropsPlaylist) {
+
+  const handleClickPlaylist = () => {
+
+    //TODO
+  }
+
+ /*  useEffect(() => {
+
+    if(props.photo === ''){
+      import foto from '../../../assets/imgs/quedate.jpg';
+      props.photo= {foto};
+
+
+    }
+
+  }, []) */
+
+
   return (
-    <a href="" className={`container-fluid d-flex flex-row ${styles.wrapperPlaylist}`}>
+    <span
+      className={`container-fluid d-flex flex-row ${styles.wrapperPlaylist}`}
+      onClick={handleClickPlaylist}
+    >
+      <img src={props.photo} alt="" className="img-fluid img-border-2" />
 
-        <img src={foto} alt="" className="img-fluid img-border-2" />
-
-
-        <div className="container-fluid d-flex flex-column p-0 ms-2">
-            <label>Quedate</label>
-            <p>Quevedo</p>
-
-        </div>
-
-    </a>
-  )
+      <div className="container-fluid d-flex flex-column p-0 ms-2">
+        <label>{props.name}</label>
+      </div>
+    </span>
+  );
 }

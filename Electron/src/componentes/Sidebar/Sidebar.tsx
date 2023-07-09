@@ -4,7 +4,25 @@ import Playlist from './Playlist/Playlist';
 import ModalAddSongPlaylist from './ModalAddSongPlaylist/ModalAddSongPlaylist';
 import { Link } from 'react-router-dom';
 
+/* class PropsPlaylist {
+  name: string;
+  photo: string;
+
+  constructor(name: string, photo: string) {
+    this.name = name;
+    this.photo = photo;
+  }
+} */
+
+type PropsPlaylist ={
+
+  name : string,
+  photo : string,
+
+}
+
 export default function Sidebar() {
+
   //* MENU HOVER
 
   let [listItemInicio, setHoverInicio] = useState('');
@@ -52,9 +70,59 @@ export default function Sidebar() {
     }
   }, [url]);
 
-  const handleUrl = () => {
-    setUrl(url === '/' ? '/explorar' : '/');
+  const handleUrlInicioClicked = () => {
+    setUrl("/");
   };
+
+  const handleUrlBuscarClicked = () => {
+    setUrl("/explorar");
+  };
+
+  //* PLAYLISTS
+
+
+  const [playlists, setPlaylists] = useState<PropsPlaylist[]>();
+
+  const handlePlaylists = () => {
+    fetch('http://127.0.0.1:8000/playlists/', {
+      headers: { 'Access-Control-Allow-Origin': '*' },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+
+        if(res["playlists"]){
+
+          let playlistsData:PropsPlaylist[] = []
+
+          for(let obj of res["playlists"]){
+            obj = JSON.parse(obj)
+            let playlistData:PropsPlaylist = {
+
+              name:obj["name"],
+              photo:obj["photo"],
+
+            }
+
+            playlistsData.push(playlistData)
+
+          }
+
+          setPlaylists(playlistsData);
+
+        }
+      })
+      .catch( (error) => {
+        console.log(error)
+        console.log("No se pudieron obtener las playlists")
+      })
+  };
+
+  useEffect(() => {
+
+    handlePlaylists()
+
+  },[])
+
 
   return (
     <div className={`container-fluid ${styles.wrapperNavbar}`}>
@@ -66,7 +134,7 @@ export default function Sidebar() {
             )} `}
             onMouseOver={handleMouseOverInicio}
             onMouseOut={handleMouseOutInicio}
-            onClick={handleUrl}
+            onClick={handleUrlInicioClicked}
             id="li-inicio"
           >
             <Link to="/">
@@ -80,7 +148,7 @@ export default function Sidebar() {
             )}`}
             onMouseOver={handleMouseOverBuscar}
             onMouseOut={handleMouseOutBuscar}
-            onClick={handleUrl}
+            onClick={handleUrlBuscarClicked}
             id="li-buscar"
           >
             <Link to="/explorar" className={`${styles.aHeader}`}>
@@ -119,26 +187,17 @@ export default function Sidebar() {
           <ul
             className={`container-fluid d-flex flex-column ${styles.ulPlaylist}`}
           >
-            <Playlist />
-            <Playlist />
-            <Playlist />
-            <Playlist />
-            <Playlist />
-            <Playlist />
-            <Playlist />
-            <Playlist />
-            <Playlist />
-            <Playlist />
-            <Playlist />
-            <Playlist />
-            <Playlist />
-            <Playlist />
-            <Playlist />
-            <Playlist />
-            <Playlist />
-            <Playlist />
-            <Playlist />
-            <Playlist />
+
+            {playlists &&
+              playlists.map((playlist) => {
+                return (
+                  <Playlist
+                    key={playlist.name}
+                    name={playlist.name}
+                    photo={playlist.photo}
+                  />
+                );
+              })}
           </ul>
         </div>
       </div>

@@ -99,6 +99,7 @@ def update_playlist(name: str, photo: str, song_names: list) -> None:
     playlistCollection.update_one({'name': name}, {
                                   "$set": {'name': name, 'photo': photo, 'song_names': song_names}})
 
+
 def get_all_playlist() -> list:
     """ Returns all playlists in a DTO object"
 
@@ -110,7 +111,7 @@ def get_all_playlist() -> list:
         List<PlaylistDTO>
     """
 
-    playlists : list = []
+    playlists: list = []
     playlists_files = playlistCollection.find()
 
     for playlist_file in playlists_files:

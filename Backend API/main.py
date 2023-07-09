@@ -25,6 +25,7 @@ app.add_middleware(
 
 #* CANCIONES
 
+
 @app.get("/canciones/{nombre}")
 def get_cancion(nombre: str) -> Response:
     """ Devuelve la canción con nombre "nombre"
@@ -95,6 +96,7 @@ def get_canciones() -> Response:
 
 #* PLAYLISTS
 
+
 @app.get("/playlists/{nombre}")
 def get_playlist(nombre: str) -> Response:
     """ Devuelve la playlist con nombre "nombre"
@@ -158,9 +160,9 @@ def update_playlist(nombre: str, nombres_canciones: list, foto: str = "") -> Res
     playlist_service.update_playlist(nombre, foto, nombres_canciones)
     return Response(None, 204)
 
+
 @app.get("/playlists/")
 def get_playlists() -> Response:
-
     """ Devuelve todas las playlists [ SOLO nombres canciones , no el archivo de audio ]
 
     Args:

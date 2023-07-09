@@ -75,6 +75,10 @@ export default function Sidebar() {
     setUrl('/explorar');
   };
 
+  const handleUrlPlaylistClicked = () => {
+    setUrl('');
+  };
+
   //* PLAYLISTS
 
   const [playlists, setPlaylists] = useState<PropsPlaylist[]>();
@@ -94,6 +98,7 @@ export default function Sidebar() {
               name: obj['name'],
               photo:
                 obj['photo'] === '' ? defaultThumbnailPlaylist : obj['photo'],
+              handleUrlPlaylistClicked: handleUrlPlaylistClicked,
             };
 
             propsPlaylists.push(propsPlaylist);
@@ -176,12 +181,15 @@ export default function Sidebar() {
           >
             {playlists &&
               playlists.map((playlist) => {
+                let urlPlaylist = '/playlist/' + playlist.name;
                 return (
-                  <Playlist
-                    key={playlist.name}
-                    name={playlist.name}
-                    photo={playlist.photo}
-                  />
+                  <Link to={urlPlaylist} key={playlist.name}>
+                    <Playlist
+                      handleUrlPlaylistClicked={handleUrlPlaylistClicked}
+                      name={playlist.name}
+                      photo={playlist.photo}
+                    />
+                  </Link>
                 );
               })}
           </ul>

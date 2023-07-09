@@ -3,8 +3,9 @@ import Sidebar from '../componentes/Sidebar/Sidebar';
 import Home from '../componentes/Home/Home';
 import Explorar from '../componentes/Explorar/Explorar';
 import Footer from '../componentes/footer/Footer';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { useState } from 'react';
+import Playlist from 'componentes/Playlist/Playlist';
 
 function App() {
   const [songName, setSongName] = useState('none');
@@ -21,6 +22,7 @@ function App() {
           className={`App d-flex container-fluid ${styles.mainContentWrapper}`}
         >
           <Routes>
+          <Route path="/playlist/:id" element=<Playlist/> />
             <Route
               path="/explorar"
               element=<Explorar changeSongName={changeSongName} />

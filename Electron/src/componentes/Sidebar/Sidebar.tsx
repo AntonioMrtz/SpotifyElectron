@@ -4,11 +4,7 @@ import Playlist from './Playlist/Playlist';
 import ModalAddSongPlaylist from './ModalAddSongPlaylist/ModalAddSongPlaylist';
 import { Link } from 'react-router-dom';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
-
-interface PropsPlaylist {
-  name: string;
-  photo: string;
-}
+import { PropsPlaylist } from './types/propsPlaylist.module';
 
 export default function Sidebar() {
   //* RELOAD SIDEBAR

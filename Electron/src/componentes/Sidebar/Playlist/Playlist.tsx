@@ -1,10 +1,5 @@
 import styles from './playlist.module.css';
-import { useEffect } from 'react';
-
-interface PropsPlaylist {
-  name: string;
-  photo: string;
-}
+import { PropsPlaylist } from '../types/propsPlaylist.module';
 
 export default function Playlist(props: PropsPlaylist) {
 

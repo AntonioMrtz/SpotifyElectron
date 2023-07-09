@@ -32,4 +32,4 @@ cd Backend API && pip install -r requirements.txt && python3 -m uvicorn main:app
 
 ## How to Contribute to the project
 
-[CONTRIBUTING readme](https://github.com/AntonioMrtz/SpotifyElectron/blob/master/CONTRIBUTING.md)
+[CONTRIBUTING readme](https://github.com/AntonioMrtz/SpotifyElectron/blob/master/.github/CONTRIBUTING.md)

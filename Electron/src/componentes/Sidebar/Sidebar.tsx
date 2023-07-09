@@ -4,16 +4,12 @@ import Playlist from './Playlist/Playlist';
 import ModalAddSongPlaylist from './ModalAddSongPlaylist/ModalAddSongPlaylist';
 import { Link } from 'react-router-dom';
 
-
-interface PropsPlaylist{
-
-  name : string,
-  photo : string,
-
+interface PropsPlaylist {
+  name: string;
+  photo: string;
 }
 
 export default function Sidebar() {
-
   //* MENU HOVER
 
   let [listItemInicio, setHoverInicio] = useState('');
@@ -62,15 +58,14 @@ export default function Sidebar() {
   }, [url]);
 
   const handleUrlInicioClicked = () => {
-    setUrl("/");
+    setUrl('/');
   };
 
   const handleUrlBuscarClicked = () => {
-    setUrl("/explorar");
+    setUrl('/explorar');
   };
 
   //* PLAYLISTS
-
 
   const [playlists, setPlaylists] = useState<PropsPlaylist[]>();
 
@@ -80,40 +75,31 @@ export default function Sidebar() {
     })
       .then((res) => res.json())
       .then((res) => {
+        if (res['playlists']) {
+          let propsPlaylists: PropsPlaylist[] = [];
 
-        if(res["playlists"]){
+          for (let obj of res['playlists']) {
+            obj = JSON.parse(obj);
+            let propsPlaylist: PropsPlaylist = {
+              name: obj['name'],
+              photo: obj['photo'],
+            };
 
-          let propsPlaylists:PropsPlaylist[] = []
-
-          for(let obj of res["playlists"]){
-            obj = JSON.parse(obj)
-            let propsPlaylist:PropsPlaylist = {
-
-              name:obj["name"],
-              photo:obj["photo"],
-
-            }
-
-            propsPlaylists.push(propsPlaylist)
-
+            propsPlaylists.push(propsPlaylist);
           }
 
           setPlaylists(propsPlaylists);
-
         }
       })
-      .catch( (error) => {
-        console.log(error)
-        console.log("No se pudieron obtener las playlists")
-      })
+      .catch((error) => {
+        console.log(error);
+        console.log('No se pudieron obtener las playlists');
+      });
   };
 
   useEffect(() => {
-
-    handlePlaylists()
-
-  },[])
-
+    handlePlaylists();
+  }, []);
 
   return (
     <div className={`container-fluid ${styles.wrapperNavbar}`}>
@@ -178,7 +164,6 @@ export default function Sidebar() {
           <ul
             className={`container-fluid d-flex flex-column ${styles.ulPlaylist}`}
           >
-
             {playlists &&
               playlists.map((playlist) => {
                 return (

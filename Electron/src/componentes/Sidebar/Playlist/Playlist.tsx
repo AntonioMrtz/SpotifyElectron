@@ -1,15 +1,11 @@
 import styles from './playlist.module.css';
 
 interface PropsPlaylist {
-
-  name : string,
-  photo : string,
-
+  name: string;
+  photo: string;
 }
 
 export default function Playlist(props: PropsPlaylist) {
-
-
   return (
     <a
       href=""

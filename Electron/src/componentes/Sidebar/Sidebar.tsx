@@ -3,6 +3,7 @@ import styles from './sideBarCss.module.css';
 import Playlist from './Playlist/Playlist';
 import ModalAddSongPlaylist from './ModalAddSongPlaylist/ModalAddSongPlaylist';
 import { Link } from 'react-router-dom';
+import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 
 interface PropsPlaylist {
   name: string;
@@ -82,7 +83,9 @@ export default function Sidebar() {
             obj = JSON.parse(obj);
             let propsPlaylist: PropsPlaylist = {
               name: obj['name'],
-              photo: obj['photo'],
+
+             /*  photo: obj['photo'], */
+             photo : obj['photo']==='' ? defaultThumbnailPlaylist : obj['photo']
             };
 
             propsPlaylists.push(propsPlaylist);

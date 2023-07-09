@@ -166,7 +166,11 @@ export default function AddSongPlayListAccordion(props: PropsAddSongPlayListAcco
       .then((res) => res.json())
       .then((res) => {
         setGenres(res);
-      });
+      })
+      .catch( (error) => {
+
+        console.log("No se pudieron obtener los géneros")
+      })
   };
 
   useEffect(() => {

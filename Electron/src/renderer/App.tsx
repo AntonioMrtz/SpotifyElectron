@@ -23,7 +23,7 @@ function App() {
           className={`App d-flex container-fluid ${styles.mainContentWrapper}`}
         >
           <Routes>
-          <Route path="/playlist/:id" element=<Playlist/> />
+          <Route path="/playlist/:id" element=<Playlist changeSongName={changeSongName}/> />
             <Route
               path="/explorar"
               element=<Explorar changeSongName={changeSongName} />

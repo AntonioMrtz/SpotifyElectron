@@ -134,16 +134,34 @@
 
 }
 
+.gridContainerFirstRow{
+
+  color: var(--secondary-white) !important;
+  border-bottom: 1px solid var(--hover-white);
+  margin-bottom: 10px;
+
+}
+
+
+.songNumberTable{
+
+  margin: 10px 10px 10px 10px;
+  display: flex;
+  justify-content: center;
+  width: 15px;
+
+}
 
 .songTitleTable{
 
   color: var(--pure-white);
+  padding: 10px 0 10px 0;
 
 }
 
 .gridContainer {
   display: grid;
-  grid-template-columns: 1fr 8fr 1fr;
+  grid-template-columns: 0.2fr 8fr 1fr;
   grid-gap: 10px;
 }
 

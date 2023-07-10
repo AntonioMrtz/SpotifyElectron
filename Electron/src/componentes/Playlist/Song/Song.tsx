@@ -4,7 +4,7 @@ import { PropsSongs } from 'componentes/Sidebar/types/propsSongs.module';
 
 export default function Song(props: PropsSongs) {
   const handleSongClicked = () => {
-    props.handleSongCliked();
+    props.handleSongCliked(props.name);
   };
 
   return (
@@ -12,8 +12,8 @@ export default function Song(props: PropsSongs) {
       onClick={handleSongClicked}
       className={`container-fluid ${styles.gridContainer}`}
     >
-      <span className={` ${styles.gridItem}`}>{props.index}</span>
-      <span className={` ${styles.gridItem} ${styles.songTitleTable}`}>
+      <span className={` ${styles.songNumberTable}`}>{props.index}</span>
+      <span className={` ${styles.songTitleTable}`}>
         {props.name}
       </span>
       <span className={` ${styles.gridItem}`}>2:01</span>

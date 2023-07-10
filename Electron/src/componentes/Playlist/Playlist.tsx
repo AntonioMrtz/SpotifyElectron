@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import Global from 'global/global';
 import styles from './playlist.module.css';
+import Song from './Song/Song';
+import { PropsSongs } from 'componentes/Sidebar/types/propsSongs.module';
 
 export default function Playlist() {
   /* Get current Playlist Name */
@@ -12,24 +14,47 @@ export default function Playlist() {
 
   const [thumbnail, setThumbnail] = useState<string>('');
   const [numberSongs, setNumberSongs] = useState<number>(0);
+  const [songs,setSongs] = useState<PropsSongs[]>();
 
-  useEffect(() => {
+  const handleSongClicked = () => {
+
+    //TODO
+    console.log("song clicked")
+
+  };
+
+
+  const handlePlaylistData = () => {
     fetch(encodeURI(Global.backendBaseUrl + 'playlists/dto/' + playlistName))
       .then((res) => res.json())
       .then((res) => {
-        console.log(res);
         setThumbnail(res['photo']);
-        setNumberSongs(res['song_names'].length);
-        console.log(res);
+
+        if (res['song_names']) {
+          setNumberSongs(res['song_names'].length);
+          let propsSongs: PropsSongs[] = [];
+
+          for (let obj of res['song_names']) {
+            let propsSong: PropsSongs = {
+              name: obj,
+              index: 0,
+              handleSongCliked: handleSongClicked,
+            };
+
+            propsSongs.push(propsSong);
+          }
+
+          setSongs(propsSongs)
+        }
       })
       .catch((error) => {
-        console.log(
-          'URL ' +
-            encodeURI(Global.backendBaseUrl + 'playlists/dto/' + playlistName)
-        );
         console.log('No se puedo obtener la playlist');
       });
-  }, []);
+  };
+
+  useEffect(() => {
+    handlePlaylistData()
+  },[location]);
 
   return (
     <div
@@ -63,14 +88,23 @@ export default function Playlist() {
           <li className={`container-fluid ${styles.gridContainer}`}>
             <span className={` ${styles.gridItem}`}>#</span>
             <span className={` ${styles.gridItem}`}>Título</span>
-            <span className={` ${styles.gridItem}`}><i className="fa-regular fa-clock"></i></span>
+            <span className={` ${styles.gridItem}`}>
+              <i className="fa-regular fa-clock"></i>
+            </span>
           </li>
 
-          <li className={`container-fluid ${styles.gridContainer}`}>
-            <span className={` ${styles.gridItem}`}>1</span>
-            <span className={` ${styles.gridItem} ${styles.songTitleTable}`}>La lucha por la vida</span>
-            <span className={` ${styles.gridItem}`}>2:01</span>
-          </li>
+          {songs &&
+            songs.map((song, index) => {
+              return (
+                <Song
+                  key={index}
+                  name={song.name}
+                  index={index+1}
+                  handleSongCliked={handleSongClicked}
+
+                />
+              );
+            })}
         </ul>
       </div>
     </div>

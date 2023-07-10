@@ -4,8 +4,6 @@ import { PropsPlaylist } from '../types/propsPlaylist.module';
 export default function Playlist(props: PropsPlaylist) {
 
   const handleClickPlaylist = () => {
-
-    //TODO
     props.handleUrlPlaylistClicked()
   }
 

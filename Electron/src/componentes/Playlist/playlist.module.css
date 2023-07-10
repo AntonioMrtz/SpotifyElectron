@@ -1,0 +1,67 @@
+.wrapperPlaylist{
+
+  padding: 0 !important;
+}
+
+.header{
+
+  padding: 6% 2% 2% 2%;
+  color: var(--pure-white);
+  backdrop-filter:  blur(50px);
+
+}
+
+.header img{
+
+  max-width: 20svw;
+  margin-right: 5%;
+
+}
+
+.header h2{
+
+  margin: 0 !important;
+  font-size: .875rem;
+}
+
+.header h1{
+
+  font-size: 3rem;
+  font-weight: 900 !important;
+}
+
+.backgroundFilter::after {
+  -webkit-backdrop-filter: blur(80px); /* Use for Safari 9+, Edge 17+ (not a mistake) and iOS Safari 9.2+ */
+  backdrop-filter: blur(90px); /* Supported in Chrome 76 */
+
+  filter: brightness(0.8); /* Aquí puedes ajustar el valor de brillo */
+
+  content: "";
+  display: block;
+  position: absolute;
+  width: 100%; height: 100%;
+  top: 0;
+}
+
+.backgroundFilter {
+  position: relative;
+  padding-left: 0%;
+
+}
+
+.nonBlurred{
+
+  position: relative;
+  z-index: 1;
+  padding-left: 2%;
+}
+
+@media (min-height:768px){
+
+
+  .header h1{
+
+    font-size: 4rem;
+  }
+
+}

@@ -8,6 +8,7 @@ import LibraryMusicRoundedIcon from '@mui/icons-material/LibraryMusicRounded';
 import AudiotrackIcon from '@mui/icons-material/Audiotrack';
 import styles from './addSongPlayListAccordion.module.css';
 import GenreOption from './GenreOption/GenreOption';
+import Global from 'global/global';
 
 interface PropsAddSongPlayListAccordion {
   handleClose: Function;
@@ -50,9 +51,8 @@ export default function AddSongPlayListAccordion(props: PropsAddSongPlayListAcco
   };
 
   const handleSubmitSong = (event: FormEvent<HTMLButtonElement>) => {
-    let backendBasePath = new URL('http://127.0.0.1:8000/');
 
-    let url = new URL(backendBasePath + 'canciones/');
+    let url = new URL(Global.backendBaseUrl + 'canciones/');
 
     event.preventDefault();
 
@@ -83,6 +83,9 @@ export default function AddSongPlayListAccordion(props: PropsAddSongPlayListAcco
           console.error('Error:', error);
         });
     }
+
+    props.handleClose();
+
   };
 
 
@@ -113,9 +116,8 @@ export default function AddSongPlayListAccordion(props: PropsAddSongPlayListAcco
 
 
   const handleSubmitPlaylist = (event: FormEvent<HTMLButtonElement>) => {
-    let backendBasePath = new URL('http://127.0.0.1:8000/');
 
-    let url = new URL(backendBasePath + 'playlists/');
+    let url = new URL(Global.backendBaseUrl + 'playlists/');
 
     event.preventDefault();
 
@@ -160,7 +162,7 @@ export default function AddSongPlayListAccordion(props: PropsAddSongPlayListAcco
   const [genres, setGenres] = useState<{}>();
 
   const handleGenres = () => {
-    fetch('http://127.0.0.1:8000/generos/', {
+    fetch(Global.backendBaseUrl+'generos/', {
       headers: { 'Access-Control-Allow-Origin': '*' },
     })
       .then((res) => res.json())

@@ -5,6 +5,7 @@ import ModalAddSongPlaylist from './ModalAddSongPlaylist/ModalAddSongPlaylist';
 import { Link } from 'react-router-dom';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 import { PropsPlaylist } from './types/propsPlaylist.module';
+import Global from 'global/global';
 
 export default function Sidebar() {
   //* RELOAD SIDEBAR
@@ -88,7 +89,7 @@ export default function Sidebar() {
   const [playlists, setPlaylists] = useState<PropsPlaylist[]>();
 
   const handlePlaylists = () => {
-    fetch('http://127.0.0.1:8000/playlists/', {
+    fetch(Global.backendBaseUrl+'playlists/', {
       headers: { 'Access-Control-Allow-Origin': '*' },
     })
       .then((res) => res.json())

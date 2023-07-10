@@ -9,17 +9,24 @@ export default function Playlist() {
   let playlistName = decodeURIComponent(location.pathname.split('/').slice(-1)[0]);
 
   const [thumbnail, setThumbnail] = useState<string>('');
+  const [numberSongs, setNumberSongs] = useState<number>(0);
+
 
   useEffect(() => {
-    fetch(Global.backendBaseUrl + 'playlists/' + playlistName)
+    fetch(encodeURI(Global.backendBaseUrl + 'playlists/dto/' + playlistName))
       .then((res) => res.json())
       .then((res) => {
         console.log(res);
         setThumbnail(res['photo']);
+        setNumberSongs(res["song_names"].length)
+        console.log(res)
       })
       .catch((error) => {
+        console.log("URL "+encodeURI(Global.backendBaseUrl + 'playlists/dto/' + playlistName))
         console.log('No se puedo obtener la playlist');
       });
+
+
   }, []);
 
   return (
@@ -27,24 +34,23 @@ export default function Playlist() {
       className={`d-flex container-fluid flex-column ${styles.wrapperPlaylist}`}
     >
       <div
-        className={`container-fluid d-flex ${styles.backgroundFilter} ${styles.header}`}
+        className={`d-flex container-fluid ${styles.backgroundFilter} ${styles.header}`}
         style={{ backgroundImage: `url(${thumbnail})` }}
       >
-        <div className={`d-flex flex-row ${styles.nonBlurred}`}>
+        <div className={`d-flex flex-row container-fluid ${styles.nonBlurred}`}>
           <div className={``}>
             <img className="img-fluid" src={thumbnail} alt="" />
           </div>
 
           <div
-            className={`d-flex container-fluid flex-column flex-grow-1 ${styles.headerText}`}
+            className={`d-flex container-fluid flex-column ${styles.headerText}`}
           >
-            <h2>Álbum</h2>
+            <p>Álbum</p>
             <h1>{playlistName}</h1>
-            <p>Info de la canción</p>
+            <p>{numberSongs} canciones</p>
           </div>
         </div>
       </div>
-
 
     </div>
   );

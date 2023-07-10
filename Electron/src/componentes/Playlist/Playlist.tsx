@@ -5,16 +5,11 @@ import styles from './playlist.module.css';
 import Song from './Song/Song';
 import { PropsSongs } from 'componentes/Sidebar/types/propsSongs.module';
 
-
-interface PropsPlaylist{
-
-
-  changeSongName: Function
-
+interface PropsPlaylist {
+  changeSongName: Function;
 }
 
-
-export default function Playlist(props:PropsPlaylist) {
+export default function Playlist(props: PropsPlaylist) {
   /* Get current Playlist Name */
   const location = useLocation();
   let playlistName = decodeURIComponent(
@@ -23,7 +18,7 @@ export default function Playlist(props:PropsPlaylist) {
 
   const [thumbnail, setThumbnail] = useState<string>('');
   const [numberSongs, setNumberSongs] = useState<number>(0);
-  const [songs,setSongs] = useState<PropsSongs[]>();
+  const [songs, setSongs] = useState<PropsSongs[]>();
 
   const handlePlaylistData = () => {
     fetch(encodeURI(Global.backendBaseUrl + 'playlists/dto/' + playlistName))
@@ -45,7 +40,7 @@ export default function Playlist(props:PropsPlaylist) {
             propsSongs.push(propsSong);
           }
 
-          setSongs(propsSongs)
+          setSongs(propsSongs);
         }
       })
       .catch((error) => {
@@ -54,8 +49,8 @@ export default function Playlist(props:PropsPlaylist) {
   };
 
   useEffect(() => {
-    handlePlaylistData()
-  },[location]);
+    handlePlaylistData();
+  }, [location]);
 
   return (
     <div
@@ -86,9 +81,16 @@ export default function Playlist(props:PropsPlaylist) {
 
       <div className={`d-flex container-fluid ${styles.wrapperSongTable}`}>
         <ul className={`d-flex flex-column container-fluid`}>
-          <li className={`container-fluid ${styles.gridContainer} ${styles.gridContainerFirstRow}`}>
+          <li
+            className={`container-fluid ${styles.gridContainer} ${styles.gridContainerFirstRow}`}
+          >
             <span className={` ${styles.songNumberTable}`}>#</span>
-            <span className={` ${styles.songTitleTable}`} style={{color:'var(--secondary-white)'}}>Título</span>
+            <span
+              className={` ${styles.songTitleTable}`}
+              style={{ color: 'var(--secondary-white)' }}
+            >
+              Título
+            </span>
             <span className={` ${styles.gridItem}`}>
               <i className="fa-regular fa-clock"></i>
             </span>
@@ -100,9 +102,8 @@ export default function Playlist(props:PropsPlaylist) {
                 <Song
                   key={index}
                   name={song.name}
-                  index={index+1}
+                  index={index + 1}
                   handleSongCliked={props.changeSongName}
-
                 />
               );
             })}

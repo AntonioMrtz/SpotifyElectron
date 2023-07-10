@@ -7,7 +7,6 @@ import { Route, Routes } from 'react-router-dom';
 import { useState } from 'react';
 import Playlist from 'componentes/Playlist/Playlist';
 
-
 function App() {
   const [songName, setSongName] = useState('none');
 
@@ -23,7 +22,10 @@ function App() {
           className={`App d-flex container-fluid ${styles.mainContentWrapper}`}
         >
           <Routes>
-          <Route path="/playlist/:id" element=<Playlist changeSongName={changeSongName}/> />
+            <Route
+              path="/playlist/:id"
+              element=<Playlist changeSongName={changeSongName} />
+            />
             <Route
               path="/explorar"
               element=<Explorar changeSongName={changeSongName} />

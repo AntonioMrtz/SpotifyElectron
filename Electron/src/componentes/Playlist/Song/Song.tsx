@@ -13,9 +13,7 @@ export default function Song(props: PropsSongs) {
       className={`container-fluid ${styles.gridContainer}`}
     >
       <span className={` ${styles.songNumberTable}`}>{props.index}</span>
-      <span className={` ${styles.songTitleTable}`}>
-        {props.name}
-      </span>
+      <span className={` ${styles.songTitleTable}`}>{props.name}</span>
       <span className={` ${styles.gridItem}`}>2:01</span>
     </li>
   );

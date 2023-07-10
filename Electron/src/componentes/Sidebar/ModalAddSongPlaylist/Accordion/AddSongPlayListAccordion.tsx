@@ -8,14 +8,16 @@ import LibraryMusicRoundedIcon from '@mui/icons-material/LibraryMusicRounded';
 import AudiotrackIcon from '@mui/icons-material/Audiotrack';
 import styles from './addSongPlayListAccordion.module.css';
 import GenreOption from './GenreOption/GenreOption';
+import Global from 'global/global';
 
 interface PropsAddSongPlayListAccordion {
   handleClose: Function;
-  reloadSidebar : Function;
+  reloadSidebar: Function;
 }
 
-export default function AddSongPlayListAccordion(props: PropsAddSongPlayListAccordion) {
-
+export default function AddSongPlayListAccordion(
+  props: PropsAddSongPlayListAccordion
+) {
   /* SONG */
 
   const [songFile, setSongFile] = useState<File>();
@@ -50,14 +52,11 @@ export default function AddSongPlayListAccordion(props: PropsAddSongPlayListAcco
   };
 
   const handleSubmitSong = (event: FormEvent<HTMLButtonElement>) => {
-    let backendBasePath = new URL('http://127.0.0.1:8000/');
-
-    let url = new URL(backendBasePath + 'canciones/');
+    let url = new URL(Global.backendBaseUrl + 'canciones/');
 
     event.preventDefault();
 
     if (formDataSong && songFile) {
-
       for (let [key, value] of Object.entries(formDataSong)) {
         if (key !== 'file' && typeof value === 'string') {
           url.searchParams.set(key, value);
@@ -83,17 +82,18 @@ export default function AddSongPlayListAccordion(props: PropsAddSongPlayListAcco
           console.error('Error:', error);
         });
     }
-  };
 
+    props.handleClose();
+  };
 
   /* PLAYLIST */
 
-
-  const [thumbnailUploadPlaylist, setThumbnailUploadPlaylist] = useState<string>();
+  const [thumbnailUploadPlaylist, setThumbnailUploadPlaylist] =
+    useState<string>();
 
   const [formDataPlaylist, setFormDataPlaylist] = useState({
     nombre: '',
-    foto:''
+    foto: '',
   });
 
   const handleChangePlaylist = (
@@ -111,30 +111,24 @@ export default function AddSongPlayListAccordion(props: PropsAddSongPlayListAcco
     }
   };
 
-
   const handleSubmitPlaylist = (event: FormEvent<HTMLButtonElement>) => {
-    let backendBasePath = new URL('http://127.0.0.1:8000/');
-
-    let url = new URL(backendBasePath + 'playlists/');
+    let url = new URL(Global.backendBaseUrl + 'playlists/');
 
     event.preventDefault();
 
-    if (formDataPlaylist ) {
-
+    if (formDataPlaylist) {
       for (let [key, value] of Object.entries(formDataPlaylist)) {
         if (typeof value === 'string') {
           url.searchParams.set(key, value);
         }
       }
 
-
-
       let requestOptions = {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify([])
+        body: JSON.stringify([]),
       };
 
       fetch(url, requestOptions)
@@ -150,27 +144,25 @@ export default function AddSongPlayListAccordion(props: PropsAddSongPlayListAcco
         });
     }
 
-    props.reloadSidebar()
+    props.reloadSidebar();
     props.handleClose();
   };
-
 
   /* GENRES */
 
   const [genres, setGenres] = useState<{}>();
 
   const handleGenres = () => {
-    fetch('http://127.0.0.1:8000/generos/', {
+    fetch(Global.backendBaseUrl + 'generos/', {
       headers: { 'Access-Control-Allow-Origin': '*' },
     })
       .then((res) => res.json())
       .then((res) => {
         setGenres(res);
       })
-      .catch( (error) => {
-
-        console.log("No se pudieron obtener los géneros")
-      })
+      .catch((error) => {
+        console.log('No se pudieron obtener los géneros');
+      });
   };
 
   useEffect(() => {
@@ -204,46 +196,45 @@ export default function AddSongPlayListAccordion(props: PropsAddSongPlayListAcco
         <AccordionDetails
           className={`p-4 d-flex flex-row ${styles.accordionDetails}`}
         >
-
-            <form
-              className={`container-fluid d-flex flex-column p-0 ${styles.formAddSong}`}
-            >
-              <div className={`container-fluid d-flex flex-row p-0`}>
-                <div className="p-0 mb-3 me-3">
-                  <input
-                    type="text"
-                    id="nombre"
-                    name="nombre"
-                    placeholder="Nombre de la playlist"
-                    className={` ${styles.input}`}
-                    onChange={handleChangePlaylist}
-                    required
-                  ></input>
-                </div>
-                <div className="mb-3">
-                  <input
-                    type="text"
-                    id="foto"
-                    name="foto"
-                    placeholder="URL de la miniatura"
-                    className={` ${styles.input}`}
-                    onChange={handleChangePlaylist}
-                    required
-                  ></input>
-                </div>
+          <form
+            className={`container-fluid d-flex flex-column p-0 ${styles.formAddSong}`}
+          >
+            <div className={`container-fluid d-flex flex-row p-0`}>
+              <div className="p-0 mb-3 me-3">
+                <input
+                  type="text"
+                  id="nombre"
+                  name="nombre"
+                  placeholder="Nombre de la playlist"
+                  className={` ${styles.input}`}
+                  onChange={handleChangePlaylist}
+                  required
+                ></input>
               </div>
-
-              <button
-                type="button"
-                onClick={handleSubmitPlaylist}
-                className={`btn btn-lg ${styles.btnSend}`}
-              >
-                Subir
-              </button>
-            </form>
-            <div className={`${styles.containerThumbNailUpload}`}>
-              <img className="img-fluid" src={thumbnailUploadPlaylist} alt="" />
+              <div className="mb-3">
+                <input
+                  type="text"
+                  id="foto"
+                  name="foto"
+                  placeholder="URL de la miniatura"
+                  className={` ${styles.input}`}
+                  onChange={handleChangePlaylist}
+                  required
+                ></input>
+              </div>
             </div>
+
+            <button
+              type="button"
+              onClick={handleSubmitPlaylist}
+              className={`btn btn-lg ${styles.btnSend}`}
+            >
+              Subir
+            </button>
+          </form>
+          <div className={`${styles.containerThumbNailUpload}`}>
+            <img className="img-fluid" src={thumbnailUploadPlaylist} alt="" />
+          </div>
         </AccordionDetails>
       </Accordion>
 

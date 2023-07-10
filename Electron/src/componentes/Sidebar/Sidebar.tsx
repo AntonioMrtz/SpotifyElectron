@@ -5,6 +5,7 @@ import ModalAddSongPlaylist from './ModalAddSongPlaylist/ModalAddSongPlaylist';
 import { Link } from 'react-router-dom';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 import { PropsPlaylist } from './types/propsPlaylist.module';
+import Global from 'global/global';
 
 export default function Sidebar() {
   //* RELOAD SIDEBAR
@@ -65,6 +66,10 @@ export default function Sidebar() {
     } else if (url === '/explorar') {
       setSelectedID('li-buscar');
     }
+    else{
+      setSelectedID('');
+    }
+
   }, [url]);
 
   const handleUrlInicioClicked = () => {
@@ -75,12 +80,16 @@ export default function Sidebar() {
     setUrl('/explorar');
   };
 
+  const handleUrlPlaylistClicked = () => {
+    setUrl('');
+  };
+
   //* PLAYLISTS
 
   const [playlists, setPlaylists] = useState<PropsPlaylist[]>();
 
   const handlePlaylists = () => {
-    fetch('http://127.0.0.1:8000/playlists/', {
+    fetch(Global.backendBaseUrl+'playlists/', {
       headers: { 'Access-Control-Allow-Origin': '*' },
     })
       .then((res) => res.json())
@@ -94,6 +103,7 @@ export default function Sidebar() {
               name: obj['name'],
               photo:
                 obj['photo'] === '' ? defaultThumbnailPlaylist : obj['photo'],
+              handleUrlPlaylistClicked: handleUrlPlaylistClicked,
             };
 
             propsPlaylists.push(propsPlaylist);
@@ -176,12 +186,15 @@ export default function Sidebar() {
           >
             {playlists &&
               playlists.map((playlist) => {
+                let urlPlaylist = '/playlist/' + playlist.name;
                 return (
-                  <Playlist
-                    key={playlist.name}
-                    name={playlist.name}
-                    photo={playlist.photo}
-                  />
+                  <Link to={urlPlaylist} key={playlist.name}>
+                    <Playlist
+                      handleUrlPlaylistClicked={handleUrlPlaylistClicked}
+                      name={playlist.name}
+                      photo={playlist.photo}
+                    />
+                  </Link>
                 );
               })}
           </ul>

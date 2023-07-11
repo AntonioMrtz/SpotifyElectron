@@ -14,7 +14,10 @@ export default function Playlist(props: PropsPlaylist) {
     >
       <img src={props.photo} alt="" className="img-fluid img-border-2" />
 
-      <div className="container-fluid d-flex flex-column p-0 ms-2">
+      <div className="container-fluid d-flex flex-column p-0 ms-2 " style={{  textOverflow:'ellipsis',overflow:'hidden',
+        whiteSpace: 'nowrap'
+
+}}>
         <label>{props.name}</label>
         <p>Lista</p>
       </div>

@@ -4,6 +4,9 @@
   border-radius: 6px;
   height: 64px;
   cursor: pointer;
+  overflow-x: hidden;
+  padding-right: 5% !important;
+
 }
 
 .wrapperPlaylist:hover {
@@ -25,6 +28,7 @@
   cursor : pointer;
   font-weight: 500 !important;
   color: var(--primary-white);
+  word-break: break-all;
 
 }
 

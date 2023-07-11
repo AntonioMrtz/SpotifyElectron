@@ -33,7 +33,9 @@
   /* Border radius thumbnail images */
 
   --border-radius-thumbnails: 8px;
+  --border-radius-rounded-button : 25px;
 
+  /* Font sizes */
 
   --font-size-song-footer: 1.05rem;
   --font-size-artist-footer: 0.85rem;

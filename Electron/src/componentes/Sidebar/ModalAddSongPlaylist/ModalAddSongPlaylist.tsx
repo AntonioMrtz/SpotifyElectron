@@ -106,23 +106,40 @@ export default function ModalAddSongPlaylist(props: PropsModalAddSongPlaylist) {
             <div className={`${styles.wrapperConfirmationModalHeader}`}>
               <div className={`${styles.wrapperConfirmationModalText}`}>
                 <span>
-                  {modalConfirmationData.type} {modalConfirmationData.response}
+                  {modalConfirmationData.type} añadida
                 </span>
                 <p>
-                  {modalConfirmationData.type} {modalConfirmationData.response}
+                  La {modalConfirmationData.type} {modalConfirmationData.response}
                 </p>
               </div>
+              {modalConfirmationData.response ===
+                ModalConfirmationResponse.SUCCESS && (
+                <div className="d-flex container-fluid align-items-center justify-content-center">
+                  <CheckIcon
+                    style={{
+                      color: 'var(--secondary-green)',
+                      fontSize: '6rem',
+                    }}
+                  ></CheckIcon>
+                </div>
+              )}
 
-              <div className="d-flex container-fluid align-items-center justify-content-center">
-                <CheckIcon
-                  style={{ color: 'var(--secondary-green)', fontSize: '6rem' }}
-                ></CheckIcon>
-              </div>
+              {modalConfirmationData.response ===
+                ModalConfirmationResponse.ERROR && (
+                <div className="d-flex container-fluid align-items-center justify-content-center">
+                  <PriorityHighIcon
+                    style={{
+                      color: 'var(--secondary-green)',
+                      fontSize: '6rem',
+                    }}
+                  ></PriorityHighIcon>
+                </div>
+              )}
             </div>
-            <div className={`container-fluid d-flex flex-column justify-content-flex-end mt-4 ${styles.wrapperButton} `}>
-              <button onClick={handleCloseConfirmationModal}>
-                Confirmar
-              </button>
+            <div
+              className={`container-fluid d-flex flex-column justify-content-flex-end mt-4 ${styles.wrapperButton} `}
+            >
+              <button onClick={handleCloseConfirmationModal}>Confirmar</button>
             </div>
           </Box>
         </Modal>

@@ -79,10 +79,12 @@ p {
   margin: 0;
 }
 
-::-webkit-scrollbar {
+/* !REMOVED FOR TESTING */
+
+/* ::-webkit-scrollbar {
   display: none;
 }
-
+ */
 
 @media (max-width: 1600px) {
 

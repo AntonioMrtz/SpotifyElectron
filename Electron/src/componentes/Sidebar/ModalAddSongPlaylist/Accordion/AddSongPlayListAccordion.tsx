@@ -9,15 +9,19 @@ import AudiotrackIcon from '@mui/icons-material/Audiotrack';
 import styles from './addSongPlayListAccordion.module.css';
 import GenreOption from './GenreOption/GenreOption';
 import Global from 'global/global';
+import { ModalConfirmationResponse,ModalConfirmationTypes } from 'componentes/Sidebar/types/ModalConfirmationArgs'; '../../types/ModalConfirmationArgs'
+
 
 interface PropsAddSongPlayListAccordion {
   handleClose: Function;
   reloadSidebar: Function;
+  handleShowConfirmationModal: Function
 }
 
 export default function AddSongPlayListAccordion(
   props: PropsAddSongPlayListAccordion
 ) {
+
   /* SONG */
 
   const [songFile, setSongFile] = useState<File>();
@@ -74,8 +78,16 @@ export default function AddSongPlayListAccordion(
         .then((response) => {
           if (response.status == 201) {
             console.log('Cancion creada');
+            props.handleShowConfirmationModal(
+              ModalConfirmationTypes.SONG,
+              ModalConfirmationResponse.SUCCESS
+            );
           } else {
             console.log('No se a creado la cancion');
+            props.handleShowConfirmationModal(
+              ModalConfirmationTypes.SONG,
+              ModalConfirmationResponse.ERROR
+            );
           }
         })
         .catch((error) => {
@@ -135,8 +147,18 @@ export default function AddSongPlayListAccordion(
         .then((response) => {
           if (response.status == 201) {
             console.log('Playlist creada');
+
+            props.handleShowConfirmationModal(
+              ModalConfirmationTypes.PLAYLIST,
+              ModalConfirmationResponse.SUCCESS
+            );
           } else {
             console.log('No se a creado la playlist');
+
+            props.handleShowConfirmationModal(
+              ModalConfirmationTypes.PLAYLIST,
+              ModalConfirmationResponse.ERROR
+            );
           }
         })
         .catch((error) => {
@@ -146,6 +168,7 @@ export default function AddSongPlayListAccordion(
 
     props.reloadSidebar();
     props.handleClose();
+
   };
 
   /* GENRES */

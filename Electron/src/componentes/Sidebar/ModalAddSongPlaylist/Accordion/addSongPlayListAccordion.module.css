@@ -10,7 +10,6 @@ input {
 input:focus {
   box-shadow: 0 0rem !important;
 
-
 }
 
 select {
@@ -126,4 +125,17 @@ select {
     margin-top: 2%;
   }
 
+}
+
+
+.modalprueba{
+
+
+  background: green;
+  position: absolute;
+  float: left;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2999;
 }

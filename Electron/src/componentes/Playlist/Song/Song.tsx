@@ -9,7 +9,7 @@ export default function Song(props: PropsSongs) {
 
   return (
     <li
-      onClick={handleSongClicked}
+      onDoubleClick={handleSongClicked}
       className={`container-fluid ${styles.gridContainer}`}
     >
       <span className={` ${styles.songNumberTable}`}>{props.index}</span>

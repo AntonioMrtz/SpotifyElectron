@@ -1,11 +1,10 @@
 .wrapperPlaylist {
 
-  padding: 5px 0 5px 10px !important;
+  padding: 5px 5% 5px 10px !important;
   border-radius: 6px;
   height: 64px;
   cursor: pointer;
   overflow-x: hidden;
-  padding-right: 5% !important;
 
 }
 

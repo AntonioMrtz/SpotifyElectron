@@ -12,19 +12,19 @@ export default function StickyHeader() {
   const handleScroll = () => {
     if (window.scrollY > 200) {
       setVisibleBackground({
-        backgroundColor: 'var(--hover-white)',
+        backgroundColor: 'var(--sticky-header-blue)',
         marginTop:'0',
       });
     }else if(window.scrollY > 150) {
       setVisibleBackground({
-        backgroundColor: 'var(--hover-white)',
+        backgroundColor: 'var(--sticky-header-blue)',
         marginTop:'0',
         opacity:'0.7'
       });
     }
     else if(window.scrollY > 100) {
       setVisibleBackground({
-        backgroundColor: 'var(--hover-white)',
+        backgroundColor: 'var(--sticky-header-blue)',
         marginTop:'0',
         opacity:'0.5',
       });

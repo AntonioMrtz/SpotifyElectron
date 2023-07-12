@@ -87,7 +87,6 @@ export default function Playlist(props: PropsPlaylist) {
       .getColorAsync(thumbnail,options)
       .then((color) => {
         setMainColorThumbnail(color.hex);
-        console.log('Average color', color);
       })
       .catch((e) => {
         //console.log(e);

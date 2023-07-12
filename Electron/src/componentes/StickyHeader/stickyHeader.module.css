@@ -1,0 +1,68 @@
+.wrapperStickyHeader {
+
+
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 4;
+  padding: 1.5% 3% 0% 2%;
+  margin: 0 0.5% 0  var(--sidebar-width);
+  width: calc(100svw - var(--sidebar-width) - 0.5svw);
+  border-radius: 14px 14px 0 0;
+  height: 8svh;
+
+}
+
+/* ARROWS */
+
+.wrapperDirectionArrows figure {
+
+  margin: 0;
+  margin-right: 2%;
+  width: 24px;
+  height: 24px;
+  padding: 0.75%;
+  background-color: var(--primary-black);
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--secondary-white);
+  cursor: pointer;
+}
+
+
+/* PROFILE and GROUP SESSION */
+
+.wrapperProfileOptions{
+
+  justify-content: flex-end;
+
+}
+
+.wrapperProfileOptions figure {
+
+  padding: 0.75%;
+  border-radius: 50px;
+  background-color: var(--primary-black);
+  cursor: pointer;
+
+
+}
+
+.wrapperProfileOptions figure img {
+
+  width: 24px;
+  height: 24px;
+  border-radius: 50px;
+
+
+}
+
+.groupIcon {
+
+  color: var(--primary-white);
+
+}
+
+

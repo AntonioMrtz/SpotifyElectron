@@ -14,6 +14,8 @@
   overflow-x: hidden;
   padding: 0% !important;
   min-height: 99svh;
+  position: relative;
+  overflow: hidden;
 
 }
 

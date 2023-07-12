@@ -6,6 +6,7 @@ import Footer from '../componentes/footer/Footer';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import Playlist from 'componentes/Playlist/Playlist';
+import StickyHeader from 'componentes/StickyHeader/StickyHeader';
 
 function App() {
   /* Scroll to the top if path is changed */
@@ -24,6 +25,8 @@ function App() {
 
   return (
     <div className={`App d-flex flex-column ${styles.appBackground}`}>
+            <StickyHeader />
+
       <div className="d-flex">
         <Sidebar />
         <div
@@ -43,7 +46,6 @@ function App() {
           </Routes>
         </div>
       </div>
-
       <Footer songName={songName} />
     </div>
   );

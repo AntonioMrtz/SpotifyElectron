@@ -10,7 +10,7 @@
 
   background-color: var(--secondary-black) !important;
   border-radius: 14px;
-  margin: 0.5% 0 calc(100svh - var(--sidebar-height)) var(--sidebar-width);
+  margin: 0.5% 0.5% calc(100svh - var(--sidebar-height)) var(--sidebar-width);
   overflow-x: hidden;
   padding: 0% !important;
   min-height: 99svh;

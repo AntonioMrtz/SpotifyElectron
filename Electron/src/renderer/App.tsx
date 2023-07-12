@@ -6,6 +6,7 @@ import Footer from '../componentes/footer/Footer';
 import { Route, Routes } from 'react-router-dom';
 import { useState } from 'react';
 import Playlist from 'componentes/Playlist/Playlist';
+import StickyHeader from 'componentes/StickyHeader/StickyHeader';
 
 function App() {
   const [songName, setSongName] = useState('none');
@@ -33,10 +34,13 @@ function App() {
             <Route path="/" element=<Home changeSongName={changeSongName} /> />
             <Route path="*" element=<Home changeSongName={changeSongName} /> />
           </Routes>
+        <StickyHeader/>
         </div>
+
       </div>
 
       <Footer songName={songName} />
+
     </div>
   );
 }

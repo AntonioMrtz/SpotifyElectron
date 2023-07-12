@@ -2,6 +2,8 @@
 
   background-color: var(--primary-black);
   font-family: SpotifyCircular !important;
+  min-height: 100%;
+
 
 }
 
@@ -12,7 +14,7 @@
   margin: 0.5% 0 calc(100svh - var(--sidebar-height)) var(--sidebar-width);
   overflow-x: hidden;
   padding: 0% !important;
-  height: 99svh;
+  min-height: 99svh;
 
 }
 
@@ -28,4 +30,3 @@
   src: url(./fonts/CircularSpotifyText-Medium.otf);
   font-weight: normal;
 }
-

@@ -3,12 +3,20 @@ import Sidebar from '../componentes/Sidebar/Sidebar';
 import Home from '../componentes/Home/Home';
 import Explorar from '../componentes/Explorar/Explorar';
 import Footer from '../componentes/footer/Footer';
-import { Route, Routes } from 'react-router-dom';
-import { useState } from 'react';
+import { Route, Routes, useLocation } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import Playlist from 'componentes/Playlist/Playlist';
 
 function App() {
+  /* Scroll to the top if path is changed */
+  const location = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
   const [songName, setSongName] = useState('none');
+
+  /* Handle change song name */
 
   const changeSongName = (songName: string): void => {
     setSongName(songName);

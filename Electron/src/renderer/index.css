@@ -23,6 +23,8 @@
 
   --grey: #888;
 
+  --sticky-header-blue : #1e0f44;
+
   /* Sidebar default width */
   --sidebar-width: 25svw;
   --sidebar-height: 90svh;
@@ -39,6 +41,13 @@
 
   --font-size-song-footer: 1.05rem;
   --font-size-artist-footer: 0.85rem;
+
+
+  /* sticky header */
+
+  --pading-top-sticky-header:5%
+
+
 
 }
 

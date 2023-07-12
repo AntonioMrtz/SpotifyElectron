@@ -48,3 +48,10 @@
 
   color: var(--grey);
 }
+
+.principal{
+
+
+  padding-top: var(--pading-top-sticky-header) !important;
+
+}

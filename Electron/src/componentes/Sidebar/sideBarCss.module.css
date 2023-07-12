@@ -7,12 +7,12 @@
   width: var(--sidebar-width);
   min-width: 200px;
   max-width: var(--sidebar-width);
-  height: calc(var(--sidebar-height));
+  height: var(--sidebar-height);
   padding: 0.5% 0.5% 0 0.5%;
 
   display: flex;
   flex-direction: column;
-
+  overflow: hidden;
 
 }
 
@@ -39,7 +39,6 @@
 }
 
 .aHeader {
-
   color: inherit;
 }
 
@@ -95,6 +94,7 @@
   padding-left: 0%;
   padding-right: 0%;
   overflow: hidden;
+  height: 100%;
 
 }
 
@@ -109,9 +109,6 @@
 
 .ulPlaylist {
 
-  /* padding: 5% 1.5% 5% 1.75%!important; */
-  /*     padding: 5% 0 5% 1.75%!important;
- */
   margin: 0 !important;
   padding: 0;
   overflow-x: hidden;
@@ -132,7 +129,6 @@
 
 .headerTuBiblioteca div div i {
 
-  /* margin-right: 5%; */
   color: var(--secondary-white);
   margin-right: 2%;
 }

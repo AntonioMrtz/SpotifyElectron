@@ -5,6 +5,7 @@ import styles from './playlist.module.css';
 import Song from './Song/Song';
 import { PropsSongs } from 'componentes/Sidebar/types/propsSongs.module';
 import { FastAverageColor } from 'fast-average-color';
+import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 
 interface PropsPlaylist {
   changeSongName: Function;
@@ -30,7 +31,10 @@ export default function Playlist(props: PropsPlaylist) {
     fetch(encodeURI(Global.backendBaseUrl + 'playlists/dto/' + playlistName))
       .then((res) => res.json())
       .then((res) => {
-        setThumbnail(res['photo']);
+
+
+        setThumbnail( res["photo"]==='' ? defaultThumbnailPlaylist : res["photo"])
+
 
         if (res['song_names']) {
           setNumberSongs(res['song_names'].length);
@@ -59,10 +63,9 @@ export default function Playlist(props: PropsPlaylist) {
   }, [location]);
 
   useEffect(() => {
+    /*     const fac = new FastAverageColor();
 
-    const fac = new FastAverageColor();
-
-    fac.getColorAsync(thumbnail)
+    fac.getColorAsync(`${thumbnail}?cross-origin=Anonymous`)
         .then(color => {
 
             setMainColorThumbnail(color.hex)
@@ -70,11 +73,31 @@ export default function Playlist(props: PropsPlaylist) {
         })
         .catch(e => {
             console.log(e);
-        });
+        }); */
+
+
+    const fac = new FastAverageColor()
+
+    let options = {
+
+      crossOrigin : "*"
+    }
+
+    fac
+      .getColorAsync(thumbnail,options)
+      .then((color) => {
+        setMainColorThumbnail(color.hex);
+        console.log('Average color', color);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+
+      fac.destroy()
 
 
 
-  }, [thumbnail])
+  }, [thumbnail]);
 
 
   return (
@@ -87,7 +110,7 @@ export default function Playlist(props: PropsPlaylist) {
       >
         <div className={`d-flex flex-row container-fluid ${styles.nonBlurred}`}>
           <div className={``}>
-            <img className="img-fluid" src={thumbnail} alt="" />
+            <img className="img-fluid" src={`${thumbnail}`} alt="" />
           </div>
 
           <div

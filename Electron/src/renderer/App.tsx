@@ -16,7 +16,7 @@ function App() {
 
   return (
     <div className={`App d-flex flex-column ${styles.appBackground}`}>
-      <div className="d-flex flex-row">
+      <div className="d-flex">
         <Sidebar />
         <div
           className={`App d-flex container-fluid ${styles.mainContentWrapper}`}

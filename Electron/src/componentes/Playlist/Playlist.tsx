@@ -4,12 +4,18 @@ import Global from 'global/global';
 import styles from './playlist.module.css';
 import Song from './Song/Song';
 import { PropsSongs } from 'componentes/Sidebar/types/propsSongs.module';
+import { FastAverageColor } from 'fast-average-color';
 
 interface PropsPlaylist {
   changeSongName: Function;
 }
 
 export default function Playlist(props: PropsPlaylist) {
+
+
+  const [mainColorThumbnail, setMainColorThumbnail] = useState('')
+
+
   /* Get current Playlist Name */
   const location = useLocation();
   let playlistName = decodeURIComponent(
@@ -52,13 +58,32 @@ export default function Playlist(props: PropsPlaylist) {
     handlePlaylistData();
   }, [location]);
 
+  useEffect(() => {
+
+    const fac = new FastAverageColor();
+
+    fac.getColorAsync(thumbnail)
+        .then(color => {
+
+            setMainColorThumbnail(color.hex)
+            console.log('Average color', color);
+        })
+        .catch(e => {
+            console.log(e);
+        });
+
+
+
+  }, [thumbnail])
+
+
   return (
     <div
       className={`d-flex container-fluid flex-column ${styles.wrapperPlaylist}`}
     >
       <div
         className={`d-flex container-fluid flex-column ${styles.backgroundFilter} ${styles.header}`}
-        style={{ backgroundImage: `url(${thumbnail})` }}
+        style={{ backgroundColor: `${mainColorThumbnail}` }}
       >
         <div className={`d-flex flex-row container-fluid ${styles.nonBlurred}`}>
           <div className={``}>

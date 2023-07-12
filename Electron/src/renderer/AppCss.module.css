@@ -17,6 +17,8 @@
   position: relative;
 
 
+  overflow: hidden;
+
 }
 
 @font-face {

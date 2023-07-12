@@ -34,13 +34,11 @@ function App() {
             <Route path="/" element=<Home changeSongName={changeSongName} /> />
             <Route path="*" element=<Home changeSongName={changeSongName} /> />
           </Routes>
-        <StickyHeader/>
+          <StickyHeader />
         </div>
-
       </div>
 
       <Footer songName={songName} />
-
     </div>
   );
 }

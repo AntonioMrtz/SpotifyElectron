@@ -2,14 +2,14 @@
 
 
   position: fixed;
-  z-index: 2;
-  padding: 2% 3% 0% 2%;
-  overflow: hidden;
-  top:0;
+  top: 0;
   right: 0;
-  margin-right: 0.5%;
-  width: calc(100svw - var(--sidebar-width));
+  z-index: 4;
+  padding: 1.5% 3% 0% 2%;
+  margin: 0 0.5% 0  var(--sidebar-width);
+  width: calc(100svw - var(--sidebar-width) - 0.5svw);
   border-radius: 14px 14px 0 0;
+  height: 8svh;
 
 }
 
@@ -36,8 +36,7 @@
 
 .wrapperProfileOptions{
 
-  justify-content: center;
-  margin-right: 6%;
+  justify-content: flex-end;
 
 }
 

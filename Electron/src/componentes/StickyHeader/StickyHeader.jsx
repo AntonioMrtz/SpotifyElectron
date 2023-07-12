@@ -10,10 +10,23 @@ export default function StickyHeader() {
   const [visibleBackground, setVisibleBackground] = useState({});
 
   const handleScroll = () => {
-    if (window.scrollY > 100) {
+    if (window.scrollY > 200) {
       setVisibleBackground({
-        backgroundColor: 'var(--primary-white)',
+        backgroundColor: 'var(--hover-white)',
         marginTop:'0',
+      });
+    }else if(window.scrollY > 150) {
+      setVisibleBackground({
+        backgroundColor: 'var(--hover-white)',
+        marginTop:'0',
+        opacity:'0.7'
+      });
+    }
+    else if(window.scrollY > 100) {
+      setVisibleBackground({
+        backgroundColor: 'var(--hover-white)',
+        marginTop:'0',
+        opacity:'0.5',
       });
     } else {
       setVisibleBackground({});

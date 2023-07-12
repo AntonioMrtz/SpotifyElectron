@@ -17,6 +17,8 @@ function App() {
 
   return (
     <div className={`App d-flex flex-column ${styles.appBackground}`}>
+            <StickyHeader />
+
       <div className="d-flex">
         <Sidebar />
         <div
@@ -34,10 +36,8 @@ function App() {
             <Route path="/" element=<Home changeSongName={changeSongName} /> />
             <Route path="*" element=<Home changeSongName={changeSongName} /> />
           </Routes>
-          <StickyHeader />
         </div>
       </div>
-
       <Footer songName={songName} />
     </div>
   );

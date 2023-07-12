@@ -90,7 +90,7 @@ export default function Playlist(props: PropsPlaylist) {
         console.log('Average color', color);
       })
       .catch((e) => {
-        console.log(e);
+        //console.log(e);
       });
 
       fac.destroy()

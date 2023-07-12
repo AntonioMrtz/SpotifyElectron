@@ -14,8 +14,11 @@ export default function StickyHeader() {
       <div
         className={`d-flex flex-row container-fluid ${styles.wrapperDirectionArrows}`}
       >
-        <i class="fa-solid fa-chevron-left"></i>
-        <i class="fa-solid fa-chevron-right"></i>
+
+        <figure><i class="fa-solid fa-chevron-left"></i></figure>
+        <figure><i class="fa-solid fa-chevron-right"></i></figure>
+
+
       </div>
 
       <div

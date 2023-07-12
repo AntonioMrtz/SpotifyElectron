@@ -1,31 +1,35 @@
-
-
-
 .wrapperStickyHeader {
 
 
   position: absolute;
   z-index: 2;
-  color: white;
   padding: 2% 3% 2% 2%;
 
 
 }
 
-/* .wrapperDirectionArrows {
+/* ARROWS */
 
+.wrapperDirectionArrows figure {
 
+  margin: 0;
+  margin-right: 2%;
+  width: 24px;
+  height: 24px;
+  padding: 0.75%;
+  background-color: var(--primary-black);
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--secondary-white);
+  cursor: pointer;
 }
 
 
-.wrapperProfileOptions{
+/* PROFILE and GROUP SESSION */
 
-
-
-} */
-
-
-.wrapperProfileOptions figure{
+.wrapperProfileOptions figure {
 
   padding: 0.75%;
   border-radius: 50px;
@@ -34,7 +38,8 @@
 
 
 }
-.wrapperProfileOptions figure img{
+
+.wrapperProfileOptions figure img {
 
   width: 24px;
   height: 24px;
@@ -42,7 +47,7 @@
 
 }
 
-.groupIcon{
+.groupIcon {
 
   color: var(--primary-white);
 

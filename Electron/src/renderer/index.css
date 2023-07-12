@@ -40,6 +40,11 @@
   --font-size-song-footer: 1.05rem;
   --font-size-artist-footer: 0.85rem;
 
+
+  /* Padding sticky header */
+
+  --pading-top-sticky-header:5%
+
 }
 
 html {

@@ -1,4 +1,4 @@
-import { ChangeEvent, ChangeEventHandler, FormEvent, FormEventHandler, Fragment } from 'react';
+import { ChangeEvent, FormEvent, useState, Fragment, useEffect } from 'react';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -7,109 +7,190 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import LibraryMusicRoundedIcon from '@mui/icons-material/LibraryMusicRounded';
 import AudiotrackIcon from '@mui/icons-material/Audiotrack';
 import styles from './addSongPlayListAccordion.module.css';
-import { useState,useRef } from 'react';
+import GenreOption from './GenreOption/GenreOption';
+import Global from 'global/global';
+import { ModalConfirmationResponse,ModalConfirmationTypes } from 'componentes/Sidebar/types/ModalConfirmationArgs'; '../../types/ModalConfirmationArgs'
 
 
-interface PropsSimpleAccordion{
-
-  handleClose : Function
-
+interface PropsAddSongPlayListAccordion {
+  handleClose: Function;
+  reloadSidebar: Function;
+  handleShowConfirmationModal: Function
 }
 
-export default function SimpleAccordion(props:PropsSimpleAccordion) {
+export default function AddSongPlayListAccordion(
+  props: PropsAddSongPlayListAccordion
+) {
 
-  const [songFile,setSongFile] = useState<File>()
+  /* SONG */
 
-  const [thumbnailUpload,setThumbnailUpload] = useState<string>()
+  const [songFile, setSongFile] = useState<File>();
+  const [thumbnailUploadSong, setThumbnailUploadSong] = useState<string>();
 
-  const [formData, setFormData] = useState({
+  const [formDataSong, setFormDataSong] = useState({
     nombre: '',
     artista: '',
-    genero:'',
-    foto:'',
+    genero: '',
+    foto: '',
   });
 
-
-  const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-
-    if(event.target && event.target.name ){
-
-      if(event.target.name==="foto"){
-
-        setThumbnailUpload(event.target.value)
+  const handleChangeSong = (
+    event: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    if (event.target && event.target.name) {
+      if (event.target.name === 'foto') {
+        setThumbnailUploadSong(event.target.value);
       }
 
-      setFormData({
-        ...formData,
+      setFormDataSong({
+        ...formDataSong,
         [event.target.name]: event.target.value,
       });
     }
   };
 
   const handleChangeFile = (event: ChangeEvent<HTMLInputElement>) => {
-
-    if(event.target && event.target.files ){
-
-      setSongFile(event.target.files[0])
-
+    if (event.target && event.target.files) {
+      setSongFile(event.target.files[0]);
     }
   };
 
-  const handleSubmitSong = (event:FormEvent<HTMLButtonElement>) => {
+  const handleSubmitSong = (event: FormEvent<HTMLButtonElement>) => {
+    let url = new URL(Global.backendBaseUrl + 'canciones/');
 
-    const backendBasePath = new URL("http://127.0.0.1:8000/");
+    event.preventDefault();
 
-    let url = new URL(backendBasePath + 'canciones/');
-
-    event.preventDefault()
-
-
-    if(formData && songFile){
-      //window.electron.submitSong.sendMessage('submit-song',formData)
-
-      for (let [key, value] of Object.entries(formData)) {
+    if (formDataSong && songFile) {
+      for (let [key, value] of Object.entries(formDataSong)) {
         if (key !== 'file' && typeof value === 'string') {
           url.searchParams.set(key, value);
         }
       }
-      const formDataFile = new FormData();
+      let formDataFile = new FormData();
       formDataFile.append('file', songFile);
 
-
-      const requestOptions = {
+      let requestOptions = {
         method: 'POST',
-        body:formDataFile
-
+        body: formDataFile,
       };
 
       fetch(url, requestOptions)
-        .then((response) =>
-
-          {
-
-            if(response.status==201){
-
-              console.log("Cancion creada")
-
-            }else{
-
-              console.log("No se a creado la cancion")
-            }
+        .then((response) => {
+          if (response.status == 201) {
+            console.log('Cancion creada');
+            props.handleShowConfirmationModal(
+              ModalConfirmationTypes.SONG,
+              ModalConfirmationResponse.SUCCESS
+            );
+          } else {
+            console.log('No se a creado la cancion');
+            props.handleShowConfirmationModal(
+              ModalConfirmationTypes.SONG,
+              ModalConfirmationResponse.ERROR
+            );
           }
-
-        )
+        })
         .catch((error) => {
           console.error('Error:', error);
         });
     }
 
-    props.handleClose()
-
-    //formRef.current?.submit()
+    props.handleClose();
   };
 
+  /* PLAYLIST */
 
+  const [thumbnailUploadPlaylist, setThumbnailUploadPlaylist] =
+    useState<string>();
 
+  const [formDataPlaylist, setFormDataPlaylist] = useState({
+    nombre: '',
+    foto: '',
+  });
+
+  const handleChangePlaylist = (
+    event: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    if (event.target && event.target.name) {
+      if (event.target.name === 'foto') {
+        setThumbnailUploadPlaylist(event.target.value);
+      }
+
+      setFormDataPlaylist({
+        ...formDataPlaylist,
+        [event.target.name]: event.target.value,
+      });
+    }
+  };
+
+  const handleSubmitPlaylist = (event: FormEvent<HTMLButtonElement>) => {
+    let url = new URL(Global.backendBaseUrl + 'playlists/');
+
+    event.preventDefault();
+
+    if (formDataPlaylist) {
+      for (let [key, value] of Object.entries(formDataPlaylist)) {
+        if (typeof value === 'string') {
+          url.searchParams.set(key, value);
+        }
+      }
+
+      let requestOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify([]),
+      };
+
+      fetch(url, requestOptions)
+        .then((response) => {
+          if (response.status == 201) {
+            console.log('Playlist creada');
+
+            props.handleShowConfirmationModal(
+              ModalConfirmationTypes.PLAYLIST,
+              ModalConfirmationResponse.SUCCESS
+            );
+          } else {
+            console.log('No se a creado la playlist');
+
+            props.handleShowConfirmationModal(
+              ModalConfirmationTypes.PLAYLIST,
+              ModalConfirmationResponse.ERROR
+            );
+          }
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+    }
+
+    props.reloadSidebar();
+    props.handleClose();
+
+  };
+
+  /* GENRES */
+
+  const [genres, setGenres] = useState<{}>();
+
+  const handleGenres = () => {
+    fetch(Global.backendBaseUrl + 'generos/', {
+      headers: { 'Access-Control-Allow-Origin': '*' },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        setGenres(res);
+      })
+      .catch((error) => {
+        console.log('No se pudieron obtener los géneros');
+      });
+  };
+
+  useEffect(() => {
+    handleGenres();
+  }, []);
 
   return (
     <Fragment>
@@ -135,12 +216,48 @@ export default function SimpleAccordion(props:PropsSimpleAccordion) {
             <LibraryMusicRoundedIcon /> Crear lista de reproducción
           </Typography>
         </AccordionSummary>
-        <AccordionDetails>
-          <Typography style={{ color: 'var(--primary-white' }}>
-            {' '}
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
+        <AccordionDetails
+          className={`p-4 d-flex flex-row ${styles.accordionDetails}`}
+        >
+          <form
+            className={`container-fluid d-flex flex-column p-0 ${styles.formAddSong}`}
+          >
+            <div className={`container-fluid d-flex flex-row p-0`}>
+              <div className="p-0 mb-3 me-3">
+                <input
+                  type="text"
+                  id="nombre"
+                  name="nombre"
+                  placeholder="Nombre de la playlist"
+                  className={` ${styles.input}`}
+                  onChange={handleChangePlaylist}
+                  required
+                ></input>
+              </div>
+              <div className="mb-3">
+                <input
+                  type="text"
+                  id="foto"
+                  name="foto"
+                  placeholder="URL de la miniatura"
+                  className={` ${styles.input}`}
+                  onChange={handleChangePlaylist}
+                  required
+                ></input>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={handleSubmitPlaylist}
+              className={`btn btn-lg ${styles.btnSend}`}
+            >
+              Subir
+            </button>
+          </form>
+          <div className={`${styles.containerThumbNailUpload}`}>
+            <img className="img-fluid" src={thumbnailUploadPlaylist} alt="" />
+          </div>
         </AccordionDetails>
       </Accordion>
 
@@ -166,109 +283,101 @@ export default function SimpleAccordion(props:PropsSimpleAccordion) {
             <AudiotrackIcon /> Subir canción
           </Typography>
         </AccordionSummary>
-        <AccordionDetails className={`p-4 d-flex flex-row ${styles.accordionDetails}`}>
-
-            <form className={`container-fluid d-flex flex-column p-0 ${styles.formAddSong}`}>
-              <div className={`container-fluid d-flex flex-row p-0`}>
-                <div className="p-0 mb-3 me-3">
-                  <input
-                    type="text"
-                    id="nombre"
-                    name='nombre'
-                    placeholder="Nombre de la cancion"
-                    className={` ${styles.input}`}
-                    onChange={handleChange}
-                    required
-                  ></input>
-                </div>
-                <div className="mb-3">
-                  <input
-                    type="text"
-                    id="artista"
-                    placeholder="Artista"
-                    className={` ${styles.input}`}
-                    onChange={handleChange}
-                    name='artista'
-                    required
-                  ></input>
-                </div>
-              </div>
-              <div className="p-0 mb-3 me-2">
+        <AccordionDetails
+          className={`p-4 d-flex flex-row ${styles.accordionDetails}`}
+        >
+          <form
+            className={`container-fluid d-flex flex-column p-0 ${styles.formAddSong}`}
+          >
+            <div className={`container-fluid d-flex flex-row p-0`}>
+              <div className="p-0 mb-3 me-3">
                 <input
                   type="text"
-                  id="foto"
-                  placeholder="URL de la miniatura"
-                  className={` form-control ${styles.input}`}
-                  onChange={handleChange}
-                  name='foto'
+                  id="nombre"
+                  name="nombre"
+                  placeholder="Nombre de la cancion"
+                  className={` ${styles.input}`}
+                  onChange={handleChangeSong}
                   required
                 ></input>
               </div>
-
-              <div className={`d-flex flex-row overflow-hidden align-items-center ${styles.containerSelectAndFileSelector}`}>
-                <div className={`me-5`}>
-                  <select
-                    className="form-select-sm mb-3"
-                    aria-label="Default select example"
-                    onChange={handleChange}
-                    name='genero'
-                    required
-                    defaultValue={"Elige un género"}
-                  >
-                    <option className={` ${styles.option}`} value={"Elige un género"} disabled>❗ Elige un género</option>
-                    <option className={` ${styles.option}`} value={"Pop"}>Pop</option>
-                    <option className={` ${styles.option}`} value="Rock">Rock</option>
-                    <option className={` ${styles.option}`} value="Hip-hop">Hip-hop</option>
-                    <option className={` ${styles.option}`} value="R&B (Ritmo y Blues)">
-                      R&B (Ritmo y Blues)
-                    </option>
-                    <option className={` ${styles.option}`}value="Jazz">Jazz</option>
-                    <option className={` ${styles.option}`} value="Blues">Blues</option>
-                    <option className={` ${styles.option}`} value="Reggae">Reggae</option>
-                    <option className={` ${styles.option}`} value="Country">Country</option>
-                    <option className={` ${styles.option}`} value="Folk">Folk</option>
-                    <option className={` ${styles.option}`} value="Clásica">Clásica</option>
-                    <option className={` ${styles.option}`} value="Electrónica">Electrónica</option>
-                    <option className={` ${styles.option}`} value="Dance">Dance</option>
-                    <option className={` ${styles.option}`} value="Metal">Metal</option>
-                    <option className={` ${styles.option}`} value="Punk">Punk</option>
-                    <option className={` ${styles.option}`} value="Funk">Funk</option>
-                    <option className={` ${styles.option}`} value="Soul">Soul</option>
-                    <option className={` ${styles.option}`} value="Gospel">Gospel</option>
-                    <option className={` ${styles.option}`} value="Latina">Latina</option>
-                    <option className={` ${styles.option}`} value="Música del mundo">Música del mundo</option>
-                    <option className={` ${styles.option}`} value="Experimental">Experimental</option>
-                    <option className={` ${styles.option}`} value="Ambiental">Ambiental</option>
-                    <option className={` ${styles.option}`} value="Fusión">Fusión</option>
-                    <option className={` ${styles.option}`} value="Instrumental">Instrumental</option>
-                    <option className={` ${styles.option}`} value="Alternativa">Alternativa</option>
-                    <option className={` ${styles.option}`} value="Indie">Indie</option>
-                    <option className={` ${styles.option}`} value="Rap">Rap</option>
-                    <option className={` ${styles.option}`} value="Ska">Ska</option>
-                    <option className={` ${styles.option}`} value="Grunge">Grunge</option>
-                    <option className={` ${styles.option}`} value="Trap">Trap</option>
-                    <option className={` ${styles.option}`} value="Reggaeton">Reggaeton</option>
-                  </select>
-                </div>
-                <div className="mb-3">
-                  <input
-                  className={`form-control-md ${styles.input}`}
-                    type="file"
-                    id="file"
-                    name='file'
-                    onChange={handleChangeFile}
-                    accept="audio/mp3"
-                    required
-                  ></input>
-                </div>
+              <div className="mb-3">
+                <input
+                  type="text"
+                  id="artista"
+                  placeholder="Artista"
+                  className={` ${styles.input}`}
+                  onChange={handleChangeSong}
+                  name="artista"
+                  required
+                ></input>
               </div>
+            </div>
+            <div className="p-0 mb-3 me-2">
+              <input
+                type="text"
+                id="foto"
+                placeholder="URL de la miniatura"
+                className={` form-control ${styles.input}`}
+                onChange={handleChangeSong}
+                name="foto"
+                required
+              ></input>
+            </div>
 
+            <div
+              className={`d-flex flex-row overflow-hidden align-items-center ${styles.containerSelectAndFileSelector}`}
+            >
+              <div className={`me-5`}>
+                <select
+                  className="form-select-sm mb-3"
+                  aria-label="Default select example"
+                  onChange={handleChangeSong}
+                  name="genero"
+                  required
+                  defaultValue={'Elige un género'}
+                >
+                  <option
+                    className={` ${styles.option}`}
+                    value={'Elige un género'}
+                    disabled
+                  >
+                    ❗ Elige un género
+                  </option>
 
-                <button type="button" onClick={handleSubmitSong} className={`btn btn-lg ${styles.btnSend}`}>Subir</button>
+                  {genres &&
+                    Object.entries(genres).map(([key, value]) => {
+                      return (
+                        <GenreOption key={key} value={value} name={value} />
+                      );
+                    })}
+                </select>
+              </div>
+              <div className="mb-3">
+                <input
+                  className={`form-control-md ${styles.input}`}
+                  type="file"
+                  id="file"
+                  name="file"
+                  onChange={handleChangeFile}
+                  accept="audio/mp3"
+                  required
+                ></input>
+              </div>
+            </div>
 
-            </form>
+            <button
+              type="button"
+              onClick={handleSubmitSong}
+              className={`btn btn-lg ${styles.btnSend}`}
+            >
+              Subir
+            </button>
+          </form>
 
-            <div className={`${styles.containerThumbNailUpload}`}><img className='img-fluid' src={thumbnailUpload} alt="" /></div>
+          <div className={`${styles.containerThumbNailUpload}`}>
+            <img className="img-fluid" src={thumbnailUploadSong} alt="" />
+          </div>
         </AccordionDetails>
       </Accordion>
     </Fragment>

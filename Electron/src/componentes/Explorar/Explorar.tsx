@@ -12,7 +12,7 @@ export default function Explorar(props:PropsExplorar) {
 
   //const {data} = useFetch("http://127.0.0.1:8000/canciones/p3")
 
-  const { data, loading, error } = useFetch("http://127.0.0.1:8000/listas/");
+  //const { data, loading, error } = useFetch("http://127.0.0.1:8000/listas/");
 
 /*   useEffect(() => {
 
@@ -22,7 +22,7 @@ export default function Explorar(props:PropsExplorar) {
 
   return (
     <div className={`container-fluid d-flex flex-column`}>
-      {data && data.prueba}
+      a
 
     </div>
   )

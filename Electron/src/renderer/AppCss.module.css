@@ -1,19 +1,33 @@
 .appBackground {
 
-    background-color: var(--primary-black);
-    font-family: "CircularStd-Medium", 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif !important;
+  background-color: var(--primary-black);
+  font-family: SpotifyCircular !important;
+
 
 }
 
 .mainContentWrapper {
 
+  background-color: var(--secondary-black) !important;
+  border-radius: 14px;
+  margin: 0.5% 0.5% calc(100svh - var(--sidebar-height)) var(--sidebar-width);
+  overflow-x: hidden;
+  padding: 0% !important;
+  min-height: 99svh;
+  position: relative;
+  overflow: hidden;
+
+}
+
+@font-face {
+  font-family: SpotifyCircular;
+  src: url(./fonts/CircularSpotifyText-Bold.otf);
+  font-weight: bold;
+}
 
 
-    background-color: var(--secondary-black) !important;
-    border-radius: 14px;
-    margin: 0.5% 0 calc(100svh - var(--sidebar-height)) var(--sidebar-width);
-    overflow-x: hidden;
-
-
-
+@font-face {
+  font-family: SpotifyCircular;
+  src: url(./fonts/CircularSpotifyText-Medium.otf);
+  font-weight: normal;
 }

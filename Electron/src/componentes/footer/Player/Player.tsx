@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef, MouseEventHandler } from 'react';
 import styles from './player.module.css';
 import TimeSlider from './TimeSlider/TimeSlider';
+import Global from 'global/global';
 
 interface PropsPlayer {
   volume: number;
@@ -22,7 +23,7 @@ export default function Player(props: PropsPlayer) {
       audio.current.pause();
     }
 
-    fetch('http://127.0.0.1:8000/canciones/' + songName, {
+    fetch(Global.backendBaseUrl+'canciones/' + songName, {
       headers: { 'Access-Control-Allow-Origin': '*' },
     })
       .then((res) => res.json())

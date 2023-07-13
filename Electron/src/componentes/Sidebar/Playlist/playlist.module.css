@@ -1,29 +1,39 @@
-.wrapperPlaylist{
+.wrapperPlaylist {
 
-    padding: 5px 0 5px 10px !important;
-    border-radius: 6px;
-    height: 64px;
+  padding: 5px 5% 5px 10px !important;
+  border-radius: 6px;
+  height: 64px;
+  cursor: pointer;
+  overflow-x: hidden;
+
 }
 
-.wrapperPlaylist:hover{
+.wrapperPlaylist:hover {
 
-    background-color: var(--hover-white);
+  background-color: var(--hover-white);
 }
 
-.wrapperPlaylist img{
+.wrapperPlaylist img {
 
-    border-radius:var(--border-radius-thumbnails);
-    width: 48px;
-    height: 48px;
-    
+  border-radius: var(--border-radius-thumbnails);
+  width: 48px;
+  height: 48px;
+
 }
 
-.wrapperPlaylist label{
+.wrapperPlaylist label {
 
-    font-size: 1.15rem;
+  font-size: 1.05rem;
+  cursor : pointer;
+  font-weight: 500 !important;
+  color: var(--primary-white);
+  word-break: break-all;
+
 }
 
-.wrapperPlaylist p{
+.wrapperPlaylist p {
 
-    color: var(--grey);
+  color: var(--grey);
+  font-size: 0.85rem;
+  font-weight: lighter;
 }

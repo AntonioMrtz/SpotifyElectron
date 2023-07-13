@@ -1,23 +1,23 @@
 .settingsContainer {
 
 
-    justify-content: center;
-    align-items: center;
-    padding-left: 0 !important;
+  justify-content: center;
+  align-items: center;
+  padding-left: 0 !important;
 
 }
 
 .settingsContainer button {
 
-    color: var(--secondary-white);
-    padding: 1.25%;
-    font-size: 1rem;
+  color: var(--secondary-white);
+  padding: 1.25%;
+  font-size: 1rem;
 
 }
 
 .settingsContainer button:hover {
 
-    color: var(--pure-white);
+  color: var(--pure-white);
 
 }
 

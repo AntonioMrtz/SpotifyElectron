@@ -2,8 +2,25 @@ import { useEffect, useState } from 'react';
 import styles from './sideBarCss.module.css';
 import Playlist from './Playlist/Playlist';
 import ModalAddSongPlaylist from './ModalAddSongPlaylist/ModalAddSongPlaylist';
+import { Link } from 'react-router-dom';
+import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
+import { PropsPlaylist } from './types/propsPlaylist.module';
+import Global from 'global/global';
 
 export default function Sidebar() {
+  //* RELOAD SIDEBAR
+
+  const reloadSideBar = () => {
+    /* Force reload by changing reload variable */
+    const delay = 500;
+
+    const timer = setTimeout(() => {
+      handlePlaylists();
+    }, delay);
+
+    return () => clearTimeout(timer);
+  };
+
   //* MENU HOVER
 
   let [listItemInicio, setHoverInicio] = useState('');
@@ -40,32 +57,72 @@ export default function Sidebar() {
   const getSelectedClass = (id: string) =>
     selectedID === id ? styles.linksubtleClicked : '';
 
-  const [url, setUrl] = useState('');
+  const [url, setUrl] = useState('/');
 
   useEffect(() => {
-    if (url === '') {
+    //console.log(url)
+    if (url === '/') {
       setSelectedID('li-inicio');
-    } else if (url === 'explorar') {
+    } else if (url === '/explorar') {
       setSelectedID('li-buscar');
     }
+    else{
+      setSelectedID('');
+    }
+
   }, [url]);
 
-  //* handle Button Clicked by looking at the Current Url
+  const handleUrlInicioClicked = () => {
+    setUrl('/');
+  };
+
+  const handleUrlBuscarClicked = () => {
+    setUrl('/explorar');
+  };
+
+  const handleUrlPlaylistClicked = () => {
+    setUrl('');
+  };
+
+  //* PLAYLISTS
+
+  const [playlists, setPlaylists] = useState<PropsPlaylist[]>();
+
+  const handlePlaylists = () => {
+    fetch(Global.backendBaseUrl+'playlists/', {
+      headers: { 'Access-Control-Allow-Origin': '*' },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if (res['playlists']) {
+          let propsPlaylists: PropsPlaylist[] = [];
+
+          for (let obj of res['playlists']) {
+            obj = JSON.parse(obj);
+            let propsPlaylist: PropsPlaylist = {
+              name: obj['name'],
+              photo:
+                obj['photo'] === '' ? defaultThumbnailPlaylist : obj['photo'],
+              handleUrlPlaylistClicked: handleUrlPlaylistClicked,
+            };
+
+            propsPlaylists.push(propsPlaylist);
+          }
+          setPlaylists(propsPlaylists);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        console.log('No se pudieron obtener las playlists');
+      });
+  };
+
   useEffect(() => {
-    const url = window.location.href;
-
-    let splitBySlash = url.split('/');
-
-    setUrl(splitBySlash[splitBySlash.length - 1]);
+    handlePlaylists();
   }, []);
 
-  //*  Handle add playlist button
-
-
   return (
-
     <div className={`container-fluid ${styles.wrapperNavbar}`}>
-
       <header className={`${styles.header}`}>
         <ul className={`${styles.ul}`}>
           <li
@@ -74,12 +131,13 @@ export default function Sidebar() {
             )} `}
             onMouseOver={handleMouseOverInicio}
             onMouseOut={handleMouseOutInicio}
+            onClick={handleUrlInicioClicked}
             id="li-inicio"
           >
-            <a href="/">
+            <Link to="/">
               <i className={`fa-solid fa-house fa-fw ${styles.headerI}`}></i>
               <span className={`${styles.headerI}`}>Inicio</span>
-            </a>
+            </Link>
           </li>
           <li
             className={`${styles.headerLi} ${listItemBuscar} ${getSelectedClass(
@@ -87,14 +145,15 @@ export default function Sidebar() {
             )}`}
             onMouseOver={handleMouseOverBuscar}
             onMouseOut={handleMouseOutBuscar}
+            onClick={handleUrlBuscarClicked}
             id="li-buscar"
           >
-            <a className={`${styles.aHeader}`} href="explorar">
+            <Link to="/explorar" className={`${styles.aHeader}`}>
               <i
                 className={`fa-solid fa-magnifying-glass fa-fw ${styles.headerI}`}
               ></i>
               <span className={`${styles.headerI}`}>Buscar</span>
-            </a>
+            </Link>
           </li>
         </ul>
       </header>
@@ -119,34 +178,25 @@ export default function Sidebar() {
               className={`container-fluid d-flex justify-content-end p-0`}
               style={{ width: '25%' }}
             >
-
-              <ModalAddSongPlaylist/>
-
+              <ModalAddSongPlaylist reloadSidebar={reloadSideBar} />
             </div>
           </header>
           <ul
             className={`container-fluid d-flex flex-column ${styles.ulPlaylist}`}
           >
-            <Playlist />
-            <Playlist />
-            <Playlist />
-            <Playlist />
-            <Playlist />
-            <Playlist />
-            <Playlist />
-            <Playlist />
-            <Playlist />
-            <Playlist />
-            <Playlist />
-            <Playlist />
-            <Playlist />
-            <Playlist />
-            <Playlist />
-            <Playlist />
-            <Playlist />
-            <Playlist />
-            <Playlist />
-            <Playlist />
+            {playlists &&
+              playlists.map((playlist) => {
+                let urlPlaylist = '/playlist/' + playlist.name;
+                return (
+                  <Link to={urlPlaylist} key={playlist.name}>
+                    <Playlist
+                      handleUrlPlaylistClicked={handleUrlPlaylistClicked}
+                      name={playlist.name}
+                      photo={playlist.photo}
+                    />
+                  </Link>
+                );
+              })}
           </ul>
         </div>
       </div>

@@ -10,11 +10,11 @@
 ## STYLE GUIDE
 
 * The new branch name must be the feature that is going to be implemented.
-* Add comments to clarify what have been done in the branch.
-
+* Fill the fields of the pull_request_template.
+* Use the .editorconfig style template for formatting the code.
 
 ## MUST-HAVE SOFTWARE
 
 * Node.js
-* Python / Python3 [ Desde la windows Store se puede conseguir y actualiza el PATH automaticamnente]
+* Python / Python3
 * Git

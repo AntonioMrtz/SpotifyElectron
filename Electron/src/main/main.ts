@@ -14,9 +14,6 @@ import log from 'electron-log';
 import { resolveHtmlPath } from './util';
 const fs = require('fs');
 
-
-const backendBasePath = new URL("http://127.0.0.1:8000/");
-
 let mainWindow: BrowserWindow | null = null;
 
 /* Events */

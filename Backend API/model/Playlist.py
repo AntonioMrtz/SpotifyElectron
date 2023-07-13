@@ -23,7 +23,7 @@ class Playlist:
         songs_json = []
 
         for song in self.songs:
-            song_json = json.dumps(song.__dict__)
+            song_json = song.get_json()
             songs_json.append(song_json)
 
         # Eliminar el atributo song_names del diccionario , hay que serializar song primero

@@ -1,11 +1,14 @@
 # Spotify Electron Clone
 
+## Software Architecture
+
+![Spotify_Electron_Software_Diagram](assets/images/Spotify_Electron_Software_Diagram.png)
+
 ## Start Electron App
 
 ```
-git clone https://github.com/AntonioMrtz/SpotifyElectron.git && cd SpotifyElectron && npm install && npm start
-
-
+git clone https://github.com/AntonioMrtz/SpotifyElectron.git && cd SpotifyElectron
+&& npm install && npm start
 ```
 
 ## Start Python Backend API
@@ -29,4 +32,4 @@ cd Backend API && pip install -r requirements.txt && python3 -m uvicorn main:app
 
 ## How to Contribute to the project
 
-[CONTRIBUTING readme](https://github.com/AntonioMrtz/SpotifyElectron/blob/master/CONTRIBUTING.md)
+[CONTRIBUTING readme](https://github.com/AntonioMrtz/SpotifyElectron/blob/master/.github/CONTRIBUTING.md)

@@ -49,24 +49,24 @@ export default function StickyHeader() {
       <div
         className={`d-flex flex-row container-fluid ${styles.wrapperDirectionArrows}`}
       >
-        <figure>
+        <button>
           <i className="fa-solid fa-chevron-left"></i>
-        </figure>
-        <figure>
+        </button>
+        <button>
           <i className="fa-solid fa-chevron-right"></i>
-        </figure>
+        </button>
       </div>
 
       <div
         className={`d-flex flex-row container-fluid  ${styles.wrapperProfileOptions}`}
       >
-        <figure>
+        <button>
           <img src={profileIcon} alt="" />
-        </figure>
+        </button>
 
-        <figure>
+        <button>
           <img className={`${styles.groupIcon}`} src={groupIcon} alt="" />
-        </figure>
+        </button>
       </div>
     </header>
   );

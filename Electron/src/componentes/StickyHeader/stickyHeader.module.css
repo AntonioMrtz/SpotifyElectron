@@ -6,7 +6,7 @@
   right: 0;
   z-index: 4;
   padding: 1.5% 3% 0% 2%;
-  margin: 0 0.5% 0  var(--sidebar-width);
+  margin: 0 0.5% 0 var(--sidebar-width);
   width: calc(100svw - var(--sidebar-width) - 0.5svw);
   border-radius: 14px 14px 0 0;
   height: 8svh;
@@ -15,7 +15,7 @@
 
 /* ARROWS */
 
-.wrapperDirectionArrows figure {
+/* .wrapperDirectionArrows button {
 
   margin: 0;
   margin-right: 2%;
@@ -30,34 +30,54 @@
   color: var(--secondary-white);
   cursor: pointer;
 
+} */
+
+.wrapperDirectionArrows button{
+
+  color: var(--secondary-white);
 }
 
 
 /* PROFILE and GROUP SESSION */
 
-.wrapperProfileOptions{
+.wrapperProfileOptions {
 
   justify-content: flex-end;
 
 }
 
-.wrapperProfileOptions figure {
+.wrapperProfileOptions button,.wrapperDirectionArrows button {
 
-  padding: 0.75%;
+  padding: 0 !important;
   border-radius: 75px;
   background-color: var(--primary-black);
   cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-width: 30px;
-  min-height: 30px;
+  min-width: 2rem;
+  min-height: 2rem;
+  border: none;
+  margin: 2px;
 
+  width: 2rem;
+  height: 2rem;
 
 
 }
 
-.wrapperProfileOptions figure img {
+.wrapperProfileOptions button:hover {
+
+
+  background-color: var(--third-black);
+  transform: scale(1.04);
+  padding: 1%;
+
+
+}
+
+
+.wrapperProfileOptions button img {
 
   width: 24px;
   height: 24px;
@@ -71,5 +91,3 @@
   color: var(--primary-white);
 
 }
-
-

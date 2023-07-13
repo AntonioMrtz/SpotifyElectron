@@ -29,6 +29,7 @@
   align-items: center;
   color: var(--secondary-white);
   cursor: pointer;
+
 }
 
 
@@ -43,9 +44,15 @@
 .wrapperProfileOptions figure {
 
   padding: 0.75%;
-  border-radius: 50px;
+  border-radius: 75px;
   background-color: var(--primary-black);
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 30px;
+  min-height: 30px;
+
 
 
 }

@@ -108,9 +108,9 @@ export default function Playlist(props: PropsPlaylist) {
         style={{ backgroundColor: `${mainColorThumbnail}` }}
       >
         <div className={`d-flex flex-row container-fluid ${styles.nonBlurred}`}>
-          <div className={``}>
-            <img className="img-fluid" src={`${thumbnail}`} alt="" />
-          </div>
+          <button className={`${styles.wrapperThumbnail}`}>
+            <img className="" src={`${thumbnail}`} alt="" />
+          </button>
 
           <div
             className={`d-flex container-fluid flex-column ${styles.headerText}`}

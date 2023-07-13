@@ -10,10 +10,32 @@
 
 }
 
+.header .wrapperThumbnail{
+
+  width: 192px !important;
+  height: 192px;
+  margin-right: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 192px;
+  background-color: transparent;
+  border: none !important;
+  padding: 0 !important;
+}
+
+.header .wrapperThumbnail:hover{
+
+  transform: scale(1.02);
+}
+
 .header img {
 
-  width: 232px;
-  margin-right: 5%;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  aspect-ratio: 1/1;
+
 
 }
 
@@ -82,8 +104,8 @@
 .headerText {
 
   justify-content: flex-end;
-  padding: 0 0 2% 3%;
-
+/*   padding: 0 0 2% 3%;
+ */
 }
 
 .headerText :nth-child(3) {

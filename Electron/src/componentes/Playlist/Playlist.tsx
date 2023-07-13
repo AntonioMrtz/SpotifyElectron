@@ -12,10 +12,7 @@ interface PropsPlaylist {
 }
 
 export default function Playlist(props: PropsPlaylist) {
-
-
-  const [mainColorThumbnail, setMainColorThumbnail] = useState('')
-
+  const [mainColorThumbnail, setMainColorThumbnail] = useState('');
 
   /* Get current Playlist Name */
   const location = useLocation();
@@ -31,10 +28,9 @@ export default function Playlist(props: PropsPlaylist) {
     fetch(encodeURI(Global.backendBaseUrl + 'playlists/dto/' + playlistName))
       .then((res) => res.json())
       .then((res) => {
-
-
-        setThumbnail( res["photo"]==='' ? defaultThumbnailPlaylist : res["photo"])
-
+        setThumbnail(
+          res['photo'] === '' ? defaultThumbnailPlaylist : res['photo']
+        );
 
         if (res['song_names']) {
           setNumberSongs(res['song_names'].length);
@@ -75,16 +71,14 @@ export default function Playlist(props: PropsPlaylist) {
             console.log(e);
         }); */
 
-
-    const fac = new FastAverageColor()
+    const fac = new FastAverageColor();
 
     let options = {
-
-      crossOrigin : "*"
-    }
+      crossOrigin: '*',
+    };
 
     fac
-      .getColorAsync(thumbnail,options)
+      .getColorAsync(thumbnail, options)
       .then((color) => {
         setMainColorThumbnail(color.hex);
       })
@@ -92,12 +86,8 @@ export default function Playlist(props: PropsPlaylist) {
         //console.log(e);
       });
 
-      fac.destroy()
-
-
-
+    fac.destroy();
   }, [thumbnail]);
-
 
   return (
     <div
@@ -122,7 +112,12 @@ export default function Playlist(props: PropsPlaylist) {
         </div>
 
         <div className={` ${styles.nonBlurred} ${styles.subhHeaderPlaylist}`}>
-          Subheader
+          <button>
+            <i
+              className="fa-solid fa-ellipsis"
+              style={{ color: '#ffffff;' }}
+            ></i>
+          </button>
         </div>
       </div>
 

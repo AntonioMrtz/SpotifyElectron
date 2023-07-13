@@ -28,7 +28,6 @@ export default function SongConfig(props:PropsSongConfig) {
         <i className="fa-solid fa-desktop fa-fw"></i>
       </button>
       <VolumeSlider changeVolume={props.changeVolume} />
-
       <button onClick={handleFullScreen} className='btn'>
         <i className="fa-solid fa-up-right-and-down-left-from-center fa-fw"></i>
       </button>

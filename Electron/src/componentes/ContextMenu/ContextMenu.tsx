@@ -18,6 +18,8 @@ export default function ContextMenu() {
         </li>
         <li>
           <button>Añadir a otra copsa</button>
+          <button>Añadir a otra copsa</button>
+
           <button>Añadir a la cola</button>
         </li>
       </ul>

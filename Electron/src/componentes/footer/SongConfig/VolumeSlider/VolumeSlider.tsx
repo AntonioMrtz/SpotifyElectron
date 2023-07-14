@@ -4,8 +4,9 @@ import Slider from "@mui/material/Slider";
 import styles from "./volumeSlider.module.css";
 
 
-interface PropsVolumeSlider {
-  changeVolume: (volume: number) => void
+
+interface PropsVolumeSlider{
+  changeVolume : (volume:number) => void
 }
 
 

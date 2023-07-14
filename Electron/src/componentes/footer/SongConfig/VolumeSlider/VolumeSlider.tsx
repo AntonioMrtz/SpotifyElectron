@@ -75,7 +75,7 @@ export default function VolumeSlider(props: PropsVolumeSlider) {
 
   return (
     <Box width="30%" paddingRight="2%" display="flex">
-      <div className={`flex container-fluid ${styles.container}`} justify-content-center
+      <div className={`d-flex justify-content-center align-items-center pr-3 ${styles.mutedContainer}`} justify-content-center
         >
         <span
           onMouseEnter={handleMouseEnter}

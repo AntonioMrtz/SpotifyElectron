@@ -74,8 +74,8 @@ export default function VolumeSlider(props: PropsVolumeSlider) {
   };
 
   return (
-    <Box width="30%" paddingRight="2%" display="flex">
-      <div className={`flex container-fluid ${styles.container}`} justify-content-center
+    <Box width="30%" padding="1.25%" display="flex">
+      <div className={`d-flex justify-contennt-center align-items-center ${styles.wrapperVolumeAndSlider}`}
         >
         <span
           onMouseEnter={handleMouseEnter}
@@ -110,7 +110,8 @@ export default function VolumeSlider(props: PropsVolumeSlider) {
           <i className={`fa-solid fa-volume-xmark`} ></i>
         </span>
       </div>
-      <Slider classes
+      <Slider
+        style={{display:'flex',justifyContent:'center',alignItems:'center'}}
         size="small"
         min={0}
         max={100}

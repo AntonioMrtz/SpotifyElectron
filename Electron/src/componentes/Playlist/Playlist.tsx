@@ -115,7 +115,7 @@ export default function Playlist(props: PropsPlaylist) {
           <button>
             <i
               className="fa-solid fa-ellipsis"
-              style={{ color: '#ffffff;' }}
+              style={{ color: '#ffffff' }}
             ></i>
           </button>
         </div>

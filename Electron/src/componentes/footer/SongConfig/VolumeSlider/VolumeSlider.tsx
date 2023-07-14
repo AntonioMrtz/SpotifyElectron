@@ -5,7 +5,7 @@ import styles from "./volumeSlider.module.css";
 
 
 interface PropsVolumeSlider{
-  changeVolume : (volume:number) => void 
+  changeVolume : (volume:number) => void
 }
 
 
@@ -52,18 +52,18 @@ const handleVolume = (event:Event, newValue:number | number[] ,activeThumb:numbe
 
   return (
     <Box width="30%" paddingRight="2%" display="flex">
-      <button 
+      <button
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         style={{
             color: isHovered ? "var(--pure-white)" : "var(--primary-white)",
         }}
-        className={`btn ${styles.buttonSpeaker}`} 
+        className={`btn ${styles.buttonSpeaker}`}
         onClick={handleMute}
       >
         <i className={`fa-solid fa-volume-low fa-fw`} ></i>
       </button>
-      <Slider classes
+      <Slider
         size="small"
         min={0}
         max={100}
@@ -80,7 +80,7 @@ const handleVolume = (event:Event, newValue:number | number[] ,activeThumb:numbe
             backgroundColor: isHovered ? "var(--primary-green)" : "var(--primary-white)",
           },
           "& .MuiSlider-thumb": {
-            backgroundColor: isHovered ? "var(--primary-green)" : "var(--primary-white)", 
+            backgroundColor: isHovered ? "var(--primary-green)" : "var(--primary-white)",
             "&:hover, &.Mui-focusVisible": {
               boxShadow: "0px 0px 0px 8px rgba(255, 255, 255, 0.16)",
             },

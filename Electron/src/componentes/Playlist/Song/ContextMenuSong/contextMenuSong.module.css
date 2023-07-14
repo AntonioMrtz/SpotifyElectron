@@ -49,10 +49,12 @@
   justify-content: flex-start;
   color: inherit;
   font-size: 0.875rem;
-  font-weight: 300 !important;
   padding: 12px;
   border-radius: 2px;
   text-align: start;
+  /* font-weight: 300 !important;
+ */
+
 }
 
 .wrapperContextMenu ul button:hover {

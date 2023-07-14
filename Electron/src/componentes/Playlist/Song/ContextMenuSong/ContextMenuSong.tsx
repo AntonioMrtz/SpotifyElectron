@@ -69,7 +69,6 @@ export default function ContextMenuSong() {
                 },
               }}
             >
-              <Typography sx={{ m: 0, p: 0 }}>
                 <div
                   className={` ${styles.wrapperContextMenu} ${styles.wrapperContextMenuAddToPlaylist}`}
                 >
@@ -115,7 +114,6 @@ export default function ContextMenuSong() {
                     </li>
                   </ul>
                 </div>
-              </Typography>
             </Popover>
           </button>
         </li>

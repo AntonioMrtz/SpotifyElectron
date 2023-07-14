@@ -1,28 +1,19 @@
-import {useState,useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import styles from '../playlist.module.css';
 import { PropsSongs } from 'componentes/Sidebar/types/propsSongs.module';
-import ContextMenuSong from 'componentes/ContextMenuSong/ContextMenuSong';
+import ContextMenuSong from 'componentes/Playlist/Song/ContextMenuSong/ContextMenuSong';
 import Popover, { PopoverPosition } from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
 
 export default function Song(props: PropsSongs) {
-
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
 
-    console.log(isOpen)
-
-
-    if(!isOpen){
-
-      handleClose()
+    if (!isOpen) {
+      handleClose();
     }
-
-  }, [isOpen])
-
-
-
+  }, [isOpen]);
 
   const handleSongClicked = () => {
     props.handleSongCliked(props.name);
@@ -30,12 +21,14 @@ export default function Song(props: PropsSongs) {
 
   const handleRightClick = (event: React.MouseEvent<HTMLLIElement>) => {
     event.preventDefault();
-    setIsOpen( isOpen ? false : true)
+    setIsOpen(isOpen ? false : true);
     handleClick(event);
-
   };
 
-  const [anchorPosition, setAnchorPosition] = useState<{ top: number; left: number } | null>(null);
+  const [anchorPosition, setAnchorPosition] = useState<{
+    top: number;
+    left: number;
+  } | null>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLLIElement>) => {
     setAnchorPosition({
@@ -46,6 +39,7 @@ export default function Song(props: PropsSongs) {
 
   const handleClose = () => {
     setAnchorPosition(null);
+    setIsOpen(false)
   };
 
   const open = Boolean(anchorPosition);
@@ -82,9 +76,7 @@ export default function Song(props: PropsSongs) {
             },
           }}
         >
-          <Typography sx={{ m: 0, p: 0 }}>
-            <ContextMenuSong />
-          </Typography>
+          <ContextMenuSong />
         </Popover>
       </div>
     </li>

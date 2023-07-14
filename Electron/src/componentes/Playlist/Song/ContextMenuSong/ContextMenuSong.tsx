@@ -60,7 +60,7 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
   const handleAddToPlaylist = (
     event: React.MouseEvent<HTMLButtonElement>,
     playlistName: string,
-    songName:string
+    songName: string
   ) => {
     /* Add to playlist */
 
@@ -69,20 +69,18 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
     })
       .then((res) => res.json())
       .then((res) => {
-
         let url = Global.backendBaseUrl + 'playlists/' + playlistName; // Reemplaza con la URL de tu API y el nombre de la playlist
 
-        let photo = res["photo"]
+        let photo = res['photo'];
 
         const queryParams = new URLSearchParams({ photo });
         const fetchUrlUpdateSong = `${url}?${queryParams}`;
 
-        let newSongsPutPlaylist = []
-        newSongsPutPlaylist.push(songName)
+        let newSongsPutPlaylist = [];
+        newSongsPutPlaylist.push(songName);
 
-        for(let song_name of res["song_names"]){
-
-          newSongsPutPlaylist.push(song_name)
+        for (let song_name of res['song_names']) {
+          newSongsPutPlaylist.push(song_name);
         }
 
         const requestOptions = {
@@ -159,7 +157,7 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
                   {/* Map */}
 
                   {playlistNames &&
-                    playlistNames.map((playlistName,index) => {
+                    playlistNames.map((playlistName, index) => {
                       return (
                         <li key={index}>
                           <button

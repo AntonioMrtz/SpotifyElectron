@@ -9,7 +9,6 @@ export default function Song(props: PropsSongs) {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-
     if (!isOpen) {
       handleClose();
     }
@@ -39,7 +38,7 @@ export default function Song(props: PropsSongs) {
 
   const handleClose = () => {
     setAnchorPosition(null);
-    setIsOpen(false)
+    setIsOpen(false);
   };
 
   const open = Boolean(anchorPosition);
@@ -76,7 +75,7 @@ export default function Song(props: PropsSongs) {
             },
           }}
         >
-          <ContextMenuSong songName={props.name} handleClose={handleClose}/>
+          <ContextMenuSong songName={props.name} handleClose={handleClose} />
         </Popover>
       </div>
     </li>

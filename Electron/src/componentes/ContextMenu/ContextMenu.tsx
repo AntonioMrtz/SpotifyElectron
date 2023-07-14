@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './contentMenu.module.css';
+import styles from './contextMenu.module.css';
 
 export default function ContextMenu() {
   return (

@@ -6,10 +6,10 @@
 }
 
 .displayMuted{
-
   display: none;
 }
 
-.mutedContainer{
-  margin-right: 1%;
+.buttonMargins{
+  margin-right: 4%;
 }
+

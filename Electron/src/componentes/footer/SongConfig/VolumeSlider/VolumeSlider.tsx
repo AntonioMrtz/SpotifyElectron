@@ -75,42 +75,41 @@ export default function VolumeSlider(props: PropsVolumeSlider) {
 
   return (
     <Box width="30%" paddingRight="2%" display="flex">
-      <div className={`d-flex justify-content-center align-items-center pr-3 ${styles.mutedContainer}`} justify-content-center
-        >
-        <span
+        <button
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           style={{
             color: isHovered ? "var(--pure-white)" : "var(--primary-white)",
           }}
-          className={`${displayUnmuted}`}
+          className={`btn ${displayUnmuted} ${styles.buttonMargins}`}
           onClick={handleMute}>
           <i className={`fa-solid fa-volume-low fa-fw`} ></i>
-        </span>
+        </button>
 
-        <span
+        <button
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           style={{
             color: isHovered ? "var(--pure-white)" : "var(--primary-white)",
           }}
-          className={`${displayHigh}`}
+          className={`btn ${displayHigh} ${styles.buttonMargins}`}
           onClick={handleMute}>
           <i className={`fa-solid fa-volume-high fa-fw`} ></i>
-        </span>
+        </button>
 
-        <span
+        <button
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
           style={{
             color: isHovered ? "var(--pure-white)" : "var(--primary-white)",
           }}
-          className={`${displayMuted}`}
+          className={`btn ${displayMuted} ${styles.buttonMargins}`}
           onClick={handleMute}>
           <i className={`fa-solid fa-volume-xmark`} ></i>
-        </span>
-      </div>
-      <Slider classes
+        </button>
+
+      <Slider
+        style={{display:'flex',justifyContent:'center',alignItems:'center'}}
         size="small"
         min={0}
         max={100}

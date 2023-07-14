@@ -52,6 +52,7 @@
   font-weight: 300 !important;
   padding: 12px;
   border-radius: 2px;
+  text-align: start;
 }
 
 .wrapperContextMenu ul button:hover {

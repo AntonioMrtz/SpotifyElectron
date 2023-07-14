@@ -1,6 +1,7 @@
 import useFetch from "hooks/useFetch"
 import styles from "./explorar.module.css"
 import { useEffect } from "react"
+import ContextMenu from "componentes/ContextMenu/ContextMenu"
 
 interface PropsExplorar{
 
@@ -20,9 +21,20 @@ export default function Explorar(props:PropsExplorar) {
   }, []) */
 
 
+
+
   return (
     <div className={`container-fluid d-flex flex-column`}>
-      a
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+
+      <ContextMenu/>
 
     </div>
   )

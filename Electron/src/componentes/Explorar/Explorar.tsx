@@ -1,7 +1,7 @@
 import useFetch from "hooks/useFetch"
 import styles from "./explorar.module.css"
 import { useEffect } from "react"
-import ContextMenu from "componentes/ContextMenu/ContextMenu"
+import ContextMenuSong from "componentes/ContextMenuSong/ContextMenuSong"
 
 interface PropsExplorar{
 
@@ -28,13 +28,8 @@ export default function Explorar(props:PropsExplorar) {
       <br />
       <br />
       <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
 
-      <ContextMenu/>
+      <ContextMenuSong/>
 
     </div>
   )

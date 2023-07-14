@@ -43,7 +43,7 @@ export default function Song(props: PropsSongs) {
   };
 
   const open = Boolean(anchorPosition);
-  const id = open ? 'simple-popover' : undefined;
+  const id = open ? 'parent-popover' : undefined;
 
   return (
     <li
@@ -76,7 +76,7 @@ export default function Song(props: PropsSongs) {
             },
           }}
         >
-          <ContextMenuSong />
+          <ContextMenuSong songName={props.name} handleClose={handleClose}/>
         </Popover>
       </div>
     </li>

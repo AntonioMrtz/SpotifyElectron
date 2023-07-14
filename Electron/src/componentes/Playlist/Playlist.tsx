@@ -36,7 +36,7 @@ export default function Playlist(props: PropsPlaylist) {
           setNumberSongs(res['song_names'].length);
           let propsSongs: PropsSongs[] = [];
 
-          for (let obj of res['song_names']) {
+          for (let obj of res['song_names'].reverse()) {
             let propsSong: PropsSongs = {
               name: obj,
               index: 0,

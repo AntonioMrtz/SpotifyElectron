@@ -1,6 +1,6 @@
 # Spotify Electron Clone
 
-![Spotify Electron Logo](https://github.com/AntonioMrtz/SpotifyElectron/blob/master/assets/images/SpotifyElectronLogo.png){:width="250px" height="250px"}
+<img src="https://github.com/AntonioMrtz/SpotifyElectron/blob/master/assets/images/SpotifyElectronLogo.png"  width="300" height="300">
 
 ## Software Architecture
 

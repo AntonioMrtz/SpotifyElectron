@@ -3,4 +3,6 @@ export interface PropsSongs {
   playlistName : string;
   index: number;
   handleSongCliked: Function
+  /* Refresh data on playlist menu after a modification */
+  loadPlaylistData: Function
 }

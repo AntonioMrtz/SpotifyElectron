@@ -24,7 +24,7 @@ export default function Playlist(props: PropsPlaylist) {
   const [numberSongs, setNumberSongs] = useState<number>(0);
   const [songs, setSongs] = useState<PropsSongs[]>();
 
-  const handlePlaylistData = () => {
+  const loadPlaylistData = () => {
     fetch(encodeURI(Global.backendBaseUrl + 'playlists/dto/' + playlistName))
       .then((res) => res.json())
       .then((res) => {
@@ -42,21 +42,23 @@ export default function Playlist(props: PropsPlaylist) {
               playlistName : playlistName,
               index: 0,
               handleSongCliked: props.changeSongName,
+              loadPlaylistData: props.changeSongName
             };
 
             propsSongs.push(propsSong);
           }
-
           setSongs(propsSongs);
         }
       })
       .catch((error) => {
         console.log('No se puedo obtener la playlist');
       });
+
+
   };
 
   useEffect(() => {
-    handlePlaylistData();
+    loadPlaylistData();
   }, [location]);
 
 
@@ -139,6 +141,7 @@ export default function Playlist(props: PropsPlaylist) {
                   playlistName={playlistName}
                   index={index + 1}
                   handleSongCliked={props.changeSongName}
+                  loadPlaylistData={loadPlaylistData}
                 />
               );
             })}

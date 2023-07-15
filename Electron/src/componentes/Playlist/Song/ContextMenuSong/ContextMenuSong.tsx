@@ -9,8 +9,9 @@ interface PropsContextMenuSong {
   songName: string;
   playlistName: string;
   handleClose: Function;
+  /* Refresh data on playlist menu after a modification */
+  loadPlaylistData: Function;
 }
-
 
 export default function ContextMenuSong(props: PropsContextMenuSong) {
   const [isOpen, setIsOpen] = useState(false);
@@ -75,8 +76,7 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
 
         let photo = res['photo'];
 
-        const queryParams = new URLSearchParams({ photo });
-        const fetchUrlUpdateSong = `${url}?${queryParams}`;
+        const fetchUrlUpdateSong = `${url}?foto=${photo}`;
 
         let newSongsPutPlaylist = [];
         newSongsPutPlaylist.push(songName);
@@ -122,17 +122,13 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
 
         let photo = res['photo'];
 
-        const queryParams = new URLSearchParams({ photo });
-        const fetchUrlUpdateSong = `${url}?${queryParams}`;
+        const fetchUrlUpdateSong = `${url}?foto=${photo}`;
 
         let newSongsPutPlaylist = [];
 
         for (let song_name of res['song_names']) {
-
-          if(song_name!==songName){
-
+          if (song_name !== songName) {
             newSongsPutPlaylist.push(song_name);
-
           }
         }
 
@@ -152,9 +148,10 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
       })
       .catch((error) => {
         console.log('Unable to update playlist');
-
       });
 
+    console.log('cancion quitada');
+    props.loadPlaylistData();
     handleClose();
   };
 
@@ -172,7 +169,15 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
         </li>
         <li>
           <button>Quitar de canciones que te gustan</button>
-          <button onClick={ (event) =>  handleDeleteFromPlaylist(event,props.playlistName,props.songName)}>
+          <button
+            onClick={(event) =>
+              handleDeleteFromPlaylist(
+                event,
+                props.playlistName,
+                props.songName
+              )
+            }
+          >
             Quitar de esta lista
           </button>
           <button

@@ -21,20 +21,6 @@ export default function Playlist(props: PropsPlaylist) {
   );
 
 
-  /* Refresh playlist song content with delay */
-  const refreshPlaylistData = () =>{
-
-    const delay = 250;
-
-    const timer = setTimeout(() => {
-      loadPlaylistData();
-    }, delay);
-
-    return () => clearTimeout(timer);
-
-  }
-
-
   const [thumbnail, setThumbnail] = useState<string>('');
   const [numberSongs, setNumberSongs] = useState<number>(0);
   const [songs, setSongs] = useState<PropsSongs[]>();
@@ -58,7 +44,7 @@ export default function Playlist(props: PropsPlaylist) {
               playlistName: playlistName,
               index: 0,
               handleSongCliked: props.changeSongName,
-              refreshPlaylistData: refreshPlaylistData,
+              refreshPlaylistData: loadPlaylistData,
             };
 
             propsSongs.push(propsSong);
@@ -153,7 +139,7 @@ export default function Playlist(props: PropsPlaylist) {
                   playlistName={playlistName}
                   index={index + 1}
                   handleSongCliked={props.changeSongName}
-                  refreshPlaylistData={refreshPlaylistData}
+                  refreshPlaylistData={loadPlaylistData}
                 />
               );
             })}

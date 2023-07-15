@@ -101,9 +101,13 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
       })
       .catch((error) => {
         console.log('Unable to update playlist');
-      });
+      }).finally( () => {
 
-    handleClose();
+
+        handleClose();
+
+      })
+
   };
 
   const handleDeleteFromPlaylist = (
@@ -141,17 +145,22 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
         };
 
         fetch(fetchUrlUpdateSong, requestOptions).then((response) => {
-          if (response.status !== 204) {
+          if (response.status === 204) {
+            props.refreshPlaylistData();
+          } else {
             console.log('Unable to delete Song from Playlist');
           }
         });
       })
       .catch((error) => {
         console.log('Unable to update playlist');
-      });
+      }).finally( () => {
 
-    props.refreshPlaylistData();
-    handleClose();
+
+        handleClose();
+
+      })
+
   };
 
   return (

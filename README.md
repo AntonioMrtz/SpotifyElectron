@@ -1,6 +1,6 @@
 # Spotify Electron
 
-<img src="[https://github.com/AntonioMrtz/SpotifyElectron/blob/master/assets/images/SpotifyElectronLogo.png](https://github.com/AntonioMrtz/SpotifyElectron/blob/master/assets/images/SpotifyElectron_MediaPreview.png)"  width="300" height="300" style="    display: block;
+<img src="https://raw.githubusercontent.com/AntonioMrtz/SpotifyElectron/master/assets/images/SpotifyElectron_MediaPreview.png"  width="300" height="300" style="    display: block;
     float: none;
     margin-left: auto;
     margin-right: auto;">

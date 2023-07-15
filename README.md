@@ -1,4 +1,4 @@
-# Spotify Electron Clone
+# Spotify Electron
 
 <img src="https://github.com/AntonioMrtz/SpotifyElectron/blob/master/assets/images/SpotifyElectronLogo.png"  width="300" height="300" style="    display: block;
     float: none;

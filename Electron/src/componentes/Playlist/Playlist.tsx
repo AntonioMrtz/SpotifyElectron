@@ -26,14 +26,12 @@ export default function Playlist(props: PropsPlaylist) {
   const [songs, setSongs] = useState<PropsSongs[]>();
 
   const loadPlaylistData = () => {
-    console.log('re render');
     fetch(encodeURI(Global.backendBaseUrl + 'playlists/dto/' + playlistName))
       .then((res) => res.json())
       .then((res) => {
         setThumbnail(
           res['photo'] === '' ? defaultThumbnailPlaylist : res['photo']
         );
-        console.log(res)
         if (res['song_names']) {
           setNumberSongs(res['song_names'].length);
           let propsSongs: PropsSongs[] = [];

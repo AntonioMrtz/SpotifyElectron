@@ -8,18 +8,6 @@ import { PropsPlaylist } from './types/propsPlaylist.module';
 import Global from 'global/global';
 
 export default function Sidebar() {
-  //* RELOAD SIDEBAR
-
-  const reloadSideBar = () => {
-    /* Force reload by changing reload variable */
-    const delay = 500;
-
-    const timer = setTimeout(() => {
-      handlePlaylists();
-    }, delay);
-
-    return () => clearTimeout(timer);
-  };
 
   //* MENU HOVER
 
@@ -178,7 +166,7 @@ export default function Sidebar() {
               className={`container-fluid d-flex justify-content-end p-0`}
               style={{ width: '25%' }}
             >
-              <ModalAddSongPlaylist reloadSidebar={reloadSideBar} />
+              <ModalAddSongPlaylist reloadSidebar={handlePlaylists} />
             </div>
           </header>
           <ul

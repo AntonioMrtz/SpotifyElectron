@@ -7,7 +7,7 @@
 ## Start Electron App
 
 ```
-git clone https://github.com/AntonioMrtz/SpotifyElectron.git && cd SpotifyElectron
+git clone https://github.com/AntonioMrtz/SpotifyElectron.git && cd SpotifyElectron/Electron
 && npm install && npm start
 ```
 

@@ -152,6 +152,8 @@ export default function AddSongPlayListAccordion(
               ModalConfirmationTypes.PLAYLIST,
               ModalConfirmationResponse.SUCCESS
             );
+            props.reloadSidebar();
+
           } else {
             console.log('No se a creado la playlist');
 
@@ -166,7 +168,6 @@ export default function AddSongPlayListAccordion(
         });
     }
 
-    props.reloadSidebar();
     props.handleClose();
 
   };

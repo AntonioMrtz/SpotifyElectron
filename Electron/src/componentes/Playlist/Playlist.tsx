@@ -39,6 +39,7 @@ export default function Playlist(props: PropsPlaylist) {
           for (let obj of res['song_names'].reverse()) {
             let propsSong: PropsSongs = {
               name: obj,
+              playlistName : playlistName,
               index: 0,
               handleSongCliked: props.changeSongName,
             };
@@ -58,18 +59,9 @@ export default function Playlist(props: PropsPlaylist) {
     handlePlaylistData();
   }, [location]);
 
+
+  /* Process photo color */
   useEffect(() => {
-    /*     const fac = new FastAverageColor();
-
-    fac.getColorAsync(`${thumbnail}?cross-origin=Anonymous`)
-        .then(color => {
-
-            setMainColorThumbnail(color.hex)
-            console.log('Average color', color);
-        })
-        .catch(e => {
-            console.log(e);
-        }); */
 
     const fac = new FastAverageColor();
 
@@ -144,6 +136,7 @@ export default function Playlist(props: PropsPlaylist) {
                 <Song
                   key={index}
                   name={song.name}
+                  playlistName={playlistName}
                   index={index + 1}
                   handleSongCliked={props.changeSongName}
                 />

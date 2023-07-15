@@ -7,8 +7,10 @@ import Global from 'global/global';
 
 interface PropsContextMenuSong {
   songName: string;
+  playlistName: string;
   handleClose: Function;
 }
+
 
 export default function ContextMenuSong(props: PropsContextMenuSong) {
   const [isOpen, setIsOpen] = useState(false);
@@ -93,12 +95,64 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
 
         fetch(fetchUrlUpdateSong, requestOptions).then((response) => {
           if (response.status !== 204) {
-            console.log('Unable to add then Song to Playlist');
+            console.log('Unable to add the Song to Playlist');
           }
         });
       })
       .catch((error) => {
         console.log('Unable to update playlist');
+      });
+
+    handleClose();
+  };
+
+  const handleDeleteFromPlaylist = (
+    event: React.MouseEvent<HTMLButtonElement>,
+    playlistName: string,
+    songName: string
+  ) => {
+    /* Add to playlist */
+
+    fetch(Global.backendBaseUrl + 'playlists/dto/' + playlistName, {
+      headers: { 'Access-Control-Allow-Origin': '*' },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        let url = Global.backendBaseUrl + 'playlists/' + playlistName; // Reemplaza con la URL de tu API y el nombre de la playlist
+
+        let photo = res['photo'];
+
+        const queryParams = new URLSearchParams({ photo });
+        const fetchUrlUpdateSong = `${url}?${queryParams}`;
+
+        let newSongsPutPlaylist = [];
+
+        for (let song_name of res['song_names']) {
+
+          if(song_name!==songName){
+
+            newSongsPutPlaylist.push(song_name);
+
+          }
+        }
+
+        const requestOptions = {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(newSongsPutPlaylist),
+        };
+
+        fetch(fetchUrlUpdateSong, requestOptions).then((response) => {
+          if (response.status !== 204) {
+            console.log('Unable to delete Song from Playlist');
+          }
+        });
+      })
+      .catch((error) => {
+        console.log('Unable to update playlist');
+
       });
 
     handleClose();
@@ -118,7 +172,9 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
         </li>
         <li>
           <button>Quitar de canciones que te gustan</button>
-          <button>Quitar de esta lista</button>
+          <button onClick={ (event) =>  handleDeleteFromPlaylist(event,props.playlistName,props.songName)}>
+            Quitar de esta lista
+          </button>
           <button
             className="d-flex justify-content-between"
             onClick={handleClick}
@@ -174,7 +230,6 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
                         </li>
                       );
                     })}
-
                 </ul>
               </div>
             </Popover>

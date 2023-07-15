@@ -75,7 +75,7 @@ export default function Song(props: PropsSongs) {
             },
           }}
         >
-          <ContextMenuSong songName={props.name} handleClose={handleClose} />
+          <ContextMenuSong songName={props.name} playlistName={props.playlistName} handleClose={handleClose} />
         </Popover>
       </div>
     </li>

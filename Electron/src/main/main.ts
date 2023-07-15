@@ -12,7 +12,7 @@ import path from 'path';
 import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import log from 'electron-log';
 import { resolveHtmlPath } from './util';
-const fs = require('fs');
+
 
 let mainWindow: BrowserWindow | null = null;
 
@@ -71,7 +71,7 @@ const createWindow = async () => {
     height: 800,
     minWidth: 900,
     minHeight: 730,
-    icon: '',
+    icon:path.join(RESOURCES_PATH, '/SpotifyElectronLogo.ico'),
     webPreferences: {
       preload: app.isPackaged
         ? path.join(__dirname, 'preload.js')

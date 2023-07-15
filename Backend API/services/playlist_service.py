@@ -88,9 +88,6 @@ def update_playlist(name: str, photo: str, song_names: list) -> None:
     Returns:
     """
 
-
-
-
     if not checkValidParameterString(name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 

@@ -1,9 +1,6 @@
 # Spotify Electron
 
-<img src="https://raw.githubusercontent.com/AntonioMrtz/SpotifyElectron/master/assets/images/SpotifyElectron_MediaPreview.png"  width="300" height="300" style="    display: block;
-    float: none;
-    margin-left: auto;
-    margin-right: auto;">
+![Spotify Electron Media Preview](https://raw.githubusercontent.com/AntonioMrtz/SpotifyElectron/master/assets/images/SpotifyElectron_MediaPreview.png)
 
 ## Software Architecture
 

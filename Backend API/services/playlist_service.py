@@ -74,7 +74,7 @@ def create_playlist(name: str, photo: str, song_names: list) -> None:
 
 
 def update_playlist(name: str, photo: str, song_names: list) -> None:
-    """ Updates a playlist with name, url of thumbnail and list of song names
+    """ Updates a playlist with name, url of thumbnail and list of song names [ duplicates wont be added ]
 
     Args:
         name (str): Playlists's name
@@ -88,6 +88,9 @@ def update_playlist(name: str, photo: str, song_names: list) -> None:
     Returns:
     """
 
+
+
+
     if not checkValidParameterString(name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
@@ -97,7 +100,7 @@ def update_playlist(name: str, photo: str, song_names: list) -> None:
         raise HTTPException(status_code=404, detail="La playlist no existe")
 
     playlistCollection.update_one({'name': name}, {
-                                  "$set": {'name': name, 'photo': photo, 'song_names': song_names}})
+                                  "$set": {'name': name, 'photo': photo, 'song_names': list(set(song_names))}})
 
 
 def get_all_playlist() -> list:

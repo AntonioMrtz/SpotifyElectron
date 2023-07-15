@@ -142,7 +142,7 @@ def post_playlist(nombre: str, foto: str, nombres_canciones: list) -> Response:
 
 @app.put("/playlists/{nombre}")
 def update_playlist(nombre: str, nombres_canciones: list, foto: str = "") -> Response:
-    """ Actualiza los parámetros de la playlist con nombre "nombre""
+    """ Actualiza los parámetros de la playlist con nombre "nombre" , las canciones repetidas son serán añadidas
 
     Args:
         nombre (str): Nombre de la playlist

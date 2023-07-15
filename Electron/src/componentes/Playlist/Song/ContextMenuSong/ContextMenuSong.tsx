@@ -10,7 +10,7 @@ interface PropsContextMenuSong {
   playlistName: string;
   handleClose: Function;
   /* Refresh data on playlist menu after a modification */
-  loadPlaylistData: Function;
+  refreshPlaylistData: Function;
 }
 
 export default function ContextMenuSong(props: PropsContextMenuSong) {
@@ -150,8 +150,7 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
         console.log('Unable to update playlist');
       });
 
-    console.log('cancion quitada');
-    props.loadPlaylistData();
+    props.refreshPlaylistData();
     handleClose();
   };
 

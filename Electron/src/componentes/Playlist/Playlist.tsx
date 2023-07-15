@@ -20,18 +20,34 @@ export default function Playlist(props: PropsPlaylist) {
     location.pathname.split('/').slice(-1)[0]
   );
 
+
+  /* Refresh playlist song content with delay */
+  const refreshPlaylistData = () =>{
+
+    const delay = 250;
+
+    const timer = setTimeout(() => {
+      loadPlaylistData();
+    }, delay);
+
+    return () => clearTimeout(timer);
+
+  }
+
+
   const [thumbnail, setThumbnail] = useState<string>('');
   const [numberSongs, setNumberSongs] = useState<number>(0);
   const [songs, setSongs] = useState<PropsSongs[]>();
 
   const loadPlaylistData = () => {
+    console.log('re render');
     fetch(encodeURI(Global.backendBaseUrl + 'playlists/dto/' + playlistName))
       .then((res) => res.json())
       .then((res) => {
         setThumbnail(
           res['photo'] === '' ? defaultThumbnailPlaylist : res['photo']
         );
-
+        console.log(res)
         if (res['song_names']) {
           setNumberSongs(res['song_names'].length);
           let propsSongs: PropsSongs[] = [];
@@ -39,10 +55,10 @@ export default function Playlist(props: PropsPlaylist) {
           for (let obj of res['song_names'].reverse()) {
             let propsSong: PropsSongs = {
               name: obj,
-              playlistName : playlistName,
+              playlistName: playlistName,
               index: 0,
               handleSongCliked: props.changeSongName,
-              loadPlaylistData: props.changeSongName
+              refreshPlaylistData: refreshPlaylistData,
             };
 
             propsSongs.push(propsSong);
@@ -53,18 +69,14 @@ export default function Playlist(props: PropsPlaylist) {
       .catch((error) => {
         console.log('No se puedo obtener la playlist');
       });
-
-
   };
 
   useEffect(() => {
     loadPlaylistData();
   }, [location]);
 
-
   /* Process photo color */
   useEffect(() => {
-
     const fac = new FastAverageColor();
 
     let options = {
@@ -141,7 +153,7 @@ export default function Playlist(props: PropsPlaylist) {
                   playlistName={playlistName}
                   index={index + 1}
                   handleSongCliked={props.changeSongName}
-                  loadPlaylistData={loadPlaylistData}
+                  refreshPlaylistData={refreshPlaylistData}
                 />
               );
             })}

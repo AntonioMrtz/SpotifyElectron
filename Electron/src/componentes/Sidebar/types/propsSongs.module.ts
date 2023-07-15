@@ -4,5 +4,5 @@ export interface PropsSongs {
   index: number;
   handleSongCliked: Function
   /* Refresh data on playlist menu after a modification */
-  loadPlaylistData: Function
+  refreshPlaylistData: Function
 }

@@ -175,9 +175,6 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
                       );
                     })}
 
-                  <li>
-                    <button>Playlist 1</button>
-                  </li>
                 </ul>
               </div>
             </Popover>

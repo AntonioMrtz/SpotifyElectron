@@ -1,5 +1,7 @@
 # Spotify Electron Clone
 
+![Spotify Electron Logo](https://github.com/AntonioMrtz/SpotifyElectron/blob/master/assets/images/SpotifyElectronLogo.png)
+
 ## Software Architecture
 
 ![Spotify_Electron_Software_Diagram](assets/images/Spotify_Electron_Software_Diagram.png)

@@ -9,19 +9,21 @@ import AudiotrackIcon from '@mui/icons-material/Audiotrack';
 import styles from './addSongPlayListAccordion.module.css';
 import GenreOption from './GenreOption/GenreOption';
 import Global from 'global/global';
-import { ModalConfirmationResponse,ModalConfirmationTypes } from 'componentes/Sidebar/types/ModalConfirmationArgs'; '../../types/ModalConfirmationArgs'
-
+import {
+  ModalConfirmationResponse,
+  ModalConfirmationTypes,
+} from 'componentes/Sidebar/types/ModalConfirmationArgs';
+('../../types/ModalConfirmationArgs');
 
 interface PropsAddSongPlayListAccordion {
   handleClose: Function;
   reloadSidebar: Function;
-  handleShowConfirmationModal: Function
+  handleShowConfirmationModal: Function;
 }
 
 export default function AddSongPlayListAccordion(
   props: PropsAddSongPlayListAccordion
 ) {
-
   /* SONG */
 
   const [songFile, setSongFile] = useState<File>();
@@ -92,10 +94,11 @@ export default function AddSongPlayListAccordion(
         })
         .catch((error) => {
           console.error('Error:', error);
+        })
+        .finally(() => {
+          props.handleClose();
         });
     }
-
-    props.handleClose();
   };
 
   /* PLAYLIST */
@@ -153,7 +156,6 @@ export default function AddSongPlayListAccordion(
               ModalConfirmationResponse.SUCCESS
             );
             props.reloadSidebar();
-
           } else {
             console.log('No se a creado la playlist');
 
@@ -165,11 +167,11 @@ export default function AddSongPlayListAccordion(
         })
         .catch((error) => {
           console.error('Error:', error);
+        })
+        .finally(() => {
+          props.handleClose();
         });
     }
-
-    props.handleClose();
-
   };
 
   /* GENRES */

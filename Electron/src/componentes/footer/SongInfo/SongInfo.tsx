@@ -36,9 +36,9 @@ export default function SongInfo(props: PropsSongInfo | any) {
             <a href="">{artist}</a>
           </div>
           <div className={`d-flex flex-column ${styles.likeContainer}`}>
-            <a href="">
+            <span onClick={updateSongInfo}>
               <i className="fa-regular fa-heart"></i>
-            </a>
+            </span>
           </div>
         </Fragment>
       )}

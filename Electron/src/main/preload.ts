@@ -3,21 +3,27 @@
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
 
 export type ChannelToogleFullScreen = 'toogle-fullscreen';
-export type ChannelSubmitSong = 'submit-song';
+export type ChannelCopyToClipboard = 'copy-to-clipboard';
 
 
 
 const electronHandler = {
-  /* submitSong: {
-    sendMessage(channel: ChannelSubmitSong, ...args: unknown[]) {
-      ipcRenderer.send(channel, ...args);
-    },
-  }, */
+
   toogleFullScreen : {
     sendMessage(channel: ChannelToogleFullScreen, ...args: unknown[]) {
       ipcRenderer.send(channel, ...args);
     },
+  },
+
+  copyToClipboard : {
+
+    sendMessage(channel: ChannelCopyToClipboard, ...args: unknown[]) {
+      ipcRenderer.invoke(channel, ...args);
+    },
+
   }
+
+
 };
 
 contextBridge.exposeInMainWorld('electron', electronHandler);

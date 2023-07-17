@@ -9,9 +9,9 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { app, BrowserWindow, shell, ipcMain } from 'electron';
-import log from 'electron-log';
+import { app, BrowserWindow, shell, ipcMain, clipboard , Data  } from 'electron';
 import { resolveHtmlPath } from './util';
+
 
 
 let mainWindow: BrowserWindow | null = null;
@@ -19,13 +19,19 @@ let mainWindow: BrowserWindow | null = null;
 /* Events */
 
 ipcMain.on('toogle-fullscreen', async (event) => {
-
-  if(mainWindow && mainWindow.isFullScreen())
-    mainWindow.setFullScreen(false)
-  else if(mainWindow)
-    mainWindow.setFullScreen(true)
-
+  if (mainWindow && mainWindow.isFullScreen()) mainWindow.setFullScreen(false);
+  else if (mainWindow) mainWindow.setFullScreen(true);
 });
+
+ipcMain.handle('copy-to-clipboard', async (event, ...args) => {
+  let data: Data = {};
+  data.text = args[0];
+
+  clipboard.write(data);
+});
+
+
+/* Settings */
 
 
 if (process.env.NODE_ENV === 'production') {

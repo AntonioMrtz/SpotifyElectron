@@ -60,6 +60,16 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
     handlePlaylists();
   }, []);
 
+
+
+  /* Handle copy to clipboard on share button */
+
+  const handleCopyToClipboard = (): void => {
+    window.electron.copyToClipboard.sendMessage('copy-to-clipboard',Global.repositoryUrl);
+    handleClose()
+  };
+
+
   const handleAddToPlaylist = (
     event: React.MouseEvent<HTMLButtonElement>,
     playlistName: string,
@@ -249,7 +259,7 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
           </button>
         </li>
         <li>
-          <button>Compartir</button>
+          <button onClick={handleCopyToClipboard}>Compartir</button>
         </li>
       </ul>
     </div>

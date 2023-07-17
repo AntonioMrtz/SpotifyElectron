@@ -11,7 +11,6 @@ import GenreOption from './GenreOption/GenreOption';
 import Global from 'global/global';
 import {
   InfoPopoverType,
-  InfoPopoverResponse,
 } from 'componentes/types/InfoPopover';
 import ConfirmationModal from 'componentes/InfoPopover/InfoPopover';
 ('../../types/ModalConfirmationArgs');
@@ -21,6 +20,22 @@ interface PropsAddSongPlayListAccordion {
   reloadSidebar: Function;
 }
 
+
+const MessagesInfoPopOver = {
+
+  PLAYLIST_ADDED_TITLE : 'Playlist Añadida',
+  PLAYLIST_ADDED_DESCRIPTION : 'La playlist se ha añadido correctamente',
+  PLAYLIST_NOT_ADDED_TITLE : 'Playlist no Añadida',
+  PLAYLIST_NOT_ADDED_DESCRIPTION : 'La playlist no se ha podido añadir',
+
+  SONG_ADDED_TITLE : 'Canción Añadida',
+  SONG_ADDED_DESCRIPTION : 'La canción se ha añadido correctamente',
+  SONG_NOT_ADDED_TITLE : 'Canción no Añadida',
+  SONG_NOT_ADDED_DESCRIPTION : 'La canción no se ha podido añadir'
+
+}
+
+
 export default function AddSongPlayListAccordion(
   props: PropsAddSongPlayListAccordion
 ) {
@@ -28,7 +43,7 @@ export default function AddSongPlayListAccordion(
 
 
   const [type, setType] = useState<InfoPopoverType>()
-  const [response, setResponse] = useState<InfoPopoverResponse>()
+  const [title, setTitle] = useState<string>()
   const [description,setDescription] = useState<String>()
 
 
@@ -40,13 +55,12 @@ export default function AddSongPlayListAccordion(
 
   const handleShowConfirmationModal = (
     type: InfoPopoverType,
-    response: InfoPopoverResponse,
+    title: string,
     description: string
   ) => {
       setType(type);
-      setResponse(response);
-      setDescription('');
-      console.log("add song playlist - "+triggerOpenConfirmationModal)
+      setTitle(title);
+      setDescription(description);
       setTriggerOpenConfirmationModal( (state) => !state)
 
   };
@@ -108,18 +122,11 @@ export default function AddSongPlayListAccordion(
         .then((response) => {
           if (response.status == 201) {
             console.log('Cancion creada');
-            handleShowConfirmationModal(
-              InfoPopoverType.SONG,
-              InfoPopoverResponse.SUCCESS,
-              ''
-            );
+            handleShowConfirmationModal(InfoPopoverType.SUCCESS,MessagesInfoPopOver.SONG_ADDED_TITLE,MessagesInfoPopOver.SONG_ADDED_DESCRIPTION)
           } else {
             console.log('No se a creado la cancion');
-            handleShowConfirmationModal(
-              InfoPopoverType.SONG,
-              InfoPopoverResponse.ERROR,
-              ''
-            );
+            handleShowConfirmationModal(InfoPopoverType.ERROR,MessagesInfoPopOver.SONG_NOT_ADDED_TITLE,MessagesInfoPopOver.SONG_NOT_ADDED_DESCRIPTION)
+
           }
         })
         .catch((error) => {
@@ -181,20 +188,13 @@ export default function AddSongPlayListAccordion(
           if (response.status == 201) {
             console.log('Playlist creada');
 
-            handleShowConfirmationModal(
-              InfoPopoverType.PLAYLIST,
-              InfoPopoverResponse.SUCCESS,
-              ''
-            );
+            handleShowConfirmationModal(  InfoPopoverType.SUCCESS,MessagesInfoPopOver.PLAYLIST_ADDED_TITLE,MessagesInfoPopOver.PLAYLIST_ADDED_DESCRIPTION);
             props.reloadSidebar();
           } else {
             console.log('No se a creado la playlist');
 
-            handleShowConfirmationModal(
-              InfoPopoverType.PLAYLIST,
-              InfoPopoverResponse.ERROR,
-              ''
-            );
+            handleShowConfirmationModal(  InfoPopoverType.ERROR,MessagesInfoPopOver.PLAYLIST_NOT_ADDED_TITLE,MessagesInfoPopOver.PLAYLIST_NOT_ADDED_DESCRIPTION);
+
           }
         })
         .catch((error) => {
@@ -416,7 +416,7 @@ export default function AddSongPlayListAccordion(
         </AccordionDetails>
       </Accordion>
 
-      <ConfirmationModal type={type} response={response} description={description} triggerOpenConfirmationModal={triggerOpenConfirmationModal} handleClose={props.handleClose}></ConfirmationModal>
+      <ConfirmationModal type={type} title={title} description={description} triggerOpenConfirmationModal={triggerOpenConfirmationModal} handleClose={props.handleClose}></ConfirmationModal>
 
     </Fragment>
   );

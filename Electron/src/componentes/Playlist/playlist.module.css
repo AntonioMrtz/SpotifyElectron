@@ -151,10 +151,17 @@
 
 }
 
-.wrapperSongTable li,
+.wrapperSongTable
 ul {
 
   padding: 0 !important;
+}
+
+.wrapperSongTable li
+{
+
+  padding: 1% 0 0% 0 !important;
+
 }
 
 .wrapperSongTable li:not(:first-child) {

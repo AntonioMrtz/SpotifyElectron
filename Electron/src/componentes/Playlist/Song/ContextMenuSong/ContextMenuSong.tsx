@@ -4,6 +4,8 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { MouseEventHandler, useEffect, useState } from 'react';
 import Global from 'global/global';
+import InfoPopover from '../../../InfoPopover/InfoPopover'
+import {InfoPopoverResponse,InfoPopoverType,PropsInfoPopover} from '../../../types/InfoPopover'
 
 interface PropsContextMenuSong {
   songName: string;
@@ -262,6 +264,9 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
           <button onClick={handleCopyToClipboard}>Compartir</button>
         </li>
       </ul>
+
+      <InfoPopover type={InfoPopoverType.PLAYLIST} response={InfoPopoverResponse.SUCCESS } description={''} triggerOpenConfirmationModal={false}></InfoPopover>
+
     </div>
   );
 }

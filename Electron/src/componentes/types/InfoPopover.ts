@@ -6,13 +6,15 @@ export interface PropsInfoPopover{
   description : String | undefined,
   triggerOpenConfirmationModal : boolean
   /* handle closing the parent if needed */
-  handleClose : Function
+  handleClose? : Function | undefined
 
 }
 
 export enum InfoPopoverType {
   PLAYLIST = 'Playlist',
   SONG = 'Canción',
+  COMPARTIR_BUTTON ='Btn-Compartir'
+
 }
 
 export enum InfoPopoverResponse {

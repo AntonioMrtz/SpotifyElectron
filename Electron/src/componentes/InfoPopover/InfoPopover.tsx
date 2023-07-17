@@ -31,7 +31,11 @@ export default function InfoPopover(props:PropsInfoPopover) {
 
   const handleCloseConfirmationModal = () => {
     setOpenConfirmationModal(false);
-    props.handleClose()
+    if(props.handleClose){
+
+      props.handleClose()
+
+    }
   };
 
 

@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import { MouseEventHandler, useEffect, useState } from 'react';
 import Global from 'global/global';
 import InfoPopover from '../../../InfoPopover/InfoPopover'
-import {InfoPopoverResponse,InfoPopoverType,PropsInfoPopover} from '../../../types/InfoPopover'
+import {PropsInfoPopover,InfoPopoverType} from '../../../types/InfoPopover'
 
 interface PropsContextMenuSong {
   songName: string;
@@ -14,6 +14,15 @@ interface PropsContextMenuSong {
   /* Refresh data on playlist menu after a modification */
   refreshPlaylistData: Function;
 }
+
+const MessagesInfoPopOver = {
+
+  CLIPBOARD_TITLE : 'Enlace copiado al portapapeles',
+  CLIPBOARD_DESCRIPTION : 'El enlace del repositorio del proyecto ha sido copiado éxitosamente',
+
+
+}
+
 
 export default function ContextMenuSong(props: PropsContextMenuSong) {
   const [isOpen, setIsOpen] = useState(false);
@@ -62,15 +71,19 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
     handlePlaylists();
   }, []);
 
-
-
   /* Handle copy to clipboard on share button */
 
-  const handleCopyToClipboard = (): void => {
-    window.electron.copyToClipboard.sendMessage('copy-to-clipboard',Global.repositoryUrl);
-    handleClose()
-  };
+  //triggers Confirmation Modal
+  const [triggerOpenConfirmationModal, setTriggerOpenConfirmationModal] = useState(false);
 
+  const handleCopyToClipboard = (): void => {
+    window.electron.copyToClipboard.sendMessage(
+      'copy-to-clipboard',
+      Global.repositoryUrl
+    );
+    setTriggerOpenConfirmationModal(true);
+
+  };
 
   const handleAddToPlaylist = (
     event: React.MouseEvent<HTMLButtonElement>,
@@ -113,13 +126,10 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
       })
       .catch((error) => {
         console.log('Unable to update playlist');
-      }).finally( () => {
-
-
-        handleClose();
-
       })
-
+      .finally(() => {
+        handleClose();
+      });
   };
 
   const handleDeleteFromPlaylist = (
@@ -166,13 +176,10 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
       })
       .catch((error) => {
         console.log('Unable to update playlist');
-      }).finally( () => {
-
-
-        handleClose();
-
       })
-
+      .finally(() => {
+        handleClose();
+      });
   };
 
   return (
@@ -265,8 +272,13 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
         </li>
       </ul>
 
-      <InfoPopover type={InfoPopoverType.PLAYLIST} response={InfoPopoverResponse.SUCCESS } description={''} triggerOpenConfirmationModal={false}></InfoPopover>
-
+      <InfoPopover
+        type={InfoPopoverType.CLIPBOARD}
+        title={MessagesInfoPopOver.CLIPBOARD_TITLE}
+        description={MessagesInfoPopOver.CLIPBOARD_DESCRIPTION}
+        triggerOpenConfirmationModal={triggerOpenConfirmationModal}
+        handleClose={handleClose}
+      ></InfoPopover>
     </div>
   );
 }

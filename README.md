@@ -9,7 +9,9 @@
 
 1. Clone the repository
 
-```git clone https://github.com/AntonioMrtz/SpotifyElectron.git```
+```
+git clone https://github.com/AntonioMrtz/SpotifyElectron.git
+```
 
 
 2. Start Electron App

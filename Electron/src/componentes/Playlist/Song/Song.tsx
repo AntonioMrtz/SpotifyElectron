@@ -47,11 +47,14 @@ export default function Song(props: PropsSongs) {
   return (
     <li
       onDoubleClick={handleSongClicked}
-      className={`container-fluid ${styles.gridContainer}`}
+      className={`container-fluid ${styles.gridContainer} align-items-center`}
       onContextMenu={handleRightClick}
     >
       <span className={` ${styles.songNumberTable}`}>{props.index}</span>
-      <span className={` ${styles.songTitleTable}`}>{props.name}</span>
+      <span className={`  d-flex flex-column`}>
+        <span className={`${styles.songTitleTable} ${styles.titleContainer} pb-0`}>{props.name}</span>
+        <span className={`${styles.gridItem} ${styles.artistNameContainer} p-0 `}>{props.artistName}</span>
+      </span>
       <span className={` ${styles.gridItem}`}>2:01</span>
 
       <div>

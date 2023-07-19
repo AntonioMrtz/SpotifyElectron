@@ -10,6 +10,11 @@ export default function SongInfo(props: PropsSongInfo | any) {
   const [name, setName] = useState<string>();
   const [thumbnail, setThumbnail] = useState<string>();
   const [artist, setArtist] = useState<string>();
+  const [displaylike, setdisplaylike] = useState('');
+
+  const handleLike = ():void =>{
+    setdisplaylike(styles.displayNoneLike);
+  };
 
   const updateSongInfo = async () => {
     if (props.songInfo) {
@@ -19,6 +24,8 @@ export default function SongInfo(props: PropsSongInfo | any) {
       setArtist(props.songInfo['artist']);
     }
   };
+
+
 
   useEffect(() => {
     updateSongInfo();
@@ -36,9 +43,9 @@ export default function SongInfo(props: PropsSongInfo | any) {
             <a href="">{artist}</a>
           </div>
           <div className={`d-flex flex-column ${styles.likeContainer}`}>
-            <span onClick={updateSongInfo}>
+            <button onClick={handleLike} className={`btn ${displaylike}`}>
               <i className="fa-regular fa-heart"></i>
-            </span>
+            </button>
           </div>
         </Fragment>
       )}

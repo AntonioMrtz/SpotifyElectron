@@ -10,20 +10,62 @@ import styles from './addSongPlayListAccordion.module.css';
 import GenreOption from './GenreOption/GenreOption';
 import Global from 'global/global';
 import {
-  ModalConfirmationResponse,
-  ModalConfirmationTypes,
-} from 'componentes/Sidebar/types/ModalConfirmationArgs';
+  InfoPopoverType,
+} from 'componentes/types/InfoPopover';
+import ConfirmationModal from 'componentes/InfoPopover/InfoPopover';
 ('../../types/ModalConfirmationArgs');
 
 interface PropsAddSongPlayListAccordion {
   handleClose: Function;
   reloadSidebar: Function;
-  handleShowConfirmationModal: Function;
 }
+
+
+const MessagesInfoPopOver = {
+
+  PLAYLIST_ADDED_TITLE : 'Playlist Añadida',
+  PLAYLIST_ADDED_DESCRIPTION : 'La playlist se ha añadido correctamente',
+  PLAYLIST_NOT_ADDED_TITLE : 'Playlist no Añadida',
+  PLAYLIST_NOT_ADDED_DESCRIPTION : 'La playlist no se ha podido añadir',
+
+  SONG_ADDED_TITLE : 'Canción Añadida',
+  SONG_ADDED_DESCRIPTION : 'La canción se ha añadido correctamente',
+  SONG_NOT_ADDED_TITLE : 'Canción no Añadida',
+  SONG_NOT_ADDED_DESCRIPTION : 'La canción no se ha podido añadir'
+
+}
+
 
 export default function AddSongPlayListAccordion(
   props: PropsAddSongPlayListAccordion
 ) {
+
+
+
+  const [type, setType] = useState<InfoPopoverType>()
+  const [title, setTitle] = useState<string>()
+  const [description,setDescription] = useState<String>()
+
+
+  /* Triggers Confirmation Modal */
+
+  const [triggerOpenConfirmationModal, setTriggerOpenConfirmationModal] =
+    useState(false);
+
+
+  const handleShowConfirmationModal = (
+    type: InfoPopoverType,
+    title: string,
+    description: string
+  ) => {
+      setType(type);
+      setTitle(title);
+      setDescription(description);
+      setTriggerOpenConfirmationModal( (state) => !state)
+
+  };
+
+
   /* SONG */
 
   const [songFile, setSongFile] = useState<File>();
@@ -80,23 +122,18 @@ export default function AddSongPlayListAccordion(
         .then((response) => {
           if (response.status == 201) {
             console.log('Cancion creada');
-            props.handleShowConfirmationModal(
-              ModalConfirmationTypes.SONG,
-              ModalConfirmationResponse.SUCCESS
-            );
+            handleShowConfirmationModal(InfoPopoverType.SUCCESS,MessagesInfoPopOver.SONG_ADDED_TITLE,MessagesInfoPopOver.SONG_ADDED_DESCRIPTION)
           } else {
             console.log('No se a creado la cancion');
-            props.handleShowConfirmationModal(
-              ModalConfirmationTypes.SONG,
-              ModalConfirmationResponse.ERROR
-            );
+            handleShowConfirmationModal(InfoPopoverType.ERROR,MessagesInfoPopOver.SONG_NOT_ADDED_TITLE,MessagesInfoPopOver.SONG_NOT_ADDED_DESCRIPTION)
+
           }
         })
         .catch((error) => {
           console.error('Error:', error);
         })
         .finally(() => {
-          props.handleClose();
+          //props.handleClose();
         });
     }
   };
@@ -151,25 +188,20 @@ export default function AddSongPlayListAccordion(
           if (response.status == 201) {
             console.log('Playlist creada');
 
-            props.handleShowConfirmationModal(
-              ModalConfirmationTypes.PLAYLIST,
-              ModalConfirmationResponse.SUCCESS
-            );
+            handleShowConfirmationModal(  InfoPopoverType.SUCCESS,MessagesInfoPopOver.PLAYLIST_ADDED_TITLE,MessagesInfoPopOver.PLAYLIST_ADDED_DESCRIPTION);
             props.reloadSidebar();
           } else {
             console.log('No se a creado la playlist');
 
-            props.handleShowConfirmationModal(
-              ModalConfirmationTypes.PLAYLIST,
-              ModalConfirmationResponse.ERROR
-            );
+            handleShowConfirmationModal(  InfoPopoverType.ERROR,MessagesInfoPopOver.PLAYLIST_NOT_ADDED_TITLE,MessagesInfoPopOver.PLAYLIST_NOT_ADDED_DESCRIPTION);
+
           }
         })
         .catch((error) => {
           console.error('Error:', error);
         })
         .finally(() => {
-          props.handleClose();
+          //props.handleClose();
         });
     }
   };
@@ -383,6 +415,10 @@ export default function AddSongPlayListAccordion(
           </div>
         </AccordionDetails>
       </Accordion>
+
+      <ConfirmationModal type={type} title={title} description={description} triggerOpenConfirmationModal={triggerOpenConfirmationModal} handleClose={props.handleClose}></ConfirmationModal>
+
     </Fragment>
   );
+
 }

@@ -151,10 +151,17 @@
 
 }
 
-.wrapperSongTable li,
+.wrapperSongTable
 ul {
 
   padding: 0 !important;
+}
+
+.wrapperSongTable li
+{
+
+  padding: 1% 0 0% 0 !important;
+
 }
 
 .wrapperSongTable li:not(:first-child) {
@@ -209,6 +216,15 @@ ul {
   padding: 10px;
 }
 
+.artistNameContainer{
+
+  font-size: 0.875rem;
+}
+
+.titleContainer{
+
+  padding: 0 !important;
+}
 
 
 @media (min-height:768px) {

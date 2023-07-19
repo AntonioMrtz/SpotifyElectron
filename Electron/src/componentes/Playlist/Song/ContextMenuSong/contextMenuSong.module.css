@@ -11,11 +11,13 @@
 .wrapperContextMenu ul {
 
   margin: 0px;
+  padding: 1% !important;
+
 }
 
 .wrapperContextMenu ul li {
 
-  padding: 1%;
+  padding: 1% !important;
   border-top: 1px solid var(--separator-white);
   border-bottom: 1px solid var(--separator-white);
 
@@ -77,3 +79,4 @@
   border: none !important;
 
 }
+

@@ -5,6 +5,7 @@ import AddSongPlayListAccordion from './Accordion/AddSongPlayListAccordion';
 import styles from './modalAddSongPlaylist.module.css';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 import CheckIcon from '@mui/icons-material/Check';
+import ConfirmationModal from 'componentes/InfoPopover/InfoPopover';
 
 const style = {
   position: 'absolute',
@@ -23,15 +24,7 @@ interface PropsModalAddSongPlaylist {
 }
 
 export default function ModalAddSongPlaylist(props: PropsModalAddSongPlaylist) {
-  enum ModalConfirmationTypes {
-    PLAYLIST = 'Playlist',
-    SONG = 'Canción',
-  }
 
-  enum ModalConfirmationResponse {
-    ERROR = 'no se ha podido añadir',
-    SUCCESS = 'se ha añadido correctamente',
-  }
   /* ADDSONGPLAYLIST MODAL */
 
   const [open, setOpen] = useState(false);
@@ -39,35 +32,6 @@ export default function ModalAddSongPlaylist(props: PropsModalAddSongPlaylist) {
 
   const handleClose = () => setOpen(false);
 
-  const handleShowConfirmationModal = (
-    type: ModalConfirmationTypes,
-    response: ModalConfirmationResponse
-  ) => {
-    handleOpenConfirmationModal(type, response);
-  };
-
-  /* CONFIRMATION MODAL */
-
-  const [modalConfirmationData, setModalConfirmationData] = useState({
-    type: '',
-    response: '',
-  });
-
-  const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
-  const handleOpenConfirmationModal = (
-    type: ModalConfirmationTypes,
-    response: ModalConfirmationResponse
-  ) => {
-    setOpenConfirmationModal(true);
-    setModalConfirmationData({
-      type: type,
-      response: response,
-    });
-  };
-
-  const handleCloseConfirmationModal = () => {
-    setOpenConfirmationModal(false);
-  };
 
   return (
     <Fragment>
@@ -85,65 +49,12 @@ export default function ModalAddSongPlaylist(props: PropsModalAddSongPlaylist) {
       >
         <Box sx={style} className={` ${styles.wrapperAccordion}`}>
           <AddSongPlayListAccordion
-            handleShowConfirmationModal={handleShowConfirmationModal}
             reloadSidebar={props.reloadSidebar}
             handleClose={handleClose}
           />
         </Box>
       </Modal>
 
-      {/* Confirmation Modal */}
-      <div>
-        <Modal
-          className={``}
-          open={openConfirmationModal}
-          onClose={handleCloseConfirmationModal}
-          aria-labelledby="modal-modal-title2"
-          aria-describedby="modal-modal-description2"
-        >
-          <Box sx={style} className={`${styles.wrapperConfirmationModal}`}>
-            {' '}
-            <div className={`${styles.wrapperConfirmationModalHeader}`}>
-              <div className={`${styles.wrapperConfirmationModalText}`}>
-                <span>
-                  {modalConfirmationData.type} añadida
-                </span>
-                <p>
-                  La {modalConfirmationData.type} {modalConfirmationData.response}
-                </p>
-              </div>
-              {modalConfirmationData.response ===
-                ModalConfirmationResponse.SUCCESS && (
-                <div className="d-flex container-fluid align-items-center justify-content-center">
-                  <CheckIcon
-                    style={{
-                      color: 'var(--secondary-green)',
-                      fontSize: '6rem',
-                    }}
-                  ></CheckIcon>
-                </div>
-              )}
-
-              {modalConfirmationData.response ===
-                ModalConfirmationResponse.ERROR && (
-                <div className="d-flex container-fluid align-items-center justify-content-center">
-                  <PriorityHighIcon
-                    style={{
-                      color: 'var(--secondary-green)',
-                      fontSize: '6rem',
-                    }}
-                  ></PriorityHighIcon>
-                </div>
-              )}
-            </div>
-            <div
-              className={`container-fluid d-flex flex-column justify-content-flex-end mt-4 ${styles.wrapperButton} `}
-            >
-              <button onClick={handleCloseConfirmationModal}>Confirmar</button>
-            </div>
-          </Box>
-        </Modal>
-      </div>
     </Fragment>
   );
 }

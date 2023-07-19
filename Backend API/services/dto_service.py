@@ -2,6 +2,8 @@ from model.DTO.SongDTO import SongDTO
 from model.DTO.PlaylistDTO import PlaylistDTO
 from database.Database import Database
 from model.Genre import Genre
+from fastapi import HTTPException
+
 
 fileSongCollection = Database().connection["cancion.files"]
 playlistCollection = Database().connection["playlist"]

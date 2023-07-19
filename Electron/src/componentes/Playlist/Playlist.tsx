@@ -79,6 +79,9 @@ export default function Playlist(props: PropsPlaylist) {
     fac.destroy();
   }, [thumbnail]);
 
+
+  /*  */
+
   return (
     <div
       className={`d-flex container-fluid flex-column ${styles.wrapperPlaylist}`}
@@ -102,10 +105,25 @@ export default function Playlist(props: PropsPlaylist) {
         </div>
 
         <div className={` ${styles.nonBlurred} ${styles.subhHeaderPlaylist}`}>
+          <button className={`${styles.hoverablePlayButton}`}>
+            <i className="fa-solid fa-circle-play" style={{ color: 'var(--primary-green)',fontSize:'3rem' }}></i>
+          </button>
+          <button className={`${styles.hoverablePlayButton}`}>
+            <i className="fa-solid fa-circle-pause" style={{ color: 'var(--primary-green)',fontSize:'3rem' }}></i>
+          </button>
+          <button className={`${styles.hoverableItemubheader}`}>
+            <i className="fa-regular fa-heart" style={{ color: 'var(--secondary-white)',fontSize:'1.75rem' }}></i>
+          </button>
           <button>
+            <i className="fa-solid fa-heart" style={{ color: 'var(--primary-green)',fontSize:'1.75rem' }}></i>
+          </button>
+          <button className={`${styles.hoverableItemubheader}`}>
+            <i className="fa-regular fa-circle-down" style={{ color: 'var(--secondary-white)',fontSize:'1.75rem' }}></i>
+          </button>
+          <button className={`${styles.hoverableItemubheader}`}>
             <i
               className="fa-solid fa-ellipsis"
-              style={{ color: '#ffffff' }}
+              style={{ color: 'var(--secondary-white)' }}
             ></i>
           </button>
         </div>

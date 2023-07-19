@@ -119,17 +119,15 @@
   padding: 2.5%;
   background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.2));
   background: linear-gradient(rgba(0, 0, 0, .5), transparent 0 100%);
+  display: flex;
+  align-content: center;
 }
 
-.subhHeaderPlaylist button {
+.subhHeaderPlaylist button{
 
   border: none;
   background-color: transparent;
-}
-
-.subhHeaderPlaylist button:hover i {
-
-  color: var(--primary-white)
+  margin-right: 2%;
 }
 
 .subhHeaderPlaylist button i {
@@ -137,6 +135,19 @@
   font-size: 1.5rem;
   color: var(--secondary-white);
 }
+
+.subhHeaderPlaylist .hoverableItemubheader:hover > i{
+
+  color: var(--pure-white) !important;
+}
+
+.subhHeaderPlaylist .hoverablePlayButton:hover > i{
+
+  transform: scale(1.02);
+
+}
+
+
 
 
 

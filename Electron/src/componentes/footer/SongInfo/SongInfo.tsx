@@ -1,5 +1,6 @@
 import styles from './songInfo.module.css';
 import foto from '../../../assets/imgs/quedate.jpg';
+import {Favorite,FavoriteBorder} from '@mui/icons-material';
 import { Fragment, useEffect, useState } from 'react';
 
 interface PropsSongInfo {
@@ -10,10 +11,21 @@ export default function SongInfo(props: PropsSongInfo | any) {
   const [name, setName] = useState<string>();
   const [thumbnail, setThumbnail] = useState<string>();
   const [artist, setArtist] = useState<string>();
+  const [liked, setLiked] = useState(false);
   const [displaylike, setdisplaylike] = useState('');
+  const [displaydislike, setdisplaydislike] = useState(styles.displayNoneLike);
 
-  const handleLike = ():void =>{
-    setdisplaylike(styles.displayNoneLike);
+  const handleLike = (): void => {
+    if (liked === false) {
+      setdisplaylike(styles.displayNoneLike);
+      setdisplaydislike('');
+      setLiked(true);
+    } else {
+      setdisplaylike('');
+      setdisplaydislike(styles.displayNoneLike);
+      setLiked(false);
+    }
+
   };
 
   const updateSongInfo = async () => {
@@ -22,6 +34,7 @@ export default function SongInfo(props: PropsSongInfo | any) {
       setName(props.songInfo['name']);
       setThumbnail(props.songInfo['photo']);
       setArtist(props.songInfo['artist']);
+      setLiked(false);
     }
   };
 
@@ -44,7 +57,10 @@ export default function SongInfo(props: PropsSongInfo | any) {
           </div>
           <div className={`d-flex flex-column ${styles.likeContainer}`}>
             <button onClick={handleLike} className={`btn ${displaylike}`}>
-              <i className="fa-regular fa-heart"></i>
+              <i><FavoriteBorder sx={{fontSize:18}}/></i>
+            </button>
+            <button onClick={handleLike} className={`btn ${displaydislike}`}>
+              <Favorite  sx={{fontSize:18, color: "var(--primary-green)"}}  />
             </button>
           </div>
         </Fragment>

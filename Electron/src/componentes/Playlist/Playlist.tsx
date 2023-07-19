@@ -25,13 +25,11 @@ export default function Playlist(props: PropsPlaylist) {
   const [numberSongs, setNumberSongs] = useState<number>(0);
   const [songs, setSongs] = useState<PropsSongs[]>();
 
-  const loadPlaylistData = () => {
+  const loadPlaylistData = async () => {
     fetch(encodeURI(Global.backendBaseUrl + 'playlists/dto/' + playlistName))
       .then((res) => res.json())
-      .then((res) => {
-        setThumbnail(
-          res['photo'] === '' ? defaultThumbnailPlaylist : res['photo']
-        );
+      .then(async (res) => {
+        setThumbnail(res['photo'] === '' ? defaultThumbnailPlaylist : res['photo']);
         if (res['song_names']) {
           setNumberSongs(res['song_names'].length);
           let propsSongs: PropsSongs[] = [];
@@ -40,18 +38,25 @@ export default function Playlist(props: PropsPlaylist) {
             let propsSong: PropsSongs = {
               name: obj,
               playlistName: playlistName,
+              artistName: '',
               index: 0,
               handleSongCliked: props.changeSongName,
               refreshPlaylistData: loadPlaylistData,
             };
 
+            let artistName = await fetch(Global.backendBaseUrl + 'canciones/dto/' + obj)
+              .then((res) => res.json())
+              .then((res) => res["artist"]);
+
+            propsSong['artistName'] = artistName;
             propsSongs.push(propsSong);
           }
+
           setSongs(propsSongs);
         }
       })
       .catch((error) => {
-        console.log('No se puedo obtener la playlist');
+        console.log('No se puede obtener la playlist');
       });
   };
 
@@ -135,6 +140,7 @@ export default function Playlist(props: PropsPlaylist) {
                   key={index}
                   name={song.name}
                   playlistName={playlistName}
+                  artistName={song.artistName}
                   index={index + 1}
                   handleSongCliked={props.changeSongName}
                   refreshPlaylistData={loadPlaylistData}

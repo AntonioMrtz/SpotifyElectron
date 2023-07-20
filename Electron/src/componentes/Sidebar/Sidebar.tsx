@@ -75,6 +75,8 @@ export default function Sidebar() {
 
   //* PLAYLISTS
 
+  const [selectedPlaylist, setSelectedPlaylist] = useState<string>(''); // Estado para almacenar el nombre de la playlist seleccionada
+
   const [playlists, setPlaylists] = useState<PropsPlaylist[]>();
 
   const handlePlaylists = () => {
@@ -111,7 +113,6 @@ export default function Sidebar() {
     handlePlaylists();
   }, []);
 
-  const [selectedPlaylist, setSelectedPlaylist] = useState<string>(''); // Estado para almacenar el nombre de la playlist seleccionada
 
   return (
     <div className={`container-fluid ${styles.wrapperNavbar}`}>

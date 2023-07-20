@@ -8,7 +8,6 @@ import { PropsPlaylist } from './types/propsPlaylist.module';
 import Global from 'global/global';
 
 export default function Sidebar() {
-
   //* MENU HOVER
 
   let [listItemInicio, setHoverInicio] = useState('');
@@ -53,11 +52,9 @@ export default function Sidebar() {
       setSelectedID('li-inicio');
     } else if (url === '/explorar') {
       setSelectedID('li-buscar');
-    }
-    else{
+    } else {
       setSelectedID('');
     }
-
   }, [url]);
 
   const handleUrlInicioClicked = () => {
@@ -77,7 +74,7 @@ export default function Sidebar() {
   const [playlists, setPlaylists] = useState<PropsPlaylist[]>();
 
   const handlePlaylists = () => {
-    fetch(Global.backendBaseUrl+'playlists/', {
+    fetch(Global.backendBaseUrl + 'playlists/', {
       headers: { 'Access-Control-Allow-Origin': '*' },
     })
       .then((res) => res.json())
@@ -113,36 +110,36 @@ export default function Sidebar() {
     <div className={`container-fluid ${styles.wrapperNavbar}`}>
       <header className={`${styles.header}`}>
         <ul className={`${styles.ul}`}>
-          <li
-            className={`${styles.headerLi} ${listItemInicio} ${getSelectedClass(
-              'li-inicio'
-            )} `}
-            onMouseOver={handleMouseOverInicio}
-            onMouseOut={handleMouseOutInicio}
-            onClick={handleUrlInicioClicked}
-            id="li-inicio"
-          >
-            <Link to="/">
+          <Link to="/">
+            <li
+              className={`${
+                styles.headerLi
+              } ${listItemInicio} ${getSelectedClass('li-inicio')} `}
+              onMouseOver={handleMouseOverInicio}
+              onMouseOut={handleMouseOutInicio}
+              onClick={handleUrlInicioClicked}
+              id="li-inicio"
+            >
               <i className={`fa-solid fa-house fa-fw ${styles.headerI}`}></i>
               <span className={`${styles.headerI}`}>Inicio</span>
-            </Link>
-          </li>
-          <li
-            className={`${styles.headerLi} ${listItemBuscar} ${getSelectedClass(
-              'li-buscar'
-            )}`}
-            onMouseOver={handleMouseOverBuscar}
-            onMouseOut={handleMouseOutBuscar}
-            onClick={handleUrlBuscarClicked}
-            id="li-buscar"
-          >
-            <Link to="/explorar" className={`${styles.aHeader}`}>
+            </li>
+          </Link>
+          <Link to="/explorar" className={`${styles.aHeader}`}>
+            <li
+              className={`${
+                styles.headerLi
+              } ${listItemBuscar} ${getSelectedClass('li-buscar')}`}
+              onMouseOver={handleMouseOverBuscar}
+              onMouseOut={handleMouseOutBuscar}
+              onClick={handleUrlBuscarClicked}
+              id="li-buscar"
+            >
               <i
                 className={`fa-solid fa-magnifying-glass fa-fw ${styles.headerI}`}
               ></i>
               <span className={`${styles.headerI}`}>Buscar</span>
-            </Link>
-          </li>
+            </li>
+          </Link>
         </ul>
       </header>
 

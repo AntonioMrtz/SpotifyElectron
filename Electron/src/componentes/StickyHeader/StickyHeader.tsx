@@ -41,6 +41,20 @@ export default function StickyHeader() {
     };
   }, []);
 
+
+  const handleGoingBackArrows = () => {
+
+    window.electron.loadPreviousUrl.sendMessage('load-previous-url')
+
+  }
+
+  const handleGoingForwardArrows = () => {
+
+    window.electron.loadForwardUrl.sendMessage('load-forward-url')
+
+  }
+
+
   return (
     <header
       style={visibleBackground}
@@ -49,10 +63,10 @@ export default function StickyHeader() {
       <div
         className={`d-flex flex-row container-fluid ${styles.wrapperDirectionArrows}`}
       >
-        <button>
+        <button onClick={handleGoingBackArrows}>
           <i className="fa-solid fa-chevron-left"></i>
         </button>
-        <button>
+        <button onClick={handleGoingForwardArrows}>
           <i className="fa-solid fa-chevron-right"></i>
         </button>
       </div>

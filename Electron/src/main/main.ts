@@ -9,7 +9,7 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { app, BrowserWindow, shell, ipcMain, clipboard , Data  } from 'electron';
+import { app, BrowserWindow, shell, ipcMain, clipboard , Data   } from 'electron';
 import { resolveHtmlPath } from './util';
 
 
@@ -28,6 +28,16 @@ ipcMain.handle('copy-to-clipboard', async (event, ...args) => {
   data.text = args[0];
 
   clipboard.write(data);
+});
+
+ipcMain.handle('load-previous-url', async (event) => {
+
+  mainWindow?.webContents.goBack()
+});
+
+ipcMain.handle('load-forward-url', async (event) => {
+
+  mainWindow?.webContents.goForward()
 });
 
 

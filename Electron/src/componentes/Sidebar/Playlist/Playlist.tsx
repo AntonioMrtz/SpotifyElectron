@@ -4,12 +4,12 @@ import { PropsPlaylist } from '../types/propsPlaylist.module';
 export default function Playlist(props: PropsPlaylist) {
 
   const handleClickPlaylist = () => {
-    props.handleUrlPlaylistClicked()
+    props.handleUrlPlaylistClicked(props.name)
   }
 
   return (
     <span
-      className={`container-fluid d-flex flex-row ${styles.wrapperPlaylist}`}
+      className={`container-fluid d-flex flex-row ${styles.wrapperPlaylist} ${props.playlistStyle}`}
       onClick={handleClickPlaylist}
     >
       <img src={props.photo} alt="" className="img-fluid img-border-2" />

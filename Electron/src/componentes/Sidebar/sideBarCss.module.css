@@ -121,6 +121,12 @@
   /* Safari and Chrome */
 }
 
+.selectedPlaylist {
+
+  background-color: var(--separator-white);
+}
+
+
 
 /* TU BIBLIOTECA */
 

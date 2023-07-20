@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 import styles from './stickyHeader.module.css';
 import groupIcon from '../../assets/imgs/groupIcon.png';
+import { useLocation } from 'react-router-dom';
+import Global from 'global/global';
+
 
 export default function StickyHeader() {
   const [profileIcon, setProfileIcon] = useState(
@@ -54,6 +57,39 @@ export default function StickyHeader() {
 
   }
 
+  const location = useLocation();
+
+  const [arrowState, setArrowState] = useState<Global.HandleUrlChangeResponse>({
+    canGoBack: false,
+    canGoForward: false,
+  });
+
+  const handleUrlChange = async () => {
+    try {
+      let response = await window.electron.handleUrlChange.sendMessage('handle-url-change');
+      let responseObj : Global.HandleUrlChangeResponse = {canGoBack:response.canGoBack,canGoForward:response.canGoForward}
+      setArrowState(responseObj)
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    handleUrlChange();
+  }, [location]);
+
+
+  const [backArrowStyle, setBackArrowStyle] = useState('')
+  const [forwardArrowStyle, setForwardArrowStyle] = useState('')
+
+
+  useEffect(() => {
+
+    setBackArrowStyle( !arrowState.canGoBack ? styles.arrowOpacity : '')
+    setForwardArrowStyle( !arrowState.canGoForward ? styles.arrowOpacity : '')
+
+  }, [arrowState])
+
 
   return (
     <header
@@ -64,10 +100,10 @@ export default function StickyHeader() {
         className={`d-flex flex-row container-fluid ${styles.wrapperDirectionArrows}`}
       >
         <button onClick={handleGoingBackArrows}>
-          <i className="fa-solid fa-chevron-left"></i>
+          <i className={`fa-solid fa-chevron-left ${backArrowStyle}`}></i>
         </button>
         <button onClick={handleGoingForwardArrows}>
-          <i className="fa-solid fa-chevron-right"></i>
+        <i className={`fa-solid fa-chevron-right ${forwardArrowStyle}`}></i>
         </button>
       </div>
 

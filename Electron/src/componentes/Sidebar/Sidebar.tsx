@@ -187,19 +187,6 @@ export default function Sidebar() {
                     ? styles.selectedPlaylist
                     : '';
 
-                console.log(
-                  '🚀 ~ file: Sidebar.tsx:133 ~ Sidebar ~ selectedPlaylist:',
-                  selectedPlaylist
-                );
-                console.log(
-                  '🚀 ~ file: Sidebar.tsx:133 ~ Sidebar ~ playlist.name:',
-                  playlist.name
-                );
-                console.log(
-                  '🚀 ~ file: Sidebar.tsx:131 ~ Sidebar ~ playlistStyle:',
-                  playlistStyle
-                );
-
                 return (
                   <Link to={urlPlaylist} key={playlist.name}>
                     <Playlist

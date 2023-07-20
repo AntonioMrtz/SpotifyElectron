@@ -11,6 +11,7 @@
 import path from 'path';
 import { app, BrowserWindow, shell, ipcMain, clipboard , Data   } from 'electron';
 import { resolveHtmlPath } from './util';
+import Global from 'global/global';
 
 
 
@@ -38,7 +39,25 @@ ipcMain.handle('load-previous-url', async (event) => {
 ipcMain.handle('load-forward-url', async (event) => {
 
   mainWindow?.webContents.goForward()
+
 });
+
+ipcMain.handle('handle-url-change', async (event) => {
+
+  //event.reply('response-handle-url-change',mainWindow?.webContents.canGoForward,mainWindow?.webContents.canGoBack)
+
+  let eventResponse : Global.HandleUrlChangeResponse = {
+
+    canGoBack:mainWindow?.webContents.canGoBack(),
+    canGoForward:mainWindow?.webContents.canGoForward()
+  }
+
+  return eventResponse
+
+});
+
+
+
 
 
 /* Settings */
@@ -118,6 +137,8 @@ const createWindow = async () => {
     shell.openExternal(edata.url);
     return { action: 'deny' };
   });
+
+
 };
 
 /**
@@ -143,3 +164,4 @@ app
     });
   })
   .catch(console.log);
+

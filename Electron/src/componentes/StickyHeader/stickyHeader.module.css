@@ -15,28 +15,17 @@
 
 /* ARROWS */
 
-/* .wrapperDirectionArrows button {
-
-  margin: 0;
-  margin-right: 2%;
-  width: 24px;
-  height: 24px;
-  padding: 0.75%;
-  background-color: var(--primary-black);
-  border-radius: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: var(--secondary-white);
-  cursor: pointer;
-
-} */
 
 .wrapperDirectionArrows button{
 
   color: var(--secondary-white);
 }
 
+.arrowOpacity{
+
+  opacity: 0.6;
+
+}
 
 /* PROFILE and GROUP SESSION */
 

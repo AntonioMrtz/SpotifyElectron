@@ -73,14 +73,14 @@ def create_playlist(name: str, photo: str, song_names: list) -> None:
     return True if result.acknowledged else False
 
 
-def update_playlist(name: str, photo: str, song_names: list) -> None:
+def update_playlist(name: str, nuevo_nombre:str,photo: str, song_names: list) -> None:
     """ Updates a playlist with name, url of thumbnail and list of song names [ duplicates wont be added ]
 
     Args:
         name (str): Playlists's name
+        nuevo_nombre (str) : New Playlist's name, if empty name is not being updated
         photo (str): Url of playlist thumbnail
         song_names (list<str>): List of song names of the playlist
-
     Raises:
         400 : Bad Request
         404 : Playlist Not Found
@@ -96,9 +96,15 @@ def update_playlist(name: str, photo: str, song_names: list) -> None:
     if not result_playlist_exists:
         raise HTTPException(status_code=404, detail="La playlist no existe")
 
-    playlistCollection.update_one({'name': name}, {
-                                  "$set": {'name': name, 'photo': photo, 'song_names': list(set(song_names))}})
+    if checkValidParameterString(nuevo_nombre):
+        new_name = nuevo_nombre
 
+        playlistCollection.update_one({'name': name}, {
+                                    "$set": {'name': new_name, 'photo': photo, 'song_names': list(set(song_names))}})
+    else:
+
+        playlistCollection.update_one({'name': name}, {
+                                  "$set": {'name': name, 'photo': photo, 'song_names': list(set(song_names))}})
 
 def get_all_playlist() -> list:
     """ Returns all playlists in a DTO object"

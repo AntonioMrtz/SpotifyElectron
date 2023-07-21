@@ -6,6 +6,8 @@ from fastapi.responses import Response
 import json
 from model.Genre import Genre
 from fastapi.middleware.cors import CORSMiddleware
+from typing import Optional
+
 
 
 app = FastAPI(title="SpotifyElectronAPI",
@@ -141,13 +143,14 @@ def post_playlist(nombre: str, foto: str, nombres_canciones: list) -> Response:
 
 
 @app.put("/playlists/{nombre}")
-def update_playlist(nombre: str, nombres_canciones: list, foto: str) -> Response:
+def update_playlist(nombre: str,nombres_canciones: list, foto: str,nuevo_nombre : Optional[str] = None ) -> Response:
     """ Actualiza los parámetros de la playlist con nombre "nombre" , las canciones repetidas son serán añadidas
 
     Args:
         nombre (str): Nombre de la playlist
         nombres_canciones (list) : Lista con las canciones de la playlist
         foto (str) : url de la foto miniatura de la playlist
+        nuevo_nombre : (str Opcional [Valor por defecto = None]) : Nuevo nombre de la playlist, si es vacío no se actualiza
 
     Returns:
         Response 204 No content
@@ -157,7 +160,7 @@ def update_playlist(nombre: str, nombres_canciones: list, foto: str) -> Response
         Not Found 404: No existe una playlist con el nombre "nombre"
     """
 
-    playlist_service.update_playlist(nombre, foto, nombres_canciones)
+    playlist_service.update_playlist(nombre,nuevo_nombre, foto, nombres_canciones)
     return Response(None, 204)
 
 

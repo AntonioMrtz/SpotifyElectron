@@ -1,4 +1,4 @@
-input {
+.accordionDetails input {
   border: 0 !important;
   outline: 0 !important;
   background: transparent !important;
@@ -7,12 +7,12 @@ input {
   padding: 5px !important;
 }
 
-input:focus {
+.accordionDetails input:focus {
   box-shadow: 0 0rem !important;
 
 }
 
-select {
+.accordionDetails select {
 
   color: var(--primary-white) !important;
   background: transparent !important;

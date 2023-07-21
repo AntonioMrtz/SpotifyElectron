@@ -1,5 +1,5 @@
-import { FormEvent, useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { useLocation,useNavigate  } from 'react-router-dom';
 import Global from 'global/global';
 import styles from './playlist.module.css';
 import Song from './Song/Song';
@@ -8,7 +8,6 @@ import { FastAverageColor } from 'fast-average-color';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
 
 interface PropsPlaylist {
   changeSongName: Function;
@@ -22,6 +21,9 @@ export default function Playlist(props: PropsPlaylist) {
   let playlistName = decodeURIComponent(
     location.pathname.split('/').slice(-1)[0]
   );
+
+  let navigate = useNavigate()
+
 
   const [thumbnail, setThumbnail] = useState<string>('');
   const [numberSongs, setNumberSongs] = useState<number>(0);
@@ -69,8 +71,24 @@ export default function Playlist(props: PropsPlaylist) {
       });
   };
 
+  const [updatingPlaylist,setUpdatingPlaylist] = useState(false)
+
   useEffect(() => {
-    loadPlaylistData();
+
+    if(updatingPlaylist){
+
+      let timeoutId = setTimeout(() => {
+        loadPlaylistData();
+        setUpdatingPlaylist(false)
+
+      }, 250);
+
+      return () => clearTimeout(timeoutId);
+    }else{
+
+      loadPlaylistData();
+
+    }
   }, [location]);
 
   /* Process photo color */
@@ -112,9 +130,85 @@ export default function Playlist(props: PropsPlaylist) {
     setOpen(true);
   };
 
+
+  const [formData, setFormData] = useState({
+    nombre: '',
+    foto: '',
+    descripcion: '',
+  });
+
+  const handleChangeForm = (e:ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) => {
+
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+    console.log(formData)
+  };
+
   const handleUpdatePlaylist = (event: FormEvent<HTMLButtonElement>) => {
     event.preventDefault();
+
+
+    fetch(Global.backendBaseUrl + 'playlists/dto/' + playlistName, {
+      headers: { 'Access-Control-Allow-Origin': '*' },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        let url = Global.backendBaseUrl + 'playlists/' + playlistName; // Reemplaza con la URL de tu API y el nombre de la playlist
+
+        //! cambiar si ponemos actualizar foto
+        let photo = res['photo'];
+
+        let fetchUrlUpdateSong;
+
+        if (formData.nombre!==playlistName && formData.nombre!==''){
+
+          fetchUrlUpdateSong = `${url}?foto=${photo}&nuevo_nombre=${formData.nombre}`;
+
+        }else{
+
+          fetchUrlUpdateSong = `${url}?foto=${photo}`
+
+        }
+
+        let newSongsPutPlaylist = [];
+        for (let song_name of res['song_names']) {
+          newSongsPutPlaylist.push(song_name);
+        }
+
+        const requestOptions = {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(newSongsPutPlaylist),
+        };
+
+        fetch(fetchUrlUpdateSong, requestOptions).then((response) => {
+          if (response.status !== 204) {
+            console.log('Unable to update playlist');
+          }
+        });
+      })
+      .catch((error) => {
+        console.log('Unable to update playlist');
+      })
+      .finally(() => {
+        setOpen(false);
+        if (formData.nombre!==playlistName && formData.nombre!==''){
+
+          setUpdatingPlaylist(true)
+          //* Al cargar inmediatamente con el useEffect de location produce que el contenido para la nueva url no esta disponible
+          navigate(`/playlist/`+formData.nombre, { replace: true })
+
+          loadPlaylistData()
+        }
+      });
+
+
   };
+
 
   return (
     <div
@@ -211,50 +305,47 @@ export default function Playlist(props: PropsPlaylist) {
           </header>
 
           <form>
-            <div className={`d-flex flex-row`}>
+            <div className={`d-flex flex-row container-fluid p-0`}>
               <div className={` ${styles.wrapperUpdateThumbnail}`}>
                 <img src={`${thumbnailUpdatePlaylist}`} alt="" />
               </div>
 
-              <div className={` ${styles.wrapperUpdateTextData}`}>
-                <TextField
-                  id="outlined-basic"
-                  label={'Nombre'}
-                  variant="filled"
-                  defaultValue={playlistName}
-                  style={{width:'100%'}}
+              <div className={`container-fluid pe-0 ${styles.wrapperUpdateTextData}`}>
+                <div
+                  className={`form-floating mb-3 ${styles.inputPlaylist}`}
+                >
+                  <input
+                    name='nombre'
+                    type="text"
+                    defaultValue={playlistName}
+                    className={`form-control`}
+                    id="nombre"
+                    placeholder="Añade un nombre"
+                    onChange={handleChangeForm}
+                  />
+                  <label htmlFor="floatingInput">Nombre</label>
+                </div>
 
-/*                   style={{width:'100%',height:'100%'}}
- */                  sx={{
-                    '& .MuiFormLabel-root': {
-                      color: 'var(--primary-white)',
-                    },
-                  }}
-                />
-                <TextField
-                  id="filled-basic"
-                  label={'Añade una descripción original'}
-                  variant="filled"
-                  style={{width:'100%',height:'100%'}}
-                  multiline
-                  rows={4}
-                  sx={{
-                    '& .MuiFormLabel-root': {
-                      color: 'var(--secondary-white)',
-                    },
-                    '& .MuiInputBase-root':{
-
-                      padding:0,
-                      height:'100%'
-
-                    }
-                  }}
-                />
+                <div
+                  className={`form-floating mb-3 ${styles.inputPlaylist}`}
+                >
+                  <div className="form-floating">
+                    <textarea
+                      name='descripcion'
+                      className="form-control"
+                      placeholder="Añade una descripción"
+                      id="descripcion"
+                      style={{ height: ' 100px' }}
+                      onChange={handleChangeForm}
+                    ></textarea>
+                    <label htmlFor="floatingTextarea2">Descripción</label>
+                  </div>
+                </div>
               </div>
             </div>
 
             <div
-              className={`d-flex justify-content-end ${styles.wrapperUpdateButton}`}
+              className={`d-flex flex-row justify-content-end pt-2 ${styles.wrapperUpdateButton} ${styles.inputPlaylist}`}
             >
               <button onClick={handleUpdatePlaylist}>Guardar</button>
             </div>

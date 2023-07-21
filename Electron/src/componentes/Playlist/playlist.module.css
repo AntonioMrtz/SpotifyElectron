@@ -320,6 +320,7 @@ ul {
   border-radius: var(--border-radius-rounded-button);
   padding: 2% 4% 2% 4%;
   font-weight: bold;
+  font-size: 1.20rem;
 }
 
 .wrapperUpdateButton button:hover{

@@ -7,7 +7,13 @@ import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist
 import { PropsPlaylist } from './types/propsPlaylist.module';
 import Global from 'global/global';
 
-export default function Sidebar() {
+interface PropsSidebar{
+
+  triggerReloadSidebar: boolean
+}
+
+
+export default function Sidebar(props:PropsSidebar) {
   //* MENU HOVER
 
   let [listItemInicio, setHoverInicio] = useState('');
@@ -80,6 +86,7 @@ export default function Sidebar() {
   const [playlists, setPlaylists] = useState<PropsPlaylist[]>();
 
   const handlePlaylists = () => {
+
     fetch(Global.backendBaseUrl + 'playlists/', {
       headers: { 'Access-Control-Allow-Origin': '*' },
     })
@@ -112,6 +119,11 @@ export default function Sidebar() {
   useEffect(() => {
     handlePlaylists();
   }, []);
+
+  /* triggered when other component wants to reload the sidebar */
+  useEffect(() => {
+    handlePlaylists();
+  }, [props.triggerReloadSidebar]);
 
 
   return (

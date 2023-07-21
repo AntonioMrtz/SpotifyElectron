@@ -11,6 +11,7 @@ import Box from '@mui/material/Box';
 
 interface PropsPlaylist {
   changeSongName: Function;
+  triggerReloadSidebar:Function
 }
 
 export default function Playlist(props: PropsPlaylist) {
@@ -80,6 +81,7 @@ export default function Playlist(props: PropsPlaylist) {
       let timeoutId = setTimeout(() => {
         loadPlaylistData();
         setUpdatingPlaylist(false)
+        props.triggerReloadSidebar()
 
       }, 250);
 
@@ -201,7 +203,6 @@ export default function Playlist(props: PropsPlaylist) {
           setUpdatingPlaylist(true)
           //* Al cargar inmediatamente con el useEffect de location produce que el contenido para la nueva url no esta disponible
           navigate(`/playlist/`+formData.nombre, { replace: true })
-
           loadPlaylistData()
         }
       });

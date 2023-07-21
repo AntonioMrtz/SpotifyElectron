@@ -15,10 +15,19 @@ function App() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location]);
-  const [songName, setSongName] = useState('none');
+
+  /* Handle reload of sidebar */
+
+  const [triggerReloadSidebar, setTriggerReloadSidebar] = useState(false);
+
+  const reloadSidebar = () => {
+
+    setTriggerReloadSidebar(state => !state)
+  }
 
   /* Handle change song name */
 
+  const [songName, setSongName] = useState('none');
   const changeSongName = (songName: string): void => {
     setSongName(songName);
   };
@@ -28,14 +37,14 @@ function App() {
             <StickyHeader />
 
       <div className="d-flex">
-        <Sidebar />
+        <Sidebar triggerReloadSidebar={triggerReloadSidebar}/>
         <div
           className={`App d-flex container-fluid ${styles.mainContentWrapper}`}
         >
           <Routes>
             <Route
               path="/playlist/:id"
-              element=<Playlist changeSongName={changeSongName} />
+              element=<Playlist changeSongName={changeSongName} triggerReloadSidebar={reloadSidebar}/>
             />
             <Route
               path="/explorar"

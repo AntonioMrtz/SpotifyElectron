@@ -1,6 +1,6 @@
 import styles from './songInfo.module.css';
 import foto from '../../../assets/imgs/quedate.jpg';
-import {Favorite,FavoriteBorder} from '@mui/icons-material';
+import { Favorite, FavoriteBorder } from '@mui/icons-material';
 import { Fragment, useEffect, useState } from 'react';
 
 interface PropsSongInfo {
@@ -57,10 +57,10 @@ export default function SongInfo(props: PropsSongInfo | any) {
           </div>
           <div className={`d-flex flex-column ${styles.likeContainer}`}>
             <button onClick={handleLike} className={`btn ${displaylike}`}>
-              <i><FavoriteBorder sx={{fontSize:18}}/></i>
+              <i><FavoriteBorder sx={{ fontSize: 18 }} /></i>
             </button>
             <button onClick={handleLike} className={`btn ${displaydislike}`}>
-              <Favorite  sx={{fontSize:18, color: "var(--primary-green)"}}  />
+              <Favorite sx={{ fontSize: 18, color: "var(--primary-green)" }} />
             </button>
           </div>
         </Fragment>

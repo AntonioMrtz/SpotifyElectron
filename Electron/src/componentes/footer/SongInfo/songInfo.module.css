@@ -64,3 +64,9 @@
 .displayNoneLike {
   display: none;
 }
+
+:focus:not(:focus-visible){
+  outline: none;
+  box-shadow: none;
+}
+

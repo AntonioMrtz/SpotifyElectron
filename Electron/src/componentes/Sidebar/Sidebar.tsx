@@ -8,7 +8,6 @@ import { PropsPlaylist } from './types/propsPlaylist.module';
 import Global from 'global/global';
 
 export default function Sidebar() {
-
   //* MENU HOVER
 
   let [listItemInicio, setHoverInicio] = useState('');
@@ -53,31 +52,35 @@ export default function Sidebar() {
       setSelectedID('li-inicio');
     } else if (url === '/explorar') {
       setSelectedID('li-buscar');
-    }
-    else{
+    } else {
       setSelectedID('');
     }
-
   }, [url]);
 
   const handleUrlInicioClicked = () => {
     setUrl('/');
+    setSelectedPlaylist('');
+
   };
 
   const handleUrlBuscarClicked = () => {
     setUrl('/explorar');
+    setSelectedPlaylist('');
   };
 
-  const handleUrlPlaylistClicked = () => {
+  const handleUrlPlaylistClicked = (name: string) => {
     setUrl('');
+    setSelectedPlaylist(name); // Actualizar el estado cuando se hace clic en una playlist
   };
 
   //* PLAYLISTS
 
+  const [selectedPlaylist, setSelectedPlaylist] = useState<string>(''); // Estado para almacenar el nombre de la playlist seleccionada
+
   const [playlists, setPlaylists] = useState<PropsPlaylist[]>();
 
   const handlePlaylists = () => {
-    fetch(Global.backendBaseUrl+'playlists/', {
+    fetch(Global.backendBaseUrl + 'playlists/', {
       headers: { 'Access-Control-Allow-Origin': '*' },
     })
       .then((res) => res.json())
@@ -92,6 +95,7 @@ export default function Sidebar() {
               photo:
                 obj['photo'] === '' ? defaultThumbnailPlaylist : obj['photo'],
               handleUrlPlaylistClicked: handleUrlPlaylistClicked,
+              playlistStyle: '',
             };
 
             propsPlaylists.push(propsPlaylist);
@@ -109,78 +113,87 @@ export default function Sidebar() {
     handlePlaylists();
   }, []);
 
+
   return (
     <div className={`container-fluid ${styles.wrapperNavbar}`}>
-      <header className={`${styles.header}`}>
-        <ul className={`${styles.ul}`}>
+    <header className={`${styles.header}`}>
+      <ul className={`${styles.ul}`}>
+        <Link to="/">
           <li
-            className={`${styles.headerLi} ${listItemInicio} ${getSelectedClass(
-              'li-inicio'
-            )} `}
+            className={`${
+              styles.headerLi
+            } ${listItemInicio} ${getSelectedClass('li-inicio')} `}
             onMouseOver={handleMouseOverInicio}
             onMouseOut={handleMouseOutInicio}
             onClick={handleUrlInicioClicked}
             id="li-inicio"
           >
-            <Link to="/">
-              <i className={`fa-solid fa-house fa-fw ${styles.headerI}`}></i>
-              <span className={`${styles.headerI}`}>Inicio</span>
-            </Link>
+            <i className={`fa-solid fa-house fa-fw ${styles.headerI}`}></i>
+            <span className={`${styles.headerI}`}>Inicio</span>
           </li>
+        </Link>
+        <Link to="/explorar" className={`${styles.aHeader}`}>
           <li
-            className={`${styles.headerLi} ${listItemBuscar} ${getSelectedClass(
-              'li-buscar'
-            )}`}
+            className={`${
+              styles.headerLi
+            } ${listItemBuscar} ${getSelectedClass('li-buscar')}`}
             onMouseOver={handleMouseOverBuscar}
             onMouseOut={handleMouseOutBuscar}
             onClick={handleUrlBuscarClicked}
             id="li-buscar"
           >
-            <Link to="/explorar" className={`${styles.aHeader}`}>
-              <i
-                className={`fa-solid fa-magnifying-glass fa-fw ${styles.headerI}`}
-              ></i>
-              <span className={`${styles.headerI}`}>Buscar</span>
-            </Link>
+            <i
+              className={`fa-solid fa-magnifying-glass fa-fw ${styles.headerI}`}
+            ></i>
+            <span className={`${styles.headerI}`}>Buscar</span>
           </li>
-        </ul>
-      </header>
+        </Link>
+      </ul>
+    </header>
 
+    <div
+      className={`container-fluid d-flex flex-column ${styles.libraryWrapper}`}
+    >
+      <header className={`container-fluid d-flex flex-column`}></header>
       <div
-        className={`container-fluid d-flex flex-column ${styles.libraryWrapper}`}
+        className={`container-fluid d-flex flex-column p-0 ${styles.playlistUlWrapper}`}
       >
-        <header className={`container-fluid d-flex flex-column`}></header>
-        <div
-          className={`container-fluid d-flex flex-column p-0 ${styles.playlistUlWrapper}`}
+        <header
+          className={`container-fluid d-flex flex-row pb-4 ${styles.headerTuBiblioteca}`}
         >
-          <header
-            className={`container-fluid d-flex flex-row pb-4 ${styles.headerTuBiblioteca}`}
-          >
-            <div className={`container-fluid d-flex justify-content-start p-0`}>
-              <div className={`container-fluid ps-0`}>
-                <i className="fa-solid fa-swatchbook fa-fw"></i>Tu biblioteca
-              </div>
+          <div className={`container-fluid d-flex justify-content-start p-0`}>
+            <div className={`container-fluid ps-0`}>
+              <i className="fa-solid fa-swatchbook fa-fw"></i>Tu biblioteca
             </div>
+          </div>
 
-            <div
-              className={`container-fluid d-flex justify-content-end p-0`}
-              style={{ width: '25%' }}
-            >
-              <ModalAddSongPlaylist reloadSidebar={handlePlaylists} />
-            </div>
-          </header>
-          <ul
-            className={`container-fluid d-flex flex-column ${styles.ulPlaylist}`}
+          <div
+            className={`container-fluid d-flex justify-content-end p-0`}
+            style={{ width: '25%' }}
           >
+            <ModalAddSongPlaylist reloadSidebar={handlePlaylists} />
+          </div>
+        </header>
+        <ul
+          className={`container-fluid d-flex flex-column ${styles.ulPlaylist}`}
+        >
             {playlists &&
               playlists.map((playlist) => {
                 let urlPlaylist = '/playlist/' + playlist.name;
+
+                // Agregar una condición para aplicar un estilo diferente si la playlist es la seleccionada
+                const playlistStyle =
+                  playlist.name === selectedPlaylist
+                    ? styles.selectedPlaylist
+                    : '';
+
                 return (
                   <Link to={urlPlaylist} key={playlist.name}>
                     <Playlist
                       handleUrlPlaylistClicked={handleUrlPlaylistClicked}
                       name={playlist.name}
                       photo={playlist.photo}
+                      playlistStyle={playlistStyle} // Pasar el estilo como prop
                     />
                   </Link>
                 );

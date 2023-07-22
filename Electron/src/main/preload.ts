@@ -4,29 +4,48 @@ import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
 
 export type ChannelToogleFullScreen = 'toogle-fullscreen';
 export type ChannelCopyToClipboard = 'copy-to-clipboard';
+export type ChannelLoadPreviousUrl = 'load-previous-url';
+export type ChannelLoadForwardUrl = 'load-forward-url';
+export type ChannelHandleUrlChange = 'handle-url-change';
+
 
 
 
 const electronHandler = {
-
-  toogleFullScreen : {
+  toogleFullScreen: {
     sendMessage(channel: ChannelToogleFullScreen, ...args: unknown[]) {
       ipcRenderer.send(channel, ...args);
     },
   },
 
-  copyToClipboard : {
-
+  copyToClipboard: {
     sendMessage(channel: ChannelCopyToClipboard, ...args: unknown[]) {
       ipcRenderer.invoke(channel, ...args);
     },
+  },
 
-  }
+  loadPreviousUrl: {
+    sendMessage(channel: ChannelLoadPreviousUrl) {
+      ipcRenderer.invoke(channel);
+    },
+  },
 
+  loadForwardUrl: {
+    sendMessage(channel: ChannelLoadForwardUrl) {
+      ipcRenderer.invoke(channel);
+    },
+  },
 
+  handleUrlChange: {
+    sendMessage(channel: ChannelHandleUrlChange) {
+      return ipcRenderer.invoke(channel);
+    },
+  },
 };
 
 contextBridge.exposeInMainWorld('electron', electronHandler);
+
+
 
 export type ElectronHandler = typeof electronHandler;
 

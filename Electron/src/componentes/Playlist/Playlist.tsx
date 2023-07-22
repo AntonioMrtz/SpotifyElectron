@@ -79,11 +79,10 @@ export default function Playlist(props: PropsPlaylist) {
     if(updatingPlaylist){
 
       let timeoutId = setTimeout(() => {
-        loadPlaylistData();
-        setUpdatingPlaylist(false)
         props.triggerReloadSidebar()
+        setUpdatingPlaylist(false)
 
-      }, 250);
+      }, 100);
 
       return () => clearTimeout(timeoutId);
     }else{
@@ -91,6 +90,8 @@ export default function Playlist(props: PropsPlaylist) {
       loadPlaylistData();
 
     }
+/*     loadPlaylistData();
+ */
   }, [location]);
 
   /* Process photo color */
@@ -145,7 +146,6 @@ export default function Playlist(props: PropsPlaylist) {
       ...formData,
       [e.target.name]: e.target.value
     });
-    console.log(formData)
   };
 
   const handleUpdatePlaylist = (event: FormEvent<HTMLButtonElement>) => {

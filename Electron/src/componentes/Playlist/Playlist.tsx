@@ -90,8 +90,6 @@ export default function Playlist(props: PropsPlaylist) {
       loadPlaylistData();
 
     }
-/*     loadPlaylistData();
- */
   }, [location]);
 
   /* Process photo color */

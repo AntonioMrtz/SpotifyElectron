@@ -1,31 +1,121 @@
 import styles from './contextMenuPlaylist.module.css';
 import Popover from '@mui/material/Popover';
-import { useEffect, useState } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 import Global from 'global/global';
-import InfoPopover from '../../../InfoPopover/InfoPopover'
-import {InfoPopoverType} from '../../../types/InfoPopover'
+import InfoPopover from '../../../InfoPopover/InfoPopover';
+import { InfoPopoverType } from '../../../types/InfoPopover';
 import { useNavigate } from 'react-router-dom';
 
 interface PropsContextMenuSong {
-  songName: string;
   playlistName: string;
   handleClose: Function;
   /* Refresh data on playlist menu after a modification */
   reloadSidebar: Function;
 }
 
-const MessagesInfoPopOver = {
+const reducerConfirmationMenu = (
+  state: ConfirmationMenuState,
+  action: ConfirmationMenuAction
+): ConfirmationMenuState => {
+  switch (action.type) {
+    case ConfirmationMenuActionKind.ADD_SUCCESS:
+      return {
+        payload: {
+          type: InfoPopoverType.SUCCESS,
+          title: 'Canciones añadidas',
+          description: 'Las canciones han sido añadidas correctamente',
+        },
+      };
 
-  CLIPBOARD_TITLE : 'Enlace copiado al portapapeles',
-  CLIPBOARD_DESCRIPTION : 'El enlace del repositorio del proyecto ha sido copiado éxitosamente',
+    case ConfirmationMenuActionKind.DELETE_ERROR:
+      return {
+        payload: {
+          type: InfoPopoverType.ERROR,
+          title: 'Canciones no añadidas',
+          description: 'Las canciones  no han sido añadidas',
+        },
+      };
 
+    case ConfirmationMenuActionKind.DELETE_SUCESS:
+      return {
+        payload: {
+          type: InfoPopoverType.SUCCESS,
+          title: 'Playlist eliminada',
+          description: 'La playlist ha sido eliminada correctamente',
+        },
+      };
+    case ConfirmationMenuActionKind.DELETE_ERROR: {
+      return {
+        payload: {
+          type: InfoPopoverType.ERROR,
+          title: 'Playlist no eliminada',
+          description: 'La playlist no ha sido eliminada',
+        },
+      };
+    }
+
+    case ConfirmationMenuActionKind.CLIPBOARD:
+      return {
+        payload: {
+          type: InfoPopoverType.CLIPBOARD,
+          title: 'Enlace copiado al portapapeles',
+          description:
+            'El enlace del repositorio del proyecto ha sido copiado éxitosamente',
+        },
+      };
+
+    default:
+      return {
+        payload: {
+          type: InfoPopoverType.ERROR,
+          title: 'Playlist no eliminada',
+          description: 'La playlist no ha sido eliminada',
+        },
+      };
+  }
+};
+
+interface ConfirmationMenuData {
+  title: string;
+  type: InfoPopoverType;
+  description: string;
 }
 
+enum ConfirmationMenuActionKind {
+  ADD_SUCCESS = 'ADD_SUCCESS',
+  ADD_ERROR = 'ADD_ERROR',
+  DELETE_SUCESS = 'DELETE_SUCCESS',
+  DELETE_ERROR = 'DELETE_ERROR',
+  CLIPBOARD = 'CLIPBOARD',
+}
+
+// An interface for our actions
+interface ConfirmationMenuAction {
+  type: ConfirmationMenuActionKind;
+}
+
+// An interface for our state
+interface ConfirmationMenuState {
+  payload: ConfirmationMenuData;
+}
 
 export default function ContextMenuSong(props: PropsContextMenuSong) {
+  let navigate = useNavigate();
 
-  let navigate = useNavigate()
+  const initialState: ConfirmationMenuState = {
+    payload: {
+      type: InfoPopoverType.ERROR,
+      title: '',
+      description: '',
+    },
+  };
 
+  const displayConfirmationModal = (state: ConfirmationMenuActionKind) => {
+    dispatch({ type: state });
+    setTriggerOpenConfirmationModal(true);
+  };
+
+  const [state, dispatch] = useReducer(reducerConfirmationMenu, initialState);
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -76,15 +166,15 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
   /* Handle copy to clipboard on share button */
 
   //triggers Confirmation Modal
-  const [triggerOpenConfirmationModal, setTriggerOpenConfirmationModal] = useState(false);
+  const [triggerOpenConfirmationModal, setTriggerOpenConfirmationModal] =
+    useState(false);
 
   const handleCopyToClipboard = (): void => {
     window.electron.copyToClipboard.sendMessage(
       'copy-to-clipboard',
       Global.repositoryUrl
     );
-    setTriggerOpenConfirmationModal(true);
-
+    displayConfirmationModal(ConfirmationMenuActionKind.CLIPBOARD);
   };
 
   const handleAddPlaylitToPlaylist = (
@@ -115,13 +205,10 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
           headers: { 'Access-Control-Allow-Origin': '*' },
         })
           .then((res) => res.json())
-          .then(res =>{
-
-            for(let song_name of res["song_names"]){
-
-              newSongsPutPlaylist.push(song_name)
+          .then((res) => {
+            for (let song_name of res['song_names']) {
+              newSongsPutPlaylist.push(song_name);
             }
-
 
             const requestOptions = {
               method: 'PUT',
@@ -133,70 +220,73 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
 
             fetch(fetchUrlUpdateSong, requestOptions).then((response) => {
               if (response.status !== 204) {
-                console.log(`Unable to add songs from ${srcPlaylistName} to ${dstPlaylistName}` );
+                console.log(
+                  `Unable to add songs from ${srcPlaylistName} to ${dstPlaylistName}`
+                );
+                displayConfirmationModal(ConfirmationMenuActionKind.ADD_ERROR);
+              } else {
+                displayConfirmationModal(
+                  ConfirmationMenuActionKind.ADD_SUCCESS
+                );
               }
             });
-
-          })
-
-
+          });
       })
       .catch((error) => {
-        console.log(`Unable to add songs from ${srcPlaylistName} to ${dstPlaylistName}` );
+        console.log(
+          `Unable to add songs from ${srcPlaylistName} to ${dstPlaylistName}`
+        );
+        displayConfirmationModal(ConfirmationMenuActionKind.ADD_ERROR);
       })
       .finally(() => {
-        handleClose();
       });
   };
 
   const handleDeletePlaylist = (
     event: React.MouseEvent<HTMLButtonElement>,
-    playlistName: string,
+    playlistName: string
   ) => {
-
     /* Delete playlist */
     fetch(Global.backendBaseUrl + 'playlists/' + playlistName, {
       method: 'DELETE',
       headers: {
-        'Access-Control-Allow-Origin': '*'
-      }
+        'Access-Control-Allow-Origin': '*',
+      },
     })
-      .then(response => {
+      .then((response) => {
         if (!response.ok) {
-          throw new Error('Unable to delete playlist');
-        }else{ if(response.status == 202)
-          navigate(`/home`, { replace: true })
-          props.reloadSidebar()
-          handleClose()
+          displayConfirmationModal(ConfirmationMenuActionKind.DELETE_ERROR);
 
+          throw new Error('Unable to delete playlist');
+        } else if (response.status == 202) {
+          navigate(`/home`, { replace: true });
+          props.reloadSidebar();
+          displayConfirmationModal(ConfirmationMenuActionKind.DELETE_SUCESS);
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.error('Unable to delete playlist: ', error);
+        displayConfirmationModal(ConfirmationMenuActionKind.DELETE_ERROR);
       });
-
   };
 
   return (
     <div className={` ${styles.wrapperContextMenu}`}>
       <ul>
-      <li>
+        <li>
           <button>Añadir a la cola</button>
         </li>
         <li>
           <button>Editar datos</button>
           <button>Crear lista similar</button>
-          <button onClick={(event) =>
-              handleDeletePlaylist(
-                event,
-                props.playlistName,
-              )
-            }
-          >Eliminar</button>
+          <button
+            onClick={(event) => handleDeletePlaylist(event, props.playlistName)}
+          >
+            Eliminar
+          </button>
           <button>Descargar</button>
         </li>
         <li>
-
           <button
             className="d-flex justify-content-between"
             onClick={handleClick}
@@ -232,8 +322,6 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
                     <button>Crear lista</button>
                   </li>
 
-                  {/* Map */}
-
                   {playlistNames &&
                     playlistNames.map((playlistName, index) => {
                       return (
@@ -263,9 +351,9 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
       </ul>
 
       <InfoPopover
-        type={InfoPopoverType.CLIPBOARD}
-        title={MessagesInfoPopOver.CLIPBOARD_TITLE}
-        description={MessagesInfoPopOver.CLIPBOARD_DESCRIPTION}
+        type={state.payload.type}
+        title={state.payload.title}
+        description={state.payload.description}
         triggerOpenConfirmationModal={triggerOpenConfirmationModal}
         handleClose={handleClose}
       ></InfoPopover>

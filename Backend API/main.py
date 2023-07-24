@@ -161,6 +161,25 @@ def update_playlist(nombre: str, nombres_canciones: list, foto: str) -> Response
     return Response(None, 204)
 
 
+@app.delete("/playlists/{nombre}")
+def delete_playlist(nombre: str) -> Response:
+    """ Elimina una playlist con nombre "nombre"
+
+    Args:
+        nombre (str): Nombre de la playlist
+
+    Returns:
+        Response 202 Accepted
+
+    Raises:
+        Bad Request 400: Parámetros introducidos no són válidos o vacíos
+        Not Found 404: No existe una playlist con el nombre "nombre"
+    """
+
+    playlist_service.delete_playlist(nombre)
+    return Response(None, 202)
+
+
 @app.get("/playlists/")
 def get_playlists() -> Response:
     """ Devuelve todas las playlists [ SOLO nombres canciones , no el archivo de audio ]

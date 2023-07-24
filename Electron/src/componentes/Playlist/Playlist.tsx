@@ -46,7 +46,8 @@ export default function Playlist(props: PropsPlaylist) {
 
             let artistName = await fetch(Global.backendBaseUrl + 'canciones/dto/' + obj)
               .then((res) => res.json())
-              .then((res) => res["artist"]);
+              .then((res) => res["artist"])
+              .catch( error => console.log("Unable to get Song : "+error))
 
             propsSong['artistName'] = artistName;
             propsSongs.push(propsSong);

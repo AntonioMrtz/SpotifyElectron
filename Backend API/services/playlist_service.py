@@ -100,6 +100,29 @@ def update_playlist(name: str, photo: str, song_names: list) -> None:
                                   "$set": {'name': name, 'photo': photo, 'song_names': list(set(song_names))}})
 
 
+
+def delete_playlist(name: str) -> None:
+    """ Deletes a playlist by name
+
+    Args:
+        name (str): Playlists's name
+
+    Raises:
+        400 : Bad Request
+        404 : Playlist Not Found
+
+    Returns:
+    """
+
+    if not checkValidParameterString(name):
+        raise HTTPException(status_code=400, detail="Parámetros no válidos")
+
+    result_playlist_exists = playlistCollection.delete_one({'name': name})
+
+    if not result_playlist_exists:
+        raise HTTPException(status_code=404, detail="La playlist no existe")
+
+
 def get_all_playlist() -> list:
     """ Returns all playlists in a DTO object"
 

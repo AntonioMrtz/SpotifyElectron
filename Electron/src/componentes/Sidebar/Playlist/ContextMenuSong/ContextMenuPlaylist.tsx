@@ -1,16 +1,17 @@
-import styles from './contextMenuSong.module.css';
+import styles from './contextMenuPlaylist.module.css';
 import Popover from '@mui/material/Popover';
 import { useEffect, useState } from 'react';
 import Global from 'global/global';
 import InfoPopover from '../../../InfoPopover/InfoPopover'
 import {InfoPopoverType} from '../../../types/InfoPopover'
+import { useNavigate } from 'react-router-dom';
 
 interface PropsContextMenuSong {
   songName: string;
   playlistName: string;
   handleClose: Function;
   /* Refresh data on playlist menu after a modification */
-  refreshPlaylistData: Function;
+  reloadSidebar: Function;
 }
 
 const MessagesInfoPopOver = {
@@ -18,11 +19,14 @@ const MessagesInfoPopOver = {
   CLIPBOARD_TITLE : 'Enlace copiado al portapapeles',
   CLIPBOARD_DESCRIPTION : 'El enlace del repositorio del proyecto ha sido copiado éxitosamente',
 
-
 }
 
 
 export default function ContextMenuSong(props: PropsContextMenuSong) {
+
+  let navigate = useNavigate()
+
+
   const [isOpen, setIsOpen] = useState(false);
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -83,133 +87,121 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
 
   };
 
-  const handleAddToPlaylist = (
+  const handleAddPlaylitToPlaylist = (
     event: React.MouseEvent<HTMLButtonElement>,
-    playlistName: string,
-    songName: string
+    dstPlaylistName: string,
+    srcPlaylistName: string
   ) => {
     /* Add to playlist */
 
-    fetch(Global.backendBaseUrl + 'playlists/dto/' + playlistName, {
+    fetch(Global.backendBaseUrl + 'playlists/dto/' + dstPlaylistName, {
       headers: { 'Access-Control-Allow-Origin': '*' },
     })
       .then((res) => res.json())
       .then((res) => {
-        let url = Global.backendBaseUrl + 'playlists/' + playlistName; // Reemplaza con la URL de tu API y el nombre de la playlist
+        let url = Global.backendBaseUrl + 'playlists/' + dstPlaylistName; // Reemplaza con la URL de tu API y el nombre de la playlist
 
         let photo = res['photo'];
 
         const fetchUrlUpdateSong = `${url}?foto=${photo}`;
 
-        let newSongsPutPlaylist = [];
-        newSongsPutPlaylist.push(songName);
-
+        /* Current songs of the dstPlaylist */
+        let newSongsPutPlaylist: string[] = [];
         for (let song_name of res['song_names']) {
           newSongsPutPlaylist.push(song_name);
         }
 
-        const requestOptions = {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(newSongsPutPlaylist),
-        };
+        fetch(Global.backendBaseUrl + 'playlists/dto/' + srcPlaylistName, {
+          headers: { 'Access-Control-Allow-Origin': '*' },
+        })
+          .then((res) => res.json())
+          .then(res =>{
 
-        fetch(fetchUrlUpdateSong, requestOptions).then((response) => {
-          if (response.status !== 204) {
-            console.log('Unable to add the Song to Playlist');
-          }
-        });
+            for(let song_name of res["song_names"]){
+
+              newSongsPutPlaylist.push(song_name)
+            }
+
+
+            const requestOptions = {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(newSongsPutPlaylist),
+            };
+
+            fetch(fetchUrlUpdateSong, requestOptions).then((response) => {
+              if (response.status !== 204) {
+                console.log(`Unable to add songs from ${srcPlaylistName} to ${dstPlaylistName}` );
+              }
+            });
+
+          })
+
+
       })
       .catch((error) => {
-        console.log('Unable to update playlist');
+        console.log(`Unable to add songs from ${srcPlaylistName} to ${dstPlaylistName}` );
       })
       .finally(() => {
         handleClose();
       });
   };
 
-  const handleDeleteFromPlaylist = (
+  const handleDeletePlaylist = (
     event: React.MouseEvent<HTMLButtonElement>,
     playlistName: string,
-    songName: string
   ) => {
-    /* Add to playlist */
 
-    fetch(Global.backendBaseUrl + 'playlists/dto/' + playlistName, {
-      headers: { 'Access-Control-Allow-Origin': '*' },
+    /* Delete playlist */
+    fetch(Global.backendBaseUrl + 'playlists/' + playlistName, {
+      method: 'DELETE',
+      headers: {
+        'Access-Control-Allow-Origin': '*'
+      }
     })
-      .then((res) => res.json())
-      .then((res) => {
-        let url = Global.backendBaseUrl + 'playlists/' + playlistName; // Reemplaza con la URL de tu API y el nombre de la playlist
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Unable to delete playlist');
+        }else{ if(response.status == 202)
+          navigate(`/home`, { replace: true })
+          props.reloadSidebar()
+          handleClose()
 
-        let photo = res['photo'];
-
-        const fetchUrlUpdateSong = `${url}?foto=${photo}`;
-
-        let newSongsPutPlaylist = [];
-
-        for (let song_name of res['song_names']) {
-          if (song_name !== songName) {
-            newSongsPutPlaylist.push(song_name);
-          }
         }
-
-        const requestOptions = {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(newSongsPutPlaylist),
-        };
-
-        fetch(fetchUrlUpdateSong, requestOptions).then((response) => {
-          if (response.status === 204) {
-            props.refreshPlaylistData();
-          } else {
-            console.log('Unable to delete Song from Playlist');
-          }
-        });
       })
-      .catch((error) => {
-        console.log('Unable to update playlist');
-      })
-      .finally(() => {
-        handleClose();
+      .catch(error => {
+        console.error('Unable to delete playlist: ', error);
       });
+
   };
 
   return (
     <div className={` ${styles.wrapperContextMenu}`}>
       <ul>
-        <li>
+      <li>
           <button>Añadir a la cola</button>
         </li>
         <li>
-          <button>Ir a radio de la canción</button>
-          <button>Ir al artista</button>
-          <button>Ir al álbum</button>
-          <button>Mostrar créditos</button>
-        </li>
-        <li>
-          <button>Quitar de canciones que te gustan</button>
-          <button
-            onClick={(event) =>
-              handleDeleteFromPlaylist(
+          <button>Editar datos</button>
+          <button>Crear lista similar</button>
+          <button onClick={(event) =>
+              handleDeletePlaylist(
                 event,
                 props.playlistName,
-                props.songName
               )
             }
-          >
-            Quitar de esta lista
-          </button>
+          >Eliminar</button>
+          <button>Descargar</button>
+        </li>
+        <li>
+
           <button
             className="d-flex justify-content-between"
             onClick={handleClick}
           >
-            Añadir a la playlist <i className="fa-solid fa-chevron-right"></i>
+            Añadir a otra lista<i className="fa-solid fa-chevron-right"></i>
             <Popover
               id={id}
               open={open}
@@ -248,10 +240,10 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
                         <li key={index}>
                           <button
                             onClick={(event) =>
-                              handleAddToPlaylist(
+                              handleAddPlaylitToPlaylist(
                                 event,
                                 playlistName.toString(),
-                                props.songName
+                                props.playlistName
                               )
                             }
                           >

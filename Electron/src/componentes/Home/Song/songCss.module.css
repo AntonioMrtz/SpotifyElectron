@@ -1,0 +1,27 @@
+.card {
+
+  padding: 1.5%;
+  margin-right: 2%;
+  background-color: var(--third-black) !important;
+}
+
+.card:hover {
+
+  background-color: var(--hover-white) !important;
+}
+
+.card_body {
+
+  padding-top: 5% !important;
+  padding-left: 0% !important;
+}
+
+.tituloLista {
+
+  color: var(--pure-white);
+}
+
+.autorLista {
+
+  color: var(--grey);
+}

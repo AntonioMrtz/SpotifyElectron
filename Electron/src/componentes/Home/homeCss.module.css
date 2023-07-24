@@ -21,6 +21,10 @@
   color: var(--grey);
 }
 
+.mostrarT:hover {
+  text-decoration: underline;
+}
+
 .card {
 
   padding: 1.5%;
@@ -54,4 +58,8 @@
 
   padding-top: var(--pading-top-sticky-header) !important;
 
+}
+
+.tituloSeccion:hover{
+  text-decoration: underline;
 }

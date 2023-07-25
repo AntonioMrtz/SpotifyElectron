@@ -5,8 +5,19 @@ from fastapi import HTTPException
 from fastapi.responses import Response
 from model.Genre import Genre
 from model.Song import Song
+from pydub import AudioSegment
+from lameenc import Encoder
 import base64
 import json
+import io
+import mutagen
+from mutagen.wave import WAVE
+from mutagen.mp3 import MP3
+import wave
+import ffmpeg
+import librosa
+
+
 
 
 """ Insert songs with format [files,chunks] https://www.mongodb.com/docs/manual/core/gridfs/"""
@@ -43,7 +54,7 @@ def get_song(name: str) -> Song:
 
     song_metadata = fileSongCollection.find_one({'name': name})
 
-    song = Song(name, song_metadata["artist"], song_metadata["photo"], Genre(
+    song = Song(name, song_metadata["artist"], song_metadata["photo"], song_metadata["duration"], Genre(
         song_metadata["genre"]).name, encoded_bytes)
 
     return song
@@ -94,7 +105,27 @@ def get_all_songs() -> list:
     return songs
 
 
-def create_song(name: str, artist: str, genre: Genre, photo: str, file) -> None:
+def convert_to_mp3(input_data, bitrate=128):
+    # Load the audio from the binary input_data
+    audio = AudioSegment.from_file(io.BytesIO(input_data))
+
+    # If the audio is not already in MP3 format, convert it
+    if audio.format != "mp3":
+        # Encode the audio as MP3 using lameenc
+        encoder = Encoder()
+        encoder.set_bit_rate(bitrate)
+        encoder.set_in_sample_rate(audio.frame_rate)
+        encoder.set_channels(audio.channels)
+        encoder.set_quality(2)  # 2 = high quality, 7 = low quality
+        audio_data = encoder.encode(audio.raw_data)
+        encoder.close()
+
+        return audio_data
+
+    return input_data
+
+
+async def create_song(name: str, artist: str, genre: Genre, photo: str, file) -> None:
     """ Returns a Song file with attributes and a song encoded in base64 "
 
     Args:
@@ -109,6 +140,7 @@ def create_song(name: str, artist: str, genre: Genre, photo: str, file) -> None:
 
     Returns:
     """
+
     if not checkValidParameterString(name) or not checkValidParameterString(photo) or not checkValidParameterString(artist) or not Genre.checkValidGenre(genre.value):
         raise HTTPException(
             status_code=400, detail="Parámetros no válidos o vacíos")
@@ -116,8 +148,25 @@ def create_song(name: str, artist: str, genre: Genre, photo: str, file) -> None:
     if fileSongCollection.find_one({'name': name}):
         raise HTTPException(status_code=400, detail="La canción ya existe")
 
-    file_id = gridFsSong.put(
-        file, name=name, artist=artist, genre=str(genre.value), photo=photo)
+    binary_data_bytes = base64.b64decode(file)
+
+    #s = io.BytesIO(binary_data_bytes)
+
+    s = io.BytesIO(binary_data_bytes)
+
+    # Assuming 'audio_bytes' contains the audio data in bytes
+    audio_data, sample_rate = librosa.load(io.BytesIO(file), sr=None)
+
+    # Calculate the duration in seconds
+    duration = librosa.get_duration(y=audio_data, sr=sample_rate)
+    print(duration)
+
+
+
+
+
+    """ file_id = gridFsSong.put(
+        file, name=name, artist=artist,duration=duration ,genre=str(genre.value), photo=photo) """
 
 
 def get_genres() -> json:

@@ -9,6 +9,8 @@ class Song:
     name: str
     artist: str
     photo: str
+    """ In seconds """
+    duration : int
     genre: Genre
     file: bytes
 

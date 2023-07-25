@@ -5,16 +5,9 @@ from fastapi import HTTPException
 from fastapi.responses import Response
 from model.Genre import Genre
 from model.Song import Song
-from pydub import AudioSegment
-from lameenc import Encoder
 import base64
 import json
 import io
-import mutagen
-from mutagen.wave import WAVE
-from mutagen.mp3 import MP3
-import wave
-import ffmpeg
 import librosa
 
 
@@ -128,17 +121,20 @@ def convert_to_mp3(input_data, bitrate=128):
 async def create_song(name: str, artist: str, genre: Genre, photo: str, file) -> None:
     """ Returns a Song file with attributes and a song encoded in base64 "
 
-    Args:
+    Parameters
+    ----------
         name (str): Song's name
         artist (str) : Artist name
-        genre : Genre of the song
+        genre (Genre): Genre of the song
         photo (str) : Url of the song thumbnail
-        file : Mp3 file of the song
+        file (FileUpload): Mp3 file of the song
 
-    Raises:
+    Raises
+    -------
         400 : Bad Request
 
-    Returns:
+    Returns
+    -------
     """
 
     if not checkValidParameterString(name) or not checkValidParameterString(photo) or not checkValidParameterString(artist) or not Genre.checkValidGenre(genre.value):
@@ -148,25 +144,15 @@ async def create_song(name: str, artist: str, genre: Genre, photo: str, file) ->
     if fileSongCollection.find_one({'name': name}):
         raise HTTPException(status_code=400, detail="La canción ya existe")
 
-    binary_data_bytes = base64.b64decode(file)
 
-    #s = io.BytesIO(binary_data_bytes)
-
-    s = io.BytesIO(binary_data_bytes)
 
     # Assuming 'audio_bytes' contains the audio data in bytes
     audio_data, sample_rate = librosa.load(io.BytesIO(file), sr=None)
-
     # Calculate the duration in seconds
-    duration = librosa.get_duration(y=audio_data, sr=sample_rate)
-    print(duration)
+    duration = int(librosa.get_duration(y=audio_data, sr=sample_rate))
 
-
-
-
-
-    """ file_id = gridFsSong.put(
-        file, name=name, artist=artist,duration=duration ,genre=str(genre.value), photo=photo) """
+    file_id = gridFsSong.put(
+        file, name=name, artist=artist,duration=duration ,genre=str(genre.value), photo=photo)
 
 
 def get_genres() -> json:

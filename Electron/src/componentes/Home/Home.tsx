@@ -50,6 +50,26 @@ export default function Home(props : PropsHome) {
               autor={'Quevedo'}
               changeSongName={props.changeSongName}
             />
+            <Song
+              name={'Quedate'}
+              autor={'Quevedo'}
+              changeSongName={props.changeSongName}
+            />
+            <Song
+              name={'Quedate'}
+              autor={'Quevedo'}
+              changeSongName={props.changeSongName}
+            />
+            <Song
+              name={'Quedate'}
+              autor={'Quevedo'}
+              changeSongName={props.changeSongName}
+            />
+            <Song
+              name={'Quedate'}
+              autor={'Quevedo'}
+              changeSongName={props.changeSongName}
+            />
         </section>
 
       </div>
@@ -75,6 +95,22 @@ export default function Home(props : PropsHome) {
               autor={'Quevedo'}
               changeSongName={props.changeSongName}
             />
+            <Song
+              name={'Quedate'}
+              autor={'Quevedo'}
+              changeSongName={props.changeSongName}
+            />
+            <Song
+              name={'Quedate'}
+              autor={'Quevedo'}
+              changeSongName={props.changeSongName}
+            />
+            <Song
+              name={'Quedate'}
+              autor={'Quevedo'}
+              changeSongName={props.changeSongName}
+            />
+
           </section>
         </div>
     </div>

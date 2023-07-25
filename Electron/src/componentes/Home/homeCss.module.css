@@ -66,5 +66,6 @@
 
 .row{
   padding-left: 3%;
+  flex-wrap: wrap;
 
 }

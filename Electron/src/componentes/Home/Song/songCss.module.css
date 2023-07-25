@@ -1,6 +1,6 @@
 .card {
 
-  flex: 0 0 0;
+  flex: 0 0 18%;
   padding: 1.5%;
   margin-right: 2%;
   background-color: var(--third-black) !important;

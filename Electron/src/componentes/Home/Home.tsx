@@ -43,15 +43,15 @@ export default function Home(props : PropsHome) {
           </div>
         </header>
 
+
         <section className={`container-fluid d-flex flex-row ${styles.row}`}>
-          <span onClick={handleDoubleClick} className={`rounded ${styles.card}`}>
-            <img src={foto} className={`card-img-top rounded`} />
-            <div className={`${styles.card_body}`}>
-              <h5 className={`${styles.tituloLista}`}>Quedate</h5>
-              <p className={`${styles.autorLista}`}>Quevedo</p>
-            </div>
-          </span>
+            <Song
+              name={'Quedate'}
+              autor={'Quevedo'}
+              changeSongName={props.changeSongName}
+            />
         </section>
+
       </div>
 
 

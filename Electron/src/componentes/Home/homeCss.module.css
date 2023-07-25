@@ -2,7 +2,7 @@
 
   padding-left: 0.5% !important;
   margin-top: 1%;
-  margin-bottom: 1.5%;
+  margin-bottom: 3%;
 }
 
 .columnTitle {
@@ -62,4 +62,8 @@
 
 .tituloSeccion:hover{
   text-decoration: underline;
+}
+
+.row{
+  padding-left: 3%;
 }

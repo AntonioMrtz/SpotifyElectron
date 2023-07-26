@@ -23,7 +23,9 @@ export default function Playlist(props: PropsPlaylist) {
 
   const [thumbnail, setThumbnail] = useState<string>('');
   const [numberSongs, setNumberSongs] = useState<number>(0);
+  const [description, setDescription] = useState<string>('');
   const [songs, setSongs] = useState<PropsSongs[]>();
+
 
   let getTotalDurationPlaylist = () => {
     let totalDuration = 0;
@@ -40,6 +42,7 @@ export default function Playlist(props: PropsPlaylist) {
     fetch(encodeURI(Global.backendBaseUrl + 'playlists/dto/' + playlistName))
       .then((res) => res.json())
       .then(async (res) => {
+        setDescription(res['description'])
         setThumbnail(res['photo'] === '' ? defaultThumbnailPlaylist : res['photo']);
         if (res['song_names']) {
           setNumberSongs(res['song_names'].length);
@@ -131,6 +134,7 @@ export default function Playlist(props: PropsPlaylist) {
           >
             <p>Álbum</p>
             <h1>{playlistName}</h1>
+            <p className={`${styles.descriptionText}`}>{description}</p>
             <div className={`d-flex flex-row`}>
 
               <p>{numberSongs} canciones</p>

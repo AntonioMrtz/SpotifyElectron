@@ -140,6 +140,8 @@ export default function Playlist(props: PropsPlaylist) {
       let timeoutId = setTimeout(() => {
         props.triggerReloadSidebar()
         setUpdatingPlaylist(false)
+        loadPlaylistData()
+
 
       }, 100);
 
@@ -263,7 +265,6 @@ export default function Playlist(props: PropsPlaylist) {
           setUpdatingPlaylist(true)
           //* Al cargar inmediatamente con el useEffect de location produce que el contenido para la nueva url no esta disponible
           navigate(`/playlist/`+formData.nombre, { replace: true })
-          loadPlaylistData()
         }
       });
 
@@ -417,6 +418,7 @@ export default function Playlist(props: PropsPlaylist) {
                     <textarea
                       name='descripcion'
                       className="form-control"
+                      defaultValue={description}
                       placeholder="Añade una descripción"
                       id="descripcion"
                       style={{ height: ' 100px' }}

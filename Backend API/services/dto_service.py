@@ -12,14 +12,17 @@ playlistCollection = Database().connection["playlist"]
 def get_song(name: str) -> SongDTO:
     """ Returns a song's metadata without his audio file"
 
-    Args:
+    Parameters
+    ----------
         name (str) : name of the song
 
-    Raises:
+    Raises
+    -------
         400 : Bad Request
         404 : Song not found
 
-    Returns:
+    Returns
+    -------
         SongDTO
     """
     if name is None or name == "":
@@ -37,14 +40,17 @@ def get_song(name: str) -> SongDTO:
 def get_playlist(name: str) -> PlaylistDTO:
     """ Returns a playlist's metadata without his song's audio files"
 
-    Args:
+    Parameters
+    ----------
         name (str) : name of the playlist
 
-    Raises:
+    Raises
+    -------
         400 : Bad Request
         404 : Playlist not found
 
-    Returns:
+    Returns
+    -------
         PlaylistDTO
     """
 

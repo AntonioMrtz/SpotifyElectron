@@ -21,14 +21,17 @@ fileSongCollection = Database().connection["cancion.files"]
 def get_song(name: str) -> Song:
     """ Returns a Song file with attributes and a song encoded in base64 "
 
-    Args:
+    Parameters
+    ----------
         name (str): Song's name
 
-    Raises:
+    Raises
+    -------
         400 : Bad Request
         404 : Song not found
 
-    Returns:
+    Returns
+    -------
         Song object
     """
 
@@ -56,14 +59,17 @@ def get_song(name: str) -> Song:
 def get_songs(names: list) -> list:
     """ Returns a list of Songs that match "names" list of names  "
 
-    Args:
+    Parameters
+    ----------
         names (list): List of song Names
 
-    Raises:
+    Raises
+    -------
             400 : Bad Request
             404 : Song not found
 
-    Returns:
+    Returns
+    -------
         List<Song>
 
     """
@@ -80,9 +86,14 @@ def get_songs(names: list) -> list:
 def get_all_songs() -> list:
     """ Returns a list of all Songs file"
 
-    Args:
+    Parameters
+    ----------
 
-    Returns:
+    Raises
+    -------
+
+    Returns
+    -------
         List <Song>
 
     """
@@ -158,9 +169,14 @@ async def create_song(name: str, artist: str, genre: Genre, photo: str, file) ->
 def get_genres() -> json:
     """ Returns a json with all the available genres"
 
-    Args:
+    Parameters
+    ----------
 
-    Returns:
+    Raises
+    -------
+
+    Returns
+    -------
         Json { GenreEnum : 'genre'}
     """
 

@@ -30,13 +30,16 @@ app.add_middleware(
 def get_cancion(nombre: str) -> Response:
     """ Devuelve la canción con nombre "nombre"
 
-    Args:
+    Parameters
+    ----------
         nombre (str): Nombre de la canción
 
-    Returns:
+    Returns
+    -------
         Response 200 OK
 
-    Raises:
+    Raises
+    -------
         Bad Request 400: "nombre" es vacío o nulo
         Not Found 404: No existe una canción con el nombre "nombre"
     """
@@ -51,17 +54,20 @@ def get_cancion(nombre: str) -> Response:
 async def post_cancion(nombre: str, artista: str, genero: Genre, foto: str, file: UploadFile) -> Response:
     """ Registra la canción con los parámetros "nombre","artista" y "género"
 
-    Args:
+    Parameters
+    ----------
         nombre (str): Nombre de la canción
         artista (str): Artista de la canción
         genero (Genre): Género musical de la canción
         foto (url): Género musical de la canción
 
 
-    Returns:
+    Returns
+    -------
         Response 201 Created
 
-    Raises:
+    Raises
+    -------
         Bad Request 400: Parámetros introducidos no són válidos o vacíos
     """
 
@@ -74,12 +80,15 @@ async def post_cancion(nombre: str, artista: str, genero: Genre, foto: str, file
 def get_canciones() -> Response:
     """ Devuelve todas las canciones
 
-    Args:
+    Parameters
+    ----------
 
-    Returns:
+    Returns
+    -------
         Response 200 OK
 
-    Raises:
+    Raises
+    -------
     """
 
     songs = song_service.get_all_songs()
@@ -101,13 +110,16 @@ def get_canciones() -> Response:
 def get_playlist(nombre: str) -> Response:
     """ Devuelve la playlist con nombre "nombre"
 
-    Args:
+    Parameters
+    ----------
         nombre (str): Nombre de la playlist
 
-    Returns:
+    Returns
+    -------
         Response 200 OK
 
-    Raises:
+    Raises
+    -------
         Bad Request 400: "nombre" es vacío o nulo
         Not Found 404: No existe una playlist con el nombre "nombre"
     """
@@ -123,16 +135,19 @@ def get_playlist(nombre: str) -> Response:
 def post_playlist(nombre: str, foto: str, nombres_canciones: list) -> Response:
     """ Registra la playlist con los parámetros "nombre" y "artista"
 
-    Args:
+    Parameters
+    ----------
         nombre (str): Nombre de la playlist
         foto (url): Género musical de la canción
         nombres_canciones (list) : nombres de las canciones
 
 
-    Returns:
+    Returns
+    -------
         Response 201 Created
 
-    Raises:
+    Raises
+    -------
         Bad Request 400: Parámetros introducidos no són válidos o vacíos
     """
 
@@ -144,15 +159,18 @@ def post_playlist(nombre: str, foto: str, nombres_canciones: list) -> Response:
 def update_playlist(nombre: str, nombres_canciones: list, foto: str) -> Response:
     """ Actualiza los parámetros de la playlist con nombre "nombre" , las canciones repetidas son serán añadidas
 
-    Args:
+    Parameters
+    ----------
         nombre (str): Nombre de la playlist
         nombres_canciones (list) : Lista con las canciones de la playlist
         foto (str) : url de la foto miniatura de la playlist
 
-    Returns:
+    Returns
+    -------
         Response 204 No content
 
-    Raises:
+    Raises
+    -------
         Bad Request 400: Parámetros introducidos no són válidos o vacíos
         Not Found 404: No existe una playlist con el nombre "nombre"
     """
@@ -165,13 +183,16 @@ def update_playlist(nombre: str, nombres_canciones: list, foto: str) -> Response
 def delete_playlist(nombre: str) -> Response:
     """ Elimina una playlist con nombre "nombre"
 
-    Args:
+    Parameters
+    ----------
         nombre (str): Nombre de la playlist
 
-    Returns:
+    Returns
+    -------
         Response 202 Accepted
 
-    Raises:
+    Raises
+    -------
         Bad Request 400: Parámetros introducidos no són válidos o vacíos
         Not Found 404: No existe una playlist con el nombre "nombre"
     """
@@ -184,12 +205,15 @@ def delete_playlist(nombre: str) -> Response:
 def get_playlists() -> Response:
     """ Devuelve todas las playlists [ SOLO nombres canciones , no el archivo de audio ]
 
-    Args:
+    Parameters
+    ----------
 
-    Returns:
+    Returns
+    -------
         Response 200 OK
 
-    Raises:
+    Raises
+    -------
     """
 
     playlists = playlist_service.get_all_playlist()
@@ -213,13 +237,16 @@ def get_playlists() -> Response:
 def get_cancion_dto(nombre: str) -> Response:
     """ Devuelve la canción con nombre "nombre" con los dato necesarios para previsualizacion sin carga el contenido de la canción
 
-    Args:
+    Parameters
+    ----------
         nombre (str): Nombre de la canción
 
-    Returns:
+    Returns
+    -------
         Response 200 OK
 
-    Raises:
+    Raises
+    -------
         Bad Request 400: "nombre" es vacío o nulo
         Not Found 404: No existe una canción con el nombre "nombre"
     """
@@ -234,13 +261,16 @@ def get_cancion_dto(nombre: str) -> Response:
 def get_playlist_dto(nombre: str) -> Response:
     """ Devuelve la playlist con nombre "nombre" con los datos necesarios para previsualización , sin el contenido de las canciones
 
-    Args:
+    Parameters
+    ----------
         nombre (str): Nombre de la playlist
 
-    Returns:
+    Returns
+    -------
         Response 200 OK
 
-    Raises:
+    Raises
+    -------
         Bad Request 400: "nombre" es vacío o nulo
         Not Found 404: No existe una playlist con el nombre "nombre"
     """
@@ -255,12 +285,15 @@ def get_playlist_dto(nombre: str) -> Response:
 def get_generos() -> Response:
     """ Devuelve el enumerado Género
 
-    Args:
+    Parameters
+    ----------
 
-    Returns:
+    Returns
+    -------
         Response 200 OK
 
-    Raises:
+    Raises
+    -------
     """
     genres = song_service.get_genres()
 

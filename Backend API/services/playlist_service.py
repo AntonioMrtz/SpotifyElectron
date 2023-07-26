@@ -12,14 +12,17 @@ playlistCollection = Database().connection["playlist"]
 def get_playlist(name: str) -> Playlist:
     """ Returns a Playlist with his songs"
 
-    Args:
+    Parameters
+    ----------
         name (str): Playlists's name
 
-    Raises:
+    Raises
+    -------
         400 : Bad Request
         404 : Playlist not found
 
-    Returns:
+    Returns
+    -------
         Playlist object
     """
 
@@ -39,23 +42,27 @@ def get_playlist(name: str) -> Playlist:
 
     #[print(song.name) for song in playlist_songs]
 
-    playlist = Playlist(name, playlist_data["photo"], playlist_songs)
+    playlist = Playlist(name,playlist_data["description"],playlist_data["photo"],playlist_songs)
 
     return playlist
 
 
-def create_playlist(name: str, photo: str, song_names: list) -> None:
+def create_playlist(name: str, photo: str,description: str, song_names: list ) -> None:
     """ Create a playlist with name, url of thumbnail and list of song names
 
-    Args:
+    Parameters
+    ----------
         name (str): Playlists's name
         photo (str): Url of playlist thumbnail
         song_names (list<str>): List of song names of the playlist
+        description (str): Playlists's description
 
-    Raises:
+    Raises
+    -------
         400 : Bad Request
 
-    Returns:
+    Returns
+    -------
     """
 
     if not checkValidParameterString(name):
@@ -68,24 +75,29 @@ def create_playlist(name: str, photo: str, song_names: list) -> None:
         raise HTTPException(status_code=400, detail="La playlist ya existe")
 
     result = playlistCollection.insert_one(
-        {'name': name, 'photo': photo if 'http' in photo else '', 'song_names': song_names})
+        {'name': name, 'photo': photo if 'http' in photo else '', 'description': description,'song_names': song_names})
 
     return True if result.acknowledged else False
 
 
-def update_playlist(name: str, nuevo_nombre:str,photo: str, song_names: list) -> None:
+def update_playlist(name: str, nuevo_nombre:str,photo: str,description: str, song_names: list) -> None:
     """ Updates a playlist with name, url of thumbnail and list of song names [ duplicates wont be added ]
 
-    Args:
+    Parameters
+    ----------
         name (str): Playlists's name
         nuevo_nombre (str) : New Playlist's name, if empty name is not being updated
         photo (str): Url of playlist thumbnail
         song_names (list<str>): List of song names of the playlist
-    Raises:
+        description (str): Playlists's description
+
+    Raises
+    -------
         400 : Bad Request
         404 : Playlist Not Found
 
-    Returns:
+    Returns
+    -------
     """
 
     if not checkValidParameterString(name):
@@ -98,6 +110,34 @@ def update_playlist(name: str, nuevo_nombre:str,photo: str, song_names: list) ->
 
     if checkValidParameterString(nuevo_nombre):
         new_name = nuevo_nombre
+    playlistCollection.update_one({'name': name}, {
+                                  "$set": {'name': name,'description':description ,'photo': photo if 'http' in photo else '', 'song_names': list(set(song_names))}})
+
+
+
+def delete_playlist(name: str) -> None:
+    """ Deletes a playlist by name
+
+    Parameters
+    ----------
+        name (str): Playlists's name
+
+    Raises
+    -------
+        400 : Bad Request
+        404 : Playlist Not Found
+
+    Returns
+    -------
+    """
+
+    if not checkValidParameterString(name):
+        raise HTTPException(status_code=400, detail="Parámetros no válidos")
+
+    result_playlist_exists = playlistCollection.delete_one({'name': name})
+
+    if not result_playlist_exists:
+        raise HTTPException(status_code=404, detail="La playlist no existe")
 
         playlistCollection.update_one({'name': name}, {
                                     "$set": {'name': new_name, 'photo': photo, 'song_names': list(set(song_names))}})
@@ -109,11 +149,14 @@ def update_playlist(name: str, nuevo_nombre:str,photo: str, song_names: list) ->
 def get_all_playlist() -> list:
     """ Returns all playlists in a DTO object"
 
-    Args:
+    Parameters
+    ----------
 
-    Raises:
+    Raises
+    -------
 
-    Returns:
+    Returns
+    -------
         List<PlaylistDTO>
     """
 

@@ -107,9 +107,12 @@
  */
 }
 
-.headerText :nth-child(3) {
+.descriptionText{
+  font-size: 0.785rem;
+  color: var( --secondary-white);
+}
+.headerText div p {
   /* Number of songs <p> */
-
   font-size: 0.85rem;
 }
 
@@ -119,17 +122,15 @@
   padding: 2.5%;
   background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.2));
   background: linear-gradient(rgba(0, 0, 0, .5), transparent 0 100%);
+  display: flex;
+  align-content: center;
 }
 
-.subhHeaderPlaylist button {
+.subhHeaderPlaylist button{
 
   border: none;
   background-color: transparent;
-}
-
-.subhHeaderPlaylist button:hover i {
-
-  color: var(--primary-white)
+  margin-right: 2%;
 }
 
 .subhHeaderPlaylist button i {
@@ -138,7 +139,24 @@
   color: var(--secondary-white);
 }
 
+.subhHeaderPlaylist .hoverableItemubheader:hover > i{
 
+  color: var(--pure-white) !important;
+}
+
+.subhHeaderPlaylist .hoverablePlayButton:hover > i{
+
+  transform: scale(1.02);
+
+}
+
+.displayNonePlay{
+  display:none;
+}
+
+.displayNoneLike{
+  display:none;
+}
 
 /** SONG TABLE */
 

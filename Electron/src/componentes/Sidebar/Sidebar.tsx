@@ -102,6 +102,7 @@ export default function Sidebar(props:PropsSidebar) {
               photo:
                 obj['photo'] === '' ? defaultThumbnailPlaylist : obj['photo'],
               handleUrlPlaylistClicked: handleUrlPlaylistClicked,
+              reloadSidebar:handlePlaylists,
               playlistStyle: '',
             };
 
@@ -206,6 +207,7 @@ export default function Sidebar(props:PropsSidebar) {
                       name={playlist.name}
                       photo={playlist.photo}
                       playlistStyle={playlistStyle} // Pasar el estilo como prop
+                      reloadSidebar={handlePlaylists}
                     />
                   </Link>
                 );

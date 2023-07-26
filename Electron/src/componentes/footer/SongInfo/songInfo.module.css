@@ -54,9 +54,19 @@
   color: var(--secondary-white);
 }
 
-.likeContainer a:hover i {
+.likeContainer button:hover i {
 
   color: var(--primary-white) !important;
 
 
 }
+
+.displayNoneLike {
+  display: none;
+}
+
+:focus:not(:focus-visible){
+  outline: none;
+  box-shadow: none;
+}
+

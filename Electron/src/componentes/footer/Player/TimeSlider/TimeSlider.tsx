@@ -46,6 +46,18 @@ export default function TimeSlider(props: PropsTimeSlider) {
     setSongDuration(props.songDuration);
   }, [props.songDuration]);
 
+  /* Hover slider */
+
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
+
   return (
     <Box width="100%" paddingRight="2%" display="flex" alignItems={'center'}>
       <p className={styles.pSlider}>{songPlayBackTimeMinutesSeconds}</p>
@@ -59,10 +71,12 @@ export default function TimeSlider(props: PropsTimeSlider) {
         aria-label="Medium"
         valueLabelDisplay="off"
         onChange={handleplaybacktime}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
         value={songPlayBackTime === undefined ? 0 : songPlayBackTime}
         sx={{
-          '& .MuiSlider-track': {
-            backgroundColor: 'var(--primary-white)',
+          "& .MuiSlider-track": {
+            backgroundColor: isHovered ? "var(--primary-green)" : "var(--primary-white)",
           },
           '& .MuiSlider-thumb': {
             backgroundColor: 'var(--primary-white)',

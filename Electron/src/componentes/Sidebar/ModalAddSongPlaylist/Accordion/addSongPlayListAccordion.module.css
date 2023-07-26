@@ -5,6 +5,7 @@
   border-bottom: 1px solid var(--secondary-white) !important;
   color: var(--primary-white) !important;
   padding: 5px !important;
+  width: 100%;
 }
 
 .accordionDetails input:focus,.accordionDetails textarea:focus {

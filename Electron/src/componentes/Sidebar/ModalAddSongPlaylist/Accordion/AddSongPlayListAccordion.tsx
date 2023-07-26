@@ -260,24 +260,24 @@ export default function AddSongPlayListAccordion(
           >
             <div className={`container-fluid d-flex flex-column p-0`}>
               <div className='d-flex flex-row'>
-                <div className="p-0 mb-3 me-3">
+                <div className="p-0 mb-3 me-3 container-fluid">
                   <input
                     type="text"
                     id="nombre"
                     name="nombre"
                     placeholder="Nombre de la playlist"
-                    className={` ${styles.input}`}
+                    className={` `}
                     onChange={handleChangePlaylist}
                     required
                   ></input>
                 </div>
-                <div className="mb-3">
+                <div className="mb-3 container-fluid p-0">
                   <input
                     type="text"
                     id="foto"
                     name="foto"
                     placeholder="URL de la miniatura"
-                    className={` ${styles.input}`}
+                    className={` `}
                     onChange={handleChangePlaylist}
                     required
                   ></input>
@@ -290,7 +290,7 @@ export default function AddSongPlayListAccordion(
                   placeholder="Descripción de la playlist"
                   className={`${styles.input}`}
                   onChange={handleChangePlaylist}
-                  style={{ height: ' 50px',width:'60%'}}
+                  style={{ height: ' 50px',width:'100%'}}
                   required
                 ></textarea>
               </div>

@@ -39,17 +39,31 @@ export default function Playlist(props: PropsPlaylist) {
               name: obj,
               playlistName: playlistName,
               artistName: '',
+              duration:0,
               index: 0,
+
               handleSongCliked: props.changeSongName,
               refreshPlaylistData: loadPlaylistData,
             };
 
-            let artistName = await fetch(Global.backendBaseUrl + 'canciones/dto/' + obj)
-              .then((res) => res.json())
-              .then((res) => res["artist"])
-              .catch( error => console.log("Unable to get Song : "+error))
+            let artistNameAndDuration;
+            try {
+              const response = await fetch(
+                Global.backendBaseUrl + 'canciones/dto/' + obj
+              );
+              const data = await response.json();
+              artistNameAndDuration = {
+                artist: data['artist'],
+                duration: data['duration'],
+              };
+            } catch (error) {
+              console.log('Unable to get Song: ' + error);
+              artistNameAndDuration = { artist: null, duration: null };
+            }
 
-            propsSong['artistName'] = artistName;
+            propsSong['artistName'] = artistNameAndDuration.artist;
+            propsSong['duration'] = artistNameAndDuration.duration;
+
             propsSongs.push(propsSong);
           }
 
@@ -143,6 +157,7 @@ export default function Playlist(props: PropsPlaylist) {
                   playlistName={playlistName}
                   artistName={song.artistName}
                   index={index + 1}
+                  duration={song.duration}
                   handleSongCliked={props.changeSongName}
                   refreshPlaylistData={loadPlaylistData}
                 />

@@ -12,14 +12,17 @@ playlistCollection = Database().connection["playlist"]
 def get_song(name: str) -> SongDTO:
     """ Returns a song's metadata without his audio file"
 
-    Args:
+    Parameters
+    ----------
         name (str) : name of the song
 
-    Raises:
+    Raises
+    -------
         400 : Bad Request
         404 : Song not found
 
-    Returns:
+    Returns
+    -------
         SongDTO
     """
     if name is None or name == "":
@@ -31,20 +34,23 @@ def get_song(name: str) -> SongDTO:
         raise HTTPException(
             status_code=404, detail="La canción con ese nombre no existe")
 
-    return SongDTO(name=song_data["name"], artist=song_data["artist"], photo=song_data["photo"], genre=Genre(song_data["genre"]).name)
+    return SongDTO(name=song_data["name"], artist=song_data["artist"], photo=song_data["photo"], duration=song_data["duration"],genre=Genre(song_data["genre"]).name)
 
 
 def get_playlist(name: str) -> PlaylistDTO:
     """ Returns a playlist's metadata without his song's audio files"
 
-    Args:
+    Parameters
+    ----------
         name (str) : name of the playlist
 
-    Raises:
+    Raises
+    -------
         400 : Bad Request
         404 : Playlist not found
 
-    Returns:
+    Returns
+    -------
         PlaylistDTO
     """
 
@@ -58,4 +64,4 @@ def get_playlist(name: str) -> PlaylistDTO:
         raise HTTPException(
             status_code=404, detail="La playlist con ese nombre no existe")
 
-    return PlaylistDTO(name=playlist_data["name"], photo=playlist_data["photo"], song_names=playlist_data["song_names"])
+    return PlaylistDTO(name=playlist_data["name"], photo=playlist_data["photo"], song_names=playlist_data["song_names"],description=playlist_data["description"])

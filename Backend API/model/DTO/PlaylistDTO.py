@@ -9,10 +9,11 @@ class PlaylistDTO:
 
     name: str
     photo: str
+    description: str
     song_names: list
     fecha_adicion: date
 
-    def add_songs(song_names: list) -> None:
+    def add_songs(self,song_names: str) -> None:
 
         self.song_names.extends(song_names)
 

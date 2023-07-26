@@ -13,14 +13,17 @@ playlistCollection = Database().connection["playlist"]
 def get_playlist(name: str) -> Playlist:
     """ Returns a Playlist with his songs"
 
-    Args:
+    Parameters
+    ----------
         name (str): Playlists's name
 
-    Raises:
+    Raises
+    -------
         400 : Bad Request
         404 : Playlist not found
 
-    Returns:
+    Returns
+    -------
         Playlist object
     """
 
@@ -45,23 +48,26 @@ def get_playlist(name: str) -> Playlist:
     return playlist
 
 
-def create_playlist(name: str, photo: str, song_names: list) -> None:
+def create_playlist(name: str, photo: str,description: str, song_names: list ) -> None:
     """ Create a playlist with name, url of thumbnail and list of song names
 
-    Args:
+    Parameters
+    ----------
         name (str): Playlists's name
         photo (str): Url of playlist thumbnail
         song_names (list<str>): List of song names of the playlist
+        description (str): Playlists's description
 
-    Raises:
+    Raises
+    -------
         400 : Bad Request
 
-    Returns:
+    Returns
+    -------
     """
     fecha_actual = datetime.now()
     fecha_iso8601 = fecha_actual.strftime('%Y-%m-%dT%H:%M:%S.%fZ')
-    print(fecha_iso8601)
-    
+
     if not checkValidParameterString(name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
@@ -70,28 +76,32 @@ def create_playlist(name: str, photo: str, song_names: list) -> None:
 
     if result_playlist_exists:
         raise HTTPException(status_code=400, detail="La playlist ya existe")
-    
+
     result = playlistCollection.insert_one(
-        {'name': name, 'photo': photo if 'http' in photo else '', 'upload_date':fecha_iso8601, 'song_names': song_names})
+        {'name': name, 'photo': photo if 'http' in photo else '', 'upload_date':fecha_iso8601,'description': description, 'song_names': song_names})
 
     return True if result.acknowledged else False
-    
-   
 
 
-def update_playlist(name: str, photo: str, song_names: list) -> None:
+
+
+def update_playlist(name: str, photo: str, song_names: list, description: str) -> None:
     """ Updates a playlist with name, url of thumbnail and list of song names [ duplicates wont be added ]
 
-    Args:
+    Parameters
+    ----------
         name (str): Playlists's name
         photo (str): Url of playlist thumbnail
         song_names (list<str>): List of song names of the playlist
+        description (str): Playlists's description
 
-    Raises:
+    Raises
+    -------
         400 : Bad Request
         404 : Playlist Not Found
 
-    Returns:
+    Returns
+    -------
     """
 
     if not checkValidParameterString(name):
@@ -110,14 +120,17 @@ def update_playlist(name: str, photo: str, song_names: list) -> None:
 def delete_playlist(name: str) -> None:
     """ Deletes a playlist by name
 
-    Args:
+    Parameters
+    ----------
         name (str): Playlists's name
 
-    Raises:
+    Raises
+    -------
         400 : Bad Request
         404 : Playlist Not Found
 
-    Returns:
+    Returns
+    -------
     """
 
     if not checkValidParameterString(name):
@@ -132,11 +145,14 @@ def delete_playlist(name: str) -> None:
 def get_all_playlist() -> list:
     """ Returns all playlists in a DTO object"
 
-    Args:
+    Parameters
+    ----------
 
-    Raises:
+    Raises
+    -------
 
-    Returns:
+    Returns
+    -------
         List<PlaylistDTO>
     """
 

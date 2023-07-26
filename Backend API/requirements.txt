@@ -3,3 +3,4 @@ fastapi==0.96.0
 pymongo==4.3.3
 python-dotenv==0.21.0
 python-multipart==0.0.6
+librosa==0.10.0.post2

@@ -7,6 +7,10 @@ from model.Genre import Genre
 from model.Song import Song
 import base64
 import json
+import io
+import librosa
+
+
 
 
 """ Insert songs with format [files,chunks] https://www.mongodb.com/docs/manual/core/gridfs/"""
@@ -43,7 +47,7 @@ def get_song(name: str) -> Song:
 
     song_metadata = fileSongCollection.find_one({'name': name})
 
-    song = Song(name, song_metadata["artist"], song_metadata["photo"], Genre(
+    song = Song(name, song_metadata["artist"], song_metadata["photo"], song_metadata["duration"], Genre(
         song_metadata["genre"]).name, encoded_bytes)
 
     return song
@@ -94,21 +98,45 @@ def get_all_songs() -> list:
     return songs
 
 
-def create_song(name: str, artist: str, genre: Genre, photo: str, file) -> None:
+def convert_to_mp3(input_data, bitrate=128):
+    # Load the audio from the binary input_data
+    audio = AudioSegment.from_file(io.BytesIO(input_data))
+
+    # If the audio is not already in MP3 format, convert it
+    if audio.format != "mp3":
+        # Encode the audio as MP3 using lameenc
+        encoder = Encoder()
+        encoder.set_bit_rate(bitrate)
+        encoder.set_in_sample_rate(audio.frame_rate)
+        encoder.set_channels(audio.channels)
+        encoder.set_quality(2)  # 2 = high quality, 7 = low quality
+        audio_data = encoder.encode(audio.raw_data)
+        encoder.close()
+
+        return audio_data
+
+    return input_data
+
+
+async def create_song(name: str, artist: str, genre: Genre, photo: str, file) -> None:
     """ Returns a Song file with attributes and a song encoded in base64 "
 
-    Args:
+    Parameters
+    ----------
         name (str): Song's name
         artist (str) : Artist name
-        genre : Genre of the song
+        genre (Genre): Genre of the song
         photo (str) : Url of the song thumbnail
-        file : Mp3 file of the song
+        file (FileUpload): Mp3 file of the song
 
-    Raises:
+    Raises
+    -------
         400 : Bad Request
 
-    Returns:
+    Returns
+    -------
     """
+
     if not checkValidParameterString(name) or not checkValidParameterString(photo) or not checkValidParameterString(artist) or not Genre.checkValidGenre(genre.value):
         raise HTTPException(
             status_code=400, detail="Parámetros no válidos o vacíos")
@@ -116,8 +144,15 @@ def create_song(name: str, artist: str, genre: Genre, photo: str, file) -> None:
     if fileSongCollection.find_one({'name': name}):
         raise HTTPException(status_code=400, detail="La canción ya existe")
 
+
+
+    # Assuming 'audio_bytes' contains the audio data in bytes
+    audio_data, sample_rate = librosa.load(io.BytesIO(file), sr=None)
+    # Calculate the duration in seconds
+    duration = int(librosa.get_duration(y=audio_data, sr=sample_rate))
+
     file_id = gridFsSong.put(
-        file, name=name, artist=artist, genre=str(genre.value), photo=photo)
+        file, name=name, artist=artist,duration=duration ,genre=str(genre.value), photo=photo)
 
 
 def get_genres() -> json:

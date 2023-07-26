@@ -66,7 +66,7 @@ async def post_cancion(nombre: str, artista: str, genero: Genre, foto: str, file
     """
 
     readFile = await file.read()
-    song_service.create_song(nombre, artista, genero, foto, readFile)
+    await song_service.create_song(nombre, artista, genero, foto, readFile)
     return Response(None, 201)
 
 

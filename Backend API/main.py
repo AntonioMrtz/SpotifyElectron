@@ -158,7 +158,7 @@ def post_playlist(nombre: str, foto: str,description: str,nombres_canciones: lis
 
 
 @app.put("/playlists/{nombre}")
-def update_playlist(nombre: str, nombres_canciones: list, foto: str) -> Response:
+def update_playlist(nombre: str,description:str ,nombres_canciones: list, foto: str) -> Response:
     """ Actualiza los parámetros de la playlist con nombre "nombre" , las canciones repetidas son serán añadidas
 
     Parameters
@@ -177,7 +177,7 @@ def update_playlist(nombre: str, nombres_canciones: list, foto: str) -> Response
         Not Found 404: No existe una playlist con el nombre "nombre"
     """
 
-    playlist_service.update_playlist(nombre, foto, nombres_canciones)
+    playlist_service.update_playlist(nombre,foto,description,nombres_canciones)
     return Response(None, 204)
 
 

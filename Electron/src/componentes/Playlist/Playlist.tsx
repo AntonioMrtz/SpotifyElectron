@@ -25,6 +25,17 @@ export default function Playlist(props: PropsPlaylist) {
   const [numberSongs, setNumberSongs] = useState<number>(0);
   const [songs, setSongs] = useState<PropsSongs[]>();
 
+  let getTotalDurationPlaylist = () => {
+    let totalDuration = 0;
+
+    if (songs) {
+      for (let song of songs) {
+        totalDuration += song.duration;
+      }
+    }
+    return totalDuration;
+  };
+
   const loadPlaylistData = async () => {
     fetch(encodeURI(Global.backendBaseUrl + 'playlists/dto/' + playlistName))
       .then((res) => res.json())
@@ -39,16 +50,31 @@ export default function Playlist(props: PropsPlaylist) {
               name: obj,
               playlistName: playlistName,
               artistName: '',
+              duration:0,
               index: 0,
+
               handleSongCliked: props.changeSongName,
               refreshPlaylistData: loadPlaylistData,
             };
 
-            let artistName = await fetch(Global.backendBaseUrl + 'canciones/dto/' + obj)
-              .then((res) => res.json())
-              .then((res) => res["artist"]);
+            let artistNameAndDuration;
+            try {
+              const response = await fetch(
+                Global.backendBaseUrl + 'canciones/dto/' + obj
+              );
+              const data = await response.json();
+              artistNameAndDuration = {
+                artist: data['artist'],
+                duration: data['duration'],
+              };
+            } catch (error) {
+              console.log('Unable to get Song: ' + error);
+              artistNameAndDuration = { artist: null, duration: null };
+            }
 
-            propsSong['artistName'] = artistName;
+            propsSong['artistName'] = artistNameAndDuration.artist;
+            propsSong['duration'] = artistNameAndDuration.duration;
+
             propsSongs.push(propsSong);
           }
 
@@ -105,7 +131,13 @@ export default function Playlist(props: PropsPlaylist) {
           >
             <p>Álbum</p>
             <h1>{playlistName}</h1>
-            <p>{numberSongs} canciones</p>
+            <div className={`d-flex flex-row`}>
+
+              <p>{numberSongs} canciones</p>
+              <p className={`me-2 ms-2`}>•</p>
+              <p>{secondsToHoursAndMinutes(getTotalDurationPlaylist())} aproximadamente</p>
+
+            </div>
           </div>
         </div>
 
@@ -160,6 +192,7 @@ export default function Playlist(props: PropsPlaylist) {
                   playlistName={playlistName}
                   artistName={song.artistName}
                   index={index + 1}
+                  duration={song.duration}
                   handleSongCliked={props.changeSongName}
                   refreshPlaylistData={loadPlaylistData}
                 />
@@ -169,4 +202,14 @@ export default function Playlist(props: PropsPlaylist) {
       </div>
     </div>
   );
+}
+
+
+
+function secondsToHoursAndMinutes(seconds:number) {
+  const hours = Math.floor(seconds / 3600);
+  const remainingSeconds = seconds % 3600;
+  const minutes = Math.floor(remainingSeconds / 60);
+
+  return hours+" h "+minutes+" min ";
 }

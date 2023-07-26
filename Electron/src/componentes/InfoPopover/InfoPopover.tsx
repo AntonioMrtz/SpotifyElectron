@@ -53,7 +53,7 @@ export default function InfoPopover(props: PropsInfoPopover) {
           {' '}
           <div className={`${styles.wrapperConfirmationModalHeader}`}>
             <div className={`${styles.wrapperConfirmationModalText}`}>
-              <span>{props.title} añadida</span>
+              <span>{props.title}</span>
               <p>{props.description}</p>
             </div>
 

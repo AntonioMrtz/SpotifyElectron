@@ -47,7 +47,7 @@ def get_playlist(name: str) -> Playlist:
     return playlist
 
 
-def create_playlist(name: str, photo: str, song_names: list) -> None:
+def create_playlist(name: str, photo: str,description: str, song_names: list ) -> None:
     """ Create a playlist with name, url of thumbnail and list of song names
 
     Parameters
@@ -55,6 +55,7 @@ def create_playlist(name: str, photo: str, song_names: list) -> None:
         name (str): Playlists's name
         photo (str): Url of playlist thumbnail
         song_names (list<str>): List of song names of the playlist
+        description (str): Playlists's description
 
     Raises
     -------
@@ -74,12 +75,12 @@ def create_playlist(name: str, photo: str, song_names: list) -> None:
         raise HTTPException(status_code=400, detail="La playlist ya existe")
 
     result = playlistCollection.insert_one(
-        {'name': name, 'photo': photo if 'http' in photo else '', 'song_names': song_names})
+        {'name': name, 'photo': photo if 'http' in photo else '', 'description': description,'song_names': song_names})
 
     return True if result.acknowledged else False
 
 
-def update_playlist(name: str, photo: str, song_names: list) -> None:
+def update_playlist(name: str, photo: str, song_names: list, description: str) -> None:
     """ Updates a playlist with name, url of thumbnail and list of song names [ duplicates wont be added ]
 
     Parameters
@@ -87,6 +88,7 @@ def update_playlist(name: str, photo: str, song_names: list) -> None:
         name (str): Playlists's name
         photo (str): Url of playlist thumbnail
         song_names (list<str>): List of song names of the playlist
+        description (str): Playlists's description
 
     Raises
     -------

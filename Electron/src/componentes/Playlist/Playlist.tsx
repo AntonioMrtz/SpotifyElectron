@@ -25,6 +25,7 @@ export default function Playlist(props: PropsPlaylist) {
   const [numberSongs, setNumberSongs] = useState<number>(0);
   const [description, setDescription] = useState<string>('');
   const [songs, setSongs] = useState<PropsSongs[]>();
+  //const [displayPlay,setDisplayplay] = useState('');
 
 
   let getTotalDurationPlaylist = () => {

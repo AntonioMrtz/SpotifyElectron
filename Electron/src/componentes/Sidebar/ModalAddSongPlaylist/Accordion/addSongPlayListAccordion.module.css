@@ -1,4 +1,4 @@
-.accordionDetails input {
+.accordionDetails input,.accordionDetails textarea {
   border: 0 !important;
   outline: 0 !important;
   background: transparent !important;
@@ -7,7 +7,7 @@
   padding: 5px !important;
 }
 
-.accordionDetails input:focus {
+.accordionDetails input:focus,.accordionDetails textarea:focus {
   box-shadow: 0 0rem !important;
 
 }

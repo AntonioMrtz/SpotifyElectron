@@ -146,10 +146,6 @@ export default function Playlist(props: PropsPlaylist) {
       }, 100);
 
       return () => clearTimeout(timeoutId);
-    }else{
-
-      loadPlaylistData();
-
     }
   }, [location]);
 
@@ -250,7 +246,15 @@ export default function Playlist(props: PropsPlaylist) {
           if (response.status !== 204) {
             console.log('Unable to update playlist');
           }else{
-            //loadPlaylistData()
+            setOpen(false);
+            if (formData.nombre!==playlistName && formData.nombre!==''){
+
+              setUpdatingPlaylist(true)
+              //* Al cargar inmediatamente con el useEffect de location produce que el contenido para la nueva url no esta disponible
+              navigate(`/playlist/`+formData.nombre, { replace: true })
+            }else{
+              loadPlaylistData()
+            }
 
           }
         });
@@ -258,15 +262,6 @@ export default function Playlist(props: PropsPlaylist) {
       .catch((error) => {
         console.log('Unable to update playlist');
       })
-      .finally(() => {
-        setOpen(false);
-        if (formData.nombre!==playlistName && formData.nombre!==''){
-
-          setUpdatingPlaylist(true)
-          //* Al cargar inmediatamente con el useEffect de location produce que el contenido para la nueva url no esta disponible
-          navigate(`/playlist/`+formData.nombre, { replace: true })
-        }
-      });
 
 
   };

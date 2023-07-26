@@ -42,7 +42,7 @@ def get_playlist(name: str) -> Playlist:
 
     #[print(song.name) for song in playlist_songs]
 
-    playlist = Playlist(name, playlist_data["photo"], playlist_songs)
+    playlist = Playlist(name,playlist_data["description"],playlist_data["photo"],playlist_songs)
 
     return playlist
 
@@ -80,7 +80,7 @@ def create_playlist(name: str, photo: str,description: str, song_names: list ) -
     return True if result.acknowledged else False
 
 
-def update_playlist(name: str, photo: str, song_names: list, description: str) -> None:
+def update_playlist(name: str, photo: str,description: str, song_names: list) -> None:
     """ Updates a playlist with name, url of thumbnail and list of song names [ duplicates wont be added ]
 
     Parameters
@@ -108,7 +108,7 @@ def update_playlist(name: str, photo: str, song_names: list, description: str) -
         raise HTTPException(status_code=404, detail="La playlist no existe")
 
     playlistCollection.update_one({'name': name}, {
-                                  "$set": {'name': name, 'photo': photo, 'song_names': list(set(song_names))}})
+                                  "$set": {'name': name,'description':description ,'photo': photo, 'song_names': list(set(song_names))}})
 
 
 

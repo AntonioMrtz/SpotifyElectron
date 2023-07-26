@@ -23,7 +23,38 @@ export default function Playlist(props: PropsPlaylist) {
 
   const [thumbnail, setThumbnail] = useState<string>('');
   const [numberSongs, setNumberSongs] = useState<number>(0);
+  const [description, setDescription] = useState<string>('');
+  const [displayPlay, setdisplayPlay] = useState('');
+  const [displayPause, setdisplayPause] = useState(styles.displayNonePlay);
+  const [displayDislike, setdisplayDislike] = useState('');
+  const [displayLike, setdisplayLike] = useState(styles.displayNoneLike);
+  const [Playing, setPlaying] = useState(false);
+  const [Liked, setLiked] = useState(false);
   const [songs, setSongs] = useState<PropsSongs[]>();
+
+  const handlePlay = ():void=>{
+    if(Playing == false){
+      setdisplayPause('');
+      setdisplayPlay(styles.displayNonePlay);
+      setPlaying(true);
+    }else{
+      setdisplayPlay('');
+      setdisplayPause(styles.displayNonePlay);
+      setPlaying(false);
+    }
+  }
+
+  const handleLike = () : void=>{
+    if(Liked == false){
+      setdisplayLike('');
+      setdisplayDislike(styles.displayNoneLike);
+      setLiked(true);
+    }else{
+      setdisplayDislike('');
+      setdisplayLike(styles.displayNoneLike);
+      setLiked(false);
+    }
+  }
 
   let getTotalDurationPlaylist = () => {
     let totalDuration = 0;
@@ -40,6 +71,7 @@ export default function Playlist(props: PropsPlaylist) {
     fetch(encodeURI(Global.backendBaseUrl + 'playlists/dto/' + playlistName))
       .then((res) => res.json())
       .then(async (res) => {
+        setDescription(res['description'])
         setThumbnail(res['photo'] === '' ? defaultThumbnailPlaylist : res['photo']);
         if (res['song_names']) {
           setNumberSongs(res['song_names'].length);
@@ -131,6 +163,7 @@ export default function Playlist(props: PropsPlaylist) {
           >
             <p>Álbum</p>
             <h1>{playlistName}</h1>
+            <p className={`${styles.descriptionText}`}>{description}</p>
             <div className={`d-flex flex-row`}>
 
               <p>{numberSongs} canciones</p>
@@ -142,16 +175,16 @@ export default function Playlist(props: PropsPlaylist) {
         </div>
 
         <div className={` ${styles.nonBlurred} ${styles.subhHeaderPlaylist}`}>
-          <button className={`${styles.hoverablePlayButton}`}>
+          <button className={`${styles.hoverablePlayButton} ${displayPlay}`} onClick={handlePlay}>
             <i className="fa-solid fa-circle-play" style={{ color: 'var(--primary-green)',fontSize:'3rem' }}></i>
           </button>
-          <button className={`${styles.hoverablePlayButton}`}>
+          <button className={`${styles.hoverablePlayButton} ${displayPause}`} onClick={handlePlay}>
             <i className="fa-solid fa-circle-pause" style={{ color: 'var(--primary-green)',fontSize:'3rem' }}></i>
           </button>
-          <button className={`${styles.hoverableItemubheader}`}>
+          <button className={`${styles.hoverableItemubheader} ${displayDislike}`} onClick={handleLike}>
             <i className="fa-regular fa-heart" style={{ color: 'var(--secondary-white)',fontSize:'1.75rem' }}></i>
           </button>
-          <button>
+          <button className={`${displayLike}`} onClick={handleLike}>
             <i className="fa-solid fa-heart" style={{ color: 'var(--primary-green)',fontSize:'1.75rem' }}></i>
           </button>
           <button className={`${styles.hoverableItemubheader}`}>

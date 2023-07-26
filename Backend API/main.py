@@ -139,7 +139,9 @@ def post_playlist(nombre: str, foto: str,description: str,nombres_canciones: lis
     ----------
         nombre (str): Nombre de la playlist
         foto (url): Género musical de la canción
+        description (str): Descripcion de la playlist
         nombres_canciones (list) : nombres de las canciones
+
 
 
     Returns

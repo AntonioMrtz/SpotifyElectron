@@ -108,7 +108,7 @@ def update_playlist(name: str, photo: str,description: str, song_names: list) ->
         raise HTTPException(status_code=404, detail="La playlist no existe")
 
     playlistCollection.update_one({'name': name}, {
-                                  "$set": {'name': name,'description':description ,'photo': photo, 'song_names': list(set(song_names))}})
+                                  "$set": {'name': name,'description':description ,'photo': photo if 'http' in photo else '', 'song_names': list(set(song_names))}})
 
 
 

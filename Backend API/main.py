@@ -182,7 +182,7 @@ def update_playlist(nombre: str, foto: str,descripcion:str,nombres_canciones: li
         Not Found 404: No existe una playlist con el nombre "nombre"
     """
 
-    playlist_service.update_playlist(nombre,nuevo_nombre, foto,description,nombres_canciones)
+    playlist_service.update_playlist(nombre,nuevo_nombre, foto,descripcion,nombres_canciones)
     return Response(None, 204)
 
 

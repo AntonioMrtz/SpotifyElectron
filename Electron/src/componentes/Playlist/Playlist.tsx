@@ -223,11 +223,11 @@ export default function Playlist(props: PropsPlaylist) {
 
         if (formData.nombre!==playlistName && formData.nombre!==''){
 
-          fetchUrlUpdateSong = `${url}?foto=${photo}&nuevo_nombre=${formData.nombre}`;
+          fetchUrlUpdateSong = `${url}?foto=${photo}&descripcion=${formData.descripcion}&nuevo_nombre=${formData.nombre}`;
 
         }else{
 
-          fetchUrlUpdateSong = `${url}?foto=${photo}`
+          fetchUrlUpdateSong = `${url}?foto=${photo}&descripcion=${formData.descripcion}`
 
         }
 
@@ -247,6 +247,9 @@ export default function Playlist(props: PropsPlaylist) {
         fetch(fetchUrlUpdateSong, requestOptions).then((response) => {
           if (response.status !== 204) {
             console.log('Unable to update playlist');
+          }else{
+            //loadPlaylistData()
+
           }
         });
       })
@@ -337,7 +340,7 @@ export default function Playlist(props: PropsPlaylist) {
             >
               Título
             </span>
-            <span className={` ${styles.gridItem}`}>
+            <span className={` d-flex justify-content-center ${styles.gridItem}`}>
               <i className="fa-regular fa-clock"></i>
             </span>
           </li>

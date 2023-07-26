@@ -110,10 +110,13 @@ def update_playlist(name: str, nuevo_nombre:str,photo: str,description: str, son
 
     if checkValidParameterString(nuevo_nombre):
         new_name = nuevo_nombre
-    playlistCollection.update_one({'name': name}, {
+        playlistCollection.update_one({'name': name}, {
+                                  "$set": {'name': new_name,'description':description ,'photo': photo if 'http' in photo else '', 'song_names': list(set(song_names))}})
+
+    else:
+
+        playlistCollection.update_one({'name': name}, {
                                   "$set": {'name': name,'description':description ,'photo': photo if 'http' in photo else '', 'song_names': list(set(song_names))}})
-
-
 
 def delete_playlist(name: str) -> None:
     """ Deletes a playlist by name

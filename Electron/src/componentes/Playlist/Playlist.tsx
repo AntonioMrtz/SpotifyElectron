@@ -26,7 +26,7 @@ export default function Playlist(props: PropsPlaylist) {
   let navigate = useNavigate()
 
 
-  const [thumbnail, setThumbnail] = useState<string>('');
+  const [thumbnail, setThumbnail] = useState<string>(defaultThumbnailPlaylist);
   const [numberSongs, setNumberSongs] = useState<number>(0);
   const [description, setDescription] = useState<string>('');
   const [displayPlay, setdisplayPlay] = useState('');
@@ -146,6 +146,8 @@ export default function Playlist(props: PropsPlaylist) {
       }, 100);
 
       return () => clearTimeout(timeoutId);
+    }else{
+      loadPlaylistData()
     }
   }, [location]);
 

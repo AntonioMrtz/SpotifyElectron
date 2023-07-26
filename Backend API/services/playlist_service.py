@@ -43,7 +43,7 @@ def get_playlist(name: str) -> Playlist:
 
     #[print(song.name) for song in playlist_songs]
 
-    playlist = Playlist(name, playlist_data["photo"], playlist_songs)
+    playlist = Playlist(name, playlist_data["photo"], playlist_songs, playlist_data["description"], playlist_data["upload_date"] )
 
     return playlist
 

@@ -10,6 +10,7 @@ class Playlist:
 
     name: str
     photo: str
+    description: str
     songs: list
     fecha_adicion:date
 

@@ -25,6 +25,17 @@ export default function Playlist(props: PropsPlaylist) {
   const [numberSongs, setNumberSongs] = useState<number>(0);
   const [songs, setSongs] = useState<PropsSongs[]>();
 
+  let getTotalDurationPlaylist = () => {
+    let totalDuration = 0;
+
+    if (songs) {
+      for (let song of songs) {
+        totalDuration += song.duration;
+      }
+    }
+    return totalDuration;
+  };
+
   const loadPlaylistData = async () => {
     fetch(encodeURI(Global.backendBaseUrl + 'playlists/dto/' + playlistName))
       .then((res) => res.json())
@@ -117,7 +128,13 @@ export default function Playlist(props: PropsPlaylist) {
           >
             <p>Álbum</p>
             <h1>{playlistName}</h1>
-            <p>{numberSongs} canciones</p>
+            <div className={`d-flex flex-row`}>
+
+              <p>{numberSongs} canciones</p>
+              <p className={`me-2 ms-2`}>•</p>
+              <p>{secondsToHoursAndMinutes(getTotalDurationPlaylist())} aproximadamente</p>
+
+            </div>
           </div>
         </div>
 
@@ -167,4 +184,14 @@ export default function Playlist(props: PropsPlaylist) {
       </div>
     </div>
   );
+}
+
+
+
+function secondsToHoursAndMinutes(seconds:number) {
+  const hours = Math.floor(seconds / 3600);
+  const remainingSeconds = seconds % 3600;
+  const minutes = Math.floor(remainingSeconds / 60);
+
+  return hours+" h "+minutes+" min ";
 }

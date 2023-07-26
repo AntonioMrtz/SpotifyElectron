@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from datetime import date
 
 import services.song_service as song_service
 import json
@@ -10,6 +11,7 @@ class Playlist:
     name: str
     photo: str
     songs: list
+    fecha_adicion:date
 
     def add_songs(song_names: str) -> None:
 

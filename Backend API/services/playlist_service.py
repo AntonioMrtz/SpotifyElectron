@@ -1,3 +1,4 @@
+from datetime import datetime
 from database.Database import Database
 import services.song_service as song_service
 import services.dto_service as dto_service
@@ -57,7 +58,10 @@ def create_playlist(name: str, photo: str, song_names: list) -> None:
 
     Returns:
     """
-
+    fecha_actual = datetime.now()
+    fecha_iso8601 = fecha_actual.strftime('%Y-%m-%dT%H:%M:%S.%fZ')
+    print(fecha_iso8601)
+    
     if not checkValidParameterString(name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
@@ -66,11 +70,13 @@ def create_playlist(name: str, photo: str, song_names: list) -> None:
 
     if result_playlist_exists:
         raise HTTPException(status_code=400, detail="La playlist ya existe")
-
+    
     result = playlistCollection.insert_one(
-        {'name': name, 'photo': photo if 'http' in photo else '', 'song_names': song_names})
+        {'name': name, 'photo': photo if 'http' in photo else '', 'upload_date':fecha_iso8601, 'song_names': song_names})
 
     return True if result.acknowledged else False
+    
+   
 
 
 def update_playlist(name: str, photo: str, song_names: list) -> None:

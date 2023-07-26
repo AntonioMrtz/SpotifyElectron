@@ -1,3 +1,4 @@
+from datetime import date
 from fastapi import FastAPI, UploadFile, status
 import services.song_service as song_service
 import services.playlist_service as playlist_service
@@ -6,6 +7,7 @@ from fastapi.responses import Response
 import json
 from model.Genre import Genre
 from fastapi.middleware.cors import CORSMiddleware
+
 
 
 app = FastAPI(title="SpotifyElectronAPI",
@@ -121,12 +123,13 @@ def get_playlist(nombre: str) -> Response:
 
 @app.post("/playlists/")
 def post_playlist(nombre: str, foto: str, nombres_canciones: list) -> Response:
-    """ Registra la playlist con los parámetros "nombre" y "artista"
+    """ Registra la playlist con los parámetros "nombre", "artista", y "fecha"
 
     Args:
         nombre (str): Nombre de la playlist
         foto (url): Género musical de la canción
         nombres_canciones (list) : nombres de las canciones
+        
 
 
     Returns:

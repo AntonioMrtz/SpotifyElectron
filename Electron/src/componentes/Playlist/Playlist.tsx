@@ -24,13 +24,18 @@ export default function Playlist(props: PropsPlaylist) {
   const [thumbnail, setThumbnail] = useState<string>('');
   const [numberSongs, setNumberSongs] = useState<number>(0);
   const [description, setDescription] = useState<string>('');
+<<<<<<< HEAD
   const [displayPlay, setdisplayPlay] = useState('');
   const [displayPause, setdisplayPause] = useState(styles.displayNonePlay);
   const [displayDislike, setdisplayDislike] = useState('');
   const [displayLike, setdisplayLike] = useState(styles.displayNoneLike);
   const [Playing, setPlaying] = useState(false);
   const [Liked, setLiked] = useState(false);
+=======
+>>>>>>> 759d79529314656a8c63809954eeedb5160c6a51
   const [songs, setSongs] = useState<PropsSongs[]>();
+  //const [displayPlay,setDisplayplay] = useState('');
+
 
   const handlePlay = ():void=>{
     if(Playing == false){

@@ -132,14 +132,16 @@ def get_playlist(nombre: str) -> Response:
 
 
 @app.post("/playlists/")
-def post_playlist(nombre: str, foto: str, nombres_canciones: list) -> Response:
+def post_playlist(nombre: str, foto: str,description: str,nombres_canciones: list,) -> Response:
     """ Registra la playlist con los parámetros "nombre" y "artista"
 
     Parameters
     ----------
         nombre (str): Nombre de la playlist
         foto (url): Género musical de la canción
+        description (str): Descripcion de la playlist
         nombres_canciones (list) : nombres de las canciones
+
 
 
     Returns
@@ -151,7 +153,7 @@ def post_playlist(nombre: str, foto: str, nombres_canciones: list) -> Response:
         Bad Request 400: Parámetros introducidos no són válidos o vacíos
     """
 
-    result = playlist_service.create_playlist(nombre, foto, nombres_canciones)
+    result = playlist_service.create_playlist(nombre, foto,description, nombres_canciones)
     return Response(None, 201)
 
 

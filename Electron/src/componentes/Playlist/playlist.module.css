@@ -107,9 +107,12 @@
  */
 }
 
+.descriptionText{
+  font-size: 0.785rem;
+  color: var( --secondary-white);
+}
 .headerText div p {
   /* Number of songs <p> */
-
   font-size: 0.85rem;
 }
 

@@ -150,9 +150,13 @@
 
 }
 
+.displayNonePlay{
+  display:none;
+}
 
-
-
+.displayNoneLike{
+  display:none;
+}
 
 /** SONG TABLE */
 

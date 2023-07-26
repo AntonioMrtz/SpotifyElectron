@@ -153,7 +153,7 @@ def post_playlist(nombre: str, foto: str,descripcion: str,nombres_canciones: lis
         Bad Request 400: Parámetros introducidos no són válidos o vacíos
     """
 
-    result = playlist_service.create_playlist(nombre, foto,description, nombres_canciones)
+    result = playlist_service.create_playlist(nombre, foto,descripcion, nombres_canciones)
     return Response(None, 201)
 
 

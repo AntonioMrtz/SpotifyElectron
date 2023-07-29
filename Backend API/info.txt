@@ -1,0 +1,17 @@
+fastpi bigger app
+
+- https://fastapi.tiangolo.com/tutorial/bigger-applications/
+
+testing fastapi
+
+pytest,httpx -> requirements
+
+
+
+#run
+
+python -m pytest
+
+#get console log
+
+python -m pytest --capture=no

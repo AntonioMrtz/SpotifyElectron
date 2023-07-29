@@ -4,3 +4,5 @@ pymongo==4.3.3
 python-dotenv==0.21.0
 python-multipart==0.0.6
 librosa==0.10.0.post2
+httpx==0.24.1
+pytest==7.4.0

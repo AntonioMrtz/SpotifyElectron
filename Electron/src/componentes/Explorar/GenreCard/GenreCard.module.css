@@ -1,0 +1,15 @@
+.card{
+    background-color: var(--third-black);
+    min-width: 20%;
+    min-height: 90%;
+    text-align: start;
+    margin: 1%;
+}
+
+.genreTitle{
+    color: var(--pure-white);
+    font-size: normal;
+    margin-top: -35%;
+    margin-left: 5%;
+    
+}

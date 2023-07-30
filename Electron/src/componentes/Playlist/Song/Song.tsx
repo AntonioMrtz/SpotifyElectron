@@ -55,7 +55,7 @@ export default function Song(props: PropsSongs) {
         <span className={`${styles.songTitleTable} ${styles.titleContainer} pb-0`}>{props.name}</span>
         <span className={`${styles.gridItem} ${styles.artistNameContainer} p-0 `}>{props.artistName}</span>
       </span>
-      <span className={` ${styles.gridItem}`}>{secondsToMinutesSeconds(props.duration)}</span>
+      <span className={` d-flex justify-content-center ${styles.gridItem}`}>{secondsToMinutesSeconds(props.duration)}</span>
 
       <div>
         <Popover

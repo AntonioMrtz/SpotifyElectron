@@ -150,9 +150,13 @@
 
 }
 
+.displayNonePlay{
+  display:none;
+}
 
-
-
+.displayNoneLike{
+  display:none;
+}
 
 /** SONG TABLE */
 
@@ -228,6 +232,7 @@ ul {
 
 .gridItem {
   padding: 10px;
+  font-weight: 300;
 }
 
 .artistNameContainer{
@@ -240,6 +245,107 @@ ul {
   padding: 0 !important;
 }
 
+
+/* Update PLAYLIST MODAL */
+
+.wrapperUpdatePlaylistModal{
+
+  background-color: var(--hover-white);
+  border-radius: var(--border-radius-thumbnails);
+  border: 1px solid var(--hover-white);
+
+}
+
+.wrapperUpdateTextData input,.wrapperUpdateTextData div textarea{
+
+  color: var(--primary-white) !important;
+  background-color: transparent !important;
+  border: 1px solid var(--secondary-white) !important;
+  resize: none;
+}
+
+.inputPlaylist label,.inputPlaylist div textarea{
+
+  color: var(--primary-white);
+}
+
+.inputPlaylist input:focus + label,.inputPlaylist div textarea:focus + label{
+
+  display: block !important;
+  font-size: 0.7rem !important;
+}
+
+.inputPlaylist input:focus,.inputPlaylist div textarea:focus{
+
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.75) !important;
+
+}
+
+.wrapperUpdatePlaylistModal header{
+
+ margin-bottom: 4%;
+}
+
+.wrapperUpdatePlaylistModal header h1{
+
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--pure-white);
+
+}
+
+.wrapperUpdatePlaylistModal header button {
+
+  background-color: transparent;
+  border: none;
+  width: 32px;
+}
+
+.wrapperUpdatePlaylistModal header button:hover {
+
+  background-color: hsla(0,0%,100%,.1);
+  border-radius: 32px;
+  padding: 1%;
+}
+
+.wrapperUpdatePlaylistModal header button i{
+
+  color: var(--secondary-white);
+  font-size: 1.15rem;
+}
+
+
+.wrapperUpdateThumbnail{
+
+  width: 180px !important;
+  height: 180px;
+  min-width: 180px;
+  align-items: center;
+
+
+}
+.wrapperUpdateThumbnail img{
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  aspect-ratio: 1/1;
+}
+
+
+.wrapperUpdateButton button{
+
+  background-color: var(--primary-white);
+  border: 1px solid var(--primary-white);
+  border-radius: var(--border-radius-rounded-button);
+  padding: 2% 4% 2% 4%;
+  font-weight: bold;
+  font-size: 1.20rem;
+}
+
+.wrapperUpdateButton button:hover{
+
+  transform: scale(1.05);
+}
 
 @media (min-height:768px) {
 

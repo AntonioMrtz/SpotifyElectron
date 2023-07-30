@@ -9,9 +9,7 @@ import AudiotrackIcon from '@mui/icons-material/Audiotrack';
 import styles from './addSongPlayListAccordion.module.css';
 import GenreOption from './GenreOption/GenreOption';
 import Global from 'global/global';
-import {
-  InfoPopoverType,
-} from 'componentes/types/InfoPopover';
+import { InfoPopoverType } from 'componentes/types/InfoPopover';
 import ConfirmationModal from 'componentes/InfoPopover/InfoPopover';
 ('../../types/ModalConfirmationArgs');
 
@@ -20,51 +18,40 @@ interface PropsAddSongPlayListAccordion {
   reloadSidebar: Function;
 }
 
-
 const MessagesInfoPopOver = {
+  PLAYLIST_ADDED_TITLE: 'Playlist Añadida',
+  PLAYLIST_ADDED_DESCRIPTION: 'La playlist se ha añadido correctamente',
+  PLAYLIST_NOT_ADDED_TITLE: 'Playlist no Añadida',
+  PLAYLIST_NOT_ADDED_DESCRIPTION: 'La playlist no se ha podido añadir',
 
-  PLAYLIST_ADDED_TITLE : 'Playlist Añadida',
-  PLAYLIST_ADDED_DESCRIPTION : 'La playlist se ha añadido correctamente',
-  PLAYLIST_NOT_ADDED_TITLE : 'Playlist no Añadida',
-  PLAYLIST_NOT_ADDED_DESCRIPTION : 'La playlist no se ha podido añadir',
-
-  SONG_ADDED_TITLE : 'Canción Añadida',
-  SONG_ADDED_DESCRIPTION : 'La canción se ha añadido correctamente',
-  SONG_NOT_ADDED_TITLE : 'Canción no Añadida',
-  SONG_NOT_ADDED_DESCRIPTION : 'La canción no se ha podido añadir'
-
-}
-
+  SONG_ADDED_TITLE: 'Canción Añadida',
+  SONG_ADDED_DESCRIPTION: 'La canción se ha añadido correctamente',
+  SONG_NOT_ADDED_TITLE: 'Canción no Añadida',
+  SONG_NOT_ADDED_DESCRIPTION: 'La canción no se ha podido añadir',
+};
 
 export default function AddSongPlayListAccordion(
   props: PropsAddSongPlayListAccordion
 ) {
-
-
-
-  const [type, setType] = useState<InfoPopoverType>()
-  const [title, setTitle] = useState<string>()
-  const [description,setDescription] = useState<String>()
-
+  const [type, setType] = useState<InfoPopoverType>();
+  const [title, setTitle] = useState<string>();
+  const [description, setDescription] = useState<String>();
 
   /* Triggers Confirmation Modal */
 
   const [triggerOpenConfirmationModal, setTriggerOpenConfirmationModal] =
     useState(false);
 
-
   const handleShowConfirmationModal = (
     type: InfoPopoverType,
     title: string,
     description: string
   ) => {
-      setType(type);
-      setTitle(title);
-      setDescription(description);
-      setTriggerOpenConfirmationModal( (state) => !state)
-
+    setType(type);
+    setTitle(title);
+    setDescription(description);
+    setTriggerOpenConfirmationModal((state) => !state);
   };
-
 
   /* SONG */
 
@@ -122,11 +109,18 @@ export default function AddSongPlayListAccordion(
         .then((response) => {
           if (response.status == 201) {
             console.log('Cancion creada');
-            handleShowConfirmationModal(InfoPopoverType.SUCCESS,MessagesInfoPopOver.SONG_ADDED_TITLE,MessagesInfoPopOver.SONG_ADDED_DESCRIPTION)
+            handleShowConfirmationModal(
+              InfoPopoverType.SUCCESS,
+              MessagesInfoPopOver.SONG_ADDED_TITLE,
+              MessagesInfoPopOver.SONG_ADDED_DESCRIPTION
+            );
           } else {
             console.log('No se a creado la cancion');
-            handleShowConfirmationModal(InfoPopoverType.ERROR,MessagesInfoPopOver.SONG_NOT_ADDED_TITLE,MessagesInfoPopOver.SONG_NOT_ADDED_DESCRIPTION)
-
+            handleShowConfirmationModal(
+              InfoPopoverType.ERROR,
+              MessagesInfoPopOver.SONG_NOT_ADDED_TITLE,
+              MessagesInfoPopOver.SONG_NOT_ADDED_DESCRIPTION
+            );
           }
         })
         .catch((error) => {
@@ -149,7 +143,7 @@ export default function AddSongPlayListAccordion(
   });
 
   const handleChangePlaylist = (
-    event: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
     if (event.target && event.target.name) {
       if (event.target.name === 'foto') {
@@ -188,13 +182,20 @@ export default function AddSongPlayListAccordion(
           if (response.status == 201) {
             console.log('Playlist creada');
 
-            handleShowConfirmationModal(  InfoPopoverType.SUCCESS,MessagesInfoPopOver.PLAYLIST_ADDED_TITLE,MessagesInfoPopOver.PLAYLIST_ADDED_DESCRIPTION);
+            handleShowConfirmationModal(
+              InfoPopoverType.SUCCESS,
+              MessagesInfoPopOver.PLAYLIST_ADDED_TITLE,
+              MessagesInfoPopOver.PLAYLIST_ADDED_DESCRIPTION
+            );
             props.reloadSidebar();
           } else {
             console.log('No se a creado la playlist');
 
-            handleShowConfirmationModal(  InfoPopoverType.ERROR,MessagesInfoPopOver.PLAYLIST_NOT_ADDED_TITLE,MessagesInfoPopOver.PLAYLIST_NOT_ADDED_DESCRIPTION);
-
+            handleShowConfirmationModal(
+              InfoPopoverType.ERROR,
+              MessagesInfoPopOver.PLAYLIST_NOT_ADDED_TITLE,
+              MessagesInfoPopOver.PLAYLIST_NOT_ADDED_DESCRIPTION
+            );
           }
         })
         .catch((error) => {
@@ -257,28 +258,41 @@ export default function AddSongPlayListAccordion(
           <form
             className={`container-fluid d-flex flex-column p-0 ${styles.formAddSong}`}
           >
-            <div className={`container-fluid d-flex flex-row p-0`}>
-              <div className="p-0 mb-3 me-3">
-                <input
-                  type="text"
-                  id="nombre"
-                  name="nombre"
-                  placeholder="Nombre de la playlist"
-                  className={` ${styles.input}`}
-                  onChange={handleChangePlaylist}
-                  required
-                ></input>
+            <div className={`container-fluid d-flex flex-column p-0`}>
+              <div className='d-flex flex-row'>
+                <div className="p-0 mb-3 me-3 container-fluid">
+                  <input
+                    type="text"
+                    id="nombre"
+                    name="nombre"
+                    placeholder="Nombre de la playlist"
+                    className={` `}
+                    onChange={handleChangePlaylist}
+                    required
+                  ></input>
+                </div>
+                <div className="mb-3 container-fluid p-0">
+                  <input
+                    type="text"
+                    id="foto"
+                    name="foto"
+                    placeholder="URL de la miniatura"
+                    className={` `}
+                    onChange={handleChangePlaylist}
+                    required
+                  ></input>
+                </div>
               </div>
-              <div className="mb-3">
-                <input
-                  type="text"
-                  id="foto"
-                  name="foto"
-                  placeholder="URL de la miniatura"
-                  className={` ${styles.input}`}
+              <div className="container-fluid p-0">
+                <textarea
+                  id="descripcion"
+                  name="descripcion"
+                  placeholder="Descripción de la playlist"
+                  className={`${styles.input}`}
                   onChange={handleChangePlaylist}
+                  style={{ height: ' 50px',width:'100%'}}
                   required
-                ></input>
+                ></textarea>
               </div>
             </div>
 
@@ -416,9 +430,13 @@ export default function AddSongPlayListAccordion(
         </AccordionDetails>
       </Accordion>
 
-      <ConfirmationModal type={type} title={title} description={description} triggerOpenConfirmationModal={triggerOpenConfirmationModal} handleClose={props.handleClose}></ConfirmationModal>
-
+      <ConfirmationModal
+        type={type}
+        title={title}
+        description={description}
+        triggerOpenConfirmationModal={triggerOpenConfirmationModal}
+        handleClose={props.handleClose}
+      ></ConfirmationModal>
     </Fragment>
   );
-
 }

@@ -1,18 +1,19 @@
-input {
+.accordionDetails input,.accordionDetails textarea {
   border: 0 !important;
   outline: 0 !important;
   background: transparent !important;
   border-bottom: 1px solid var(--secondary-white) !important;
   color: var(--primary-white) !important;
   padding: 5px !important;
+  width: 100%;
 }
 
-input:focus {
+.accordionDetails input:focus,.accordionDetails textarea:focus {
   box-shadow: 0 0rem !important;
 
 }
 
-select {
+.accordionDetails select {
 
   color: var(--primary-white) !important;
   background: transparent !important;

@@ -55,7 +55,7 @@ export default function Song(props: PropsSongs) {
         <span className={`${styles.songTitleTable} ${styles.titleContainer} pb-0`}>{props.name}</span>
         <span className={`${styles.gridItem} ${styles.artistNameContainer} p-0 `}>{props.artistName}</span>
       </span>
-      <span className={` ${styles.gridItem}`}>2:01</span>
+      <span className={` d-flex justify-content-center ${styles.gridItem}`}>{secondsToMinutesSeconds(props.duration)}</span>
 
       <div>
         <Popover
@@ -84,3 +84,11 @@ export default function Song(props: PropsSongs) {
     </li>
   );
 }
+
+
+const secondsToMinutesSeconds: Function = (secs: number) => {
+  let minutes = Math.floor(secs / 60);
+  let seconds = (secs - minutes * 60) / 100;
+
+  return (minutes + seconds).toFixed(2);
+};

@@ -6,6 +6,7 @@ on:
       - 'master'
 
 jobs:
+
   run_tests:
     runs-on: ubuntu-latest
     steps:
@@ -20,6 +21,14 @@ jobs:
       - name: Install dependencies
         working-directory: Backend API # Change to your backend API directory path
         run: pip install -r requirements.txt
+
+        - name: Make envfile
+          uses: SpicyPizza/create-envfile@v1
+          with:
+            envkey_DEBUG: false
+            MONGO_PASS: ${{ secrets.MONGO_PASS }}
+            file_name: .env
+
 
       - name: Run tests
         working-directory: Backend API/src # Change to your backend API src directory path

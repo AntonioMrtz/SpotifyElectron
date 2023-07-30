@@ -17,14 +17,13 @@ git clone https://github.com/AntonioMrtz/SpotifyElectron.git
 ## 2. Start Electron App
 
 ```
-cd SpotifyElectron/Electron
-&& npm install && npm start
+cd SpotifyElectron/Electron; npm install ; npm start
 ```
 
 ## 3. Start Python Backend API
 
 ```
-cd Backend API && pip install -r requirements.txt && python3 -m uvicorn main:app --reload
+cd Backend API ; pip install -r requirements.txt ; cd src/ ; python3 -m uvicorn main:app --reload
 ```
 **.env file is needed to access the DB**
 

@@ -42,7 +42,7 @@ def get_playlist(name: str) -> Playlist:
 
     #[print(song.name) for song in playlist_songs]
 
-    playlist = Playlist(name,playlist_data["description"],playlist_data["photo"],playlist_songs)
+    playlist = Playlist(name,playlist_data["photo"],playlist_data["description"],playlist_songs)
 
     return playlist
 
@@ -137,17 +137,9 @@ def delete_playlist(name: str) -> None:
     if not checkValidParameterString(name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
-    result_playlist_exists = playlistCollection.delete_one({'name': name})
-
-    if not result_playlist_exists:
+    result = playlistCollection.delete_one({'name': name})
+    if result.deleted_count==0:
         raise HTTPException(status_code=404, detail="La playlist no existe")
-
-        playlistCollection.update_one({'name': name}, {
-                                    "$set": {'name': new_name, 'photo': photo, 'song_names': list(set(song_names))}})
-    else:
-
-        playlistCollection.update_one({'name': name}, {
-                                  "$set": {'name': name, 'photo': photo, 'song_names': list(set(song_names))}})
 
 def get_all_playlist() -> list:
     """ Returns all playlists in a DTO object"

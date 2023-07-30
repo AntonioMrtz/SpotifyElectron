@@ -138,11 +138,8 @@ def delete_playlist(name: str) -> None:
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
     result = playlistCollection.delete_one({'name': name})
-
     if result.deleted_count==0:
         raise HTTPException(status_code=404, detail="La playlist no existe")
-
-
 
 def get_all_playlist() -> list:
     """ Returns all playlists in a DTO object"

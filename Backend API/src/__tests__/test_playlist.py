@@ -162,6 +162,38 @@ def test_update_playlist_correct_nuevo_nombre(clear_test_data_db):
     assert response.status_code == 202
 
 
+def test_upload_date_playlist_correct(clear_test_data_db):
+    name = "8232392323623823723"
+
+    url = f"/playlists/?nombre={name}&foto=foto&upload_date=upload_date"
+
+    payload = []
+
+    response = client.post(
+        url, json=payload, headers={"Content-Type": "application/json"}
+    )
+    assert response.status_code == 201
+
+    new_upload_date= "nuevafecha"
+
+    url = f"/playlists/{name}/?foto=foto&upload_date={new_upload_date}"
+
+    payload = []
+
+    response = client.put(
+        url, json=payload, headers={"Content-Type": "application/json"}
+    )
+    assert response.status_code == 204
+
+
+    response = client.get(f"/playlists/{name}")
+    assert response.status_code == 200
+    assert response.json()["upload_date"]==new_upload_date
+
+    response = client.delete(f"/playlists/{name}")
+    assert response.status_code == 202
+
+
 # executes after all tests
 @pytest.fixture()
 def clear_test_data_db():

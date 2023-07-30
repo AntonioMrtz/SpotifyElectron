@@ -1,6 +1,7 @@
 from fastapi.testclient import TestClient
 import logging
 import json
+import pytest
 
 from main import app as app
 
@@ -9,7 +10,7 @@ client = TestClient(app)
 # TODO añadir test post_playlist con cancion ( crearla y despues borrarla)
 
 
-def test_get_playlist_correct():
+def test_get_playlist_correct(clear_test_data_db):
     name = "8232392323623823723"
 
     url = f"/playlists/?nombre={name}&foto=foto&descripcion=descripcion"
@@ -42,7 +43,7 @@ def test_get_playlist_invalid_name():
     assert response.status_code == 404
 
 
-def test_post_playlist_correct():
+def test_post_playlist_correct(clear_test_data_db):
     name = "8232392323623823723"
 
     url = f"/playlists/?nombre={name}&foto=foto&descripcion=descripcion"
@@ -58,7 +59,7 @@ def test_post_playlist_correct():
     assert response.status_code == 202
 
 
-def test_delete_playlist_correct():
+def test_delete_playlist_correct(clear_test_data_db):
     name = "8232392323623823723"
 
     url = f"/playlists/?nombre={name}&foto=foto&descripcion=descripcion"
@@ -74,14 +75,14 @@ def test_delete_playlist_correct():
     assert response.status_code == 202
 
 
-def test_delete_playlist_playlist_not_found():
+def test_delete_playlist_playlist_not_found(clear_test_data_db):
     name = "8232392323623823723"
 
     response = client.delete(f"/playlists/{name}")
     assert response.status_code == 404
 
 
-def test_delete_playlist_playlist_invalid_name():
+def test_delete_playlist_playlist_invalid_name(clear_test_data_db):
     """Cannot recreate error 404 because name cant be empty or None to reach the actual python method"""
 
     name = ""
@@ -96,7 +97,7 @@ def test_get_playlists_correct():
 
 
 
-def test_update_playlist_correct():
+def test_update_playlist_correct(clear_test_data_db):
     name = "8232392323623823723"
 
     url = f"/playlists/?nombre={name}&foto=foto&descripcion=descripcion"
@@ -128,7 +129,7 @@ def test_update_playlist_correct():
     assert response.status_code == 202
 
 
-def test_update_playlist_correct_nuevo_nombre():
+def test_update_playlist_correct_nuevo_nombre(clear_test_data_db):
     name = "8232392323623823723"
 
     url = f"/playlists/?nombre={name}&foto=foto&descripcion=descripcion"
@@ -158,5 +159,20 @@ def test_update_playlist_correct_nuevo_nombre():
     assert response.json()["description"]==new_description
 
 
+    """ response = client.delete(f"/playlists/{new_name}")
+    assert response.status_code == 202 """
+
+
+# executes after all tests
+@pytest.fixture()
+def clear_test_data_db():
+    new_name = "82323923236238237237"
+    name = "8232392323623823723"
     response = client.delete(f"/playlists/{new_name}")
-    assert response.status_code == 202
+    response = client.delete(f"/playlists/{name}")
+
+    yield
+    new_name = "82323923236238237237"
+    name = "8232392323623823723"
+    response = client.delete(f"/playlists/{new_name}")
+    response = client.delete(f"/playlists/{name}")

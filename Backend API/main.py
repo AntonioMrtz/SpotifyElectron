@@ -134,7 +134,7 @@ def get_playlist(nombre: str) -> Response:
 
 
 @app.post("/playlists/")
-def post_playlist(nombre: str, foto: str,descripcion: str,nombres_canciones: list,) -> Response:
+def post_playlist(nombre: str, foto: str,descripcion: str,nombres_canciones: list) -> Response:
     """ Registra la playlist con los parámetros "nombre" y "artista"
 
     Parameters

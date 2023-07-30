@@ -4,8 +4,6 @@ fastpi bigger app
 
 testing fastapi
 
-pytest,httpx -> requirements
-
 
 
 #run

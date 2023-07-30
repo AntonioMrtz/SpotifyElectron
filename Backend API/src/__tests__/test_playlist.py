@@ -1,5 +1,4 @@
 from fastapi.testclient import TestClient
-import logging
 import json
 import pytest
 

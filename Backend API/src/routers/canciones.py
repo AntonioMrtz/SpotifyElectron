@@ -111,3 +111,13 @@ def get_cancion_dto(nombre: str) -> Response:
     song_json = song.get_json()
 
     return Response(song_json, media_type="application/json", status_code=200)
+
+
+
+#TODO documentacion y pulir
+
+@router.delete("/{nombre}")
+def get_cancion_dto(nombre: str) -> Response:
+    song_service.delete_song(nombre)
+
+    return Response(None, 202)

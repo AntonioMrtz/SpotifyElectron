@@ -109,26 +109,6 @@ def get_all_songs() -> list:
     return songs
 
 
-def convert_to_mp3(input_data, bitrate=128):
-    # Load the audio from the binary input_data
-    audio = AudioSegment.from_file(io.BytesIO(input_data))
-
-    # If the audio is not already in MP3 format, convert it
-    if audio.format != "mp3":
-        # Encode the audio as MP3 using lameenc
-        encoder = Encoder()
-        encoder.set_bit_rate(bitrate)
-        encoder.set_in_sample_rate(audio.frame_rate)
-        encoder.set_channels(audio.channels)
-        encoder.set_quality(2)  # 2 = high quality, 7 = low quality
-        audio_data = encoder.encode(audio.raw_data)
-        encoder.close()
-
-        return audio_data
-
-    return input_data
-
-
 async def create_song(name: str, artist: str, genre: Genre, photo: str, file) -> None:
     """ Returns a Song file with attributes and a song encoded in base64 "
 
@@ -155,13 +135,35 @@ async def create_song(name: str, artist: str, genre: Genre, photo: str, file) ->
     if fileSongCollection.find_one({'name': name}):
         raise HTTPException(status_code=400, detail="La canción ya existe")
 
+    try:
+        # Assuming 'audio_bytes' contains the audio data in bytes
+        audio_data, sample_rate = librosa.load(io.BytesIO(file), sr=None)
+        file_id = gridFsSong.put(
+            file, name=name, artist=artist, duration=duration, genre=str(genre.value), photo=photo)
+
+    #! If its not a sound file
+    except:
+        duration = 0
+
+        file_id = gridFsSong.put(
+            file, name=name, artist=artist, duration=duration, genre=str(genre.value), photo=photo)
 
 
-    # Assuming 'audio_bytes' contains the audio data in bytes
-    audio_data, sample_rate = librosa.load(io.BytesIO(file), sr=None)
-    # Calculate the duration in seconds
-    duration = int(librosa.get_duration(y=audio_data, sr=sample_rate))
 
-    file_id = gridFsSong.put(
-        file, name=name, artist=artist,duration=duration ,genre=str(genre.value), photo=photo)
+
+
+
+
+
+#TODO documentacion y pulir
+
+def delete_song(name:str)->None:
+
+    result = fileSongCollection.find_one({'name': name})
+
+    if result and result["_id"]:
+        gridFsSong.delete(result["_id"])
+
+    else:
+        raise HTTPException(status_code=404, detail="La canción no existe")
 

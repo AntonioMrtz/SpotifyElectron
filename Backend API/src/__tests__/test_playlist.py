@@ -158,9 +158,8 @@ def test_update_playlist_correct_nuevo_nombre(clear_test_data_db):
     assert response.status_code == 200
     assert response.json()["description"]==new_description
 
-
-    """ response = client.delete(f"/playlists/{new_name}")
-    assert response.status_code == 202 """
+    response = client.delete(f"/playlists/{new_name}")
+    assert response.status_code == 202
 
 
 # executes after all tests

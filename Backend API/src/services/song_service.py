@@ -11,8 +11,6 @@ import io
 import librosa
 
 
-
-
 """ Insert songs with format [files,chunks] https://www.mongodb.com/docs/manual/core/gridfs/"""
 gridFsSong = GridFS(Database().connection, collection='cancion')
 fileSongCollection = Database().connection["cancion.files"]
@@ -149,15 +147,25 @@ async def create_song(name: str, artist: str, genre: Genre, photo: str, file) ->
             file, name=name, artist=artist, duration=duration, genre=str(genre.value), photo=photo)
 
 
+def delete_song(name: str) -> None:
+    """ Delete the song with his asociated chunk files "
 
+    Parameters
+    ----------
+        name (str): Song's name
 
+    Raises
+    -------
+        400 : Bad Parameters
+        404 : Bad Request
 
+    Returns
+    -------
+    """
 
-
-
-#TODO documentacion y pulir
-
-def delete_song(name:str)->None:
+    if not checkValidParameterString(name):
+        raise HTTPException(
+            status_code=400, detail="El nombre de la canción no es válido")
 
     result = fileSongCollection.find_one({'name': name})
 
@@ -166,4 +174,3 @@ def delete_song(name:str)->None:
 
     else:
         raise HTTPException(status_code=404, detail="La canción no existe")
-

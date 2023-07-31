@@ -43,7 +43,9 @@ def get_playlist(name: str) -> Playlist:
 
     #[print(song.name) for song in playlist_songs]
 
-    playlist = Playlist(name, playlist_data["photo"],playlist_data["description"],playlist_data["upload_date"],playlist_songs )
+    date =  playlist_data["upload_date"][:-1]
+
+    playlist = Playlist(name, playlist_data["photo"],playlist_data["description"],date,playlist_songs )
 
     return playlist
 

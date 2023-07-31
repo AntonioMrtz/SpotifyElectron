@@ -1,4 +1,4 @@
-from fastapi import FastAPI,APIRouter, UploadFile, status
+from fastapi import FastAPI, APIRouter, UploadFile, status
 from model.Genre import Genre
 from fastapi.responses import Response
 import services.dto_service as dto_service
@@ -87,6 +87,29 @@ def get_canciones() -> Response:
     songs_json = json.dumps(songs_dict)
 
     return Response(songs_json, media_type="application/json", status_code=200)
+
+
+@router.delete("/{nombre}")
+def delete_cancion(nombre: str) -> Response:
+    """ Borra una canción a partir de "nombre"
+
+    Parameters
+    ----------
+        nombre (str): Nombre de la canción
+
+    Returns
+    -------
+        Response 202 Accepted
+
+    Raises
+    -------
+        Bad Request 400 : Parámetros inválidos
+        Not found 404: La canción con ese nombre no existe
+    """
+
+    song_service.delete_song(nombre)
+
+    return Response(None, 202)
 
 
 @router.get("/dto/{nombre}")

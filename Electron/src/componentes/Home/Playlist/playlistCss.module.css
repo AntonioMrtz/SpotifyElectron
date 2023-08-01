@@ -1,28 +1,43 @@
 .card {
 
-  flex: 0 0 18%;
+  flex: 0 0 18.5%;
   padding: 1.5%;
   margin-right: 2%;
   background-color: var(--third-black) !important;
+  max-width: 18%;
+
 }
 
 .card:hover {
 
   background-color: var(--hover-white) !important;
+
 }
 
-.card_body {
+.cardBody {
+
 
   padding-top: 5% !important;
   padding-left: 0% !important;
+
 }
 
 .tituloLista {
 
+  width: calc(100%);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   color: var(--pure-white);
+
 }
 
 .autorLista {
 
+  width: calc(100%);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   color: var(--grey);
+
 }

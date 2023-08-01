@@ -1,20 +1,21 @@
 import styles from './homeCss.module.css';
-
-import Song from './Song/Song';
+import Playlist from './Playlist/Playlist';
 import Global from 'global/global';
 import { PropsPlaylist } from './types/propsPlaylist.module';
 import { useEffect, useState } from 'react';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
-import { Link } from 'react-router-dom';
+
 
 
 interface PropsHome {
-  changeSongName : Function;
+
+  changeSongName: Function;
+
 }
 
-export default function Home(props : PropsHome) {
+export default function Home(props: PropsHome) {
 
-  const handleDoubleClick = () =>{
+  const handleDoubleClick = () => {
 
     props.changeSongName("p3")
 
@@ -30,10 +31,10 @@ export default function Home(props : PropsHome) {
     })
       .then((res) => res.json())
       .then((res) => {
-        if(res['playlists']){
+        if (res['playlists']) {
           let propsPlaylists: PropsPlaylist[] = [];
 
-          for (let obj of res['playlists']) {
+          for (let obj of res['playlists'].slice(0, 5)) {
             obj = JSON.parse(obj);
 
             let propsPlaylist: PropsPlaylist = {
@@ -53,6 +54,7 @@ export default function Home(props : PropsHome) {
         console.log(error);
         console.log('No se pudieron obtener las playlists');
       });
+
   };
 
   useEffect(() => {
@@ -60,76 +62,67 @@ export default function Home(props : PropsHome) {
   }, []);
 
   return (
-    <div className={`container-fluid d-flex flex-column ${styles.principal}`}>
+
+    <div className={`container-fluid d-flex flex-column ${styles.mainContentContainer}`}>
       <div
         className={`container-fluid d-flex flex-column ${styles.columnOfListas}`}
       >
         <header
           className={`container-fluid d-flex flex-row ${styles.columnHead}`}
         >
-          <div className={`container-fluid d-flex ${styles.columnTitle}`}>
-            <h4 className={`${styles.tituloSeccion}`} onClick={handleDoubleClick}>Especialmente para ti</h4>
+          <div className={`container-fluid d-flex ${styles.categoryTitleContainer}`}>
+            <button className={`${styles.categoryTitle}`} onClick={handleDoubleClick}> Especialmente para ti </button>
           </div>
-          <div className={`container-fluid d-flex ${styles.mostrarT}`}>
-            <p>Mostrar todos</p>
+          <div className={`container-fluid d-flex ${styles.mostrarTodoContainer}`}>
+            <button className={`${styles.mostrarTodo}`}>Mostrar todos</button>
           </div>
         </header>
 
 
         <ul className={`container-fluid d-flex flex-row ${styles.row}`}>
-        {playlists &&
-              playlists.map((playlist) => {
-                let urlPlaylist = '/playlist/' + playlist.name;
-                return (
-                  <Link to={urlPlaylist} key={playlist.name} className={`${styles.playlistLink}`}>
-                    <Song
-                      name={playlist.name}
-                      photo={playlist.photo}
-                      description={playlist.description}
-                      song_names={playlist.song_names}
-                    />
-                  </Link>
-                );
-              })}
-
+          {playlists &&
+            playlists.map((playlist) => {
+              return (
+                <Playlist
+                  name={playlist.name}
+                  photo={playlist.photo}
+                  description={playlist.description}
+                  song_names={playlist.song_names}
+                />
+              );
+            })}
         </ul>
-
       </div>
 
 
-        <div
-          className={`container-fluid d-flex flex-column ${styles.columnOfListas}`}
+      <div
+        className={`container-fluid d-flex flex-column ${styles.columnOfListas}`}
+      >
+        <header
+          className={`container-fluid d-flex flex-row ${styles.columnHead}`}
         >
-          <header
-            className={`container-fluid d-flex flex-row ${styles.columnHead}`}
-          >
-            <div className={`container-fluid d-flex ${styles.columnTitle}`}>
-              <h4 className={`${styles.tituloSeccion}`} onClick={handleDoubleClick}>Escuchado recientemente</h4>
-            </div>
-            <div className={`container-fluid d-flex ${styles.mostrarT}`}>
-              <p>Mostrar todos</p>
-            </div>
-          </header>
+          <div className={`container-fluid d-flex ${styles.categoryTitleContainer}`}>
+            <button className={`${styles.categoryTitle}`} onClick={handleDoubleClick}>Escuchado recientemente</button>
+          </div>
+          <div className={`container-fluid d-flex ${styles.mostrarTodoContainer}`}>
+            <button className={`${styles.mostrarTodo}`}>Mostrar todos</button>
+          </div>
+        </header>
 
-          <section className={`container-fluid d-flex flex-row ${styles.row}`}>
+        <section className={`container-fluid d-flex flex-row ${styles.row}`}>
           {playlists &&
-              playlists.map((playlist) => {
-                let urlPlaylist = '/playlist/' + playlist.name;
-                return (
-                  <Link to={urlPlaylist} key={playlist.name} className={`${styles.playlistLink}`}>
-                    <Song
-                      name={playlist.name}
-                      photo={playlist.photo}
-                      description={playlist.description}
-                      song_names={playlist.song_names}
-                    />
-                  </Link>
-                );
-              })}
-
-
-          </section>
-        </div>
+            playlists.map((playlist) => {
+              return (
+                <Playlist
+                  name={playlist.name}
+                  photo={playlist.photo}
+                  description={playlist.description}
+                  song_names={playlist.song_names}
+                />
+              );
+            })}
+        </section>
+      </div>
     </div>
   );
 }

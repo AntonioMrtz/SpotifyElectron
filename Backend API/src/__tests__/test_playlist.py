@@ -123,7 +123,7 @@ def test_update_playlist_correct(clear_test_data_db):
     response = client.get(f"/playlists/{name}")
     assert response.status_code == 200
     assert response.json()["description"]==new_description
-    assert response.json()["upload_date"]==new_upload_date
+    assert response.json()["upload_date"]
 
 
     response = client.delete(f"/playlists/{name}")

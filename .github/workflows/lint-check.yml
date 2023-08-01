@@ -50,7 +50,7 @@ jobs:
           VALIDATE_ALL_CODEBASE: false
           DEFAULT_BRANCH: master
 
-          LINTER_RULES_PATH:
+          LINTER_RULES_PATH: /
           EDITORCONFIG_FILE_NAME : .editorconfig
         continue-on-error: false
 

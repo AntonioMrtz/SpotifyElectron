@@ -1,4 +1,4 @@
-.wrapperConfirmationModal{
+.wrapperConfirmationModal {
 
   border-radius: var(--border-radius-thumbnails);
   background-color: var(--primary-white) !important;
@@ -12,14 +12,14 @@
 
 }
 
-.wrapperConfirmationModalHeader{
+.wrapperConfirmationModalHeader {
 
   display: grid;
-  grid-template-columns:5fr 5fr;
+  grid-template-columns: 5fr 5fr;
   grid-gap: 10px;
 }
 
-.wrapperConfirmationModalText{
+.wrapperConfirmationModalText {
 
   display: flex;
   flex-direction: column;
@@ -27,21 +27,21 @@
   padding-left: 4%;
 }
 
-.wrapperConfirmationModalText span{
+.wrapperConfirmationModalText span {
 
   font-weight: bold;
   font-size: 1.3rem;
 
 }
 
-.wrapperButton{
+.wrapperButton {
 
   margin-top: 3% !important;
   margin-bottom: 3% !important;
   padding: 0% !important;
 }
 
-.wrapperButton button{
+.wrapperButton button {
 
   background-color: var(--secondary-green);
   border-radius: var(--border-radius-rounded-button);

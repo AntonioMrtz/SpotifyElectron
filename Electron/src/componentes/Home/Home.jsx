@@ -1,26 +1,18 @@
 import styles from './homeCss.module.css';
 import foto from '../../assets/imgs/quedate.jpg';
 
-
 export default function Home(props) {
+  const handleDoubleClick = () => {
+    props.changeSongName('p3');
+  };
 
-  const handleDoubleClick = () =>{
+  const handleDoubleClickBeta = () => {
+    props.changeSongName('loquillo');
+  };
 
-    props.changeSongName("p3")
-
-  }
-
-  const handleDoubleClickBeta = () =>{
-
-    props.changeSongName("loquillo")
-
-  }
-
-  const handleDoubleClickP3 = () =>{
-
-    props.changeSongName("The Battle For Everyone's Soul")
-
-  }
+  const handleDoubleClickP3 = () => {
+    props.changeSongName("The Battle For Everyone's Soul");
+  };
 
   return (
     <div className={`container-fluid d-flex flex-column ${styles.principal}`}>
@@ -39,21 +31,30 @@ export default function Home(props) {
         </header>
 
         <section className={`container-fluid d-flex flex-row ${styles.row}`}>
-          <span onClick={handleDoubleClick} className={`rounded ${styles.card}`}>
+          <span
+            onClick={handleDoubleClick}
+            className={`rounded ${styles.card}`}
+          >
             <img src={foto} className={`card-img-top rounded`} />
             <div className={`${styles.card_body}`}>
               <h5 className={`${styles.tituloLista}`}>Quedate</h5>
               <p className={`${styles.autorLista}`}>Quevedo</p>
             </div>
           </span>
-          <span onClick={handleDoubleClickBeta} className={`rounded ${styles.card}`}>
+          <span
+            onClick={handleDoubleClickBeta}
+            className={`rounded ${styles.card}`}
+          >
             <img src={foto} className={`card-img-top rounded`} />
             <div className={`${styles.card_body}`}>
               <h5 className={`${styles.tituloLista}`}>Quedate</h5>
               <p className={`${styles.autorLista}`}>Quevedo</p>
             </div>
           </span>
-          <span onClick={handleDoubleClickP3} className={`rounded ${styles.card}`}>
+          <span
+            onClick={handleDoubleClickP3}
+            className={`rounded ${styles.card}`}
+          >
             <img src={foto} className={`card-img-top rounded`} />
             <div className={`${styles.card_body}`}>
               <h5 className={`${styles.tituloLista}`}>Quedate</h5>

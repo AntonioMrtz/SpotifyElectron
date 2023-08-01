@@ -50,10 +50,20 @@ export default function Song(props: PropsSongs) {
     >
       <span className={` ${styles.songNumberTable}`}>{props.index}</span>
       <span className={`  d-flex flex-column`}>
-        <span className={`${styles.songTitleTable} ${styles.titleContainer} pb-0`}>{props.name}</span>
-        <span className={`${styles.gridItem} ${styles.artistNameContainer} p-0 `}>{props.artistName}</span>
+        <span
+          className={`${styles.songTitleTable} ${styles.titleContainer} pb-0`}
+        >
+          {props.name}
+        </span>
+        <span
+          className={`${styles.gridItem} ${styles.artistNameContainer} p-0 `}
+        >
+          {props.artistName}
+        </span>
       </span>
-      <span className={` d-flex justify-content-center ${styles.gridItem}`}>{secondsToMinutesSeconds(props.duration)}</span>
+      <span className={` d-flex justify-content-center ${styles.gridItem}`}>
+        {secondsToMinutesSeconds(props.duration)}
+      </span>
 
       <div>
         <Popover
@@ -76,13 +86,17 @@ export default function Song(props: PropsSongs) {
             },
           }}
         >
-          <ContextMenuSong songName={props.name} playlistName={props.playlistName} handleClose={handleClose} refreshPlaylistData={props.refreshPlaylistData}/>
+          <ContextMenuSong
+            songName={props.name}
+            playlistName={props.playlistName}
+            handleClose={handleClose}
+            refreshPlaylistData={props.refreshPlaylistData}
+          />
         </Popover>
       </div>
     </li>
   );
 }
-
 
 const secondsToMinutesSeconds: Function = (secs: number) => {
   let minutes = Math.floor(secs / 60);

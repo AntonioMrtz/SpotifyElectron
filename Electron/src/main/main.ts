@@ -9,11 +9,9 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { app, BrowserWindow, shell, ipcMain, clipboard , Data   } from 'electron';
+import { app, BrowserWindow, shell, ipcMain, clipboard, Data } from 'electron';
 import { resolveHtmlPath } from './util';
 import Global from 'global/global';
-
-
 
 let mainWindow: BrowserWindow | null = null;
 
@@ -32,36 +30,25 @@ ipcMain.handle('copy-to-clipboard', async (event, ...args) => {
 });
 
 ipcMain.handle('load-previous-url', async (event) => {
-
-  mainWindow?.webContents.goBack()
+  mainWindow?.webContents.goBack();
 });
 
 ipcMain.handle('load-forward-url', async (event) => {
-
-  mainWindow?.webContents.goForward()
-
+  mainWindow?.webContents.goForward();
 });
 
 ipcMain.handle('handle-url-change', async (event) => {
-
   //event.reply('response-handle-url-change',mainWindow?.webContents.canGoForward,mainWindow?.webContents.canGoBack)
 
-  let eventResponse : Global.HandleUrlChangeResponse = {
+  let eventResponse: Global.HandleUrlChangeResponse = {
+    canGoBack: mainWindow?.webContents.canGoBack(),
+    canGoForward: mainWindow?.webContents.canGoForward(),
+  };
 
-    canGoBack:mainWindow?.webContents.canGoBack(),
-    canGoForward:mainWindow?.webContents.canGoForward()
-  }
-
-  return eventResponse
-
+  return eventResponse;
 });
 
-
-
-
-
 /* Settings */
-
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
@@ -106,7 +93,7 @@ const createWindow = async () => {
     height: 800,
     minWidth: 900,
     minHeight: 730,
-    icon:path.join(RESOURCES_PATH, '/SpotifyElectronLogo.ico'),
+    icon: path.join(RESOURCES_PATH, '/SpotifyElectronLogo.ico'),
     webPreferences: {
       preload: app.isPackaged
         ? path.join(__dirname, 'preload.js')
@@ -137,8 +124,6 @@ const createWindow = async () => {
     shell.openExternal(edata.url);
     return { action: 'deny' };
   });
-
-
 };
 
 /**
@@ -164,4 +149,3 @@ app
     });
   })
   .catch(console.log);
-

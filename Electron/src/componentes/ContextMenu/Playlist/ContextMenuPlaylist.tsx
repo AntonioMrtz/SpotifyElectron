@@ -238,8 +238,7 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
         );
         displayConfirmationModal(ConfirmationMenuActionKind.ADD_ERROR);
       })
-      .finally(() => {
-      });
+      .finally(() => {});
   };
 
   const handleDeletePlaylist = (

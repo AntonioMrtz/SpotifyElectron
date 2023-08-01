@@ -24,14 +24,12 @@ interface PropsModalAddSongPlaylist {
 }
 
 export default function ModalAddSongPlaylist(props: PropsModalAddSongPlaylist) {
-
   /* ADDSONGPLAYLIST MODAL */
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
 
   const handleClose = () => setOpen(false);
-
 
   return (
     <Fragment>
@@ -54,7 +52,6 @@ export default function ModalAddSongPlaylist(props: PropsModalAddSongPlaylist) {
           />
         </Box>
       </Modal>
-
     </Fragment>
   );
 }

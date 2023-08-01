@@ -45,13 +45,13 @@ jobs:
       # Run Linter against codebase #
       ################################
       - name: Lint Code Base
-        uses: github/super-linter@v4
+        uses: super-linter/super-linter/slim@v5
         env:
           VALIDATE_ALL_CODEBASE: false
           DEFAULT_BRANCH: master
-          VALIDATE_TSX: true
-          VALIDATE_PYTHON: true
-          VALIDATE_JSON: true
+          
+          LINTER_RULES_PATH: Electron/
+          EDITORCONFIG_FILE_NAME : .editorconfig
         continue-on-error: true
 
       ##############################

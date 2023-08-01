@@ -2,7 +2,7 @@ import styles from './playlist.module.css';
 import { PropsPlaylist } from '../types/propsPlaylist.module';
 import Popover, { PopoverPosition } from '@mui/material/Popover';
 import { useEffect, useState } from 'react';
-import ContextMenuPlaylist from './ContextMenuSong/ContextMenuPlaylist';
+import ContextMenuPlaylist from '../../ContextMenu/Playlist/ContextMenuPlaylist';
 
 export default function Playlist(props: PropsPlaylist) {
 

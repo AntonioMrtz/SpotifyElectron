@@ -1,6 +1,11 @@
 import styles from './homeCss.module.css';
-import foto from '../../assets/imgs/quedate.jpg';
+
 import Song from './Song/Song';
+import Global from 'global/global';
+import { PropsPlaylist } from './types/propsPlaylist.module';
+import { useEffect, useState } from 'react';
+import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
+import { Link } from 'react-router-dom';
 
 
 interface PropsHome {
@@ -15,17 +20,44 @@ export default function Home(props : PropsHome) {
 
   }
 
-  const handleDoubleClickBeta = () =>{
 
-    props.changeSongName("loquillo")
+  const [playlists, setPlaylists] = useState<PropsPlaylist[]>();
 
-  }
+  const handlePlaylists = () => {
 
-  const handleDoubleClickP3 = () =>{
+    fetch(Global.backendBaseUrl + 'playlists/', {
+      headers: { 'Access-Control-Allow-Origin': '*' },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if(res['playlists']){
+          let propsPlaylists: PropsPlaylist[] = [];
 
-    props.changeSongName("The Battle For Everyone's Soul")
+          for (let obj of res['playlists']) {
+            obj = JSON.parse(obj);
 
-  }
+            let propsPlaylist: PropsPlaylist = {
+              name: obj['name'],
+              photo:
+                obj['photo'] === '' ? defaultThumbnailPlaylist : obj['photo'],
+              description: obj['description'],
+              song_names: obj['song_names']
+            };
+
+            propsPlaylists.push(propsPlaylist);
+          }
+          setPlaylists(propsPlaylists);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        console.log('No se pudieron obtener las playlists');
+      });
+  };
+
+  useEffect(() => {
+    handlePlaylists();
+  }, []);
 
   return (
     <div className={`container-fluid d-flex flex-column ${styles.principal}`}>
@@ -44,33 +76,23 @@ export default function Home(props : PropsHome) {
         </header>
 
 
-        <section className={`container-fluid d-flex flex-row ${styles.row}`}>
-            <Song
-              name={'Quedate'}
-              autor={'Quevedo'}
-              changeSongName={props.changeSongName}
-            />
-            <Song
-              name={'Quedate'}
-              autor={'Quevedo'}
-              changeSongName={props.changeSongName}
-            />
-            <Song
-              name={'Quedate'}
-              autor={'Quevedo'}
-              changeSongName={props.changeSongName}
-            />
-            <Song
-              name={'Quedate'}
-              autor={'Quevedo'}
-              changeSongName={props.changeSongName}
-            />
-            <Song
-              name={'Quedate'}
-              autor={'Quevedo'}
-              changeSongName={props.changeSongName}
-            />
-        </section>
+        <ul className={`container-fluid d-flex flex-row ${styles.row}`}>
+        {playlists &&
+              playlists.map((playlist) => {
+                let urlPlaylist = '/playlist/' + playlist.name;
+                return (
+                  <Link to={urlPlaylist} key={playlist.name} className={`${styles.playlistLink}`}>
+                    <Song
+                      name={playlist.name}
+                      photo={playlist.photo}
+                      description={playlist.description}
+                      song_names={playlist.song_names}
+                    />
+                  </Link>
+                );
+              })}
+
+        </ul>
 
       </div>
 
@@ -90,26 +112,21 @@ export default function Home(props : PropsHome) {
           </header>
 
           <section className={`container-fluid d-flex flex-row ${styles.row}`}>
-            <Song
-              name={'Quedate'}
-              autor={'Quevedo'}
-              changeSongName={props.changeSongName}
-            />
-            <Song
-              name={'Quedate'}
-              autor={'Quevedo'}
-              changeSongName={props.changeSongName}
-            />
-            <Song
-              name={'Quedate'}
-              autor={'Quevedo'}
-              changeSongName={props.changeSongName}
-            />
-            <Song
-              name={'Quedate'}
-              autor={'Quevedo'}
-              changeSongName={props.changeSongName}
-            />
+          {playlists &&
+              playlists.map((playlist) => {
+                let urlPlaylist = '/playlist/' + playlist.name;
+                return (
+                  <Link to={urlPlaylist} key={playlist.name} className={`${styles.playlistLink}`}>
+                    <Song
+                      name={playlist.name}
+                      photo={playlist.photo}
+                      description={playlist.description}
+                      song_names={playlist.song_names}
+                    />
+                  </Link>
+                );
+              })}
+
 
           </section>
         </div>

@@ -41,7 +41,7 @@ def get_playlist(name: str) -> Playlist:
     [playlist_songs.append(song_service.get_song(song_name))
      for song_name in playlist_data["song_names"]]
 
-    #[print(song.name) for song in playlist_songs]
+    # [print(song.name) for song in playlist_songs]
 
     date =  playlist_data["upload_date"][:-1]
 
@@ -50,7 +50,7 @@ def get_playlist(name: str) -> Playlist:
     return playlist
 
 
-def create_playlist(name: str, photo: str,description: str, song_names: list ) -> None:
+def create_playlist(name: str, photo: str, description: str, song_names: list) -> None:
     """ Create a playlist with name, url of thumbnail and list of song names
 
     Parameters
@@ -85,7 +85,7 @@ def create_playlist(name: str, photo: str,description: str, song_names: list ) -
     return True if result.acknowledged else False
 
 
-def update_playlist(name: str, nuevo_nombre:str,photo: str,description: str, song_names: list) -> None:
+def update_playlist(name: str, nuevo_nombre: str, photo: str, description: str, song_names: list) -> None:
     """ Updates a playlist with name, url of thumbnail and list of song names [ duplicates wont be added ]
 
     Parameters
@@ -116,12 +116,13 @@ def update_playlist(name: str, nuevo_nombre:str,photo: str,description: str, son
     if checkValidParameterString(nuevo_nombre):
         new_name = nuevo_nombre
         playlistCollection.update_one({'name': name}, {
-                                  "$set": {'name': new_name,'description':description ,'photo': photo if 'http' in photo else '', 'song_names': list(set(song_names))}})
+            "$set": {'name': new_name, 'description': description, 'photo': photo if 'http' in photo else '', 'song_names': list(set(song_names))}})
 
     else:
 
         playlistCollection.update_one({'name': name}, {
-                                  "$set": {'name': name,'description':description ,'photo': photo if 'http' in photo else '', 'song_names': list(set(song_names))}})
+            "$set": {'name': name, 'description': description, 'photo': photo if 'http' in photo else '', 'song_names': list(set(song_names))}})
+
 
 def delete_playlist(name: str) -> None:
     """ Deletes a playlist by name
@@ -143,8 +144,9 @@ def delete_playlist(name: str) -> None:
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
     result = playlistCollection.delete_one({'name': name})
-    if result.deleted_count==0:
+    if result.deleted_count == 0:
         raise HTTPException(status_code=404, detail="La playlist no existe")
+
 
 def get_all_playlist() -> list:
     """ Returns all playlists in a DTO object"

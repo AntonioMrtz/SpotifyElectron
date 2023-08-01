@@ -21,9 +21,8 @@ function App() {
   const [triggerReloadSidebar, setTriggerReloadSidebar] = useState(false);
 
   const reloadSidebar = () => {
-
-    setTriggerReloadSidebar(state => !state)
-  }
+    setTriggerReloadSidebar((state) => !state);
+  };
 
   /* Handle change song name */
 
@@ -34,17 +33,20 @@ function App() {
 
   return (
     <div className={`App d-flex flex-column ${styles.appBackground}`}>
-            <StickyHeader />
+      <StickyHeader />
 
       <div className="d-flex">
-        <Sidebar triggerReloadSidebar={triggerReloadSidebar}/>
+        <Sidebar triggerReloadSidebar={triggerReloadSidebar} />
         <div
           className={`App d-flex container-fluid ${styles.mainContentWrapper}`}
         >
           <Routes>
             <Route
               path="/playlist/:id"
-              element=<Playlist changeSongName={changeSongName} triggerReloadSidebar={reloadSidebar}/>
+              element=<Playlist
+                changeSongName={changeSongName}
+                triggerReloadSidebar={reloadSidebar}
+              />
             />
             <Route
               path="/explorar"

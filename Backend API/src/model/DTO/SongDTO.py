@@ -10,7 +10,7 @@ class SongDTO:
     artist: str
     photo: str
     """ In seconds """
-    duration : int
+    duration: int
     genre: Genre
 
     def get_json(self) -> json:

@@ -43,7 +43,6 @@ def test_get_playlist_playlist_dto_invalid_name():
     assert response.status_code == 404
 
 
-
 # executes after all tests
 @pytest.fixture()
 def clear_test_data_db():

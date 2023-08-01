@@ -141,7 +141,7 @@ def get_playlists() -> Response:
     return Response(playlist_json, media_type="application/json", status_code=200)
 
 
-#* DTO
+# * DTO
 
 @router.get("/dto/{nombre}")
 def get_playlist_dto(nombre: str) -> Response:

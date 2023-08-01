@@ -2,14 +2,12 @@ import styles from './playlist.module.css';
 import { PropsPlaylist } from '../types/propsPlaylist.module';
 import Popover, { PopoverPosition } from '@mui/material/Popover';
 import { useEffect, useState } from 'react';
-import ContextMenuPlaylist from './ContextMenuSong/ContextMenuPlaylist';
+import ContextMenuPlaylist from '../../ContextMenu/Playlist/ContextMenuPlaylist';
 
 export default function Playlist(props: PropsPlaylist) {
-
-
   const handleClickPlaylist = () => {
-    props.handleUrlPlaylistClicked(props.name)
-  }
+    props.handleUrlPlaylistClicked(props.name);
+  };
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -45,8 +43,6 @@ export default function Playlist(props: PropsPlaylist) {
   const open = Boolean(anchorPosition);
   const id = open ? 'parent-popover' : undefined;
 
-
-
   return (
     <span
       className={`container-fluid d-flex flex-row ${styles.wrapperPlaylist} ${props.playlistStyle}`}
@@ -55,10 +51,14 @@ export default function Playlist(props: PropsPlaylist) {
     >
       <img src={props.photo} alt="" className="img-fluid img-border-2" />
 
-      <div className="container-fluid d-flex flex-column p-0 ms-2 " style={{  textOverflow:'ellipsis',overflow:'hidden',
-        whiteSpace: 'nowrap'
-
-}}>
+      <div
+        className="container-fluid d-flex flex-column p-0 ms-2 "
+        style={{
+          textOverflow: 'ellipsis',
+          overflow: 'hidden',
+          whiteSpace: 'nowrap',
+        }}
+      >
         <label>{props.name}</label>
         <p>Lista</p>
       </div>
@@ -83,11 +83,13 @@ export default function Playlist(props: PropsPlaylist) {
             },
           }}
         >
-          <ContextMenuPlaylist playlistName={props.name} handleClose={handleClose} reloadSidebar={props.reloadSidebar}/>
+          <ContextMenuPlaylist
+            playlistName={props.name}
+            handleClose={handleClose}
+            reloadSidebar={props.reloadSidebar}
+          />
         </Popover>
       </div>
     </span>
-
-
   );
 }

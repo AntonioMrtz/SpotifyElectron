@@ -1,0 +1,14 @@
+root = true
+
+[*.{py,java,r,R}]
+indent_style = space
+indent_size = 4
+
+[Electron/src/**.{js,json,ts,tsx,y{a,}ml,html,cwl}]
+indent_style = space
+indent_size = 2
+
+[*.{md,Rmd,rst}]
+trim_trailing_whitespace = false
+indent_style = space
+indent_size = 2

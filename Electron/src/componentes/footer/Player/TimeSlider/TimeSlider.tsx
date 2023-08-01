@@ -75,8 +75,10 @@ export default function TimeSlider(props: PropsTimeSlider) {
         onMouseLeave={handleMouseLeave}
         value={songPlayBackTime === undefined ? 0 : songPlayBackTime}
         sx={{
-          "& .MuiSlider-track": {
-            backgroundColor: isHovered ? "var(--primary-green)" : "var(--primary-white)",
+          '& .MuiSlider-track': {
+            backgroundColor: isHovered
+              ? 'var(--primary-green)'
+              : 'var(--primary-white)',
           },
           '& .MuiSlider-thumb': {
             backgroundColor: 'var(--primary-white)',

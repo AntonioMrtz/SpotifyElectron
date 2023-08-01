@@ -1,9 +1,9 @@
-import styles from './contextMenuSong.module.css';
+import styles from '../contextMenu.module.css';
 import Popover from '@mui/material/Popover';
 import { useEffect, useState } from 'react';
 import Global from 'global/global';
-import InfoPopover from '../../../InfoPopover/InfoPopover'
-import {InfoPopoverType} from '../../../types/InfoPopover'
+import InfoPopover from '../../InfoPopover/InfoPopover';
+import { InfoPopoverType } from '../../types/InfoPopover';
 
 interface PropsContextMenuSong {
   songName: string;
@@ -14,13 +14,10 @@ interface PropsContextMenuSong {
 }
 
 const MessagesInfoPopOver = {
-
-  CLIPBOARD_TITLE : 'Enlace copiado al portapapeles',
-  CLIPBOARD_DESCRIPTION : 'El enlace del repositorio del proyecto ha sido copiado éxitosamente',
-
-
-}
-
+  CLIPBOARD_TITLE: 'Enlace copiado al portapapeles',
+  CLIPBOARD_DESCRIPTION:
+    'El enlace del repositorio del proyecto ha sido copiado éxitosamente',
+};
 
 export default function ContextMenuSong(props: PropsContextMenuSong) {
   const [isOpen, setIsOpen] = useState(false);
@@ -72,7 +69,8 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
   /* Handle copy to clipboard on share button */
 
   //triggers Confirmation Modal
-  const [triggerOpenConfirmationModal, setTriggerOpenConfirmationModal] = useState(false);
+  const [triggerOpenConfirmationModal, setTriggerOpenConfirmationModal] =
+    useState(false);
 
   const handleCopyToClipboard = (): void => {
     window.electron.copyToClipboard.sendMessage(
@@ -80,7 +78,6 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
       Global.repositoryUrl
     );
     setTriggerOpenConfirmationModal(true);
-
   };
 
   const handleAddToPlaylist = (

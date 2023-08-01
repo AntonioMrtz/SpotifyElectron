@@ -1,9 +1,9 @@
-import styles from './contextMenuPlaylist.module.css';
+import styles from '../contextMenu.module.css';
 import Popover from '@mui/material/Popover';
 import { useEffect, useReducer, useState } from 'react';
 import Global from 'global/global';
-import InfoPopover from '../../../InfoPopover/InfoPopover';
-import { InfoPopoverType } from '../../../types/InfoPopover';
+import InfoPopover from '../../InfoPopover/InfoPopover';
+import { InfoPopoverType } from '../../types/InfoPopover';
 import { useNavigate } from 'react-router-dom';
 
 interface PropsContextMenuSong {
@@ -238,8 +238,7 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
         );
         displayConfirmationModal(ConfirmationMenuActionKind.ADD_ERROR);
       })
-      .finally(() => {
-      });
+      .finally(() => {});
   };
 
   const handleDeletePlaylist = (

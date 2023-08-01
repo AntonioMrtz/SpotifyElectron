@@ -107,10 +107,11 @@
  */
 }
 
-.descriptionText{
+.descriptionText {
   font-size: 0.785rem;
-  color: var( --secondary-white);
+  color: var(--secondary-white);
 }
+
 .headerText div p {
   /* Number of songs <p> */
   font-size: 0.85rem;
@@ -126,7 +127,7 @@
   align-content: center;
 }
 
-.subhHeaderPlaylist button{
+.subhHeaderPlaylist button {
 
   border: none;
   background-color: transparent;
@@ -139,23 +140,23 @@
   color: var(--secondary-white);
 }
 
-.subhHeaderPlaylist .hoverableItemubheader:hover > i{
+.subhHeaderPlaylist .hoverableItemubheader:hover>i {
 
   color: var(--pure-white) !important;
 }
 
-.subhHeaderPlaylist .hoverablePlayButton:hover > i{
+.subhHeaderPlaylist .hoverablePlayButton:hover>i {
 
   transform: scale(1.02);
 
 }
 
-.displayNonePlay{
-  display:none;
+.displayNonePlay {
+  display: none;
 }
 
-.displayNoneLike{
-  display:none;
+.displayNoneLike {
+  display: none;
 }
 
 /** SONG TABLE */
@@ -169,14 +170,12 @@
 
 }
 
-.wrapperSongTable
-ul {
+.wrapperSongTable ul {
 
   padding: 0 !important;
 }
 
-.wrapperSongTable li
-{
+.wrapperSongTable li {
 
   padding: 1% 0 0% 0 !important;
 
@@ -235,12 +234,12 @@ ul {
   font-weight: 300;
 }
 
-.artistNameContainer{
+.artistNameContainer {
 
   font-size: 0.875rem;
 }
 
-.titleContainer{
+.titleContainer {
 
   padding: 0 !important;
 }
@@ -248,7 +247,7 @@ ul {
 
 /* Update PLAYLIST MODAL */
 
-.wrapperUpdatePlaylistModal{
+.wrapperUpdatePlaylistModal {
 
   background-color: var(--hover-white);
   border-radius: var(--border-radius-thumbnails);
@@ -256,7 +255,8 @@ ul {
 
 }
 
-.wrapperUpdateTextData input,.wrapperUpdateTextData div textarea{
+.wrapperUpdateTextData input,
+.wrapperUpdateTextData div textarea {
 
   color: var(--primary-white) !important;
   background-color: transparent !important;
@@ -264,29 +264,32 @@ ul {
   resize: none;
 }
 
-.inputPlaylist label,.inputPlaylist div textarea{
+.inputPlaylist label,
+.inputPlaylist div textarea {
 
   color: var(--primary-white);
 }
 
-.inputPlaylist input:focus + label,.inputPlaylist div textarea:focus + label{
+.inputPlaylist input:focus+label,
+.inputPlaylist div textarea:focus+label {
 
   display: block !important;
   font-size: 0.7rem !important;
 }
 
-.inputPlaylist input:focus,.inputPlaylist div textarea:focus{
+.inputPlaylist input:focus,
+.inputPlaylist div textarea:focus {
 
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.75) !important;
 
 }
 
-.wrapperUpdatePlaylistModal header{
+.wrapperUpdatePlaylistModal header {
 
- margin-bottom: 4%;
+  margin-bottom: 4%;
 }
 
-.wrapperUpdatePlaylistModal header h1{
+.wrapperUpdatePlaylistModal header h1 {
 
   font-size: 1.5rem;
   font-weight: 700;
@@ -303,19 +306,19 @@ ul {
 
 .wrapperUpdatePlaylistModal header button:hover {
 
-  background-color: hsla(0,0%,100%,.1);
+  background-color: hsla(0, 0%, 100%, .1);
   border-radius: 32px;
   padding: 1%;
 }
 
-.wrapperUpdatePlaylistModal header button i{
+.wrapperUpdatePlaylistModal header button i {
 
   color: var(--secondary-white);
   font-size: 1.15rem;
 }
 
 
-.wrapperUpdateThumbnail{
+.wrapperUpdateThumbnail {
 
   width: 180px !important;
   height: 180px;
@@ -324,7 +327,8 @@ ul {
 
 
 }
-.wrapperUpdateThumbnail img{
+
+.wrapperUpdateThumbnail img {
   width: 100%;
   height: auto;
   object-fit: cover;
@@ -332,7 +336,7 @@ ul {
 }
 
 
-.wrapperUpdateButton button{
+.wrapperUpdateButton button {
 
   background-color: var(--primary-white);
   border: 1px solid var(--primary-white);
@@ -342,7 +346,7 @@ ul {
   font-size: 1.20rem;
 }
 
-.wrapperUpdateButton button:hover{
+.wrapperUpdateButton button:hover {
 
   transform: scale(1.05);
 }

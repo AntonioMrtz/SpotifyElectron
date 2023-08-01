@@ -16,12 +16,12 @@
 /* ARROWS */
 
 
-.wrapperDirectionArrows button{
+.wrapperDirectionArrows button {
 
   color: var(--secondary-white);
 }
 
-.arrowOpacity{
+.arrowOpacity {
 
   opacity: 0.6;
 
@@ -35,7 +35,8 @@
 
 }
 
-.wrapperProfileOptions button,.wrapperDirectionArrows button {
+.wrapperProfileOptions button,
+.wrapperDirectionArrows button {
 
   padding: 0 !important;
   border-radius: 75px;

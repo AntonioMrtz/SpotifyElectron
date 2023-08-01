@@ -134,6 +134,7 @@
     "rimraf": "^5.0.1",
     "sass": "^1.62.1",
     "sass-loader": "^13.3.1",
+    "standard": "^17.1.0",
     "style-loader": "^3.3.3",
     "terser-webpack-plugin": "^5.3.9",
     "ts-jest": "^29.1.0",

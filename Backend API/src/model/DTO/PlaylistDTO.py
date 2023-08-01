@@ -11,7 +11,7 @@ class PlaylistDTO:
     description: str
     song_names: list
 
-    def add_songs(self,song_names: str) -> None:
+    def add_songs(self, song_names: str) -> None:
 
         self.song_names.extends(song_names)
 

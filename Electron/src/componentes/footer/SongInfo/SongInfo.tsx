@@ -25,7 +25,6 @@ export default function SongInfo(props: PropsSongInfo | any) {
       setdisplaydislike(styles.displayNoneLike);
       setLiked(false);
     }
-
   };
 
   const updateSongInfo = async () => {
@@ -37,8 +36,6 @@ export default function SongInfo(props: PropsSongInfo | any) {
       setLiked(false);
     }
   };
-
-
 
   useEffect(() => {
     updateSongInfo();
@@ -56,12 +53,13 @@ export default function SongInfo(props: PropsSongInfo | any) {
             <a href="">{artist}</a>
           </div>
           <div className={`d-flex flex-column ${styles.likeContainer}`}>
-            <button
-             onClick={handleLike} className={`btn ${displaylike}`} >
-              <i><FavoriteBorder sx={{ fontSize: 18 }} /></i>
+            <button onClick={handleLike} className={`btn ${displaylike}`}>
+              <i>
+                <FavoriteBorder sx={{ fontSize: 18 }} />
+              </i>
             </button>
             <button onClick={handleLike} className={`btn ${displaydislike}`}>
-              <Favorite sx={{ fontSize: 18, color: "var(--primary-green)" }} />
+              <Favorite sx={{ fontSize: 18, color: 'var(--primary-green)' }} />
             </button>
           </div>
         </Fragment>

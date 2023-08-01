@@ -7,13 +7,11 @@ import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist
 import { PropsPlaylist } from './types/propsPlaylist.module';
 import Global from 'global/global';
 
-interface PropsSidebar{
-
-  triggerReloadSidebar: boolean
+interface PropsSidebar {
+  triggerReloadSidebar: boolean;
 }
 
-
-export default function Sidebar(props:PropsSidebar) {
+export default function Sidebar(props: PropsSidebar) {
   //* MENU HOVER
 
   let [listItemInicio, setHoverInicio] = useState('');
@@ -66,7 +64,6 @@ export default function Sidebar(props:PropsSidebar) {
   const handleUrlInicioClicked = () => {
     setUrl('/');
     setSelectedPlaylist('');
-
   };
 
   const handleUrlBuscarClicked = () => {
@@ -86,7 +83,6 @@ export default function Sidebar(props:PropsSidebar) {
   const [playlists, setPlaylists] = useState<PropsPlaylist[]>();
 
   const handlePlaylists = () => {
-
     fetch(Global.backendBaseUrl + 'playlists/', {
       headers: { 'Access-Control-Allow-Origin': '*' },
     })
@@ -102,7 +98,7 @@ export default function Sidebar(props:PropsSidebar) {
               photo:
                 obj['photo'] === '' ? defaultThumbnailPlaylist : obj['photo'],
               handleUrlPlaylistClicked: handleUrlPlaylistClicked,
-              reloadSidebar:handlePlaylists,
+              reloadSidebar: handlePlaylists,
               playlistStyle: '',
             };
 
@@ -126,70 +122,69 @@ export default function Sidebar(props:PropsSidebar) {
     handlePlaylists();
   }, [props.triggerReloadSidebar]);
 
-
   return (
     <div className={`container-fluid ${styles.wrapperNavbar}`}>
-    <header className={`${styles.header}`}>
-      <ul className={`${styles.ul}`}>
-        <Link to="/">
-          <li
-            className={`${
-              styles.headerLi
-            } ${listItemInicio} ${getSelectedClass('li-inicio')} `}
-            onMouseOver={handleMouseOverInicio}
-            onMouseOut={handleMouseOutInicio}
-            onClick={handleUrlInicioClicked}
-            id="li-inicio"
-          >
-            <i className={`fa-solid fa-house fa-fw ${styles.headerI}`}></i>
-            <span className={`${styles.headerI}`}>Inicio</span>
-          </li>
-        </Link>
-        <Link to="/explorar" className={`${styles.aHeader}`}>
-          <li
-            className={`${
-              styles.headerLi
-            } ${listItemBuscar} ${getSelectedClass('li-buscar')}`}
-            onMouseOver={handleMouseOverBuscar}
-            onMouseOut={handleMouseOutBuscar}
-            onClick={handleUrlBuscarClicked}
-            id="li-buscar"
-          >
-            <i
-              className={`fa-solid fa-magnifying-glass fa-fw ${styles.headerI}`}
-            ></i>
-            <span className={`${styles.headerI}`}>Buscar</span>
-          </li>
-        </Link>
-      </ul>
-    </header>
+      <header className={`${styles.header}`}>
+        <ul className={`${styles.ul}`}>
+          <Link to="/">
+            <li
+              className={`${
+                styles.headerLi
+              } ${listItemInicio} ${getSelectedClass('li-inicio')} `}
+              onMouseOver={handleMouseOverInicio}
+              onMouseOut={handleMouseOutInicio}
+              onClick={handleUrlInicioClicked}
+              id="li-inicio"
+            >
+              <i className={`fa-solid fa-house fa-fw ${styles.headerI}`}></i>
+              <span className={`${styles.headerI}`}>Inicio</span>
+            </li>
+          </Link>
+          <Link to="/explorar" className={`${styles.aHeader}`}>
+            <li
+              className={`${
+                styles.headerLi
+              } ${listItemBuscar} ${getSelectedClass('li-buscar')}`}
+              onMouseOver={handleMouseOverBuscar}
+              onMouseOut={handleMouseOutBuscar}
+              onClick={handleUrlBuscarClicked}
+              id="li-buscar"
+            >
+              <i
+                className={`fa-solid fa-magnifying-glass fa-fw ${styles.headerI}`}
+              ></i>
+              <span className={`${styles.headerI}`}>Buscar</span>
+            </li>
+          </Link>
+        </ul>
+      </header>
 
-    <div
-      className={`container-fluid d-flex flex-column ${styles.libraryWrapper}`}
-    >
-      <header className={`container-fluid d-flex flex-column`}></header>
       <div
-        className={`container-fluid d-flex flex-column p-0 ${styles.playlistUlWrapper}`}
+        className={`container-fluid d-flex flex-column ${styles.libraryWrapper}`}
       >
-        <header
-          className={`container-fluid d-flex flex-row pb-4 ${styles.headerTuBiblioteca}`}
+        <header className={`container-fluid d-flex flex-column`}></header>
+        <div
+          className={`container-fluid d-flex flex-column p-0 ${styles.playlistUlWrapper}`}
         >
-          <div className={`container-fluid d-flex justify-content-start p-0`}>
-            <div className={`container-fluid ps-0`}>
-              <i className="fa-solid fa-swatchbook fa-fw"></i>Tu biblioteca
-            </div>
-          </div>
-
-          <div
-            className={`container-fluid d-flex justify-content-end p-0`}
-            style={{ width: '25%' }}
+          <header
+            className={`container-fluid d-flex flex-row pb-4 ${styles.headerTuBiblioteca}`}
           >
-            <ModalAddSongPlaylist reloadSidebar={handlePlaylists} />
-          </div>
-        </header>
-        <ul
-          className={`container-fluid d-flex flex-column ${styles.ulPlaylist}`}
-        >
+            <div className={`container-fluid d-flex justify-content-start p-0`}>
+              <div className={`container-fluid ps-0`}>
+                <i className="fa-solid fa-swatchbook fa-fw"></i>Tu biblioteca
+              </div>
+            </div>
+
+            <div
+              className={`container-fluid d-flex justify-content-end p-0`}
+              style={{ width: '25%' }}
+            >
+              <ModalAddSongPlaylist reloadSidebar={handlePlaylists} />
+            </div>
+          </header>
+          <ul
+            className={`container-fluid d-flex flex-column ${styles.ulPlaylist}`}
+          >
             {playlists &&
               playlists.map((playlist) => {
                 let urlPlaylist = '/playlist/' + playlist.name;

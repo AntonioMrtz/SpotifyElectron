@@ -1,4 +1,5 @@
-.accordionDetails input,.accordionDetails textarea {
+.accordionDetails input,
+.accordionDetails textarea {
   border: 0 !important;
   outline: 0 !important;
   background: transparent !important;
@@ -8,7 +9,8 @@
   width: 100%;
 }
 
-.accordionDetails input:focus,.accordionDetails textarea:focus {
+.accordionDetails input:focus,
+.accordionDetails textarea:focus {
   box-shadow: 0 0rem !important;
 
 }
@@ -129,7 +131,7 @@
 }
 
 
-.modalprueba{
+.modalprueba {
 
 
   background: green;

@@ -143,7 +143,9 @@ export default function AddSongPlayListAccordion(
   });
 
   const handleChangePlaylist = (
-    event: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    event: ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
   ) => {
     if (event.target && event.target.name) {
       if (event.target.name === 'foto') {
@@ -259,7 +261,7 @@ export default function AddSongPlayListAccordion(
             className={`container-fluid d-flex flex-column p-0 ${styles.formAddSong}`}
           >
             <div className={`container-fluid d-flex flex-column p-0`}>
-              <div className='d-flex flex-row'>
+              <div className="d-flex flex-row">
                 <div className="p-0 mb-3 me-3 container-fluid">
                   <input
                     type="text"
@@ -290,7 +292,7 @@ export default function AddSongPlayListAccordion(
                   placeholder="Descripción de la playlist"
                   className={`${styles.input}`}
                   onChange={handleChangePlaylist}
-                  style={{ height: ' 50px',width:'100%'}}
+                  style={{ height: ' 50px', width: '100%' }}
                   required
                 ></textarea>
               </div>

@@ -8,9 +8,6 @@ export type ChannelLoadPreviousUrl = 'load-previous-url';
 export type ChannelLoadForwardUrl = 'load-forward-url';
 export type ChannelHandleUrlChange = 'handle-url-change';
 
-
-
-
 const electronHandler = {
   toogleFullScreen: {
     sendMessage(channel: ChannelToogleFullScreen, ...args: unknown[]) {
@@ -45,10 +42,7 @@ const electronHandler = {
 
 contextBridge.exposeInMainWorld('electron', electronHandler);
 
-
-
 export type ElectronHandler = typeof electronHandler;
-
 
 /* const electronHandler = {
   ipcRenderer: {

@@ -1,27 +1,21 @@
-import useFetch from "hooks/useFetch"
-import styles from "./explorar.module.css"
-import { useEffect } from "react"
-import ContextMenuSong from "componentes/Playlist/Song/ContextMenuSong/ContextMenuSong"
+import useFetch from 'hooks/useFetch';
+import styles from './explorar.module.css';
+import { useEffect } from 'react';
+import ContextMenuSong from 'componentes/ContextMenu/Song/ContextMenuSong';
 
-interface PropsExplorar{
-
-  changeSongName : (songName : string) => void
+interface PropsExplorar {
+  changeSongName: (songName: string) => void;
 }
 
-
-export default function Explorar(props:PropsExplorar) {
-
+export default function Explorar(props: PropsExplorar) {
   //const {data} = useFetch("http://127.0.0.1:8000/canciones/p3")
 
   //const { data, loading, error } = useFetch("http://127.0.0.1:8000/listas/");
 
-/*   useEffect(() => {
+  /*   useEffect(() => {
 
     console.log(props.changeSongName)
   }, []) */
-
-
-
 
   return (
     <div className={`container-fluid d-flex flex-column`}>
@@ -29,9 +23,7 @@ export default function Explorar(props:PropsExplorar) {
       <br />
       <br />
 
-      <ContextMenuSong/>
-
+      <ContextMenuSong />
     </div>
-  )
+  );
 }
-

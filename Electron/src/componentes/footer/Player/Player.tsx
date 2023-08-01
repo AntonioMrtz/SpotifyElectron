@@ -23,7 +23,7 @@ export default function Player(props: PropsPlayer) {
       audio.current.pause();
     }
 
-    fetch(Global.backendBaseUrl+'canciones/' + songName, {
+    fetch(Global.backendBaseUrl + 'canciones/' + songName, {
       headers: { 'Access-Control-Allow-Origin': '*' },
     })
       .then((res) => res.json())

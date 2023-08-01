@@ -1,5 +1,5 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import { useLocation,useNavigate  } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Global from 'global/global';
 import styles from './playlist.module.css';
 import Song from './Song/Song';
@@ -11,7 +11,7 @@ import Box from '@mui/material/Box';
 
 interface PropsPlaylist {
   changeSongName: Function;
-  triggerReloadSidebar:Function
+  triggerReloadSidebar: Function;
 }
 
 export default function Playlist(props: PropsPlaylist) {
@@ -23,8 +23,7 @@ export default function Playlist(props: PropsPlaylist) {
     location.pathname.split('/').slice(-1)[0]
   );
 
-  let navigate = useNavigate()
-
+  let navigate = useNavigate();
 
   const [thumbnail, setThumbnail] = useState<string>(defaultThumbnailPlaylist);
   const [numberSongs, setNumberSongs] = useState<number>(0);
@@ -37,31 +36,29 @@ export default function Playlist(props: PropsPlaylist) {
   const [Liked, setLiked] = useState(false);
   const [songs, setSongs] = useState<PropsSongs[]>();
 
-
-
-  const handlePlay = ():void=>{
-    if(Playing == false){
+  const handlePlay = (): void => {
+    if (Playing == false) {
       setdisplayPause('');
       setdisplayPlay(styles.displayNonePlay);
       setPlaying(true);
-    }else{
+    } else {
       setdisplayPlay('');
       setdisplayPause(styles.displayNonePlay);
       setPlaying(false);
     }
-  }
+  };
 
-  const handleLike = () : void=>{
-    if(Liked == false){
+  const handleLike = (): void => {
+    if (Liked == false) {
       setdisplayLike('');
       setdisplayDislike(styles.displayNoneLike);
       setLiked(true);
-    }else{
+    } else {
       setdisplayDislike('');
       setdisplayLike(styles.displayNoneLike);
       setLiked(false);
     }
-  }
+  };
 
   let getTotalDurationPlaylist = () => {
     let totalDuration = 0;
@@ -78,7 +75,7 @@ export default function Playlist(props: PropsPlaylist) {
     fetch(encodeURI(Global.backendBaseUrl + 'playlists/dto/' + playlistName))
       .then((res) => res.json())
       .then(async (res) => {
-        setDescription(res['description'])
+        setDescription(res['description']);
         setThumbnail(
           res['photo'] === '' ? defaultThumbnailPlaylist : res['photo']
         );
@@ -95,7 +92,7 @@ export default function Playlist(props: PropsPlaylist) {
               name: obj,
               playlistName: playlistName,
               artistName: '',
-              duration:0,
+              duration: 0,
               index: 0,
 
               handleSongCliked: props.changeSongName,
@@ -131,23 +128,19 @@ export default function Playlist(props: PropsPlaylist) {
       });
   };
 
-  const [updatingPlaylist,setUpdatingPlaylist] = useState(false)
+  const [updatingPlaylist, setUpdatingPlaylist] = useState(false);
 
   useEffect(() => {
-
-    if(updatingPlaylist){
-
+    if (updatingPlaylist) {
       let timeoutId = setTimeout(() => {
-        props.triggerReloadSidebar()
-        setUpdatingPlaylist(false)
-        loadPlaylistData()
-
-
+        props.triggerReloadSidebar();
+        setUpdatingPlaylist(false);
+        loadPlaylistData();
       }, 100);
 
       return () => clearTimeout(timeoutId);
-    }else{
-      loadPlaylistData()
+    } else {
+      loadPlaylistData();
     }
   }, [location]);
 
@@ -190,24 +183,23 @@ export default function Playlist(props: PropsPlaylist) {
     setOpen(true);
   };
 
-
   const [formData, setFormData] = useState({
     nombre: '',
     foto: '',
     descripcion: '',
   });
 
-  const handleChangeForm = (e:ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) => {
-
+  const handleChangeForm = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
   const handleUpdatePlaylist = (event: FormEvent<HTMLButtonElement>) => {
     event.preventDefault();
-
 
     fetch(Global.backendBaseUrl + 'playlists/dto/' + playlistName, {
       headers: { 'Access-Control-Allow-Origin': '*' },
@@ -221,14 +213,10 @@ export default function Playlist(props: PropsPlaylist) {
 
         let fetchUrlUpdateSong;
 
-        if (formData.nombre!==playlistName && formData.nombre!==''){
-
+        if (formData.nombre !== playlistName && formData.nombre !== '') {
           fetchUrlUpdateSong = `${url}?foto=${photo}&descripcion=${formData.descripcion}&nuevo_nombre=${formData.nombre}`;
-
-        }else{
-
-          fetchUrlUpdateSong = `${url}?foto=${photo}&descripcion=${formData.descripcion}`
-
+        } else {
+          fetchUrlUpdateSong = `${url}?foto=${photo}&descripcion=${formData.descripcion}`;
         }
 
         let newSongsPutPlaylist = [];
@@ -247,27 +235,22 @@ export default function Playlist(props: PropsPlaylist) {
         fetch(fetchUrlUpdateSong, requestOptions).then((response) => {
           if (response.status !== 204) {
             console.log('Unable to update playlist');
-          }else{
+          } else {
             setOpen(false);
-            if (formData.nombre!==playlistName && formData.nombre!==''){
-
-              setUpdatingPlaylist(true)
+            if (formData.nombre !== playlistName && formData.nombre !== '') {
+              setUpdatingPlaylist(true);
               //* Al cargar inmediatamente con el useEffect de location produce que el contenido para la nueva url no esta disponible
-              navigate(`/playlist/`+formData.nombre, { replace: true })
-            }else{
-              loadPlaylistData()
+              navigate(`/playlist/` + formData.nombre, { replace: true });
+            } else {
+              loadPlaylistData();
             }
-
           }
         });
       })
       .catch((error) => {
         console.log('Unable to update playlist');
-      })
-
-
+      });
   };
-
 
   return (
     <div
@@ -292,30 +275,55 @@ export default function Playlist(props: PropsPlaylist) {
             <h1>{playlistName}</h1>
             <p className={`${styles.descriptionText}`}>{description}</p>
             <div className={`d-flex flex-row`}>
-
               <p>{numberSongs} canciones</p>
               <p className={`me-2 ms-2`}>•</p>
-              <p>{secondsToHoursAndMinutes(getTotalDurationPlaylist())} aproximadamente</p>
-
+              <p>
+                {secondsToHoursAndMinutes(getTotalDurationPlaylist())}{' '}
+                aproximadamente
+              </p>
             </div>
           </div>
         </div>
 
         <div className={` ${styles.nonBlurred} ${styles.subhHeaderPlaylist}`}>
-          <button className={`${styles.hoverablePlayButton} ${displayPlay}`} onClick={handlePlay}>
-            <i className="fa-solid fa-circle-play" style={{ color: 'var(--primary-green)',fontSize:'3rem' }}></i>
+          <button
+            className={`${styles.hoverablePlayButton} ${displayPlay}`}
+            onClick={handlePlay}
+          >
+            <i
+              className="fa-solid fa-circle-play"
+              style={{ color: 'var(--primary-green)', fontSize: '3rem' }}
+            ></i>
           </button>
-          <button className={`${styles.hoverablePlayButton} ${displayPause}`} onClick={handlePlay}>
-            <i className="fa-solid fa-circle-pause" style={{ color: 'var(--primary-green)',fontSize:'3rem' }}></i>
+          <button
+            className={`${styles.hoverablePlayButton} ${displayPause}`}
+            onClick={handlePlay}
+          >
+            <i
+              className="fa-solid fa-circle-pause"
+              style={{ color: 'var(--primary-green)', fontSize: '3rem' }}
+            ></i>
           </button>
-          <button className={`${styles.hoverableItemubheader} ${displayDislike}`} onClick={handleLike}>
-            <i className="fa-regular fa-heart" style={{ color: 'var(--secondary-white)',fontSize:'1.75rem' }}></i>
+          <button
+            className={`${styles.hoverableItemubheader} ${displayDislike}`}
+            onClick={handleLike}
+          >
+            <i
+              className="fa-regular fa-heart"
+              style={{ color: 'var(--secondary-white)', fontSize: '1.75rem' }}
+            ></i>
           </button>
           <button className={`${displayLike}`} onClick={handleLike}>
-            <i className="fa-solid fa-heart" style={{ color: 'var(--primary-green)',fontSize:'1.75rem' }}></i>
+            <i
+              className="fa-solid fa-heart"
+              style={{ color: 'var(--primary-green)', fontSize: '1.75rem' }}
+            ></i>
           </button>
           <button className={`${styles.hoverableItemubheader}`}>
-            <i className="fa-regular fa-circle-down" style={{ color: 'var(--secondary-white)',fontSize:'1.75rem' }}></i>
+            <i
+              className="fa-regular fa-circle-down"
+              style={{ color: 'var(--secondary-white)', fontSize: '1.75rem' }}
+            ></i>
           </button>
           <button className={`${styles.hoverableItemubheader}`}>
             <i
@@ -338,7 +346,9 @@ export default function Playlist(props: PropsPlaylist) {
             >
               Título
             </span>
-            <span className={` d-flex justify-content-center ${styles.gridItem}`}>
+            <span
+              className={` d-flex justify-content-center ${styles.gridItem}`}
+            >
               <i className="fa-regular fa-clock"></i>
             </span>
           </li>
@@ -392,12 +402,12 @@ export default function Playlist(props: PropsPlaylist) {
                 <img src={`${thumbnailUpdatePlaylist}`} alt="" />
               </div>
 
-              <div className={`container-fluid pe-0 ${styles.wrapperUpdateTextData}`}>
-                <div
-                  className={`form-floating mb-3 ${styles.inputPlaylist}`}
-                >
+              <div
+                className={`container-fluid pe-0 ${styles.wrapperUpdateTextData}`}
+              >
+                <div className={`form-floating mb-3 ${styles.inputPlaylist}`}>
                   <input
-                    name='nombre'
+                    name="nombre"
                     type="text"
                     defaultValue={playlistName}
                     className={`form-control`}
@@ -408,12 +418,10 @@ export default function Playlist(props: PropsPlaylist) {
                   <label htmlFor="floatingInput">Nombre</label>
                 </div>
 
-                <div
-                  className={`form-floating mb-3 ${styles.inputPlaylist}`}
-                >
+                <div className={`form-floating mb-3 ${styles.inputPlaylist}`}>
                   <div className="form-floating">
                     <textarea
-                      name='descripcion'
+                      name="descripcion"
                       className="form-control"
                       defaultValue={description}
                       placeholder="Añade una descripción"
@@ -439,12 +447,10 @@ export default function Playlist(props: PropsPlaylist) {
   );
 }
 
-
-
-function secondsToHoursAndMinutes(seconds:number) {
+function secondsToHoursAndMinutes(seconds: number) {
   const hours = Math.floor(seconds / 3600);
   const remainingSeconds = seconds % 3600;
   const minutes = Math.floor(remainingSeconds / 60);
 
-  return hours+" h "+minutes+" min ";
+  return hours + ' h ' + minutes + ' min ';
 }

@@ -1,4 +1,3 @@
----
 ###########################
 ###########################
 ## Linter GitHub Actions ##
@@ -55,9 +54,6 @@ jobs:
           VALIDATE_JAVASCRIPT_ES : false
           VALIDATE_JAVASCRIPT_STANDARD : false
           VALIDATE_JSCPD : false
-          VALIDATE_JSCPD : false
-          VALIDATE_CSS : false
-          VALIDATE_TYPESCRIPT_STANDARD : false
         continue-on-error: false
 
       ##############################

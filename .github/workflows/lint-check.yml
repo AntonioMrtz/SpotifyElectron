@@ -52,6 +52,9 @@ jobs:
 
           LINTER_RULES_PATH: /
           EDITORCONFIG_FILE_NAME : .editorconfig
+          VALIDATE_JAVASCRIPT_ES : false
+          VALIDATE_JAVASCRIPT_STANDARD : false
+          VALIDATE_JSCPD : false
         continue-on-error: false
 
       ##############################

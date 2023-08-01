@@ -3,11 +3,9 @@ import { PropsPlaylist } from '../types/propsPlaylist.module';
 import { Link } from 'react-router-dom';
 
 export default function Home(props: PropsPlaylist) {
-
   let urlPlaylist = '/playlist/' + props.name;
 
   return (
-
     <span className={`rounded ${styles.card}`}>
       <Link to={urlPlaylist} key={props.name}>
         <img src={props.photo} className={`card-img-top rounded`} />
@@ -17,7 +15,5 @@ export default function Home(props: PropsPlaylist) {
         </div>
       </Link>
     </span>
-
   );
-
 }

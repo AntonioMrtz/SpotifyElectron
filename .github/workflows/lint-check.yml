@@ -49,10 +49,10 @@ jobs:
         env:
           VALIDATE_ALL_CODEBASE: false
           DEFAULT_BRANCH: master
-          
-          LINTER_RULES_PATH: Electron/
+
+          LINTER_RULES_PATH:
           EDITORCONFIG_FILE_NAME : .editorconfig
-        continue-on-error: true
+        continue-on-error: false
 
       ##############################
       # Fail the workflow on error #

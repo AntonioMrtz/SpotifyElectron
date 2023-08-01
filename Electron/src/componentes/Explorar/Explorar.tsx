@@ -1,7 +1,7 @@
 import useFetch from "hooks/useFetch"
 import styles from "./explorar.module.css"
 import { useEffect } from "react"
-import ContextMenuSong from "componentes/Playlist/Song/ContextMenuSong/ContextMenuSong"
+import ContextMenuSong from "componentes/ContextMenu/Song/ContextMenuSong"
 
 interface PropsExplorar{
 

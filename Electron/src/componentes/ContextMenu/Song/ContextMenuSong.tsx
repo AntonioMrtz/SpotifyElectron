@@ -1,9 +1,9 @@
-import styles from './contextMenuSong.module.css';
+import styles from '../contextMenu.module.css';
 import Popover from '@mui/material/Popover';
 import { useEffect, useState } from 'react';
 import Global from 'global/global';
-import InfoPopover from '../../../InfoPopover/InfoPopover'
-import {InfoPopoverType} from '../../../types/InfoPopover'
+import InfoPopover from '../../InfoPopover/InfoPopover'
+import {InfoPopoverType} from '../../types/InfoPopover'
 
 interface PropsContextMenuSong {
   songName: string;

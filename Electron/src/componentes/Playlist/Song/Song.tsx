@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react';
 import styles from '../playlist.module.css';
 import { PropsSongs } from 'componentes/Sidebar/types/propsSongs.module';
-import ContextMenuSong from 'componentes/Playlist/Song/ContextMenuSong/ContextMenuSong';
+import ContextMenuSong from 'componentes/ContextMenu/Song/ContextMenuSong';
 import Popover, { PopoverPosition } from '@mui/material/Popover';
-import Typography from '@mui/material/Typography';
-
 export default function Song(props: PropsSongs) {
   const [isOpen, setIsOpen] = useState(false);
 

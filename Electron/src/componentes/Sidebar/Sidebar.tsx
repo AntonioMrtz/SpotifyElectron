@@ -83,6 +83,8 @@ export default function Sidebar(props: PropsSidebar) {
 
   const [playlists, setPlaylists] = useState<PropsPlaylist[]>();
 
+  const [loading, setLoading] = useState(true);
+
   const handlePlaylists = () => {
     fetch(Global.backendBaseUrl + 'playlists/', {
       headers: { 'Access-Control-Allow-Origin': '*' },
@@ -124,10 +126,6 @@ export default function Sidebar(props: PropsSidebar) {
   useEffect(() => {
     handlePlaylists();
   }, [props.triggerReloadSidebar]);
-
-  /* Loading animation */
-
-  const [loading, setLoading] = useState(true);
 
   return (
     <div className={`container-fluid ${styles.wrapperNavbar}`}>
@@ -192,17 +190,23 @@ export default function Sidebar(props: PropsSidebar) {
             className={`container-fluid d-flex flex-column ${styles.ulPlaylist}`}
           >
             {loading && (
-              <div className="container-fluid d-flex justify-content-center align-content-center" style={{height:'100%',justifyContent:'center',alignItems:'center'}}>
+              <div
+                className="container-fluid d-flex justify-content-center align-content-center"
+                style={{
+                  height: '100%',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
                 <CircularProgress
-                  style={{width:'3rem',height:'auto'}}
+                  style={{ width: '3rem', height: 'auto' }}
                   sx={{
                     ' & .MuiCircularProgress-circle': {
                       color: 'var(--pure-white)',
                     },
-                    '& .css-zk81sn-MuiCircularProgress-root' : {
-
-                      width:'3rem'
-                    }
+                    '& .css-zk81sn-MuiCircularProgress-root': {
+                      width: '3rem',
+                    },
                   }}
                 />
               </div>

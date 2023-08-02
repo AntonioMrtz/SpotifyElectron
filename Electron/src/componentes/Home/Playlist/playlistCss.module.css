@@ -5,8 +5,41 @@
   margin-right: 2%;
   background-color: var(--third-black) !important;
   max-width: 18%;
+  position: relative;
 
 }
+
+.card:hover .displayTruePlay {
+
+  display: flex;
+
+}
+
+.card .displayTruePlay {
+
+  display: none;
+
+}
+
+.card button {
+
+  position: absolute;
+  background: transparent;
+  border: none;
+  width: 5vw;
+  height: 5vw;
+  top: 5vw;
+  right: 50%;
+
+}
+
+.card .i:hover {
+
+  color: red;
+
+
+}
+
 
 .card:hover {
 
@@ -39,5 +72,24 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   color: var(--grey);
+
+}
+
+.displayNonePlay {
+
+  display: none;
+
+}
+
+.playButton {
+
+  color: var(--primary-green);
+  font-size: 2.5rem;
+
+}
+
+.playButton:hover {
+
+  font-size: 2.55rem;
 
 }

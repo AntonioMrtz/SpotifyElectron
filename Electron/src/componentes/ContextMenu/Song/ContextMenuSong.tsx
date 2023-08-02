@@ -228,6 +228,8 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
               sx={{
                 '& .MuiPaper-root': {
                   backgroundColor: 'var(--hover-white)',
+                  border: '1px solid var(--third-black)',
+
                 },
               }}
             >

@@ -2,10 +2,10 @@
 
 
   background-color: var(--hover-white);
-  width: 250px;
+  max-width: 30svw !important;
   border-radius: 4px;
   color: hsla(0, 0%, 100%, .9);
-  padding: 4px
+  padding: 4px;
 }
 
 .wrapperContextMenu ul {
@@ -70,9 +70,38 @@
 
 .wrapperContextMenuAddToPlaylist{
 
-  max-width: 350px !important;
+  max-width: 30svw !important;
   max-height: 40svh;
+  overflow-y: scroll;
 }
+
+
+/* Scrollbar AddToPlaylist */
+
+
+.wrapperContextMenuAddToPlaylist::-webkit-scrollbar {
+  display: block;
+  width: 10px; /* Set the width of the scrollbar */
+  transition: background-color .2s;
+}
+
+.wrapperContextMenuAddToPlaylist::-webkit-scrollbar-track {
+  background-color: transparent; /* Background color of the scrollbar track */
+}
+
+.wrapperContextMenuAddToPlaylist::-webkit-scrollbar-thumb {
+  background: #555;
+    /* Color of the thumb on hover */
+}
+
+.wrapperContextMenuAddToPlaylist::-webkit-scrollbar-thumb:hover {
+  background: #888; /* Color of the scrollbar thumb */
+}
+
+
+
+
+
 
 .wrapperContextMenuAddToPlaylist li:not(:nth-child(2)){
 

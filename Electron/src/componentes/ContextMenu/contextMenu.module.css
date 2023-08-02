@@ -1,6 +1,6 @@
 .wrapperContextMenu {
   background-color: var(--hover-white);
-  max-width: 30svw !important;
+  width: 15svw !important;
   border-radius: 4px;
   color: hsla(0, 0%, 100%, 0.9);
   padding: 4px;
@@ -53,8 +53,8 @@
 /* Add to playlist */
 
 .wrapperContextMenuAddToPlaylist {
-  max-width: 30svw !important;
-  max-height: 40svh;
+  width: 15svw !important;
+  height: 40svh;
   overflow-y: scroll;
 }
 

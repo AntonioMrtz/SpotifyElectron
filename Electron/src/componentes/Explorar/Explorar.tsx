@@ -22,8 +22,8 @@ export default function Explorar(props: PropsExplorar) {
       <br />
       <br />
       <br />
-
-      <ContextMenuSong />
+      {/*       <ContextMenuSong />
+       */}{' '}
     </div>
   );
 }

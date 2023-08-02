@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 import { PropsPlaylist } from './types/propsPlaylist.module';
 import Global from 'global/global';
+import CircularProgress from '@mui/material/CircularProgress';
 
 interface PropsSidebar {
   triggerReloadSidebar: boolean;
@@ -106,6 +107,8 @@ export default function Sidebar(props: PropsSidebar) {
           }
           setPlaylists(propsPlaylists);
         }
+
+        setLoading(false);
       })
       .catch((error) => {
         console.log(error);
@@ -121,6 +124,10 @@ export default function Sidebar(props: PropsSidebar) {
   useEffect(() => {
     handlePlaylists();
   }, [props.triggerReloadSidebar]);
+
+  /* Loading animation */
+
+  const [loading, setLoading] = useState(true);
 
   return (
     <div className={`container-fluid ${styles.wrapperNavbar}`}>
@@ -162,7 +169,6 @@ export default function Sidebar(props: PropsSidebar) {
       <div
         className={`container-fluid d-flex flex-column ${styles.libraryWrapper}`}
       >
-        <header className={`container-fluid d-flex flex-column`}></header>
         <div
           className={`container-fluid d-flex flex-column p-0 ${styles.playlistUlWrapper}`}
         >
@@ -185,7 +191,25 @@ export default function Sidebar(props: PropsSidebar) {
           <ul
             className={`container-fluid d-flex flex-column ${styles.ulPlaylist}`}
           >
-            {playlists &&
+            {loading && (
+              <div className="container-fluid d-flex justify-content-center align-content-center" style={{height:'100%',justifyContent:'center',alignItems:'center'}}>
+                <CircularProgress
+                  style={{width:'3rem',height:'auto'}}
+                  sx={{
+                    ' & .MuiCircularProgress-circle': {
+                      color: 'var(--pure-white)',
+                    },
+                    '& .css-zk81sn-MuiCircularProgress-root' : {
+
+                      width:'3rem'
+                    }
+                  }}
+                />
+              </div>
+            )}
+
+            {!loading &&
+              playlists &&
               playlists.map((playlist) => {
                 let urlPlaylist = '/playlist/' + playlist.name;
 

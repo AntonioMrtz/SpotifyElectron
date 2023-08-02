@@ -5,6 +5,7 @@ import Global from 'global/global';
 import InfoPopover from '../../InfoPopover/InfoPopover';
 import { InfoPopoverType } from '../../types/InfoPopover';
 import { useNavigate } from 'react-router-dom';
+import CircularProgress from '@mui/material/CircularProgress/CircularProgress';
 
 interface PropsContextMenuSong {
   playlistName: string;
@@ -135,6 +136,7 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
   const id = open ? 'child-popover' : undefined;
 
   const [playlistNames, setPlaylistNames] = useState<String[]>();
+  const [loading, setLoading] = useState(true);
 
   const handlePlaylists = () => {
     fetch(Global.backendBaseUrl + 'playlists/', {
@@ -152,6 +154,7 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
         }
 
         setPlaylistNames(playlistNames);
+        setLoading(false);
       })
       .catch((error) => {
         console.log(error);
@@ -321,7 +324,32 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
                     <button>Crear lista</button>
                   </li>
 
-                  {playlistNames &&
+                  {loading && (
+                    <div
+                      className="container-fluid d-flex justify-content-center align-content-center"
+                      style={{
+                        height: '100%',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        padding: '5%',
+                      }}
+                    >
+                      <CircularProgress
+                        style={{ width: '2rem', height: 'auto' }}
+                        sx={{
+                          ' & .MuiCircularProgress-circle': {
+                            color: 'var(--pure-white)',
+                          },
+                          '& .css-zk81sn-MuiCircularProgress-root': {
+                            width: '3rem',
+                          },
+                        }}
+                      />
+                    </div>
+                  )}
+
+                  {!loading &&
+                    playlistNames &&
                     playlistNames.map((playlistName, index) => {
                       return (
                         <li key={index}>

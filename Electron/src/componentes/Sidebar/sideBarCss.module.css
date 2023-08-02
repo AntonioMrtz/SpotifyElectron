@@ -82,6 +82,7 @@
   padding: 0 !important;
   overflow: hidden;
   padding: 5% 0 5% 1.75% !important;
+  height: 100%;
 }
 
 .ulPlaylist {
@@ -91,6 +92,7 @@
   max-height: 78svh;
   overflow-y: auto;
   scrollbar-width: none;
+  height: 100%;
   /* Firefox */
 }
 

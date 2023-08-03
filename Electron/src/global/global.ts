@@ -7,11 +7,6 @@ namespace Global {
     canGoBack: boolean | undefined;
     canGoForward: boolean | undefined;
   }
-
-  let hola="hola"
 }
-
-
-
 
 export default Global;

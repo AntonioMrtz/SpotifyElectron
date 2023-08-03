@@ -50,7 +50,9 @@ jobs:
           VALIDATE_ALL_CODEBASE: false
           DEFAULT_BRANCH: master
           OUTPUT_FOLDER : LintReports
-          OUTPUT_DETAILS: detailed
+          OUTPUT_DETAILS : detailed
+          LOG_FILE : super-linter.log
+          LOG_LEVEL : VERBOSE
           LINTER_RULES_PATH: /
           EDITORCONFIG_FILE_NAME : .editorconfig
           VALIDATE_JAVASCRIPT_ES : false

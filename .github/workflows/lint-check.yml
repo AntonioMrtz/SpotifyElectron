@@ -58,6 +58,7 @@ jobs:
           VALIDATE_JSCPD : false
           VALIDATE_CSS : false
           VALIDATE_TYPESCRIPT_STANDARD : false
+          TYPESCRIPT_ES_CONFIG_FILE : Electron/eslint.js
         continue-on-error: false
 
       ##############################

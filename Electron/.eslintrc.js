@@ -1,5 +1,5 @@
 module.exports = {
-  extends: 'erb',
+  //extends: 'erb',
   plugins: ['@typescript-eslint'],
   rules: {
     // A temporary hack related to IDE not resolving correct package.json

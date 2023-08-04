@@ -155,7 +155,8 @@ yarn-error.log*
 
 # js webpacked
 
-preload.js
+.erb/dll/preload.js
+.erb
 
 #python
 

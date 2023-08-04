@@ -76,6 +76,7 @@ export default function Playlist(props: PropsPlaylist) {
       .then((res) => res.json())
       .then(async (res) => {
         setDescription(res['description']);
+        console.log("🚀 ~ file: Playlist.tsx:81 ~ .then ~ res['photo']:", res['photo'])
         setThumbnail(
           res['photo'] === '' ? defaultThumbnailPlaylist : res['photo']
         );
@@ -128,10 +129,18 @@ export default function Playlist(props: PropsPlaylist) {
       });
   };
 
-  const [updatingPlaylist, setUpdatingPlaylist] = useState(false);
-
   useEffect(() => {
-    loadPlaylistData();
+
+    loadPlaylistData()
+    console.log("🚀 ~ file: Playlist.tsx:144 ~ Playlist ~ location:", location)
+
+    if(localStorage.getItem("playlistEdit")==="true"){
+
+      setOpen(true)
+      localStorage.setItem('playlistEdit', JSON.stringify(false));
+
+    }
+
   }, [location]);
 
   /* Process photo color */
@@ -370,8 +379,6 @@ export default function Playlist(props: PropsPlaylist) {
         </ul>
       </div>
 
-      {/* Modal */}
-
       <Modal
         className={``}
         open={open}
@@ -434,7 +441,7 @@ export default function Playlist(props: PropsPlaylist) {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> 
             <div
               className={`container-fluid d-flex p-0 ${styles.wrapperUpdateTextData}`}
             >

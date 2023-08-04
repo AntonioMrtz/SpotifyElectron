@@ -272,6 +272,17 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
       });
   };
 
+
+  const handleEditPlaylistData = () =>{
+
+    navigate(`/playlists/${props.playlistName}?edit=true`, { replace:true});
+    
+    localStorage.setItem('playlistEdit', JSON.stringify(true));
+
+    handleClose()
+
+  }
+
   return (
     <div className={` ${styles.wrapperContextMenu}`}>
       <ul>
@@ -279,7 +290,7 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
           <button>Añadir a la cola</button>
         </li>
         <li>
-          <button>Editar datos</button>
+          <button onClick={handleEditPlaylistData}>Editar datos</button>
           <button>Crear lista similar</button>
           <button
             onClick={(event) => handleDeletePlaylist(event, props.playlistName)}

@@ -131,7 +131,7 @@ export default function Playlist(props: PropsPlaylist) {
   const [updatingPlaylist, setUpdatingPlaylist] = useState(false);
 
   useEffect(() => {
-    loadPlaylistData()
+    loadPlaylistData();
   }, [location]);
 
   /* Process photo color */
@@ -182,12 +182,13 @@ export default function Playlist(props: PropsPlaylist) {
   const handleChangeForm = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-
-    if(e.target.name==="foto"){
-
-      setThumbnailUpdatePlaylist(e.target.value.includes("http") ? e.target.value : defaultThumbnailPlaylist)
+    if (e.target.name === 'foto') {
+      setThumbnailUpdatePlaylist(
+        e.target.value.includes('http')
+          ? e.target.value
+          : defaultThumbnailPlaylist
+      );
     }
-
 
     setFormData({
       ...formData,
@@ -205,8 +206,8 @@ export default function Playlist(props: PropsPlaylist) {
       .then((res) => {
         let url = Global.backendBaseUrl + 'playlists/' + playlistName; // Reemplaza con la URL de tu API y el nombre de la playlist
 
-        
-        let photo = formData.foto && formData.foto.includes("http") ? formData.foto : '' 
+        let photo =
+          formData.foto && formData.foto.includes('http') ? formData.foto : '';
 
         let fetchUrlUpdateSong;
 
@@ -236,11 +237,11 @@ export default function Playlist(props: PropsPlaylist) {
             setOpen(false);
             if (formData.nombre !== playlistName && formData.nombre !== '') {
               //* Al cargar inmediatamente con el useEffect de location produce que el contenido para la nueva url no esta disponible
-              props.triggerReloadSidebar()
+              props.triggerReloadSidebar();
               navigate(`/playlist/` + formData.nombre, { replace: true });
             } else {
               loadPlaylistData();
-              props.triggerReloadSidebar()
+              props.triggerReloadSidebar();
             }
           }
         });

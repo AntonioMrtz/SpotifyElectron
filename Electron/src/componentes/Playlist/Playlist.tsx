@@ -131,17 +131,7 @@ export default function Playlist(props: PropsPlaylist) {
   const [updatingPlaylist, setUpdatingPlaylist] = useState(false);
 
   useEffect(() => {
-    if (updatingPlaylist) {
-      let timeoutId = setTimeout(() => {
-        props.triggerReloadSidebar();
-        setUpdatingPlaylist(false);
-        loadPlaylistData();
-      }, 100);
-
-      return () => clearTimeout(timeoutId);
-    } else {
-      loadPlaylistData();
-    }
+    loadPlaylistData()
   }, [location]);
 
   /* Process photo color */
@@ -192,6 +182,13 @@ export default function Playlist(props: PropsPlaylist) {
   const handleChangeForm = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
+
+    if(e.target.name==="foto"){
+
+      setThumbnailUpdatePlaylist(e.target.value.includes("http") ? e.target.value : defaultThumbnailPlaylist)
+    }
+
+
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -208,8 +205,8 @@ export default function Playlist(props: PropsPlaylist) {
       .then((res) => {
         let url = Global.backendBaseUrl + 'playlists/' + playlistName; // Reemplaza con la URL de tu API y el nombre de la playlist
 
-        //! cambiar si ponemos actualizar foto
-        let photo = res['photo'];
+        
+        let photo = formData.foto && formData.foto.includes("http") ? formData.foto : '' 
 
         let fetchUrlUpdateSong;
 
@@ -238,11 +235,12 @@ export default function Playlist(props: PropsPlaylist) {
           } else {
             setOpen(false);
             if (formData.nombre !== playlistName && formData.nombre !== '') {
-              setUpdatingPlaylist(true);
               //* Al cargar inmediatamente con el useEffect de location produce que el contenido para la nueva url no esta disponible
+              props.triggerReloadSidebar()
               navigate(`/playlist/` + formData.nombre, { replace: true });
             } else {
               loadPlaylistData();
+              props.triggerReloadSidebar()
             }
           }
         });
@@ -397,41 +395,60 @@ export default function Playlist(props: PropsPlaylist) {
           </header>
 
           <form>
-            <div className={`d-flex flex-row container-fluid p-0`}>
-              <div className={` ${styles.wrapperUpdateThumbnail}`}>
-                <img src={`${thumbnailUpdatePlaylist}`} alt="" />
-              </div>
-
-              <div
-                className={`container-fluid pe-0 ${styles.wrapperUpdateTextData}`}
-              >
-                <div className={`form-floating mb-3 ${styles.inputPlaylist}`}>
-                  <input
-                    name="nombre"
-                    type="text"
-                    defaultValue={playlistName}
-                    className={`form-control`}
-                    id="nombre"
-                    placeholder="Añade un nombre"
-                    onChange={handleChangeForm}
-                  />
-                  <label htmlFor="floatingInput">Nombre</label>
+            <div className="d-flex flex-column p-0">
+              <div className={`d-flex flex-row container-fluid p-0`}>
+                <div className={` ${styles.wrapperUpdateThumbnail}`}>
+                  <img src={`${thumbnailUpdatePlaylist}`} alt="" />
                 </div>
 
-                <div className={`form-floating mb-3 ${styles.inputPlaylist}`}>
-                  <div className="form-floating">
-                    <textarea
-                      name="descripcion"
-                      className="form-control"
-                      defaultValue={description}
-                      placeholder="Añade una descripción"
-                      id="descripcion"
-                      style={{ height: ' 100px' }}
+                <div
+                  className={`container-fluid pe-0 ${styles.wrapperUpdateTextData}`}
+                >
+                  <div className={`form-floating mb-3 ${styles.inputPlaylist}`}>
+                    <input
+                      name="nombre"
+                      type="text"
+                      defaultValue={playlistName}
+                      className={`form-control`}
+                      id="nombre"
+                      placeholder="Añade un nombre"
                       onChange={handleChangeForm}
-                    ></textarea>
-                    <label htmlFor="floatingTextarea2">Descripción</label>
+                    />
+                    <label htmlFor="floatingInput">Nombre</label>
+                  </div>
+
+                  <div className={`form-floating mb-3 ${styles.inputPlaylist}`}>
+                    <div className="form-floating">
+                      <textarea
+                        name="descripcion"
+                        className="form-control"
+                        defaultValue={description}
+                        placeholder="Añade una descripción"
+                        id="descripcion"
+                        style={{ height: ' 100px' }}
+                        onChange={handleChangeForm}
+                      ></textarea>
+                      <label htmlFor="floatingTextarea2">Descripción</label>
+                    </div>
                   </div>
                 </div>
+              </div>
+            </div>
+            <div
+              className={`container-fluid d-flex p-0 ${styles.wrapperUpdateTextData}`}
+            >
+              <div
+                className={`form-floating container-fluid p-0 ${styles.inputPlaylist}`}
+              >
+                <input
+                  name="foto"
+                  type="text"
+                  className={`form-control`}
+                  id="foto"
+                  placeholder="Url de la nueva foto"
+                  onChange={handleChangeForm}
+                />
+                <label htmlFor="foto">Url de la miniatura</label>
               </div>
             </div>
 

@@ -21,6 +21,7 @@ function App() {
   const [triggerReloadSidebar, setTriggerReloadSidebar] = useState(false);
 
   const reloadSidebar = () => {
+    console.log("hola")
     setTriggerReloadSidebar((state) => !state);
   };
 

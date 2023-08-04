@@ -100,7 +100,7 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
 
         const { photo } = res;
 
-        const fetchUrlUpdateSong = `${url}?foto=${photo}`;
+        const fetchUrlUpdateSong = `${url}?foto=${photo}&descripcion=${res['description']}`;
 
         const newSongsPutPlaylist = [];
         newSongsPutPlaylist.push(songName);
@@ -207,7 +207,7 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
             Quitar de esta lista
           </button>
           <button
-            className="d-flex justify-content-between"
+            className="d-flex justify-content-between align-items-center"
             onClick={handleClick}
           >
             Añadir a la playlist <i className="fa-solid fa-chevron-right" />

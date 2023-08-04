@@ -83,7 +83,10 @@ export default function Song(props: PropsSongs) {
           sx={{
             '& .MuiPaper-root': {
               backgroundColor: 'var(--hover-white)',
-            },
+            },'& . MuiPopover-root':{
+
+              zIndex:'1000'
+            }
           }}
         >
           <ContextMenuSong

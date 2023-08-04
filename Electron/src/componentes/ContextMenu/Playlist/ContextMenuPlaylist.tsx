@@ -28,7 +28,7 @@ const reducerConfirmationMenu = (
         },
       };
 
-    case ConfirmationMenuActionKind.DELETE_ERROR:
+    case ConfirmationMenuActionKind.ADD_ERROR:
       return {
         payload: {
           type: InfoPopoverType.ERROR,
@@ -69,8 +69,8 @@ const reducerConfirmationMenu = (
       return {
         payload: {
           type: InfoPopoverType.ERROR,
-          title: 'Playlist no eliminada',
-          description: 'La playlist no ha sido eliminada',
+          title: 'Error',
+          description: 'Ha ocurrido un error.',
         },
       };
   }
@@ -196,7 +196,7 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
 
         let photo = res['photo'];
 
-        const fetchUrlUpdateSong = `${url}?foto=${photo}`;
+        const fetchUrlUpdateSong = `${url}?foto=${photo}&descripcion=${res['description']}`;
 
         /* Current songs of the dstPlaylist */
         let newSongsPutPlaylist: string[] = [];
@@ -290,10 +290,11 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
         </li>
         <li>
           <button
-            className="d-flex justify-content-between"
+            className="d-flex justify-content-between align-items-center"
             onClick={handleClick}
           >
-            Añadir a otra lista<i className="fa-solid fa-chevron-right"></i>
+            Añadir a otra lista
+              <i className="fa-solid fa-chevron-right"></i>
             <Popover
               id={id}
               open={open}

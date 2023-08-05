@@ -80,7 +80,10 @@ export default function Playlist(props: PropsPlaylist) {
           sx={{
             '& .MuiPaper-root': {
               backgroundColor: 'var(--hover-white)',
-            },
+            },'& . MuiPopover-root':{
+
+              zIndex:'1000'
+            }
           }}
         >
           <ContextMenuPlaylist

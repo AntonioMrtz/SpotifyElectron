@@ -111,5 +111,5 @@ const secondsToMinutesSeconds: Function = (secs: number) => {
   let minutes = Math.floor(secs / 60);
   let seconds = (secs - minutes * 60) / 100;
 
-  return (minutes + seconds).toFixed(2);
+  return (minutes + seconds).toFixed(2).replace('.', ':');
 };

@@ -1,39 +1,40 @@
 .wrapperPlaylist {
-
   padding: 5px 5% 5px 10px !important;
   border-radius: 6px;
   height: 64px;
   cursor: pointer;
   overflow-x: hidden;
-
+  align-items: center;
 }
 
 .wrapperPlaylist:hover {
-
   background-color: var(--hover-white);
 }
 
 .wrapperPlaylist img {
-
   border-radius: var(--border-radius-thumbnails);
   width: 48px;
   height: 48px;
-
 }
 
 .wrapperPlaylist label {
-
+  width: calc(100%);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   font-size: 1.05rem;
   cursor: pointer;
   font-weight: 500 !important;
   color: var(--primary-white);
   word-break: break-all;
-
 }
 
 .wrapperPlaylist p {
-
   color: var(--grey);
   font-size: 0.85rem;
   font-weight: lighter;
+  width: calc(100%);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }

@@ -5,6 +5,7 @@ import Global from 'global/global';
 import InfoPopover from '../../InfoPopover/InfoPopover';
 import { InfoPopoverType } from '../../types/InfoPopover';
 import { useNavigate } from 'react-router-dom';
+import CircularProgress from '@mui/material/CircularProgress/CircularProgress';
 
 interface PropsContextMenuSong {
   playlistName: string;
@@ -27,7 +28,7 @@ const reducerConfirmationMenu = (
         },
       };
 
-    case ConfirmationMenuActionKind.DELETE_ERROR:
+    case ConfirmationMenuActionKind.ADD_ERROR:
       return {
         payload: {
           type: InfoPopoverType.ERROR,
@@ -68,8 +69,8 @@ const reducerConfirmationMenu = (
       return {
         payload: {
           type: InfoPopoverType.ERROR,
-          title: 'Playlist no eliminada',
-          description: 'La playlist no ha sido eliminada',
+          title: 'Error',
+          description: 'Ha ocurrido un error.',
         },
       };
   }
@@ -135,6 +136,7 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
   const id = open ? 'child-popover' : undefined;
 
   const [playlistNames, setPlaylistNames] = useState<String[]>();
+  const [loading, setLoading] = useState(true);
 
   const handlePlaylists = () => {
     fetch(Global.backendBaseUrl + 'playlists/', {
@@ -152,6 +154,7 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
         }
 
         setPlaylistNames(playlistNames);
+        setLoading(false);
       })
       .catch((error) => {
         console.log(error);
@@ -193,7 +196,7 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
 
         let photo = res['photo'];
 
-        const fetchUrlUpdateSong = `${url}?foto=${photo}`;
+        const fetchUrlUpdateSong = `${url}?foto=${photo}&descripcion=${res['description']}`;
 
         /* Current songs of the dstPlaylist */
         let newSongsPutPlaylist: string[] = [];
@@ -269,6 +272,17 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
       });
   };
 
+
+  const handleEditPlaylistData = () =>{
+
+    navigate(`/playlists/${props.playlistName}?edit=true`, { replace:true});
+    
+    localStorage.setItem('playlistEdit', JSON.stringify(true));
+
+    handleClose()
+
+  }
+
   return (
     <div className={` ${styles.wrapperContextMenu}`}>
       <ul>
@@ -276,7 +290,7 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
           <button>Añadir a la cola</button>
         </li>
         <li>
-          <button>Editar datos</button>
+          <button onClick={handleEditPlaylistData}>Editar datos</button>
           <button>Crear lista similar</button>
           <button
             onClick={(event) => handleDeletePlaylist(event, props.playlistName)}
@@ -287,10 +301,11 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
         </li>
         <li>
           <button
-            className="d-flex justify-content-between"
+            className="d-flex justify-content-between align-items-center"
             onClick={handleClick}
           >
-            Añadir a otra lista<i className="fa-solid fa-chevron-right"></i>
+            Añadir a otra lista
+              <i className="fa-solid fa-chevron-right"></i>
             <Popover
               id={id}
               open={open}
@@ -321,7 +336,32 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
                     <button>Crear lista</button>
                   </li>
 
-                  {playlistNames &&
+                  {loading && (
+                    <div
+                      className="container-fluid d-flex justify-content-center align-content-center"
+                      style={{
+                        height: '100%',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        padding: '5%',
+                      }}
+                    >
+                      <CircularProgress
+                        style={{ width: '2rem', height: 'auto' }}
+                        sx={{
+                          ' & .MuiCircularProgress-circle': {
+                            color: 'var(--pure-white)',
+                          },
+                          '& .css-zk81sn-MuiCircularProgress-root': {
+                            width: '3rem',
+                          },
+                        }}
+                      />
+                    </div>
+                  )}
+
+                  {!loading &&
+                    playlistNames &&
                     playlistNames.map((playlistName, index) => {
                       return (
                         <li key={index}>

@@ -255,7 +255,7 @@
 
 }
 
-.wrapperUpdateTextData input,
+.wrapperUpdateTextData div input,
 .wrapperUpdateTextData div textarea {
 
   color: var(--primary-white) !important;

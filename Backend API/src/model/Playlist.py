@@ -11,7 +11,7 @@ class Playlist:
     name: str
     photo: str
     description: str
-    fecha_adicion:str
+    upload_date: str
     songs: list
 
     def add_songs(self, song_names: str) -> None:

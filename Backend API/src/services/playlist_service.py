@@ -68,7 +68,7 @@ def create_playlist(name: str, photo: str, description: str, song_names: list) -
     -------
     """
     fecha_actual = datetime.now()
-    fecha_iso8601 = fecha_actual.strftime('%Y-%m-%dT%H:%M:%S.%fZ')
+    fecha_iso8601 = fecha_actual.strftime('%Y-%m-%dT%H:%M:%S')
 
     if not checkValidParameterString(name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")

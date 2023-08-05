@@ -83,9 +83,9 @@ def test_delete_cancion_not_found():
 
 
 
-#def test_get_canciones_correct():
- #   response = client.get(f"/canciones/")
-  #  assert response.status_code == 200
+def test_get_canciones_correct():
+    response = client.get(f"/canciones/")
+    assert response.status_code == 200
 
 
 @pytest.fixture()

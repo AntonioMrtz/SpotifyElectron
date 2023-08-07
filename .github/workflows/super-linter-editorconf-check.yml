@@ -4,8 +4,7 @@
 ## Linter GitHub Actions ##
 ###########################
 ###########################
-name: Lint Code Base
-
+name: Super Linter Editorconfig
 #
 # Documentation:
 # https://help.github.com/en/articles/workflow-syntax-for-github-actions
@@ -49,14 +48,19 @@ jobs:
         env:
           VALIDATE_ALL_CODEBASE: false
           DEFAULT_BRANCH: master
-
           LINTER_RULES_PATH: /
           EDITORCONFIG_FILE_NAME : .editorconfig
           VALIDATE_JAVASCRIPT_ES : false
           VALIDATE_JAVASCRIPT_STANDARD : false
           VALIDATE_JSCPD : false
-          VALIDATE_CSS : false
           VALIDATE_TYPESCRIPT_STANDARD : false
+          VALIDATE_PYTHON : false
+          VALIDATE_PYTHON_PYLINT : false
+          VALIDATE_PYTHON_BLACK : false
+          VALIDATE_PYTHON_FLAKE8 : false
+          VALIDATE_PYTHON_ISORT : false
+          VALIDATE_PYTHON_MYPY : false
+          VALIDATE_CSS : false
         continue-on-error: false
 
       ##############################

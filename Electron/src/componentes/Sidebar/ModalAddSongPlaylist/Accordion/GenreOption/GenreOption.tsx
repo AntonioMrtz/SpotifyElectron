@@ -6,7 +6,6 @@ interface PropsGenreOption {
   value: any;
 }
 
-/* <option className={` ${styles.option}`} value={"Pop"}>Pop</option> */
 export default function GenreOption(props: PropsGenreOption) {
   const [name, setName] = useState<string>('');
   const [value, setValue] = useState<string>('');

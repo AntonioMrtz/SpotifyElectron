@@ -3,7 +3,7 @@ name: Eslintrc Check
 on:
   push:
     branches:
-      - 'NpmRunLint'
+      - master
 
 jobs:
   build:
@@ -16,13 +16,10 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: '16'  # Use the desired Node.js version
-
-    - name: Change directory
+        node-version: '14'
+        
+    - name: Change directory and run commands
       working-directory: SpotifyElectron/Electron
-
-    - name: Install dependencies
-      run: npm install
-
-    - name: Run linting
-      run: npm run lint
+      run: |
+        npm install
+        npm run lint

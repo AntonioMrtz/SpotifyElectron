@@ -76,7 +76,6 @@ export default function Playlist(props: PropsPlaylist) {
       .then((res) => res.json())
       .then(async (res) => {
         setDescription(res['description']);
-        console.log("🚀 ~ file: Playlist.tsx:81 ~ .then ~ res['photo']:", res['photo'])
         setThumbnail(
           res['photo'] === '' ? defaultThumbnailPlaylist : res['photo']
         );
@@ -132,7 +131,6 @@ export default function Playlist(props: PropsPlaylist) {
   useEffect(() => {
 
     loadPlaylistData()
-    console.log("🚀 ~ file: Playlist.tsx:144 ~ Playlist ~ location:", location)
 
     if(localStorage.getItem("playlistEdit")==="true"){
 

@@ -1,6 +1,4 @@
-name: Eslintrc Check 
-
-name: Node.js CI
+name: Eslintrc Check
 
 on:
   pull_request:

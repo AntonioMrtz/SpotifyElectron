@@ -16,10 +16,10 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: '14'
+        node-version: '16'
         
     - name: Change directory and run commands
-      working-directory: SpotifyElectron/Electron
+      working-directory: Electron
       run: |
         npm install
         npm run lint

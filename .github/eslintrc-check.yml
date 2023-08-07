@@ -1,0 +1,25 @@
+name: Eslintrc Check
+
+on:
+  pull_request:
+    branches:
+      - 'master'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+      
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16'
+        
+    - name: Change directory and run commands
+      working-directory: Electron
+      run: |
+        npm install
+        npm run lint

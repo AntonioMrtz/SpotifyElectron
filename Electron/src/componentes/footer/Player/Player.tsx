@@ -28,15 +28,20 @@ export default function Player(props: PropsPlayer) {
     })
       .then((res) => res.json())
       .then((res) => {
-
         const requestOptions = {
           method: 'PUT',
         };
         let fetchUrlUpdateSong: string = `${Global.backendBaseUrl}canciones/${songName}?number_of_plays=True`;
-        fetch(fetchUrlUpdateSong,requestOptions).then((res) => {});
-        fetch(`${Global.backendBaseUrl}canciones/dto/${songName}?number_of_plays=True`).then((res) => res.json()).then((res) => { console.log(res)});
+        fetch(fetchUrlUpdateSong, requestOptions).then((res) => {});
+        fetch(
+          `${Global.backendBaseUrl}canciones/dto/${songName}?number_of_plays=True`
+        )
+          .then((res) => res.json())
+          .then((res) => {
+            console.log(res);
+          });
         props.changeSongInfo(res);
-        
+
         return res['file'];
       })
       .then((res) => {

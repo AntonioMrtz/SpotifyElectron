@@ -39,13 +39,14 @@ def get_playlist(name: str) -> Playlist:
     playlist_songs = []
 
     [playlist_songs.append(song_service.get_song(song_name))
-     for song_name in playlist_data["song_names"]]
+        for song_name in playlist_data["song_names"]]
 
     # [print(song.name) for song in playlist_songs]
 
-    date =  playlist_data["upload_date"][:-1]
+    date = playlist_data["upload_date"][:-1]
 
-    playlist = Playlist(name, playlist_data["photo"],playlist_data["description"],date,playlist_songs )
+    playlist = Playlist(
+        name, playlist_data["photo"], playlist_data["description"], date, playlist_songs)
 
     return playlist
 
@@ -80,7 +81,7 @@ def create_playlist(name: str, photo: str, description: str, song_names: list) -
         raise HTTPException(status_code=400, detail="La playlist ya existe")
 
     result = playlistCollection.insert_one(
-        {'name': name, 'photo': photo if 'http' in photo else '', 'upload_date':fecha_iso8601,'description': description, 'song_names': song_names})
+        {'name': name, 'photo': photo if 'http' in photo else '', 'upload_date': fecha_iso8601, 'description': description, 'song_names': song_names})
 
     return True if result.acknowledged else False
 

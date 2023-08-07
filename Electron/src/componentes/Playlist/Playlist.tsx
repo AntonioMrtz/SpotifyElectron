@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState, MouseEvent } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Global from 'global/global';
 import styles from './playlist.module.css';
@@ -8,6 +8,8 @@ import { FastAverageColor } from 'fast-average-color';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
+import ContextMenuPlaylist from 'componentes/ContextMenu/Playlist/ContextMenuPlaylist';
+import Popover, { PopoverPosition } from '@mui/material/Popover/Popover';
 
 interface PropsPlaylist {
   changeSongName: Function;
@@ -129,16 +131,12 @@ export default function Playlist(props: PropsPlaylist) {
   };
 
   useEffect(() => {
+    loadPlaylistData();
 
-    loadPlaylistData()
-
-    if(localStorage.getItem("playlistEdit")==="true"){
-
-      setOpen(true)
+    if (localStorage.getItem('playlistEdit') === 'true') {
+      setopenModalUpdatePlaylist(true);
       localStorage.setItem('playlistEdit', JSON.stringify(false));
-
     }
-
   }, [location]);
 
   /* Process photo color */
@@ -173,11 +171,11 @@ export default function Playlist(props: PropsPlaylist) {
     p: 4,
   };
 
-  const [open, setOpen] = useState(false);
+  const [openModalUpdatePlaylist, setopenModalUpdatePlaylist] = useState(false);
   const [thumbnailUpdatePlaylist, setThumbnailUpdatePlaylist] = useState('');
 
   const handleOpenUpdatePlaylistModal = () => {
-    setOpen(true);
+    setopenModalUpdatePlaylist(true);
   };
 
   const [formData, setFormData] = useState({
@@ -241,7 +239,7 @@ export default function Playlist(props: PropsPlaylist) {
           if (response.status !== 204) {
             console.log('Unable to update playlist');
           } else {
-            setOpen(false);
+            setopenModalUpdatePlaylist(false);
             if (formData.nombre !== playlistName && formData.nombre !== '') {
               //* Al cargar inmediatamente con el useEffect de location produce que el contenido para la nueva url no esta disponible
               props.triggerReloadSidebar();
@@ -256,6 +254,37 @@ export default function Playlist(props: PropsPlaylist) {
       .catch((error) => {
         console.log('Unable to update playlist');
       });
+  };
+
+  /* Context Menu */
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    if (!isOpen) {
+      handleCloseContextMenu();
+    }
+  }, [isOpen]);
+
+  const [anchorPosition, setAnchorPosition] = useState<{
+    top: number;
+    left: number;
+  } | null>(null);
+
+  const open = Boolean(anchorPosition);
+  const id = open ? 'parent-popover' : undefined;
+
+  const handleOpenContextMenu = (event: MouseEvent<HTMLButtonElement>) => {
+    setIsOpen(isOpen ? false : true);
+    setAnchorPosition({
+      top: event.clientY,
+      left: event.clientX,
+    });
+  };
+
+  const handleCloseContextMenu = () => {
+    setAnchorPosition(null);
+    setIsOpen(false);
   };
 
   return (
@@ -331,7 +360,10 @@ export default function Playlist(props: PropsPlaylist) {
               style={{ color: 'var(--secondary-white)', fontSize: '1.75rem' }}
             ></i>
           </button>
-          <button className={`${styles.hoverableItemubheader}`}>
+          <button
+            className={`${styles.hoverableItemubheader}`}
+            onClick={handleOpenContextMenu}
+          >
             <i
               className="fa-solid fa-ellipsis"
               style={{ color: 'var(--secondary-white)' }}
@@ -377,11 +409,43 @@ export default function Playlist(props: PropsPlaylist) {
         </ul>
       </div>
 
+      <div>
+        <Popover
+          id={id}
+          open={open}
+          onClose={handleCloseContextMenu}
+          anchorReference="anchorPosition"
+          anchorPosition={anchorPosition as PopoverPosition}
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'left',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'left',
+          }}
+          sx={{
+            '& .MuiPaper-root': {
+              backgroundColor: 'var(--hover-white)',
+            },
+            '& . MuiPopover-root': {
+              zIndex: '1000',
+            },
+          }}
+        >
+          <ContextMenuPlaylist
+            playlistName={playlistName}
+            handleClose={handleCloseContextMenu}
+            reloadSidebar={props.triggerReloadSidebar}
+          />
+        </Popover>
+      </div>
+
       <Modal
         className={``}
-        open={open}
+        open={openModalUpdatePlaylist}
         onClose={() => {
-          setOpen(false);
+          setopenModalUpdatePlaylist(false);
         }}
         aria-labelledby="modal-modal-confirmation"
         aria-describedby="modal-modal-confirmation-description"
@@ -393,7 +457,7 @@ export default function Playlist(props: PropsPlaylist) {
             <h1>Editar información</h1>
             <button
               onClick={() => {
-                setOpen(false);
+                setopenModalUpdatePlaylist(false);
               }}
             >
               <i className="fa-solid fa-xmark"></i>
@@ -439,7 +503,7 @@ export default function Playlist(props: PropsPlaylist) {
                   </div>
                 </div>
               </div>
-            </div> 
+            </div>
             <div
               className={`container-fluid d-flex p-0 ${styles.wrapperUpdateTextData}`}
             >

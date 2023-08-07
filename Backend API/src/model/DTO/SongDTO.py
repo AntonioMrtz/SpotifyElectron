@@ -12,6 +12,7 @@ class SongDTO:
     """ In seconds """
     duration: int
     genre: Genre
+    number_of_plays: int
 
     def get_json(self) -> json:
         song_json = json.dumps(self.__dict__)

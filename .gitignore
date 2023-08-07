@@ -157,6 +157,7 @@ yarn-error.log*
 
 .erb/dll/preload.js
 .erb
+.erb/**
 
 #python
 

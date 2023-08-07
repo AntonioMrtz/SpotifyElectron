@@ -49,7 +49,7 @@ def get_song(name: str) -> Song:
     song_metadata = fileSongCollection.find_one({'name': name})
 
     song = Song(name, song_metadata["artist"], song_metadata["photo"], song_metadata["duration"], Genre(
-        song_metadata["genre"]).name, encoded_bytes)
+        song_metadata["genre"]).name, encoded_bytes, song_metadata["number_of_plays"])
 
     return song
 
@@ -137,14 +137,14 @@ async def create_song(name: str, artist: str, genre: Genre, photo: str, file) ->
         # Assuming 'audio_bytes' contains the audio data in bytes
         audio_data, sample_rate = librosa.load(io.BytesIO(file), sr=None)
         file_id = gridFsSong.put(
-            file, name=name, artist=artist, duration=duration, genre=str(genre.value), photo=photo)
+            file, name=name, artist=artist, duration=duration, genre=str(genre.value), photo=photo, number_of_plays=0)
 
     #! If its not a sound file
     except:
         duration = 0
 
         file_id = gridFsSong.put(
-            file, name=name, artist=artist, duration=duration, genre=str(genre.value), photo=photo)
+            file, name=name, artist=artist, duration=duration, genre=str(genre.value), photo=photo, number_of_plays=0)
 
 
 def delete_song(name: str) -> None:
@@ -174,3 +174,41 @@ def delete_song(name: str) -> None:
 
     else:
         raise HTTPException(status_code=404, detail="La canción no existe")
+
+
+def update_song(name: str, nuevo_nombre: str, photo: str, duration: int, genre: Genre, number_of_plays: int) -> None:
+    """ Updates a song with name, url of thumbnail, duration, genre and number of plays, if empty parameter is not being updated "
+
+    Parameters
+    ----------
+        name (str): Song's name
+        nuevo_nombre (str) : New Song's name, if empty name is not being updated
+        photo (str): Url of Song thumbnail
+        duration (int): Duration of the Song
+        genre (Genre): Genre of the Song
+        number_of_plays (int): Number of plays of the Song
+
+    Raises
+    -------
+        400 : Bad Request
+        404 : Song Not Found
+
+    Returns
+    -------
+    """
+
+    if not checkValidParameterString(name):
+        raise HTTPException(status_code=400, detail="Parámetros no válidos")
+
+    result_song_exists: Song = get_song(name=name)
+
+    if not result_song_exists:
+        raise HTTPException(status_code=404, detail="La cancion no existe")
+
+    if checkValidParameterString(nuevo_nombre):
+        new_name = nuevo_nombre
+        fileSongCollection.update_one({'name': name}, {
+            "$set": {'name': new_name, 'artist': result_song_exists.artist, 'photo': photo if photo and 'http' in photo else result_song_exists.photo, 'duration': duration or result_song_exists.duration, 'genre': Genre(genre).value if genre != None else Genre[result_song_exists.genre].value, 'number_of_plays': result_song_exists.number_of_plays + 1 if number_of_plays else result_song_exists.number_of_plays}})
+    else:
+        fileSongCollection.update_one({'name': name}, {
+            "$set": {'name': name, 'artist': result_song_exists.artist, 'photo': photo if photo and 'http' in photo else result_song_exists.photo, 'duration': duration or result_song_exists.duration, 'genre': Genre(genre).value if genre != None else Genre[result_song_exists.genre].value, 'number_of_plays': result_song_exists.number_of_plays + 1 if number_of_plays else result_song_exists.number_of_plays}})

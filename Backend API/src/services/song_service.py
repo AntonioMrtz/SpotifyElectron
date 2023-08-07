@@ -176,7 +176,7 @@ def delete_song(name: str) -> None:
         raise HTTPException(status_code=404, detail="La canción no existe")
 
 
-def update_song(name: str, nuevo_nombre: str, photo: str, duration: int, genre: Genre, number_of_plays: bool) -> None:
+def update_song(name: str, nuevo_nombre: str, photo: str, duration: int, genre: Genre, number_of_plays: int) -> None:
     """ Updates a song with name, url of thumbnail, duration, genre and number of plays, if empty parameter is not being updated "
 
     Parameters

@@ -138,7 +138,7 @@ def get_cancion_dto(nombre: str) -> Response:
 
 
 @router.put("/{nombre}")
-def update_playlist(nombre: str,artist: str = None, foto: str = None, duration: int = None, genre: Genre = None, number_of_plays: bool = False, nuevo_nombre: str = None) -> Response:
+def update_song(nombre: str,artist: str = None, foto: str = None, duration: int = None, genre: Genre = None, number_of_plays: bool = False, nuevo_nombre: str = None) -> Response:
     """ Actualiza los parámetros de la cancion con nombre "nombre"
 
     Parameters
@@ -148,7 +148,7 @@ def update_playlist(nombre: str,artist: str = None, foto: str = None, duration: 
         foto (url): Foto de la cancion
         duration (int): Duracion de la cancion
         genre (Genre): Genero de la cancion
-        number_of_plays (int): Numero de reproducciones de la cancion
+        number_of_plays (bool): Actualizar/No actualizar número de reproducciones de la canción
         nuevo_nombre (str): Nuevo nombre de la cancion
 
     Returns

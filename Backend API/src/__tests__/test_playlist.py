@@ -8,13 +8,16 @@ from main import app as app
 
 client = TestClient(app)
 
-# TODO añadir test post_playlist con cancion ( crearla y despues borrarla)
-
 
 def test_get_playlist_correct(clear_test_data_db):
     name = "8232392323623823723"
 
     url = f"/playlists/?nombre={name}&foto=foto&descripcion=descripcion"
+
+
+    formatting = "%Y-%m-%dT%H:%M:%S"
+    post_date_iso8601 = datetime.strptime(datetime.now().strftime('%Y-%m-%dT%H:%M:%S'),formatting)
+
 
     payload = []
 
@@ -25,6 +28,16 @@ def test_get_playlist_correct(clear_test_data_db):
 
     response = client.get(f"/playlists/{name}")
     assert response.status_code == 200
+
+
+    try:
+        fecha = response.json()["upload_date"]
+        response_date = datetime.strptime(fecha, formatting)
+
+        assert response_date.hour==post_date_iso8601.hour
+
+    except ValueError:
+        assert False
 
     response = client.delete(f"/playlists/{name}")
     assert response.status_code == 202
@@ -119,23 +132,13 @@ def test_update_playlist_correct(clear_test_data_db):
         url, json=payload, headers={"Content-Type": "application/json"}
     )
     assert response.status_code == 204
-    
-        
+
+
     response = client.get(f"/playlists/{name}")
     assert response.status_code == 200
     assert response.json()["description"]==new_description
 
 
-    """assert response.json()["upload_date"]==new_upload_date"""
-    try:
-        fecha = response.json()["upload_date"]
-        formatting = "%Y-%m-%dT%H:%M:%S"
-        datetime.strptime(fecha, formatting)
-        assert True
-    except ValueError:
-        assert False
-        
-    
 
     response = client.delete(f"/playlists/{name}")
     assert response.status_code == 202

@@ -35,11 +35,7 @@ export default function Player(props: PropsPlayer) {
         fetch(fetchUrlUpdateSong, requestOptions).then((res) => {});
         fetch(
           `${Global.backendBaseUrl}canciones/dto/${songName}?number_of_plays=True`
-        )
-          .then((res) => res.json())
-          .then((res) => {
-            console.log(res);
-          });
+        ).then((res) => res.json());
         props.changeSongInfo(res);
 
         return res['file'];

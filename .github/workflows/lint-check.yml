@@ -57,7 +57,7 @@ jobs:
           VALIDATE_JAVASCRIPT_STANDARD : false
           VALIDATE_JSCPD : false
           VALIDATE_TYPESCRIPT_STANDARD : false
-          #
+          # Python 
           VALIDATE_PYTHON_PYLINT : false
           VALIDATE_PYTHON : false
           VALIDATE_PYTHON_BLACK : false

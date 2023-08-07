@@ -1,9 +1,9 @@
 name: Eslintrc Check
 
 on:
-  pull_request:
+  push:
     branches:
-      - 'master'
+      - 'NpmRunLint'
 
 jobs:
   build:

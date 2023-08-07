@@ -10,8 +10,9 @@ class PlaylistDTO:
     name: str
     photo: str
     description: str
-    song_names: list
     upload_date: str
+    song_names: list
+    
 
     def add_songs(self, song_names: str) -> None:
 

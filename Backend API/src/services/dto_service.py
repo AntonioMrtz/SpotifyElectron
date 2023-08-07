@@ -64,4 +64,4 @@ def get_playlist(name: str) -> PlaylistDTO:
         raise HTTPException(
             status_code=404, detail="La playlist con ese nombre no existe")
 
-    return PlaylistDTO(name=playlist_data["name"], photo=playlist_data["photo"],description=playlist_data["description"] ,song_names=playlist_data["song_names"], upload_date=playlist_data["upload_date"])
+    return PlaylistDTO(name=playlist_data["name"], photo=playlist_data["photo"],description=playlist_data["description"] , upload_date=playlist_data["upload_date"], song_names=playlist_data["song_names"],)

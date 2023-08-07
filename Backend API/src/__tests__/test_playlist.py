@@ -110,8 +110,6 @@ def test_update_playlist_correct(clear_test_data_db):
     assert response.status_code == 201
 
     new_description= "nuevadescripcion"
-    new_upload_date = "2023-08-05"
-    
 
     url = f"/playlists/{name}/?foto=foto&descripcion={new_description}"
 
@@ -126,21 +124,21 @@ def test_update_playlist_correct(clear_test_data_db):
     response = client.get(f"/playlists/{name}")
     assert response.status_code == 200
     assert response.json()["description"]==new_description
-    
+
+
+    """assert response.json()["upload_date"]==new_upload_date"""
+    try:
+        fecha = response.json()["upload_date"]
+        formatting = "%Y-%m-%dT%H:%M:%S"
+        datetime.strptime(fecha, formatting)
+        assert True
+    except ValueError:
+        assert False
+        
     
 
     response = client.delete(f"/playlists/{name}")
     assert response.status_code == 202
-
-    while True:
-        try:
-            fecha = "2020-04-20"
-            datetime.strptime(fecha, '%Y-%m-%d')
-            assert response.status_code == 202
-            break
-        except ValueError:
-            assert response.status_code == 404
-
 
 def test_update_playlist_correct_nuevo_nombre(clear_test_data_db):
     name = "8232392323623823723"

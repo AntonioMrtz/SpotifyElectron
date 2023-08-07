@@ -67,6 +67,6 @@ jobs:
       ##############################
       # Fail the workflow on error #
       ##############################
-      - name: Fail on Linting Errors
+      - name: Fail on SuperLint-EditorConf Errors
         if: ${{ failure() }}
-        run: exit 1
+        run: exit 

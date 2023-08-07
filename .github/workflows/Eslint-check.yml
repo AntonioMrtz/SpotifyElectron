@@ -1,9 +1,9 @@
-name: Node.js CI
+name: Eslintrc Check
 
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   build:
@@ -19,7 +19,7 @@ jobs:
         node-version: '14'
         
     - name: Change directory and run commands
-      working-directory: SpotifyElectron/Electron
+      working-directory: Electron
       run: |
         npm install
         npm run lint

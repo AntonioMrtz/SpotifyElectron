@@ -9,7 +9,7 @@ import styles from '../contextMenu.module.css';
 interface PropsContextMenuSong {
   songName: string;
   playlistName: string;
-  handleClose: Function;
+  handleCloseParent: Function;
   /* Refresh data on playlist menu after a modification */
   refreshPlaylistData: Function;
 }
@@ -20,7 +20,12 @@ const MessagesInfoPopOver = {
     'El enlace del repositorio del proyecto ha sido copiado éxitosamente',
 };
 
-export default function ContextMenuSong(props: PropsContextMenuSong) {
+export default function ContextMenuSong({
+  songName,
+  playlistName,
+  handleCloseParent,
+  refreshPlaylistData,
+}: PropsContextMenuSong) {
   const [isOpen, setIsOpen] = useState(false);
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -32,7 +37,7 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
 
   const handleClose = () => {
     setAnchorEl(null);
-    props.handleClose();
+    handleCloseParent();
   };
 
   const open = Boolean(anchorEl);
@@ -48,17 +53,19 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
     })
       .then((res) => res.json())
       .then((res) => {
-        const playlistNames = [];
+        const playlistNamesFromFetch: string[] = [];
 
         if (res.playlists) {
-          for (let obj of res.playlists) {
-            obj = JSON.parse(obj);
-            playlistNames.push(obj.name);
-          }
+          res.playlists.forEach((obj: any) => {
+            const playlistObject = JSON.parse(obj);
+            playlistNamesFromFetch.push(playlistObject.name);
+          });
         }
 
-        setPlaylistNames(playlistNames);
+        setPlaylistNames(playlistNamesFromFetch);
         setLoading(false);
+
+        return null;
       })
       .catch((error) => {
         console.log(error);
@@ -84,11 +91,7 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
     setTriggerOpenConfirmationModal(true);
   };
 
-  const handleAddToPlaylist = (
-    event: React.MouseEvent<HTMLButtonElement>,
-    playlistName: string,
-    songName: string
-  ) => {
+  const handleAddToPlaylist = () => {
     /* Add to playlist */
 
     fetch(`${Global.backendBaseUrl}playlists/dto/${playlistName}`, {
@@ -96,18 +99,18 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
     })
       .then((res) => res.json())
       .then((res) => {
-        const url = `${Global.backendBaseUrl}playlists/${playlistName}`; // Reemplaza con la URL de tu API y el nombre de la playlist
+        const url = `${Global.backendBaseUrl}playlists/${playlistName}`;
 
         const { photo } = res;
 
         const fetchUrlUpdateSong = `${url}?foto=${photo}&descripcion=${res.description}`;
 
-        const newSongsPutPlaylist = [];
+        const newSongsPutPlaylist: string[] = [];
         newSongsPutPlaylist.push(songName);
 
-        for (const song_name of res.song_names) {
-          newSongsPutPlaylist.push(song_name);
-        }
+        res.song_names.forEach((songNameFetch: any) => {
+          newSongsPutPlaylist.push(songNameFetch);
+        });
 
         const requestOptions = {
           method: 'PUT',
@@ -117,25 +120,28 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
           body: JSON.stringify(newSongsPutPlaylist),
         };
 
-        fetch(fetchUrlUpdateSong, requestOptions).then((response) => {
-          if (response.status !== 204) {
-            console.log('Unable to add the Song to Playlist');
-          }
-        });
+        fetch(fetchUrlUpdateSong, requestOptions)
+          .then((response) => {
+            if (response.status !== 204) {
+              console.log('Unable to add the Song to Playlist');
+            }
+            return null;
+          })
+          .finally(() => {
+            handleClose();
+          })
+          .catch(() => {
+            console.log('Unable to update playlist');
+          });
+
+        return null;
       })
-      .catch((error) => {
+      .catch(() => {
         console.log('Unable to update playlist');
-      })
-      .finally(() => {
-        handleClose();
       });
   };
 
-  const handleDeleteFromPlaylist = (
-    event: React.MouseEvent<HTMLButtonElement>,
-    playlistName: string,
-    songName: string
-  ) => {
+  const handleDeleteFromPlaylist = () => {
     /* Add to playlist */
 
     fetch(`${Global.backendBaseUrl}playlists/dto/${playlistName}`, {
@@ -149,13 +155,13 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
 
         const fetchUrlUpdateSong = `${url}?foto=${photo}`;
 
-        const newSongsPutPlaylist = [];
+        const newSongsPutPlaylist: string[] = [];
 
-        for (const song_name of res.song_names) {
-          if (song_name !== songName) {
-            newSongsPutPlaylist.push(song_name);
+        res.song_names.forEach((songNameFetch: any) => {
+          if (songNameFetch !== songName) {
+            newSongsPutPlaylist.push(songNameFetch);
           }
-        }
+        });
 
         const requestOptions = {
           method: 'PUT',
@@ -165,19 +171,26 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
           body: JSON.stringify(newSongsPutPlaylist),
         };
 
-        fetch(fetchUrlUpdateSong, requestOptions).then((response) => {
-          if (response.status === 204) {
-            props.refreshPlaylistData();
-          } else {
-            console.log('Unable to delete Song from Playlist');
-          }
-        });
-      })
-      .catch((error) => {
-        console.log('Unable to update playlist');
+        fetch(fetchUrlUpdateSong, requestOptions)
+          .then((response) => {
+            if (response.status === 204) {
+              refreshPlaylistData();
+            } else {
+              console.log('Unable to delete Song from Playlist');
+            }
+            return null;
+          })
+          .catch(() => {
+            console.log('Unable to update playlist');
+          });
+
+        return null;
       })
       .finally(() => {
         handleClose();
+      })
+      .catch(() => {
+        console.log('Unable to update playlist');
       });
   };
 
@@ -185,28 +198,21 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
     <div className={` ${styles.wrapperContextMenu}`}>
       <ul>
         <li>
-          <button>Añadir a la cola</button>
+          <button type="button">Añadir a la cola</button>
         </li>
         <li>
-          <button>Ir a radio de la canción</button>
-          <button>Ir al artista</button>
-          <button>Ir al álbum</button>
-          <button>Mostrar créditos</button>
+          <button type="button">Ir a radio de la canción</button>
+          <button type="button">Ir al artista</button>
+          <button type="button">Ir al álbum</button>
+          <button type="button">Mostrar créditos</button>
         </li>
         <li>
-          <button>Quitar de canciones que te gustan</button>
-          <button
-            onClick={(event) =>
-              handleDeleteFromPlaylist(
-                event,
-                props.playlistName,
-                props.songName
-              )
-            }
-          >
+          <button type="button">Quitar de canciones que te gustan</button>
+          <button type="button" onClick={() => handleDeleteFromPlaylist()}>
             Quitar de esta lista
           </button>
           <button
+            type="button"
             className="d-flex justify-content-between align-items-center"
             onClick={handleClick}
           >
@@ -236,10 +242,10 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
               >
                 <ul>
                   <li>
-                    <button>Buscar una lista</button>
+                    <button type="button">Buscar una lista</button>
                   </li>
                   <li>
-                    <button>Crear lista</button>
+                    <button type="button">Crear lista</button>
                   </li>
 
                   {loading && (
@@ -268,19 +274,14 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
 
                   {!loading &&
                     playlistNames &&
-                    playlistNames.map((playlistName, index) => {
+                    playlistNames.map((playlistNameItem) => {
                       return (
-                        <li key={index}>
+                        <li key={songName}>
                           <button
-                            onClick={(event) =>
-                              handleAddToPlaylist(
-                                event,
-                                playlistName.toString(),
-                                props.songName
-                              )
-                            }
+                            type="button"
+                            onClick={() => handleAddToPlaylist()}
                           >
-                            {playlistName}
+                            {playlistNameItem}
                           </button>
                         </li>
                       );
@@ -291,7 +292,9 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
           </button>
         </li>
         <li>
-          <button onClick={handleCopyToClipboard}>Compartir</button>
+          <button type="button" onClick={handleCopyToClipboard}>
+            Compartir
+          </button>
         </li>
       </ul>
 

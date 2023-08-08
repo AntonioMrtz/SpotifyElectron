@@ -1,7 +1,7 @@
-import styles from './playlist.module.css';
-import { PropsPlaylist } from '../types/propsPlaylist.module';
 import Popover, { PopoverPosition } from '@mui/material/Popover';
 import { useEffect, useState } from 'react';
+import styles from './playlist.module.css';
+import { PropsPlaylist } from '../types/propsPlaylist.module';
 import ContextMenuPlaylist from '../../ContextMenu/Playlist/ContextMenuPlaylist';
 
 export default function Playlist(props: PropsPlaylist) {
@@ -19,7 +19,7 @@ export default function Playlist(props: PropsPlaylist) {
 
   const handleRightClick = (event: React.MouseEvent<HTMLLIElement>) => {
     event.preventDefault();
-    setIsOpen(isOpen ? false : true);
+    setIsOpen(!isOpen);
     handleClick(event);
   };
 
@@ -80,10 +80,10 @@ export default function Playlist(props: PropsPlaylist) {
           sx={{
             '& .MuiPaper-root': {
               backgroundColor: 'var(--hover-white)',
-            },'& . MuiPopover-root':{
-
-              zIndex:'1000'
-            }
+            },
+            '& . MuiPopover-root': {
+              zIndex: '1000',
+            },
           }}
         >
           <ContextMenuPlaylist

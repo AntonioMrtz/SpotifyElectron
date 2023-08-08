@@ -10,8 +10,8 @@
  */
 import path from 'path';
 import { app, BrowserWindow, shell, ipcMain, clipboard, Data } from 'electron';
-import { resolveHtmlPath } from './util';
 import Global from 'global/global';
+import { resolveHtmlPath } from './util';
 
 let mainWindow: BrowserWindow | null = null;
 
@@ -23,7 +23,7 @@ ipcMain.on('toogle-fullscreen', async (event) => {
 });
 
 ipcMain.handle('copy-to-clipboard', async (event, ...args) => {
-  let data: Data = {};
+  const data: Data = {};
   data.text = args[0];
 
   clipboard.write(data);
@@ -38,9 +38,9 @@ ipcMain.handle('load-forward-url', async (event) => {
 });
 
 ipcMain.handle('handle-url-change', async (event) => {
-  //event.reply('response-handle-url-change',mainWindow?.webContents.canGoForward,mainWindow?.webContents.canGoBack)
+  // event.reply('response-handle-url-change',mainWindow?.webContents.canGoForward,mainWindow?.webContents.canGoBack)
 
-  let eventResponse: Global.HandleUrlChangeResponse = {
+  const eventResponse: Global.HandleUrlChangeResponse = {
     canGoBack: mainWindow?.webContents.canGoBack(),
     canGoForward: mainWindow?.webContents.canGoForward(),
   };

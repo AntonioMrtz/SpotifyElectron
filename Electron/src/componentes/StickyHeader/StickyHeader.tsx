@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import styles from './stickyHeader.module.css';
-import groupIcon from '../../assets/imgs/groupIcon.png';
 import { useLocation } from 'react-router-dom';
 import Global from 'global/global';
+import styles from './stickyHeader.module.css';
+import groupIcon from '../../assets/imgs/groupIcon.png';
 
 export default function StickyHeader() {
   const [profileIcon, setProfileIcon] = useState(
@@ -59,10 +59,10 @@ export default function StickyHeader() {
 
   const handleUrlChange = async () => {
     try {
-      let response = await window.electron.handleUrlChange.sendMessage(
+      const response = await window.electron.handleUrlChange.sendMessage(
         'handle-url-change'
       );
-      let responseObj: Global.HandleUrlChangeResponse = {
+      const responseObj: Global.HandleUrlChangeResponse = {
         canGoBack: response.canGoBack,
         canGoForward: response.canGoForward,
       };
@@ -93,10 +93,10 @@ export default function StickyHeader() {
         className={`d-flex flex-row container-fluid ${styles.wrapperDirectionArrows}`}
       >
         <button onClick={handleGoingBackArrows}>
-          <i className={`fa-solid fa-chevron-left ${backArrowStyle}`}></i>
+          <i className={`fa-solid fa-chevron-left ${backArrowStyle}`} />
         </button>
         <button onClick={handleGoingForwardArrows}>
-          <i className={`fa-solid fa-chevron-right ${forwardArrowStyle}`}></i>
+          <i className={`fa-solid fa-chevron-right ${forwardArrowStyle}`} />
         </button>
       </div>
 

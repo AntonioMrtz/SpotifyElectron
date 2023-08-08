@@ -7,7 +7,7 @@ interface FetchResult {
 }
 
 const useFetch = (url: string): FetchResult => {
-  const [data, setData] = useState<any>("");
+  const [data, setData] = useState<any>('');
   const [loading, setLoading] = useState<boolean | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -16,11 +16,11 @@ const useFetch = (url: string): FetchResult => {
     setData(null);
     setError(null);
 
-    fetch(url, {"headers":{ 'Access-Control-Allow-Origin': '*' }})
+    fetch(url, { headers: { 'Access-Control-Allow-Origin': '*' } })
       .then((res) => {
         setLoading(false);
         res.json().then((jsonData) => {
-          //console.log(jsonData)
+          // console.log(jsonData)
           if (jsonData.content) {
             setData(jsonData.content);
           } else {
@@ -30,11 +30,11 @@ const useFetch = (url: string): FetchResult => {
       })
       .catch((err) => {
         setLoading(false);
-        setError('An error occurred during Fetch: '+url);
+        setError(`An error occurred during Fetch: ${url}`);
       });
   }, [url]);
 
   return { data, loading, error };
-}
+};
 
 export default useFetch;

@@ -84,7 +84,7 @@ export default function VolumeSlider(props: PropsVolumeSlider) {
         className={`btn ${displayUnmuted} ${styles.buttonMargins}`}
         onClick={handleMute}
       >
-        <i className={`fa-solid fa-volume-low fa-fw`}></i>
+        <i className="fa-solid fa-volume-low fa-fw" />
       </button>
 
       <button
@@ -96,7 +96,7 @@ export default function VolumeSlider(props: PropsVolumeSlider) {
         className={`btn ${displayHigh} ${styles.buttonMargins}`}
         onClick={handleMute}
       >
-        <i className={`fa-solid fa-volume-high fa-fw`}></i>
+        <i className="fa-solid fa-volume-high fa-fw" />
       </button>
 
       <button
@@ -108,7 +108,7 @@ export default function VolumeSlider(props: PropsVolumeSlider) {
         className={`btn ${displayMuted} ${styles.buttonMargins}`}
         onClick={handleMute}
       >
-        <i className={`fa-solid fa-volume-xmark`}></i>
+        <i className="fa-solid fa-volume-xmark" />
       </button>
 
       <Slider

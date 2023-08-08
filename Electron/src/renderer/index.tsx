@@ -16,4 +16,4 @@ root.render(
   // eslint-disable-next-line no-console
   console.log(arg);
 }); */
-//window.electron.ipcRenderer.sendMessage('ipc-example', ['ping']);
+// window.electron.ipcRenderer.sendMessage('ipc-example', ['ping']);

@@ -16,17 +16,17 @@ export default function SongConfig(props: PropsSongConfig) {
       className={`d-flex container-fluid justify-content-end ${styles.settingsContainer} `}
     >
       <button className="btn">
-        <i className="fa-solid fa-microphone fa-fw"></i>
+        <i className="fa-solid fa-microphone fa-fw" />
       </button>
       <button className="btn">
-        <i className="fa-solid fa-bars fa-fw"></i>
+        <i className="fa-solid fa-bars fa-fw" />
       </button>
       <button className="btn">
-        <i className="fa-solid fa-desktop fa-fw"></i>
+        <i className="fa-solid fa-desktop fa-fw" />
       </button>
       <VolumeSlider changeVolume={props.changeVolume} />
       <button onClick={handleFullScreen} className="btn">
-        <i className="fa-solid fa-up-right-and-down-left-from-center fa-fw"></i>
+        <i className="fa-solid fa-up-right-and-down-left-from-center fa-fw" />
       </button>
     </div>
   );

@@ -1,8 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
 import styles from './timeSlider.module.css';
-import { useEffect } from 'react';
 
 interface PropsTimeSlider {
   playBackTime: number;
@@ -59,7 +58,7 @@ export default function TimeSlider(props: PropsTimeSlider) {
   };
 
   return (
-    <Box width="100%" paddingRight="2%" display="flex" alignItems={'center'}>
+    <Box width="100%" paddingRight="2%" display="flex" alignItems="center">
       <p className={styles.pSlider}>{songPlayBackTimeMinutesSeconds}</p>
 
       <Slider
@@ -102,14 +101,14 @@ export default function TimeSlider(props: PropsTimeSlider) {
 
 /* Utils */
 const minutesSecondsToSeconds = (minutesSeconds: number) => {
-  let result =
+  const result =
     Math.round(minutesSeconds) * 60 + ((minutesSeconds % 1) * 100).toFixed(2);
   return result;
 };
 
 const secondsToMinutesSeconds: Function = (secs: number) => {
-  let minutes = Math.floor(secs / 60);
-  let seconds = (secs - minutes * 60) / 100;
+  const minutes = Math.floor(secs / 60);
+  const seconds = (secs - minutes * 60) / 100;
 
   return (minutes + seconds).toFixed(2).replace('.', ':');
 };

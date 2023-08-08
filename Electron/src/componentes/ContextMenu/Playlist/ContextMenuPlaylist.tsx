@@ -1,11 +1,11 @@
-import styles from '../contextMenu.module.css';
 import Popover from '@mui/material/Popover';
 import { useEffect, useReducer, useState } from 'react';
 import Global from 'global/global';
-import InfoPopover from '../../InfoPopover/InfoPopover';
-import { InfoPopoverType } from '../../types/InfoPopover';
 import { useNavigate } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress/CircularProgress';
+import InfoPopover from '../../InfoPopover/InfoPopover';
+import { InfoPopoverType } from '../../types/InfoPopover';
+import styles from '../contextMenu.module.css';
 
 interface PropsContextMenuSong {
   playlistName: string;
@@ -101,7 +101,7 @@ interface ConfirmationMenuState {
 }
 
 export default function ContextMenuSong(props: PropsContextMenuSong) {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
   const initialState: ConfirmationMenuState = {
     payload: {
@@ -124,7 +124,7 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
 
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
-    setIsOpen(isOpen ? false : true);
+    setIsOpen(!isOpen);
   };
 
   const handleClose = () => {
@@ -139,17 +139,17 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
   const [loading, setLoading] = useState(true);
 
   const handlePlaylists = () => {
-    fetch(Global.backendBaseUrl + 'playlists/', {
+    fetch(`${Global.backendBaseUrl}playlists/`, {
       headers: { 'Access-Control-Allow-Origin': '*' },
     })
       .then((res) => res.json())
       .then((res) => {
-        let playlistNames = [];
+        const playlistNames = [];
 
-        if (res['playlists']) {
-          for (let obj of res['playlists']) {
+        if (res.playlists) {
+          for (let obj of res.playlists) {
             obj = JSON.parse(obj);
-            playlistNames.push(obj['name']);
+            playlistNames.push(obj.name);
           }
         }
 
@@ -168,7 +168,7 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
 
   /* Handle copy to clipboard on share button */
 
-  //triggers Confirmation Modal
+  // triggers Confirmation Modal
   const [triggerOpenConfirmationModal, setTriggerOpenConfirmationModal] =
     useState(false);
 
@@ -187,29 +187,29 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
   ) => {
     /* Add to playlist */
 
-    fetch(Global.backendBaseUrl + 'playlists/dto/' + dstPlaylistName, {
+    fetch(`${Global.backendBaseUrl}playlists/dto/${dstPlaylistName}`, {
       headers: { 'Access-Control-Allow-Origin': '*' },
     })
       .then((res) => res.json())
       .then((res) => {
-        let url = Global.backendBaseUrl + 'playlists/' + dstPlaylistName; // Reemplaza con la URL de tu API y el nombre de la playlist
+        const url = `${Global.backendBaseUrl}playlists/${dstPlaylistName}`; // Reemplaza con la URL de tu API y el nombre de la playlist
 
-        let photo = res['photo'];
+        const { photo } = res;
 
-        const fetchUrlUpdateSong = `${url}?foto=${photo}&descripcion=${res['description']}`;
+        const fetchUrlUpdateSong = `${url}?foto=${photo}&descripcion=${res.description}`;
 
         /* Current songs of the dstPlaylist */
-        let newSongsPutPlaylist: string[] = [];
-        for (let song_name of res['song_names']) {
+        const newSongsPutPlaylist: string[] = [];
+        for (const song_name of res.song_names) {
           newSongsPutPlaylist.push(song_name);
         }
 
-        fetch(Global.backendBaseUrl + 'playlists/dto/' + srcPlaylistName, {
+        fetch(`${Global.backendBaseUrl}playlists/dto/${srcPlaylistName}`, {
           headers: { 'Access-Control-Allow-Origin': '*' },
         })
           .then((res) => res.json())
           .then((res) => {
-            for (let song_name of res['song_names']) {
+            for (const song_name of res.song_names) {
               newSongsPutPlaylist.push(song_name);
             }
 
@@ -249,7 +249,7 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
     playlistName: string
   ) => {
     /* Delete playlist */
-    fetch(Global.backendBaseUrl + 'playlists/' + playlistName, {
+    fetch(`${Global.backendBaseUrl}playlists/${playlistName}`, {
       method: 'DELETE',
       headers: {
         'Access-Control-Allow-Origin': '*',
@@ -272,16 +272,13 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
       });
   };
 
+  const handleEditPlaylistData = () => {
+    navigate(`/playlists/${props.playlistName}?edit=true`, { replace: true });
 
-  const handleEditPlaylistData = () =>{
-
-    navigate(`/playlists/${props.playlistName}?edit=true`, { replace:true});
-    
     localStorage.setItem('playlistEdit', JSON.stringify(true));
 
-    handleClose()
-
-  }
+    handleClose();
+  };
 
   return (
     <div className={` ${styles.wrapperContextMenu}`}>
@@ -305,7 +302,7 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
             onClick={handleClick}
           >
             Añadir a otra lista
-              <i className="fa-solid fa-chevron-right"></i>
+            <i className="fa-solid fa-chevron-right" />
             <Popover
               id={id}
               open={open}
@@ -395,7 +392,7 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
         description={state.payload.description}
         triggerOpenConfirmationModal={triggerOpenConfirmationModal}
         handleClose={handleClose}
-      ></InfoPopover>
+      />
     </div>
   );
 }

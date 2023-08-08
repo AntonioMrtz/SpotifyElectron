@@ -6,11 +6,12 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import LibraryMusicRoundedIcon from '@mui/icons-material/LibraryMusicRounded';
 import AudiotrackIcon from '@mui/icons-material/Audiotrack';
-import styles from './addSongPlayListAccordion.module.css';
-import GenreOption from './GenreOption/GenreOption';
 import Global from 'global/global';
 import { InfoPopoverType } from 'componentes/types/InfoPopover';
 import ConfirmationModal from 'componentes/InfoPopover/InfoPopover';
+import GenreOption from './GenreOption/GenreOption';
+import styles from './addSongPlayListAccordion.module.css';
+
 ('../../types/ModalConfirmationArgs');
 
 interface PropsAddSongPlayListAccordion {
@@ -87,20 +88,20 @@ export default function AddSongPlayListAccordion(
   };
 
   const handleSubmitSong = (event: FormEvent<HTMLButtonElement>) => {
-    let url = new URL(Global.backendBaseUrl + 'canciones/');
+    const url = new URL(`${Global.backendBaseUrl}canciones/`);
 
     event.preventDefault();
 
     if (formDataSong && songFile) {
-      for (let [key, value] of Object.entries(formDataSong)) {
+      for (const [key, value] of Object.entries(formDataSong)) {
         if (key !== 'file' && typeof value === 'string') {
           url.searchParams.set(key, value);
         }
       }
-      let formDataFile = new FormData();
+      const formDataFile = new FormData();
       formDataFile.append('file', songFile);
 
-      let requestOptions = {
+      const requestOptions = {
         method: 'POST',
         body: formDataFile,
       };
@@ -127,7 +128,7 @@ export default function AddSongPlayListAccordion(
           console.error('Error:', error);
         })
         .finally(() => {
-          //props.handleClose();
+          // props.handleClose();
         });
     }
   };
@@ -160,18 +161,18 @@ export default function AddSongPlayListAccordion(
   };
 
   const handleSubmitPlaylist = (event: FormEvent<HTMLButtonElement>) => {
-    let url = new URL(Global.backendBaseUrl + 'playlists/');
+    const url = new URL(`${Global.backendBaseUrl}playlists/`);
 
     event.preventDefault();
 
     if (formDataPlaylist) {
-      for (let [key, value] of Object.entries(formDataPlaylist)) {
+      for (const [key, value] of Object.entries(formDataPlaylist)) {
         if (typeof value === 'string') {
           url.searchParams.set(key, value);
         }
       }
 
-      let requestOptions = {
+      const requestOptions = {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -204,7 +205,7 @@ export default function AddSongPlayListAccordion(
           console.error('Error:', error);
         })
         .finally(() => {
-          //props.handleClose();
+          // props.handleClose();
         });
     }
   };
@@ -214,7 +215,7 @@ export default function AddSongPlayListAccordion(
   const [genres, setGenres] = useState<{}>();
 
   const handleGenres = () => {
-    fetch(Global.backendBaseUrl + 'generos/', {
+    fetch(`${Global.backendBaseUrl}generos/`, {
       headers: { 'Access-Control-Allow-Origin': '*' },
     })
       .then((res) => res.json())
@@ -231,7 +232,7 @@ export default function AddSongPlayListAccordion(
   }, []);
 
   return (
-    <Fragment>
+    <>
       <Accordion
         style={{
           backgroundColor: 'var(--secondary-black)',
@@ -260,7 +261,7 @@ export default function AddSongPlayListAccordion(
           <form
             className={`container-fluid d-flex flex-column p-0 ${styles.formAddSong}`}
           >
-            <div className={`container-fluid d-flex flex-column p-0`}>
+            <div className="container-fluid d-flex flex-column p-0">
               <div className="d-flex flex-row">
                 <div className="p-0 mb-3 me-3 container-fluid">
                   <input
@@ -271,7 +272,7 @@ export default function AddSongPlayListAccordion(
                     className={` `}
                     onChange={handleChangePlaylist}
                     required
-                  ></input>
+                  />
                 </div>
                 <div className="mb-3 container-fluid p-0">
                   <input
@@ -282,7 +283,7 @@ export default function AddSongPlayListAccordion(
                     className={` `}
                     onChange={handleChangePlaylist}
                     required
-                  ></input>
+                  />
                 </div>
               </div>
               <div className="container-fluid p-0">
@@ -294,7 +295,7 @@ export default function AddSongPlayListAccordion(
                   onChange={handleChangePlaylist}
                   style={{ height: ' 50px', width: '100%' }}
                   required
-                ></textarea>
+                />
               </div>
             </div>
 
@@ -340,7 +341,7 @@ export default function AddSongPlayListAccordion(
           <form
             className={`container-fluid d-flex flex-column p-0 ${styles.formAddSong}`}
           >
-            <div className={`container-fluid d-flex flex-row p-0`}>
+            <div className="container-fluid d-flex flex-row p-0">
               <div className="p-0 mb-3 me-3">
                 <input
                   type="text"
@@ -350,7 +351,7 @@ export default function AddSongPlayListAccordion(
                   className={` ${styles.input}`}
                   onChange={handleChangeSong}
                   required
-                ></input>
+                />
               </div>
               <div className="mb-3">
                 <input
@@ -361,7 +362,7 @@ export default function AddSongPlayListAccordion(
                   onChange={handleChangeSong}
                   name="artista"
                   required
-                ></input>
+                />
               </div>
             </div>
             <div className="p-0 mb-3 me-2">
@@ -373,24 +374,24 @@ export default function AddSongPlayListAccordion(
                 onChange={handleChangeSong}
                 name="foto"
                 required
-              ></input>
+              />
             </div>
 
             <div
               className={`d-flex flex-row overflow-hidden align-items-center ${styles.containerSelectAndFileSelector}`}
             >
-              <div className={`me-5`}>
+              <div className="me-5">
                 <select
                   className="form-select-sm mb-3"
                   aria-label="Default select example"
                   onChange={handleChangeSong}
                   name="genero"
                   required
-                  defaultValue={'Elige un género'}
+                  defaultValue="Elige un género"
                 >
                   <option
                     className={` ${styles.option}`}
-                    value={'Elige un género'}
+                    value="Elige un género"
                     disabled
                   >
                     ❗ Elige un género
@@ -413,7 +414,7 @@ export default function AddSongPlayListAccordion(
                   onChange={handleChangeFile}
                   accept="audio/mp3"
                   required
-                ></input>
+                />
               </div>
             </div>
 
@@ -438,7 +439,7 @@ export default function AddSongPlayListAccordion(
         description={description}
         triggerOpenConfirmationModal={triggerOpenConfirmationModal}
         handleClose={props.handleClose}
-      ></ConfirmationModal>
-    </Fragment>
+      />
+    </>
   );
 }

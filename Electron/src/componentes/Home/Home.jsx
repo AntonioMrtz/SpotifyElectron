@@ -35,7 +35,7 @@ export default function Home(props) {
             onClick={handleDoubleClick}
             className={`rounded ${styles.card}`}
           >
-            <img src={foto} className={`card-img-top rounded`} />
+            <img src={foto} className="card-img-top rounded" />
             <div className={`${styles.card_body}`}>
               <h5 className={`${styles.tituloLista}`}>Quedate</h5>
               <p className={`${styles.autorLista}`}>Quevedo</p>
@@ -45,7 +45,7 @@ export default function Home(props) {
             onClick={handleDoubleClickBeta}
             className={`rounded ${styles.card}`}
           >
-            <img src={foto} className={`card-img-top rounded`} />
+            <img src={foto} className="card-img-top rounded" />
             <div className={`${styles.card_body}`}>
               <h5 className={`${styles.tituloLista}`}>Quedate</h5>
               <p className={`${styles.autorLista}`}>Quevedo</p>
@@ -55,7 +55,7 @@ export default function Home(props) {
             onClick={handleDoubleClickP3}
             className={`rounded ${styles.card}`}
           >
-            <img src={foto} className={`card-img-top rounded`} />
+            <img src={foto} className="card-img-top rounded" />
             <div className={`${styles.card_body}`}>
               <h5 className={`${styles.tituloLista}`}>Quedate</h5>
               <p className={`${styles.autorLista}`}>Quevedo</p>
@@ -83,42 +83,42 @@ export default function Home(props) {
 
           <section className={`container-fluid d-flex flex-row ${styles.row}`}>
             <a href="#" className={`rounded ${styles.card}`}>
-              <img src={foto} className={`card-img-top rounded`} />
+              <img src={foto} className="card-img-top rounded" />
               <div className={`${styles.card_body}`}>
                 <h5 className={`${styles.tituloLista}`}>Quedate</h5>
                 <p className={`${styles.autorLista}`}>Quevedo</p>
               </div>
             </a>{' '}
             <a href="#" className={`rounded ${styles.card}`}>
-              <img src={foto} className={`card-img-top rounded`} />
+              <img src={foto} className="card-img-top rounded" />
               <div className={`${styles.card_body}`}>
                 <h5 className={`${styles.tituloLista}`}>Quedate</h5>
                 <p className={`${styles.autorLista}`}>Quevedo</p>
               </div>
             </a>{' '}
             <a href="#" className={`rounded ${styles.card}`}>
-              <img src={foto} className={`card-img-top rounded`} />
+              <img src={foto} className="card-img-top rounded" />
               <div className={`${styles.card_body}`}>
                 <h5 className={`${styles.tituloLista}`}>Quedate</h5>
                 <p className={`${styles.autorLista}`}>Quevedo</p>
               </div>
             </a>{' '}
             <a href="#" className={`rounded ${styles.card}`}>
-              <img src={foto} className={`card-img-top rounded`} />
+              <img src={foto} className="card-img-top rounded" />
               <div className={`${styles.card_body}`}>
                 <h5 className={`${styles.tituloLista}`}>Quedate</h5>
                 <p className={`${styles.autorLista}`}>Quevedo</p>
               </div>
             </a>{' '}
             <a href="#" className={`rounded ${styles.card}`}>
-              <img src={foto} className={`card-img-top rounded`} />
+              <img src={foto} className="card-img-top rounded" />
               <div className={`${styles.card_body}`}>
                 <h5 className={`${styles.tituloLista}`}>Quedate</h5>
                 <p className={`${styles.autorLista}`}>Quevedo</p>
               </div>
             </a>{' '}
             <a href="#" className={`rounded ${styles.card}`}>
-              <img src={foto} className={`card-img-top rounded`} />
+              <img src={foto} className="card-img-top rounded" />
               <div className={`${styles.card_body}`}>
                 <h5 className={`${styles.tituloLista}`}>Quedate</h5>
                 <p className={`${styles.autorLista}`}>Quevedo</p>
@@ -144,14 +144,14 @@ export default function Home(props) {
 
         <section className={`container-fluid d-flex flex-row ${styles.row}`}>
           <a href="#" className={`rounded ${styles.card}`}>
-            <img src={foto} className={`card-img-top rounded`} />
+            <img src={foto} className="card-img-top rounded" />
             <div className={`${styles.card_body}`}>
               <h5 className={`${styles.tituloLista}`}>Quedate</h5>
               <p className={`${styles.autorLista}`}>Quevedo</p>
             </div>
           </a>
           <a href="#" className={`rounded ${styles.card}`}>
-            <img src={foto} className={`card-img-top rounded`} />
+            <img src={foto} className="card-img-top rounded" />
             <div className={`${styles.card_body}`}>
               <h5 className={`${styles.tituloLista}`}>Quedate</h5>
               <p className={`${styles.autorLista}`}>Quevedo</p>

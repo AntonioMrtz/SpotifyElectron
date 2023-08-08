@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef, MouseEventHandler } from 'react';
+import Global from 'global/global';
 import styles from './player.module.css';
 import TimeSlider from './TimeSlider/TimeSlider';
-import Global from 'global/global';
 
 interface PropsPlayer {
   volume: number;
@@ -13,17 +13,17 @@ export default function Player(props: PropsPlayer) {
   //* PLAYER AUDIO DATA
 
   /* Global audio variable for the component, has the logic of playing the songs */
-  let audio = useRef<HTMLAudioElement | null>(null);
+  const audio = useRef<HTMLAudioElement | null>(null);
 
-  let songName = props.songName;
+  const { songName } = props;
 
-  /* Loads the song and metadata to the Player*/
+  /* Loads the song and metadata to the Player */
   useEffect(() => {
     if (audio.current) {
       audio.current.pause();
     }
 
-    fetch(Global.backendBaseUrl + 'canciones/' + songName, {
+    fetch(`${Global.backendBaseUrl}canciones/${songName}`, {
       headers: { 'Access-Control-Allow-Origin': '*' },
     })
       .then((res) => res.json())
@@ -31,14 +31,14 @@ export default function Player(props: PropsPlayer) {
         const requestOptions = {
           method: 'PUT',
         };
-        let fetchUrlUpdateSong: string = `${Global.backendBaseUrl}canciones/${songName}?number_of_plays=True`;
+        const fetchUrlUpdateSong: string = `${Global.backendBaseUrl}canciones/${songName}?number_of_plays=True`;
         fetch(fetchUrlUpdateSong, requestOptions).then((res) => {});
         fetch(
           `${Global.backendBaseUrl}canciones/dto/${songName}?number_of_plays=True`
         ).then((res) => res.json());
         props.changeSongInfo(res);
 
-        return res['file'];
+        return res.file;
       })
       .then((res) => {
         let audiobytes_string = res;
@@ -49,7 +49,7 @@ export default function Player(props: PropsPlayer) {
             .replace('b', '')
             .replace("'", '')
             .slice(0, -1);
-          let dataURI = 'data:audio/mp3;base64,' + audiobytes_string;
+          const dataURI = `data:audio/mp3;base64,${audiobytes_string}`;
           audio.current = new Audio(dataURI);
         }
       })
@@ -62,7 +62,7 @@ export default function Player(props: PropsPlayer) {
               audio.current.currentTime &&
               audio.current.duration
             ) {
-              let time = audio.current.currentTime;
+              const time = audio.current.currentTime;
               setPlayBackTime(+time.toFixed(2));
 
               if (audio.current.currentTime === audio.current.duration) {
@@ -84,7 +84,7 @@ export default function Player(props: PropsPlayer) {
 
         // set play and pause functions
 
-        let playWhenFetched = () => {
+        const playWhenFetched = () => {
           return function returns() {
             if (audio.current) {
               audio.current.play();
@@ -94,7 +94,7 @@ export default function Player(props: PropsPlayer) {
           };
         };
 
-        let pauseWhenFetched = () => {
+        const pauseWhenFetched = () => {
           return function returns() {
             if (audio.current) {
               audio.current.pause();
@@ -175,23 +175,23 @@ export default function Player(props: PropsPlayer) {
         className={`d-flex container-fluid flex-row ${styles.buttonsPlayerContainer}`}
       >
         <span>
-          <i className="fa-solid fa-shuffle fa-fw"></i>
+          <i className="fa-solid fa-shuffle fa-fw" />
         </span>
         <span>
-          <i className="fa-solid fa-backward-step fa-fw"></i>
+          <i className="fa-solid fa-backward-step fa-fw" />
         </span>
         <span onClick={play} className={`${displayNonePlay}`}>
-          <i className="fa-solid fa-circle-play fa-fw"></i>
+          <i className="fa-solid fa-circle-play fa-fw" />
         </span>
         <span onClick={pause} className={`${displayNonePause}`}>
-          <i className="fa-solid fa-circle-pause fa-fw"></i>
+          <i className="fa-solid fa-circle-pause fa-fw" />
         </span>
         <span>
-          <i className="fa-solid fa-forward-step fa-fw"></i>
+          <i className="fa-solid fa-forward-step fa-fw" />
         </span>
 
         <span>
-          <i className="fa-solid fa-repeat fa-fw"></i>
+          <i className="fa-solid fa-repeat fa-fw" />
         </span>
       </div>
 

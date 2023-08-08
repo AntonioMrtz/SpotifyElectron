@@ -1,7 +1,7 @@
-import styles from './songInfo.module.css';
-import foto from '../../../assets/imgs/quedate.jpg';
 import { Favorite, FavoriteBorder } from '@mui/icons-material';
 import { Fragment, useEffect, useState } from 'react';
+import styles from './songInfo.module.css';
+import foto from '../../../assets/imgs/quedate.jpg';
 
 interface PropsSongInfo {
   songInfo: JSON | undefined;
@@ -29,10 +29,10 @@ export default function SongInfo(props: PropsSongInfo | any) {
 
   const updateSongInfo = async () => {
     if (props.songInfo) {
-      //console.log(props.songInfo)
-      setName(props.songInfo['name']);
-      setThumbnail(props.songInfo['photo']);
-      setArtist(props.songInfo['artist']);
+      // console.log(props.songInfo)
+      setName(props.songInfo.name);
+      setThumbnail(props.songInfo.photo);
+      setArtist(props.songInfo.artist);
       setLiked(false);
     }
   };
@@ -46,7 +46,7 @@ export default function SongInfo(props: PropsSongInfo | any) {
       className={`d-flex flex-row justify-content-start container-fluid ${styles.songInfoContainer}`}
     >
       {name && (
-        <Fragment>
+        <>
           <img src={thumbnail} alt="" />
           <div className={`d-flex flex-column ${styles.infoCancionContainer}`}>
             <a href="">{name}</a>
@@ -62,7 +62,7 @@ export default function SongInfo(props: PropsSongInfo | any) {
               <Favorite sx={{ fontSize: 18, color: 'var(--primary-green)' }} />
             </button>
           </div>
-        </Fragment>
+        </>
       )}
     </div>
   );

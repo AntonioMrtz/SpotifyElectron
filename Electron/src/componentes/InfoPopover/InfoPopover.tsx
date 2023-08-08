@@ -4,11 +4,11 @@ import {
   PropsInfoPopover,
 } from 'componentes/types/InfoPopover';
 import { useEffect, useImperativeHandle, useState } from 'react';
-import styles from './confirmationModal.module.css';
 import Box from '@mui/material/Box';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 import CheckIcon from '@mui/icons-material/Check';
 import ContentPasteIcon from '@mui/icons-material/ContentPaste';
+import styles from './confirmationModal.module.css';
 
 export default function InfoPopover(props: PropsInfoPopover) {
   const style = {
@@ -43,7 +43,7 @@ export default function InfoPopover(props: PropsInfoPopover) {
   return (
     <div>
       <Modal
-        className={``}
+        className=""
         open={openConfirmationModal}
         onClose={handleCloseConfirmationModal}
         aria-labelledby="modal-modal-confirmation"
@@ -64,7 +64,7 @@ export default function InfoPopover(props: PropsInfoPopover) {
                     color: 'var(--secondary-green)',
                     fontSize: '6rem',
                   }}
-                ></CheckIcon>
+                />
               )}
 
               {props.type === InfoPopoverType.ERROR && (
@@ -73,7 +73,7 @@ export default function InfoPopover(props: PropsInfoPopover) {
                     color: 'var(--secondary-green)',
                     fontSize: '6rem',
                   }}
-                ></PriorityHighIcon>
+                />
               )}
 
               {props.type === InfoPopoverType.CLIPBOARD && (
@@ -82,7 +82,7 @@ export default function InfoPopover(props: PropsInfoPopover) {
                     color: 'var(--secondary-green)',
                     fontSize: '6rem',
                   }}
-                ></ContentPasteIcon>
+                />
               )}
             </div>
           </div>

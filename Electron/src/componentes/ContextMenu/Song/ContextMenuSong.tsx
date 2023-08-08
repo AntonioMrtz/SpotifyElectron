@@ -100,7 +100,7 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
 
         const { photo } = res;
 
-        const fetchUrlUpdateSong = `${url}?foto=${photo}&descripcion=${res['description']}`;
+        const fetchUrlUpdateSong = `${url}?foto=${photo}&descripcion=${res.description}`;
 
         const newSongsPutPlaylist = [];
         newSongsPutPlaylist.push(songName);

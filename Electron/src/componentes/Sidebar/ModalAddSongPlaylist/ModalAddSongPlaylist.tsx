@@ -1,11 +1,11 @@
 import { useState, Fragment } from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import AddSongPlayListAccordion from './Accordion/AddSongPlayListAccordion';
-import styles from './modalAddSongPlaylist.module.css';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 import CheckIcon from '@mui/icons-material/Check';
 import ConfirmationModal from 'componentes/InfoPopover/InfoPopover';
+import styles from './modalAddSongPlaylist.module.css';
+import AddSongPlayListAccordion from './Accordion/AddSongPlayListAccordion';
 
 const style = {
   position: 'absolute',
@@ -32,9 +32,9 @@ export default function ModalAddSongPlaylist(props: PropsModalAddSongPlaylist) {
   const handleClose = () => setOpen(false);
 
   return (
-    <Fragment>
-      <button className={`btn`} onClick={handleOpen}>
-        <i className="fa-solid fa-plus fa-fw"></i>
+    <>
+      <button className="btn" onClick={handleOpen}>
+        <i className="fa-solid fa-plus fa-fw" />
       </button>
 
       {/* AddSongPlaylist Modal */}
@@ -52,6 +52,6 @@ export default function ModalAddSongPlaylist(props: PropsModalAddSongPlaylist) {
           />
         </Box>
       </Modal>
-    </Fragment>
+    </>
   );
 }

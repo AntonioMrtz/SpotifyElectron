@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import styles from '../playlist.module.css';
 import { PropsSongs } from 'componentes/Sidebar/types/propsSongs.module';
 import ContextMenuSong from 'componentes/ContextMenu/Song/ContextMenuSong';
 import Popover, { PopoverPosition } from '@mui/material/Popover';
+import styles from '../playlist.module.css';
+
 export default function Song(props: PropsSongs) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -18,7 +19,7 @@ export default function Song(props: PropsSongs) {
 
   const handleRightClick = (event: React.MouseEvent<HTMLLIElement>) => {
     event.preventDefault();
-    setIsOpen(isOpen ? false : true);
+    setIsOpen(!isOpen);
     handleClick(event);
   };
 
@@ -83,10 +84,10 @@ export default function Song(props: PropsSongs) {
           sx={{
             '& .MuiPaper-root': {
               backgroundColor: 'var(--hover-white)',
-            },'& . MuiPopover-root':{
-
-              zIndex:'1000'
-            }
+            },
+            '& . MuiPopover-root': {
+              zIndex: '1000',
+            },
           }}
         >
           <ContextMenuSong
@@ -102,8 +103,8 @@ export default function Song(props: PropsSongs) {
 }
 
 const secondsToMinutesSeconds: Function = (secs: number) => {
-  let minutes = Math.floor(secs / 60);
-  let seconds = (secs - minutes * 60) / 100;
+  const minutes = Math.floor(secs / 60);
+  const seconds = (secs - minutes * 60) / 100;
 
   return (minutes + seconds).toFixed(2).replace('.', ':');
 };

@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import Global from 'global/global';
+import CircularProgress from '@mui/material/CircularProgress';
 import styles from './sideBarCss.module.css';
 import Playlist from './Playlist/Playlist';
 import ModalAddSongPlaylist from './ModalAddSongPlaylist/ModalAddSongPlaylist';
-import { Link } from 'react-router-dom';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 import { PropsPlaylist } from './types/propsPlaylist.module';
-import Global from 'global/global';
-import CircularProgress from '@mui/material/CircularProgress';
 
 interface PropsSidebar {
   triggerReloadSidebar: boolean;
@@ -15,8 +15,8 @@ interface PropsSidebar {
 export default function Sidebar(props: PropsSidebar) {
   //* MENU HOVER
 
-  let [listItemInicio, setHoverInicio] = useState('');
-  let [listItemBuscar, setHoverBuscar] = useState('');
+  const [listItemInicio, setHoverInicio] = useState('');
+  const [listItemBuscar, setHoverBuscar] = useState('');
 
   const [isHoveredInicio, setIsHovered] = useState(false);
   const [isHoveredBuscar, setIsHoveredBuscar] = useState(false);
@@ -52,7 +52,7 @@ export default function Sidebar(props: PropsSidebar) {
   const [url, setUrl] = useState('/');
 
   useEffect(() => {
-    //console.log(url)
+    // console.log(url)
     if (url === '/') {
       setSelectedID('li-inicio');
     } else if (url === '/explorar') {
@@ -86,21 +86,20 @@ export default function Sidebar(props: PropsSidebar) {
   const [loading, setLoading] = useState(true);
 
   const handlePlaylists = () => {
-    fetch(Global.backendBaseUrl + 'playlists/', {
+    fetch(`${Global.backendBaseUrl}playlists/`, {
       headers: { 'Access-Control-Allow-Origin': '*' },
     })
       .then((res) => res.json())
       .then((res) => {
-        if (res['playlists']) {
-          let propsPlaylists: PropsPlaylist[] = [];
+        if (res.playlists) {
+          const propsPlaylists: PropsPlaylist[] = [];
 
-          for (let obj of res['playlists']) {
+          for (let obj of res.playlists) {
             obj = JSON.parse(obj);
-            let propsPlaylist: PropsPlaylist = {
-              name: obj['name'],
-              photo:
-                obj['photo'] === '' ? defaultThumbnailPlaylist : obj['photo'],
-              handleUrlPlaylistClicked: handleUrlPlaylistClicked,
+            const propsPlaylist: PropsPlaylist = {
+              name: obj.name,
+              photo: obj.photo === '' ? defaultThumbnailPlaylist : obj.photo,
+              handleUrlPlaylistClicked,
               reloadSidebar: handlePlaylists,
               playlistStyle: '',
             };
@@ -141,7 +140,7 @@ export default function Sidebar(props: PropsSidebar) {
               onClick={handleUrlInicioClicked}
               id="li-inicio"
             >
-              <i className={`fa-solid fa-house fa-fw ${styles.headerI}`}></i>
+              <i className={`fa-solid fa-house fa-fw ${styles.headerI}`} />
               <span className={`${styles.headerI}`}>Inicio</span>
             </li>
           </Link>
@@ -157,7 +156,7 @@ export default function Sidebar(props: PropsSidebar) {
             >
               <i
                 className={`fa-solid fa-magnifying-glass fa-fw ${styles.headerI}`}
-              ></i>
+              />
               <span className={`${styles.headerI}`}>Buscar</span>
             </li>
           </Link>
@@ -173,14 +172,15 @@ export default function Sidebar(props: PropsSidebar) {
           <header
             className={`container-fluid d-flex flex-row pb-4 ${styles.headerTuBiblioteca}`}
           >
-            <div className={`container-fluid d-flex justify-content-start p-0`}>
-              <div className={`container-fluid ps-0`}>
-                <i className="fa-solid fa-swatchbook fa-fw"></i>Tu biblioteca
+            <div className="container-fluid d-flex justify-content-start p-0">
+              <div className="container-fluid ps-0">
+                <i className="fa-solid fa-swatchbook fa-fw" />
+                Tu biblioteca
               </div>
             </div>
 
             <div
-              className={`container-fluid d-flex justify-content-end p-0`}
+              className="container-fluid d-flex justify-content-end p-0"
               style={{ width: '25%' }}
             >
               <ModalAddSongPlaylist reloadSidebar={handlePlaylists} />
@@ -215,7 +215,7 @@ export default function Sidebar(props: PropsSidebar) {
             {!loading &&
               playlists &&
               playlists.map((playlist) => {
-                let urlPlaylist = '/playlist/' + playlist.name;
+                const urlPlaylist = `/playlist/${playlist.name}`;
 
                 // Agregar una condición para aplicar un estilo diferente si la playlist es la seleccionada
                 const playlistStyle =

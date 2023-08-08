@@ -93,7 +93,7 @@ export default function Song(props: PropsSongs) {
           <ContextMenuSong
             songName={props.name}
             playlistName={props.playlistName}
-            handleClose={handleClose}
+            handleCloseParent={handleClose}
             refreshPlaylistData={props.refreshPlaylistData}
           />
         </Popover>

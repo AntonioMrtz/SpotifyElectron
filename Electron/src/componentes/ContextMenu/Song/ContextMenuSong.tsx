@@ -91,107 +91,83 @@ export default function ContextMenuSong({
     setTriggerOpenConfirmationModal(true);
   };
 
-  const handleAddToPlaylist = () => {
-    /* Add to playlist */
+  const handleAddToPlaylist = async () => {
+    try {
+      const playlistResponse = await fetch(
+        `${Global.backendBaseUrl}playlists/dto/${playlistName}`,
+        {
+          headers: { 'Access-Control-Allow-Origin': '*' },
+        }
+      );
+      const playlistData = await playlistResponse.json();
 
-    fetch(`${Global.backendBaseUrl}playlists/dto/${playlistName}`, {
-      headers: { 'Access-Control-Allow-Origin': '*' },
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        const url = `${Global.backendBaseUrl}playlists/${playlistName}`;
+      const url = `${Global.backendBaseUrl}playlists/${playlistName}`;
+      const { photo } = playlistData;
 
-        const { photo } = res;
+      const fetchUrlUpdateSong = `${url}?foto=${photo}&descripcion=${playlistData.description}`;
 
-        const fetchUrlUpdateSong = `${url}?foto=${photo}&descripcion=${res.description}`;
+      const newSongsPutPlaylist: string[] = [
+        songName,
+        ...playlistData.song_names,
+      ];
 
-        const newSongsPutPlaylist: string[] = [];
-        newSongsPutPlaylist.push(songName);
+      const requestOptions = {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newSongsPutPlaylist),
+      };
 
-        res.song_names.forEach((songNameFetch: any) => {
-          newSongsPutPlaylist.push(songNameFetch);
-        });
+      const updateResponse = await fetch(fetchUrlUpdateSong, requestOptions);
+      if (updateResponse.status !== 204) {
+        console.log('Unable to add the Song to Playlist');
+      }
 
-        const requestOptions = {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(newSongsPutPlaylist),
-        };
-
-        fetch(fetchUrlUpdateSong, requestOptions)
-          .then((response) => {
-            if (response.status !== 204) {
-              console.log('Unable to add the Song to Playlist');
-            }
-            return null;
-          })
-          .finally(() => {
-            handleClose();
-          })
-          .catch(() => {
-            console.log('Unable to update playlist');
-          });
-
-        return null;
-      })
-      .catch(() => {
-        console.log('Unable to update playlist');
-      });
+      handleClose();
+    } catch (error) {
+      console.log('Unable to update playlist', error);
+    }
   };
 
-  const handleDeleteFromPlaylist = () => {
-    /* Add to playlist */
+  const handleDeleteFromPlaylist = async () => {
+    try {
+      const playlistResponse = await fetch(
+        `${Global.backendBaseUrl}playlists/dto/${playlistName}`,
+        {
+          headers: { 'Access-Control-Allow-Origin': '*' },
+        }
+      );
+      const playlistData = await playlistResponse.json();
 
-    fetch(`${Global.backendBaseUrl}playlists/dto/${playlistName}`, {
-      headers: { 'Access-Control-Allow-Origin': '*' },
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        const url = `${Global.backendBaseUrl}playlists/${playlistName}`; // Reemplaza con la URL de tu API y el nombre de la playlist
+      const url = `${Global.backendBaseUrl}playlists/${playlistName}`;
+      const { photo, description } = playlistData;
 
-        const { photo } = res;
+      const fetchUrlUpdateSong = `${url}?foto=${photo}&descripcion=${description}`;
 
-        const fetchUrlUpdateSong = `${url}?foto=${photo}`;
+      const newSongsPutPlaylist = playlistData.song_names.filter(
+        (songNameFetch: any) => songNameFetch !== songName
+      );
 
-        const newSongsPutPlaylist: string[] = [];
+      const requestOptions = {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newSongsPutPlaylist),
+      };
 
-        res.song_names.forEach((songNameFetch: any) => {
-          if (songNameFetch !== songName) {
-            newSongsPutPlaylist.push(songNameFetch);
-          }
-        });
+      const updateResponse = await fetch(fetchUrlUpdateSong, requestOptions);
+      if (updateResponse.status === 204) {
+        refreshPlaylistData();
+      } else {
+        console.log('Unable to delete Song from Playlist');
+      }
 
-        const requestOptions = {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(newSongsPutPlaylist),
-        };
-
-        fetch(fetchUrlUpdateSong, requestOptions)
-          .then((response) => {
-            if (response.status === 204) {
-              refreshPlaylistData();
-            } else {
-              console.log('Unable to delete Song from Playlist');
-            }
-            return null;
-          })
-          .catch(() => {
-            console.log('Unable to update playlist');
-          });
-
-        return null;
-      })
-      .finally(() => {
-        handleClose();
-      })
-      .catch(() => {
-        console.log('Unable to update playlist');
-      });
+      handleClose();
+    } catch (error) {
+      console.log('Unable to update playlist', error);
+    }
   };
 
   return (

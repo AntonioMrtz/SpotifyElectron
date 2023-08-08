@@ -5,6 +5,7 @@ import styles from './stickyHeader.module.css';
 import groupIcon from '../../assets/imgs/groupIcon.png';
 
 export default function StickyHeader() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [profileIcon, setProfileIcon] = useState(
     'https://i.scdn.co/image/ab67757000003b82ae8c728abc415a173667ff85'
   );
@@ -92,10 +93,10 @@ export default function StickyHeader() {
       <div
         className={`d-flex flex-row container-fluid ${styles.wrapperDirectionArrows}`}
       >
-        <button onClick={handleGoingBackArrows}>
+        <button type="button" onClick={handleGoingBackArrows}>
           <i className={`fa-solid fa-chevron-left ${backArrowStyle}`} />
         </button>
-        <button onClick={handleGoingForwardArrows}>
+        <button type="button" onClick={handleGoingForwardArrows}>
           <i className={`fa-solid fa-chevron-right ${forwardArrowStyle}`} />
         </button>
       </div>
@@ -103,11 +104,11 @@ export default function StickyHeader() {
       <div
         className={`d-flex flex-row container-fluid  ${styles.wrapperProfileOptions}`}
       >
-        <button>
+        <button type="button">
           <img src={profileIcon} alt="" />
         </button>
 
-        <button>
+        <button type="button">
           <img className={`${styles.groupIcon}`} src={groupIcon} alt="" />
         </button>
       </div>

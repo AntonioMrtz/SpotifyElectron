@@ -17,27 +17,28 @@ let mainWindow: BrowserWindow | null = null;
 
 /* Events */
 
-ipcMain.on('toogle-fullscreen', async (event) => {
+ipcMain.on('toogle-fullscreen', async () => {
   if (mainWindow && mainWindow.isFullScreen()) mainWindow.setFullScreen(false);
   else if (mainWindow) mainWindow.setFullScreen(true);
 });
 
-ipcMain.handle('copy-to-clipboard', async (event, ...args) => {
+ipcMain.handle('copy-to-clipboard', async (event, dataToClipboard) => {
   const data: Data = {};
-  data.text = args[0];
+  // eslint-disable-next-line prefer-destructuring
+  data.text = dataToClipboard;
 
   clipboard.write(data);
 });
 
-ipcMain.handle('load-previous-url', async (event) => {
+ipcMain.handle('load-previous-url', async () => {
   mainWindow?.webContents.goBack();
 });
 
-ipcMain.handle('load-forward-url', async (event) => {
+ipcMain.handle('load-forward-url', async () => {
   mainWindow?.webContents.goForward();
 });
 
-ipcMain.handle('handle-url-change', async (event) => {
+ipcMain.handle('handle-url-change', async () => {
   // event.reply('response-handle-url-change',mainWindow?.webContents.canGoForward,mainWindow?.webContents.canGoBack)
 
   const eventResponse: Global.HandleUrlChangeResponse = {
@@ -84,9 +85,9 @@ const createWindow = async () => {
     ? path.join(process.resourcesPath, 'assets')
     : path.join(__dirname, '../../assets');
 
-  const getAssetPath = (...paths: string[]): string => {
+  /* const getAssetPath = (...paths: string[]): string => {
     return path.join(RESOURCES_PATH, ...paths);
-  };
+  }; */
 
   mainWindow = new BrowserWindow({
     width: 1200,

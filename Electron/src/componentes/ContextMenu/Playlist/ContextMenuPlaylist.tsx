@@ -6,12 +6,30 @@ import CircularProgress from '@mui/material/CircularProgress/CircularProgress';
 import InfoPopover from '../../InfoPopover/InfoPopover';
 import { InfoPopoverType } from '../../types/InfoPopover';
 import styles from '../contextMenu.module.css';
+import { PropsContextMenuPlaylist } from '../types/PropsContextMenu';
 
-interface PropsContextMenuSong {
-  playlistName: string;
-  handleClose: Function;
-  /* Refresh data on playlist menu after a modification */
-  reloadSidebar: Function;
+interface ConfirmationMenuData {
+  title: string;
+  type: InfoPopoverType;
+  description: string;
+}
+
+enum ConfirmationMenuActionKind {
+  ADD_SUCCESS = 'ADD_SUCCESS',
+  ADD_ERROR = 'ADD_ERROR',
+  DELETE_SUCESS = 'DELETE_SUCCESS',
+  DELETE_ERROR = 'DELETE_ERROR',
+  CLIPBOARD = 'CLIPBOARD',
+}
+
+// An interface for our actions
+interface ConfirmationMenuAction {
+  type: ConfirmationMenuActionKind;
+}
+
+// An interface for our state
+interface ConfirmationMenuState {
+  payload: ConfirmationMenuData;
 }
 
 const reducerConfirmationMenu = (
@@ -76,31 +94,11 @@ const reducerConfirmationMenu = (
   }
 };
 
-interface ConfirmationMenuData {
-  title: string;
-  type: InfoPopoverType;
-  description: string;
-}
-
-enum ConfirmationMenuActionKind {
-  ADD_SUCCESS = 'ADD_SUCCESS',
-  ADD_ERROR = 'ADD_ERROR',
-  DELETE_SUCESS = 'DELETE_SUCCESS',
-  DELETE_ERROR = 'DELETE_ERROR',
-  CLIPBOARD = 'CLIPBOARD',
-}
-
-// An interface for our actions
-interface ConfirmationMenuAction {
-  type: ConfirmationMenuActionKind;
-}
-
-// An interface for our state
-interface ConfirmationMenuState {
-  payload: ConfirmationMenuData;
-}
-
-export default function ContextMenuSong(props: PropsContextMenuSong) {
+export default function ContextMenuSong({
+  playlistName,
+  handleCloseParent,
+  refreshPlaylistData,
+}: PropsContextMenuPlaylist) {
   const navigate = useNavigate();
 
   const initialState: ConfirmationMenuState = {
@@ -110,13 +108,26 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
       description: '',
     },
   };
+  const [state, dispatch] = useReducer(reducerConfirmationMenu, initialState);
 
-  const displayConfirmationModal = (state: ConfirmationMenuActionKind) => {
-    dispatch({ type: state });
+  // triggers Confirmation Modal
+  const [triggerOpenConfirmationModal, setTriggerOpenConfirmationModal] =
+    useState(false);
+
+  /* Handle copy to clipboard on share button */
+
+  const displayConfirmationModal = (newState: ConfirmationMenuActionKind) => {
+    dispatch({ type: newState });
     setTriggerOpenConfirmationModal(true);
   };
 
-  const [state, dispatch] = useReducer(reducerConfirmationMenu, initialState);
+  const handleCopyToClipboard = (): void => {
+    window.electron.copyToClipboard.sendMessage(
+      'copy-to-clipboard',
+      Global.repositoryUrl
+    );
+    displayConfirmationModal(ConfirmationMenuActionKind.CLIPBOARD);
+  };
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -129,13 +140,13 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
 
   const handleClose = () => {
     setAnchorEl(null);
-    props.handleClose();
+    handleCloseParent();
   };
 
   const open = Boolean(anchorEl);
   const id = open ? 'child-popover' : undefined;
 
-  const [playlistNames, setPlaylistNames] = useState<String[]>();
+  const [playlistNames, setPlaylistNames] = useState<string[]>();
   const [loading, setLoading] = useState(true);
 
   const handlePlaylists = () => {
@@ -144,17 +155,16 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
     })
       .then((res) => res.json())
       .then((res) => {
-        const playlistNames = [];
+        const playlistNamesFromFetch: string[] = [];
 
-        if (res.playlists) {
-          for (let obj of res.playlists) {
-            obj = JSON.parse(obj);
-            playlistNames.push(obj.name);
-          }
-        }
+        res.playlists.forEach((playlistObj: any) => {
+          playlistNamesFromFetch.push(JSON.parse(playlistObj).name);
+        });
 
-        setPlaylistNames(playlistNames);
+        setPlaylistNames(playlistNamesFromFetch);
         setLoading(false);
+
+        return null;
       })
       .catch((error) => {
         console.log(error);
@@ -166,90 +176,69 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
     handlePlaylists();
   }, []);
 
-  /* Handle copy to clipboard on share button */
-
-  // triggers Confirmation Modal
-  const [triggerOpenConfirmationModal, setTriggerOpenConfirmationModal] =
-    useState(false);
-
-  const handleCopyToClipboard = (): void => {
-    window.electron.copyToClipboard.sendMessage(
-      'copy-to-clipboard',
-      Global.repositoryUrl
-    );
-    displayConfirmationModal(ConfirmationMenuActionKind.CLIPBOARD);
-  };
-
-  const handleAddPlaylitToPlaylist = (
-    event: React.MouseEvent<HTMLButtonElement>,
+  const handleAddPlaylistToPlaylist = async (
     dstPlaylistName: string,
     srcPlaylistName: string
   ) => {
-    /* Add to playlist */
+    try {
+      const url = `${Global.backendBaseUrl}playlists/${dstPlaylistName}`; // Reemplaza con la URL de tu API y el nombre de la playlist
 
-    fetch(`${Global.backendBaseUrl}playlists/dto/${dstPlaylistName}`, {
-      headers: { 'Access-Control-Allow-Origin': '*' },
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        const url = `${Global.backendBaseUrl}playlists/${dstPlaylistName}`; // Reemplaza con la URL de tu API y el nombre de la playlist
-
-        const { photo } = res;
-
-        const fetchUrlUpdateSong = `${url}?foto=${photo}&descripcion=${res.description}`;
-
-        /* Current songs of the dstPlaylist */
-        const newSongsPutPlaylist: string[] = [];
-        for (const song_name of res.song_names) {
-          newSongsPutPlaylist.push(song_name);
-        }
-
-        fetch(`${Global.backendBaseUrl}playlists/dto/${srcPlaylistName}`, {
+      const dstResponse = await fetch(
+        `${Global.backendBaseUrl}playlists/dto/${dstPlaylistName}`,
+        {
           headers: { 'Access-Control-Allow-Origin': '*' },
-        })
-          .then((res) => res.json())
-          .then((res) => {
-            for (const song_name of res.song_names) {
-              newSongsPutPlaylist.push(song_name);
-            }
+        }
+      );
 
-            const requestOptions = {
-              method: 'PUT',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(newSongsPutPlaylist),
-            };
+      const dstPlaylistData = await dstResponse.json();
+      // eslint-disable-next-line camelcase
+      const { photo, description, song_names } = dstPlaylistData;
 
-            fetch(fetchUrlUpdateSong, requestOptions).then((response) => {
-              if (response.status !== 204) {
-                console.log(
-                  `Unable to add songs from ${srcPlaylistName} to ${dstPlaylistName}`
-                );
-                displayConfirmationModal(ConfirmationMenuActionKind.ADD_ERROR);
-              } else {
-                displayConfirmationModal(
-                  ConfirmationMenuActionKind.ADD_SUCCESS
-                );
-              }
-            });
-          });
-      })
-      .catch((error) => {
+      const putUrl = `${url}?foto=${photo}&descripcion=${description}`;
+
+      const srcResponse = await fetch(
+        `${Global.backendBaseUrl}playlists/dto/${srcPlaylistName}`,
+        {
+          headers: { 'Access-Control-Allow-Origin': '*' },
+        }
+      );
+
+      const srcPlaylistData = await srcResponse.json();
+      const newSongsPutPlaylist = [
+        // eslint-disable-next-line camelcase
+        ...song_names,
+        ...srcPlaylistData.song_names,
+      ];
+
+      const requestOptions = {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newSongsPutPlaylist),
+      };
+
+      const updateResponse = await fetch(putUrl, requestOptions);
+
+      if (updateResponse.status !== 204) {
         console.log(
           `Unable to add songs from ${srcPlaylistName} to ${dstPlaylistName}`
         );
         displayConfirmationModal(ConfirmationMenuActionKind.ADD_ERROR);
-      })
-      .finally(() => {});
+      } else {
+        displayConfirmationModal(ConfirmationMenuActionKind.ADD_SUCCESS);
+      }
+    } catch (error) {
+      console.log(
+        `Unable to add songs from ${srcPlaylistName} to ${dstPlaylistName}`
+      );
+      displayConfirmationModal(ConfirmationMenuActionKind.ADD_ERROR);
+    }
   };
 
-  const handleDeletePlaylist = (
-    event: React.MouseEvent<HTMLButtonElement>,
-    playlistName: string
-  ) => {
+  const handleDeletePlaylist = (playlistNameToDelete: string) => {
     /* Delete playlist */
-    fetch(`${Global.backendBaseUrl}playlists/${playlistName}`, {
+    fetch(`${Global.backendBaseUrl}playlists/${playlistNameToDelete}`, {
       method: 'DELETE',
       headers: {
         'Access-Control-Allow-Origin': '*',
@@ -260,11 +249,13 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
           displayConfirmationModal(ConfirmationMenuActionKind.DELETE_ERROR);
 
           throw new Error('Unable to delete playlist');
-        } else if (response.status == 202) {
+        } else if (response.status === 202) {
           navigate(`/home`, { replace: true });
-          props.reloadSidebar();
+          refreshPlaylistData();
           displayConfirmationModal(ConfirmationMenuActionKind.DELETE_SUCESS);
         }
+
+        return null;
       })
       .catch((error) => {
         console.error('Unable to delete playlist: ', error);
@@ -273,7 +264,7 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
   };
 
   const handleEditPlaylistData = () => {
-    navigate(`/playlists/${props.playlistName}?edit=true`, { replace: true });
+    navigate(`/playlists/${playlistName}?edit=true`, { replace: true });
 
     localStorage.setItem('playlistEdit', JSON.stringify(true));
 
@@ -284,20 +275,24 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
     <div className={` ${styles.wrapperContextMenu}`}>
       <ul>
         <li>
-          <button>Añadir a la cola</button>
+          <button type="button">Añadir a la cola</button>
         </li>
         <li>
-          <button onClick={handleEditPlaylistData}>Editar datos</button>
-          <button>Crear lista similar</button>
+          <button type="button" onClick={handleEditPlaylistData}>
+            Editar datos
+          </button>
+          <button type="button">Crear lista similar</button>
           <button
-            onClick={(event) => handleDeletePlaylist(event, props.playlistName)}
+            type="button"
+            onClick={() => handleDeletePlaylist(playlistName)}
           >
             Eliminar
           </button>
-          <button>Descargar</button>
+          <button type="button">Descargar</button>
         </li>
         <li>
           <button
+            type="button"
             className="d-flex justify-content-between align-items-center"
             onClick={handleClick}
           >
@@ -327,10 +322,10 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
               >
                 <ul>
                   <li>
-                    <button>Buscar una lista</button>
+                    <button type="button">Buscar una lista</button>
                   </li>
                   <li>
-                    <button>Crear lista</button>
+                    <button type="button">Crear lista</button>
                   </li>
 
                   {loading && (
@@ -359,19 +354,19 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
 
                   {!loading &&
                     playlistNames &&
-                    playlistNames.map((playlistName, index) => {
+                    playlistNames.map((playlistNameItem) => {
                       return (
-                        <li key={index}>
+                        <li key={playlistNameItem}>
                           <button
-                            onClick={(event) =>
-                              handleAddPlaylitToPlaylist(
-                                event,
-                                playlistName.toString(),
-                                props.playlistName
+                            type="button"
+                            onClick={() =>
+                              handleAddPlaylistToPlaylist(
+                                playlistNameItem.toString(),
+                                playlistName
                               )
                             }
                           >
-                            {playlistName}
+                            {playlistNameItem}
                           </button>
                         </li>
                       );
@@ -382,7 +377,9 @@ export default function ContextMenuSong(props: PropsContextMenuSong) {
           </button>
         </li>
         <li>
-          <button onClick={handleCopyToClipboard}>Compartir</button>
+          <button type="button" onClick={handleCopyToClipboard}>
+            Compartir
+          </button>
         </li>
       </ul>
 

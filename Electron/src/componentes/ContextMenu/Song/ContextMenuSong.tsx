@@ -5,14 +5,7 @@ import CircularProgress from '@mui/material/CircularProgress/CircularProgress';
 import InfoPopover from '../../InfoPopover/InfoPopover';
 import { InfoPopoverType } from '../../types/InfoPopover';
 import styles from '../contextMenu.module.css';
-
-interface PropsContextMenuSong {
-  songName: string;
-  playlistName: string;
-  handleCloseParent: Function;
-  /* Refresh data on playlist menu after a modification */
-  refreshPlaylistData: Function;
-}
+import { PropsContextMenuSong } from '../types/PropsContextMenu';
 
 const MessagesInfoPopOver = {
   CLIPBOARD_TITLE: 'Enlace copiado al portapapeles',

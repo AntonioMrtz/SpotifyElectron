@@ -88,8 +88,8 @@ export default function Playlist(props: PropsPlaylist) {
         >
           <ContextMenuPlaylist
             playlistName={props.name}
-            handleClose={handleClose}
-            reloadSidebar={props.reloadSidebar}
+            handleCloseParent={handleClose}
+            refreshPlaylistData={props.reloadSidebar}
           />
         </Popover>
       </div>

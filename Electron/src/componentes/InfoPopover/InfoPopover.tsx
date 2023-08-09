@@ -2,7 +2,7 @@ import Modal from '@mui/material/Modal';
 import {
   InfoPopoverType,
   PropsInfoPopover,
-} from 'componentes/types/InfoPopover';
+} from 'componentes/InfoPopover/types/InfoPopover';
 import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';

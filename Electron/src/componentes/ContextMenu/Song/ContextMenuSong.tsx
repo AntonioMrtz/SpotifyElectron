@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import Global from 'global/global';
 import CircularProgress from '@mui/material/CircularProgress/CircularProgress';
 import InfoPopover from '../../InfoPopover/InfoPopover';
-import { InfoPopoverType } from '../../types/InfoPopover';
+import { InfoPopoverType } from '../../InfoPopover/types/InfoPopover';
 import styles from '../contextMenu.module.css';
 import { PropsContextMenuSong } from '../types/PropsContextMenu';
 

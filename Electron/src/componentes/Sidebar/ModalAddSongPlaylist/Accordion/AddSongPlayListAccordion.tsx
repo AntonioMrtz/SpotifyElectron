@@ -7,7 +7,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import LibraryMusicRoundedIcon from '@mui/icons-material/LibraryMusicRounded';
 import AudiotrackIcon from '@mui/icons-material/Audiotrack';
 import Global from 'global/global';
-import { InfoPopoverType } from 'componentes/types/InfoPopover';
+import { InfoPopoverType } from 'componentes/InfoPopover/types/InfoPopover';
 import ConfirmationModal from 'componentes/InfoPopover/InfoPopover';
 import GenreOption from './GenreOption/GenreOption';
 import styles from './addSongPlayListAccordion.module.css';

@@ -4,7 +4,7 @@ import Global from 'global/global';
 import { useNavigate } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress/CircularProgress';
 import InfoPopover from '../../InfoPopover/InfoPopover';
-import { InfoPopoverType } from '../../types/InfoPopover';
+import { InfoPopoverType } from '../../InfoPopover/types/InfoPopover';
 import styles from '../contextMenu.module.css';
 import { PropsContextMenuPlaylist } from '../types/PropsContextMenu';
 

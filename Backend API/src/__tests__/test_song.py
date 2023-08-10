@@ -24,6 +24,42 @@ def test_post_cancion_correct(clear_test_data_db):
     assert response.status_code == 202
 
 
+def test_post_cancion_correct_check_valid_duration(clear_test_data_db):
+
+    song_name = "8232392323623823723989"
+
+    url = f"/canciones/?nombre={song_name}&artista=artista&genero=Pop&foto=foto"
+
+    with open('__tests__/song_4s.mp3', 'rb') as file:
+        response = client.post(url, files={'file': file})
+        assert response.status_code == 201
+
+    response = client.get(f"/canciones/{song_name}")
+    assert response.status_code == 200
+    assert "4" == str(response.json()["duration"]).split(".")[0]
+
+    response = client.delete(f"/canciones/{song_name}")
+    assert response.status_code == 202
+
+
+def test_post_cancion_correct_check_invalid_duration(clear_test_data_db):
+
+    song_name = "8232392323623823723989"
+
+    url = f"/canciones/?nombre={song_name}&artista=artista&genero=Pop&foto=foto"
+
+    with open('__tests__/song.mp3', 'rb') as file:
+        response = client.post(url, files={'file': file})
+        assert response.status_code == 201
+
+    response = client.get(f"/canciones/{song_name}")
+    assert response.status_code == 200
+    assert "0" in str(response.json()["duration"])
+
+    response = client.delete(f"/canciones/{song_name}")
+    assert response.status_code == 202
+
+
 def test_get_cancion_correct(clear_test_data_db):
 
     song_name = "8232392323623823723989"

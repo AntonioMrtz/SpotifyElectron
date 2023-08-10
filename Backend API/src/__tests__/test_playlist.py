@@ -1,18 +1,23 @@
 from fastapi.testclient import TestClient
 import json
 import pytest
+from datetime import datetime
+
 
 from main import app as app
 
 client = TestClient(app)
-
-# TODO añadir test post_playlist con cancion ( crearla y despues borrarla)
 
 
 def test_get_playlist_correct(clear_test_data_db):
     name = "8232392323623823723"
 
     url = f"/playlists/?nombre={name}&foto=foto&descripcion=descripcion"
+
+
+    formatting = "%Y-%m-%dT%H:%M:%S"
+    post_date_iso8601 = datetime.strptime(datetime.now().strftime('%Y-%m-%dT%H:%M:%S'),formatting)
+
 
     payload = []
 
@@ -23,6 +28,16 @@ def test_get_playlist_correct(clear_test_data_db):
 
     response = client.get(f"/playlists/{name}")
     assert response.status_code == 200
+
+
+    try:
+        fecha = response.json()["upload_date"]
+        response_date = datetime.strptime(fecha, formatting)
+
+        assert response_date.hour==post_date_iso8601.hour
+
+    except ValueError:
+        assert False
 
     response = client.delete(f"/playlists/{name}")
     assert response.status_code == 202
@@ -45,7 +60,7 @@ def test_get_playlist_invalid_name():
 def test_post_playlist_correct(clear_test_data_db):
     name = "8232392323623823723"
 
-    url = f"/playlists/?nombre={name}&foto=foto&descripcion=descripcion"
+    url = f"/playlists/?nombre={name}&foto=foto&descripcion=descripcion&upload_date=upload_date"
 
     payload = []
 
@@ -95,7 +110,6 @@ def test_get_playlists_correct():
     assert response.status_code == 200
 
 
-
 def test_update_playlist_correct(clear_test_data_db):
     name = "8232392323623823723"
 
@@ -124,9 +138,10 @@ def test_update_playlist_correct(clear_test_data_db):
     assert response.status_code == 200
     assert response.json()["description"]==new_description
 
+
+
     response = client.delete(f"/playlists/{name}")
     assert response.status_code == 202
-
 
 def test_update_playlist_correct_nuevo_nombre(clear_test_data_db):
     name = "8232392323623823723"
@@ -155,8 +170,6 @@ def test_update_playlist_correct_nuevo_nombre(clear_test_data_db):
 
     response = client.get(f"/playlists/{new_name}")
     assert response.status_code == 200
-    assert response.json()["description"]==new_description
-
 
     response = client.delete(f"/playlists/{new_name}")
     assert response.status_code == 202

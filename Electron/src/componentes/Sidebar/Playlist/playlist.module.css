@@ -4,6 +4,7 @@
   height: 64px;
   cursor: pointer;
   overflow-x: hidden;
+  align-items: center;
 }
 
 .wrapperPlaylist:hover {

@@ -34,7 +34,7 @@ def get_song(name: str) -> SongDTO:
         raise HTTPException(
             status_code=404, detail="La canción con ese nombre no existe")
 
-    return SongDTO(name=song_data["name"], artist=song_data["artist"], photo=song_data["photo"], duration=song_data["duration"],genre=Genre(song_data["genre"]).name)
+    return SongDTO(name=song_data["name"], artist=song_data["artist"], photo=song_data["photo"], duration=song_data["duration"],genre=Genre(song_data["genre"]).name, number_of_plays=song_data["number_of_plays"])
 
 
 def get_playlist(name: str) -> PlaylistDTO:
@@ -64,4 +64,4 @@ def get_playlist(name: str) -> PlaylistDTO:
         raise HTTPException(
             status_code=404, detail="La playlist con ese nombre no existe")
 
-    return PlaylistDTO(name=playlist_data["name"], photo=playlist_data["photo"], song_names=playlist_data["song_names"],description=playlist_data["description"])
+    return PlaylistDTO(name=playlist_data["name"], photo=playlist_data["photo"],description=playlist_data["description"] , upload_date=playlist_data["upload_date"], song_names=playlist_data["song_names"],)

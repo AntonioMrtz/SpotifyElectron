@@ -1,3 +1,4 @@
+from datetime import datetime
 from database.Database import Database
 import services.song_service as song_service
 import services.dto_service as dto_service
@@ -38,12 +39,14 @@ def get_playlist(name: str) -> Playlist:
     playlist_songs = []
 
     [playlist_songs.append(song_service.get_song(song_name))
-     for song_name in playlist_data["song_names"]]
+        for song_name in playlist_data["song_names"]]
 
     # [print(song.name) for song in playlist_songs]
 
+    date = playlist_data["upload_date"][:-1]
+
     playlist = Playlist(
-        name, playlist_data["photo"], playlist_data["description"], playlist_songs)
+        name, playlist_data["photo"], playlist_data["description"], date, playlist_songs)
 
     return playlist
 
@@ -65,6 +68,8 @@ def create_playlist(name: str, photo: str, description: str, song_names: list) -
     Returns
     -------
     """
+    fecha_actual = datetime.now()
+    fecha_iso8601 = fecha_actual.strftime('%Y-%m-%dT%H:%M:%S')
 
     if not checkValidParameterString(name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
@@ -76,7 +81,7 @@ def create_playlist(name: str, photo: str, description: str, song_names: list) -
         raise HTTPException(status_code=400, detail="La playlist ya existe")
 
     result = playlistCollection.insert_one(
-        {'name': name, 'photo': photo if 'http' in photo else '', 'description': description, 'song_names': song_names})
+        {'name': name, 'photo': photo if 'http' in photo else '', 'upload_date': fecha_iso8601, 'description': description, 'song_names': song_names})
 
     return True if result.acknowledged else False
 

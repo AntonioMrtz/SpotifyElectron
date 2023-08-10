@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import { ChangeEvent, FormEvent, useEffect, useState, MouseEvent } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Global from 'global/global';
@@ -16,7 +17,18 @@ interface PropsPlaylist {
   triggerReloadSidebar: Function;
 }
 
-export default function Playlist(props: PropsPlaylist) {
+function secondsToHoursAndMinutes(seconds: number) {
+  const hours = Math.floor(seconds / 3600);
+  const remainingSeconds = seconds % 3600;
+  const minutes = Math.floor(remainingSeconds / 60);
+
+  return `${hours} h ${minutes} min `;
+}
+
+export default function Playlist({
+  changeSongName,
+  triggerReloadSidebar,
+}: PropsPlaylist) {
   const [mainColorThumbnail, setMainColorThumbnail] = useState('');
 
   /* Get current Playlist Name */
@@ -34,12 +46,12 @@ export default function Playlist(props: PropsPlaylist) {
   const [displayPause, setdisplayPause] = useState(styles.displayNonePlay);
   const [displayDislike, setdisplayDislike] = useState('');
   const [displayLike, setdisplayLike] = useState(styles.displayNoneLike);
-  const [Playing, setPlaying] = useState(false);
-  const [Liked, setLiked] = useState(false);
+  const [playing, setPlaying] = useState(false);
+  const [liked, setLiked] = useState(false);
   const [songs, setSongs] = useState<PropsSongs[]>();
 
   const handlePlay = (): void => {
-    if (Playing == false) {
+    if (playing === false) {
       setdisplayPause('');
       setdisplayPlay(styles.displayNonePlay);
       setPlaying(true);
@@ -51,7 +63,7 @@ export default function Playlist(props: PropsPlaylist) {
   };
 
   const handleLike = (): void => {
-    if (Liked == false) {
+    if (liked === false) {
       setdisplayLike('');
       setdisplayDislike(styles.displayNoneLike);
       setLiked(true);
@@ -66,96 +78,12 @@ export default function Playlist(props: PropsPlaylist) {
     let totalDuration = 0;
 
     if (songs) {
-      for (const song of songs) {
+      songs.forEach((song) => {
         totalDuration += song.duration;
-      }
+      });
     }
     return totalDuration;
   };
-
-  const loadPlaylistData = async () => {
-    fetch(encodeURI(`${Global.backendBaseUrl}playlists/dto/${playlistName}`))
-      .then((res) => res.json())
-      .then(async (res) => {
-        setDescription(res.description);
-        setThumbnail(res.photo === '' ? defaultThumbnailPlaylist : res.photo);
-        setThumbnailUpdatePlaylist(
-          res.photo === '' ? defaultThumbnailPlaylist : res.photo
-        );
-
-        if (res.song_names) {
-          setNumberSongs(res.song_names.length);
-          const propsSongs: PropsSongs[] = [];
-
-          for (const obj of res.song_names.reverse()) {
-            const propsSong: PropsSongs = {
-              name: obj,
-              playlistName,
-              artistName: '',
-              duration: 0,
-              index: 0,
-
-              handleSongCliked: props.changeSongName,
-              refreshPlaylistData: loadPlaylistData,
-            };
-
-            let artistNameAndDuration;
-            try {
-              const response = await fetch(
-                `${Global.backendBaseUrl}canciones/dto/${obj}`
-              );
-              const data = await response.json();
-              artistNameAndDuration = {
-                artist: data.artist,
-                duration: data.duration,
-              };
-            } catch (error) {
-              console.log(`Unable to get Song: ${error}`);
-              artistNameAndDuration = { artist: null, duration: null };
-            }
-
-            propsSong.artistName = artistNameAndDuration.artist;
-            propsSong.duration = artistNameAndDuration.duration;
-
-            propsSongs.push(propsSong);
-          }
-
-          setSongs(propsSongs);
-        }
-      })
-      .catch((error) => {
-        console.log('No se puede obtener la playlist');
-      });
-  };
-
-  useEffect(() => {
-    loadPlaylistData();
-
-    if (localStorage.getItem('playlistEdit') === 'true') {
-      setopenModalUpdatePlaylist(true);
-      localStorage.setItem('playlistEdit', JSON.stringify(false));
-    }
-  }, [location]);
-
-  /* Process photo color */
-  useEffect(() => {
-    const fac = new FastAverageColor();
-
-    const options = {
-      crossOrigin: '*',
-    };
-
-    fac
-      .getColorAsync(thumbnail, options)
-      .then((color) => {
-        setMainColorThumbnail(color.hex);
-      })
-      .catch((e) => {
-        // console.log(e);
-      });
-
-    fac.destroy();
-  }, [thumbnail]);
 
   /* Handle Update Playlist Data */
 
@@ -199,70 +127,257 @@ export default function Playlist(props: PropsPlaylist) {
     });
   };
 
-  const handleUpdatePlaylist = (event: FormEvent<HTMLButtonElement>) => {
-    event.preventDefault();
+  const loadPlaylistData = async () => {
+    try {
+      const resFetchGetPlaylistDTO = await fetch(
+        encodeURI(`${Global.backendBaseUrl}playlists/dto/${playlistName}`)
+      );
+      const resFetchGetPlaylistDTOJson = await resFetchGetPlaylistDTO.json();
 
-    fetch(`${Global.backendBaseUrl}playlists/dto/${playlistName}`, {
-      headers: { 'Access-Control-Allow-Origin': '*' },
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        const url = `${Global.backendBaseUrl}playlists/${playlistName}`; // Reemplaza con la URL de tu API y el nombre de la playlist
+      setDescription(resFetchGetPlaylistDTOJson.description);
+      setThumbnail(
+        resFetchGetPlaylistDTOJson.photo === ''
+          ? defaultThumbnailPlaylist
+          : resFetchGetPlaylistDTOJson.photo
+      );
+      setThumbnailUpdatePlaylist(
+        resFetchGetPlaylistDTOJson.photo === ''
+          ? defaultThumbnailPlaylist
+          : resFetchGetPlaylistDTOJson.photo
+      );
+      /* if (resFetchGetPlaylistDTOJson.song_names) {
+        setNumberSongs(resFetchGetPlaylistDTOJson.song_names.length);
+        const propsSongs: PropsSongs[] = [];
 
-        const photo =
-          formData.foto && formData.foto.includes('http') ? formData.foto : '';
+        await resFetchGetPlaylistDTOJson.song_names
+          .reverse()
+          .forEach( async (songName: string) => {
+            const propsSong: PropsSongs = {
+              name: songName,
+              playlistName,
+              artistName: '',
+              duration: 0,
+              index: 0,
+              handleSongCliked: changeSongName,
+              refreshPlaylistData: loadPlaylistData,
+            };
+            let artistNameAndDuration;
+            try {
+              const response = await fetch(
+                `${Global.backendBaseUrl}canciones/dto/${songName}`
+              );
+              const data = await response.json();
+              artistNameAndDuration = {
+                artist: data.artist,
+                duration: data.duration,
+              };
+            } catch (error) {
+              console.log(`Unable to get Song: ${error}`);
+              artistNameAndDuration = { artist: null, duration: null };
+            }
 
-        let fetchUrlUpdateSong;
+            propsSong.artistName = artistNameAndDuration.artist;
+            propsSong.duration = artistNameAndDuration.duration;
 
-        if (formData.nombre !== playlistName && formData.nombre !== '') {
-          fetchUrlUpdateSong = `${url}?foto=${photo}&descripcion=${formData.descripcion}&nuevo_nombre=${formData.nombre}`;
-        } else {
-          fetchUrlUpdateSong = `${url}?foto=${photo}&descripcion=${formData.descripcion}`;
-        }
+            propsSongs.push(propsSong);
+          });
+        setSongs(propsSongs);
+      } */
 
-        const newSongsPutPlaylist = [];
-        for (const song_name of res.song_names) {
-          newSongsPutPlaylist.push(song_name);
-        }
+      const reversedSongNames = resFetchGetPlaylistDTOJson.song_names.reverse();
+      setNumberSongs(reversedSongNames.length);
+      /* const propsSongs = []; */
 
-        const requestOptions = {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(newSongsPutPlaylist),
+      /*  for (const songName of reversedSongNames) {
+        const propsSong = {
+          name: songName,
+          playlistName,
+          artistName: '',
+          duration: 0,
+          index: 0,
+          handleSongCliked: changeSongName,
+          refreshPlaylistData: loadPlaylistData,
         };
 
-        fetch(fetchUrlUpdateSong, requestOptions).then((response) => {
-          if (response.status !== 204) {
-            console.log('Unable to update playlist');
-          } else {
-            setopenModalUpdatePlaylist(false);
-            if (formData.nombre !== playlistName && formData.nombre !== '') {
-              //* Al cargar inmediatamente con el useEffect de location produce que el contenido para la nueva url no esta disponible
-              props.triggerReloadSidebar();
-              navigate(`/playlist/${formData.nombre}`, { replace: true });
-            } else {
-              loadPlaylistData();
-              props.triggerReloadSidebar();
+        try {
+          const response = await fetch(
+            `${Global.backendBaseUrl}canciones/dto/${songName}`
+          );
+          const data = await response.json();
+          const artistNameAndDuration = {
+            artist: data.artist,
+            duration: data.duration,
+          };
+
+          propsSong.artistName = artistNameAndDuration.artist;
+          propsSong.duration = artistNameAndDuration.duration;
+
+          propsSongs.push(propsSong);
+        } catch (error) {
+          console.log(`Unable to get Song: ${error}`);
+        }
+      }
+
+      setSongs(propsSongs); */
+
+      const promises = [];
+
+      for (const songName of reversedSongNames) {
+        promises.push(
+          (async () => {
+            let artistNameAndDuration;
+            try {
+              const response = await fetch(
+                `${Global.backendBaseUrl}canciones/dto/${songName}`
+              );
+              const data = await response.json();
+
+              const propsSong: PropsSongs = {
+                name: songName,
+                playlistName,
+                artistName: '',
+                duration: 0,
+                index: 0,
+                handleSongCliked: changeSongName,
+                refreshPlaylistData: loadPlaylistData,
+              };
+
+              return propsSong;
+            } catch (error) {
+              console.log(`Unable to get Song: ${error}`);
+              artistNameAndDuration = { artist: null, duration: null };
+              return null;
             }
+          })()
+        );
+      }
+
+      const propsSongs = await Promise.all(promises);
+      const filteredPropsSongs = propsSongs.filter((song) => song !== null);
+
+      if (filteredPropsSongs) {
+        setSongs(filteredPropsSongs);
+      }
+    } catch {
+      console.log('No se puede obtener la playlist');
+    }
+  };
+
+  /*   const loadPlaylistData = async () => {
+    fetch(encodeURI(`${Global.backendBaseUrl}playlists/dto/${playlistName}`))
+      .then((res) => res.json())
+      .then(async (res) => {
+        setDescription(res.description);
+        setThumbnail(res.photo === '' ? defaultThumbnailPlaylist : res.photo);
+        setThumbnailUpdatePlaylist(
+          res.photo === '' ? defaultThumbnailPlaylist : res.photo
+        );
+
+        if (res.song_names) {
+          setNumberSongs(res.song_names.length);
+          const propsSongs: PropsSongs[] = [];
+
+          for (const obj of res.song_names.reverse()) {
+            const propsSong: PropsSongs = {
+              name: obj,
+              playlistName,
+              artistName: '',
+              duration: 0,
+              index: 0,
+
+              handleSongCliked: changeSongName,
+              refreshPlaylistData: loadPlaylistData,
+            };
+
+            let artistNameAndDuration;
+            try {
+              const response = await fetch(
+                `${Global.backendBaseUrl}canciones/dto/${obj}`
+              );
+              const data = await response.json();
+              artistNameAndDuration = {
+                artist: data.artist,
+                duration: data.duration,
+              };
+            } catch (error) {
+              console.log(`Unable to get Song: ${error}`);
+              artistNameAndDuration = { artist: null, duration: null };
+            }
+
+            propsSong.artistName = artistNameAndDuration.artist;
+            propsSong.duration = artistNameAndDuration.duration;
+
+            propsSongs.push(propsSong);
           }
-        });
+
+          setSongs(propsSongs);
+        }
       })
       .catch((error) => {
-        console.log('Unable to update playlist');
+        console.log('No se puede obtener la playlist');
       });
+  }; */
+
+  const handleUpdatePlaylist = async (event: FormEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+
+    try {
+      const resGetPlaylistDTO = await fetch(
+        `${Global.backendBaseUrl}playlists/dto/${playlistName}`,
+        {
+          headers: { 'Access-Control-Allow-Origin': '*' },
+        }
+      );
+
+      const resGetPlaylistDTOJson = await resGetPlaylistDTO.json();
+      const newSongsPutPlaylist = [...resGetPlaylistDTOJson.song_names];
+
+      const url = `${Global.backendBaseUrl}playlists/${playlistName}`; // Reemplaza con la URL de tu API y el nombre de la playlist
+      const photo =
+        formData.foto && formData.foto.includes('http') ? formData.foto : '';
+
+      let fetchUrlUpdateSong: string;
+
+      if (formData.nombre !== playlistName && formData.nombre !== '') {
+        fetchUrlUpdateSong = `${url}?foto=${photo}&descripcion=${formData.descripcion}&nuevo_nombre=${formData.nombre}`;
+      } else {
+        fetchUrlUpdateSong = `${url}?foto=${photo}&descripcion=${formData.descripcion}`;
+      }
+
+      const requestOptions = {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newSongsPutPlaylist),
+      };
+
+      const resFetchUpdateSong = await fetch(
+        fetchUrlUpdateSong,
+        requestOptions
+      );
+
+      if (resFetchUpdateSong.status !== 204) {
+        console.log('Unable to update playlist');
+      } else {
+        setopenModalUpdatePlaylist(false);
+        if (formData.nombre !== playlistName && formData.nombre !== '') {
+          //* Al cargar inmediatamente con el useEffect de location produce que el contenido para la nueva url no esta disponible
+          triggerReloadSidebar();
+          navigate(`/playlist/${formData.nombre}`, { replace: true });
+        } else {
+          loadPlaylistData();
+          triggerReloadSidebar();
+        }
+      }
+    } catch {
+      console.log('Unable to update playlist');
+    }
   };
 
   /* Context Menu */
 
   const [isOpen, setIsOpen] = useState(false);
-
-  useEffect(() => {
-    if (!isOpen) {
-      handleCloseContextMenu();
-    }
-  }, [isOpen]);
 
   const [anchorPosition, setAnchorPosition] = useState<{
     top: number;
@@ -285,6 +400,45 @@ export default function Playlist(props: PropsPlaylist) {
     setIsOpen(false);
   };
 
+  useEffect(() => {
+    if (!isOpen) {
+      handleCloseContextMenu();
+    }
+  }, [isOpen]);
+
+  /*  */
+
+  useEffect(() => {
+    loadPlaylistData();
+
+    if (localStorage.getItem('playlistEdit') === 'true') {
+      setopenModalUpdatePlaylist(true);
+      localStorage.setItem('playlistEdit', JSON.stringify(false));
+    }
+  }, [location]);
+
+  /* Process photo color */
+  useEffect(() => {
+    const fac = new FastAverageColor();
+
+    const options = {
+      crossOrigin: '*',
+    };
+
+    fac
+      .getColorAsync(thumbnail, options)
+      .then((color) => {
+        setMainColorThumbnail(color.hex);
+
+        return null;
+      })
+      .catch(() => {
+        // console.log(e);
+      });
+
+    fac.destroy();
+  }, [thumbnail]);
+
   return (
     <div
       className={`d-flex container-fluid flex-column ${styles.wrapperPlaylist}`}
@@ -295,6 +449,7 @@ export default function Playlist(props: PropsPlaylist) {
       >
         <div className={`d-flex flex-row container-fluid ${styles.nonBlurred}`}>
           <button
+            type="button"
             onClick={handleOpenUpdatePlaylistModal}
             className={`${styles.wrapperThumbnail}`}
           >
@@ -320,6 +475,7 @@ export default function Playlist(props: PropsPlaylist) {
 
         <div className={` ${styles.nonBlurred} ${styles.subhHeaderPlaylist}`}>
           <button
+            type="button"
             className={`${styles.hoverablePlayButton} ${displayPlay}`}
             onClick={handlePlay}
           >
@@ -329,6 +485,7 @@ export default function Playlist(props: PropsPlaylist) {
             />
           </button>
           <button
+            type="button"
             className={`${styles.hoverablePlayButton} ${displayPause}`}
             onClick={handlePlay}
           >
@@ -338,6 +495,7 @@ export default function Playlist(props: PropsPlaylist) {
             />
           </button>
           <button
+            type="button"
             className={`${styles.hoverableItemubheader} ${displayDislike}`}
             onClick={handleLike}
           >
@@ -346,19 +504,24 @@ export default function Playlist(props: PropsPlaylist) {
               style={{ color: 'var(--secondary-white)', fontSize: '1.75rem' }}
             />
           </button>
-          <button className={`${displayLike}`} onClick={handleLike}>
+          <button
+            type="button"
+            className={`${displayLike}`}
+            onClick={handleLike}
+          >
             <i
               className="fa-solid fa-heart"
               style={{ color: 'var(--primary-green)', fontSize: '1.75rem' }}
             />
           </button>
-          <button className={`${styles.hoverableItemubheader}`}>
+          <button type="button" className={`${styles.hoverableItemubheader}`}>
             <i
               className="fa-regular fa-circle-down"
               style={{ color: 'var(--secondary-white)', fontSize: '1.75rem' }}
             />
           </button>
           <button
+            type="button"
             className={`${styles.hoverableItemubheader}`}
             onClick={handleOpenContextMenu}
           >
@@ -391,15 +554,16 @@ export default function Playlist(props: PropsPlaylist) {
 
           {songs &&
             songs.map((song, index) => {
+              console.log('🚀 ~ file: Playlist.tsx:494 ~ song:', song);
               return (
                 <Song
-                  key={index}
+                  key={song.name}
                   name={song.name}
                   playlistName={playlistName}
                   artistName={song.artistName}
                   index={index + 1}
                   duration={song.duration}
-                  handleSongCliked={props.changeSongName}
+                  handleSongCliked={changeSongName}
                   refreshPlaylistData={loadPlaylistData}
                 />
               );
@@ -434,7 +598,7 @@ export default function Playlist(props: PropsPlaylist) {
           <ContextMenuPlaylist
             playlistName={playlistName}
             handleCloseParent={handleCloseContextMenu}
-            refreshPlaylistData={props.triggerReloadSidebar}
+            refreshPlaylistData={triggerReloadSidebar}
           />
         </Popover>
       </div>
@@ -452,6 +616,7 @@ export default function Playlist(props: PropsPlaylist) {
           <header className="d-flex flex-row justify-content-between align-items-center">
             <h1>Editar información</h1>
             <button
+              type="button"
               onClick={() => {
                 setopenModalUpdatePlaylist(false);
               }}
@@ -521,19 +686,13 @@ export default function Playlist(props: PropsPlaylist) {
             <div
               className={`d-flex flex-row justify-content-end pt-2 ${styles.wrapperUpdateButton} ${styles.inputPlaylist}`}
             >
-              <button onClick={handleUpdatePlaylist}>Guardar</button>
+              <button type="button" onClick={handleUpdatePlaylist}>
+                Guardar
+              </button>
             </div>
           </form>
         </Box>
       </Modal>
     </div>
   );
-}
-
-function secondsToHoursAndMinutes(seconds: number) {
-  const hours = Math.floor(seconds / 3600);
-  const remainingSeconds = seconds % 3600;
-  const minutes = Math.floor(remainingSeconds / 60);
-
-  return `${hours} h ${minutes} min `;
 }

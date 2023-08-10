@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { ChangeEvent, FormEvent, useEffect, useState, MouseEvent } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -145,178 +146,52 @@ export default function Playlist({
           ? defaultThumbnailPlaylist
           : resFetchGetPlaylistDTOJson.photo
       );
-      /* if (resFetchGetPlaylistDTOJson.song_names) {
+
+      //TODO , problemas de rendimiento ya que hay que hacer fetch dentro de los bucles para cada cancion
+
+      if (resFetchGetPlaylistDTOJson.song_names) {
         setNumberSongs(resFetchGetPlaylistDTOJson.song_names.length);
         const propsSongs: PropsSongs[] = [];
 
-        await resFetchGetPlaylistDTOJson.song_names
-          .reverse()
-          .forEach( async (songName: string) => {
-            const propsSong: PropsSongs = {
-              name: songName,
-              playlistName,
-              artistName: '',
-              duration: 0,
-              index: 0,
-              handleSongCliked: changeSongName,
-              refreshPlaylistData: loadPlaylistData,
-            };
-            let artistNameAndDuration;
-            try {
-              const response = await fetch(
-                `${Global.backendBaseUrl}canciones/dto/${songName}`
-              );
-              const data = await response.json();
-              artistNameAndDuration = {
-                artist: data.artist,
-                duration: data.duration,
-              };
-            } catch (error) {
-              console.log(`Unable to get Song: ${error}`);
-              artistNameAndDuration = { artist: null, duration: null };
-            }
+        for (const obj of resFetchGetPlaylistDTOJson.song_names.reverse()) {
+          const propsSong: PropsSongs = {
+            name: obj,
+            playlistName,
+            artistName: '',
+            duration: 0,
+            index: 0,
 
-            propsSong.artistName = artistNameAndDuration.artist;
-            propsSong.duration = artistNameAndDuration.duration;
-
-            propsSongs.push(propsSong);
-          });
-        setSongs(propsSongs);
-      } */
-
-      const reversedSongNames = resFetchGetPlaylistDTOJson.song_names.reverse();
-      setNumberSongs(reversedSongNames.length);
-      /* const propsSongs = []; */
-
-      /*  for (const songName of reversedSongNames) {
-        const propsSong = {
-          name: songName,
-          playlistName,
-          artistName: '',
-          duration: 0,
-          index: 0,
-          handleSongCliked: changeSongName,
-          refreshPlaylistData: loadPlaylistData,
-        };
-
-        try {
-          const response = await fetch(
-            `${Global.backendBaseUrl}canciones/dto/${songName}`
-          );
-          const data = await response.json();
-          const artistNameAndDuration = {
-            artist: data.artist,
-            duration: data.duration,
+            handleSongCliked: changeSongName,
+            refreshPlaylistData: loadPlaylistData,
           };
+
+          let artistNameAndDuration;
+          try {
+            const response = await fetch(
+              `${Global.backendBaseUrl}canciones/dto/${obj}`
+            );
+            const data = await response.json();
+            artistNameAndDuration = {
+              artist: data.artist,
+              duration: data.duration,
+            };
+          } catch (error) {
+            console.log(`Unable to get Song: ${error}`);
+            artistNameAndDuration = { artist: null, duration: null };
+          }
 
           propsSong.artistName = artistNameAndDuration.artist;
           propsSong.duration = artistNameAndDuration.duration;
 
           propsSongs.push(propsSong);
-        } catch (error) {
-          console.log(`Unable to get Song: ${error}`);
         }
-      }
 
-      setSongs(propsSongs); */
-
-      const promises = [];
-
-      for (const songName of reversedSongNames) {
-        promises.push(
-          (async () => {
-            let artistNameAndDuration;
-            try {
-              const response = await fetch(
-                `${Global.backendBaseUrl}canciones/dto/${songName}`
-              );
-              const data = await response.json();
-
-              const propsSong: PropsSongs = {
-                name: songName,
-                playlistName,
-                artistName: '',
-                duration: 0,
-                index: 0,
-                handleSongCliked: changeSongName,
-                refreshPlaylistData: loadPlaylistData,
-              };
-
-              return propsSong;
-            } catch (error) {
-              console.log(`Unable to get Song: ${error}`);
-              artistNameAndDuration = { artist: null, duration: null };
-              return null;
-            }
-          })()
-        );
-      }
-
-      const propsSongs = await Promise.all(promises);
-      const filteredPropsSongs = propsSongs.filter((song) => song !== null);
-
-      if (filteredPropsSongs) {
-        setSongs(filteredPropsSongs);
+        setSongs(propsSongs);
       }
     } catch {
-      console.log('No se puede obtener la playlist');
+      console.log('Unable to get playlist');
     }
   };
-
-  /*   const loadPlaylistData = async () => {
-    fetch(encodeURI(`${Global.backendBaseUrl}playlists/dto/${playlistName}`))
-      .then((res) => res.json())
-      .then(async (res) => {
-        setDescription(res.description);
-        setThumbnail(res.photo === '' ? defaultThumbnailPlaylist : res.photo);
-        setThumbnailUpdatePlaylist(
-          res.photo === '' ? defaultThumbnailPlaylist : res.photo
-        );
-
-        if (res.song_names) {
-          setNumberSongs(res.song_names.length);
-          const propsSongs: PropsSongs[] = [];
-
-          for (const obj of res.song_names.reverse()) {
-            const propsSong: PropsSongs = {
-              name: obj,
-              playlistName,
-              artistName: '',
-              duration: 0,
-              index: 0,
-
-              handleSongCliked: changeSongName,
-              refreshPlaylistData: loadPlaylistData,
-            };
-
-            let artistNameAndDuration;
-            try {
-              const response = await fetch(
-                `${Global.backendBaseUrl}canciones/dto/${obj}`
-              );
-              const data = await response.json();
-              artistNameAndDuration = {
-                artist: data.artist,
-                duration: data.duration,
-              };
-            } catch (error) {
-              console.log(`Unable to get Song: ${error}`);
-              artistNameAndDuration = { artist: null, duration: null };
-            }
-
-            propsSong.artistName = artistNameAndDuration.artist;
-            propsSong.duration = artistNameAndDuration.duration;
-
-            propsSongs.push(propsSong);
-          }
-
-          setSongs(propsSongs);
-        }
-      })
-      .catch((error) => {
-        console.log('No se puede obtener la playlist');
-      });
-  }; */
 
   const handleUpdatePlaylist = async (event: FormEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -554,7 +429,6 @@ export default function Playlist({
 
           {songs &&
             songs.map((song, index) => {
-              console.log('🚀 ~ file: Playlist.tsx:494 ~ song:', song);
               return (
                 <Song
                   key={song.name}

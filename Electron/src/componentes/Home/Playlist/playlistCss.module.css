@@ -7,7 +7,6 @@
   max-width: 18%;
   width: 100%;
   height: 100%;
-  position: relative;
 
 }
 
@@ -25,17 +24,19 @@
 
 .card button {
 
-  top: 30%;
-  right: 5%;
+  /* top: 30%;
+  right: 5%; */
+  bottom: 8px;
+  right: 8px;
   position: absolute;
   background: transparent;
   border: none;
-  
+
 
 }
 
 .card .i {
-  
+
   position: absolute;
   display: flex;
   align-self: center;
@@ -48,6 +49,7 @@
   background-color: var(--hover-white) !important;
 
 }
+
 
 .cardBody {
 
@@ -92,6 +94,21 @@
 
 .playButton:hover {
 
-  font-size: 2.55rem;
+  transform: scale(1.05);
 
+}
+
+
+/* NEW */
+
+.card .imgContainer{
+
+  position: relative;
+}
+
+@media (max-width: 1100px) {
+  .card button i {
+
+    font-size: 1.5rem;
+  }
 }

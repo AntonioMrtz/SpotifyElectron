@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 
 export default function Home(props: PropsPlaylist) {
-
   const [displayPlay, setdisplayPlay] = useState(styles.displayTruePlay);
   const [displayPause, setdisplayPause] = useState(styles.displayNonePlay);
   const [Playing, setPlaying] = useState(false);
@@ -25,24 +24,22 @@ export default function Home(props: PropsPlaylist) {
 
   return (
     <span className={`rounded ${styles.card}`}>
-    <button
-           className={`${styles.hoverablePlayButton} ${displayPlay}`}
-           onClick={handlePlay}
-         >
-           <i
-             className={`fa-solid fa-circle-play ${styles.playButton}`}
-           ></i>
+      <Link to={urlPlaylist} key={props.name}>
+        <div className={`${styles.imgContainer}`}>
+          <img src={props.photo} className={`card-img-top rounded`} />
+          <button
+            className={`${styles.hoverablePlayButton} ${displayPlay}`}
+            onClick={handlePlay}
+          >
+            <i className={`fa-solid fa-circle-play ${styles.playButton}`}></i>
           </button>
           <button
-           className={`${styles.hoverablePlayButton} ${displayPause}`}
-           onClick={handlePlay}
-         >
-           <i
-             className={`fa-solid fa-circle-pause ${styles.playButton}`}
-           ></i>
-    </button>
-      <Link to={urlPlaylist} key={props.name}>
-        <img src={props.photo} className={`card-img-top rounded`} />
+            className={`${styles.hoverablePlayButton} ${displayPause}`}
+            onClick={handlePlay}
+          >
+            <i className={`fa-solid fa-circle-pause ${styles.playButton}`}></i>
+          </button>
+        </div>
         <div className={`${styles.cardBody}`}>
           <h5 className={`${styles.tituloLista}`}>{props.name}</h5>
           <p className={`${styles.autorLista}`}>{props.description}</p>

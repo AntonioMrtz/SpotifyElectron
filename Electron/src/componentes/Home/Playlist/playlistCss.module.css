@@ -79,7 +79,7 @@
 .playButton {
 
   color: var(--primary-green);
-  font-size: 3.5vw;
+  font-size: 3.25vw;
   align-content: center;
 
 }
@@ -94,11 +94,9 @@
 
 
 
-.card .imgContainer{
+.card .imgContainer {
 
   position: relative;
 
 
 }
-
-

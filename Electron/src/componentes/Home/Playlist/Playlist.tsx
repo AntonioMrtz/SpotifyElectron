@@ -1,7 +1,9 @@
 import styles from './playlistCss.module.css';
 import { PropsPlaylist } from '../types/propsPlaylist.module';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useState,MouseEvent } from 'react';
+
+// ... (importaciones y definición de componente)
 
 export default function Home(props: PropsPlaylist) {
   const [displayPlay, setdisplayPlay] = useState(styles.displayTruePlay);
@@ -11,7 +13,7 @@ export default function Home(props: PropsPlaylist) {
   let urlPlaylist = '/playlist/' + props.name;
 
   const handlePlay = (): void => {
-    if (Playing == false) {
+    if (Playing === false) {
       setdisplayPause(styles.displayTruePlay);
       setdisplayPlay(styles.displayNonePlay);
       setPlaying(true);
@@ -22,20 +24,26 @@ export default function Home(props: PropsPlaylist) {
     }
   };
 
+  const handleButtonClick = (e: MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation(); // Detener la propagación del evento de clic
+    e.preventDefault()
+    handlePlay();
+  };
+
   return (
     <span className={`rounded ${styles.card}`}>
-    <Link to={urlPlaylist} key={props.name}>
+      <Link to={urlPlaylist} key={props.name}>
         <div className={`${styles.imgContainer}`}>
           <img src={props.photo} className={`card-img-top rounded`} />
           <button
             className={`${styles.hoverablePlayButton} ${displayPlay}`}
-            onClick={handlePlay}
+            onClick={handleButtonClick}
           >
             <i className={`fa-solid fa-circle-play ${styles.playButton}`}></i>
           </button>
           <button
             className={`${styles.hoverablePlayButton} ${displayPause}`}
-            onClick={handlePlay}
+            onClick={handleButtonClick}
           >
             <i className={`fa-solid fa-circle-pause ${styles.playButton}`}></i>
           </button>
@@ -44,7 +52,7 @@ export default function Home(props: PropsPlaylist) {
           <h5 className={`${styles.tituloLista}`}>{props.name}</h5>
           <p className={`${styles.autorLista}`}>{props.description}</p>
         </div>
-    </Link>
+      </Link>
     </span>
   );
 }

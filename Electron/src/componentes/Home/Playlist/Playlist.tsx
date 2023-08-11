@@ -24,7 +24,7 @@ export default function Home(props: PropsPlaylist) {
 
   return (
     <span className={`rounded ${styles.card}`}>
-      <Link to={urlPlaylist} key={props.name}>
+    <Link to={urlPlaylist} key={props.name}>
         <div className={`${styles.imgContainer}`}>
           <img src={props.photo} className={`card-img-top rounded`} />
           <button
@@ -44,7 +44,7 @@ export default function Home(props: PropsPlaylist) {
           <h5 className={`${styles.tituloLista}`}>{props.name}</h5>
           <p className={`${styles.autorLista}`}>{props.description}</p>
         </div>
-      </Link>
+    </Link>
     </span>
   );
 }

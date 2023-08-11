@@ -10,9 +10,6 @@ interface PropsHome {
 }
 
 export default function Home(props: PropsHome) {
-  const handleDoubleClick = () => {
-    props.changeSongName('p3');
-  };
 
   const [playlists, setPlaylists] = useState<PropsPlaylist[]>();
 
@@ -66,7 +63,7 @@ export default function Home(props: PropsHome) {
           >
             <button
               className={`${styles.categoryTitle}`}
-              onClick={handleDoubleClick}
+              /* onClick={} */
             >
               {' '}
               Especialmente para ti{' '}
@@ -105,7 +102,7 @@ export default function Home(props: PropsHome) {
           >
             <button
               className={`${styles.categoryTitle}`}
-              onClick={handleDoubleClick}
+              /* onClick={} */
             >
               Escuchado recientemente
             </button>

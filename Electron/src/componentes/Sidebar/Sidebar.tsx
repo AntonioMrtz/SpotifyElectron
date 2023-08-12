@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import Global from 'global/global';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -12,7 +12,7 @@ interface PropsSidebar {
   triggerReloadSidebar: boolean;
 }
 
-export default function Sidebar(props: PropsSidebar) {
+export default function Sidebar({ triggerReloadSidebar }: PropsSidebar) {
   //* MENU HOVER
 
   const [listItemInicio, setHoverInicio] = useState('');
@@ -45,6 +45,7 @@ export default function Sidebar(props: PropsSidebar) {
   //* HIGHLIGHT CURRENT SECTION LI
 
   const [selectedID, setSelectedID] = useState<string>(); // you could set a default id as well
+  const [selectedPlaylist, setSelectedPlaylist] = useState<string>(''); // Estado para almacenar el nombre de la playlist seleccionada
 
   const getSelectedClass = (id: string) =>
     selectedID === id ? styles.linksubtleClicked : '';
@@ -79,13 +80,11 @@ export default function Sidebar(props: PropsSidebar) {
 
   //* PLAYLISTS
 
-  const [selectedPlaylist, setSelectedPlaylist] = useState<string>(''); // Estado para almacenar el nombre de la playlist seleccionada
-
   const [playlists, setPlaylists] = useState<PropsPlaylist[]>();
 
   const [loading, setLoading] = useState(true);
 
-  const handlePlaylists = () => {
+  const handlePlaylists = useCallback(() => {
     fetch(`${Global.backendBaseUrl}playlists/`, {
       headers: { 'Access-Control-Allow-Origin': '*' },
     })
@@ -94,72 +93,86 @@ export default function Sidebar(props: PropsSidebar) {
         if (res.playlists) {
           const propsPlaylists: PropsPlaylist[] = [];
 
-          for (let obj of res.playlists) {
-            obj = JSON.parse(obj);
+          res.playlists.forEach((playlistFetchObject: any) => {
+            const playlist = JSON.parse(playlistFetchObject);
             const propsPlaylist: PropsPlaylist = {
-              name: obj.name,
-              photo: obj.photo === '' ? defaultThumbnailPlaylist : obj.photo,
+              name: playlist.name,
+              photo:
+                playlist.photo === ''
+                  ? defaultThumbnailPlaylist
+                  : playlist.photo,
               handleUrlPlaylistClicked,
               reloadSidebar: handlePlaylists,
               playlistStyle: '',
             };
 
             propsPlaylists.push(propsPlaylist);
-          }
+          });
           setPlaylists(propsPlaylists);
         }
 
         setLoading(false);
+        return null;
       })
       .catch((error) => {
         console.log(error);
         console.log('No se pudieron obtener las playlists');
       });
-  };
+  }, []);
 
   useEffect(() => {
     handlePlaylists();
-  }, []);
+  }, [handlePlaylists]);
 
   /* triggered when other component wants to reload the sidebar */
   useEffect(() => {
     handlePlaylists();
-  }, [props.triggerReloadSidebar]);
+  }, [handlePlaylists, triggerReloadSidebar]);
 
   return (
     <div className={`container-fluid ${styles.wrapperNavbar}`}>
       <header className={`${styles.header}`}>
-        <ul className={`${styles.ul}`}>
-          <Link to="/">
-            <li
-              className={`${
-                styles.headerLi
-              } ${listItemInicio} ${getSelectedClass('li-inicio')} `}
-              onMouseOver={handleMouseOverInicio}
-              onMouseOut={handleMouseOutInicio}
-              onClick={handleUrlInicioClicked}
-              id="li-inicio"
-            >
-              <i className={`fa-solid fa-house fa-fw ${styles.headerI}`} />
-              <span className={`${styles.headerI}`}>Inicio</span>
-            </li>
-          </Link>
-          <Link to="/explorar" className={`${styles.aHeader}`}>
-            <li
-              className={`${
-                styles.headerLi
-              } ${listItemBuscar} ${getSelectedClass('li-buscar')}`}
-              onMouseOver={handleMouseOverBuscar}
-              onMouseOut={handleMouseOutBuscar}
-              onClick={handleUrlBuscarClicked}
-              id="li-buscar"
-            >
-              <i
-                className={`fa-solid fa-magnifying-glass fa-fw ${styles.headerI}`}
-              />
-              <span className={`${styles.headerI}`}>Buscar</span>
-            </li>
-          </Link>
+        <ul className={`${styles.ulNavigation}`}>
+          <li>
+            <Link to="/">
+              <button
+                type="button"
+                onFocus={handleMouseOverInicio}
+                onBlur={handleMouseOutInicio}
+                className={`${
+                  styles.headerLi
+                } ${listItemInicio} ${getSelectedClass('li-inicio')} `}
+                onMouseOver={handleMouseOverInicio}
+                onMouseOut={handleMouseOutInicio}
+                onClick={handleUrlInicioClicked}
+                id="li-inicio"
+              >
+                <i className={`fa-solid fa-house fa-fw ${styles.headerI}`} />
+                <span className={`${styles.headerI}`}>Inicio</span>
+              </button>
+            </Link>
+          </li>
+          <li>
+            <Link to="/explorar" className={`${styles.aHeader}`}>
+              <button
+                type="button"
+                onFocus={handleMouseOverBuscar}
+                onBlur={handleMouseOutBuscar}
+                className={`${
+                  styles.headerLi
+                } ${listItemBuscar} ${getSelectedClass('li-buscar')}`}
+                onMouseOver={handleMouseOverBuscar}
+                onMouseOut={handleMouseOutBuscar}
+                onClick={handleUrlBuscarClicked}
+                id="li-buscar"
+              >
+                <i
+                  className={`fa-solid fa-magnifying-glass fa-fw ${styles.headerI}`}
+                />
+                <span className={`${styles.headerI}`}>Buscar</span>
+              </button>
+            </Link>
+          </li>
         </ul>
       </header>
 

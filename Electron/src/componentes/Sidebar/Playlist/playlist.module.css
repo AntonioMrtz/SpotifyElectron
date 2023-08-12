@@ -5,6 +5,8 @@
   cursor: pointer;
   overflow-x: hidden;
   align-items: center;
+  background-color: transparent;
+  border: none;
 }
 
 .wrapperPlaylist:hover {
@@ -37,4 +39,10 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+.textContainer{
+
+  justify-content: start;
+
 }

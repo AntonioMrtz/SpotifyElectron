@@ -136,6 +136,10 @@ async def create_song(name: str, artist: str, genre: Genre, photo: str, file) ->
     try:
         # Assuming 'audio_bytes' contains the audio data in bytes
         audio_data, sample_rate = librosa.load(io.BytesIO(file), sr=None)
+
+        # Calculate the duration in seconds
+        duration = librosa.get_duration(y=audio_data, sr=sample_rate)
+
         file_id = gridFsSong.put(
             file, name=name, artist=artist, duration=duration, genre=str(genre.value), photo=photo, number_of_plays=0)
 

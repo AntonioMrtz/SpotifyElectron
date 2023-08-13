@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import styles from './footerCss.module.css';
+import { useState } from 'react';
+import styles from './footer.module.css';
 import SongInfo from './SongInfo/SongInfo';
 import SongConfig from './SongConfig/SongConfig';
 import Player from './Player/Player';
@@ -8,12 +8,12 @@ interface PropsFooter {
   songName: string;
 }
 
-export default function Footer(props: PropsFooter) {
+export default function Footer({ songName }: PropsFooter) {
   const [volume, setVolume] = useState<number>(50);
   const [songInfo, setSongInfo] = useState<JSON | undefined>();
 
-  const changeVolumeParent = (volume: number): void => {
-    setVolume(volume);
+  const changeVolumeParent = (newVolume: number): void => {
+    setVolume(newVolume);
   };
 
   const changeSongInfo = (data: JSON): void => {
@@ -28,7 +28,7 @@ export default function Footer(props: PropsFooter) {
 
       <Player
         volume={volume}
-        songName={props.songName}
+        songName={songName}
         changeSongInfo={changeSongInfo}
       />
 

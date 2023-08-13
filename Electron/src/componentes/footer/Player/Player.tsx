@@ -9,13 +9,71 @@ interface PropsPlayer {
   changeSongInfo: (data: JSON) => void;
 }
 
-export default function Player(props: PropsPlayer) {
+export default function Player({
+  volume,
+  songName,
+  changeSongInfo,
+}: PropsPlayer) {
   //* PLAYER AUDIO DATA
 
   /* Global audio variable for the component, has the logic of playing the songs */
   const audio = useRef<HTMLAudioElement | null>(null);
 
-  const { songName } = props;
+  //* PLAYER BUTTON HANDLERS
+
+  /* Methods are declared when song is fetched */
+  const [play, setPlay] = useState<MouseEventHandler>();
+  const [pause, setPause] = useState<MouseEventHandler>();
+
+  /* Play/Pause Button manager */
+  const [displayNonePlay, setDisplayNonePlay] = useState('');
+  const [displayNonePause, setDisplayNonePause] = useState(
+    styles.displayNonePlay
+  );
+
+  /**
+   * Modifies buttons and control variables when the play button is clicked
+   */
+  const handlePlay = () => {
+    setDisplayNonePlay(styles.displayNonePlay);
+    setDisplayNonePause('');
+  };
+
+  /**
+   * Modifies buttons and control variables when the pause button is clicked
+   */
+  const handlePause = () => {
+    setDisplayNonePlay('');
+    setDisplayNonePause(styles.displayNonePause);
+  };
+
+  //* PLAYBACK TIME MANAGING
+
+  /* Hooks for updating the children Playbar */
+  const [playBackTime, setPlayBackTime] = useState(0);
+  const [songDuration, setSongDuration] = useState(0);
+
+  /* Update playback time  */
+  const changePlayBackTime = (value: number) => {
+    if (audio.current && audio.current.currentTime) {
+      audio.current.currentTime = value;
+    }
+  };
+
+  //* VOLUME
+
+  const setVolume = () => {
+    if (audio.current && audio.current.volume !== undefined) {
+      audio.current.volume =
+        volume === 0
+          ? (audio.current.volume = 0)
+          : (audio.current.volume = volume / 100);
+    }
+  };
+  /* Manages volume given from parent */
+  useEffect(() => {
+    setVolume();
+  }, [volume]);
 
   /* Loads the song and metadata to the Player */
   useEffect(() => {
@@ -26,37 +84,44 @@ export default function Player(props: PropsPlayer) {
     fetch(`${Global.backendBaseUrl}canciones/${songName}`, {
       headers: { 'Access-Control-Allow-Origin': '*' },
     })
-      .then((res) => res.json())
-      .then((res) => {
+      .then((resGetSong) => resGetSong.json())
+      .then((resGetSongFetch) => {
         const requestOptions = {
           method: 'PUT',
         };
         const fetchUrlUpdateSong: string = `${Global.backendBaseUrl}canciones/${songName}?number_of_plays=True`;
-        fetch(fetchUrlUpdateSong, requestOptions).then((res) => {});
+        fetch(fetchUrlUpdateSong, requestOptions);
         fetch(
           `${Global.backendBaseUrl}canciones/dto/${songName}?number_of_plays=True`
-        ).then((res) => res.json());
-        props.changeSongInfo(res);
+        )
+          .then((res) => res.json())
+          .then((res) => {
+            changeSongInfo(res);
+            return null;
+          })
+          .catch(() => console.log('Unable to get Son Data'));
 
-        return res.file;
+        return resGetSongFetch.file;
       })
       .then((res) => {
-        let audiobytes_string = res;
+        let audioBytesString = res;
 
-        if (audiobytes_string !== undefined) {
-          audiobytes_string = audiobytes_string
+        if (audioBytesString !== undefined) {
+          audioBytesString = audioBytesString
             .replace('"', '')
             .replace('b', '')
             .replace("'", '')
             .slice(0, -1);
-          const dataURI = `data:audio/mp3;base64,${audiobytes_string}`;
+          const dataURI = `data:audio/mp3;base64,${audioBytesString}`;
           audio.current = new Audio(dataURI);
         }
+
+        return null;
       })
       .then(() => {
         if (audio.current) {
           // Listener that handles the time update of playbacktime
-          audio.current.addEventListener('timeupdate', function () {
+          audio.current.addEventListener('timeupdate', () => {
             if (
               audio.current &&
               audio.current.currentTime &&
@@ -72,7 +137,7 @@ export default function Player(props: PropsPlayer) {
           });
 
           // When metadata such as duration,etc is loaded
-          audio.current.addEventListener('loadedmetadata', function () {
+          audio.current.addEventListener('loadedmetadata', () => {
             if (audio.current) {
               audio.current.play();
               handlePlay();
@@ -105,67 +170,13 @@ export default function Player(props: PropsPlayer) {
 
         setPlay(playWhenFetched);
         setPause(pauseWhenFetched);
+
+        return null;
       })
-      .catch((res) => {
+      .catch(() => {
         console.log('Unable to fetch the song');
       });
-  }, [props.songName]);
-
-  //* PLAYER BUTTON HANDLERS
-
-  /* Methods are declared when song is fetched */
-  const [play, setPlay] = useState<MouseEventHandler>();
-  const [pause, setPause] = useState<MouseEventHandler>();
-
-  /**
-   * Modifies buttons and control variables when the play button is clicked
-   */
-  const handlePlay = () => {
-    setDisplayNonePlay(styles.displayNonePlay);
-    setDisplayNonePause('');
-  };
-
-  /**
-   * Modifies buttons and control variables when the pause button is clicked
-   */
-  const handlePause = () => {
-    setDisplayNonePlay('');
-    setDisplayNonePause(styles.displayNonePause);
-  };
-
-  /* Play/Pause Button manager */
-  const [displayNonePlay, setDisplayNonePlay] = useState('');
-  const [displayNonePause, setDisplayNonePause] = useState(
-    styles.displayNonePlay
-  );
-
-  //* PLAYBACK TIME MANAGING
-
-  /* Hooks for updating the children Playbar */
-  let [playBackTime, setPlayBackTime] = useState(0);
-  let [songDuration, setSongDuration] = useState(0);
-
-  /* Update playback time  */
-  const changePlayBackTime = (value: number) => {
-    if (audio.current && audio.current.currentTime) {
-      audio.current.currentTime = value;
-    }
-  };
-
-  //* VOLUME
-
-  /* Manages volume given from parent */
-  useEffect(() => {
-    setVolume();
-  }, [props.volume]);
-
-  const setVolume = () => {
-    if (audio.current && audio.current.volume !== undefined) {
-      props.volume == 0
-        ? (audio.current.volume = 0)
-        : (audio.current.volume = props.volume / 100);
-    }
-  };
+  }, [songName]);
 
   return (
     <div

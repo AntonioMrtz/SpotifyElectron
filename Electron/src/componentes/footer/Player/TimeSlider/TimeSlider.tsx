@@ -5,34 +5,41 @@ import styles from './timeSlider.module.css';
 
 interface PropsTimeSlider {
   playBackTime: number;
-  songDuration: number;
+  initialSongDuration: number;
   changePlayBackTime: (playBackTime: number) => void;
 }
 
-export default function TimeSlider(props: PropsTimeSlider) {
+/* Utils */
+
+const secondsToMinutesSeconds: Function = (secs: number) => {
+  const minutes = Math.floor(secs / 60);
+  const seconds = (secs - minutes * 60) / 100;
+
+  return (minutes + seconds).toFixed(2).replace('.', ':');
+};
+
+export default function TimeSlider({
+  playBackTime,
+  initialSongDuration,
+  changePlayBackTime,
+}: PropsTimeSlider) {
   /* Song PLAYBACK TIME */
 
   const [songPlayBackTime, setSongPlayBackTime] = useState(0);
   const [songPlayBackTimeMinutesSeconds, setSongPlayBackTimeMinutesSeconds] =
     useState(0.0);
 
-  const handleplaybacktime = (
-    event: Event,
-    value: number | number[],
-    activeThumb: number
-  ) => {
+  const handleplaybacktime = (event: Event, value: number | number[]) => {
     if (typeof value === 'number') {
       setSongPlayBackTime(value);
-      props.changePlayBackTime(value);
+      changePlayBackTime(value);
     }
   };
 
   useEffect(() => {
-    setSongPlayBackTime(props.playBackTime);
-    setSongPlayBackTimeMinutesSeconds(
-      secondsToMinutesSeconds(props.playBackTime)
-    );
-  }, [props.playBackTime]);
+    setSongPlayBackTime(playBackTime);
+    setSongPlayBackTimeMinutesSeconds(secondsToMinutesSeconds(playBackTime));
+  }, [playBackTime]);
 
   /* Song DURATION */
 
@@ -41,9 +48,9 @@ export default function TimeSlider(props: PropsTimeSlider) {
     useState(0.0);
 
   useEffect(() => {
-    setsongDurationMinutesSeconds(secondsToMinutesSeconds(props.songDuration));
-    setSongDuration(props.songDuration);
-  }, [props.songDuration]);
+    setsongDurationMinutesSeconds(secondsToMinutesSeconds(songDuration));
+    setSongDuration(initialSongDuration);
+  }, [initialSongDuration, songDuration]);
 
   /* Hover slider */
 
@@ -99,16 +106,8 @@ export default function TimeSlider(props: PropsTimeSlider) {
   );
 }
 
-/* Utils */
-const minutesSecondsToSeconds = (minutesSeconds: number) => {
+/* const minutesSecondsToSeconds = (minutesSeconds: number) => {
   const result =
     Math.round(minutesSeconds) * 60 + ((minutesSeconds % 1) * 100).toFixed(2);
   return result;
-};
-
-const secondsToMinutesSeconds: Function = (secs: number) => {
-  const minutes = Math.floor(secs / 60);
-  const seconds = (secs - minutes * 60) / 100;
-
-  return (minutes + seconds).toFixed(2).replace('.', ':');
-};
+}; */

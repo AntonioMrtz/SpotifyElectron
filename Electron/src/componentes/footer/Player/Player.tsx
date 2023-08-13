@@ -174,30 +174,30 @@ export default function Player(props: PropsPlayer) {
       <div
         className={`d-flex container-fluid flex-row ${styles.buttonsPlayerContainer}`}
       >
-        <span>
+        <button type="button">
           <i className="fa-solid fa-shuffle fa-fw" />
-        </span>
-        <span>
+        </button>
+        <button type="button">
           <i className="fa-solid fa-backward-step fa-fw" />
-        </span>
-        <span onClick={play} className={`${displayNonePlay}`}>
+        </button>
+        <button type="button" onClick={play} className={`${displayNonePlay}`}>
           <i className="fa-solid fa-circle-play fa-fw" />
-        </span>
-        <span onClick={pause} className={`${displayNonePause}`}>
+        </button>
+        <button type="button" onClick={pause} className={`${displayNonePause}`}>
           <i className="fa-solid fa-circle-pause fa-fw" />
-        </span>
-        <span>
+        </button>
+        <button type="button">
           <i className="fa-solid fa-forward-step fa-fw" />
-        </span>
+        </button>
 
-        <span>
+        <button type="button">
           <i className="fa-solid fa-repeat fa-fw" />
-        </span>
+        </button>
       </div>
 
       <TimeSlider
         playBackTime={playBackTime}
-        songDuration={songDuration}
+        initialSongDuration={songDuration}
         changePlayBackTime={changePlayBackTime}
       />
     </div>

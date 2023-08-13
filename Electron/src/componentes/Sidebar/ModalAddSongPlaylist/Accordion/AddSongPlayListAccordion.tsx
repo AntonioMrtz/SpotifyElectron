@@ -12,8 +12,6 @@ import ConfirmationModal from 'componentes/InfoPopover/InfoPopover';
 import GenreOption from './GenreOption/GenreOption';
 import styles from './addSongPlayListAccordion.module.css';
 
-('../../types/ModalConfirmationArgs');
-
 interface PropsAddSongPlayListAccordion {
   handleClose: Function;
   reloadSidebar: Function;
@@ -31,9 +29,10 @@ const MessagesInfoPopOver = {
   SONG_NOT_ADDED_DESCRIPTION: 'La canción no se ha podido añadir',
 };
 
-export default function AddSongPlayListAccordion(
-  props: PropsAddSongPlayListAccordion
-) {
+export default function AddSongPlayListAccordion({
+  handleClose,
+  reloadSidebar,
+}: PropsAddSongPlayListAccordion) {
   const [type, setType] = useState<InfoPopoverType>();
   const [title, setTitle] = useState<string>();
   const [description, setDescription] = useState<String>();
@@ -44,13 +43,13 @@ export default function AddSongPlayListAccordion(
     useState(false);
 
   const handleShowConfirmationModal = (
-    type: InfoPopoverType,
-    title: string,
-    description: string
+    typeInput: InfoPopoverType,
+    titleInput: string,
+    descriptionInput: string
   ) => {
-    setType(type);
-    setTitle(title);
-    setDescription(description);
+    setType(typeInput);
+    setTitle(titleInput);
+    setDescription(descriptionInput);
     setTriggerOpenConfirmationModal((state) => !state);
   };
 
@@ -93,11 +92,12 @@ export default function AddSongPlayListAccordion(
     event.preventDefault();
 
     if (formDataSong && songFile) {
-      for (const [key, value] of Object.entries(formDataSong)) {
+      Object.entries(formDataSong).forEach(([key, value]) => {
         if (key !== 'file' && typeof value === 'string') {
           url.searchParams.set(key, value);
         }
-      }
+      });
+
       const formDataFile = new FormData();
       formDataFile.append('file', songFile);
 
@@ -108,7 +108,7 @@ export default function AddSongPlayListAccordion(
 
       fetch(url, requestOptions)
         .then((response) => {
-          if (response.status == 201) {
+          if (response.status === 201) {
             console.log('Cancion creada');
             handleShowConfirmationModal(
               InfoPopoverType.SUCCESS,
@@ -123,12 +123,13 @@ export default function AddSongPlayListAccordion(
               MessagesInfoPopOver.SONG_NOT_ADDED_DESCRIPTION
             );
           }
-        })
-        .catch((error) => {
-          console.error('Error:', error);
+          return null;
         })
         .finally(() => {
           // props.handleClose();
+        })
+        .catch((error) => {
+          console.error('Error:', error);
         });
     }
   };
@@ -166,11 +167,11 @@ export default function AddSongPlayListAccordion(
     event.preventDefault();
 
     if (formDataPlaylist) {
-      for (const [key, value] of Object.entries(formDataPlaylist)) {
+      Object.entries(formDataPlaylist).forEach(([key, value]) => {
         if (typeof value === 'string') {
           url.searchParams.set(key, value);
         }
-      }
+      });
 
       const requestOptions = {
         method: 'POST',
@@ -182,7 +183,7 @@ export default function AddSongPlayListAccordion(
 
       fetch(url, requestOptions)
         .then((response) => {
-          if (response.status == 201) {
+          if (response.status === 201) {
             console.log('Playlist creada');
 
             handleShowConfirmationModal(
@@ -190,7 +191,7 @@ export default function AddSongPlayListAccordion(
               MessagesInfoPopOver.PLAYLIST_ADDED_TITLE,
               MessagesInfoPopOver.PLAYLIST_ADDED_DESCRIPTION
             );
-            props.reloadSidebar();
+            reloadSidebar();
           } else {
             console.log('No se a creado la playlist');
 
@@ -200,12 +201,13 @@ export default function AddSongPlayListAccordion(
               MessagesInfoPopOver.PLAYLIST_NOT_ADDED_DESCRIPTION
             );
           }
-        })
-        .catch((error) => {
-          console.error('Error:', error);
+          return null;
         })
         .finally(() => {
           // props.handleClose();
+        })
+        .catch((error) => {
+          console.error('Error:', error);
         });
     }
   };
@@ -221,8 +223,9 @@ export default function AddSongPlayListAccordion(
       .then((res) => res.json())
       .then((res) => {
         setGenres(res);
+        return null;
       })
-      .catch((error) => {
+      .catch(() => {
         console.log('No se pudieron obtener los géneros');
       });
   };
@@ -399,9 +402,16 @@ export default function AddSongPlayListAccordion(
 
                   {genres &&
                     Object.entries(genres).map(([key, value]) => {
-                      return (
-                        <GenreOption key={key} value={value} name={value} />
-                      );
+                      if (
+                        typeof value === 'string' &&
+                        typeof value === 'string'
+                      ) {
+                        return (
+                          <GenreOption key={key} value={value} name={value} />
+                        );
+                      }
+
+                      return null;
                     })}
                 </select>
               </div>
@@ -438,7 +448,7 @@ export default function AddSongPlayListAccordion(
         title={title}
         description={description}
         triggerOpenConfirmationModal={triggerOpenConfirmationModal}
-        handleClose={props.handleClose}
+        handleClose={handleClose}
       />
     </>
   );

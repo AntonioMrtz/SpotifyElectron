@@ -147,12 +147,13 @@ export default function Playlist({
           : resFetchGetPlaylistDTOJson.photo
       );
 
-      //TODO , problemas de rendimiento ya que hay que hacer fetch dentro de los bucles para cada cancion
+      // TODO , problemas de rendimiento ya que hay que hacer fetch dentro de los bucles para cada cancion
 
       if (resFetchGetPlaylistDTOJson.song_names) {
         setNumberSongs(resFetchGetPlaylistDTOJson.song_names.length);
         const propsSongs: PropsSongs[] = [];
 
+        // eslint-disable-next-line no-restricted-syntax
         for (const obj of resFetchGetPlaylistDTOJson.song_names.reverse()) {
           const propsSong: PropsSongs = {
             name: obj,
@@ -167,9 +168,11 @@ export default function Playlist({
 
           let artistNameAndDuration;
           try {
+            // eslint-disable-next-line no-await-in-loop
             const response = await fetch(
               `${Global.backendBaseUrl}canciones/dto/${obj}`
             );
+            // eslint-disable-next-line no-await-in-loop
             const data = await response.json();
             artistNameAndDuration = {
               artist: data.artist,

@@ -1,0 +1,15 @@
+export interface PropsContextMenu {
+  /* Close the first ContextMenu */
+  handleCloseParent: Function;
+  /* Refresh data on playlist menu after a modification */
+  refreshPlaylistData: Function;
+}
+
+export interface PropsContextMenuPlaylist extends PropsContextMenu {
+  playlistName: string;
+}
+
+export interface PropsContextMenuSong extends PropsContextMenu {
+  playlistName: string;
+  songName: string;
+}

@@ -1,31 +1,44 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import { ChangeEvent, FormEvent, useEffect, useState, MouseEvent } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Global from 'global/global';
-import styles from './playlist.module.css';
-import Song from './Song/Song';
 import { PropsSongs } from 'componentes/Sidebar/types/propsSongs.module';
 import { FastAverageColor } from 'fast-average-color';
-import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import ContextMenuPlaylist from 'componentes/ContextMenu/Playlist/ContextMenuPlaylist';
 import Popover, { PopoverPosition } from '@mui/material/Popover/Popover';
+import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
+import Song from './Song/Song';
+import styles from './playlist.module.css';
 
 interface PropsPlaylist {
   changeSongName: Function;
   triggerReloadSidebar: Function;
 }
 
-export default function Playlist(props: PropsPlaylist) {
+function secondsToHoursAndMinutes(seconds: number) {
+  const hours = Math.floor(seconds / 3600);
+  const remainingSeconds = seconds % 3600;
+  const minutes = Math.floor(remainingSeconds / 60);
+
+  return `${hours} h ${minutes} min `;
+}
+
+export default function Playlist({
+  changeSongName,
+  triggerReloadSidebar,
+}: PropsPlaylist) {
   const [mainColorThumbnail, setMainColorThumbnail] = useState('');
 
   /* Get current Playlist Name */
   const location = useLocation();
-  let playlistName = decodeURIComponent(
+  const playlistName = decodeURIComponent(
     location.pathname.split('/').slice(-1)[0]
   );
 
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
   const [thumbnail, setThumbnail] = useState<string>(defaultThumbnailPlaylist);
   const [numberSongs, setNumberSongs] = useState<number>(0);
@@ -34,12 +47,12 @@ export default function Playlist(props: PropsPlaylist) {
   const [displayPause, setdisplayPause] = useState(styles.displayNonePlay);
   const [displayDislike, setdisplayDislike] = useState('');
   const [displayLike, setdisplayLike] = useState(styles.displayNoneLike);
-  const [Playing, setPlaying] = useState(false);
-  const [Liked, setLiked] = useState(false);
+  const [playing, setPlaying] = useState(false);
+  const [liked, setLiked] = useState(false);
   const [songs, setSongs] = useState<PropsSongs[]>();
 
   const handlePlay = (): void => {
-    if (Playing == false) {
+    if (playing === false) {
       setdisplayPause('');
       setdisplayPlay(styles.displayNonePlay);
       setPlaying(true);
@@ -51,7 +64,7 @@ export default function Playlist(props: PropsPlaylist) {
   };
 
   const handleLike = (): void => {
-    if (Liked == false) {
+    if (liked === false) {
       setdisplayLike('');
       setdisplayDislike(styles.displayNoneLike);
       setLiked(true);
@@ -62,102 +75,16 @@ export default function Playlist(props: PropsPlaylist) {
     }
   };
 
-  let getTotalDurationPlaylist = () => {
+  const getTotalDurationPlaylist = () => {
     let totalDuration = 0;
 
     if (songs) {
-      for (let song of songs) {
+      songs.forEach((song) => {
         totalDuration += song.duration;
-      }
+      });
     }
     return totalDuration;
   };
-
-  const loadPlaylistData = async () => {
-    fetch(encodeURI(Global.backendBaseUrl + 'playlists/dto/' + playlistName))
-      .then((res) => res.json())
-      .then(async (res) => {
-        setDescription(res['description']);
-        setThumbnail(
-          res['photo'] === '' ? defaultThumbnailPlaylist : res['photo']
-        );
-        setThumbnailUpdatePlaylist(
-          res['photo'] === '' ? defaultThumbnailPlaylist : res['photo']
-        );
-
-        if (res['song_names']) {
-          setNumberSongs(res['song_names'].length);
-          let propsSongs: PropsSongs[] = [];
-
-          for (let obj of res['song_names'].reverse()) {
-            let propsSong: PropsSongs = {
-              name: obj,
-              playlistName: playlistName,
-              artistName: '',
-              duration: 0,
-              index: 0,
-
-              handleSongCliked: props.changeSongName,
-              refreshPlaylistData: loadPlaylistData,
-            };
-
-            let artistNameAndDuration;
-            try {
-              const response = await fetch(
-                Global.backendBaseUrl + 'canciones/dto/' + obj
-              );
-              const data = await response.json();
-              artistNameAndDuration = {
-                artist: data['artist'],
-                duration: data['duration'],
-              };
-            } catch (error) {
-              console.log('Unable to get Song: ' + error);
-              artistNameAndDuration = { artist: null, duration: null };
-            }
-
-            propsSong['artistName'] = artistNameAndDuration.artist;
-            propsSong['duration'] = artistNameAndDuration.duration;
-
-            propsSongs.push(propsSong);
-          }
-
-          setSongs(propsSongs);
-        }
-      })
-      .catch((error) => {
-        console.log('No se puede obtener la playlist');
-      });
-  };
-
-  useEffect(() => {
-    loadPlaylistData();
-
-    if (localStorage.getItem('playlistEdit') === 'true') {
-      setopenModalUpdatePlaylist(true);
-      localStorage.setItem('playlistEdit', JSON.stringify(false));
-    }
-  }, [location]);
-
-  /* Process photo color */
-  useEffect(() => {
-    const fac = new FastAverageColor();
-
-    let options = {
-      crossOrigin: '*',
-    };
-
-    fac
-      .getColorAsync(thumbnail, options)
-      .then((color) => {
-        setMainColorThumbnail(color.hex);
-      })
-      .catch((e) => {
-        //console.log(e);
-      });
-
-    fac.destroy();
-  }, [thumbnail]);
 
   /* Handle Update Playlist Data */
 
@@ -201,70 +128,134 @@ export default function Playlist(props: PropsPlaylist) {
     });
   };
 
-  const handleUpdatePlaylist = (event: FormEvent<HTMLButtonElement>) => {
+  const loadPlaylistData = async () => {
+    try {
+      const resFetchGetPlaylistDTO = await fetch(
+        encodeURI(`${Global.backendBaseUrl}playlists/dto/${playlistName}`)
+      );
+      const resFetchGetPlaylistDTOJson = await resFetchGetPlaylistDTO.json();
+
+      setDescription(resFetchGetPlaylistDTOJson.description);
+      setThumbnail(
+        resFetchGetPlaylistDTOJson.photo === ''
+          ? defaultThumbnailPlaylist
+          : resFetchGetPlaylistDTOJson.photo
+      );
+      setThumbnailUpdatePlaylist(
+        resFetchGetPlaylistDTOJson.photo === ''
+          ? defaultThumbnailPlaylist
+          : resFetchGetPlaylistDTOJson.photo
+      );
+
+      // TODO , problemas de rendimiento ya que hay que hacer fetch dentro de los bucles para cada cancion
+
+      if (resFetchGetPlaylistDTOJson.song_names) {
+        setNumberSongs(resFetchGetPlaylistDTOJson.song_names.length);
+        const propsSongs: PropsSongs[] = [];
+
+        // eslint-disable-next-line no-restricted-syntax
+        for (const obj of resFetchGetPlaylistDTOJson.song_names.reverse()) {
+          const propsSong: PropsSongs = {
+            name: obj,
+            playlistName,
+            artistName: '',
+            duration: 0,
+            index: 0,
+
+            handleSongCliked: changeSongName,
+            refreshPlaylistData: loadPlaylistData,
+          };
+
+          let artistNameAndDuration;
+          try {
+            // eslint-disable-next-line no-await-in-loop
+            const response = await fetch(
+              `${Global.backendBaseUrl}canciones/dto/${obj}`
+            );
+            // eslint-disable-next-line no-await-in-loop
+            const data = await response.json();
+            artistNameAndDuration = {
+              artist: data.artist,
+              duration: data.duration,
+            };
+          } catch (error) {
+            console.log(`Unable to get Song: ${error}`);
+            artistNameAndDuration = { artist: null, duration: null };
+          }
+
+          propsSong.artistName = artistNameAndDuration.artist;
+          propsSong.duration = artistNameAndDuration.duration;
+
+          propsSongs.push(propsSong);
+        }
+
+        setSongs(propsSongs);
+      }
+    } catch {
+      console.log('Unable to get playlist');
+    }
+  };
+
+  const handleUpdatePlaylist = async (event: FormEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
-    fetch(Global.backendBaseUrl + 'playlists/dto/' + playlistName, {
-      headers: { 'Access-Control-Allow-Origin': '*' },
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        let url = Global.backendBaseUrl + 'playlists/' + playlistName; // Reemplaza con la URL de tu API y el nombre de la playlist
-
-        let photo =
-          formData.foto && formData.foto.includes('http') ? formData.foto : '';
-
-        let fetchUrlUpdateSong;
-
-        if (formData.nombre !== playlistName && formData.nombre !== '') {
-          fetchUrlUpdateSong = `${url}?foto=${photo}&descripcion=${formData.descripcion}&nuevo_nombre=${formData.nombre}`;
-        } else {
-          fetchUrlUpdateSong = `${url}?foto=${photo}&descripcion=${formData.descripcion}`;
+    try {
+      const resGetPlaylistDTO = await fetch(
+        `${Global.backendBaseUrl}playlists/dto/${playlistName}`,
+        {
+          headers: { 'Access-Control-Allow-Origin': '*' },
         }
+      );
 
-        let newSongsPutPlaylist = [];
-        for (let song_name of res['song_names']) {
-          newSongsPutPlaylist.push(song_name);
-        }
+      const resGetPlaylistDTOJson = await resGetPlaylistDTO.json();
+      const newSongsPutPlaylist = [...resGetPlaylistDTOJson.song_names];
 
-        const requestOptions = {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(newSongsPutPlaylist),
-        };
+      const url = `${Global.backendBaseUrl}playlists/${playlistName}`; // Reemplaza con la URL de tu API y el nombre de la playlist
+      const photo =
+        formData.foto && formData.foto.includes('http') ? formData.foto : '';
 
-        fetch(fetchUrlUpdateSong, requestOptions).then((response) => {
-          if (response.status !== 204) {
-            console.log('Unable to update playlist');
-          } else {
-            setopenModalUpdatePlaylist(false);
-            if (formData.nombre !== playlistName && formData.nombre !== '') {
-              //* Al cargar inmediatamente con el useEffect de location produce que el contenido para la nueva url no esta disponible
-              props.triggerReloadSidebar();
-              navigate(`/playlist/` + formData.nombre, { replace: true });
-            } else {
-              loadPlaylistData();
-              props.triggerReloadSidebar();
-            }
-          }
-        });
-      })
-      .catch((error) => {
+      let fetchUrlUpdateSong: string;
+
+      if (formData.nombre !== playlistName && formData.nombre !== '') {
+        fetchUrlUpdateSong = `${url}?foto=${photo}&descripcion=${formData.descripcion}&nuevo_nombre=${formData.nombre}`;
+      } else {
+        fetchUrlUpdateSong = `${url}?foto=${photo}&descripcion=${formData.descripcion}`;
+      }
+
+      const requestOptions = {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newSongsPutPlaylist),
+      };
+
+      const resFetchUpdateSong = await fetch(
+        fetchUrlUpdateSong,
+        requestOptions
+      );
+
+      if (resFetchUpdateSong.status !== 204) {
         console.log('Unable to update playlist');
-      });
+      } else {
+        setopenModalUpdatePlaylist(false);
+        if (formData.nombre !== playlistName && formData.nombre !== '') {
+          //* Al cargar inmediatamente con el useEffect de location produce que el contenido para la nueva url no esta disponible
+          triggerReloadSidebar();
+          navigate(`/playlist/${formData.nombre}`, { replace: true });
+        } else {
+          loadPlaylistData();
+          triggerReloadSidebar();
+        }
+      }
+    } catch {
+      console.log('Unable to update playlist');
+    }
   };
 
   /* Context Menu */
 
   const [isOpen, setIsOpen] = useState(false);
-
-  useEffect(() => {
-    if (!isOpen) {
-      handleCloseContextMenu();
-    }
-  }, [isOpen]);
 
   const [anchorPosition, setAnchorPosition] = useState<{
     top: number;
@@ -275,7 +266,7 @@ export default function Playlist(props: PropsPlaylist) {
   const id = open ? 'parent-popover' : undefined;
 
   const handleOpenContextMenu = (event: MouseEvent<HTMLButtonElement>) => {
-    setIsOpen(isOpen ? false : true);
+    setIsOpen(!isOpen);
     setAnchorPosition({
       top: event.clientY,
       left: event.clientX,
@@ -287,6 +278,45 @@ export default function Playlist(props: PropsPlaylist) {
     setIsOpen(false);
   };
 
+  useEffect(() => {
+    if (!isOpen) {
+      handleCloseContextMenu();
+    }
+  }, [isOpen]);
+
+  /*  */
+
+  useEffect(() => {
+    loadPlaylistData();
+
+    if (localStorage.getItem('playlistEdit') === 'true') {
+      setopenModalUpdatePlaylist(true);
+      localStorage.setItem('playlistEdit', JSON.stringify(false));
+    }
+  }, [location]);
+
+  /* Process photo color */
+  useEffect(() => {
+    const fac = new FastAverageColor();
+
+    const options = {
+      crossOrigin: '*',
+    };
+
+    fac
+      .getColorAsync(thumbnail, options)
+      .then((color) => {
+        setMainColorThumbnail(color.hex);
+
+        return null;
+      })
+      .catch(() => {
+        // console.log(e);
+      });
+
+    fac.destroy();
+  }, [thumbnail]);
+
   return (
     <div
       className={`d-flex container-fluid flex-column ${styles.wrapperPlaylist}`}
@@ -297,6 +327,7 @@ export default function Playlist(props: PropsPlaylist) {
       >
         <div className={`d-flex flex-row container-fluid ${styles.nonBlurred}`}>
           <button
+            type="button"
             onClick={handleOpenUpdatePlaylistModal}
             className={`${styles.wrapperThumbnail}`}
           >
@@ -309,9 +340,9 @@ export default function Playlist(props: PropsPlaylist) {
             <p>Álbum</p>
             <h1>{playlistName}</h1>
             <p className={`${styles.descriptionText}`}>{description}</p>
-            <div className={`d-flex flex-row`}>
+            <div className="d-flex flex-row">
               <p>{numberSongs} canciones</p>
-              <p className={`me-2 ms-2`}>•</p>
+              <p className="me-2 ms-2">•</p>
               <p>
                 {secondsToHoursAndMinutes(getTotalDurationPlaylist())}{' '}
                 aproximadamente
@@ -322,58 +353,66 @@ export default function Playlist(props: PropsPlaylist) {
 
         <div className={` ${styles.nonBlurred} ${styles.subhHeaderPlaylist}`}>
           <button
+            type="button"
             className={`${styles.hoverablePlayButton} ${displayPlay}`}
             onClick={handlePlay}
           >
             <i
               className="fa-solid fa-circle-play"
               style={{ color: 'var(--primary-green)', fontSize: '3rem' }}
-            ></i>
+            />
           </button>
           <button
+            type="button"
             className={`${styles.hoverablePlayButton} ${displayPause}`}
             onClick={handlePlay}
           >
             <i
               className="fa-solid fa-circle-pause"
               style={{ color: 'var(--primary-green)', fontSize: '3rem' }}
-            ></i>
+            />
           </button>
           <button
+            type="button"
             className={`${styles.hoverableItemubheader} ${displayDislike}`}
             onClick={handleLike}
           >
             <i
               className="fa-regular fa-heart"
               style={{ color: 'var(--secondary-white)', fontSize: '1.75rem' }}
-            ></i>
+            />
           </button>
-          <button className={`${displayLike}`} onClick={handleLike}>
+          <button
+            type="button"
+            className={`${displayLike}`}
+            onClick={handleLike}
+          >
             <i
               className="fa-solid fa-heart"
               style={{ color: 'var(--primary-green)', fontSize: '1.75rem' }}
-            ></i>
+            />
           </button>
-          <button className={`${styles.hoverableItemubheader}`}>
+          <button type="button" className={`${styles.hoverableItemubheader}`}>
             <i
               className="fa-regular fa-circle-down"
               style={{ color: 'var(--secondary-white)', fontSize: '1.75rem' }}
-            ></i>
+            />
           </button>
           <button
+            type="button"
             className={`${styles.hoverableItemubheader}`}
             onClick={handleOpenContextMenu}
           >
             <i
               className="fa-solid fa-ellipsis"
               style={{ color: 'var(--secondary-white)' }}
-            ></i>
+            />
           </button>
         </div>
       </div>
 
       <div className={`d-flex container-fluid ${styles.wrapperSongTable}`}>
-        <ul className={`d-flex flex-column container-fluid`}>
+        <ul className="d-flex flex-column container-fluid">
           <li
             className={`container-fluid ${styles.gridContainer} ${styles.gridContainerFirstRow}`}
           >
@@ -387,7 +426,7 @@ export default function Playlist(props: PropsPlaylist) {
             <span
               className={` d-flex justify-content-center ${styles.gridItem}`}
             >
-              <i className="fa-regular fa-clock"></i>
+              <i className="fa-regular fa-clock" />
             </span>
           </li>
 
@@ -395,13 +434,13 @@ export default function Playlist(props: PropsPlaylist) {
             songs.map((song, index) => {
               return (
                 <Song
-                  key={index}
+                  key={song.name}
                   name={song.name}
                   playlistName={playlistName}
                   artistName={song.artistName}
                   index={index + 1}
                   duration={song.duration}
-                  handleSongCliked={props.changeSongName}
+                  handleSongCliked={changeSongName}
                   refreshPlaylistData={loadPlaylistData}
                 />
               );
@@ -435,14 +474,14 @@ export default function Playlist(props: PropsPlaylist) {
         >
           <ContextMenuPlaylist
             playlistName={playlistName}
-            handleClose={handleCloseContextMenu}
-            reloadSidebar={props.triggerReloadSidebar}
+            handleCloseParent={handleCloseContextMenu}
+            refreshPlaylistData={triggerReloadSidebar}
           />
         </Popover>
       </div>
 
       <Modal
-        className={``}
+        className=""
         open={openModalUpdatePlaylist}
         onClose={() => {
           setopenModalUpdatePlaylist(false);
@@ -451,22 +490,21 @@ export default function Playlist(props: PropsPlaylist) {
         aria-describedby="modal-modal-confirmation-description"
       >
         <Box sx={style} className={`${styles.wrapperUpdatePlaylistModal}`}>
-          <header
-            className={`d-flex flex-row justify-content-between align-items-center`}
-          >
+          <header className="d-flex flex-row justify-content-between align-items-center">
             <h1>Editar información</h1>
             <button
+              type="button"
               onClick={() => {
                 setopenModalUpdatePlaylist(false);
               }}
             >
-              <i className="fa-solid fa-xmark"></i>
+              <i className="fa-solid fa-xmark" />
             </button>
           </header>
 
           <form>
             <div className="d-flex flex-column p-0">
-              <div className={`d-flex flex-row container-fluid p-0`}>
+              <div className="d-flex flex-row container-fluid p-0">
                 <div className={` ${styles.wrapperUpdateThumbnail}`}>
                   <img src={`${thumbnailUpdatePlaylist}`} alt="" />
                 </div>
@@ -479,7 +517,7 @@ export default function Playlist(props: PropsPlaylist) {
                       name="nombre"
                       type="text"
                       defaultValue={playlistName}
-                      className={`form-control`}
+                      className="form-control"
                       id="nombre"
                       placeholder="Añade un nombre"
                       onChange={handleChangeForm}
@@ -497,7 +535,7 @@ export default function Playlist(props: PropsPlaylist) {
                         id="descripcion"
                         style={{ height: ' 100px' }}
                         onChange={handleChangeForm}
-                      ></textarea>
+                      />
                       <label htmlFor="floatingTextarea2">Descripción</label>
                     </div>
                   </div>
@@ -513,7 +551,7 @@ export default function Playlist(props: PropsPlaylist) {
                 <input
                   name="foto"
                   type="text"
-                  className={`form-control`}
+                  className="form-control"
                   id="foto"
                   placeholder="Url de la nueva foto"
                   onChange={handleChangeForm}
@@ -525,19 +563,13 @@ export default function Playlist(props: PropsPlaylist) {
             <div
               className={`d-flex flex-row justify-content-end pt-2 ${styles.wrapperUpdateButton} ${styles.inputPlaylist}`}
             >
-              <button onClick={handleUpdatePlaylist}>Guardar</button>
+              <button type="button" onClick={handleUpdatePlaylist}>
+                Guardar
+              </button>
             </div>
           </form>
         </Box>
       </Modal>
     </div>
   );
-}
-
-function secondsToHoursAndMinutes(seconds: number) {
-  const hours = Math.floor(seconds / 3600);
-  const remainingSeconds = seconds % 3600;
-  const minutes = Math.floor(remainingSeconds / 60);
-
-  return hours + ' h ' + minutes + ' min ';
 }

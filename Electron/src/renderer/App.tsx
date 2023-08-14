@@ -1,12 +1,12 @@
+import { Route, Routes, useLocation } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import Playlist from 'componentes/Playlist/Playlist';
+import StickyHeader from 'componentes/StickyHeader/StickyHeader';
 import styles from './AppCss.module.css';
 import Sidebar from '../componentes/Sidebar/Sidebar';
 import Home from '../componentes/Home/Home';
 import Explorar from '../componentes/Explorar/Explorar';
 import Footer from '../componentes/footer/Footer';
-import { Route, Routes, useLocation } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import Playlist from 'componentes/Playlist/Playlist';
-import StickyHeader from 'componentes/StickyHeader/StickyHeader';
 
 function App() {
   /* Scroll to the top if path is changed */
@@ -27,8 +27,8 @@ function App() {
   /* Handle change song name */
 
   const [songName, setSongName] = useState('none');
-  const changeSongName = (songName: string): void => {
-    setSongName(songName);
+  const changeSongName = (songNameInput: string): void => {
+    setSongName(songNameInput);
   };
 
   return (

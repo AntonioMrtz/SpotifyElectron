@@ -7,7 +7,7 @@ interface PropsVolumeSlider {
   changeVolume: (volume: number) => void;
 }
 
-export default function VolumeSlider(props: PropsVolumeSlider) {
+export default function VolumeSlider({ changeVolume }: PropsVolumeSlider) {
   const [isHovered, setIsHovered] = useState(false);
   const [previousVolume, setPreviousVolume] = useState<number>(50);
   const [currentValue, setcurrentValue] = useState<number>(50);
@@ -24,15 +24,11 @@ export default function VolumeSlider(props: PropsVolumeSlider) {
     setIsHovered(false);
   };
 
-  const handleVolume = (
-    event: Event,
-    newValue: number | number[],
-    activeThumb: number
-  ): void => {
+  const handleVolume = (event: Event, newValue: number | number[]): void => {
     if (typeof newValue === 'number') {
       setcurrentValue(newValue);
       setPreviousVolume(newValue);
-      props.changeVolume(newValue);
+      changeVolume(newValue);
       setmuted(false);
       if (newValue === 0) {
         setdisplayUnmuted(styles.displayMuted);
@@ -55,7 +51,7 @@ export default function VolumeSlider(props: PropsVolumeSlider) {
     if (!muted) {
       setPreviousVolume(currentValue);
       setcurrentValue(0);
-      props.changeVolume(0);
+      changeVolume(0);
       setdisplayUnmuted(styles.displayMuted);
       setdisplayHigh(styles.displayMuted);
       setdisplayMuted('');
@@ -64,7 +60,7 @@ export default function VolumeSlider(props: PropsVolumeSlider) {
       setcurrentValue(previousVolume);
       setdisplayMuted(styles.displayMuted);
       setmuted(false);
-      props.changeVolume(previousVolume);
+      changeVolume(previousVolume);
       if (previousVolume >= 75) {
         setdisplayHigh('');
       } else {
@@ -76,6 +72,7 @@ export default function VolumeSlider(props: PropsVolumeSlider) {
   return (
     <Box width="30%" paddingRight="2%" display="flex">
       <button
+        type="button"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         style={{
@@ -84,10 +81,11 @@ export default function VolumeSlider(props: PropsVolumeSlider) {
         className={`btn ${displayUnmuted} ${styles.buttonMargins}`}
         onClick={handleMute}
       >
-        <i className={`fa-solid fa-volume-low fa-fw`}></i>
+        <i className="fa-solid fa-volume-low fa-fw" />
       </button>
 
       <button
+        type="button"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         style={{
@@ -96,10 +94,11 @@ export default function VolumeSlider(props: PropsVolumeSlider) {
         className={`btn ${displayHigh} ${styles.buttonMargins}`}
         onClick={handleMute}
       >
-        <i className={`fa-solid fa-volume-high fa-fw`}></i>
+        <i className="fa-solid fa-volume-high fa-fw" />
       </button>
 
       <button
+        type="button"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         style={{
@@ -108,7 +107,7 @@ export default function VolumeSlider(props: PropsVolumeSlider) {
         className={`btn ${displayMuted} ${styles.buttonMargins}`}
         onClick={handleMute}
       >
-        <i className={`fa-solid fa-volume-xmark`}></i>
+        <i className="fa-solid fa-volume-xmark" />
       </button>
 
       <Slider

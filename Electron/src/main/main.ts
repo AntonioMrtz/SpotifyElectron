@@ -10,37 +10,38 @@
  */
 import path from 'path';
 import { app, BrowserWindow, shell, ipcMain, clipboard, Data } from 'electron';
-import { resolveHtmlPath } from './util';
 import Global from 'global/global';
+import { resolveHtmlPath } from './util';
 
 let mainWindow: BrowserWindow | null = null;
 
 /* Events */
 
-ipcMain.on('toogle-fullscreen', async (event) => {
+ipcMain.on('toogle-fullscreen', async () => {
   if (mainWindow && mainWindow.isFullScreen()) mainWindow.setFullScreen(false);
   else if (mainWindow) mainWindow.setFullScreen(true);
 });
 
-ipcMain.handle('copy-to-clipboard', async (event, ...args) => {
-  let data: Data = {};
-  data.text = args[0];
+ipcMain.handle('copy-to-clipboard', async (event, dataToClipboard) => {
+  const data: Data = {};
+  // eslint-disable-next-line prefer-destructuring
+  data.text = dataToClipboard;
 
   clipboard.write(data);
 });
 
-ipcMain.handle('load-previous-url', async (event) => {
+ipcMain.handle('load-previous-url', async () => {
   mainWindow?.webContents.goBack();
 });
 
-ipcMain.handle('load-forward-url', async (event) => {
+ipcMain.handle('load-forward-url', async () => {
   mainWindow?.webContents.goForward();
 });
 
-ipcMain.handle('handle-url-change', async (event) => {
-  //event.reply('response-handle-url-change',mainWindow?.webContents.canGoForward,mainWindow?.webContents.canGoBack)
+ipcMain.handle('handle-url-change', async () => {
+  // event.reply('response-handle-url-change',mainWindow?.webContents.canGoForward,mainWindow?.webContents.canGoBack)
 
-  let eventResponse: Global.HandleUrlChangeResponse = {
+  const eventResponse: Global.HandleUrlChangeResponse = {
     canGoBack: mainWindow?.webContents.canGoBack(),
     canGoForward: mainWindow?.webContents.canGoForward(),
   };
@@ -84,9 +85,9 @@ const createWindow = async () => {
     ? path.join(process.resourcesPath, 'assets')
     : path.join(__dirname, '../../assets');
 
-  const getAssetPath = (...paths: string[]): string => {
+  /* const getAssetPath = (...paths: string[]): string => {
     return path.join(RESOURCES_PATH, ...paths);
-  };
+  }; */
 
   mainWindow = new BrowserWindow({
     width: 1200,

@@ -33,9 +33,22 @@
   color: inherit;
 }
 
-.ul {
+.ulNavigation {
   padding: 0 !important;
   margin: 0 !important;
+}
+
+.ulNavigation li{
+
+  width: 100%;
+}
+
+.ulNavigation li button{
+
+  width: 100%;
+  border: none;
+  background-color: transparent;
+  text-align: start;
 }
 
 .headerI {

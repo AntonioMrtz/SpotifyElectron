@@ -2,15 +2,21 @@ import Modal from '@mui/material/Modal';
 import {
   InfoPopoverType,
   PropsInfoPopover,
-} from 'componentes/types/InfoPopover';
-import { useEffect, useImperativeHandle, useState } from 'react';
-import styles from './confirmationModal.module.css';
+} from 'componentes/InfoPopover/types/InfoPopover';
+import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 import CheckIcon from '@mui/icons-material/Check';
 import ContentPasteIcon from '@mui/icons-material/ContentPaste';
+import styles from './confirmationModal.module.css';
 
-export default function InfoPopover(props: PropsInfoPopover) {
+export default function InfoPopover({
+  title,
+  description,
+  type,
+  triggerOpenConfirmationModal,
+  handleClose,
+}: PropsInfoPopover) {
   const style = {
     position: 'absolute',
     top: '50%',
@@ -29,21 +35,21 @@ export default function InfoPopover(props: PropsInfoPopover) {
 
   const handleCloseConfirmationModal = () => {
     setOpenConfirmationModal(false);
-    if (props.handleClose) {
-      props.handleClose();
+    if (handleClose) {
+      handleClose();
     }
   };
 
   useEffect(() => {
-    if (props.triggerOpenConfirmationModal === true) {
+    if (triggerOpenConfirmationModal === true) {
       setOpenConfirmationModal((state) => !state);
     }
-  }, [props.triggerOpenConfirmationModal]);
+  }, [triggerOpenConfirmationModal]);
 
   return (
     <div>
       <Modal
-        className={``}
+        className=""
         open={openConfirmationModal}
         onClose={handleCloseConfirmationModal}
         aria-labelledby="modal-modal-confirmation"
@@ -53,43 +59,45 @@ export default function InfoPopover(props: PropsInfoPopover) {
           {' '}
           <div className={`${styles.wrapperConfirmationModalHeader}`}>
             <div className={`${styles.wrapperConfirmationModalText}`}>
-              <span>{props.title}</span>
-              <p>{props.description}</p>
+              <span>{title}</span>
+              <p>{description}</p>
             </div>
 
             <div className="d-flex container-fluid align-items-center justify-content-end">
-              {props.type === InfoPopoverType.SUCCESS && (
+              {type === InfoPopoverType.SUCCESS && (
                 <CheckIcon
                   style={{
                     color: 'var(--secondary-green)',
                     fontSize: '6rem',
                   }}
-                ></CheckIcon>
+                />
               )}
 
-              {props.type === InfoPopoverType.ERROR && (
+              {type === InfoPopoverType.ERROR && (
                 <PriorityHighIcon
                   style={{
                     color: 'var(--secondary-green)',
                     fontSize: '6rem',
                   }}
-                ></PriorityHighIcon>
+                />
               )}
 
-              {props.type === InfoPopoverType.CLIPBOARD && (
+              {type === InfoPopoverType.CLIPBOARD && (
                 <ContentPasteIcon
                   style={{
                     color: 'var(--secondary-green)',
                     fontSize: '6rem',
                   }}
-                ></ContentPasteIcon>
+                />
               )}
             </div>
           </div>
           <div
             className={`container-fluid d-flex flex-column justify-content-flex-end mt-4 ${styles.wrapperButton} `}
           >
-            <button onClick={handleCloseConfirmationModal}>Confirmar</button>
+            <button type="button" onClick={handleCloseConfirmationModal}>
+              Confirmar
+            </button>
           </div>
         </Box>
       </Modal>

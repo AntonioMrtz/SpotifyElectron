@@ -12,14 +12,6 @@ export default function Footer({ songName }: PropsFooter) {
   const [volume, setVolume] = useState<number>(50);
   const [songInfo, setSongInfo] = useState<JSON | undefined>();
 
-  const changeVolumeParent = (newVolume: number): void => {
-    setVolume(newVolume);
-  };
-
-  const changeSongInfo = (data: JSON): void => {
-    setSongInfo(data);
-  };
-
   return (
     <div
       className={`container-fluid d-flex flex-row space-evenly ${styles.wrapperFooter}`}
@@ -29,10 +21,10 @@ export default function Footer({ songName }: PropsFooter) {
       <Player
         volume={volume}
         songName={songName}
-        changeSongInfo={changeSongInfo}
+        changeSongInfo={setSongInfo}
       />
 
-      <SongConfig changeVolume={changeVolumeParent} />
+      <SongConfig changeVolume={setVolume} />
     </div>
   );
 }

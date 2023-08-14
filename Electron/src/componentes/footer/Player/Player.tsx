@@ -1,4 +1,10 @@
-import { useEffect, useState, useRef, MouseEventHandler } from 'react';
+import {
+  useEffect,
+  useState,
+  useRef,
+  MouseEventHandler,
+  useCallback,
+} from 'react';
 import Global from 'global/global';
 import styles from './player.module.css';
 import TimeSlider from './TimeSlider/TimeSlider';
@@ -62,121 +68,120 @@ export default function Player({
 
   //* VOLUME
 
-  const setVolume = () => {
+  const setVolume = useCallback(() => {
     if (audio.current && audio.current.volume !== undefined) {
       audio.current.volume =
         volume === 0
           ? (audio.current.volume = 0)
           : (audio.current.volume = volume / 100);
     }
-  };
-  /* Manages volume given from parent */
-  useEffect(() => {
-    setVolume();
   }, [volume]);
 
-  /* Loads the song and metadata to the Player */
   useEffect(() => {
-    if (audio.current) {
-      audio.current.pause();
-    }
+    setVolume();
+  }, [setVolume, volume]);
 
-    fetch(`${Global.backendBaseUrl}canciones/${songName}`, {
-      headers: { 'Access-Control-Allow-Origin': '*' },
-    })
-      .then((resGetSong) => resGetSong.json())
-      .then((resGetSongFetch) => {
-        const requestOptions = {
-          method: 'PUT',
-        };
-        const fetchUrlUpdateSong: string = `${Global.backendBaseUrl}canciones/${songName}?number_of_plays=True`;
-        fetch(fetchUrlUpdateSong, requestOptions);
-        fetch(
-          `${Global.backendBaseUrl}canciones/dto/${songName}?number_of_plays=True`
-        )
-          .then((res) => res.json())
-          .then((res) => {
-            changeSongInfo(res);
-            return null;
-          })
-          .catch(() => console.log('Unable to get Son Data'));
+  /* Loads the song and metadata to the Player */
+  const handleMetaData = async () => {
+    try {
+      if (audio.current) {
+        audio.current.pause();
+      }
 
-        return resGetSongFetch.file;
-      })
-      .then((res) => {
-        let audioBytesString = res;
-
-        if (audioBytesString !== undefined) {
-          audioBytesString = audioBytesString
-            .replace('"', '')
-            .replace('b', '')
-            .replace("'", '')
-            .slice(0, -1);
-          const dataURI = `data:audio/mp3;base64,${audioBytesString}`;
-          audio.current = new Audio(dataURI);
+      const resFetchSong = await fetch(
+        `${Global.backendBaseUrl}canciones/${songName}`,
+        {
+          headers: { 'Access-Control-Allow-Origin': '*' },
         }
+      );
 
-        return null;
-      })
-      .then(() => {
-        if (audio.current) {
-          // Listener that handles the time update of playbacktime
-          audio.current.addEventListener('timeupdate', () => {
-            if (
-              audio.current &&
-              audio.current.currentTime &&
-              audio.current.duration
-            ) {
-              const time = audio.current.currentTime;
-              setPlayBackTime(+time.toFixed(2));
+      const resFetchSongJson = await resFetchSong.json();
 
-              if (audio.current.currentTime === audio.current.duration) {
-                handlePause();
-              }
-            }
-          });
+      const requestOptions = {
+        method: 'PUT',
+      };
+      const fetchUrlUpdateSong: string = `${Global.backendBaseUrl}canciones/${songName}?number_of_plays=True`;
 
-          // When metadata such as duration,etc is loaded
-          audio.current.addEventListener('loadedmetadata', () => {
-            if (audio.current) {
-              audio.current.play();
-              handlePlay();
-              setSongDuration(audio.current.duration); // not updating every 0.5s as playback time
-              setVolume();
-            }
-          });
-        }
+      fetch(fetchUrlUpdateSong, requestOptions);
+      const resFetchSongDTO = await fetch(
+        `${Global.backendBaseUrl}canciones/dto/${songName}`
+      );
 
-        // set play and pause functions
+      const resFetchSongDTOJson = await resFetchSongDTO.json();
+      changeSongInfo(resFetchSongDTOJson);
 
-        const playWhenFetched = () => {
-          return function returns() {
-            if (audio.current) {
-              audio.current.play();
-              handlePlay();
-              setSongDuration(audio.current.duration); // not updating every 0.5s as playback time
-            }
-          };
-        };
+      let audioBytesString = resFetchSongJson.file;
 
-        const pauseWhenFetched = () => {
-          return function returns() {
-            if (audio.current) {
-              audio.current.pause();
+      if (audioBytesString !== undefined) {
+        audioBytesString = audioBytesString
+          .replace('"', '')
+          .replace('b', '')
+          .replace("'", '')
+          .slice(0, -1);
+        const dataURI = `data:audio/mp3;base64,${audioBytesString}`;
+        audio.current = new Audio(dataURI);
+      }
+
+      if (audio.current) {
+        // Listener that handles the time update of playbacktime
+        audio.current.addEventListener('timeupdate', () => {
+          if (
+            audio.current &&
+            audio.current.currentTime &&
+            audio.current.duration
+          ) {
+            const time = audio.current.currentTime;
+            setPlayBackTime(+time.toFixed(2));
+
+            if (audio.current.currentTime === audio.current.duration) {
               handlePause();
             }
-          };
+          }
+        });
+
+        // When metadata such as duration,etc is loaded
+        audio.current.addEventListener('loadedmetadata', () => {
+          if (audio.current) {
+            audio.current.play();
+            handlePlay();
+            setSongDuration(audio.current.duration); // not updating every 0.5s as playback time
+            setVolume();
+          }
+        });
+      }
+
+      // set play and pause functions
+
+      const playWhenFetched = () => {
+        return function returns() {
+          if (audio.current) {
+            audio.current.play();
+            handlePlay();
+            setSongDuration(audio.current.duration); // not updating every 0.5s as playback time
+          }
         };
+      };
 
-        setPlay(playWhenFetched);
-        setPause(pauseWhenFetched);
+      const pauseWhenFetched = () => {
+        return function returns() {
+          if (audio.current) {
+            audio.current.pause();
+            handlePause();
+          }
+        };
+      };
 
-        return null;
-      })
-      .catch(() => {
-        console.log('Unable to fetch the song');
-      });
-  }, [songName]);
+      setPlay(playWhenFetched);
+      setPause(pauseWhenFetched);
+    } catch {
+      console.log('Unable to fetch the song');
+    }
+  };
+
+  useEffect(() => {
+    handleMetaData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [songName, changeSongInfo]);
 
   return (
     <div

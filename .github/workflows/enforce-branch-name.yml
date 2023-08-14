@@ -14,9 +14,17 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Check branch name format
+      id: check_branch
       run: |
         branch_name=$(echo "${GITHUB_REF#refs/heads/}")
         if [[ ! "$branch_name" =~ ^(feat|fix|refactor|docs|chore|test|style)\/.* ]]; then
           echo "Branch name doesn't match the required format."
           exit 1
         fi
+
+    - name: Delete branch if fail
+      if: ${{ failure() }}
+      uses: dawidd6/action-delete-branch@v3
+      with:
+        github_token: ${{github.token}}
+        branches: ${{ github.ref_name }}        

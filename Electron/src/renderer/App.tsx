@@ -27,8 +27,8 @@ function App() {
   /* Handle change song name */
 
   const [songName, setSongName] = useState('none');
-  const changeSongName = (songName: string): void => {
-    setSongName(songName);
+  const changeSongName = (songNameInput: string): void => {
+    setSongName(songNameInput);
   };
 
   return (

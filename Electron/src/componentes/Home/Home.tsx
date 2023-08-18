@@ -87,6 +87,7 @@ export default function Home() {
                   name={playlist.name}
                   photo={playlist.photo}
                   description={playlist.description}
+                  key={playlist.name + playlist.description}
                 />
               );
             })}
@@ -127,6 +128,7 @@ export default function Home() {
                   name={playlist.name}
                   photo={playlist.photo}
                   description={playlist.description}
+                  key={playlist.name + playlist.description}
                 />
               );
             })}

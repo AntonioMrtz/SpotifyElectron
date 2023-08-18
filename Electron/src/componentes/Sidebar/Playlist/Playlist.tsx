@@ -1,34 +1,31 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
+import Popover, { PopoverPosition } from '@mui/material/Popover';
+import { useEffect, useState, MouseEvent } from 'react';
 import styles from './playlist.module.css';
 import { PropsPlaylist } from '../types/propsPlaylist.module';
-import Popover, { PopoverPosition } from '@mui/material/Popover';
-import { useEffect, useState } from 'react';
 import ContextMenuPlaylist from '../../ContextMenu/Playlist/ContextMenuPlaylist';
 
-export default function Playlist(props: PropsPlaylist) {
+export default function Playlist({
+  name,
+  photo,
+  playlistStyle,
+  handleUrlPlaylistClicked,
+  reloadSidebar,
+}: PropsPlaylist) {
   const handleClickPlaylist = () => {
-    props.handleUrlPlaylistClicked(props.name);
+    handleUrlPlaylistClicked(name);
   };
 
   const [isOpen, setIsOpen] = useState(false);
-
-  useEffect(() => {
-    if (!isOpen) {
-      handleClose();
-    }
-  }, [isOpen]);
-
-  const handleRightClick = (event: React.MouseEvent<HTMLLIElement>) => {
-    event.preventDefault();
-    setIsOpen(isOpen ? false : true);
-    handleClick(event);
-  };
 
   const [anchorPosition, setAnchorPosition] = useState<{
     top: number;
     left: number;
   } | null>(null);
 
-  const handleClick = (event: React.MouseEvent<HTMLLIElement>) => {
+  const handleRightClick = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    setIsOpen(!isOpen);
     setAnchorPosition({
       top: event.clientY,
       left: event.clientX,
@@ -43,24 +40,31 @@ export default function Playlist(props: PropsPlaylist) {
   const open = Boolean(anchorPosition);
   const id = open ? 'parent-popover' : undefined;
 
+  useEffect(() => {
+    if (!isOpen) {
+      handleClose();
+    }
+  }, [isOpen]);
+
   return (
-    <span
-      className={`container-fluid d-flex flex-row ${styles.wrapperPlaylist} ${props.playlistStyle}`}
+    <button
+      type="button"
+      className={`container-fluid d-flex flex-row ${styles.wrapperPlaylist} ${playlistStyle}`}
       onClick={handleClickPlaylist}
       onContextMenu={handleRightClick}
     >
-      <img src={props.photo} alt="" className="img-fluid img-border-2" />
+      <img src={photo} alt="" className="img-fluid img-border-2" />
 
       <div
-        className="container-fluid d-flex flex-column p-0 ms-2 "
+        className="container-fluid d-flex flex-column p-0 ms-2 justify-content-start"
         style={{
           textOverflow: 'ellipsis',
           overflow: 'hidden',
           whiteSpace: 'nowrap',
         }}
       >
-        <label>{props.name}</label>
-        <p>Lista</p>
+        <label style={{ textAlign: 'start' }}>{name}</label>
+        <p style={{ textAlign: 'start' }}>Lista</p>
       </div>
       <div>
         <Popover
@@ -80,19 +84,19 @@ export default function Playlist(props: PropsPlaylist) {
           sx={{
             '& .MuiPaper-root': {
               backgroundColor: 'var(--hover-white)',
-            },'& . MuiPopover-root':{
-
-              zIndex:'1000'
-            }
+            },
+            '& . MuiPopover-root': {
+              zIndex: '1000',
+            },
           }}
         >
           <ContextMenuPlaylist
-            playlistName={props.name}
-            handleClose={handleClose}
-            reloadSidebar={props.reloadSidebar}
+            playlistName={name}
+            handleCloseParent={handleClose}
+            refreshPlaylistData={reloadSidebar}
           />
         </Popover>
       </div>
-    </span>
+    </button>
   );
 }

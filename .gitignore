@@ -169,3 +169,4 @@ __pycache__
 
 .vscode
 .vscode/*
+Electron/.erb/dll/preload.js

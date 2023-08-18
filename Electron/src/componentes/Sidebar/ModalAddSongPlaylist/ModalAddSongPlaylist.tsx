@@ -1,11 +1,8 @@
-import { useState, Fragment } from 'react';
+import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import AddSongPlayListAccordion from './Accordion/AddSongPlayListAccordion';
 import styles from './modalAddSongPlaylist.module.css';
-import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
-import CheckIcon from '@mui/icons-material/Check';
-import ConfirmationModal from 'componentes/InfoPopover/InfoPopover';
+import AddSongPlayListAccordion from './Accordion/AddSongPlayListAccordion';
 
 const style = {
   position: 'absolute',
@@ -23,7 +20,9 @@ interface PropsModalAddSongPlaylist {
   reloadSidebar: Function;
 }
 
-export default function ModalAddSongPlaylist(props: PropsModalAddSongPlaylist) {
+export default function ModalAddSongPlaylist({
+  reloadSidebar,
+}: PropsModalAddSongPlaylist) {
   /* ADDSONGPLAYLIST MODAL */
 
   const [open, setOpen] = useState(false);
@@ -32,9 +31,9 @@ export default function ModalAddSongPlaylist(props: PropsModalAddSongPlaylist) {
   const handleClose = () => setOpen(false);
 
   return (
-    <Fragment>
-      <button className={`btn`} onClick={handleOpen}>
-        <i className="fa-solid fa-plus fa-fw"></i>
+    <>
+      <button type="button" className="btn" onClick={handleOpen}>
+        <i className="fa-solid fa-plus fa-fw" />
       </button>
 
       {/* AddSongPlaylist Modal */}
@@ -47,11 +46,11 @@ export default function ModalAddSongPlaylist(props: PropsModalAddSongPlaylist) {
       >
         <Box sx={style} className={` ${styles.wrapperAccordion}`}>
           <AddSongPlayListAccordion
-            reloadSidebar={props.reloadSidebar}
+            reloadSidebar={reloadSidebar}
             handleClose={handleClose}
           />
         </Box>
       </Modal>
-    </Fragment>
+    </>
   );
 }

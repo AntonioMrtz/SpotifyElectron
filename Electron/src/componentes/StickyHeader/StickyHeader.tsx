@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import styles from './stickyHeader.module.css';
-import groupIcon from '../../assets/imgs/groupIcon.png';
 import { useLocation } from 'react-router-dom';
 import Global from 'global/global';
+import styles from './stickyHeader.module.css';
+import groupIcon from '../../assets/imgs/groupIcon.png';
 
 export default function StickyHeader() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [profileIcon, setProfileIcon] = useState(
     'https://i.scdn.co/image/ab67757000003b82ae8c728abc415a173667ff85'
   );
@@ -59,10 +60,10 @@ export default function StickyHeader() {
 
   const handleUrlChange = async () => {
     try {
-      let response = await window.electron.handleUrlChange.sendMessage(
+      const response = await window.electron.handleUrlChange.sendMessage(
         'handle-url-change'
       );
-      let responseObj: Global.HandleUrlChangeResponse = {
+      const responseObj: Global.HandleUrlChangeResponse = {
         canGoBack: response.canGoBack,
         canGoForward: response.canGoForward,
       };
@@ -92,22 +93,22 @@ export default function StickyHeader() {
       <div
         className={`d-flex flex-row container-fluid ${styles.wrapperDirectionArrows}`}
       >
-        <button onClick={handleGoingBackArrows}>
-          <i className={`fa-solid fa-chevron-left ${backArrowStyle}`}></i>
+        <button type="button" onClick={handleGoingBackArrows}>
+          <i className={`fa-solid fa-chevron-left ${backArrowStyle}`} />
         </button>
-        <button onClick={handleGoingForwardArrows}>
-          <i className={`fa-solid fa-chevron-right ${forwardArrowStyle}`}></i>
+        <button type="button" onClick={handleGoingForwardArrows}>
+          <i className={`fa-solid fa-chevron-right ${forwardArrowStyle}`} />
         </button>
       </div>
 
       <div
         className={`d-flex flex-row container-fluid  ${styles.wrapperProfileOptions}`}
       >
-        <button>
+        <button type="button">
           <img src={profileIcon} alt="" />
         </button>
 
-        <button>
+        <button type="button">
           <img className={`${styles.groupIcon}`} src={groupIcon} alt="" />
         </button>
       </div>

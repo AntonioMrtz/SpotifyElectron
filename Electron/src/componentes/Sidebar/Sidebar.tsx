@@ -1,22 +1,22 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
+import { Link } from 'react-router-dom';
+import Global from 'global/global';
+import CircularProgress from '@mui/material/CircularProgress';
 import styles from './sideBarCss.module.css';
 import Playlist from './Playlist/Playlist';
 import ModalAddSongPlaylist from './ModalAddSongPlaylist/ModalAddSongPlaylist';
-import { Link } from 'react-router-dom';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 import { PropsPlaylist } from './types/propsPlaylist.module';
-import Global from 'global/global';
-import CircularProgress from '@mui/material/CircularProgress';
 
 interface PropsSidebar {
   triggerReloadSidebar: boolean;
 }
 
-export default function Sidebar(props: PropsSidebar) {
+export default function Sidebar({ triggerReloadSidebar }: PropsSidebar) {
   //* MENU HOVER
 
-  let [listItemInicio, setHoverInicio] = useState('');
-  let [listItemBuscar, setHoverBuscar] = useState('');
+  const [listItemInicio, setHoverInicio] = useState('');
+  const [listItemBuscar, setHoverBuscar] = useState('');
 
   const [isHoveredInicio, setIsHovered] = useState(false);
   const [isHoveredBuscar, setIsHoveredBuscar] = useState(false);
@@ -45,6 +45,7 @@ export default function Sidebar(props: PropsSidebar) {
   //* HIGHLIGHT CURRENT SECTION LI
 
   const [selectedID, setSelectedID] = useState<string>(); // you could set a default id as well
+  const [selectedPlaylist, setSelectedPlaylist] = useState<string>(''); // Estado para almacenar el nombre de la playlist seleccionada
 
   const getSelectedClass = (id: string) =>
     selectedID === id ? styles.linksubtleClicked : '';
@@ -52,7 +53,7 @@ export default function Sidebar(props: PropsSidebar) {
   const [url, setUrl] = useState('/');
 
   useEffect(() => {
-    //console.log(url)
+    // console.log(url)
     if (url === '/') {
       setSelectedID('li-inicio');
     } else if (url === '/explorar') {
@@ -79,88 +80,99 @@ export default function Sidebar(props: PropsSidebar) {
 
   //* PLAYLISTS
 
-  const [selectedPlaylist, setSelectedPlaylist] = useState<string>(''); // Estado para almacenar el nombre de la playlist seleccionada
-
   const [playlists, setPlaylists] = useState<PropsPlaylist[]>();
 
   const [loading, setLoading] = useState(true);
 
-  const handlePlaylists = () => {
-    fetch(Global.backendBaseUrl + 'playlists/', {
+  const handlePlaylists = useCallback(() => {
+    fetch(`${Global.backendBaseUrl}playlists/`, {
       headers: { 'Access-Control-Allow-Origin': '*' },
     })
       .then((res) => res.json())
       .then((res) => {
-        if (res['playlists']) {
-          let propsPlaylists: PropsPlaylist[] = [];
+        if (res.playlists) {
+          const propsPlaylists: PropsPlaylist[] = [];
 
-          for (let obj of res['playlists']) {
-            obj = JSON.parse(obj);
-            let propsPlaylist: PropsPlaylist = {
-              name: obj['name'],
+          res.playlists.forEach((playlistFetchObject: any) => {
+            const playlist = JSON.parse(playlistFetchObject);
+            const propsPlaylist: PropsPlaylist = {
+              name: playlist.name,
               photo:
-                obj['photo'] === '' ? defaultThumbnailPlaylist : obj['photo'],
-              handleUrlPlaylistClicked: handleUrlPlaylistClicked,
+                playlist.photo === ''
+                  ? defaultThumbnailPlaylist
+                  : playlist.photo,
+              handleUrlPlaylistClicked,
               reloadSidebar: handlePlaylists,
               playlistStyle: '',
             };
 
             propsPlaylists.push(propsPlaylist);
-          }
+          });
           setPlaylists(propsPlaylists);
         }
 
         setLoading(false);
+        return null;
       })
       .catch((error) => {
         console.log(error);
         console.log('No se pudieron obtener las playlists');
       });
-  };
+  }, []);
 
   useEffect(() => {
     handlePlaylists();
-  }, []);
+  }, [handlePlaylists]);
 
   /* triggered when other component wants to reload the sidebar */
   useEffect(() => {
     handlePlaylists();
-  }, [props.triggerReloadSidebar]);
+  }, [handlePlaylists, triggerReloadSidebar]);
 
   return (
     <div className={`container-fluid ${styles.wrapperNavbar}`}>
       <header className={`${styles.header}`}>
-        <ul className={`${styles.ul}`}>
-          <Link to="/">
-            <li
-              className={`${
-                styles.headerLi
-              } ${listItemInicio} ${getSelectedClass('li-inicio')} `}
-              onMouseOver={handleMouseOverInicio}
-              onMouseOut={handleMouseOutInicio}
-              onClick={handleUrlInicioClicked}
-              id="li-inicio"
-            >
-              <i className={`fa-solid fa-house fa-fw ${styles.headerI}`}></i>
-              <span className={`${styles.headerI}`}>Inicio</span>
-            </li>
-          </Link>
-          <Link to="/explorar" className={`${styles.aHeader}`}>
-            <li
-              className={`${
-                styles.headerLi
-              } ${listItemBuscar} ${getSelectedClass('li-buscar')}`}
-              onMouseOver={handleMouseOverBuscar}
-              onMouseOut={handleMouseOutBuscar}
-              onClick={handleUrlBuscarClicked}
-              id="li-buscar"
-            >
-              <i
-                className={`fa-solid fa-magnifying-glass fa-fw ${styles.headerI}`}
-              ></i>
-              <span className={`${styles.headerI}`}>Buscar</span>
-            </li>
-          </Link>
+        <ul className={`${styles.ulNavigation}`}>
+          <li>
+            <Link to="/">
+              <button
+                type="button"
+                onFocus={handleMouseOverInicio}
+                onBlur={handleMouseOutInicio}
+                className={`${
+                  styles.headerLi
+                } ${listItemInicio} ${getSelectedClass('li-inicio')} `}
+                onMouseOver={handleMouseOverInicio}
+                onMouseOut={handleMouseOutInicio}
+                onClick={handleUrlInicioClicked}
+                id="li-inicio"
+              >
+                <i className={`fa-solid fa-house fa-fw ${styles.headerI}`} />
+                <span className={`${styles.headerI}`}>Inicio</span>
+              </button>
+            </Link>
+          </li>
+          <li>
+            <Link to="/explorar" className={`${styles.aHeader}`}>
+              <button
+                type="button"
+                onFocus={handleMouseOverBuscar}
+                onBlur={handleMouseOutBuscar}
+                className={`${
+                  styles.headerLi
+                } ${listItemBuscar} ${getSelectedClass('li-buscar')}`}
+                onMouseOver={handleMouseOverBuscar}
+                onMouseOut={handleMouseOutBuscar}
+                onClick={handleUrlBuscarClicked}
+                id="li-buscar"
+              >
+                <i
+                  className={`fa-solid fa-magnifying-glass fa-fw ${styles.headerI}`}
+                />
+                <span className={`${styles.headerI}`}>Buscar</span>
+              </button>
+            </Link>
+          </li>
         </ul>
       </header>
 
@@ -173,14 +185,15 @@ export default function Sidebar(props: PropsSidebar) {
           <header
             className={`container-fluid d-flex flex-row pb-4 ${styles.headerTuBiblioteca}`}
           >
-            <div className={`container-fluid d-flex justify-content-start p-0`}>
-              <div className={`container-fluid ps-0`}>
-                <i className="fa-solid fa-swatchbook fa-fw"></i>Tu biblioteca
+            <div className="container-fluid d-flex justify-content-start p-0">
+              <div className="container-fluid ps-0">
+                <i className="fa-solid fa-swatchbook fa-fw" />
+                Tu biblioteca
               </div>
             </div>
 
             <div
-              className={`container-fluid d-flex justify-content-end p-0`}
+              className="container-fluid d-flex justify-content-end p-0"
               style={{ width: '25%' }}
             >
               <ModalAddSongPlaylist reloadSidebar={handlePlaylists} />
@@ -215,7 +228,7 @@ export default function Sidebar(props: PropsSidebar) {
             {!loading &&
               playlists &&
               playlists.map((playlist) => {
-                let urlPlaylist = '/playlist/' + playlist.name;
+                const urlPlaylist = `/playlist/${playlist.name}`;
 
                 // Agregar una condición para aplicar un estilo diferente si la playlist es la seleccionada
                 const playlistStyle =

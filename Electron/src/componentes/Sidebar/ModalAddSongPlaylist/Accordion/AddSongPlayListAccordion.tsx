@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useState, Fragment, useEffect } from 'react';
+import { ChangeEvent, FormEvent, useState, useEffect } from 'react';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -6,12 +6,11 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import LibraryMusicRoundedIcon from '@mui/icons-material/LibraryMusicRounded';
 import AudiotrackIcon from '@mui/icons-material/Audiotrack';
-import styles from './addSongPlayListAccordion.module.css';
-import GenreOption from './GenreOption/GenreOption';
 import Global from 'global/global';
-import { InfoPopoverType } from 'componentes/types/InfoPopover';
+import { InfoPopoverType } from 'componentes/InfoPopover/types/InfoPopover';
 import ConfirmationModal from 'componentes/InfoPopover/InfoPopover';
-('../../types/ModalConfirmationArgs');
+import GenreOption from './GenreOption/GenreOption';
+import styles from './addSongPlayListAccordion.module.css';
 
 interface PropsAddSongPlayListAccordion {
   handleClose: Function;
@@ -30,9 +29,10 @@ const MessagesInfoPopOver = {
   SONG_NOT_ADDED_DESCRIPTION: 'La canción no se ha podido añadir',
 };
 
-export default function AddSongPlayListAccordion(
-  props: PropsAddSongPlayListAccordion
-) {
+export default function AddSongPlayListAccordion({
+  handleClose,
+  reloadSidebar,
+}: PropsAddSongPlayListAccordion) {
   const [type, setType] = useState<InfoPopoverType>();
   const [title, setTitle] = useState<string>();
   const [description, setDescription] = useState<String>();
@@ -43,13 +43,13 @@ export default function AddSongPlayListAccordion(
     useState(false);
 
   const handleShowConfirmationModal = (
-    type: InfoPopoverType,
-    title: string,
-    description: string
+    typeInput: InfoPopoverType,
+    titleInput: string,
+    descriptionInput: string
   ) => {
-    setType(type);
-    setTitle(title);
-    setDescription(description);
+    setType(typeInput);
+    setTitle(titleInput);
+    setDescription(descriptionInput);
     setTriggerOpenConfirmationModal((state) => !state);
   };
 
@@ -87,27 +87,28 @@ export default function AddSongPlayListAccordion(
   };
 
   const handleSubmitSong = (event: FormEvent<HTMLButtonElement>) => {
-    let url = new URL(Global.backendBaseUrl + 'canciones/');
+    const url = new URL(`${Global.backendBaseUrl}canciones/`);
 
     event.preventDefault();
 
     if (formDataSong && songFile) {
-      for (let [key, value] of Object.entries(formDataSong)) {
+      Object.entries(formDataSong).forEach(([key, value]) => {
         if (key !== 'file' && typeof value === 'string') {
           url.searchParams.set(key, value);
         }
-      }
-      let formDataFile = new FormData();
+      });
+
+      const formDataFile = new FormData();
       formDataFile.append('file', songFile);
 
-      let requestOptions = {
+      const requestOptions = {
         method: 'POST',
         body: formDataFile,
       };
 
       fetch(url, requestOptions)
         .then((response) => {
-          if (response.status == 201) {
+          if (response.status === 201) {
             console.log('Cancion creada');
             handleShowConfirmationModal(
               InfoPopoverType.SUCCESS,
@@ -122,12 +123,13 @@ export default function AddSongPlayListAccordion(
               MessagesInfoPopOver.SONG_NOT_ADDED_DESCRIPTION
             );
           }
+          return null;
+        })
+        .finally(() => {
+          // props.handleClose();
         })
         .catch((error) => {
           console.error('Error:', error);
-        })
-        .finally(() => {
-          //props.handleClose();
         });
     }
   };
@@ -160,18 +162,18 @@ export default function AddSongPlayListAccordion(
   };
 
   const handleSubmitPlaylist = (event: FormEvent<HTMLButtonElement>) => {
-    let url = new URL(Global.backendBaseUrl + 'playlists/');
+    const url = new URL(`${Global.backendBaseUrl}playlists/`);
 
     event.preventDefault();
 
     if (formDataPlaylist) {
-      for (let [key, value] of Object.entries(formDataPlaylist)) {
+      Object.entries(formDataPlaylist).forEach(([key, value]) => {
         if (typeof value === 'string') {
           url.searchParams.set(key, value);
         }
-      }
+      });
 
-      let requestOptions = {
+      const requestOptions = {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -181,7 +183,7 @@ export default function AddSongPlayListAccordion(
 
       fetch(url, requestOptions)
         .then((response) => {
-          if (response.status == 201) {
+          if (response.status === 201) {
             console.log('Playlist creada');
 
             handleShowConfirmationModal(
@@ -189,7 +191,7 @@ export default function AddSongPlayListAccordion(
               MessagesInfoPopOver.PLAYLIST_ADDED_TITLE,
               MessagesInfoPopOver.PLAYLIST_ADDED_DESCRIPTION
             );
-            props.reloadSidebar();
+            reloadSidebar();
           } else {
             console.log('No se a creado la playlist');
 
@@ -199,12 +201,13 @@ export default function AddSongPlayListAccordion(
               MessagesInfoPopOver.PLAYLIST_NOT_ADDED_DESCRIPTION
             );
           }
+          return null;
+        })
+        .finally(() => {
+          // props.handleClose();
         })
         .catch((error) => {
           console.error('Error:', error);
-        })
-        .finally(() => {
-          //props.handleClose();
         });
     }
   };
@@ -214,14 +217,15 @@ export default function AddSongPlayListAccordion(
   const [genres, setGenres] = useState<{}>();
 
   const handleGenres = () => {
-    fetch(Global.backendBaseUrl + 'generos/', {
+    fetch(`${Global.backendBaseUrl}generos/`, {
       headers: { 'Access-Control-Allow-Origin': '*' },
     })
       .then((res) => res.json())
       .then((res) => {
         setGenres(res);
+        return null;
       })
-      .catch((error) => {
+      .catch(() => {
         console.log('No se pudieron obtener los géneros');
       });
   };
@@ -231,7 +235,7 @@ export default function AddSongPlayListAccordion(
   }, []);
 
   return (
-    <Fragment>
+    <>
       <Accordion
         style={{
           backgroundColor: 'var(--secondary-black)',
@@ -260,7 +264,7 @@ export default function AddSongPlayListAccordion(
           <form
             className={`container-fluid d-flex flex-column p-0 ${styles.formAddSong}`}
           >
-            <div className={`container-fluid d-flex flex-column p-0`}>
+            <div className="container-fluid d-flex flex-column p-0">
               <div className="d-flex flex-row">
                 <div className="p-0 mb-3 me-3 container-fluid">
                   <input
@@ -271,7 +275,7 @@ export default function AddSongPlayListAccordion(
                     className={` `}
                     onChange={handleChangePlaylist}
                     required
-                  ></input>
+                  />
                 </div>
                 <div className="mb-3 container-fluid p-0">
                   <input
@@ -282,7 +286,7 @@ export default function AddSongPlayListAccordion(
                     className={` `}
                     onChange={handleChangePlaylist}
                     required
-                  ></input>
+                  />
                 </div>
               </div>
               <div className="container-fluid p-0">
@@ -294,7 +298,7 @@ export default function AddSongPlayListAccordion(
                   onChange={handleChangePlaylist}
                   style={{ height: ' 50px', width: '100%' }}
                   required
-                ></textarea>
+                />
               </div>
             </div>
 
@@ -340,7 +344,7 @@ export default function AddSongPlayListAccordion(
           <form
             className={`container-fluid d-flex flex-column p-0 ${styles.formAddSong}`}
           >
-            <div className={`container-fluid d-flex flex-row p-0`}>
+            <div className="container-fluid d-flex flex-row p-0">
               <div className="p-0 mb-3 me-3">
                 <input
                   type="text"
@@ -350,7 +354,7 @@ export default function AddSongPlayListAccordion(
                   className={` ${styles.input}`}
                   onChange={handleChangeSong}
                   required
-                ></input>
+                />
               </div>
               <div className="mb-3">
                 <input
@@ -361,7 +365,7 @@ export default function AddSongPlayListAccordion(
                   onChange={handleChangeSong}
                   name="artista"
                   required
-                ></input>
+                />
               </div>
             </div>
             <div className="p-0 mb-3 me-2">
@@ -373,24 +377,24 @@ export default function AddSongPlayListAccordion(
                 onChange={handleChangeSong}
                 name="foto"
                 required
-              ></input>
+              />
             </div>
 
             <div
               className={`d-flex flex-row overflow-hidden align-items-center ${styles.containerSelectAndFileSelector}`}
             >
-              <div className={`me-5`}>
+              <div className="me-5">
                 <select
                   className="form-select-sm mb-3"
                   aria-label="Default select example"
                   onChange={handleChangeSong}
                   name="genero"
                   required
-                  defaultValue={'Elige un género'}
+                  defaultValue="Elige un género"
                 >
                   <option
                     className={` ${styles.option}`}
-                    value={'Elige un género'}
+                    value="Elige un género"
                     disabled
                   >
                     ❗ Elige un género
@@ -398,9 +402,16 @@ export default function AddSongPlayListAccordion(
 
                   {genres &&
                     Object.entries(genres).map(([key, value]) => {
-                      return (
-                        <GenreOption key={key} value={value} name={value} />
-                      );
+                      if (
+                        typeof value === 'string' &&
+                        typeof value === 'string'
+                      ) {
+                        return (
+                          <GenreOption key={key} value={value} name={value} />
+                        );
+                      }
+
+                      return null;
                     })}
                 </select>
               </div>
@@ -413,7 +424,7 @@ export default function AddSongPlayListAccordion(
                   onChange={handleChangeFile}
                   accept="audio/mp3"
                   required
-                ></input>
+                />
               </div>
             </div>
 
@@ -437,8 +448,8 @@ export default function AddSongPlayListAccordion(
         title={title}
         description={description}
         triggerOpenConfirmationModal={triggerOpenConfirmationModal}
-        handleClose={props.handleClose}
-      ></ConfirmationModal>
-    </Fragment>
+        handleClose={handleClose}
+      />
+    </>
   );
 }

@@ -98,11 +98,13 @@ export default function Player({
       const resFetchSongJson = await resFetchSong.json();
 
       const requestOptions = {
-        method: 'PUT',
+        method: 'PATCH',
       };
-      const fetchUrlUpdateSong: string = `${Global.backendBaseUrl}canciones/${songName}?number_of_plays=True`;
+      const fetchUrlUpdateSong: string = `${Global.backendBaseUrl}canciones/${songName}/numberOfPlays`;
 
-      fetch(fetchUrlUpdateSong, requestOptions);
+      fetch(fetchUrlUpdateSong, requestOptions).catch(() =>
+        console.log('Unable to update number of plays')
+      );
       const resFetchSongDTO = await fetch(
         `${Global.backendBaseUrl}canciones/dto/${songName}`
       );

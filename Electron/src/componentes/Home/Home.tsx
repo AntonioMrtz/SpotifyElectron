@@ -1,42 +1,42 @@
+import Global from 'global/global';
+import { useEffect, useState } from 'react';
 import styles from './homeCss.module.css';
 import Playlist from './Playlist/Playlist';
-import Global from 'global/global';
 import { PropsPlaylist } from './types/propsPlaylist.module';
-import { useEffect, useState } from 'react';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 
-interface PropsHome {
-  changeSongName: Function;
-}
-
-export default function Home(props: PropsHome) {
-
+export default function Home() {
   const [playlists, setPlaylists] = useState<PropsPlaylist[]>();
 
   const handlePlaylists = () => {
-    fetch(Global.backendBaseUrl + 'playlists/', {
+    fetch(`${Global.backendBaseUrl}playlists/`, {
       headers: { 'Access-Control-Allow-Origin': '*' },
     })
-      .then((res) => res.json())
-      .then((res) => {
-        if (res['playlists']) {
-          let propsPlaylists: PropsPlaylist[] = [];
+      .then((resFetchPlaylists) => resFetchPlaylists.json())
+      .then((resFetchPlaylistsJson) => {
+        if (resFetchPlaylistsJson.playlists) {
+          const propsPlaylists: PropsPlaylist[] = [];
 
-          for (let obj of res['playlists'].slice(0, 5)) {
-            obj = JSON.parse(obj);
+          resFetchPlaylistsJson.playlists
+            .slice(0, 5)
+            .forEach((resPlaylistFetch: any) => {
+              const resPlaylistFetchJson = JSON.parse(resPlaylistFetch);
 
-            let propsPlaylist: PropsPlaylist = {
-              name: obj['name'],
-              photo:
-                obj['photo'] === '' ? defaultThumbnailPlaylist : obj['photo'],
-              description: obj['description'],
-              song_names: obj['song_names'],
-            };
+              const propsPlaylist: PropsPlaylist = {
+                name: resPlaylistFetchJson.name,
+                photo:
+                  resPlaylistFetchJson.photo === ''
+                    ? defaultThumbnailPlaylist
+                    : resPlaylistFetchJson.photo,
+                description: resPlaylistFetchJson.description,
+              };
 
-            propsPlaylists.push(propsPlaylist);
-          }
-          setPlaylists(propsPlaylists);
+              propsPlaylists.push(propsPlaylist);
+
+              setPlaylists(propsPlaylists);
+            });
         }
+        return null;
       })
       .catch((error) => {
         console.log(error);
@@ -62,6 +62,7 @@ export default function Home(props: PropsHome) {
             className={`container-fluid d-flex ${styles.categoryTitleContainer}`}
           >
             <button
+              type="button"
               className={`${styles.categoryTitle}`}
               /* onClick={} */
             >
@@ -72,7 +73,9 @@ export default function Home(props: PropsHome) {
           <div
             className={`container-fluid d-flex ${styles.mostrarTodoContainer}`}
           >
-            <button className={`${styles.mostrarTodo}`}>Mostrar todos</button>
+            <button type="button" className={`${styles.mostrarTodo}`}>
+              Mostrar todos
+            </button>
           </div>
         </header>
 
@@ -84,7 +87,6 @@ export default function Home(props: PropsHome) {
                   name={playlist.name}
                   photo={playlist.photo}
                   description={playlist.description}
-                  song_names={playlist.song_names}
                 />
               );
             })}
@@ -101,6 +103,7 @@ export default function Home(props: PropsHome) {
             className={`container-fluid d-flex ${styles.categoryTitleContainer}`}
           >
             <button
+              type="button"
               className={`${styles.categoryTitle}`}
               /* onClick={} */
             >
@@ -110,7 +113,9 @@ export default function Home(props: PropsHome) {
           <div
             className={`container-fluid d-flex ${styles.mostrarTodoContainer}`}
           >
-            <button className={`${styles.mostrarTodo}`}>Mostrar todos</button>
+            <button type="button" className={`${styles.mostrarTodo}`}>
+              Mostrar todos
+            </button>
           </div>
         </header>
 
@@ -122,7 +127,6 @@ export default function Home(props: PropsHome) {
                   name={playlist.name}
                   photo={playlist.photo}
                   description={playlist.description}
-                  song_names={playlist.song_names}
                 />
               );
             })}

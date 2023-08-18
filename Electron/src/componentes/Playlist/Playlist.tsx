@@ -147,49 +147,51 @@ export default function Playlist({
           : resFetchGetPlaylistDTOJson.photo
       );
 
-      // TODO , problemas de rendimiento ya que hay que hacer fetch dentro de los bucles para cada cancion
-
       if (resFetchGetPlaylistDTOJson.song_names) {
         setNumberSongs(resFetchGetPlaylistDTOJson.song_names.length);
-        const propsSongs: PropsSongs[] = [];
+        const songPromises: Promise<any>[] = [];
 
-        // eslint-disable-next-line no-restricted-syntax
-        for (const obj of resFetchGetPlaylistDTOJson.song_names.reverse()) {
-          const propsSong: PropsSongs = {
-            name: obj,
-            playlistName,
-            artistName: '',
-            duration: 0,
-            index: 0,
+        resFetchGetPlaylistDTOJson.song_names
+          .reverse()
+          .forEach((songName: string) => {
+            songPromises.push(
+              new Promise((resolve) => {
+                fetch(`${Global.backendBaseUrl}canciones/dto/${songName}`)
+                  .then((resFetchSongDTO) => {
+                    return resFetchSongDTO.json();
+                  })
+                  .then((resFetchSongDTOJson) => {
+                    const propsSong: PropsSongs = {
+                      name: songName,
+                      playlistName,
+                      artistName: '',
+                      duration: 0,
+                      index: 0,
 
-            handleSongCliked: changeSongName,
-            refreshPlaylistData: loadPlaylistData,
-          };
+                      handleSongCliked: changeSongName,
+                      refreshPlaylistData: loadPlaylistData,
+                    };
+                    propsSong.artistName = resFetchSongDTOJson.artist;
+                    propsSong.duration = resFetchSongDTOJson.duration;
 
-          let artistNameAndDuration;
-          try {
-            // eslint-disable-next-line no-await-in-loop
-            const response = await fetch(
-              `${Global.backendBaseUrl}canciones/dto/${obj}`
+                    resolve(propsSong);
+                    return propsSong;
+                  })
+                  .catch(() => {
+                    console.log('Unable to get Song Data');
+                  });
+              })
             );
-            // eslint-disable-next-line no-await-in-loop
-            const data = await response.json();
-            artistNameAndDuration = {
-              artist: data.artist,
-              duration: data.duration,
-            };
-          } catch (error) {
-            console.log(`Unable to get Song: ${error}`);
-            artistNameAndDuration = { artist: null, duration: null };
-          }
+          });
 
-          propsSong.artistName = artistNameAndDuration.artist;
-          propsSong.duration = artistNameAndDuration.duration;
-
-          propsSongs.push(propsSong);
-        }
-
-        setSongs(propsSongs);
+        Promise.all(songPromises)
+          .then((resSongPromises) => {
+            setSongs([...resSongPromises]);
+            return null;
+          })
+          .catch(() => {
+            console.log('Unable to get Songs Data');
+          });
       }
     } catch {
       console.log('Unable to get playlist');

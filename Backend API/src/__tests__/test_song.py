@@ -1,5 +1,6 @@
 from fastapi.testclient import TestClient
 from fastapi import UploadFile
+from model.Genre import Genre
 import io
 import json
 import pytest
@@ -63,8 +64,12 @@ def test_post_cancion_correct_check_invalid_duration(clear_test_data_db):
 def test_get_cancion_correct(clear_test_data_db):
 
     song_name = "8232392323623823723989"
+    artista = "artista"
+    genero = "Pop"
+    foto = "https://foto"
 
-    url = f"/canciones/?nombre={song_name}&artista=artista&genero=Pop&foto=foto"
+
+    url = f"/canciones/?nombre={song_name}&artista={artista}&genero={genero}&foto={foto}"
 
     with open('__tests__/song.mp3', 'rb') as file:
         response = client.post(url, files={'file': file})
@@ -72,6 +77,10 @@ def test_get_cancion_correct(clear_test_data_db):
 
     response = client.get(f"/canciones/{song_name}")
     assert response.status_code == 200
+    assert response.json()["name"]==song_name
+    assert response.json()["artist"]==artista
+    assert response.json()["genre"]==Genre(genero).name
+    assert response.json()["photo"]==foto
 
     response = client.delete(f"/canciones/{song_name}")
     assert response.status_code == 202

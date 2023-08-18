@@ -11,8 +11,10 @@ client = TestClient(app)
 
 def test_get_playlist_correct(clear_test_data_db):
     name = "8232392323623823723"
+    foto = "https://foto"
+    descripcion = "hola"
 
-    url = f"/playlists/?nombre={name}&foto=foto&descripcion=descripcion"
+    url = f"/playlists/?nombre={name}&foto={foto}&descripcion={descripcion}"
 
 
     formatting = "%Y-%m-%dT%H:%M:%S"
@@ -28,7 +30,9 @@ def test_get_playlist_correct(clear_test_data_db):
 
     response = client.get(f"/playlists/{name}")
     assert response.status_code == 200
-
+    assert response.json()["name"]==name
+    assert response.json()["photo"]==foto
+    assert response.json()["description"]==descripcion
 
     try:
         fecha = response.json()["upload_date"]

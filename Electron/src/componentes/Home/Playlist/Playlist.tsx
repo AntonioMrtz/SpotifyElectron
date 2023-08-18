@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
-import { useState, MouseEvent } from 'react';
+import { useState, MouseEvent, useEffect } from 'react';
+import ContextMenuPlaylist from 'componentes/ContextMenu/Playlist/ContextMenuPlaylist';
+import Popover, { PopoverPosition } from '@mui/material/Popover/Popover';
 import styles from './playlistCss.module.css';
 import { PropsPlaylist } from '../types/propsPlaylist.module';
 
@@ -28,10 +30,44 @@ export default function Home({ name, photo, description }: PropsPlaylist) {
     handlePlay();
   };
 
+  /* Context Menu */
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const [anchorPosition, setAnchorPosition] = useState<{
+    top: number;
+    left: number;
+  } | null>(null);
+
+  const open = Boolean(anchorPosition);
+  const id = open ? 'parent-popover' : undefined;
+
+  const handleOpenContextMenu = (event: MouseEvent<HTMLDivElement>) => {
+    setIsOpen(!isOpen);
+    setAnchorPosition({
+      top: event.clientY,
+      left: event.clientX,
+    });
+  };
+
+  const handleCloseContextMenu = () => {
+    setAnchorPosition(null);
+    setIsOpen(false);
+  };
+
+  useEffect(() => {
+    if (!isOpen) {
+      handleCloseContextMenu();
+    }
+  }, [isOpen]);
+
   return (
     <span className={`rounded ${styles.card}`}>
       <Link to={urlPlaylist} key={name}>
-        <div className={`${styles.imgContainer}`}>
+        <div
+          className={`${styles.imgContainer}`}
+          onContextMenu={handleOpenContextMenu}
+        >
           <img
             src={photo}
             className="card-img-top rounded"
@@ -57,6 +93,37 @@ export default function Home({ name, photo, description }: PropsPlaylist) {
           <p className={`${styles.autorLista}`}>{description}</p>
         </div>
       </Link>
+      <div>
+        <Popover
+          id={id}
+          open={open}
+          onClose={handleCloseContextMenu}
+          anchorReference="anchorPosition"
+          anchorPosition={anchorPosition as PopoverPosition}
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'left',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'left',
+          }}
+          sx={{
+            '& .MuiPaper-root': {
+              backgroundColor: 'var(--hover-white)',
+            },
+            '& . MuiPopover-root': {
+              zIndex: '1000',
+            },
+          }}
+        >
+          <ContextMenuPlaylist
+            playlistName={name}
+            handleCloseParent={handleCloseContextMenu}
+            refreshPlaylistData={() => {}}
+          />
+        </Popover>
+      </div>
     </span>
   );
 }

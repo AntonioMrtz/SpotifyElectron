@@ -3,8 +3,6 @@ import { useState, MouseEvent } from 'react';
 import styles from './playlistCss.module.css';
 import { PropsPlaylist } from '../types/propsPlaylist.module';
 
-// ... (importaciones y definición de componente)
-
 export default function Home({ name, photo, description }: PropsPlaylist) {
   const [displayPlay, setdisplayPlay] = useState(styles.displayTruePlay);
   const [displayPause, setdisplayPause] = useState(styles.displayNonePlay);

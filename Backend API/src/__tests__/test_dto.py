@@ -11,7 +11,6 @@ client = TestClient(app)
 def test_get_playlist_dto_correct(clear_test_data_db):
 
     name = "8232392323623823723"
-    song_name = "8232392323623823723989"
     descripcion = "descripcion"
     foto = "https://foto"
 

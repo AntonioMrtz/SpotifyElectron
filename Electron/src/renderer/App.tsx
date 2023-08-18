@@ -52,8 +52,8 @@ function App() {
               path="/explorar"
               element=<Explorar changeSongName={changeSongName} />
             />
-            <Route path="/" element=<Home changeSongName={changeSongName} /> />
-            <Route path="*" element=<Home changeSongName={changeSongName} /> />
+            <Route path="/" element=<Home /> />
+            <Route path="*" element=<Home /> />
           </Routes>
         </div>
       </div>

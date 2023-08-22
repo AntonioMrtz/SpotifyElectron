@@ -58,7 +58,11 @@ def test_get_song_dto_correct(clear_test_song_db):
     file_path = "__tests__/song.mp3"
 
     res_create_song = create_song(
-        name=song_name, file_path=file_path, artista=artista, genero=genero, foto=foto)
+        name=song_name,
+        file_path=file_path,
+        artista=artista,
+        genero=genero,
+        foto=foto)
     assert res_create_song.status_code == 201
 
     res_get_song = get_song(song_name)

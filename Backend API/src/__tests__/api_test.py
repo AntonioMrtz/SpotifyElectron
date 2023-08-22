@@ -29,7 +29,12 @@ def delete_playlist(name: str):
     return response
 
 
-def create_song(name: str,file_path:str, artista: str, genero: str, foto: str):
+def create_song(
+        name: str,
+        file_path: str,
+        artista: str,
+        genero: str,
+        foto: str):
     name = "8232392323623823723989"
     artista = "artista"
     genero = "Pop"
@@ -40,6 +45,7 @@ def create_song(name: str,file_path:str, artista: str, genero: str, foto: str):
     with open(file_path, 'rb') as file:
         response = client.post(url, files={'file': file})
         return response
+
 
 def get_song(name: str):
     response = client.get(f"/canciones/dto/{name}")

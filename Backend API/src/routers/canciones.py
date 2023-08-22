@@ -138,7 +138,7 @@ def get_cancion_dto(nombre: str) -> Response:
 
 
 @router.put("/{nombre}")
-def update_song(nombre: str,artist: str = None, foto: str = None, duration: int = None, genre: Genre = None, number_of_plays: bool = False, nuevo_nombre: str = None) -> Response:
+def update_song(nombre: str,artist: str = None, foto: str = None, duration: int = None, genre: Genre = None, nuevo_nombre: str = None) -> Response:
     """ Actualiza los parámetros de la cancion con nombre "nombre"
 
     Parameters
@@ -148,7 +148,6 @@ def update_song(nombre: str,artist: str = None, foto: str = None, duration: int 
         foto (url): Foto de la cancion
         duration (int): Duracion de la cancion
         genre (Genre): Genero de la cancion
-        number_of_plays (bool): Actualizar/No actualizar número de reproducciones de la canción
         nuevo_nombre (str): Nuevo nombre de la cancion
 
     Returns
@@ -162,5 +161,27 @@ def update_song(nombre: str,artist: str = None, foto: str = None, duration: int 
     """
 
     song_service.update_song(
-        nombre, nuevo_nombre, foto, duration, genre, number_of_plays)
+        nombre, nuevo_nombre, foto, duration, genre)
+    return Response(None, 204)
+
+
+@router.patch("/{nombre}/numberOfPlays")
+def increase_number_plays_song(nombre: str) -> Response:
+    """ Incrementa el número de visitas de la cancion con nombre "nombre"
+
+    Parameters
+    ----------
+        nombre (str): Nombre de la cancion
+
+    Returns
+    -------
+        Response 204 No content
+
+    Raises
+    -------
+        Bad Request 400: Parámetros introducidos no són válidos o vacíos
+        Not Found 404: No existe una cancion con el nombre "nombre"
+    """
+
+    song_service.increase_number_plays(nombre)
     return Response(None, 204)

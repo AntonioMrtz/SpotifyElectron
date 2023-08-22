@@ -132,6 +132,57 @@ def test_get_canciones_correct():
     assert response.status_code == 200
 
 
+def test_patch_number_plays_cancion_correct(clear_test_data_db):
+
+    song_name = "8232392323623823723989"
+    artista = "artista"
+    genero = "Pop"
+    foto = "https://foto"
+
+
+    url = f"/canciones/?nombre={song_name}&artista={artista}&genero={genero}&foto={foto}"
+
+    with open('__tests__/song.mp3', 'rb') as file:
+        response = client.post(url, files={'file': file})
+        assert response.status_code == 201
+
+    patch_url = f"/canciones/{song_name}/numberOfPlays"
+
+    patch_response = client.patch(patch_url)
+    assert patch_response.status_code==204
+
+    response = client.get(f"/canciones/{song_name}")
+    assert response.status_code == 200
+    assert response.json()["name"]==song_name
+    assert response.json()["artist"]==artista
+    assert response.json()["genre"]==Genre(genero).name
+    assert response.json()["photo"]==foto
+    assert response.json()["number_of_plays"]==1
+
+    response = client.delete(f"/canciones/{song_name}")
+    assert response.status_code == 202
+
+
+def test_patch_song_not_found():
+
+    song_name = "8232392323623823723989"
+
+    patch_url = f"/canciones/{song_name}/numberOfPlays"
+
+    patch_response = client.patch(patch_url)
+    assert patch_response.status_code==404
+
+
+def test_patch_song_invalid_name():
+
+    song_name = ""
+
+    patch_url = f"/canciones/{song_name}/numberOfPlays"
+
+    patch_response = client.patch(patch_url)
+    assert patch_response.status_code==404
+
+
 @pytest.fixture()
 def clear_test_data_db():
     song_name = "8232392323623823723989"

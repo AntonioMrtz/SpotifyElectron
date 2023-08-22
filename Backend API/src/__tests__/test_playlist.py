@@ -1,10 +1,9 @@
 from fastapi.testclient import TestClient
+from datetime import datetime
+from api_test import create_playlist, get_playlist, delete_playlist , update_playlist
+from main import app as app
 import json
 import pytest
-from datetime import datetime
-
-
-from main import app as app
 
 client = TestClient(app)
 
@@ -14,28 +13,22 @@ def test_get_playlist_correct(clear_test_data_db):
     foto = "https://foto"
     descripcion = "hola"
 
-    url = f"/playlists/?nombre={name}&foto={foto}&descripcion={descripcion}"
-
-
     formatting = "%Y-%m-%dT%H:%M:%S"
     post_date_iso8601 = datetime.strptime(datetime.now().strftime('%Y-%m-%dT%H:%M:%S'),formatting)
 
+    url = f"/playlists/?nombre={name}&foto={foto}&descripcion={descripcion}"
 
-    payload = []
+    res_create_playlist = create_playlist(name=name,descripcion=descripcion,foto=foto)
+    assert res_create_playlist.status_code == 201
 
-    response = client.post(
-        url, json=payload, headers={"Content-Type": "application/json"}
-    )
-    assert response.status_code == 201
-
-    response = client.get(f"/playlists/{name}")
-    assert response.status_code == 200
-    assert response.json()["name"]==name
-    assert response.json()["photo"]==foto
-    assert response.json()["description"]==descripcion
+    res_get_playlist = get_playlist(name=name)
+    assert res_get_playlist.status_code == 200
+    assert res_get_playlist.json()["name"]==name
+    assert res_get_playlist.json()["photo"]==foto
+    assert res_get_playlist.json()["description"]==descripcion
 
     try:
-        fecha = response.json()["upload_date"]
+        fecha = res_get_playlist.json()["upload_date"]
         response_date = datetime.strptime(fecha, formatting)
 
         assert response_date.hour==post_date_iso8601.hour
@@ -43,61 +36,46 @@ def test_get_playlist_correct(clear_test_data_db):
     except ValueError:
         assert False
 
-    response = client.delete(f"/playlists/{name}")
-    assert response.status_code == 202
+    res_delete_playlist = delete_playlist(name=name)
+    assert res_delete_playlist.status_code == 202
 
 
 def test_get_playlist_not_found():
     name = "8232392323623823723"
 
-    response = client.get("/playlists/{name}")
-    assert response.status_code == 404
-
-
-def test_get_playlist_invalid_name():
-    name = ""
-
-    response = client.get("/playlists/{name}")
-    assert response.status_code == 404
+    res_get_playlist = get_playlist(name=name)
+    assert res_get_playlist.status_code == 404
 
 
 def test_post_playlist_correct(clear_test_data_db):
     name = "8232392323623823723"
+    foto = "https://foto"
+    descripcion = "hola"
 
-    url = f"/playlists/?nombre={name}&foto=foto&descripcion=descripcion&upload_date=upload_date"
+    res_create_playlist = create_playlist(name=name,descripcion=descripcion,foto=foto)
+    assert res_create_playlist.status_code == 201
 
-    payload = []
-
-    response = client.post(
-        url, json=payload, headers={"Content-Type": "application/json"}
-    )
-    assert response.status_code == 201
-
-    response = client.delete(f"/playlists/{name}")
-    assert response.status_code == 202
+    res_delete_playlist = delete_playlist(name=name)
+    assert res_delete_playlist.status_code == 202
 
 
 def test_delete_playlist_correct(clear_test_data_db):
     name = "8232392323623823723"
+    foto = "https://foto"
+    descripcion = "hola"
 
-    url = f"/playlists/?nombre={name}&foto=foto&descripcion=descripcion"
+    res_create_playlist = create_playlist(name=name,descripcion=descripcion,foto=foto)
+    assert res_create_playlist.status_code == 201
 
-    payload = []
-
-    response = client.post(
-        url, json=payload, headers={"Content-Type": "application/json"}
-    )
-    assert response.status_code == 201
-
-    response = client.delete(f"/playlists/{name}")
-    assert response.status_code == 202
+    res_delete_playlist = delete_playlist(name=name)
+    assert res_delete_playlist.status_code == 202
 
 
 def test_delete_playlist_playlist_not_found(clear_test_data_db):
     name = "8232392323623823723"
 
-    response = client.delete(f"/playlists/{name}")
-    assert response.status_code == 404
+    res_delete_playlist = delete_playlist(name=name)
+    assert res_delete_playlist.status_code == 404
 
 
 def test_delete_playlist_playlist_invalid_name(clear_test_data_db):
@@ -105,78 +83,57 @@ def test_delete_playlist_playlist_invalid_name(clear_test_data_db):
 
     name = ""
 
-    response = client.delete(f"/playlists/{name}")
-    assert response.status_code == 405
+    res_delete_playlist = delete_playlist(name=name)
+    assert res_delete_playlist.status_code == 405
 
 
 def test_get_playlists_correct():
-    response = client.get(f"/playlists/")
-    assert response.status_code == 200
+    name = ""
+
+    res_get_playlist = get_playlist(name=name)
+    assert res_get_playlist.status_code == 200
 
 
 def test_update_playlist_correct(clear_test_data_db):
     name = "8232392323623823723"
+    foto= "foto"
+    descripcion = "descripcion"
 
-    url = f"/playlists/?nombre={name}&foto=foto&descripcion=descripcion"
-
-    payload = []
-
-    response = client.post(
-        url, json=payload, headers={"Content-Type": "application/json"}
-    )
-    assert response.status_code == 201
+    res_create_playlist = create_playlist(name=name,descripcion=descripcion,foto=foto)
+    assert res_create_playlist.status_code == 201
 
     new_description= "nuevadescripcion"
 
-    url = f"/playlists/{name}/?foto=foto&descripcion={new_description}"
+    res_update_playlist = update_playlist(name=name,foto=foto,descripcion=new_description)
+    assert res_update_playlist.status_code == 204
 
-    payload = []
+    res_get_playlist = get_playlist(name=name)
+    assert res_get_playlist.status_code == 200
+    assert res_get_playlist.json()["description"]==new_description
 
-    response = client.put(
-        url, json=payload, headers={"Content-Type": "application/json"}
-    )
-    assert response.status_code == 204
-
-
-    response = client.get(f"/playlists/{name}")
-    assert response.status_code == 200
-    assert response.json()["description"]==new_description
-
-
-
-    response = client.delete(f"/playlists/{name}")
-    assert response.status_code == 202
+    res_delete_playlist = delete_playlist(name=name)
+    assert res_delete_playlist.status_code == 202
 
 def test_update_playlist_correct_nuevo_nombre(clear_test_data_db):
     name = "8232392323623823723"
+    foto= "foto"
+    descripcion = "descripcion"
 
-    url = f"/playlists/?nombre={name}&foto=foto&descripcion=descripcion"
-
-    payload = []
-
-    response = client.post(
-        url, json=payload, headers={"Content-Type": "application/json"}
-    )
-    assert response.status_code == 201
+    res_create_playlist = create_playlist(name=name,descripcion=descripcion,foto=foto)
+    assert res_create_playlist.status_code == 201
 
     new_name = "82323923236238237237"
     new_description= "nuevadescripcion"
 
-    url = f"/playlists/{name}/?foto=foto&descripcion={new_description}&nuevo_nombre={new_name}"
-
-    payload = []
-
-    response = client.put(
-        url, json=payload, headers={"Content-Type": "application/json"}
-    )
-    assert response.status_code == 204
+    res_update_playlist = update_playlist(name=name,foto=foto,descripcion=new_description,nuevo_nombre=new_name)
+    assert res_update_playlist.status_code == 204
 
 
-    response = client.get(f"/playlists/{new_name}")
-    assert response.status_code == 200
+    res_get_playlist =get_playlist(new_name)
+    assert res_get_playlist.status_code == 200
 
-    response = client.delete(f"/playlists/{new_name}")
-    assert response.status_code == 202
+    res_delete_playlist = delete_playlist(new_name)
+    assert res_delete_playlist.status_code == 202
 
 
 # executes after all tests

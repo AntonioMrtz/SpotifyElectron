@@ -1,6 +1,6 @@
 from fastapi.testclient import TestClient
 from model.Genre import Genre
-from api_test import create_playlist, get_playlist, delete_playlist, create_song, delete_song, get_song
+from api_test import create_playlist, get_playlist_dto, delete_playlist, create_song, delete_song, get_song_dto
 import logging
 import pytest
 
@@ -21,7 +21,7 @@ def test_get_playlist_dto_correct(clear_test_playlist_db):
         name=name, descripcion=descripcion, foto=foto)
     assert res_create_playlist.status_code == 201
 
-    res_get_playlist = get_playlist(name=name)
+    res_get_playlist = get_playlist_dto(name=name)
     assert res_get_playlist.status_code == 200
     assert res_get_playlist.json()["name"] == name
     assert res_get_playlist.json()["photo"] == foto
@@ -35,7 +35,7 @@ def test_get_playlist_dto_not_found():
 
     name = "8232392323623823723"
 
-    res_get_playlist = get_playlist(name)
+    res_get_playlist = get_playlist_dto(name)
     assert res_get_playlist.status_code == 404
 
 
@@ -43,7 +43,7 @@ def test_get_playlist_dto_invalid_name():
 
     name = ""
 
-    res_get_playlist = get_playlist(name)
+    res_get_playlist = get_playlist_dto(name)
     assert res_get_playlist.status_code == 404
 
 
@@ -65,7 +65,7 @@ def test_get_song_dto_correct(clear_test_song_db):
         foto=foto)
     assert res_create_song.status_code == 201
 
-    res_get_song = get_song(song_name)
+    res_get_song = get_song_dto(song_name)
     assert res_get_song.status_code == 200
 
     assert res_get_song.json()["name"] == song_name
@@ -81,7 +81,7 @@ def test_song_playlist_dto_not_found():
 
     name = "8232392323623823723"
 
-    res_get_song = get_song(name)
+    res_get_song = get_song_dto(name)
     assert res_get_song.status_code == 404
 
 
@@ -89,7 +89,7 @@ def test_get_song_dto_invalid_name():
 
     name = ""
 
-    res_get_song = get_song(name)
+    res_get_song = get_song_dto(name)
     assert res_get_song.status_code == 404
 
 
@@ -100,21 +100,21 @@ def clear_test_playlist_db():
     new_name = "82323923236238237237"
     name = "8232392323623823723"
     song_name = "8232392323623823723989"
-    client.delete(f"/playlists/{new_name}")
-    client.delete(f"/playlists/{name}")
+    delete_playlist(name=name)
+    delete_playlist(name=new_name)
 
     yield
     new_name = "82323923236238237237"
     name = "8232392323623823723"
-    client.delete(f"/playlists/{new_name}")
-    client.delete(f"/playlists/{name}")
+    delete_playlist(name=name)
+    delete_playlist(name=new_name)
 
 
 @pytest.fixture()
 def clear_test_song_db():
     song_name = "8232392323623823723989"
-    client.delete(f"/canciones/{song_name}")
+    delete_song(song_name)
 
     yield
     song_name = "8232392323623823723989"
-    client.delete(f"/canciones/{song_name}")
+    delete_song(song_name)

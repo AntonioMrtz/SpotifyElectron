@@ -55,7 +55,7 @@ def test_get_song_dto_correct(clear_test_song_db):
     artista = "artista"
     genero = "Pop"
     foto = "https://foto"
-    file_path = "__tests__/song.mp3"
+    file_path = "__tests__/assets/song.mp3"
 
     res_create_song = create_song(
         name=song_name,

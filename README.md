@@ -31,7 +31,7 @@ cd Backend API ; pip install -r requirements.txt ; cd src/ ; python3 -m uvicorn 
 * python3 -m uvicorn main:app --reload **[ API is being deployed at http://127.0.0.1:8000/ ]**
 * Access visual API swagger documentation at  **http://127.0.0.1:8000/docs**
 
-  ## 4. Tests
+## 4. Tests
 
 ```
 cd Backend API/src ; python3 -m pytest -s

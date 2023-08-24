@@ -2,7 +2,7 @@
 
 ## STEPS TO CONTRIBUTE
 
-1. Create a new branch with the feature youre implementing.
+1. Create a new branch with the feature youre implementing with the name convention type/BranchName [ej : feat/Home , fix/UserLogin]
 2. Push your changes to the new branch with one of the following prefix:
     * feat: Indicates the addition of a new feature or functionality to the project.
     * fix: Used when fixing a bug or error in the code.

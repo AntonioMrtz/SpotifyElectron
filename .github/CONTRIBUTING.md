@@ -13,7 +13,8 @@
     * test: Indicates changes to unit tests or test configuration.
 
 4. Go to your branch in Git and then select Pull Request and field the fields indicated in the template.
-5. The owner of the project will check the Pull Request and then merge it with the main branch.
+5. Check if Github Actions CI tests are passing, any pull request with errors on CI would not be merged to the master branch.
+6. The owner of the project will check the Pull Request and then merge it with the main branch.
 
 ## STYLE GUIDE
 

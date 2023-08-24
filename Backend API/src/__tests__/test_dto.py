@@ -1,6 +1,8 @@
 from fastapi.testclient import TestClient
 from model.Genre import Genre
-from api_test import create_playlist, get_playlist_dto, delete_playlist, create_song, delete_song, get_song_dto
+from test_API.api_test_dto import get_playlist_dto, get_song_dto
+from test_API.api_test_playlist import get_playlist, create_playlist, delete_playlist
+from test_API.api_test_song import create_song, delete_song
 import logging
 import pytest
 

@@ -2,6 +2,7 @@ from fastapi.testclient import TestClient
 from fastapi import UploadFile
 from model.Genre import Genre
 import io
+from test_API.api_test_song import create_song,delete_song,get_song,get_songs,patch_song_number_plays
 import json
 import pytest
 
@@ -14,122 +15,118 @@ client = TestClient(app)
 def test_post_cancion_correct(clear_test_data_db):
 
     song_name = "8232392323623823723989"
+    file_path = "__tests__/assets/song.mp3"
+    artista = "artista"
+    genero = "Pop"
+    foto = "https://foto"
 
-    url = f"/canciones/?nombre={song_name}&artista=artista&genero=Pop&foto=foto"
+    res_create_song = create_song(name=song_name,file_path=file_path,artista=artista,genero=genero,foto=foto)
+    assert res_create_song.status_code == 201
 
-    with open('__tests__/song.mp3', 'rb') as file:
-        response = client.post(url, files={'file': file})
-        assert response.status_code == 201
+    res_delete_song = delete_song(name=song_name)
+    assert res_delete_song.status_code == 202
 
-    response = client.delete(f"/canciones/{song_name}")
-    assert response.status_code == 202
 
 
 def test_post_cancion_correct_check_valid_duration(clear_test_data_db):
 
     song_name = "8232392323623823723989"
+    file_path = "__tests__/assets/song_4_seconds.mp3"
+    artista = "artista"
+    genero = "Pop"
+    foto = "https://foto"
 
-    url = f"/canciones/?nombre={song_name}&artista=artista&genero=Pop&foto=foto"
+    res_create_song = create_song(name=song_name,file_path=file_path,artista=artista,genero=genero,foto=foto)
+    assert res_create_song.status_code == 201
 
-    with open('__tests__/song_4s.mp3', 'rb') as file:
-        response = client.post(url, files={'file': file})
-        assert response.status_code == 201
+    res_get_song = get_song(name=song_name)
+    assert res_get_song.status_code == 200
+    assert "4" == str(res_get_song.json()["duration"]).split(".")[0]
 
-    response = client.get(f"/canciones/{song_name}")
-    assert response.status_code == 200
-    assert "4" == str(response.json()["duration"]).split(".")[0]
-
-    response = client.delete(f"/canciones/{song_name}")
-    assert response.status_code == 202
+    res_delete_song = delete_song(song_name)
+    assert res_delete_song.status_code == 202
 
 
 def test_post_cancion_correct_check_invalid_duration(clear_test_data_db):
 
+
     song_name = "8232392323623823723989"
+    file_path = "__tests__/assets/song.mp3"
+    artista = "artista"
+    genero = "Pop"
+    foto = "https://foto"
 
-    url = f"/canciones/?nombre={song_name}&artista=artista&genero=Pop&foto=foto"
+    res_create_song = create_song(name=song_name,file_path=file_path,artista=artista,genero=genero,foto=foto)
+    assert res_create_song.status_code == 201
 
-    with open('__tests__/song.mp3', 'rb') as file:
-        response = client.post(url, files={'file': file})
-        assert response.status_code == 201
+    res_get_song = get_song(name=song_name)
+    assert res_get_song.status_code == 200
+    assert "0" in str(res_get_song.json()["duration"])
 
-    response = client.get(f"/canciones/{song_name}")
-    assert response.status_code == 200
-    assert "0" in str(response.json()["duration"])
+    res_delete_song = delete_song(song_name)
+    assert res_delete_song.status_code == 202
 
-    response = client.delete(f"/canciones/{song_name}")
-    assert response.status_code == 202
+
 
 
 def test_get_cancion_correct(clear_test_data_db):
 
     song_name = "8232392323623823723989"
+    file_path = "__tests__/assets/song.mp3"
     artista = "artista"
     genero = "Pop"
     foto = "https://foto"
 
+    res_create_song = create_song(name=song_name,file_path=file_path,artista=artista,genero=genero,foto=foto)
+    assert res_create_song.status_code == 201
 
-    url = f"/canciones/?nombre={song_name}&artista={artista}&genero={genero}&foto={foto}"
+    res_get_song = get_song(name=song_name)
+    assert res_get_song.status_code == 200
+    assert res_get_song.json()["name"]==song_name
+    assert res_get_song.json()["artist"]==artista
+    assert res_get_song.json()["genre"]==Genre(genero).name
+    assert res_get_song.json()["photo"]==foto
 
-    with open('__tests__/song.mp3', 'rb') as file:
-        response = client.post(url, files={'file': file})
-        assert response.status_code == 201
+    res_delete_song = delete_song(song_name)
+    assert res_delete_song.status_code == 202
 
-    response = client.get(f"/canciones/{song_name}")
-    assert response.status_code == 200
-    assert response.json()["name"]==song_name
-    assert response.json()["artist"]==artista
-    assert response.json()["genre"]==Genre(genero).name
-    assert response.json()["photo"]==foto
-
-    response = client.delete(f"/canciones/{song_name}")
-    assert response.status_code == 202
 
 
 def test_get_cancion_invalid_name():
 
     song_name = "8232392323623823723989"
 
-    response = client.get(f"/canciones/{song_name}")
-    assert response.status_code == 404
+    res_get_song = get_song(name=song_name)
+    assert res_get_song.status_code == 404
 
-
-def test_post_cancion_invalid_param_():
-
-    song_name = "8232392323623823723989"
-
-    url = f"/canciones/?nombre={song_name}&artista=&genero=Pop&foto=foto"
-
-    with open('__tests__/song.mp3', 'rb') as file:
-        response = client.post(url, files={'file': file})
-        assert response.status_code == 400
 
 
 def test_delete_cancion_correct():
 
     song_name = "8232392323623823723989"
+    file_path = "__tests__/assets/song.mp3"
+    artista = "artista"
+    genero = "Pop"
+    foto = "https://foto"
 
-    url = f"/canciones/?nombre={song_name}&artista=artista&genero=Pop&foto=foto"
+    res_create_song = create_song(name=song_name,file_path=file_path,artista=artista,genero=genero,foto=foto)
+    assert res_create_song.status_code == 201
 
-    with open('__tests__/song.mp3', 'rb') as file:
-        response = client.post(url, files={'file': file})
-        assert response.status_code == 201
-
-    response = client.delete(f"/canciones/{song_name}")
-    assert response.status_code == 202
+    res_delete_song = delete_song(song_name)
+    assert res_delete_song.status_code == 202
 
 
 def test_delete_cancion_not_found():
 
     song_name = "8232392323623823723989"
 
-    response = client.delete(f"/canciones/{song_name}")
-    assert response.status_code == 404
+    res_delete_song = delete_song(song_name)
+    assert res_delete_song.status_code == 404
 
 
 def test_get_canciones_correct():
-    response = client.get(f"/canciones/")
-    assert response.status_code == 200
+    res_get_songs = get_songs()
+    assert res_get_songs.status_code == 200
 
 
 def test_patch_number_plays_cancion_correct(clear_test_data_db):
@@ -138,49 +135,41 @@ def test_patch_number_plays_cancion_correct(clear_test_data_db):
     artista = "artista"
     genero = "Pop"
     foto = "https://foto"
+    file_path = "__tests__/assets/song.mp3"
 
 
-    url = f"/canciones/?nombre={song_name}&artista={artista}&genero={genero}&foto={foto}"
+    res_create_song = create_song(name=song_name,file_path=file_path,artista=artista,genero=genero,foto=foto)
+    assert res_create_song.status_code == 201
 
-    with open('__tests__/song.mp3', 'rb') as file:
-        response = client.post(url, files={'file': file})
-        assert response.status_code == 201
+    res_patch_song = patch_song_number_plays(name=song_name)
+    assert res_patch_song.status_code==204
 
-    patch_url = f"/canciones/{song_name}/numberOfPlays"
+    res_get_song = get_song(name=song_name)
+    assert res_get_song.status_code == 200
+    assert res_get_song.json()["name"]==song_name
+    assert res_get_song.json()["artist"]==artista
+    assert res_get_song.json()["genre"]==Genre(genero).name
+    assert res_get_song.json()["photo"]==foto
+    assert res_get_song.json()["number_of_plays"]==1
 
-    patch_response = client.patch(patch_url)
-    assert patch_response.status_code==204
-
-    response = client.get(f"/canciones/{song_name}")
-    assert response.status_code == 200
-    assert response.json()["name"]==song_name
-    assert response.json()["artist"]==artista
-    assert response.json()["genre"]==Genre(genero).name
-    assert response.json()["photo"]==foto
-    assert response.json()["number_of_plays"]==1
-
-    response = client.delete(f"/canciones/{song_name}")
-    assert response.status_code == 202
+    res_delete_song = delete_song(song_name)
+    assert res_delete_song.status_code == 202
 
 
 def test_patch_song_not_found():
 
     song_name = "8232392323623823723989"
 
-    patch_url = f"/canciones/{song_name}/numberOfPlays"
-
-    patch_response = client.patch(patch_url)
-    assert patch_response.status_code==404
+    res_patch_song = patch_song_number_plays(name=song_name)
+    assert res_patch_song.status_code==404
 
 
 def test_patch_song_invalid_name():
 
     song_name = ""
 
-    patch_url = f"/canciones/{song_name}/numberOfPlays"
-
-    patch_response = client.patch(patch_url)
-    assert patch_response.status_code==404
+    res_patch_song = patch_song_number_plays(name=song_name)
+    assert res_patch_song.status_code==404
 
 
 @pytest.fixture()

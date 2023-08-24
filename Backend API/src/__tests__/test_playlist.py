@@ -1,11 +1,9 @@
 from fastapi.testclient import TestClient
 from datetime import datetime
-from test_API.api_test_playlist import create_playlist, get_playlist, delete_playlist , update_playlist
+from test_API.api_test_playlist import create_playlist, get_playlist, delete_playlist , update_playlist, get_playlists
 from main import app as app
 import json
 import pytest
-
-client = TestClient(app)
 
 
 def test_get_playlist_correct(clear_test_data_db):
@@ -136,16 +134,23 @@ def test_update_playlist_correct_nuevo_nombre(clear_test_data_db):
     assert res_delete_playlist.status_code == 202
 
 
+
+def test_get_playlists(clear_test_data_db):
+
+    res_get_playlists = get_playlists()
+    assert res_get_playlists.status_code == 200
+
+
 # executes after all tests
 @pytest.fixture()
 def clear_test_data_db():
     new_name = "82323923236238237237"
     name = "8232392323623823723"
-    response = client.delete(f"/playlists/{new_name}")
-    response = client.delete(f"/playlists/{name}")
+    delete_playlist(name=name)
+    delete_playlist(name=new_name)
 
     yield
     new_name = "82323923236238237237"
     name = "8232392323623823723"
-    response = client.delete(f"/playlists/{new_name}")
-    response = client.delete(f"/playlists/{name}")
+    delete_playlist(name=name)
+    delete_playlist(name=new_name)

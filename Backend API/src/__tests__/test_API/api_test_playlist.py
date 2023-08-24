@@ -48,3 +48,7 @@ def update_playlist(
 def delete_playlist(name: str):
     response = client.delete(f"/playlists/{name}")
     return response
+
+def get_playlists():
+    response = client.get(f"/playlists/")
+    return response

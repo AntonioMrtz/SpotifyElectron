@@ -8,8 +8,6 @@ import pytest
 
 from main import app as app
 
-client = TestClient(app)
-
 
 # * Playlist DTO
 

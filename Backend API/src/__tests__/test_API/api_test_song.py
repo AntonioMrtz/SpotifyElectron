@@ -11,10 +11,6 @@ def create_song(
         artista: str,
         genero: str,
         foto: str):
-    name = "8232392323623823723989"
-    artista = "artista"
-    genero = "Pop"
-    foto = "https://foto"
 
     url = f"/canciones/?nombre={name}&artista={artista}&genero={genero}&foto={foto}"
 
@@ -23,6 +19,25 @@ def create_song(
         return response
 
 
+def get_song(name: str):
+
+    response = client.get(f"/canciones/{name}")
+    return response
+
+
 def delete_song(name: str):
     response = client.delete(f"/canciones/{name}")
+    return response
+
+
+def get_songs():
+    response = client.get(f"/canciones/")
+    return response
+
+
+def patch_song_number_plays(name: str):
+
+    patch_url = f"/canciones/{name}/numberOfPlays"
+
+    response = client.patch(patch_url)
     return response

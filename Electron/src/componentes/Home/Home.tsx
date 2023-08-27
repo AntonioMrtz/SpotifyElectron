@@ -1,6 +1,6 @@
 import Global from 'global/global';
 import { useEffect, useState } from 'react';
-import LoadingCircle from 'componentes/AdvancedUIComponents/LoadingCircle';
+import LoadingCircle from 'componentes/AdvancedUIComponents/LoadingCircle/LoadingCircle';
 import styles from './homeCss.module.css';
 import Playlist from './Playlist/Playlist';
 import { PropsPlaylist } from './types/propsPlaylist.module';

@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import Global from 'global/global';
-import LoadingCircle from 'componentes/AdvancedUIComponents/LoadingCircle';
+import LoadingCircle from 'componentes/AdvancedUIComponents/LoadingCircle/LoadingCircle';
 import styles from './sideBarCss.module.css';
 import Playlist from './Playlist/Playlist';
 import ModalAddSongPlaylist from './ModalAddSongPlaylist/ModalAddSongPlaylist';

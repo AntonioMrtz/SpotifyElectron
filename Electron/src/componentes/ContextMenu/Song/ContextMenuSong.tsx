@@ -1,7 +1,7 @@
 import Popover from '@mui/material/Popover';
 import { useEffect, useState } from 'react';
 import Global from 'global/global';
-import LoadingCircle from 'componentes/AdvancedUIComponents/LoadingCircle';
+import LoadingCircle from 'componentes/AdvancedUIComponents/LoadingCircle/LoadingCircle';
 import InfoPopover from '../../InfoPopover/InfoPopover';
 import { InfoPopoverType } from '../../InfoPopover/types/InfoPopover';
 import styles from '../contextMenu.module.css';

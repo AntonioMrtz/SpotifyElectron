@@ -1,6 +1,6 @@
 import Global from 'global/global';
 import { useEffect, useState } from 'react';
-import CircularProgress from '@mui/material/CircularProgress/CircularProgress';
+import LoadingCircle from 'componentes/AdvancedUIComponents/LoadingCircle';
 import styles from './homeCss.module.css';
 import Playlist from './Playlist/Playlist';
 import { PropsPlaylist } from './types/propsPlaylist.module';
@@ -83,29 +83,7 @@ export default function Home() {
         </header>
 
         <ul className={`container-fluid d-flex flex-row ${styles.row}`}>
-          {loading && (
-            <div
-              className="container-fluid d-flex justify-content-center align-content-center"
-              style={{
-                height: '100%',
-                justifyContent: 'center',
-                alignItems: 'center',
-                padding: '5%',
-              }}
-            >
-              <CircularProgress
-                style={{ width: '2rem', height: 'auto' }}
-                sx={{
-                  ' & .MuiCircularProgress-circle': {
-                    color: 'var(--pure-white)',
-                  },
-                  '& .css-zk81sn-MuiCircularProgress-root': {
-                    width: '3rem',
-                  },
-                }}
-              />
-            </div>
-          )}
+          {loading && <LoadingCircle />}
 
           {!loading &&
             playlists &&
@@ -149,29 +127,7 @@ export default function Home() {
         </header>
 
         <section className={`container-fluid d-flex flex-row ${styles.row}`}>
-          {loading && (
-            <div
-              className="container-fluid d-flex justify-content-center align-content-center"
-              style={{
-                height: '100%',
-                justifyContent: 'center',
-                alignItems: 'center',
-                padding: '5%',
-              }}
-            >
-              <CircularProgress
-                style={{ width: '2rem', height: 'auto' }}
-                sx={{
-                  ' & .MuiCircularProgress-circle': {
-                    color: 'var(--pure-white)',
-                  },
-                  '& .css-zk81sn-MuiCircularProgress-root': {
-                    width: '3rem',
-                  },
-                }}
-              />
-            </div>
-          )}
+          {loading && <LoadingCircle />}
 
           {!loading &&
             playlists &&

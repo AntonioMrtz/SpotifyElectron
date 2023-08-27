@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import Global from 'global/global';
-import CircularProgress from '@mui/material/CircularProgress';
+import LoadingCircle from 'componentes/AdvancedUIComponents/LoadingCircle';
 import styles from './sideBarCss.module.css';
 import Playlist from './Playlist/Playlist';
 import ModalAddSongPlaylist from './ModalAddSongPlaylist/ModalAddSongPlaylist';
@@ -202,28 +202,7 @@ export default function Sidebar({ triggerReloadSidebar }: PropsSidebar) {
           <ul
             className={`container-fluid d-flex flex-column ${styles.ulPlaylist}`}
           >
-            {loading && (
-              <div
-                className="container-fluid d-flex justify-content-center align-content-center"
-                style={{
-                  height: '100%',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                <CircularProgress
-                  style={{ width: '3rem', height: 'auto' }}
-                  sx={{
-                    ' & .MuiCircularProgress-circle': {
-                      color: 'var(--pure-white)',
-                    },
-                    '& .css-zk81sn-MuiCircularProgress-root': {
-                      width: '3rem',
-                    },
-                  }}
-                />
-              </div>
-            )}
+            {loading && <LoadingCircle />}
 
             {!loading &&
               playlists &&

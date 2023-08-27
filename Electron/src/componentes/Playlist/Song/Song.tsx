@@ -1,6 +1,6 @@
 import { useState, useEffect, MouseEvent } from 'react';
 import { PropsSongs } from 'componentes/Sidebar/types/propsSongs.module';
-import ContextMenuSong from 'componentes/ContextMenu/Song/ContextMenuSong';
+import ContextMenuSong from 'componentes/AdvancedUIComponents/ContextMenu/Song/ContextMenuSong';
 import Popover, { PopoverPosition } from '@mui/material/Popover';
 import styles from '../playlist.module.css';
 

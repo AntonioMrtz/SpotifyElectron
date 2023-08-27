@@ -7,7 +7,7 @@ import { PropsSongs } from 'componentes/Sidebar/types/propsSongs.module';
 import { FastAverageColor } from 'fast-average-color';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
-import ContextMenuPlaylist from 'componentes/ContextMenu/Playlist/ContextMenuPlaylist';
+import ContextMenuPlaylist from 'componentes/AdvancedUIComponents/ContextMenu/Playlist/ContextMenuPlaylist';
 import Popover, { PopoverPosition } from '@mui/material/Popover/Popover';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 import Song from './Song/Song';

@@ -1,9 +1,9 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import Popover, { PopoverPosition } from '@mui/material/Popover';
 import { useEffect, useState, MouseEvent } from 'react';
+import ContextMenuPlaylist from 'componentes/AdvancedUIComponents/ContextMenu/Playlist/ContextMenuPlaylist';
 import styles from './playlist.module.css';
 import { PropsPlaylist } from '../types/propsPlaylist.module';
-import ContextMenuPlaylist from '../../ContextMenu/Playlist/ContextMenuPlaylist';
 
 export default function Playlist({
   name,

@@ -1,7 +1,7 @@
 import Popover from '@mui/material/Popover';
 import { useEffect, useState } from 'react';
 import Global from 'global/global';
-import CircularProgress from '@mui/material/CircularProgress/CircularProgress';
+import LoadingCircle from 'componentes/AdvancedUIComponents/LoadingCircle';
 import InfoPopover from '../../InfoPopover/InfoPopover';
 import { InfoPopoverType } from '../../InfoPopover/types/InfoPopover';
 import styles from '../contextMenu.module.css';
@@ -217,29 +217,7 @@ export default function ContextMenuSong({
                     <button type="button">Crear lista</button>
                   </li>
 
-                  {loading && (
-                    <div
-                      className="container-fluid d-flex justify-content-center align-content-center"
-                      style={{
-                        height: '100%',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        padding: '5%',
-                      }}
-                    >
-                      <CircularProgress
-                        style={{ width: '2rem', height: 'auto' }}
-                        sx={{
-                          ' & .MuiCircularProgress-circle': {
-                            color: 'var(--pure-white)',
-                          },
-                          '& .css-zk81sn-MuiCircularProgress-root': {
-                            width: '3rem',
-                          },
-                        }}
-                      />
-                    </div>
-                  )}
+                  {loading && <LoadingCircle />}
 
                   {!loading &&
                     playlistNames &&

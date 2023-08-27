@@ -209,7 +209,7 @@ export default function ContextMenuSong({
               <div
                 className={` ${styles.wrapperContextMenu} ${styles.wrapperContextMenuAddToPlaylist}`}
               >
-                <ul>
+                <ul style={{ height: '100%' }}>
                   <li>
                     <button type="button">Buscar una lista</button>
                   </li>

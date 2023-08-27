@@ -12,7 +12,7 @@
 
 ## Api Endpoints
 
-![Api Endpoints](assets/images/ApiEndpoints.png)
+![Api Endpoints](assets/images/ApiDiagram.png)
 
 ## 1. Clone the repository
 

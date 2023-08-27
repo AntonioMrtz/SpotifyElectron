@@ -10,6 +10,10 @@
 
 ![Frontend Component Structure](assets/images/ComponentDiagram.png)
 
+## Api Endpoints
+
+![Api Endpoints](assets/images/ApiEndpoints.png)
+
 ## 1. Clone the repository
 
 ```

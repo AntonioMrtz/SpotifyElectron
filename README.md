@@ -6,6 +6,9 @@
 
 ![Spotify_Electron_Software_Diagram](assets/images/Spotify_Electron_Software_Diagram.png)
 
+## Frontend Component Structure
+
+![Frontend Component Structure](assets/images/ComponentDiagram.png)
 
 ## 1. Clone the repository
 

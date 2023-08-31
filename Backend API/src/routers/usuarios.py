@@ -27,7 +27,7 @@ def get_user(nombre: str) -> Response:
         Not Found 404: No existe un usuario con el nombre "nombre"
     """
 
-    usuario = user_service.get_usuario(nombre)
+    usuario = user_service.get_user(nombre)
 
     usuario_json = usuario.get_json()
 

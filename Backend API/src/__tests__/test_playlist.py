@@ -14,8 +14,6 @@ def test_get_playlist_correct(clear_test_data_db):
     formatting = "%Y-%m-%dT%H:%M:%S"
     post_date_iso8601 = datetime.strptime(datetime.now().strftime('%Y-%m-%dT%H:%M:%S'),formatting)
 
-    url = f"/playlists/?nombre={name}&foto={foto}&descripcion={descripcion}"
-
     res_create_playlist = create_playlist(name=name,descripcion=descripcion,foto=foto)
     assert res_create_playlist.status_code == 201
 

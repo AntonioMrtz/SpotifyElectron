@@ -8,9 +8,9 @@ class User:
     name: str
     photo: str
     register_date: str
+    password: str
     """ Stores the last 5 songs that the user played """
     playback_history: list
-    password: str
     playlists: list
     saved_playlists: list
 

@@ -39,12 +39,12 @@ def get_playlist(nombre: str) -> Response:
 
 @router.post("/", tags=["playlists"])
 def post_playlist(nombre: str, foto: str, descripcion: str, nombres_canciones: list) -> Response:
-    """ Registra la playlist con los parámetros "nombre" y "artista"
+    """ Registra la playlist
 
     Parameters
     ----------
         nombre (str): Nombre de la playlist
-        foto (url): Género musical de la canción
+        foto (url): url de la imagen
         descripcion (str): Descripcion de la playlist
         nombres_canciones (list) : nombres de las canciones
 

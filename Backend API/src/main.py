@@ -1,12 +1,12 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from routers import playlists, canciones, generos
+from routers import playlists, canciones, generos, usuarios
 
 app = FastAPI(title="SpotifyElectronAPI",
                 description="API created with FastAPI Python to serve as backend for SpotifyElectron App",
                 version="0.0.1"
-            )
+                )
 
 """ Cors disabled """
 app.add_middleware(
@@ -22,3 +22,4 @@ app.add_middleware(
 app.include_router(playlists.router)
 app.include_router(canciones.router)
 app.include_router(generos.router)
+app.include_router(usuarios.router)

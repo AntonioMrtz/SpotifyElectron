@@ -1,6 +1,6 @@
 from fastapi.testclient import TestClient
 from datetime import datetime
-from test_API.api_test_user import create_user,delete_user,get_user
+from test_API.api_test_user import create_user, delete_user, get_user, update_user
 from main import app as app
 import json
 import pytest
@@ -83,31 +83,32 @@ def test_delete_user_invalid_name(clear_test_data_db):
     assert res_delete_user.status_code == 405
 
 
-"""
+
 
 
 def test_update_playlist_correct(clear_test_data_db):
+
     name = "8232392323623823723"
-    foto= "foto"
-    descripcion = "descripcion"
+    foto = "https://foto"
+    password = "hola"
 
-    res_create_playlist = create_playlist(name=name,descripcion=descripcion,foto=foto)
-    assert res_create_playlist.status_code == 201
+    res_create_user = create_user(name=name,password=password,photo=foto)
+    assert res_create_user.status_code == 201
 
-    new_description= "nuevadescripcion"
+    res_update_user = update_user(name=name,photo=foto,playlists=["prueba"],saved_playlists=["prueba"],playback_history=["prueba"])
+    assert res_update_user.status_code == 204
 
-    res_update_playlist = update_playlist(name=name,foto=foto,descripcion=new_description)
-    assert res_update_playlist.status_code == 204
+    res_get_user = get_user(name=name)
+    assert res_get_user.status_code == 200
+    assert len(res_get_user.json()["playback_history"])==1
+    assert len(res_get_user.json()["saved_playlists"])==1
+    assert len(res_get_user.json()["playlists"])==1
 
-    res_get_playlist = get_playlist(name=name)
-    assert res_get_playlist.status_code == 200
-    assert res_get_playlist.json()["description"]==new_description
-
-    res_delete_playlist = delete_playlist(name=name)
-    assert res_delete_playlist.status_code == 202
+    res_delete_user = delete_user(name=name)
+    assert res_delete_user.status_code == 202
 
 
-"""
+
 
 
 # executes after all tests

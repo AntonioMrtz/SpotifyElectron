@@ -76,16 +76,17 @@ def create_user(name: str, photo: str, password: str) -> None:
     return True if result.acknowledged else False
 
 
-def update_playlist(name: str, nuevo_nombre: str, photo: str, description: str, song_names: list) -> None:
-    """ Updates a playlist with name, url of thumbnail and list of song names [ duplicates wont be added ]
+def update_user(name: str, photo: str, playlists:list,saved_playlists:list,playback_history:list) -> None:
+    """ Updates a user , duplicated playlists and songs wont be added
 
     Parameters
     ----------
-        name (str): Playlists's name
-        nuevo_nombre (str) : New Playlist's name, if empty name is not being updated
-        photo (str): Url of playlist thumbnail
-        song_names (list<str>): List of song names of the playlist
-        description (str): Playlists's description
+        name (str): Users's name
+        photo (str): Url of user thumbnail
+        playlists (list) : users playlists
+        playlists (list) : others users playlists saved by user with name "name"
+        playback_history (list) : song names of playback history of the user
+
 
     Raises
     -------
@@ -99,20 +100,13 @@ def update_playlist(name: str, nuevo_nombre: str, photo: str, description: str, 
     if not checkValidParameterString(name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
-    result_playlist_exists = playlistCollection.find_one({'name': name})
+    result_user_exists = user_collection.find_one({'name': name})
 
-    if not result_playlist_exists:
-        raise HTTPException(status_code=404, detail="La playlist no existe")
+    if not result_user_exists:
+        raise HTTPException(status_code=404, detail="El usuario no existe")
 
-    if checkValidParameterString(nuevo_nombre):
-        new_name = nuevo_nombre
-        playlistCollection.update_one({'name': name}, {
-            "$set": {'name': new_name, 'description': description, 'photo': photo if 'http' in photo else '', 'song_names': list(set(song_names))}})
-
-    else:
-
-        playlistCollection.update_one({'name': name}, {
-            "$set": {'name': name, 'description': description, 'photo': photo if 'http' in photo else '', 'song_names': list(set(song_names))}})
+    result = user_collection.update_one( {'name': name} ,
+        { "$set": {'photo': photo if 'http' in photo else '','saved_playlists': list(set(saved_playlists)), 'playlists': list(set(playlists)), 'playback_history': list(set(playback_history))} })
 
 
 def delete_user(name: str) -> None:

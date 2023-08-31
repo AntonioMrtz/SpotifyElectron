@@ -59,7 +59,7 @@ def post_usuario(nombre: str, foto: str, password: str) -> Response:
 
 
 @router.put("/{nombre}", tags=["usuarios"])
-def update_playlist(nombre: str, foto: str, historial_canciones: list, playlists: list,  playlists_guardadas: list) -> Response:
+def update_usuario(nombre: str, foto: str, historial_canciones: list, playlists: list,  playlists_guardadas: list) -> Response:
     """ Actualiza los parámetros de la playlist con nombre "nombre" , las canciones repetidas son serán añadidas
 
     Parameters
@@ -81,7 +81,7 @@ def update_playlist(nombre: str, foto: str, historial_canciones: list, playlists
     """
 
     user_service.update_user(
-        nombre, foto, historial_canciones, playlists, playlists_guardadas)
+        name=nombre, photo=foto, playback_history=historial_canciones, playlists=playlists, saved_playlists=playlists_guardadas)
     return Response(None, 204)
 
 

@@ -69,14 +69,14 @@ def test_delete_playlist_correct(clear_test_data_db):
     assert res_delete_playlist.status_code == 202
 
 
-def test_delete_playlist_playlist_not_found(clear_test_data_db):
+def test_delete__playlist_not_found(clear_test_data_db):
     name = "8232392323623823723"
 
     res_delete_playlist = delete_playlist(name=name)
     assert res_delete_playlist.status_code == 404
 
 
-def test_delete_playlist_playlist_invalid_name(clear_test_data_db):
+def test_delete_playlist_invalid_name(clear_test_data_db):
     """Cannot recreate error 404 because name cant be empty or None to reach the actual python method"""
 
     name = ""
@@ -85,7 +85,7 @@ def test_delete_playlist_playlist_invalid_name(clear_test_data_db):
     assert res_delete_playlist.status_code == 405
 
 
-def test_get_playlists_correct():
+def test_get_playlist_correct():
     name = ""
 
     res_get_playlist = get_playlist(name=name)

@@ -4,6 +4,7 @@ import Global from 'global/global';
 import LoadingCircle from 'componentes/AdvancedUIComponents/LoadingCircle/LoadingCircle';
 import InfoPopover from 'componentes/InfoPopover/InfoPopover';
 import { InfoPopoverType } from 'componentes/InfoPopover/types/InfoPopover';
+import { useNavigate } from 'react-router-dom';
 import styles from '../contextMenu.module.css';
 import { PropsContextMenuSong } from '../types/PropsContextMenu';
 
@@ -19,6 +20,8 @@ export default function ContextMenuSong({
   handleCloseParent,
   refreshPlaylistData,
 }: PropsContextMenuSong) {
+  const navigate = useNavigate();
+
   const [isOpen, setIsOpen] = useState(false);
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -153,6 +156,7 @@ export default function ContextMenuSong({
       const updateResponse = await fetch(fetchUrlUpdateSong, requestOptions);
       if (updateResponse.status === 204) {
         refreshPlaylistData();
+        navigate(`/home}`, { replace: true });
       } else {
         console.log('Unable to delete Song from Playlist');
       }
@@ -160,6 +164,41 @@ export default function ContextMenuSong({
       handleClose();
     } catch (error) {
       console.log('Unable to update playlist', error);
+    }
+  };
+
+  /* Handle crear lista */
+
+  const handleCrearLista = async () => {
+    try {
+      const newPlaylistName = `Playlist${Math.trunc(
+        Math.floor(Math.random() * 1000)
+      ).toString()}`;
+
+      const fetchPostSongUrl = `${Global.backendBaseUrl}playlists/?nombre=${newPlaylistName}&foto=foto&descripcion=Insertar+descripcion`;
+
+      const requestOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify([songName]),
+      };
+
+      const postResponse = await fetch(fetchPostSongUrl, requestOptions);
+
+      if (postResponse.status === 201) {
+        refreshPlaylistData();
+        console.log("🚀 ~ file: ContextMenuPlaylist.tsx:253 ~ .then ~ response:", postResponse)
+
+        //navigate(`/playlists/${newPlaylistName}`, { replace: true });
+      } else {
+        console.log('Unable to create playlist with this Song');
+      }
+
+      handleClose();
+    } catch {
+      console.log(console.log('Unable to create playlist with this Song'));
     }
   };
 
@@ -214,7 +253,9 @@ export default function ContextMenuSong({
                     <button type="button">Buscar una lista</button>
                   </li>
                   <li>
-                    <button type="button">Crear lista</button>
+                    <button type="button" onClick={handleCrearLista}>
+                      Crear lista
+                    </button>
                   </li>
 
                   {loading && <LoadingCircle />}
@@ -223,7 +264,7 @@ export default function ContextMenuSong({
                     playlistNames &&
                     playlistNames.map((playlistNameItem) => {
                       return (
-                        <li key={songName}>
+                        <li key={playlistNameItem + songName}>
                           <button
                             type="button"
                             onClick={() => handleAddToPlaylist()}

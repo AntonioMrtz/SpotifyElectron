@@ -250,9 +250,8 @@ export default function ContextMenuPlaylist({
 
           throw new Error('Unable to delete playlist');
         } else if (response.status === 202) {
-          navigate(`/home`, { replace: true });
           refreshPlaylistData();
-          displayConfirmationModal(ConfirmationMenuActionKind.DELETE_SUCESS);
+          navigate(`/home`, { replace: true });
         }
 
         return null;

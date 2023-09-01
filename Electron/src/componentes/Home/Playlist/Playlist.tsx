@@ -63,7 +63,7 @@ export default function Home({ name, photo, description }: PropsPlaylist) {
 
   return (
     <span className={`rounded ${styles.card}`}>
-      <Link to={urlPlaylist} key={name}>
+      <Link to={urlPlaylist} key={urlPlaylist + name}>
         <div
           className={`${styles.imgContainer}`}
           onContextMenu={handleOpenContextMenu}

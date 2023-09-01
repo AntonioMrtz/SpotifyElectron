@@ -138,7 +138,7 @@ def get_cancion_dto(nombre: str) -> Response:
 
 
 @router.put("/{nombre}")
-def update_song(nombre: str,artist: str = None, foto: str = None, duration: int = None, genre: Genre = None, nuevo_nombre: str = None) -> Response:
+def update_song(nombre: str,artist: str = None, foto: str = None, genre: Genre = None, nuevo_nombre: str = None) -> Response:
     """ Actualiza los parámetros de la cancion con nombre "nombre"
 
     Parameters
@@ -146,7 +146,6 @@ def update_song(nombre: str,artist: str = None, foto: str = None, duration: int 
         nombre (str): Nombre de la cancion
         artist (str): Artista de la cancion
         foto (url): Foto de la cancion
-        duration (int): Duracion de la cancion
         genre (Genre): Genero de la cancion
         nuevo_nombre (str): Nuevo nombre de la cancion
 
@@ -161,7 +160,7 @@ def update_song(nombre: str,artist: str = None, foto: str = None, duration: int 
     """
 
     song_service.update_song(
-        nombre, nuevo_nombre, foto, duration, genre)
+        nombre, nuevo_nombre, foto, genre)
     return Response(None, 204)
 
 

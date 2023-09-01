@@ -180,7 +180,7 @@ def delete_song(name: str) -> None:
         raise HTTPException(status_code=404, detail="La canción no existe")
 
 
-def update_song(name: str, nuevo_nombre: str, photo: str, duration: int, genre: Genre) -> None:
+def update_song(name: str, nuevo_nombre: str, photo: str, genre: Genre) -> None:
     """ Updates a song with name, url of thumbnail, duration, genre and number of plays, if empty parameter is not being updated "
 
     Parameters
@@ -188,7 +188,6 @@ def update_song(name: str, nuevo_nombre: str, photo: str, duration: int, genre: 
         name (str): Song's name
         nuevo_nombre (str) : New Song's name, if empty name is not being updated
         photo (str): Url of Song thumbnail
-        duration (int): Duration of the Song
         genre (Genre): Genre of the Song
         number_of_plays (int): Number of plays of the Song
 
@@ -212,10 +211,10 @@ def update_song(name: str, nuevo_nombre: str, photo: str, duration: int, genre: 
     if checkValidParameterString(nuevo_nombre):
         new_name = nuevo_nombre
         fileSongCollection.update_one({'name': name}, {
-            "$set": {'name': new_name, 'artist': result_song_exists.artist, 'photo': photo if photo and 'http' in photo else result_song_exists.photo, 'duration': duration or result_song_exists.duration, 'genre': Genre(genre).value if genre != None else Genre[result_song_exists.genre].value}})
+            "$set": {'name': new_name, 'artist': result_song_exists.artist, 'photo': photo if photo and 'http' in photo else result_song_exists.photo, 'genre': Genre(genre).value if genre != None else Genre[result_song_exists.genre].value}})
     else:
         fileSongCollection.update_one({'name': name}, {
-            "$set": {'name': name, 'artist': result_song_exists.artist, 'photo': photo if photo and 'http' in photo else result_song_exists.photo, 'duration': duration or result_song_exists.duration, 'genre': Genre(genre).value if genre != None else Genre[result_song_exists.genre].value}})
+            "$set": {'name': name, 'artist': result_song_exists.artist, 'photo': photo if photo and 'http' in photo else result_song_exists.photo, 'genre': Genre(genre).value if genre != None else Genre[result_song_exists.genre].value}})
 
 
 def increase_number_plays(name: str) -> None:

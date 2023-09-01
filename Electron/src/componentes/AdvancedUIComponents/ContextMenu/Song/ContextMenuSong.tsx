@@ -20,8 +20,6 @@ export default function ContextMenuSong({
   handleCloseParent,
   refreshPlaylistData,
 }: PropsContextMenuSong) {
-  const navigate = useNavigate();
-
   const [isOpen, setIsOpen] = useState(false);
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -156,7 +154,6 @@ export default function ContextMenuSong({
       const updateResponse = await fetch(fetchUrlUpdateSong, requestOptions);
       if (updateResponse.status === 204) {
         refreshPlaylistData();
-        navigate(`/home}`, { replace: true });
       } else {
         console.log('Unable to delete Song from Playlist');
       }
@@ -189,9 +186,6 @@ export default function ContextMenuSong({
 
       if (postResponse.status === 201) {
         refreshPlaylistData();
-        console.log("🚀 ~ file: ContextMenuPlaylist.tsx:253 ~ .then ~ response:", postResponse)
-
-        //navigate(`/playlists/${newPlaylistName}`, { replace: true });
       } else {
         console.log('Unable to create playlist with this Song');
       }
@@ -200,6 +194,8 @@ export default function ContextMenuSong({
     } catch {
       console.log(console.log('Unable to create playlist with this Song'));
     }
+
+    // refreshPlaylistData();
   };
 
   return (

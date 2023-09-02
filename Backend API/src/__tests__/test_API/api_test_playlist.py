@@ -23,6 +23,11 @@ def get_playlist(name: str):
     response = client.get(f"/playlists/{name}")
     return response
 
+def get_playlists(song_names: str):
+
+    response = client.get(f"/playlists/multiple/{song_names}")
+    return response
+
 
 def update_playlist(
         name: str,
@@ -50,6 +55,6 @@ def delete_playlist(name: str):
     return response
 
 
-def get_playlists():
+def get_all_playlists():
     response = client.get(f"/playlists/")
     return response

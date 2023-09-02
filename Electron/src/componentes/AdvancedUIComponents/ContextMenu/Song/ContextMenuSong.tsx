@@ -4,7 +4,6 @@ import Global from 'global/global';
 import LoadingCircle from 'componentes/AdvancedUIComponents/LoadingCircle/LoadingCircle';
 import InfoPopover from 'componentes/InfoPopover/InfoPopover';
 import { InfoPopoverType } from 'componentes/InfoPopover/types/InfoPopover';
-import { useNavigate } from 'react-router-dom';
 import styles from '../contextMenu.module.css';
 import { PropsContextMenuSong } from '../types/PropsContextMenu';
 

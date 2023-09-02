@@ -3,8 +3,8 @@ import { useEffect, useReducer, useState } from 'react';
 import Global from 'global/global';
 import { useNavigate } from 'react-router-dom';
 import LoadingCircle from 'componentes/AdvancedUIComponents/LoadingCircle/LoadingCircle';
-import InfoPopover from 'componentes/InfoPopover/InfoPopover';
-import { InfoPopoverType } from 'componentes/InfoPopover/types/InfoPopover';
+import InfoPopover from 'componentes/AdvancedUIComponents/InfoPopOver/InfoPopover';
+import { InfoPopoverType } from 'componentes/AdvancedUIComponents/InfoPopOver/types/InfoPopover';
 import styles from '../contextMenu.module.css';
 import { PropsContextMenuPlaylist } from '../types/PropsContextMenu';
 

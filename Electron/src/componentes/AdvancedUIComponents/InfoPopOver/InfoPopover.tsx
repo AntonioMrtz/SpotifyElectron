@@ -1,13 +1,10 @@
 import Modal from '@mui/material/Modal';
-import {
-  InfoPopoverType,
-  PropsInfoPopover,
-} from 'componentes/InfoPopover/types/InfoPopover';
 import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 import CheckIcon from '@mui/icons-material/Check';
 import ContentPasteIcon from '@mui/icons-material/ContentPaste';
+import { PropsInfoPopover, InfoPopoverType } from './types/InfoPopover';
 import styles from './confirmationModal.module.css';
 
 export default function InfoPopover({

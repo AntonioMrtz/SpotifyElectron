@@ -127,8 +127,36 @@ def get_playlists() -> Response:
     Raises
     -------
     """
-
     playlists = playlist_service.get_all_playlist()
+
+    playlist_list = []
+    [playlist_list.append(playlist.get_json()) for playlist in playlists]
+
+    playlist_dict = {}
+
+    playlist_dict["playlists"] = playlist_list
+    playlist_json = json.dumps(playlist_dict)
+
+    return Response(playlist_json, media_type="application/json", status_code=200)
+
+
+@router.get("/multiple/{nombres}", tags=["playlists"])
+def get_selected_playlists(nombres:str) -> Response:
+    """ Devuelve todas las playlists [ SOLO nombres canciones , no el archivo de audio ]
+
+    Parameters
+    ----------
+
+    Returns
+    -------
+        Response 200 OK
+
+    Raises
+    -------
+    """
+
+
+    playlists = playlist_service.get_selected_playlists(nombres.split(','))
 
     playlist_list = []
     [playlist_list.append(playlist.get_json()) for playlist in playlists]

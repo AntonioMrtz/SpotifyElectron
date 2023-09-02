@@ -1,6 +1,6 @@
 from fastapi.testclient import TestClient
 from datetime import datetime
-from test_API.api_test_playlist import create_playlist, get_playlist, delete_playlist , update_playlist, get_playlists
+from test_API.api_test_playlist import create_playlist, get_playlist, delete_playlist , update_playlist, get_playlists ,get_all_playlists
 from main import app as app
 import json
 import pytest
@@ -133,10 +133,38 @@ def test_update_playlist_correct_nuevo_nombre(clear_test_data_db):
 
 
 
+def test_get_playlists():
+
+    res_get_playlists = get_all_playlists()
+    assert res_get_playlists.status_code == 200
+
+
 def test_get_playlists(clear_test_data_db):
 
-    res_get_playlists = get_playlists()
+    name = "8232392323623823723"
+    foto= "foto"
+    descripcion = "descripcion"
+
+    res_create_playlist = create_playlist(name=name,descripcion=descripcion,foto=foto)
+    assert res_create_playlist.status_code == 201
+
+    new_name = "82323923236238237237"
+    foto= "foto"
+    descripcion = "descripcion"
+
+    res_create_playlist = create_playlist(name=new_name,descripcion=descripcion,foto=foto)
+    assert res_create_playlist.status_code == 201
+
+    res_get_playlists = get_playlists(f'{name},{new_name}')
     assert res_get_playlists.status_code == 200
+    assert len(res_get_playlists.json()["playlists"])==2
+
+    res_delete_playlist = delete_playlist(name)
+    assert res_delete_playlist.status_code == 202
+
+    res_delete_playlist = delete_playlist(new_name)
+    assert res_delete_playlist.status_code == 202
+
 
 
 # executes after all tests

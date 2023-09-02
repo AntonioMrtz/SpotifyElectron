@@ -167,9 +167,9 @@ export default function Playlist({
                       artistName: '',
                       duration: 0,
                       index: 0,
-
                       handleSongCliked: changeSongName,
                       refreshPlaylistData: loadPlaylistData,
+                      refreshSidebarData: triggerReloadSidebar,
                     };
                     propsSong.artistName = resFetchSongDTOJson.artist;
                     propsSong.duration = resFetchSongDTOJson.duration;
@@ -444,6 +444,7 @@ export default function Playlist({
                   duration={song.duration}
                   handleSongCliked={changeSongName}
                   refreshPlaylistData={loadPlaylistData}
+                  refreshSidebarData={triggerReloadSidebar}
                 />
               );
             })}
@@ -477,7 +478,8 @@ export default function Playlist({
           <ContextMenuPlaylist
             playlistName={playlistName}
             handleCloseParent={handleCloseContextMenu}
-            refreshPlaylistData={triggerReloadSidebar}
+            refreshPlaylistData={() => {}}
+            refreshSidebarData={triggerReloadSidebar}
           />
         </Popover>
       </div>

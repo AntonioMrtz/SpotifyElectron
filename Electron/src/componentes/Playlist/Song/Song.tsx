@@ -19,6 +19,7 @@ export default function Song({
   duration,
   handleSongCliked,
   refreshPlaylistData,
+  refreshSidebarData,
 }: PropsSongs) {
   const [isOpen, setIsOpen] = useState(false);
   const [anchorPosition, setAnchorPosition] = useState<{
@@ -104,6 +105,7 @@ export default function Song({
             playlistName={playlistName}
             handleCloseParent={handleClose}
             refreshPlaylistData={refreshPlaylistData}
+            refreshSidebarData={refreshSidebarData}
           />
         </Popover>
       </div>

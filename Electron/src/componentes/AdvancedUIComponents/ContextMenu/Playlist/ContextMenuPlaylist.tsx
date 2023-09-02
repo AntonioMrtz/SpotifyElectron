@@ -97,7 +97,7 @@ const reducerConfirmationMenu = (
 export default function ContextMenuPlaylist({
   playlistName,
   handleCloseParent,
-  refreshPlaylistData,
+  refreshSidebarData,
 }: PropsContextMenuPlaylist) {
   const navigate = useNavigate();
 
@@ -250,7 +250,7 @@ export default function ContextMenuPlaylist({
 
           throw new Error('Unable to delete playlist');
         } else if (response.status === 202) {
-          refreshPlaylistData();
+          refreshSidebarData();
           navigate(`/home`, { replace: true });
         }
 

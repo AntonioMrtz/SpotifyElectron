@@ -18,6 +18,7 @@ export default function ContextMenuSong({
   playlistName,
   handleCloseParent,
   refreshPlaylistData,
+  refreshSidebarData,
 }: PropsContextMenuSong) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -84,17 +85,17 @@ export default function ContextMenuSong({
     setTriggerOpenConfirmationModal(true);
   };
 
-  const handleAddToPlaylist = async () => {
+  const handleAddToPlaylist = async (selectedPlaylistName: string) => {
     try {
       const playlistResponse = await fetch(
-        `${Global.backendBaseUrl}playlists/dto/${playlistName}`,
+        `${Global.backendBaseUrl}playlists/dto/${selectedPlaylistName}`,
         {
           headers: { 'Access-Control-Allow-Origin': '*' },
         }
       );
       const playlistData = await playlistResponse.json();
 
-      const url = `${Global.backendBaseUrl}playlists/${playlistName}`;
+      const url = `${Global.backendBaseUrl}playlists/${selectedPlaylistName}`;
       const { photo } = playlistData;
 
       const fetchUrlUpdateSong = `${url}?foto=${photo}&descripcion=${playlistData.description}`;
@@ -103,7 +104,6 @@ export default function ContextMenuSong({
         songName,
         ...playlistData.song_names,
       ];
-
       const requestOptions = {
         method: 'PUT',
         headers: {
@@ -184,7 +184,7 @@ export default function ContextMenuSong({
       const postResponse = await fetch(fetchPostSongUrl, requestOptions);
 
       if (postResponse.status === 201) {
-        refreshPlaylistData();
+        refreshSidebarData();
       } else {
         console.log('Unable to create playlist with this Song');
       }
@@ -193,8 +193,6 @@ export default function ContextMenuSong({
     } catch {
       console.log(console.log('Unable to create playlist with this Song'));
     }
-
-    // refreshPlaylistData();
   };
 
   return (
@@ -262,7 +260,9 @@ export default function ContextMenuSong({
                         <li key={playlistNameItem + songName}>
                           <button
                             type="button"
-                            onClick={() => handleAddToPlaylist()}
+                            onClick={() =>
+                              handleAddToPlaylist(playlistNameItem.toString())
+                            }
                           >
                             {playlistNameItem}
                           </button>

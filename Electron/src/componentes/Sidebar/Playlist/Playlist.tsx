@@ -93,7 +93,8 @@ export default function Playlist({
           <ContextMenuPlaylist
             playlistName={name}
             handleCloseParent={handleClose}
-            refreshPlaylistData={reloadSidebar}
+            refreshPlaylistData={() => {}}
+            refreshSidebarData={reloadSidebar}
           />
         </Popover>
       </div>

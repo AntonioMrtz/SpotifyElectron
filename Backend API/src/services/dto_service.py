@@ -36,6 +36,42 @@ def get_song(name: str) -> SongDTO:
 
     return SongDTO(name=song_data["name"], artist=song_data["artist"], photo=song_data["photo"], duration=song_data["duration"],genre=Genre(song_data["genre"]).name, number_of_plays=song_data["number_of_plays"])
 
+def get_songs(song_names: list) -> list:
+    """ Returns a list with song's metadatas without his audio files"
+
+    Parameters
+    ----------
+        song_names (list) : song names
+
+    Raises
+    -------
+        400 : Bad Request
+        404 : Song not found
+
+    Returns
+    -------
+        List<SongDTO>
+    """
+
+    respone_songs_dto = []
+
+    for name in song_names:
+
+        if name is None or name == "":
+            raise HTTPException(
+                status_code=400, detail="El nombre de la canción es vacío")
+
+        song_data = fileSongCollection.find_one({'name': name})
+        if song_data is None:
+            raise HTTPException(
+                status_code=404, detail="La canción con ese nombre no existe")
+
+        respone_songs_dto.append(SongDTO(name=song_data["name"], artist=song_data["artist"], photo=song_data["photo"], duration=song_data["duration"], genre=Genre(
+            song_data["genre"]).name, number_of_plays=song_data["number_of_plays"]))
+
+    return respone_songs_dto
+
+
 
 def get_playlist(name: str) -> PlaylistDTO:
     """ Returns a playlist's metadata without his song's audio files"

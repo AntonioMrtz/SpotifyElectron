@@ -74,7 +74,7 @@ def create_playlist(name: str, photo: str, description: str, song_names: list) -
     if not checkValidParameterString(name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
-    songs = song_service.get_songs(song_names)
+    songs = dto_service.get_songs(song_names)
     result_playlist_exists = playlistCollection.find_one({'name': name})
 
     if result_playlist_exists:
@@ -157,6 +157,8 @@ def get_all_playlist() -> list:
 
     Raises
     -------
+        400 : Bad Request
+        404 : Playlist Not Found
 
     Returns
     -------
@@ -170,3 +172,30 @@ def get_all_playlist() -> list:
         playlists.append(dto_service.get_playlist(playlist_file["name"]))
 
     return playlists
+
+
+def get_selected_playlists(playlist_names: list) -> list:
+    """ Returns the selected playlists DTO object"
+
+    Parameters
+    ----------
+    playlist_names (list<str>) : the names of the playlists
+
+    Raises
+    -------
+    400
+
+    Returns
+    -------
+        List<PlaylistDTO>
+    """
+
+    filter_contained_playlist_names = {"name": {"$in": playlist_names}}
+
+    response_playlists = []
+    playlists_files = playlistCollection.find(filter_contained_playlist_names)
+
+    for playlist_file in playlists_files:
+        response_playlists.append(dto_service.get_playlist(playlist_file["name"]))
+
+    return response_playlists

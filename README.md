@@ -54,3 +54,23 @@ cd Backend API/src ; python3 -m pytest -s
 ## How to Contribute to the project
 
 [CONTRIBUTING readme](https://github.com/AntonioMrtz/SpotifyElectron/blob/master/.github/CONTRIBUTING.md)
+
+## Walkthrough
+
+### Home
+
+![Home](assets/images/Walkthrough/Home.png)
+
+### Playlist
+
+![Home](assets/images/Walkthrough/Playlist.png)
+
+### Upload Song
+
+![Home](assets/images/Walkthrough/UploadSong.png)
+
+### Update Playlist
+
+![Home](assets/images/Walkthrough/UpdatePlaylist.png)
+
+

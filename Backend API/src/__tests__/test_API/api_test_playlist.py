@@ -5,9 +5,9 @@ from fastapi.testclient import TestClient
 client = TestClient(app)
 
 
-def create_playlist(name: str, descripcion: str, foto: str):
+def create_playlist(name: str, descripcion: str, foto: str,creador:str):
 
-    url = f"/playlists/?nombre={name}&foto={foto}&descripcion={descripcion}"
+    url = f"/playlists/?nombre={name}&foto={foto}&descripcion={descripcion}&creador={creador}"
 
     payload = []
 

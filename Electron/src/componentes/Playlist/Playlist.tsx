@@ -42,6 +42,8 @@ export default function Playlist({
 
   const [thumbnail, setThumbnail] = useState<string>(defaultThumbnailPlaylist);
   const [numberSongs, setNumberSongs] = useState<number>(0);
+  const [owner, setOwner] = useState<string>('');
+  const [creationDate, setCreationDate] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [displayPlay, setdisplayPlay] = useState('');
   const [displayPause, setdisplayPause] = useState(styles.displayNonePlay);
@@ -135,7 +137,10 @@ export default function Playlist({
       );
       const resFetchGetPlaylistDTOJson = await resFetchGetPlaylistDTO.json();
 
+      setOwner(resFetchGetPlaylistDTOJson.owner);
+      setCreationDate(resFetchGetPlaylistDTOJson.upload_date.split('-')[0]);
       setDescription(resFetchGetPlaylistDTOJson.description);
+
       setThumbnail(
         resFetchGetPlaylistDTOJson.photo === ''
           ? defaultThumbnailPlaylist
@@ -343,6 +348,10 @@ export default function Playlist({
             <h1>{playlistName}</h1>
             <p className={`${styles.descriptionText}`}>{description}</p>
             <div className="d-flex flex-row">
+              <p>{owner}</p>
+              <p className="me-2 ms-2">•</p>
+              <p>{creationDate}</p>
+              <p className="me-2 ms-2">•</p>
               <p>{numberSongs} canciones</p>
               <p className="me-2 ms-2">•</p>
               <p>

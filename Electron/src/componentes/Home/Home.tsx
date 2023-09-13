@@ -6,7 +6,11 @@ import Playlist from './Playlist/Playlist';
 import { PropsPlaylist } from './types/propsPlaylist.module';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 
-export default function Home() {
+interface PropsHome {
+  refreshSidebarData: Function;
+}
+
+export default function Home({ refreshSidebarData }: PropsHome) {
   const [playlists, setPlaylists] = useState<PropsPlaylist[]>();
   const [loading, setLoading] = useState(true);
 
@@ -31,6 +35,8 @@ export default function Home() {
                     ? defaultThumbnailPlaylist
                     : resPlaylistFetchJson.photo,
                 description: resPlaylistFetchJson.description,
+                refreshSidebarData,
+                owner: resPlaylistFetchJson.owner,
               };
 
               propsPlaylists.push(propsPlaylist);
@@ -49,6 +55,7 @@ export default function Home() {
 
   useEffect(() => {
     handlePlaylists();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -93,7 +100,9 @@ export default function Home() {
                   name={playlist.name}
                   photo={playlist.photo}
                   description={playlist.description}
+                  owner={playlist.owner}
                   key={playlist.name + playlist.description}
+                  refreshSidebarData={refreshSidebarData}
                 />
               );
             })}
@@ -137,7 +146,9 @@ export default function Home() {
                   name={playlist.name}
                   photo={playlist.photo}
                   description={playlist.description}
+                  owner={playlist.owner}
                   key={playlist.name + playlist.description}
+                  refreshSidebarData={refreshSidebarData}
                 />
               );
             })}

@@ -173,6 +173,8 @@ export default function AddSongPlayListAccordion({
         }
       });
 
+      url.searchParams.set('creador', 'usuarioprovisionalcambiar');
+
       const requestOptions = {
         method: 'POST',
         headers: {

@@ -10,11 +10,12 @@ def test_get_playlist_correct(clear_test_data_db):
     name = "8232392323623823723"
     foto = "https://foto"
     descripcion = "hola"
+    owner = "usuarioprueba834783478923489734298"
 
     formatting = "%Y-%m-%dT%H:%M:%S"
     post_date_iso8601 = datetime.strptime(datetime.now().strftime('%Y-%m-%dT%H:%M:%S'),formatting)
 
-    res_create_playlist = create_playlist(name=name,descripcion=descripcion,foto=foto)
+    res_create_playlist = create_playlist(name=name,descripcion=descripcion,foto=foto,creador=owner)
     assert res_create_playlist.status_code == 201
 
     res_get_playlist = get_playlist(name=name)
@@ -22,6 +23,8 @@ def test_get_playlist_correct(clear_test_data_db):
     assert res_get_playlist.json()["name"]==name
     assert res_get_playlist.json()["photo"]==foto
     assert res_get_playlist.json()["description"]==descripcion
+    assert res_get_playlist.json()["owner"]==owner
+
 
     try:
         fecha = res_get_playlist.json()["upload_date"]
@@ -47,8 +50,10 @@ def test_post_playlist_correct(clear_test_data_db):
     name = "8232392323623823723"
     foto = "https://foto"
     descripcion = "hola"
+    owner = "usuarioprueba834783478923489734298"
 
-    res_create_playlist = create_playlist(name=name,descripcion=descripcion,foto=foto)
+
+    res_create_playlist = create_playlist(name=name,descripcion=descripcion,foto=foto,creador=owner)
     assert res_create_playlist.status_code == 201
 
     res_delete_playlist = delete_playlist(name=name)
@@ -59,8 +64,10 @@ def test_delete_playlist_correct(clear_test_data_db):
     name = "8232392323623823723"
     foto = "https://foto"
     descripcion = "hola"
+    owner = "usuarioprueba834783478923489734298"
 
-    res_create_playlist = create_playlist(name=name,descripcion=descripcion,foto=foto)
+
+    res_create_playlist = create_playlist(name=name,descripcion=descripcion,foto=foto,creador=owner)
     assert res_create_playlist.status_code == 201
 
     res_delete_playlist = delete_playlist(name=name)
@@ -94,8 +101,10 @@ def test_update_playlist_correct(clear_test_data_db):
     name = "8232392323623823723"
     foto= "foto"
     descripcion = "descripcion"
+    owner = "usuarioprueba834783478923489734298"
 
-    res_create_playlist = create_playlist(name=name,descripcion=descripcion,foto=foto)
+
+    res_create_playlist = create_playlist(name=name,descripcion=descripcion,foto=foto,creador=owner)
     assert res_create_playlist.status_code == 201
 
     new_description= "nuevadescripcion"
@@ -114,8 +123,10 @@ def test_update_playlist_correct_nuevo_nombre(clear_test_data_db):
     name = "8232392323623823723"
     foto= "foto"
     descripcion = "descripcion"
+    owner = "usuarioprueba834783478923489734298"
 
-    res_create_playlist = create_playlist(name=name,descripcion=descripcion,foto=foto)
+
+    res_create_playlist = create_playlist(name=name,descripcion=descripcion,foto=foto,creador=owner)
     assert res_create_playlist.status_code == 201
 
     new_name = "82323923236238237237"
@@ -144,15 +155,17 @@ def test_get_playlists(clear_test_data_db):
     name = "8232392323623823723"
     foto= "foto"
     descripcion = "descripcion"
+    owner = "usuarioprueba834783478923489734298"
 
-    res_create_playlist = create_playlist(name=name,descripcion=descripcion,foto=foto)
+
+    res_create_playlist = create_playlist(name=name,descripcion=descripcion,foto=foto,creador=owner)
     assert res_create_playlist.status_code == 201
 
     new_name = "82323923236238237237"
     foto= "foto"
     descripcion = "descripcion"
 
-    res_create_playlist = create_playlist(name=new_name,descripcion=descripcion,foto=foto)
+    res_create_playlist = create_playlist(name=new_name,descripcion=descripcion,foto=foto,creador=owner)
     assert res_create_playlist.status_code == 201
 
     res_get_playlists = get_playlists(f'{name},{new_name}')

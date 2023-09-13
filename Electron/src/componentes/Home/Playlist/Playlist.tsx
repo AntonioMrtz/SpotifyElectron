@@ -5,7 +5,12 @@ import Popover, { PopoverPosition } from '@mui/material/Popover/Popover';
 import styles from './playlistCss.module.css';
 import { PropsPlaylist } from '../types/propsPlaylist.module';
 
-export default function Home({ name, photo, description }: PropsPlaylist) {
+export default function Playlist({
+  name,
+  photo,
+  owner,
+  refreshSidebarData,
+}: PropsPlaylist) {
   const [displayPlay, setdisplayPlay] = useState(styles.displayTruePlay);
   const [displayPause, setdisplayPause] = useState(styles.displayNonePlay);
   const [Playing, setPlaying] = useState(false);
@@ -90,7 +95,7 @@ export default function Home({ name, photo, description }: PropsPlaylist) {
         </div>
         <div className={`${styles.cardBody}`}>
           <h5 className={`${styles.tituloLista}`}>{name}</h5>
-          <p className={`${styles.autorLista}`}>{description}</p>
+          <p className={`${styles.autorLista}`}>{owner}</p>
         </div>
       </Link>
       <div>
@@ -121,6 +126,7 @@ export default function Home({ name, photo, description }: PropsPlaylist) {
             playlistName={name}
             handleCloseParent={handleCloseContextMenu}
             refreshPlaylistData={() => {}}
+            refreshSidebarData={refreshSidebarData}
           />
         </Popover>
       </div>

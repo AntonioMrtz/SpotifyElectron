@@ -52,8 +52,14 @@ function App() {
               path="/explorar"
               element=<Explorar changeSongName={changeSongName} />
             />
-            <Route path="/" element=<Home /> />
-            <Route path="*" element=<Home /> />
+            <Route
+              path="/"
+              element=<Home refreshSidebarData={reloadSidebar} />
+            />
+            <Route
+              path="*"
+              element=<Home refreshSidebarData={reloadSidebar} />
+            />
           </Routes>
         </div>
       </div>

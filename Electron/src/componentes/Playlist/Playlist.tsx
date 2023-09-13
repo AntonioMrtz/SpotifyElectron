@@ -557,6 +557,9 @@ export default function Playlist({
                   type="text"
                   className="form-control"
                   id="foto"
+                  defaultValue={
+                    thumbnail === defaultThumbnailPlaylist ? '' : thumbnail
+                  }
                   placeholder="Url de la nueva foto"
                   onChange={handleChangeForm}
                 />

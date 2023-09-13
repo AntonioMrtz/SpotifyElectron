@@ -4,6 +4,8 @@ import services.user_service as user_service
 from model.User import User
 from fastapi import HTTPException
 from services.utils import checkValidParameterString
+import bcrypt
+
 
 user_collection = Database().connection["usuario"]
 
@@ -70,13 +72,16 @@ def create_user(name: str, photo: str, password: str) -> None:
     if result_user_exists:
         raise HTTPException(status_code=400, detail="La playlist ya existe")
 
+    utf8_password = password.encode('utf-8')
+    hashed_password = bcrypt.hashpw(utf8_password, bcrypt.gensalt())
+
     result = user_collection.insert_one(
-        {'name': name, 'photo': photo if 'http' in photo else '', 'register_date': date_iso8601, 'password': password,'saved_playlists': [], 'playlists': [], 'playback_history': []})
+        {'name': name, 'photo': photo if 'http' in photo else '', 'register_date': date_iso8601, 'password': hashed_password, 'saved_playlists': [], 'playlists': [], 'playback_history': []})
 
     return True if result.acknowledged else False
 
 
-def update_user(name: str, photo: str, playlists:list,saved_playlists:list,playback_history:list) -> None:
+def update_user(name: str, photo: str, playlists: list, saved_playlists: list, playback_history: list) -> None:
     """ Updates a user , duplicated playlists and songs wont be added
 
     Parameters
@@ -105,8 +110,8 @@ def update_user(name: str, photo: str, playlists:list,saved_playlists:list,playb
     if not result_user_exists:
         raise HTTPException(status_code=404, detail="El usuario no existe")
 
-    result = user_collection.update_one( {'name': name} ,
-        { "$set": {'photo': photo if 'http' in photo else '','saved_playlists': list(set(saved_playlists)), 'playlists': list(set(playlists)), 'playback_history': list(set(playback_history))} })
+    result = user_collection.update_one({'name': name},
+                                        {"$set": {'photo': photo if 'http' in photo else '', 'saved_playlists': list(set(saved_playlists)), 'playlists': list(set(playlists)), 'playback_history': list(set(playback_history))}})
 
 
 def delete_user(name: str) -> None:

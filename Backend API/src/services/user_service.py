@@ -1,6 +1,5 @@
 from datetime import datetime
 from database.Database import Database
-import services.user_service as user_service
 from model.User import User
 from fastapi import HTTPException
 from services.utils import checkValidParameterString
@@ -8,6 +7,7 @@ import bcrypt
 
 
 user_collection = Database().connection["usuario"]
+artist_collection = Database().connection["artista"]
 
 
 def get_user(name: str) -> User:
@@ -68,9 +68,10 @@ def create_user(name: str, photo: str, password: str) -> None:
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
     result_user_exists = user_collection.find_one({'name': name})
+    result_artist_exists = artist_collection.find_one({'name': name})
 
-    if result_user_exists:
-        raise HTTPException(status_code=400, detail="La playlist ya existe")
+    if result_user_exists or result_artist_exists:
+        raise HTTPException(status_code=400, detail="El usuario ya existe")
 
     utf8_password = password.encode('utf-8')
     hashed_password = bcrypt.hashpw(utf8_password, bcrypt.gensalt())

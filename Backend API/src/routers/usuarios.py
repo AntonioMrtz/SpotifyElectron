@@ -60,7 +60,7 @@ def post_usuario(nombre: str, foto: str, password: str) -> Response:
 
 @router.put("/{nombre}", tags=["usuarios"])
 def update_usuario(nombre: str, foto: str, historial_canciones: list, playlists: list,  playlists_guardadas: list) -> Response:
-    """ Actualiza los parámetros de la playlist con nombre "nombre" , las canciones repetidas son serán añadidas
+    """ Actualiza los parámetros del usuario con nombre "nombre"
 
     Parameters
     ----------
@@ -87,7 +87,7 @@ def update_usuario(nombre: str, foto: str, historial_canciones: list, playlists:
 
 @router.delete("/{nombre}", tags=["usuarios"])
 def delete_usuario(nombre: str) -> Response:
-    """ Elimina una usuario con nombre "nombre"
+    """ Elimina un usuario con nombre "nombre"
 
     Parameters
     ----------

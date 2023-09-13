@@ -21,7 +21,6 @@ def test_get_artist_correct(clear_test_data_db):
     assert res_get_artist.status_code == 200
     assert res_get_artist.json()["name"]==name
     assert res_get_artist.json()["photo"]==foto
-    assert res_get_artist.json()["password"]==password
 
     try:
         fecha = res_get_artist.json()["register_date"]

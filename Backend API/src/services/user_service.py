@@ -70,7 +70,6 @@ def create_user(name: str, photo: str, password: str) -> None:
     result_user_exists = user_collection.find_one({'name': name})
     result_artist_exists = artist_collection.find_one({'name': name})
 
-
     if result_user_exists or result_artist_exists:
         raise HTTPException(status_code=400, detail="El usuario ya existe")
 

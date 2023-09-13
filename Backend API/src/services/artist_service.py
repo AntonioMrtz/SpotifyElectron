@@ -3,6 +3,8 @@ from database.Database import Database
 from model.Artist import Artist
 from fastapi import HTTPException
 from services.utils import checkValidParameterString
+import bcrypt
+
 
 artist_collection = Database().connection["artista"]
 user_collection = Database().connection["usuario"]
@@ -71,8 +73,11 @@ def create_artist(name: str, photo: str, password: str) -> None:
     if result_artist_exists or result_user_exists:
         raise HTTPException(status_code=400, detail="El artista ya existe")
 
+    utf8_password = password.encode('utf-8')
+    hashed_password = bcrypt.hashpw(utf8_password, bcrypt.gensalt())
+
     result = artist_collection.insert_one(
-        {'name': name, 'photo': photo if 'http' in photo else '', 'register_date': date_iso8601, 'password': password, 'saved_playlists': [], 'playlists': [], 'playback_history': [], 'uploaded_songs': []})
+        {'name': name, 'photo': photo if 'http' in photo else '', 'register_date': date_iso8601, 'password': hashed_password, 'saved_playlists': [], 'playlists': [], 'playback_history': [], 'uploaded_songs': []})
 
     return True if result.acknowledged else False
 

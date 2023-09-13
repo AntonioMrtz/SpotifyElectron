@@ -82,7 +82,7 @@ def update_artista(nombre: str, foto: str, historial_canciones: list, playlists:
     """
 
     artist_service.update_artist(
-        name=nombre, photo=foto, playback_history=historial_canciones, playlists=playlists, saved_playlists=playlists_guardadas,)
+        name=nombre, photo=foto, playback_history=historial_canciones, playlists=playlists, saved_playlists=playlists_guardadas, uploaded_songs=canciones_creadas)
     return Response(None, 204)
 
 

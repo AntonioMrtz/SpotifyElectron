@@ -9,11 +9,13 @@ class User:
     photo: str
     register_date: str
     password: str
-    """ Stores the last 5 songs that the user played """
     playback_history: list
+    """ Stores the last 5 songs that the user played """
     playlists: list
     saved_playlists: list
 
     def get_json(self) -> json:
+
+        self.password= self.password.decode('utf-8')
         user_json = json.dumps(self.__dict__)
         return user_json

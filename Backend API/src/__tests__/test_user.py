@@ -4,6 +4,8 @@ from test_API.api_test_user import create_user, delete_user, get_user, update_us
 from main import app as app
 import json
 import pytest
+import bcrypt
+
 
 
 def test_get_user_correct(clear_test_data_db):
@@ -21,7 +23,13 @@ def test_get_user_correct(clear_test_data_db):
     assert res_get_user.status_code == 200
     assert res_get_user.json()["name"]==name
     assert res_get_user.json()["photo"]==foto
-    assert res_get_user.json()["password"]==password
+
+    # check password
+
+    utf8_password = res_get_user.json()["password"].encode('utf-8')
+    assert bcrypt.checkpw(password.encode('utf-8'),utf8_password)==True
+
+
 
     try:
         fecha = res_get_user.json()["register_date"]

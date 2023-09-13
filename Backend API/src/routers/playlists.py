@@ -38,7 +38,7 @@ def get_playlist(nombre: str) -> Response:
 
 
 @router.post("/", tags=["playlists"])
-def post_playlist(nombre: str, foto: str, descripcion: str, nombres_canciones: list) -> Response:
+def post_playlist(nombre: str, foto: str, descripcion: str, creador: str, nombres_canciones: list) -> Response:
     """ Registra la playlist
 
     Parameters
@@ -46,9 +46,8 @@ def post_playlist(nombre: str, foto: str, descripcion: str, nombres_canciones: l
         nombre (str): Nombre de la playlist
         foto (url): url de la imagen
         descripcion (str): Descripcion de la playlist
+        creador (str) : creador de la playlist
         nombres_canciones (list) : nombres de las canciones
-
-
 
     Returns
     -------
@@ -60,7 +59,7 @@ def post_playlist(nombre: str, foto: str, descripcion: str, nombres_canciones: l
     """
 
     result = playlist_service.create_playlist(
-        nombre, foto, descripcion, nombres_canciones)
+        nombre, foto, descripcion, creador, nombres_canciones)
     return Response(None, 201)
 
 
@@ -141,7 +140,7 @@ def get_playlists() -> Response:
 
 
 @router.get("/multiple/{nombres}", tags=["playlists"])
-def get_selected_playlists(nombres:str) -> Response:
+def get_selected_playlists(nombres: str) -> Response:
     """ Devuelve todas las playlists [ SOLO nombres canciones , no el archivo de audio ]
 
     Parameters
@@ -154,7 +153,6 @@ def get_selected_playlists(nombres:str) -> Response:
     Raises
     -------
     """
-
 
     playlists = playlist_service.get_selected_playlists(nombres.split(','))
 

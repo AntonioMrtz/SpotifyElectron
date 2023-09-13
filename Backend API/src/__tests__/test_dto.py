@@ -16,9 +16,10 @@ def test_get_playlist_dto_correct(clear_test_playlist_db):
     name = "8232392323623823723"
     descripcion = "descripcion"
     foto = "https://foto"
+    owner = "usuarioprueba834783478923489734298"
 
     res_create_playlist = create_playlist(
-        name=name, descripcion=descripcion, foto=foto)
+        name=name, descripcion=descripcion, foto=foto,creador=owner)
     assert res_create_playlist.status_code == 201
 
     res_get_playlist = get_playlist_dto(name=name)
@@ -26,6 +27,7 @@ def test_get_playlist_dto_correct(clear_test_playlist_db):
     assert res_get_playlist.json()["name"] == name
     assert res_get_playlist.json()["photo"] == foto
     assert res_get_playlist.json()["description"] == descripcion
+    assert res_get_playlist.json()["owner"] == owner
 
     res_delete_playlist = delete_playlist(name=name)
     assert res_delete_playlist.status_code == 202
@@ -62,7 +64,8 @@ def test_get_song_dto_correct(clear_test_song_db):
         file_path=file_path,
         artista=artista,
         genero=genero,
-        foto=foto)
+        foto=foto
+        )
     assert res_create_song.status_code == 201
 
     res_get_song = get_song_dto(song_name)

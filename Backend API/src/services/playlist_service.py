@@ -46,20 +46,21 @@ def get_playlist(name: str) -> Playlist:
     date = playlist_data["upload_date"][:-1]
 
     playlist = Playlist(
-        name, playlist_data["photo"], playlist_data["description"], date, playlist_songs)
+        name, playlist_data["photo"], playlist_data["description"], date, playlist_data["owner"], playlist_songs)
 
     return playlist
 
 
-def create_playlist(name: str, photo: str, description: str, song_names: list) -> None:
+def create_playlist(name: str, photo: str, description: str, owner: str, song_names: list) -> None:
     """ Create a playlist with name, url of thumbnail and list of song names
 
     Parameters
     ----------
         name (str): Playlists's name
         photo (str): Url of playlist thumbnail
-        song_names (list<str>): List of song names of the playlist
         description (str): Playlists's description
+        owner (str) : Nickname of the playlist owner
+        song_names (list<str>): List of song names of the playlist
 
     Raises
     -------
@@ -68,6 +69,7 @@ def create_playlist(name: str, photo: str, description: str, song_names: list) -
     Returns
     -------
     """
+
     fecha_actual = datetime.now()
     fecha_iso8601 = fecha_actual.strftime('%Y-%m-%dT%H:%M:%S')
 
@@ -81,7 +83,7 @@ def create_playlist(name: str, photo: str, description: str, song_names: list) -
         raise HTTPException(status_code=400, detail="La playlist ya existe")
 
     result = playlistCollection.insert_one(
-        {'name': name, 'photo': photo if 'http' in photo else '', 'upload_date': fecha_iso8601, 'description': description, 'song_names': song_names})
+        {'name': name, 'photo': photo if 'http' in photo else '', 'upload_date': fecha_iso8601, 'description': description, 'owner': owner, 'song_names': song_names})
 
     return True if result.acknowledged else False
 
@@ -94,8 +96,8 @@ def update_playlist(name: str, nuevo_nombre: str, photo: str, description: str, 
         name (str): Playlists's name
         nuevo_nombre (str) : New Playlist's name, if empty name is not being updated
         photo (str): Url of playlist thumbnail
-        song_names (list<str>): List of song names of the playlist
         description (str): Playlists's description
+        song_names (list<str>): List of song names of the playlist
 
     Raises
     -------
@@ -196,6 +198,7 @@ def get_selected_playlists(playlist_names: list) -> list:
     playlists_files = playlistCollection.find(filter_contained_playlist_names)
 
     for playlist_file in playlists_files:
-        response_playlists.append(dto_service.get_playlist(playlist_file["name"]))
+        response_playlists.append(
+            dto_service.get_playlist(playlist_file["name"]))
 
     return response_playlists

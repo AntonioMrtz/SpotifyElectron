@@ -34,7 +34,8 @@ def get_song(name: str) -> SongDTO:
         raise HTTPException(
             status_code=404, detail="La canción con ese nombre no existe")
 
-    return SongDTO(name=song_data["name"], artist=song_data["artist"], photo=song_data["photo"], duration=song_data["duration"],genre=Genre(song_data["genre"]).name, number_of_plays=song_data["number_of_plays"])
+    return SongDTO(name=song_data["name"], artist=song_data["artist"], photo=song_data["photo"], duration=song_data["duration"], genre=Genre(song_data["genre"]).name, number_of_plays=song_data["number_of_plays"])
+
 
 def get_songs(song_names: list) -> list:
     """ Returns a list with song's metadatas without his audio files"
@@ -72,7 +73,6 @@ def get_songs(song_names: list) -> list:
     return respone_songs_dto
 
 
-
 def get_playlist(name: str) -> PlaylistDTO:
     """ Returns a playlist's metadata without his song's audio files"
 
@@ -100,4 +100,4 @@ def get_playlist(name: str) -> PlaylistDTO:
         raise HTTPException(
             status_code=404, detail="La playlist con ese nombre no existe")
 
-    return PlaylistDTO(name=playlist_data["name"], photo=playlist_data["photo"],description=playlist_data["description"] , upload_date=playlist_data["upload_date"], song_names=playlist_data["song_names"],)
+    return PlaylistDTO(name=playlist_data["name"], photo=playlist_data["photo"], description=playlist_data["description"], upload_date=playlist_data["upload_date"], song_names=playlist_data["song_names"], owner=playlist_data["owner"])

@@ -109,6 +109,21 @@ export default function Player({
         `${Global.backendBaseUrl}canciones/dto/${songName}`
       );
 
+      // TODO cambiar usuario real
+
+      const usuarioprovisionalcambiar = 'usuarioprovisionalcambiar';
+
+      const fetchPatchPlayBackHistory: string = `${Global.backendBaseUrl}usuarios/${usuarioprovisionalcambiar}/historial?nombre_cancion=${songName}`;
+
+      const requestOptionsUpdatePlaybackHistory = {
+        method: 'PATCH',
+      };
+
+      fetch(
+        fetchPatchPlayBackHistory,
+        requestOptionsUpdatePlaybackHistory
+      ).catch(() => console.log('Unable to update playback history'));
+
       const resFetchSongDTOJson = await resFetchSongDTO.json();
       changeSongInfo(resFetchSongDTOJson);
 

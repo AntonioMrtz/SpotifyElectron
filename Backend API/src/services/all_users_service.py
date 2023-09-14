@@ -1,12 +1,12 @@
 from fastapi import HTTPException
 from services.utils import checkValidParameterString
 from database.Database import Database
-from services.song_service import check_song_exists
 from enum import Enum
-
 
 user_collection = Database().connection["usuario"]
 artist_collection = Database().connection["artista"]
+fileSongCollection = Database().connection["cancion.files"]
+
 
 MAX_NUMBER_PLAYBACK_HISTORY_SONGS = 5
 
@@ -65,6 +65,22 @@ def check_user_exists(user_name: str) -> bool:
     result_artist_exists = artist_collection.find_one({'name': user_name})
 
     return result_user_exists or result_artist_exists
+
+def check_song_exists(name:str) -> bool:
+    """ Check if the song exists or not
+
+    Parameters
+    ----------
+        name (str): Song's name
+
+    Raises
+    -------
+
+    Returns
+    -------
+        Boolean
+    """
+    return True if fileSongCollection.find_one({'name': name}) else False
 
 
 def add_playback_history(user_name: str, song: str) -> None:

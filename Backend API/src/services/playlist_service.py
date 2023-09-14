@@ -1,6 +1,6 @@
 from datetime import datetime
 from database.Database import Database
-import services.song_service as song_service
+from services.song_service import get_song
 import services.dto_service as dto_service
 from model.Playlist import Playlist
 from model.Song import Song
@@ -38,7 +38,7 @@ def get_playlist(name: str) -> Playlist:
 
     playlist_songs = []
 
-    [playlist_songs.append(song_service.get_song(song_name))
+    [playlist_songs.append(get_song(song_name))
         for song_name in playlist_data["song_names"]]
 
     # [print(song.name) for song in playlist_songs]

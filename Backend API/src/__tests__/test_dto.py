@@ -3,11 +3,9 @@ from model.Genre import Genre
 from test_API.api_test_dto import get_playlist_dto, get_song_dto
 from test_API.api_test_playlist import get_playlist, create_playlist, delete_playlist
 from test_API.api_test_song import create_song, delete_song
+from test_API.api_test_artist import create_artist,delete_artist
 import logging
 import pytest
-
-from main import app as app
-
 
 # * Playlist DTO
 
@@ -59,6 +57,13 @@ def test_get_song_dto_correct(clear_test_song_db):
     foto = "https://foto"
     file_path = "__tests__/assets/song.mp3"
 
+    foto = "https://foto"
+    password = "hola"
+
+    res_create_artist = create_artist(
+        name=artista, password=password, photo=foto)
+    assert res_create_artist.status_code == 201
+
     res_create_song = create_song(
         name=song_name,
         file_path=file_path,
@@ -78,6 +83,9 @@ def test_get_song_dto_correct(clear_test_song_db):
 
     res_delete_song = delete_song(song_name)
     assert res_delete_song.status_code == 202
+
+    res_delete_artist = delete_artist(artista)
+    assert res_delete_artist.status_code == 202
 
 
 def test_song_playlist_dto_not_found():

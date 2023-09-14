@@ -5,6 +5,7 @@ from fastapi import HTTPException
 from fastapi.responses import Response
 from model.Genre import Genre
 from model.Song import Song
+from services.artist_service import check_artists_exists , add_song_artist , delete_song_artist
 import base64
 import json
 import io
@@ -140,6 +141,7 @@ async def create_song(name: str, artist: str, genre: Genre, photo: str, file) ->
     Raises
     -------
         400 : Bad Request
+        404 : Artist Not Found / Song not found
 
     Returns
     -------
@@ -152,6 +154,9 @@ async def create_song(name: str, artist: str, genre: Genre, photo: str, file) ->
     if check_song_exists(name=name):
         raise HTTPException(status_code=400, detail="La canción ya existe")
 
+    if not check_artists_exists(artist_name=artist):
+        raise HTTPException(status_code=404, detail="El artista no existe")
+
     try:
         # Assuming 'audio_bytes' contains the audio data in bytes
         audio_data, sample_rate = librosa.load(io.BytesIO(file), sr=None)
@@ -162,12 +167,16 @@ async def create_song(name: str, artist: str, genre: Genre, photo: str, file) ->
         file_id = gridFsSong.put(
             file, name=name, artist=artist, duration=duration, genre=str(genre.value), photo=photo, number_of_plays=0)
 
+
     #! If its not a sound file
     except:
         duration = 0
 
         file_id = gridFsSong.put(
             file, name=name, artist=artist, duration=duration, genre=str(genre.value), photo=photo, number_of_plays=0)
+
+    add_song_artist(artist,name)
+
 
 
 def delete_song(name: str) -> None:
@@ -180,7 +189,7 @@ def delete_song(name: str) -> None:
     Raises
     -------
         400 : Bad Parameters
-        404 : Bad Request
+        404 : Artist not found
 
     Returns
     -------
@@ -193,10 +202,12 @@ def delete_song(name: str) -> None:
     result = fileSongCollection.find_one({'name': name})
 
     if result and result["_id"]:
+        delete_song_artist(result["artist"],name)
         gridFsSong.delete(result["_id"])
 
     else:
         raise HTTPException(status_code=404, detail="La canción no existe")
+
 
 
 def update_song(name: str, nuevo_nombre: str, photo: str, genre: Genre) -> None:

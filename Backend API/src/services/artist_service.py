@@ -3,12 +3,92 @@ from database.Database import Database
 from model.Artist import Artist
 from fastapi import HTTPException
 from services.utils import checkValidParameterString
-from services.all_users_service import check_user_exists
+from services.all_users_service import check_user_exists, check_song_exists
 import bcrypt
 
 
 artist_collection = Database().connection["artista"]
 user_collection = Database().connection["usuario"]
+
+
+def check_artists_exists(artist_name: str) -> bool:
+    """ Checks if the user or artists exists
+
+    Parameters
+    ----------
+        artist_name (str): Artists's name
+
+    Raises
+    -------
+        400 : Bad Request
+
+
+    Returns
+    -------
+        Boolean
+    """
+
+    if not checkValidParameterString(artist_name):
+        raise HTTPException(status_code=400, detail="Parámetros no válidos")
+
+    return True if artist_collection.find_one({'name': artist_name}) else False
+
+
+def add_song_artist(artist_name: str, song_name: str):
+    """ Updates the uploaded songs of the artist adding "song_name"
+
+    Parameters
+    ----------
+        artist_name (str): Artists's name
+        song_name (str) : Song that is going to be added to the uploaded songs of the artist
+
+
+    Raises
+    -------
+        400 : Bad Request
+        404 : Artist Not Found / Song not found
+
+    Returns
+    -------
+    """
+
+    if not checkValidParameterString(artist_name) or not checkValidParameterString(song_name):
+        raise HTTPException(status_code=400, detail="Parámetros no válidos")
+
+    if not check_artists_exists(artist_name=artist_name):
+        raise HTTPException(status_code=404, detail="El artista no existe")
+
+    if not check_song_exists(song_name):
+        raise HTTPException(status_code=404, detail="La canción no existe")
+
+    result = artist_collection.update_one(
+        {'name': artist_name}, {"$push": {'uploaded_songs': song_name}})
+
+
+def delete_song_artist(artist_name: str, song_name: str):
+    """ Updates the uploaded songs of the artist deleting "song_name"
+
+    Parameters
+    ----------
+        artist_name (str): Artists's name
+        song_name (str) : Song that is going to be deleted of the uploaded songs of the artist
+
+
+    Raises
+    -------
+        400 : Bad Request
+        404 : Artist Not Found / Song not found
+
+    Returns
+    -------
+    """
+
+    if not checkValidParameterString(artist_name) or not checkValidParameterString(song_name):
+        raise HTTPException(status_code=400, detail="Parámetros no válidos")
+
+    if check_artists_exists(artist_name=artist_name):
+        result = artist_collection.update_one(
+            {'name': artist_name}, {"$pull": {'uploaded_songs': song_name}})
 
 
 def get_artist(name: str) -> Artist:

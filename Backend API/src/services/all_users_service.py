@@ -102,14 +102,13 @@ def add_playback_history(user_name: str, song: str) -> None:
 
         playback_history = artist_data["playback_history"]
 
-        if len(playback_history)==MAX_NUMBER_PLAYBACK_HISTORY_SONGS:
+        if len(playback_history) == MAX_NUMBER_PLAYBACK_HISTORY_SONGS:
             playback_history.pop(0)
 
         playback_history.append(song)
 
         result = artist_collection.update_one({'name': user_name},
-                                            {"$set": {'playback_history': playback_history}})
-
+                                              {"$set": {'playback_history': playback_history}})
 
     if user_type == User_Type.USER:
 
@@ -117,7 +116,7 @@ def add_playback_history(user_name: str, song: str) -> None:
 
         playback_history = user_data["playback_history"]
 
-        if len(playback_history)==MAX_NUMBER_PLAYBACK_HISTORY_SONGS:
+        if len(playback_history) == MAX_NUMBER_PLAYBACK_HISTORY_SONGS:
             playback_history.pop(0)
 
         playback_history.append(song)

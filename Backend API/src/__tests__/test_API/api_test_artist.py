@@ -21,7 +21,7 @@ def create_artist(name: str, photo: str, password: str):
     return response
 
 
-def update_artist(name: str, photo: str, playlists: list, saved_playlists: list, playback_history: list, uploaded_songs:list):
+def update_artist(name: str, photo: str, playlists: list, saved_playlists: list, playback_history: list, uploaded_songs: list):
 
     url = f"/artistas/{name}/?foto={photo}"
 

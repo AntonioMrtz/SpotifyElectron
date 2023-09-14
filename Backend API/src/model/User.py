@@ -10,7 +10,6 @@ class User:
     register_date: str
     password: str
     playback_history: list
-    """ Stores the last 5 songs that the user played """
     playlists: list
     saved_playlists: list
 

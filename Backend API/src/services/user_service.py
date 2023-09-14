@@ -3,6 +3,7 @@ from database.Database import Database
 from model.User import User
 from fastapi import HTTPException
 from services.utils import checkValidParameterString
+from services.all_users_service import check_user_exists
 import bcrypt
 
 
@@ -67,10 +68,7 @@ def create_user(name: str, photo: str, password: str) -> None:
     if not checkValidParameterString(name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
-    result_user_exists = user_collection.find_one({'name': name})
-    result_artist_exists = artist_collection.find_one({'name': name})
-
-    if result_user_exists or result_artist_exists:
+    if check_user_exists(name):
         raise HTTPException(status_code=400, detail="El usuario ya existe")
 
     utf8_password = password.encode('utf-8')

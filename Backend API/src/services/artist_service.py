@@ -3,6 +3,7 @@ from database.Database import Database
 from model.Artist import Artist
 from fastapi import HTTPException
 from services.utils import checkValidParameterString
+from services.all_users_service import check_user_exists
 import bcrypt
 
 
@@ -67,10 +68,7 @@ def create_artist(name: str, photo: str, password: str) -> None:
     if not checkValidParameterString(name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
-    result_artist_exists = artist_collection.find_one({'name': name})
-    result_user_exists = user_collection.find_one({'name': name})
-
-    if result_artist_exists or result_user_exists:
+    if check_user_exists(name):
         raise HTTPException(status_code=400, detail="El artista ya existe")
 
     utf8_password = password.encode('utf-8')

@@ -10,11 +10,21 @@ import base64
 import json
 import io
 import librosa
+from sys import modules
 
 
 """ Insert songs with format [files,chunks] https://www.mongodb.com/docs/manual/core/gridfs/"""
-gridFsSong = GridFS(Database().connection, collection='cancion')
-fileSongCollection = Database().connection["cancion.files"]
+
+if "pytest" in modules:
+
+    gridFsSong = GridFS(Database().connection, collection='test.cancion')
+    fileSongCollection = Database().connection["test.cancion.files"]
+
+else:
+
+    gridFsSong = GridFS(Database().connection, collection='cancion')
+    fileSongCollection = Database().connection["cancion.files"]
+
 
 
 

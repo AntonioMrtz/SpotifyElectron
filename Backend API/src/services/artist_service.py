@@ -5,10 +5,17 @@ from fastapi import HTTPException
 from services.utils import checkValidParameterString
 from services.all_users_service import check_user_exists, check_song_exists
 import bcrypt
+from sys import modules
 
+if "pytest" in modules:
 
-artist_collection = Database().connection["artista"]
-user_collection = Database().connection["usuario"]
+    artist_collection = Database().connection["test.artista"]
+    user_collection = Database().connection["test.usuario"]
+
+else:
+
+    artist_collection = Database().connection["artista"]
+    user_collection = Database().connection["usuario"]
 
 
 def check_artists_exists(artist_name: str) -> bool:

@@ -42,3 +42,8 @@ def update_artist(name: str, photo: str, playlists: list, saved_playlists: list,
 def delete_artist(name: str):
     response = client.delete(f"/artistas/{name}")
     return response
+
+
+def get_artists():
+    response = client.get(f"/artistas/")
+    return response

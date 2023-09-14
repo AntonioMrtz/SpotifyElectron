@@ -1,6 +1,6 @@
 from fastapi.testclient import TestClient
 from datetime import datetime
-from test_API.api_test_artist import create_artist, delete_artist, get_artist, update_artist
+from test_API.api_test_artist import create_artist, delete_artist, get_artist, update_artist , get_artists
 from main import app as app
 import bcrypt
 import json
@@ -88,7 +88,10 @@ def test_delete_artist_invalid_name(clear_test_data_db):
     assert res_delete_artist.status_code == 405
 
 
+def test_get_artists_correct():
 
+    res_get_artists = get_artists()
+    assert res_get_artists.status_code==200
 
 
 def test_update_playlists_correct(clear_test_data_db):

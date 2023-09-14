@@ -135,3 +135,28 @@ def delete_artist(name: str) -> None:
     result = artist_collection.delete_one({'name': name})
     if result.deleted_count == 0:
         raise HTTPException(status_code=404, detail="El artista no existe")
+
+
+def get_all_artists() -> list:
+    """ Returns all artists
+
+    Parameters
+    ----------
+
+    Raises
+    -------
+        400 : Bad Request
+        404 : Artist Not Found
+
+    Returns
+    -------
+        List<Artist>
+    """
+
+    artists: list = []
+    artists_files = artist_collection.find()
+
+    for artist_file in artists_files:
+        artists.append(get_artist(name=artist_file["name"]))
+
+    return artists

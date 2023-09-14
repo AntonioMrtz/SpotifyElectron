@@ -1,6 +1,7 @@
 from fastapi.responses import Response
 from fastapi import APIRouter
 import services.user_service as user_service
+import services.all_users_service as all_users_service
 import json
 
 router = APIRouter(
@@ -105,3 +106,29 @@ def delete_usuario(nombre: str) -> Response:
 
     user_service.delete_user(nombre)
     return Response(None, 202)
+
+
+@router.patch("/{nombre}/historial", tags=["usuarios"])
+def patch_historial(nombre: str, nombre_cancion: str) -> Response:
+    """ Actualiza el historial de canciones del usuario
+
+    Parameters
+    ----------
+        nombre (str): Nombre del usuario
+        song_name (str): Nombre de la canción
+
+
+    Returns
+    -------
+
+        Response 204
+    Raises
+    -------
+        Bad Request 400: Parámetros introducidos no són válidos o vacíos
+        Not Found 404: No existe un usuario con el nombre "nombre" | No existe una canción con el nombre "nombre_cancion"
+    """
+
+    all_users_service.add_playback_history(user_name=nombre,song=nombre_cancion)
+    return Response(None, 204)
+
+

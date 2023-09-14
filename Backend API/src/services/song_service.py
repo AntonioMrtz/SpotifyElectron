@@ -16,6 +16,25 @@ gridFsSong = GridFS(Database().connection, collection='cancion')
 fileSongCollection = Database().connection["cancion.files"]
 
 
+
+def check_song_exists(name:str) -> bool:
+    """ Check if the song exists or not
+
+    Parameters
+    ----------
+        name (str): Song's name
+
+    Raises
+    -------
+
+    Returns
+    -------
+        Boolean
+    """
+    return True if fileSongCollection.find_one({'name': name}) else False
+
+
+
 def get_song(name: str) -> Song:
     """ Returns a Song file with attributes and a song encoded in base64 "
 
@@ -38,7 +57,7 @@ def get_song(name: str) -> Song:
             status_code=400, detail="El nombre de la canción es vacío")
 
     song_bytes = gridFsSong.find_one({'name': name})
-    if song_bytes is None:
+    if song_bytes is None or not check_song_exists(name=name):
         raise HTTPException(
             status_code=404, detail="La canción con ese nombre no existe")
 
@@ -130,7 +149,7 @@ async def create_song(name: str, artist: str, genre: Genre, photo: str, file) ->
         raise HTTPException(
             status_code=400, detail="Parámetros no válidos o vacíos")
 
-    if fileSongCollection.find_one({'name': name}):
+    if check_song_exists(name=name):
         raise HTTPException(status_code=400, detail="La canción ya existe")
 
     try:

@@ -106,3 +106,33 @@ def delete_artista(nombre: str) -> Response:
 
     artist_service.delete_artist(nombre)
     return Response(None, 202)
+
+
+@router.get("/", tags=["artistas"])
+def get_artistas() -> Response:
+    """ Devuelve todos los artistas
+
+    Parameters
+    ----------
+
+    Returns
+    -------
+        Response 200 OK
+
+    Raises
+    -------
+        Bad Request 400: "nombre" es vacío o nulo
+        Not Found 404: No existe un artista con el nombre "nombre"
+    """
+
+    artists = artist_service.get_all_artists()
+
+    artists_list = []
+    [artists_list.append(artist.get_json()) for artist in artists]
+
+    artists_dict = {}
+
+    artists_dict["artists"] = artists_list
+    artist_json = json.dumps(artists_dict)
+
+    return Response(artist_json, media_type="application/json", status_code=200)

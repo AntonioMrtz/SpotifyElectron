@@ -36,8 +36,6 @@ export default function ModalAddSongPlaylist({
         <i className="fa-solid fa-plus fa-fw" />
       </button>
 
-      {/* AddSongPlaylist Modal */}
-
       <Modal
         open={open}
         onClose={handleClose}

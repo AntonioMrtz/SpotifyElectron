@@ -3,6 +3,7 @@ from database.Database import Database
 from model.Artist import Artist
 from fastapi import HTTPException
 from services.utils import checkValidParameterString
+from services.all_users_service import check_user_exists
 import bcrypt
 
 
@@ -67,10 +68,7 @@ def create_artist(name: str, photo: str, password: str) -> None:
     if not checkValidParameterString(name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
-    result_artist_exists = artist_collection.find_one({'name': name})
-    result_user_exists = user_collection.find_one({'name': name})
-
-    if result_artist_exists or result_user_exists:
+    if check_user_exists(name):
         raise HTTPException(status_code=400, detail="El artista ya existe")
 
     utf8_password = password.encode('utf-8')
@@ -137,3 +135,28 @@ def delete_artist(name: str) -> None:
     result = artist_collection.delete_one({'name': name})
     if result.deleted_count == 0:
         raise HTTPException(status_code=404, detail="El artista no existe")
+
+
+def get_all_artists() -> list:
+    """ Returns all artists
+
+    Parameters
+    ----------
+
+    Raises
+    -------
+        400 : Bad Request
+        404 : Artist Not Found
+
+    Returns
+    -------
+        List<Artist>
+    """
+
+    artists: list = []
+    artists_files = artist_collection.find()
+
+    for artist_file in artists_files:
+        artists.append(get_artist(name=artist_file["name"]))
+
+    return artists

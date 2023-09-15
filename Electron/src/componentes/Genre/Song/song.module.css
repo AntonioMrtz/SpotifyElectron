@@ -21,6 +21,7 @@
     text-overflow: ellipsis;
     color: var(--pure-white);
     margin-top: 1rem;
+    text-align: start;
 }
 
 .wrapperSongCardGenre p {
@@ -30,4 +31,6 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     color: var(--grey);
+    text-align: start;
+
 }

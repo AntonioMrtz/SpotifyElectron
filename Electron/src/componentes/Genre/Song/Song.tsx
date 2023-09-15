@@ -19,7 +19,7 @@ export default function Song({
       <div>
         <img className="img-fluid" src={defaultThumbnailPlaylist} alt="" />
       </div>
-      <div>
+      <div className={`${styles.wrapperTextSongGenre}`}>
         <h5>{name}</h5>
         <p>{artist}</p>
       </div>

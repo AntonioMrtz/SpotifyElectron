@@ -1,0 +1,46 @@
+.wrapperSongCardGenre {
+
+    background-color: var(--third-black);
+    border: none;
+    padding: 1.5%;
+    margin-right: 2%;
+    max-width: 12svw;
+    border-radius: 0.25rem !important;
+}
+
+.wrapperSongCardGenre img{
+
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    aspect-ratio: 1/1;
+    color: wheat;
+}
+
+.wrapperSongCardGenre:hover {
+
+    background-color: var(--hover-white) !important;
+}
+
+.wrapperSongCardGenre h5 {
+
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: var(--pure-white);
+    margin-top: 1rem;
+    text-align: start;
+}
+
+.wrapperSongCardGenre p {
+
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: var(--grey);
+    text-align: start;
+
+}
+

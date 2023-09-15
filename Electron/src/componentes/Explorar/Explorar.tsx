@@ -1,30 +1,52 @@
-/* import useFetch from 'hooks/useFetch';
-import { useEffect } from 'react';
-import ContextMenuSong from 'componentes/ContextMenu/Song/ContextMenuSong';
-import styles from './explorar.module.css'; */
+import { useEffect, useState } from 'react';
+import Global from 'global/global';
+import styles from './explorar.module.css';
+import GenreCard from './GenreCard/GenreCard';
 
-interface PropsExplorar {
-  changeSongName: (songName: string) => void;
-}
+/* interface PropsExplorar {
+} */
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export default function Explorar({ changeSongName }: PropsExplorar) {
-  // const {data} = useFetch("http://127.0.0.1:8000/canciones/p3")
+export default function Explorar() {
+  const [generos, setGeneros] = useState<{}>();
 
-  // const { data, loading, error } = useFetch("http://127.0.0.1:8000/listas/");
-
-  /*   useEffect(() => {
-
-    console.log(props.changeSongName)
-  }, []) */
+  const getGeneros = async () => {
+    fetch(encodeURI(`${Global.backendBaseUrl}generos/`))
+      .then((res) => res.json())
+      .then(async (res) => {
+        setGeneros(res);
+        return null;
+      })
+      .catch(() => console.log('Cannot get genres'));
+  };
+  useEffect(() => {
+    getGeneros();
+  }, []);
 
   return (
-    <div className="container-fluid d-flex flex-column">
-      <br />
-      <br />
-      <br />
-      {/*       <ContextMenuSong />
-       */}{' '}
+    <div className={`container-fluid d-flex flex-column ${styles.principal}`}>
+      <div
+        className={`container-fluid d-flex flex-column ${styles.columnofGeneros}`}
+      >
+        <header className="container-fluid d-flex flex-row">
+          <div className={`container-fluid d-flex ${styles.columnTitle}`}>
+            <h4>Explorar Todo</h4>
+          </div>
+        </header>
+        <div
+          className={`container-fluid d-flex flex-row ${styles.cardContainer}`}
+        >
+          {generos &&
+            Object.values(generos).map((genero) => {
+              return (
+                <GenreCard
+                  key={genero as string}
+                  name={genero as string}
+                  color={Global.genreColors[genero as string]}
+                />
+              );
+            })}
+        </div>
+      </div>
     </div>
   );
 }

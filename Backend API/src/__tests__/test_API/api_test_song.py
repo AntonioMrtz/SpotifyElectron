@@ -41,3 +41,11 @@ def patch_song_number_plays(name: str):
 
     response = client.patch(patch_url)
     return response
+
+
+def get_songs_by_genre(genre : str):
+
+    get_url = f"/canciones/generos/{genre}"
+
+    response = client.get(get_url)
+    return response

@@ -1,0 +1,27 @@
+.card {
+    width: 20vw;
+    height: 200px;
+    margin: 10px;
+    border: none;
+    display: flex;
+    align-items: flex-start;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    border-radius: 8px;
+}
+
+.genreTitle {
+    font-size: 2rem;
+
+    color: var(--pure-white);
+    font-weight: 600;
+    text-wrap: balance;
+    margin-top: 15px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    word-break: break-all;
+
+
+}

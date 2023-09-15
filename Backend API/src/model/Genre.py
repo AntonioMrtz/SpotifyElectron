@@ -37,4 +37,7 @@ class Genre(Enum):
         if Genre(genre) is None:
             return False
         return True
-        
+
+    def getGenre(genre : str) -> str:
+        """ Returns genre string """
+        return str(genre.value)

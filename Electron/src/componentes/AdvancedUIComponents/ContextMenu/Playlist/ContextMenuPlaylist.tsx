@@ -251,7 +251,7 @@ export default function ContextMenuPlaylist({
           throw new Error('Unable to delete playlist');
         } else if (response.status === 202) {
           refreshSidebarData();
-          navigate(`/home`, { replace: true });
+          navigate(`/home`);
         }
 
         return null;

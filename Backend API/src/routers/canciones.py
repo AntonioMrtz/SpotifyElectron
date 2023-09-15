@@ -136,9 +136,8 @@ def get_cancion_dto(nombre: str) -> Response:
     return Response(song_json, media_type="application/json", status_code=200)
 
 
-
 @router.put("/{nombre}")
-def update_song(nombre: str,artist: str = None, foto: str = None, genre: Genre = None, nuevo_nombre: str = None) -> Response:
+def update_song(nombre: str, artist: str = None, foto: str = None, genre: Genre = None, nuevo_nombre: str = None) -> Response:
     """ Actualiza los parámetros de la cancion con nombre "nombre"
 
     Parameters
@@ -184,3 +183,33 @@ def increase_number_plays_song(nombre: str) -> Response:
 
     song_service.increase_number_plays(nombre)
     return Response(None, 204)
+
+
+@router.get("/generos/{genero}")
+def get_cancion_por_genero(genero: Genre) -> Response:
+    """ Obtiene todas las playlist de un género
+
+    Parameters
+    ----------
+        genero (Genre): Género para filtrar
+
+    Returns
+    -------
+        Response 200 OK
+
+    Raises
+    -------
+        Bad Request 400: Parámetros introducidos no són válidos o vacíos
+        Not Found 404: Género no existe
+    """
+
+    filtered_songs = dto_service.get_songs_by_genero(genero)
+
+    filtered_songs_list = []
+    [filtered_songs_list.append(song.get_json()) for song in filtered_songs]
+
+    songs_dict = {}
+
+    songs_json = json.dumps(filtered_songs_list)
+
+    return Response(songs_json, media_type="application/json", status_code=200)

@@ -5,7 +5,7 @@ from fastapi import HTTPException
 from fastapi.responses import Response
 from model.Genre import Genre
 from model.Song import Song
-from services.artist_service import check_artists_exists , add_song_artist , delete_song_artist
+from services.artist_service import check_artists_exists, add_song_artist, delete_song_artist
 import base64
 import json
 import io
@@ -26,9 +26,7 @@ else:
     fileSongCollection = Database().connection["cancion.files"]
 
 
-
-
-def check_song_exists(name:str) -> bool:
+def check_song_exists(name: str) -> bool:
     """ Check if the song exists or not
 
     Parameters
@@ -43,7 +41,6 @@ def check_song_exists(name:str) -> bool:
         Boolean
     """
     return True if fileSongCollection.find_one({'name': name}) else False
-
 
 
 def get_song(name: str) -> Song:
@@ -177,7 +174,6 @@ async def create_song(name: str, artist: str, genre: Genre, photo: str, file) ->
         file_id = gridFsSong.put(
             file, name=name, artist=artist, duration=duration, genre=str(genre.value), photo=photo, number_of_plays=0)
 
-
     #! If its not a sound file
     except:
         duration = 0
@@ -185,8 +181,7 @@ async def create_song(name: str, artist: str, genre: Genre, photo: str, file) ->
         file_id = gridFsSong.put(
             file, name=name, artist=artist, duration=duration, genre=str(genre.value), photo=photo, number_of_plays=0)
 
-    add_song_artist(artist,name)
-
+    add_song_artist(artist, name)
 
 
 def delete_song(name: str) -> None:
@@ -212,12 +207,11 @@ def delete_song(name: str) -> None:
     result = fileSongCollection.find_one({'name': name})
 
     if result and result["_id"]:
-        delete_song_artist(result["artist"],name)
+        delete_song_artist(result["artist"], name)
         gridFsSong.delete(result["_id"])
 
     else:
         raise HTTPException(status_code=404, detail="La canción no existe")
-
 
 
 def update_song(name: str, nuevo_nombre: str, photo: str, genre: Genre) -> None:

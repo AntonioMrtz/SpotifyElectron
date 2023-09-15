@@ -2,7 +2,7 @@ from fastapi.testclient import TestClient
 from fastapi import UploadFile
 from model.Genre import Genre
 import io
-from test_API.api_test_song import create_song,delete_song,get_song,get_songs,patch_song_number_plays
+from test_API.api_test_song import create_song,delete_song,get_song,get_songs,patch_song_number_plays,get_songs_by_genre
 from test_API.api_test_artist import get_artist,create_artist,delete_artist
 import json
 import pytest
@@ -292,6 +292,38 @@ def test_delete_song_uploaded_songs_updated(clear_test_data_db):
 
     res_delete_artist = delete_artist(artista)
     assert res_delete_artist.status_code == 202
+
+def test_get_cancion_by_genre(clear_test_data_db):
+
+    song_name = "8232392323623823723989"
+    file_path = "__tests__/assets/song.mp3"
+    artista = "artista"
+    genero = "Rock"
+    foto = "https://foto"
+    password = "hola"
+
+    res_create_artist = create_artist(name=artista,password=password,photo=foto)
+    assert res_create_artist.status_code == 201
+
+    res_create_song = create_song(name=song_name,file_path=file_path,artista=artista,genero=genero,foto=foto)
+    assert res_create_song.status_code == 201
+
+    res_get_song_by_genre = get_songs_by_genre(genre=genero)
+    assert res_get_song_by_genre.status_code == 200
+    assert len(res_get_song_by_genre.json())==1
+
+    res_delete_song = delete_song(song_name)
+    assert res_delete_song.status_code == 202
+
+    res_delete_artist = delete_artist(artista)
+    assert res_delete_artist.status_code == 202
+
+def test_get_cancion_by_genre_bad_genre(clear_test_data_db):
+
+    genero = "RockInventado"
+
+    res_get_song_by_genre = get_songs_by_genre(genre=genero)
+    assert res_get_song_by_genre.status_code == 422
 
 
 

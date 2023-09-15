@@ -3,6 +3,7 @@ from model.DTO.PlaylistDTO import PlaylistDTO
 from database.Database import Database
 from model.Genre import Genre
 from fastapi import HTTPException
+from services.utils import checkValidParameterString
 from sys import modules
 
 if "pytest" in modules:
@@ -14,8 +15,6 @@ else:
 
     fileSongCollection = Database().connection["cancion.files"]
     playlistCollection = Database().connection["playlist"]
-
-
 
 
 def get_song(name: str) -> SongDTO:
@@ -34,7 +33,7 @@ def get_song(name: str) -> SongDTO:
     -------
         SongDTO
     """
-    if name is None or name == "":
+    if not checkValidParameterString(name):
         raise HTTPException(
             status_code=400, detail="El nombre de la canción es vacío")
 
@@ -67,7 +66,7 @@ def get_songs(song_names: list) -> list:
 
     for name in song_names:
 
-        if name is None or name == "":
+        if not checkValidParameterString(name):
             raise HTTPException(
                 status_code=400, detail="El nombre de la canción es vacío")
 
@@ -99,7 +98,7 @@ def get_playlist(name: str) -> PlaylistDTO:
         PlaylistDTO
     """
 
-    if name is None or name == "":
+    if not checkValidParameterString(name):
         raise HTTPException(
             status_code=400, detail="El nombre de la playlist es vacío")
 
@@ -110,3 +109,40 @@ def get_playlist(name: str) -> PlaylistDTO:
             status_code=404, detail="La playlist con ese nombre no existe")
 
     return PlaylistDTO(name=playlist_data["name"], photo=playlist_data["photo"], description=playlist_data["description"], upload_date=playlist_data["upload_date"], song_names=playlist_data["song_names"], owner=playlist_data["owner"])
+
+
+def get_songs_by_genero(genre: Genre) -> list:
+    """ Increase the number of plays of a song
+
+    Parameters
+    ----------
+        name (str): Song's name
+
+    Raises
+    -------
+        400 : Bad Request
+        404 : Song Not Found
+
+    Returns
+    -------
+    List<Song>
+
+    """
+
+    if not checkValidParameterString(genre.value):
+        raise HTTPException(status_code=400, detail="Parámetros no válidos")
+
+    if not Genre.checkValidGenre(genre.value):
+        raise HTTPException(status_code=404, detail="El género no existe")
+
+    result_get_song_by_genre = fileSongCollection.find(
+        {'genre': Genre.getGenre(genre)})
+
+    songs_by_genre = []
+
+    for song_data in result_get_song_by_genre:
+
+        songs_by_genre.append(SongDTO(name=song_data["name"], artist=song_data["artist"], photo=song_data["photo"], duration=song_data["duration"], genre=Genre(
+            song_data["genre"]).name, number_of_plays=song_data["number_of_plays"]))
+
+    return songs_by_genre

@@ -20,22 +20,24 @@
   align-items: center;
 }
 
-.buttonsPlayerContainer span {
+.buttonsPlayerContainer button {
 
   color: var(--secondary-white);
   padding: 0 1.25% 0 1.25%;
   font-size: 1.5rem;
+  border: none;
+  background-color: transparent;
 
 }
 
-.buttonsPlayerContainer span:hover {
+.buttonsPlayerContainer button:hover {
 
   color: var(--pure-white);
 
 }
 
-.buttonsPlayerContainer span:nth-child(3),
-.buttonsPlayerContainer span:nth-child(4) {
+.buttonsPlayerContainer button:nth-child(3),
+.buttonsPlayerContainer button:nth-child(4) {
 
   color: var(--pure-white);
   font-size: 2rem;

@@ -1,57 +1,69 @@
+.mainContentContainer {
+
+  padding-top: var(--pading-top-sticky-header) !important;
+
+}
+
 .columnOfListas {
 
   padding-left: 0.5% !important;
-  margin-top: 1%;
-  margin-bottom: 1.5%;
+  margin-top: 3%;
+  margin-bottom: 3%;
+
 }
 
-.columnTitle {
+.categoryTitleContainer {
 
-  color: var(--pure-white);
+  flex-grow: 2;
   padding-bottom: 1%;
 
+}
+
+.categoryTitleContainer button {
+
+  display: flex;
+  justify-content: start;
+  background: transparent;
+  border: none;
+  color: var(--pure-white);
+  font-size: 1.35rem;
+  font-weight: 800;
 
 }
 
-.mostrarT {
+.mostrarTodoContainer {
 
+  flex-shrink: 3;
   justify-content: flex-end;
   padding-top: 0.6%;
   padding-right: 2%;
+
+}
+
+.mostrarTodoContainer button {
+
+  background: transparent;
+  border: none;
   color: var(--grey);
+
 }
 
-.card {
+.mostrarTodo:hover {
 
-  padding: 1.5%;
-  margin-right: 2%;
-  background-color: var(--third-black) !important;
+  text-decoration: underline;
+
 }
 
-.card:hover {
 
-  background-color: var(--hover-white) !important;
+.categoryTitle:hover {
+
+  text-decoration: underline;
+
 }
 
-.card_body {
+.row {
 
-  padding-top: 5% !important;
-  padding-left: 0% !important;
-}
-
-.tituloLista {
-
-  color: var(--pure-white);
-}
-
-.autorLista {
-
-  color: var(--grey);
-}
-
-.principal{
-
-
-  padding-top: var(--pading-top-sticky-header) !important;
+  padding-left: 3%;
+  flex-wrap: wrap;
 
 }

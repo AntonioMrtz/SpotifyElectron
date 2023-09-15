@@ -152,6 +152,13 @@ yarn-debug.log*
 yarn-error.log*
 
 
+
+# js webpacked
+
+.erb/dll/preload.js
+.erb
+.erb/**
+
 #python
 
 
@@ -162,3 +169,4 @@ __pycache__
 
 .vscode
 .vscode/*
+Electron/.erb/dll/preload.js

@@ -2,7 +2,7 @@
 
 ## STEPS TO CONTRIBUTE
 
-1. Create a new branch with the feature youre implementing.
+1. Create a new branch with the feature youre implementing with the name convention type/BranchName [ej : feat/Home , fix/UserLogin]
 2. Push your changes to the new branch with one of the following prefix:
     * feat: Indicates the addition of a new feature or functionality to the project.
     * fix: Used when fixing a bug or error in the code.
@@ -13,7 +13,8 @@
     * test: Indicates changes to unit tests or test configuration.
 
 4. Go to your branch in Git and then select Pull Request and field the fields indicated in the template.
-5. The owner of the project will check the Pull Request and then merge it with the main branch.
+5. Check if Github Actions CI tests are passing, any pull request with errors on CI would not be merged to the master branch.
+6. The owner of the project will check the Pull Request and then merge it with the main branch.
 
 ## STYLE GUIDE
 

@@ -9,59 +9,47 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { app, BrowserWindow, shell, ipcMain, clipboard , Data   } from 'electron';
-import { resolveHtmlPath } from './util';
+import { app, BrowserWindow, shell, ipcMain, clipboard, Data } from 'electron';
 import Global from 'global/global';
-
-
+import { resolveHtmlPath } from './util';
 
 let mainWindow: BrowserWindow | null = null;
 
 /* Events */
 
-ipcMain.on('toogle-fullscreen', async (event) => {
+ipcMain.on('toogle-fullscreen', async () => {
   if (mainWindow && mainWindow.isFullScreen()) mainWindow.setFullScreen(false);
   else if (mainWindow) mainWindow.setFullScreen(true);
 });
 
-ipcMain.handle('copy-to-clipboard', async (event, ...args) => {
-  let data: Data = {};
-  data.text = args[0];
+ipcMain.handle('copy-to-clipboard', async (event, dataToClipboard) => {
+  const data: Data = {};
+  // eslint-disable-next-line prefer-destructuring
+  data.text = dataToClipboard;
 
   clipboard.write(data);
 });
 
-ipcMain.handle('load-previous-url', async (event) => {
-
-  mainWindow?.webContents.goBack()
+ipcMain.handle('load-previous-url', async () => {
+  mainWindow?.webContents.goBack();
 });
 
-ipcMain.handle('load-forward-url', async (event) => {
-
-  mainWindow?.webContents.goForward()
-
+ipcMain.handle('load-forward-url', async () => {
+  mainWindow?.webContents.goForward();
 });
 
-ipcMain.handle('handle-url-change', async (event) => {
+ipcMain.handle('handle-url-change', async () => {
+  // event.reply('response-handle-url-change',mainWindow?.webContents.canGoForward,mainWindow?.webContents.canGoBack)
 
-  //event.reply('response-handle-url-change',mainWindow?.webContents.canGoForward,mainWindow?.webContents.canGoBack)
+  const eventResponse: Global.HandleUrlChangeResponse = {
+    canGoBack: mainWindow?.webContents.canGoBack(),
+    canGoForward: mainWindow?.webContents.canGoForward(),
+  };
 
-  let eventResponse : Global.HandleUrlChangeResponse = {
-
-    canGoBack:mainWindow?.webContents.canGoBack(),
-    canGoForward:mainWindow?.webContents.canGoForward()
-  }
-
-  return eventResponse
-
+  return eventResponse;
 });
-
-
-
-
 
 /* Settings */
-
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
@@ -97,16 +85,16 @@ const createWindow = async () => {
     ? path.join(process.resourcesPath, 'assets')
     : path.join(__dirname, '../../assets');
 
-  const getAssetPath = (...paths: string[]): string => {
+  /* const getAssetPath = (...paths: string[]): string => {
     return path.join(RESOURCES_PATH, ...paths);
-  };
+  }; */
 
   mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
     minWidth: 900,
     minHeight: 730,
-    icon:path.join(RESOURCES_PATH, '/SpotifyElectronLogo.ico'),
+    icon: path.join(RESOURCES_PATH, '/SpotifyElectronLogo.ico'),
     webPreferences: {
       preload: app.isPackaged
         ? path.join(__dirname, 'preload.js')
@@ -137,8 +125,6 @@ const createWindow = async () => {
     shell.openExternal(edata.url);
     return { action: 'deny' };
   });
-
-
 };
 
 /**
@@ -164,4 +150,3 @@ app
     });
   })
   .catch(console.log);
-

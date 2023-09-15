@@ -13,6 +13,13 @@ module.exports = {
     '@typescript-eslint/no-shadow': 'error',
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': 'error',
+    'no-console': 'off',
+    'prettier/prettier': [
+      'error',
+      {
+        endOfLine: 'auto', // Corrected this line by removing the extra ']' at the end
+      },
+    ],
   },
   parserOptions: {
     ecmaVersion: 2020,

@@ -1,19 +1,21 @@
-import useFetch from "hooks/useFetch"
-import styles from "./explorar.module.css"
+import useFetch from 'hooks/useFetch';
+import styles from './explorar.module.css';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import ContextMenuSong from "componentes/Playlist/Song/ContextMenuSong/ContextMenuSong"
-import { useNavigate } from "react-router-dom"
-import Global from "global/global"
-import { Console } from "console";
-import GenreCard from "./GenreCard/GenreCard";
+import ContextMenuSong from 'componentes/Playlist/Song/ContextMenuSong/ContextMenuSong';
+import { useNavigate } from 'react-router-dom';
+import Global from 'global/global';
+import { Console } from 'console';
+import GenreCard from './GenreCard/GenreCard';
 
-interface PropsExplorar{
-
-  changeSongName : (songName : string) => void
+interface PropsExplorar {
+  changeSongName: (songName: string) => void;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export default function Explorar({ changeSongName }: PropsExplorar) {
+  // const {data} = useFetch("http://127.0.0.1:8000/canciones/p3")
 
-export default function Explorar(props:PropsExplorar) {
+  // const { data, loading, error } = useFetch("http://127.0.0.1:8000/listas/");
 
   const [generos, setGeneros] = useState<{}>();
 
@@ -21,44 +23,43 @@ export default function Explorar(props:PropsExplorar) {
 
   //const { data, loading, error } = useFetch("http://127.0.0.1:8000/listas/");
 
-/*   useEffect(() => {
+  /*   useEffect(() => {
 
     console.log(props.changeSongName)
   }, []) */
 
-  
-  let navigate = useNavigate()
-  const getGeneros = async()=>{
+  let navigate = useNavigate();
+  const getGeneros = async () => {
     fetch(encodeURI(Global.backendBaseUrl + 'generos/'))
       .then((res) => res.json())
-      .then(async (res) =>{
-        setGeneros(res)
-        console.log(res)
-      })
-  }
-  useEffect(() => {getGeneros()},[])
+      .then(async (res) => {
+        setGeneros(res);
+        console.log(res);
+      });
+  };
+  useEffect(() => {
+    getGeneros();
+  }, []);
 
   return (
     <div className={`container-fluid d-flex flex-column ${styles.principal}`}>
-      <div className={`container-fluid d-flex flex-column ${styles.columnofGeneros}`}>
-      <header
-          className={`container-fluid d-flex flex-row`}
-        >
+      <div
+        className={`container-fluid d-flex flex-column ${styles.columnofGeneros}`}
+      >
+        <header className={`container-fluid d-flex flex-row`}>
           <div className={`container-fluid d-flex ${styles.columnTitle}`}>
             <h4>Explorar Todo</h4>
           </div>
         </header>
-        <div className={`container-fluid d-flex flex-row ${styles.cardContainer}`}>
-        {generos &&
+        <div
+          className={`container-fluid d-flex flex-row ${styles.cardContainer}`}
+        >
+          {generos &&
             Object.values(generos).map((genero, index) => {
-              return (
-                <GenreCard key={index} name={genero} />
-              );
+              return <GenreCard key={index} name={genero} />;
             })}
         </div>
-      </div >
-
+      </div>
     </div>
-  )
+  );
 }
-

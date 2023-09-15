@@ -1,0 +1,102 @@
+.card {
+
+  flex: 0 0 18.5%;
+  padding: 1.5%;
+  margin-right: 2%;
+  background-color: var(--third-black) !important;
+  max-width: 18%;
+  width: 100%;
+  height: 100%;
+
+}
+
+.card:hover .displayTruePlay {
+
+  display: flex;
+
+}
+
+.card .displayTruePlay {
+
+  display: none;
+
+}
+
+.card button {
+
+  bottom: 0.5vw;
+  right: 0.2vw;
+  position: absolute;
+  background: transparent;
+  border: none;
+
+}
+
+
+
+
+.card:hover {
+
+  background-color: var(--hover-white) !important;
+
+}
+
+
+.cardBody {
+
+
+  padding-top: 5% !important;
+  padding-left: 0% !important;
+
+}
+
+.tituloLista {
+
+  width: calc(100%);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--pure-white);
+
+}
+
+.autorLista {
+
+  width: calc(100%);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--grey);
+
+}
+
+.displayNonePlay {
+
+  display: none;
+
+}
+
+.playButton {
+
+  color: var(--primary-green);
+  font-size: 3.25vw;
+  align-content: center;
+
+}
+
+
+
+.playButton:hover {
+
+  transform: scale(1.05);
+
+}
+
+
+
+.card .imgContainer {
+
+  position: relative;
+
+
+}

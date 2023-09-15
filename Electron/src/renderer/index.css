@@ -17,14 +17,14 @@
   --secondary-white: #b3b3b3;
   --third-black: #161616;
   --hover-white: #272727;
-  --separator-white : #3e3e3e;
+  --separator-white: #3e3e3e;
 
   --primary-green: #1db954;
   --secondary-green: #228822;
 
   --grey: #888;
 
-  --sticky-header-blue : #1e0f44;
+  --sticky-header-blue: #1e0f44;
 
   /* Sidebar default width */
   --sidebar-width: 25svw;
@@ -36,7 +36,7 @@
   /* Border radius thumbnail images */
 
   --border-radius-thumbnails: 8px;
-  --border-radius-rounded-button : 25px;
+  --border-radius-rounded-button: 25px;
 
   /* Font sizes */
 
@@ -46,10 +46,7 @@
 
   /* sticky header */
 
-  --pading-top-sticky-header:5%
-
-
-
+  --pading-top-sticky-header: 5%
 }
 
 html {

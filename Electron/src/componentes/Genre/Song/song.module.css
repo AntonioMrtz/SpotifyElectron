@@ -8,6 +8,15 @@
     border-radius: 0.25rem !important;
 }
 
+.wrapperSongCardGenre img{
+
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    aspect-ratio: 1/1;
+    color: wheat;
+}
+
 .wrapperSongCardGenre:hover {
 
     background-color: var(--hover-white) !important;
@@ -34,3 +43,4 @@
     text-align: start;
 
 }
+

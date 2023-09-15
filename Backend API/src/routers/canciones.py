@@ -136,8 +136,9 @@ def get_cancion_dto(nombre: str) -> Response:
     return Response(song_json, media_type="application/json", status_code=200)
 
 
+
 @router.put("/{nombre}")
-def update_song(nombre: str, artist: str = None, foto: str = None, genre: Genre = None, nuevo_nombre: str = None) -> Response:
+def update_song(nombre: str,artist: str = None, foto: str = None, genre: Genre = None, nuevo_nombre: str = None) -> Response:
     """ Actualiza los parámetros de la cancion con nombre "nombre"
 
     Parameters
@@ -210,6 +211,9 @@ def get_cancion_por_genero(genero: Genre) -> Response:
 
     songs_dict = {}
 
-    songs_json = json.dumps(filtered_songs_list)
+    songs_dict["songs"] = filtered_songs_list
+    songs_json = json.dumps(songs_dict)
+
+    print(songs_json)
 
     return Response(songs_json, media_type="application/json", status_code=200)

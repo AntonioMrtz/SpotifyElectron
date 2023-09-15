@@ -22,10 +22,14 @@ export default function Song({
     <button
       type="button"
       className={`${styles.wrapperSongCardGenre}`}
-      onClick={handleClickSong}
+      onDoubleClick={handleClickSong}
     >
-      <div>
-        <img className="img-fluid" src={defaultThumbnailPlaylist} alt="" />
+      <div className={`${styles.wrapperImageCard}`}>
+        <img
+          className="img-fluid"
+          src={photo === '' ? defaultThumbnailPlaylist : photo}
+          alt=""
+        />
       </div>
       <div className={`${styles.wrapperTextSongGenre}`}>
         <h5>{name}</h5>

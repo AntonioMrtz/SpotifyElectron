@@ -14,8 +14,16 @@ export default function Song({
   photo,
   changeSongName,
 }: PropsSongGenre) {
+  const handleClickSong = () => {
+    changeSongName(name);
+  };
+
   return (
-    <button type="button" className={`${styles.wrapperSongCardGenre}`}>
+    <button
+      type="button"
+      className={`${styles.wrapperSongCardGenre}`}
+      onClick={handleClickSong}
+    >
       <div>
         <img className="img-fluid" src={defaultThumbnailPlaylist} alt="" />
       </div>

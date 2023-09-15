@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Global from 'global/global';
 import { useLocation } from 'react-router-dom';
 import styles from './genre.module.css';
@@ -14,6 +14,16 @@ export default function Genre({ changeSongName }: PropsGenre) {
   const genreName = decodeURIComponent(
     location.pathname.split('/').slice(-1)[0]
   );
+
+  type SongProps = {
+    name: string;
+    artist: string;
+    photo: string;
+  };
+
+  const [songs, setSongs] = useState<SongProps[]>();
+
+  const handleSongsFromGenre = async () => {};
 
   return (
     <div className="d-flex flex-column container-fluid p-0">
@@ -36,9 +46,18 @@ export default function Genre({ changeSongName }: PropsGenre) {
       <div
         className={`d-flex container-fluid flex-wrap ${styles.songWrapperGenre}`}
       >
-        <Song name="songName"  artist="artist" photo='photo' changeSongName={changeSongName}/>
-        <Song name="songName"  artist="artist" photo='photo' changeSongName={changeSongName}/>
-
+        {songs &&
+          songs.map((song) => {
+            return (
+              <Song
+                key={`${song.name} ${genreName}`}
+                name={song.name}
+                artist={song.artist}
+                photo={song.photo}
+                changeSongName={changeSongName}
+              />
+            );
+          })}
       </div>
     </div>
   );

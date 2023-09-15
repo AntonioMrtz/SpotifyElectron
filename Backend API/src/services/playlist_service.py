@@ -6,8 +6,18 @@ from model.Playlist import Playlist
 from model.Song import Song
 from fastapi import HTTPException
 from services.utils import checkValidParameterString
+from sys import modules
 
-playlistCollection = Database().connection["playlist"]
+
+if "pytest" in modules:
+
+    playlistCollection = Database().connection["test.playlist"]
+
+
+else:
+
+    playlistCollection = Database().connection["playlist"]
+
 
 
 def get_playlist(name: str) -> Playlist:

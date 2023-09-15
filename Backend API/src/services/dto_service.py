@@ -3,10 +3,19 @@ from model.DTO.PlaylistDTO import PlaylistDTO
 from database.Database import Database
 from model.Genre import Genre
 from fastapi import HTTPException
+from sys import modules
+
+if "pytest" in modules:
+
+    fileSongCollection = Database().connection["test.cancion.files"]
+    playlistCollection = Database().connection["test.playlist"]
+
+else:
+
+    fileSongCollection = Database().connection["cancion.files"]
+    playlistCollection = Database().connection["playlist"]
 
 
-fileSongCollection = Database().connection["cancion.files"]
-playlistCollection = Database().connection["playlist"]
 
 
 def get_song(name: str) -> SongDTO:

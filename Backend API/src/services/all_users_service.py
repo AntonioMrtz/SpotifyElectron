@@ -2,10 +2,21 @@ from fastapi import HTTPException
 from services.utils import checkValidParameterString
 from database.Database import Database
 from enum import Enum
+from sys import modules
 
-user_collection = Database().connection["usuario"]
-artist_collection = Database().connection["artista"]
-fileSongCollection = Database().connection["cancion.files"]
+if "pytest" in modules:
+
+    user_collection = Database().connection["test.usuario"]
+    artist_collection = Database().connection["test.artista"]
+    fileSongCollection = Database().connection["test.cancion.files"]
+
+else:
+
+    user_collection = Database().connection["usuario"]
+    artist_collection = Database().connection["artista"]
+    fileSongCollection = Database().connection["cancion.files"]
+
+
 
 
 MAX_NUMBER_PLAYBACK_HISTORY_SONGS = 5

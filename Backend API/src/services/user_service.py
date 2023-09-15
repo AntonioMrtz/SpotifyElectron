@@ -5,10 +5,18 @@ from fastapi import HTTPException
 from services.utils import checkValidParameterString
 from services.all_users_service import check_user_exists
 import bcrypt
+from sys import modules
 
 
-user_collection = Database().connection["usuario"]
-artist_collection = Database().connection["artista"]
+if "pytest" in modules:
+
+    user_collection = Database().connection["test.usuario"]
+    artist_collection = Database().connection["test.artista"]
+
+else:
+
+    user_collection = Database().connection["usuario"]
+    artist_collection = Database().connection["artista"]
 
 
 def get_user(name: str) -> User:

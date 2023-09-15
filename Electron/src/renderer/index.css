@@ -46,7 +46,7 @@
 
   /* sticky header */
 
-  --pading-top-sticky-header: 5%
+  --pading-top-sticky-header: 3rem;
 }
 
 html {

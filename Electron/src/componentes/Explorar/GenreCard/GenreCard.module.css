@@ -1,15 +1,27 @@
-.card{
-    background-color: var(--third-black);
-    min-width: 20%;
-    min-height: 90%;
-    text-align: start;
-    margin: 1%;
+.card {
+    width: 20vw;
+    height: 200px;
+    margin: 10px;
+    border: none;
+    display: flex;
+    align-items: flex-start;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    border-radius: 8px;
 }
 
-.genreTitle{
+.genreTitle {
+    font-size: 2rem;
+
     color: var(--pure-white);
-    font-size: normal;
-    margin-top: -35%;
-    margin-left: 5%;
-    
+    font-weight: 600;
+    text-wrap: balance;
+    margin-top: 15px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    word-break: break-all;
+
+
 }

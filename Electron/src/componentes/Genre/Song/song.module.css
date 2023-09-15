@@ -1,0 +1,33 @@
+.wrapperSongCardGenre {
+
+    background-color: var(--third-black);
+    border: none;
+    padding: 1.5%;
+    margin-right: 2%;
+    max-width: 12svw;
+    border-radius: 0.25rem !important;
+}
+
+.wrapperSongCardGenre:hover {
+
+    background-color: var(--hover-white) !important;
+}
+
+.wrapperSongCardGenre h5 {
+
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: var(--pure-white);
+    margin-top: 1rem;
+}
+
+.wrapperSongCardGenre p {
+
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: var(--grey);
+}

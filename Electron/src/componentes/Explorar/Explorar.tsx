@@ -1,41 +1,22 @@
-import useFetch from 'hooks/useFetch';
-import styles from './explorar.module.css';
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import ContextMenuSong from 'componentes/Playlist/Song/ContextMenuSong/ContextMenuSong';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import Global from 'global/global';
-import { Console } from 'console';
+import styles from './explorar.module.css';
 import GenreCard from './GenreCard/GenreCard';
 
-interface PropsExplorar {
-  changeSongName: (songName: string) => void;
-}
+/* interface PropsExplorar {
+} */
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export default function Explorar({ changeSongName }: PropsExplorar) {
-  // const {data} = useFetch("http://127.0.0.1:8000/canciones/p3")
-
-  // const { data, loading, error } = useFetch("http://127.0.0.1:8000/listas/");
-
+export default function Explorar() {
   const [generos, setGeneros] = useState<{}>();
 
-  //const {data} = useFetch("http://127.0.0.1:8000/canciones/p3")
-
-  //const { data, loading, error } = useFetch("http://127.0.0.1:8000/listas/");
-
-  /*   useEffect(() => {
-
-    console.log(props.changeSongName)
-  }, []) */
-
-  let navigate = useNavigate();
   const getGeneros = async () => {
-    fetch(encodeURI(Global.backendBaseUrl + 'generos/'))
+    fetch(encodeURI(`${Global.backendBaseUrl}generos/`))
       .then((res) => res.json())
       .then(async (res) => {
         setGeneros(res);
-        console.log(res);
-      });
+        return null;
+      })
+      .catch(() => console.log('Cannot get genres'));
   };
   useEffect(() => {
     getGeneros();
@@ -46,7 +27,7 @@ export default function Explorar({ changeSongName }: PropsExplorar) {
       <div
         className={`container-fluid d-flex flex-column ${styles.columnofGeneros}`}
       >
-        <header className={`container-fluid d-flex flex-row`}>
+        <header className="container-fluid d-flex flex-row">
           <div className={`container-fluid d-flex ${styles.columnTitle}`}>
             <h4>Explorar Todo</h4>
           </div>
@@ -55,8 +36,14 @@ export default function Explorar({ changeSongName }: PropsExplorar) {
           className={`container-fluid d-flex flex-row ${styles.cardContainer}`}
         >
           {generos &&
-            Object.values(generos).map((genero, index) => {
-              return <GenreCard key={index} name={genero} />;
+            Object.values(generos).map((genero) => {
+              return (
+                <GenreCard
+                  key={genero as string}
+                  name={genero as string}
+                  color={Global.genreColors[genero as string]}
+                />
+              );
             })}
         </div>
       </div>

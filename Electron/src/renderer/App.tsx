@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import Playlist from 'componentes/Playlist/Playlist';
 import StickyHeader from 'componentes/StickyHeader/StickyHeader';
 import Global from 'global/global';
+import Genre from 'componentes/Genre/Genre';
 import styles from './AppCss.module.css';
 import Sidebar from '../componentes/Sidebar/Sidebar';
 import Home from '../componentes/Home/Home';
@@ -49,14 +50,16 @@ function App() {
                 triggerReloadSidebar={reloadSidebar}
               />
             />
+            <Route path="/explorar" element=<Explorar /> />
             <Route
-              path="/explorar"
-              element=<Explorar changeSongName={changeSongName} />
+              path="/explorar/genre/:id"
+              element=<Genre changeSongName={changeSongName} />
             />
             <Route
               path="/"
               element=<Home refreshSidebarData={reloadSidebar} />
             />
+
             <Route
               path="*"
               element=<Home refreshSidebarData={reloadSidebar} />

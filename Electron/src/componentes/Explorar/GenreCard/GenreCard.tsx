@@ -1,21 +1,31 @@
-import { useEffect, useState } from "react";
-import styles from "./GenreCard.module.css";
+import { useNavigate } from 'react-router-dom';
+import styles from './GenreCard.module.css';
 
-interface PropsGenreCard{
-    name: any
+interface PropsGenreCard {
+  name: string;
+  color: string;
 }
-export default function GenreCard(props : PropsGenreCard){
-    const [name, setName] = useState<string>('');
 
-  useEffect(() => {
-    if (props.name) {
-      setName(props.name);
-    }
-  }, [props]);
+export default function GenreCard({ name, color }: PropsGenreCard) {
+  const navigate = useNavigate();
 
-    return(
-        <button className={`rounded ${styles.card}`}>
-            <div className={`${styles.genreTitle}`}>{name}</div>
-        </button>
-    );
+  const backgroundColor = {
+    backgroundColor: color, // Use the provided background color or default to 'blue'
+  };
+
+  const handleClick = () => {
+    navigate(`/explorar/genre/${name}`);
+  };
+
+  return (
+    <button
+      type="button"
+      className={`${styles.card} ${backgroundColor}`}
+      style={backgroundColor}
+      onClick={handleClick}
+    >
+      {' '}
+      <div className={`${styles.genreTitle}`}>{name}</div>
+    </button>
+  );
 }

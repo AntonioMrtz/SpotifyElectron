@@ -1,0 +1,46 @@
+.headerGenre {
+
+    position: relative;
+    height: 30svh;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+
+
+}
+
+.headerGenre::before {
+
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    background: linear-gradient(transparent 0, rgba(0, 0, 0, .7) 100%);
+    height: 100%;
+}
+
+
+
+.headerGenre h1 {
+
+    color: var(--pure-white);
+    font-size: 6rem;
+
+}
+
+
+.subheaderGenre {
+
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    color: var(--pure-white);
+}
+
+
+.songWrapperGenre {
+
+
+}

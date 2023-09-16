@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Global from 'global/global';
 import { useLocation } from 'react-router-dom';
 import styles from './genre.module.css';
-import Song from './Song/Song';
+import Song from '../SongCard/Song';
 
 interface PropsGenre {
   changeSongName: Function;

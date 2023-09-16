@@ -1,5 +1,5 @@
 import styles from './song.module.css';
-import defaultThumbnailPlaylist from '../../../assets/imgs/DefaultThumbnailPlaylist.jpg';
+import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 
 export interface PropsSongGenre {
   name: string;

@@ -59,7 +59,10 @@ function App() {
 
             <Route
               path="/user/:id"
-              element=<UserProfile refreshSidebarData={reloadSidebar} />
+              element=<UserProfile
+                refreshSidebarData={reloadSidebar}
+                changeSongName={changeSongName}
+              />
             />
             <Route
               path="/"

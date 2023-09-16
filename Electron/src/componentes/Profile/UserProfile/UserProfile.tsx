@@ -2,31 +2,28 @@ import { useEffect, useState } from 'react';
 import { FastAverageColor } from 'fast-average-color';
 import Global from 'global/global';
 import { PropsPlaylistCard } from 'componentes/PlaylistCard/types/propsPlaylistCard.module';
+import SongCard, { PropsSongCard } from 'componentes/SongCard/SongCard';
 import PlaylistCard from 'componentes/PlaylistCard/PlaylistCard';
 import styles from './userProfile.module.css';
 import defaultThumbnailPlaylist from '../../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 
 interface PropsUserProfile {
   refreshSidebarData: Function;
+  changeSongName: Function;
 }
 
-export default function UserProfile({ refreshSidebarData }: PropsUserProfile) {
+export default function UserProfile({
+  changeSongName,
+  refreshSidebarData,
+}: PropsUserProfile) {
   const userName = 'usuarioprovisionalcambiar';
 
   const [thumbnail, setThumbnail] = useState<string>(defaultThumbnailPlaylist);
   const [mainColorThumbnail, setMainColorThumbnail] = useState('');
-  const [playbackHistory, setPlaybackHistory] = useState<PropsPlaylistCard[]>(
-    []
-  );
+  const [playlists, setPlaylists] = useState<PropsPlaylistCard[]>([]);
+  const [playbackHistory, setPlaybackHistory] = useState<PropsSongCard[]>([]);
 
-  const handleLoadProfile = async () => {
-    const fetchUrlGetUser = `${Global.backendBaseUrl}usuarios/${userName}`;
-
-    const resGetUser = await fetch(fetchUrlGetUser);
-    const resGetUserJson = await resGetUser.json();
-
-    setThumbnail(resGetUserJson.photo);
-
+  const loadPlaylists = async (resGetUserJson: any) => {
     const playlistPromises: Promise<any>[] = [];
     resGetUserJson.playlists.forEach((playlistName: string) => {
       playlistPromises.push(
@@ -56,12 +53,61 @@ export default function UserProfile({ refreshSidebarData }: PropsUserProfile) {
 
     Promise.all(playlistPromises)
       .then((resPlaylistPromises) => {
-        setPlaybackHistory([...resPlaylistPromises]);
+        setPlaylists([...resPlaylistPromises]);
         return null;
       })
       .catch(() => {
         console.log('Unable to get Playlists Data');
       });
+  };
+
+  const loadPlaybackHistory = (resGetUserJson: any) => {
+    const songPromises: Promise<any>[] = [];
+    resGetUserJson.playback_history.forEach((songName: string) => {
+      songPromises.push(
+        new Promise((resolve) => {
+          fetch(`${Global.backendBaseUrl}canciones/dto/${songName}`)
+            .then((resFetchSongDTO) => {
+              return resFetchSongDTO.json();
+            })
+            .then((resFetchSongDTOJson) => {
+              const propsSong: PropsSongCard = {
+                name: resFetchSongDTOJson.name,
+                photo: resFetchSongDTOJson.photo,
+                artist: resFetchSongDTOJson.artist,
+                changeSongName,
+              };
+
+              resolve(propsSong);
+              return propsSong;
+            })
+            .catch(() => {
+              console.log('Unable to get Songs Data');
+            });
+        })
+      );
+    });
+
+    Promise.all(songPromises)
+      .then((resSongPromises) => {
+        setPlaybackHistory([...resSongPromises]);
+        return null;
+      })
+      .catch(() => {
+        console.log('Unable to get Songs Data');
+      });
+  };
+
+  const handleLoadProfile = async () => {
+    const fetchUrlGetUser = `${Global.backendBaseUrl}usuarios/${userName}`;
+
+    const resGetUser = await fetch(fetchUrlGetUser);
+    const resGetUserJson = await resGetUser.json();
+
+    loadPlaylists(resGetUserJson);
+    loadPlaybackHistory(resGetUserJson);
+
+    setThumbnail(resGetUserJson.photo);
   };
 
   useEffect(() => {
@@ -127,8 +173,8 @@ export default function UserProfile({ refreshSidebarData }: PropsUserProfile) {
           Playlists del usuario
         </h2>
         <div className="d-flex flex-row flex-wrap " style={{ gap: '15px' }}>
-          {playbackHistory &&
-            playbackHistory.map((playlistItem) => {
+          {playlists &&
+            playlists.map((playlistItem) => {
               return (
                 <PlaylistCard
                   key={playlistItem.name}
@@ -137,6 +183,33 @@ export default function UserProfile({ refreshSidebarData }: PropsUserProfile) {
                   owner={playlistItem.owner}
                   photo={playlistItem.photo}
                   refreshSidebarData={refreshSidebarData}
+                />
+              );
+            })}
+        </div>
+      </div>
+
+      <div className="p-4">
+        <h2
+          style={{
+            color: 'var(--pure-white)',
+            fontWeight: '700',
+            fontSize: '1.5rem',
+            marginTop: '1rem',
+            marginBottom: '1.5rem',
+          }}
+        >
+          Historial de reproducción
+        </h2>
+        <div className="d-flex flex-row flex-wrap " style={{ gap: '15px' }}>
+          {playbackHistory &&
+            playbackHistory.map((songItem) => {
+              return (
+                <SongCard
+                  name={songItem.name}
+                  photo={songItem.photo}
+                  artist={songItem.artist}
+                  changeSongName={songItem.changeSongName}
                 />
               );
             })}

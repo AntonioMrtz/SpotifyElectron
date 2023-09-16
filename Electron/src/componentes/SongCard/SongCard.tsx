@@ -1,7 +1,7 @@
 import styles from './songCard.module.css';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 
-export interface PropsSongGenre {
+export interface PropsSongCard {
   name: string;
   artist: string;
   photo: string;
@@ -13,7 +13,7 @@ export default function SongCard({
   artist,
   photo,
   changeSongName,
-}: PropsSongGenre) {
+}: PropsSongCard) {
   const handleClickSong = () => {
     changeSongName(name);
   };

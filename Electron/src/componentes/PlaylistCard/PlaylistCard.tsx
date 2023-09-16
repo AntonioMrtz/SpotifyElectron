@@ -2,15 +2,15 @@ import { Link } from 'react-router-dom';
 import { useState, MouseEvent, useEffect } from 'react';
 import ContextMenuPlaylist from 'componentes/AdvancedUIComponents/ContextMenu/Playlist/ContextMenuPlaylist';
 import Popover, { PopoverPosition } from '@mui/material/Popover/Popover';
-import styles from './playlistCss.module.css';
-import { PropsPlaylist } from '../Home/types/propsPlaylist.module';
+import styles from './playlistCard.module.css';
+import { PropsPlaylistCard } from './types/propsPlaylistCard.module';
 
-export default function Playlist({
+export default function PlaylistCard({
   name,
   photo,
   owner,
   refreshSidebarData,
-}: PropsPlaylist) {
+}: PropsPlaylistCard) {
   const [displayPlay, setdisplayPlay] = useState(styles.displayTruePlay);
   const [displayPause, setdisplayPause] = useState(styles.displayNonePlay);
   const [Playing, setPlaying] = useState(false);

@@ -114,24 +114,33 @@ export default function UserProfile({ refreshSidebarData }: PropsUserProfile) {
           </div>
         </div>
       </div>
-
-      <div
-        className="container-fluid d-flex flex-row flex-wrap"
-        style={{ gap: '15px' }}
-      >
-        {playbackHistory &&
-          playbackHistory.map((playlistItem) => {
-            return (
-              <PlaylistCard
-                key={playlistItem.name}
-                description={playlistItem.description}
-                name={playlistItem.name}
-                owner={playlistItem.owner}
-                photo={playlistItem.photo}
-                refreshSidebarData={refreshSidebarData}
-              />
-            );
-          })}
+      <div className="p-4">
+        <h2
+          style={{
+            color: 'var(--pure-white)',
+            fontWeight: '700',
+            fontSize: '1.5rem',
+            marginTop: '1rem',
+            marginBottom: '1.5rem',
+          }}
+        >
+          Playlists del usuario
+        </h2>
+        <div className="d-flex flex-row flex-wrap " style={{ gap: '15px' }}>
+          {playbackHistory &&
+            playbackHistory.map((playlistItem) => {
+              return (
+                <PlaylistCard
+                  key={playlistItem.name}
+                  description={playlistItem.description}
+                  name={playlistItem.name}
+                  owner={playlistItem.owner}
+                  photo={playlistItem.photo}
+                  refreshSidebarData={refreshSidebarData}
+                />
+              );
+            })}
+        </div>
       </div>
     </div>
   );

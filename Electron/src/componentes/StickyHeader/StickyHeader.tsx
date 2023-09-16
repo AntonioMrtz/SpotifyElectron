@@ -1,14 +1,22 @@
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Global from 'global/global';
 import styles from './stickyHeader.module.css';
 import groupIcon from '../../assets/imgs/groupIcon.png';
 
 export default function StickyHeader() {
+  const navigate = useNavigate();
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [profileIcon, setProfileIcon] = useState(
     'https://i.scdn.co/image/ab67757000003b82ae8c728abc415a173667ff85'
   );
+
+  // TODO cambiar usuario real
+
+  const handleProfileButon = () => {
+    navigate(`/user/${'usuarioprovisionalcambiar'}`);
+  };
 
   const [visibleBackground, setVisibleBackground] = useState({});
 
@@ -104,7 +112,7 @@ export default function StickyHeader() {
       <div
         className={`d-flex flex-row container-fluid  ${styles.wrapperProfileOptions}`}
       >
-        <button type="button">
+        <button type="button" onClick={handleProfileButon}>
           <img src={profileIcon} alt="" />
         </button>
 

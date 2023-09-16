@@ -1,4 +1,4 @@
-export interface PropsPlaylist {
+export interface PropsPlaylistCard {
   name: string;
   photo: string;
   description: string;

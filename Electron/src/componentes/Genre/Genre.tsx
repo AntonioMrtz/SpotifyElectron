@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Global from 'global/global';
 import { useLocation } from 'react-router-dom';
 import styles from './genre.module.css';
-import Song from '../SongCard/Song';
+import SongCard from '../SongCard/SongCard';
 
 interface PropsGenre {
   changeSongName: Function;
@@ -89,7 +89,7 @@ export default function Genre({ changeSongName }: PropsGenre) {
         {songs &&
           songs.map((song) => {
             return (
-              <Song
+              <SongCard
                 key={`${song.name} ${genreName}`}
                 name={song.name}
                 artist={song.artist}

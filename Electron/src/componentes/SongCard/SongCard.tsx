@@ -1,4 +1,4 @@
-import styles from './song.module.css';
+import styles from './songCard.module.css';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 
 export interface PropsSongGenre {
@@ -8,7 +8,7 @@ export interface PropsSongGenre {
   changeSongName: Function;
 }
 
-export default function Song({
+export default function SongCard({
   name,
   artist,
   photo,

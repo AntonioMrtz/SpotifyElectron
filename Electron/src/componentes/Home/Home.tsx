@@ -2,8 +2,8 @@ import Global from 'global/global';
 import { useEffect, useState } from 'react';
 import LoadingCircle from 'componentes/AdvancedUIComponents/LoadingCircle/LoadingCircle';
 import styles from './homeCss.module.css';
-import Playlist from '../PlaylistCard/Playlist';
-import { PropsPlaylist } from './types/propsPlaylist.module';
+import Playlist from '../PlaylistCard/PlaylistCard';
+import { PropsPlaylistCard } from '../PlaylistCard/types/propsPlaylistCard.module';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 
 interface PropsHome {
@@ -11,7 +11,7 @@ interface PropsHome {
 }
 
 export default function Home({ refreshSidebarData }: PropsHome) {
-  const [playlists, setPlaylists] = useState<PropsPlaylist[]>();
+  const [playlists, setPlaylists] = useState<PropsPlaylistCard[]>();
   const [loading, setLoading] = useState(true);
 
   const handlePlaylists = () => {
@@ -21,14 +21,14 @@ export default function Home({ refreshSidebarData }: PropsHome) {
       .then((resFetchPlaylists) => resFetchPlaylists.json())
       .then((resFetchPlaylistsJson) => {
         if (resFetchPlaylistsJson.playlists) {
-          const propsPlaylists: PropsPlaylist[] = [];
+          const propsPlaylists: PropsPlaylistCard[] = [];
 
           resFetchPlaylistsJson.playlists
             .slice(0, 5)
             .forEach((resPlaylistFetch: any) => {
               const resPlaylistFetchJson = JSON.parse(resPlaylistFetch);
 
-              const propsPlaylist: PropsPlaylist = {
+              const propsPlaylist: PropsPlaylistCard = {
                 name: resPlaylistFetchJson.name,
                 photo:
                   resPlaylistFetchJson.photo === ''

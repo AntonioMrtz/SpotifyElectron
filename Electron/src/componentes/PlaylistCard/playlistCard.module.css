@@ -4,10 +4,7 @@
   padding: 1.5%;
   margin-right: 2%;
   background-color: var(--third-black) !important;
-  max-width: 18%;
-  width: 100%;
-  height: 100%;
-
+  width: 10svw;
 }
 
 .card:hover .displayTruePlay {

@@ -1,14 +1,23 @@
 import { useEffect, useState } from 'react';
 import { FastAverageColor } from 'fast-average-color';
 import Global from 'global/global';
+import { PropsPlaylistCard } from 'componentes/PlaylistCard/types/propsPlaylistCard.module';
+import PlaylistCard from 'componentes/PlaylistCard/PlaylistCard';
 import styles from './userProfile.module.css';
 import defaultThumbnailPlaylist from '../../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 
-export default function UserProfile() {
+interface PropsUserProfile {
+  refreshSidebarData: Function;
+}
+
+export default function UserProfile({ refreshSidebarData }: PropsUserProfile) {
   const userName = 'usuarioprovisionalcambiar';
 
   const [thumbnail, setThumbnail] = useState<string>(defaultThumbnailPlaylist);
   const [mainColorThumbnail, setMainColorThumbnail] = useState('');
+  const [playbackHistory, setPlaybackHistory] = useState<PropsPlaylistCard[]>(
+    []
+  );
 
   const handleLoadProfile = async () => {
     const fetchUrlGetUser = `${Global.backendBaseUrl}usuarios/${userName}`;
@@ -17,10 +26,47 @@ export default function UserProfile() {
     const resGetUserJson = await resGetUser.json();
 
     setThumbnail(resGetUserJson.photo);
+
+    const playlistPromises: Promise<any>[] = [];
+    resGetUserJson.playlists.forEach((playlistName: string) => {
+      playlistPromises.push(
+        new Promise((resolve) => {
+          fetch(`${Global.backendBaseUrl}playlists/dto/${playlistName}`)
+            .then((resFetchPlaylistDTO) => {
+              return resFetchPlaylistDTO.json();
+            })
+            .then((resFetchPlaylistDTOJson) => {
+              const propsPlaylist: PropsPlaylistCard = {
+                name: resFetchPlaylistDTOJson.name,
+                description: resFetchPlaylistDTOJson.desdescription,
+                owner: resFetchPlaylistDTOJson.owner,
+                photo: resFetchPlaylistDTOJson.photo,
+                refreshSidebarData,
+              };
+
+              resolve(propsPlaylist);
+              return propsPlaylist;
+            })
+            .catch(() => {
+              console.log('Unable to get Playlists Data');
+            });
+        })
+      );
+    });
+
+    Promise.all(playlistPromises)
+      .then((resPlaylistPromises) => {
+        setPlaybackHistory([...resPlaylistPromises]);
+        return null;
+      })
+      .catch(() => {
+        console.log('Unable to get Playlists Data');
+      });
   };
 
   useEffect(() => {
     handleLoadProfile();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   /* Process photo color */
@@ -67,6 +113,25 @@ export default function UserProfile() {
             <h1>{userName}</h1>
           </div>
         </div>
+      </div>
+
+      <div
+        className="container-fluid d-flex flex-row flex-wrap"
+        style={{ gap: '15px' }}
+      >
+        {playbackHistory &&
+          playbackHistory.map((playlistItem) => {
+            return (
+              <PlaylistCard
+                key={playlistItem.name}
+                description={playlistItem.description}
+                name={playlistItem.name}
+                owner={playlistItem.owner}
+                photo={playlistItem.photo}
+                refreshSidebarData={refreshSidebarData}
+              />
+            );
+          })}
       </div>
     </div>
   );

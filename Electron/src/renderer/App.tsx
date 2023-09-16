@@ -57,7 +57,10 @@ function App() {
               element=<Genre changeSongName={changeSongName} />
             />
 
-            <Route path="/user/:id" element=<UserProfile /> />
+            <Route
+              path="/user/:id"
+              element=<UserProfile refreshSidebarData={reloadSidebar} />
+            />
             <Route
               path="/"
               element=<Home refreshSidebarData={reloadSidebar} />

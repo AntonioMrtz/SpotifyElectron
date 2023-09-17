@@ -19,7 +19,7 @@
 
 }
 
-.card button {
+.card .buttonCardPlaylistCard {
 
   bottom: 0.5vw;
   right: 0.2vw;
@@ -59,12 +59,21 @@
 
 .autorLista {
 
+  border: none;
+  background-color: transparent;
   width: calc(100%);
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
   color: var(--grey);
+  text-align: start;
+  padding-left: 0 !important;
 
+}
+
+.autorLista:hover{
+
+  text-decoration: underline;
 }
 
 .displayNonePlay {

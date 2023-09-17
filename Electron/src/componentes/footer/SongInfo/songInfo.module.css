@@ -19,14 +19,24 @@
 
 }
 
-.infoCancionContainer a:hover {
+.infoCancionContainer button {
+
+
+  border: none;
+  background-color: transparent;
+  text-align: start;
+
+}
+
+.infoCancionContainer button:hover {
 
   color: var(--primary-white) !important;
   text-decoration: underline;
 
+
 }
 
-.infoCancionContainer a:first-child {
+.infoCancionContainer button:first-child {
 
   font-size: var(--font-size-song-footer);
   color: var(--primary-white);
@@ -35,7 +45,7 @@
 
 }
 
-.infoCancionContainer a:nth-child(2) {
+.infoCancionContainer button:nth-child(2) {
 
   font-size: var(--font-size-artist-footer);
   color: var(--secondary-white);

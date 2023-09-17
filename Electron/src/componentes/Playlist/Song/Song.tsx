@@ -2,6 +2,7 @@ import { useState, useEffect, MouseEvent } from 'react';
 import { PropsSongs } from 'componentes/Sidebar/types/propsSongs.module';
 import ContextMenuSong from 'componentes/AdvancedUIComponents/ContextMenu/Song/ContextMenuSong';
 import Popover, { PopoverPosition } from '@mui/material/Popover';
+import { useNavigate } from 'react-router-dom';
 import styles from '../playlist.module.css';
 
 const secondsToMinutesSeconds: Function = (secs: number) => {
@@ -21,6 +22,8 @@ export default function Song({
   refreshPlaylistData,
   refreshSidebarData,
 }: PropsSongs) {
+  const navigate = useNavigate();
+
   const [isOpen, setIsOpen] = useState(false);
   const [anchorPosition, setAnchorPosition] = useState<{
     top: number;
@@ -39,6 +42,10 @@ export default function Song({
 
   const handleSongClicked = () => {
     handleSongCliked(name);
+  };
+
+  const handleClickArtist = () => {
+    navigate(`/artist/${artistName}`);
   };
 
   const handleRightClick = (event: MouseEvent<HTMLLIElement>) => {
@@ -66,11 +73,13 @@ export default function Song({
         >
           {name}
         </span>
-        <span
+        <button
+          type="button"
+          onClick={handleClickArtist}
           className={`${styles.gridItem} ${styles.artistNameContainer} p-0 `}
         >
           {artistName}
-        </span>
+        </button>
       </span>
       <span className={` d-flex justify-content-center ${styles.gridItem}`}>
         {secondsToMinutesSeconds(duration)}

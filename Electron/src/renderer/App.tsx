@@ -4,7 +4,9 @@ import Playlist from 'componentes/Playlist/Playlist';
 import StickyHeader from 'componentes/StickyHeader/StickyHeader';
 import Global from 'global/global';
 import Genre from 'componentes/Genre/Genre';
-import UserProfile from 'componentes/Profile/UserProfile/UserProfile';
+import UserProfile, {
+  UserType,
+} from 'componentes/Profile/UserProfile/UserProfile';
 import styles from './AppCss.module.css';
 import Sidebar from '../componentes/Sidebar/Sidebar';
 import Home from '../componentes/Home/Home';
@@ -62,6 +64,16 @@ function App() {
               element=<UserProfile
                 refreshSidebarData={reloadSidebar}
                 changeSongName={changeSongName}
+                userType={UserType.USER}
+              />
+            />
+
+            <Route
+              path="/artist/:id"
+              element=<UserProfile
+                refreshSidebarData={reloadSidebar}
+                changeSongName={changeSongName}
+                userType={UserType.ARTIST}
               />
             />
             <Route

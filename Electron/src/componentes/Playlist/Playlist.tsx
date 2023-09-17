@@ -77,6 +77,10 @@ export default function Playlist({
     }
   };
 
+  const handleClickArtist = () => {
+    navigate(`/user/${owner}`);
+  };
+
   const getTotalDurationPlaylist = () => {
     let totalDuration = 0;
 
@@ -348,7 +352,9 @@ export default function Playlist({
             <h1>{playlistName}</h1>
             <p className={`${styles.descriptionText}`}>{description}</p>
             <div className="d-flex flex-row">
-              <p>{owner}</p>
+              <button onClick={handleClickArtist} type="button">
+                {owner}
+              </button>
               <p className="me-2 ms-2">•</p>
               <p>{creationDate}</p>
               <p className="me-2 ms-2">•</p>

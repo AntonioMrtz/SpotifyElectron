@@ -54,7 +54,7 @@
 
 }
 
-.wrapperHeaderData img {
+.wrapperHeaderData .thumbnailUser {
 
     border-radius: 999px;
     width: 232px !important;
@@ -86,7 +86,7 @@
 
     }
 
-    .wrapperHeaderData img {
+    .wrapperHeaderData .thumbnailUser {
 
         width: 192px !important;
         height: 192px !important;

@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState, MouseEvent, useEffect } from 'react';
 import ContextMenuPlaylist from 'componentes/AdvancedUIComponents/ContextMenu/Playlist/ContextMenuPlaylist';
 import Popover, { PopoverPosition } from '@mui/material/Popover/Popover';
@@ -11,6 +11,8 @@ export default function PlaylistCard({
   owner,
   refreshSidebarData,
 }: PropsPlaylistCard) {
+  const navigate = useNavigate();
+
   const [displayPlay, setdisplayPlay] = useState(styles.displayTruePlay);
   const [displayPause, setdisplayPause] = useState(styles.displayNonePlay);
   const [Playing, setPlaying] = useState(false);
@@ -33,6 +35,12 @@ export default function PlaylistCard({
     e.stopPropagation(); // Detener la propagación del evento de clic
     e.preventDefault();
     handlePlay();
+  };
+
+  const handleClickArtist = (event: any) => {
+    event.preventDefault();
+    event.stopPropagation();
+    navigate(`/user/${owner}`);
   };
 
   /* Context Menu */
@@ -97,7 +105,11 @@ export default function PlaylistCard({
         </div>
         <div className={`${styles.cardBody}`}>
           <h5 className={`${styles.tituloLista}`}>{name}</h5>
-          <button type="button" className={`${styles.autorLista}`}>
+          <button
+            type="button"
+            onClick={handleClickArtist}
+            className={`${styles.autorLista}`}
+          >
             {owner}
           </button>
         </div>

@@ -183,7 +183,6 @@
 
 .wrapperSongTable li:not(:first-child) {
 
-  cursor: pointer;
   border-radius: var(--border-radius-thumbnails)
 }
 
@@ -196,6 +195,21 @@
 
   color: var(--secondary-white);
 
+}
+
+.gridContainer button{
+
+  border: none;
+  background-color: transparent;
+  font-weight: 300;
+  text-align: start;
+  color: var(--secondary-white);
+}
+
+.gridContainer button:hover{
+
+  text-decoration: underline;
+  color: var(--pure-white);
 }
 
 .gridContainerFirstRow {

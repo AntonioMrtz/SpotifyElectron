@@ -112,9 +112,20 @@
   color: var(--secondary-white);
 }
 
-.headerText div p {
+.headerText div p, .headerText div button {
   /* Number of songs <p> */
   font-size: 0.85rem;
+  border: none;
+  background-color: transparent;
+  text-align: start;
+  padding: 0 !important;
+  font-weight: lighter !important;
+  color: var(--pure-white);
+}
+
+.headerText div button:hover{
+
+  text-decoration: underline;
 }
 
 .subhHeaderPlaylist {

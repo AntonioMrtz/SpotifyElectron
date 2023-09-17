@@ -97,10 +97,12 @@ export default function PlaylistCard({
           </button>
           <button
             type="button"
-            className={`${styles.hoverablePlayButton} ${displayPause}`}
+            className={`${styles.hoverablePlayButton} ${displayPause} ${styles.buttonCardPlaylistCard}`}
             onClick={handleButtonClick}
           >
-            <i className={`fa-solid fa-circle-pause ${styles.playButton}`} />
+            <i
+              className={`fa-solid fa-circle-pause ${styles.playButton} ${styles.buttonCardPlaylistCard}`}
+            />
           </button>
         </div>
         <div className={`${styles.cardBody}`}>

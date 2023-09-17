@@ -1,5 +1,6 @@
 import { Favorite, FavoriteBorder } from '@mui/icons-material';
 import { useCallback, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './songInfo.module.css';
 
 interface PropsSongInfo {
@@ -7,6 +8,8 @@ interface PropsSongInfo {
 }
 
 export default function SongInfo({ songInfo }: PropsSongInfo | any) {
+  const navigate = useNavigate();
+
   const [name, setName] = useState<string>();
   const [thumbnail, setThumbnail] = useState<string>();
   const [artist, setArtist] = useState<string>();
@@ -28,13 +31,16 @@ export default function SongInfo({ songInfo }: PropsSongInfo | any) {
 
   const updateSongInfo = useCallback(() => {
     if (songInfo) {
-      // console.log(props.songInfo)
       setName(songInfo.name);
       setThumbnail(songInfo.photo);
       setArtist(songInfo.artist);
       setLiked(false);
     }
   }, [songInfo]);
+
+  const handleClickArtist = () => {
+    navigate(`/artist/${artist}`);
+  };
 
   useEffect(() => {
     updateSongInfo();
@@ -48,8 +54,12 @@ export default function SongInfo({ songInfo }: PropsSongInfo | any) {
         <>
           <img src={thumbnail} alt="" />
           <div className={`d-flex flex-column ${styles.infoCancionContainer}`}>
-            <a href="name">{name}</a>
-            <a href="artist">{artist}</a>
+            <button type="button" onClick={() => {}}>
+              {name}
+            </button>
+            <button type="button" onClick={handleClickArtist}>
+              {artist}
+            </button>
           </div>
           <div className={`d-flex flex-column ${styles.likeContainer}`}>
             <button

@@ -4,6 +4,7 @@ import Global from 'global/global';
 import { PropsPlaylistCard } from 'componentes/PlaylistCard/types/propsPlaylistCard.module';
 import SongCard, { PropsSongCard } from 'componentes/SongCard/SongCard';
 import PlaylistCard from 'componentes/PlaylistCard/PlaylistCard';
+import { useParams } from 'react-router-dom';
 import styles from './userProfile.module.css';
 import defaultThumbnailPlaylist from '../../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 
@@ -23,7 +24,8 @@ export default function UserProfile({
   changeSongName,
   refreshSidebarData,
 }: PropsUserProfile) {
-  const userName = 'usuarioprovisionalcambiar';
+  // Use the useParams hook to get the id parameter from the URL
+  const { id } = useParams();
 
   const [thumbnail, setThumbnail] = useState<string>(defaultThumbnailPlaylist);
   const [mainColorThumbnail, setMainColorThumbnail] = useState('');
@@ -145,10 +147,13 @@ export default function UserProfile({
   };
 
   const handleLoadProfile = async () => {
-    const fetchUrlGetUser = `${Global.backendBaseUrl}${userType}s/${userName}`;
+    const fetchUrlGetUser = `${Global.backendBaseUrl}${userType}s/${id}`;
 
     const resGetUser = await fetch(fetchUrlGetUser);
+
+    if (resGetUser.status === 404) return;
     const resGetUserJson = await resGetUser.json();
+
     loadPlaylists(resGetUserJson);
     setThumbnail(resGetUserJson.photo);
 
@@ -162,7 +167,7 @@ export default function UserProfile({
   useEffect(() => {
     handleLoadProfile();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [id]);
 
   /* Process photo color */
   useEffect(() => {
@@ -219,7 +224,7 @@ export default function UserProfile({
                 {userType} {userType === UserType.ARTIST && 'verificado'}
               </p>
             </div>
-            <h1>{userName}</h1>
+            <h1>{id}</h1>
           </div>
         </div>
       </div>

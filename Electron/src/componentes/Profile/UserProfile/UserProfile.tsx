@@ -203,9 +203,11 @@ export default function UserProfile({
         </h2>
         <div className="d-flex flex-row flex-wrap " style={{ gap: '15px' }}>
           {playbackHistory &&
-            playbackHistory.map((songItem) => {
+            playbackHistory.map((songItem, index) => {
               return (
                 <SongCard
+                  // eslint-disable-next-line react/no-array-index-key
+                  key={`${songItem.name}${index}`}
                   name={songItem.name}
                   photo={songItem.photo}
                   artist={songItem.artist}

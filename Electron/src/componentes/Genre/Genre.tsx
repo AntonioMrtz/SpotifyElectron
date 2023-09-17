@@ -35,8 +35,6 @@ export default function Genre({ changeSongName }: PropsGenre) {
       })
       .then((resGetSongsByGenreUrlJson) => {
         const songsFromFetch: SongProps[] = [];
-
-        console.log(typeof resGetSongsByGenreUrlJson.songs);
         resGetSongsByGenreUrlJson.songs.forEach((song: any) => {
           const songParsed = JSON.parse(song);
 

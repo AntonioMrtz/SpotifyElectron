@@ -207,7 +207,7 @@ def add_saved_playlist(user_name: str, playlist_name: str) -> None:
         saved_playlists.append(playlist_name)
 
         result = artist_collection.update_one({'name': user_name},
-                                              {"$set": {'saved_playlists': saved_playlists}})
+                                              {"$set": {'saved_playlists': list(set(saved_playlists))}})
 
     if user_type == User_Type.USER:
 
@@ -218,4 +218,4 @@ def add_saved_playlist(user_name: str, playlist_name: str) -> None:
         saved_playlists.append(playlist_name)
 
         result = user_collection.update_one({'name': user_name},
-                                              {"$set": {'saved_playlists': saved_playlists}})
+                                              {"$set": {'saved_playlists': list(set(saved_playlists))}})

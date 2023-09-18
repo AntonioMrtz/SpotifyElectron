@@ -156,6 +156,29 @@ def patch_playlists_guardadas(nombre: str, nombre_playlist: str) -> Response:
     all_users_service.add_saved_playlist(nombre,nombre_playlist)
     return Response(None, 204)
 
+@router.delete("/{nombre}/playlists_guardadas", tags=["usuarios"])
+def delete_playlists_guardadas(nombre: str, nombre_playlist: str) -> Response:
+    """ Elimina la playlist de las playlist guardadas del usuario
+
+    Parameters
+    ----------
+        nombre (str): Nombre del usuario
+        nombre_playlist (str): Nombre de la playlist
+
+    Returns
+    -------
+
+        Response 202
+
+    Raises
+    -------
+        Bad Request 400: Parámetros introducidos no són válidos o vacíos
+        Not Found 404: No existe un usuario con el nombre "nombre" | No existe una playlist con el nombre "nombre_playlist"
+    """
+
+    all_users_service.deleted_saved_playlist(nombre,nombre_playlist)
+    return Response(None, 202)
+
 
 @router.get("/{nombre}/whoami", tags=["usuarios"])
 def get_whoAmI(nombre: str) -> Response:

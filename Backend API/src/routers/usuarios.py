@@ -155,3 +155,29 @@ def patch_playlists_guardadas(nombre: str, nombre_playlist: str) -> Response:
 
     all_users_service.add_saved_playlist(nombre,nombre_playlist)
     return Response(None, 204)
+
+
+@router.get("/{nombre}/whoami", tags=["usuarios"])
+def get_whoAmI(nombre: str) -> Response:
+    """ Devuelve el rol del usuario
+
+    Parameters
+    ----------
+        nombre (str): Nombre del usuario
+
+    Returns
+    -------
+        Response 200 OK | { type : "usuario | artista"}
+
+    Raises
+    -------
+        Bad Request 400: "nombre" es vacío o nulo
+        Not Found 404: No existe un usuario con el nombre "nombre"
+    """
+
+    user_type = all_users_service.isArtistOrUser(nombre)
+
+    if user_type != "":
+        return Response(json.dumps({"type":user_type.value}), media_type="application/json", status_code=200)
+
+    return Response(json.dumps({}), media_type="application/json", status_code=200)

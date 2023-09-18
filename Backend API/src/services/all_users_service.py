@@ -25,8 +25,8 @@ MAX_NUMBER_PLAYBACK_HISTORY_SONGS = 5
 
 
 class User_Type(Enum):
-    ARTIST = "Artist"
-    USER = "User"
+    ARTIST = "artista"
+    USER = "usuario"
 
 
 def isArtistOrUser(user_name: str) -> User_Type or null:
@@ -51,7 +51,7 @@ def isArtistOrUser(user_name: str) -> User_Type or null:
         return User_Type.ARTIST
 
     else:
-        return null
+        return ""
 
 
 def check_user_exists(user_name: str) -> bool:
@@ -155,7 +155,7 @@ def add_playback_history(user_name: str, song: str) -> None:
         result = artist_collection.update_one({'name': user_name},
                                               {"$set": {'playback_history': playback_history}})
 
-    if user_type == User_Type.USER:
+    elif user_type == User_Type.USER:
 
         user_data = user_collection.find_one({'name': user_name})
 
@@ -209,7 +209,7 @@ def add_saved_playlist(user_name: str, playlist_name: str) -> None:
         result = artist_collection.update_one({'name': user_name},
                                               {"$set": {'saved_playlists': list(set(saved_playlists))}})
 
-    if user_type == User_Type.USER:
+    elif user_type == User_Type.USER:
 
         user_data = user_collection.find_one({'name': user_name})
 

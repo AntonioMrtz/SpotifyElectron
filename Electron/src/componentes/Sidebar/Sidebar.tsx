@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Global from 'global/global';
 import LoadingCircle from 'componentes/AdvancedUIComponents/LoadingCircle/LoadingCircle';
 import styles from './sideBarCss.module.css';
@@ -13,20 +13,40 @@ interface PropsSidebar {
 }
 
 export default function Sidebar({ triggerReloadSidebar }: PropsSidebar) {
+  //* HIGHLIGHT CURRENT SECTION LI
+
+  const [selectedID, setSelectedID] = useState<string>(); // you could set a default id as well
+  const [selectedPlaylist, setSelectedPlaylist] = useState<string>(''); // Estado para almacenar el nombre de la playlist seleccionada
+
+  const getSelectedClass = (id: string) =>
+    selectedID === id ? styles.linksubtleClicked : '';
+
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname === '/') {
+      setSelectedID('li-inicio');
+    } else if (location.pathname.includes('/explorar')) {
+      setSelectedID('li-buscar');
+    } else {
+      setSelectedID('');
+    }
+  }, [location]);
+
   //* MENU HOVER
 
   const [listItemInicio, setHoverInicio] = useState('');
   const [listItemBuscar, setHoverBuscar] = useState('');
 
-  const [isHoveredInicio, setIsHovered] = useState(false);
+  const [isHoveredInicio, setIsHoveredInicio] = useState(false);
   const [isHoveredBuscar, setIsHoveredBuscar] = useState(false);
 
   const handleMouseOverInicio = () => {
-    setIsHovered(true);
+    setIsHoveredInicio(true);
   };
 
   const handleMouseOutInicio = () => {
-    setIsHovered(false);
+    setIsHoveredInicio(false);
   };
 
   const handleMouseOverBuscar = () => {
@@ -42,39 +62,15 @@ export default function Sidebar({ triggerReloadSidebar }: PropsSidebar) {
     setHoverBuscar(isHoveredBuscar ? styles.linksubtle : '');
   }, [isHoveredBuscar, isHoveredInicio]);
 
-  //* HIGHLIGHT CURRENT SECTION LI
-
-  const [selectedID, setSelectedID] = useState<string>(); // you could set a default id as well
-  const [selectedPlaylist, setSelectedPlaylist] = useState<string>(''); // Estado para almacenar el nombre de la playlist seleccionada
-
-  const getSelectedClass = (id: string) =>
-    selectedID === id ? styles.linksubtleClicked : '';
-
-  const [url, setUrl] = useState('/');
-
-  useEffect(() => {
-    // console.log(url)
-    if (url === '/') {
-      setSelectedID('li-inicio');
-    } else if (url === '/explorar') {
-      setSelectedID('li-buscar');
-    } else {
-      setSelectedID('');
-    }
-  }, [url]);
-
   const handleUrlInicioClicked = () => {
-    setUrl('/');
     setSelectedPlaylist('');
   };
 
   const handleUrlBuscarClicked = () => {
-    setUrl('/explorar');
     setSelectedPlaylist('');
   };
 
   const handleUrlPlaylistClicked = (name: string) => {
-    setUrl('');
     setSelectedPlaylist(name); // Actualizar el estado cuando se hace clic en una playlist
   };
 

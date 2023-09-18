@@ -132,3 +132,26 @@ def patch_historial(nombre: str, nombre_cancion: str) -> Response:
     return Response(None, 204)
 
 
+
+@router.patch("/{nombre}/playlists_guardadas", tags=["usuarios"])
+def patch_playlists_guardadas(nombre: str, nombre_playlist: str) -> Response:
+    """ Actualiza las listas guardadas del usuario
+
+    Parameters
+    ----------
+        nombre (str): Nombre del usuario
+        nombre_playlist (str): Nombre de la playlist
+
+    Returns
+    -------
+
+        Response 204
+
+    Raises
+    -------
+        Bad Request 400: Parámetros introducidos no són válidos o vacíos
+        Not Found 404: No existe un usuario con el nombre "nombre" | No existe una playlist con el nombre "nombre_playlist"
+    """
+
+    all_users_service.add_saved_playlist(nombre,nombre_playlist)
+    return Response(None, 204)

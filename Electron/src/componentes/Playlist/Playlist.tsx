@@ -9,6 +9,7 @@ import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import ContextMenuPlaylist from 'componentes/AdvancedUIComponents/ContextMenu/Playlist/ContextMenuPlaylist';
 import Popover, { PopoverPosition } from '@mui/material/Popover/Popover';
+import { UserType } from 'componentes/Profile/UserProfile/UserProfile';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 import Song from './Song/Song';
 import styles from './playlist.module.css';
@@ -77,6 +78,41 @@ export default function Playlist({
     setdisplayDislike('');
     setdisplayLike(styles.displayNoneLike);
     setLiked(false);
+  };
+  const loadPlaylistLikedStatus = async () => {
+    // TODO cambiar usuario real
+
+    const user = 'usuarioprovisionalcambiar';
+
+    const resFetchWhoAmIUser = await fetch(
+      `${Global.backendBaseUrl}usuarios/${user}/whoami`
+    );
+    const resFetchWhoAmIUserJson = await resFetchWhoAmIUser.json();
+
+    let resFetchGetUserJson;
+
+    if (resFetchWhoAmIUserJson.type === UserType.USER) {
+      const fetchGetUser = `${Global.backendBaseUrl}${UserType.USER}s/${user}`;
+
+      const resFetchGetUser = await fetch(fetchGetUser);
+      if (resFetchGetUser.status === 200)
+        resFetchGetUserJson = await resFetchGetUser.json();
+    } else if (resFetchWhoAmIUserJson.type === UserType.ARTIST) {
+      const fetchGetArtist = `${Global.backendBaseUrl}${UserType.ARTIST}s/${user}`;
+
+      const resFetchGetArtist = await fetch(fetchGetArtist);
+      if (resFetchGetArtist.status === 200)
+        resFetchGetUserJson = await resFetchGetArtist.json();
+    }
+
+    if (
+      resFetchGetUserJson.saved_playlists &&
+      resFetchGetUserJson.saved_playlists.includes(playlistName)
+    ) {
+      setHearthLiked();
+    } else {
+      setHearthUnLiked();
+    }
   };
 
   const handleLike = (): void => {
@@ -328,6 +364,8 @@ export default function Playlist({
       setopenModalUpdatePlaylist(true);
       localStorage.setItem('playlistEdit', JSON.stringify(false));
     }
+
+    loadPlaylistLikedStatus();
   }, [location]);
 
   /* Process photo color */

@@ -54,10 +54,6 @@ def test_patch_playback_history_artist_correct(clear_test_data_db):
     name = "8232392323623823723"
     foto = "https://foto"
     password = "hola"
-
-    res_create_artist = create_artist(name=name,password=password,photo=foto)
-    assert res_create_artist.status_code == 201
-
     artista = "artista"
     foto = "https://foto"
     password = "hola"
@@ -73,11 +69,11 @@ def test_patch_playback_history_artist_correct(clear_test_data_db):
     res_create_song = create_song(name=song_name,file_path=file_path,artista=artista,genero=genero,foto=foto)
     assert res_create_song.status_code == 201
 
-    res_patch_user = patch_history_playback(name,song_name)
+    res_patch_user = patch_history_playback(artista,song_name)
     assert res_patch_user.status_code == 204
 
 
-    res_get_artist = get_artist(name=name)
+    res_get_artist = get_artist(name=artista)
     assert res_get_artist.status_code == 200
     assert len(res_get_artist.json()["playback_history"])==1
     assert res_get_artist.json()["playback_history"][0]==song_name
@@ -176,8 +172,10 @@ def clear_test_data_db():
     name = "8232392323623823723"
     song_name = "8232392323623823723989"
     new_song_name = "cancionnueva"
+    artista = "artista"
 
     delete_user(name=name)
+    delete_artist(name=artista)
     delete_song(name=song_name)
     delete_song(name=new_song_name)
 
@@ -186,8 +184,9 @@ def clear_test_data_db():
     name = "8232392323623823723"
     song_name = "8232392323623823723989"
     new_song_name = "cancionnueva"
+    artista = "artista"
 
     delete_user(name=name)
-    delete_artist(name=name)
+    delete_artist(name=artista)
     delete_song(name=song_name)
     delete_song(name=new_song_name)

@@ -68,13 +68,13 @@ export default function Playlist({
 
   /* Like Button */
 
-  const setHearthLiked = () => {
+  const setHearthLikedInterface = () => {
     setdisplayLike('');
     setdisplayDislike(styles.displayNoneLike);
     setLiked(true);
   };
 
-  const setHearthUnLiked = () => {
+  const setHearthUnLikedInterface = () => {
     setdisplayDislike('');
     setdisplayLike(styles.displayNoneLike);
     setLiked(false);
@@ -109,31 +109,43 @@ export default function Playlist({
       resFetchGetUserJson.saved_playlists &&
       resFetchGetUserJson.saved_playlists.includes(playlistName)
     ) {
-      setHearthLiked();
+      setHearthLikedInterface();
     } else {
-      setHearthUnLiked();
+      setHearthUnLikedInterface();
     }
   };
 
   const handleLike = (): void => {
+    // TODO cambiar usuario real
+
+    const user = 'usuarioprovisionalcambiar';
+
     if (liked === false) {
-      // TODO cambiar usuario real
-
-      const user = 'usuarioprovisionalcambiar';
-
       const fetchPatchSavedPlaylistUrl = `${Global.backendBaseUrl}usuarios/${user}/playlists_guardadas?nombre_playlist=${playlistName}`;
 
       const requestOptionsPatchSavedPlaylistUr = {
         method: 'PATCH',
       };
 
-      fetch(
-        fetchPatchSavedPlaylistUrl,
-        requestOptionsPatchSavedPlaylistUr
-      ).catch(() => console.log('Unable to update saved playlists'));
-      setHearthLiked();
+      fetch(fetchPatchSavedPlaylistUrl, requestOptionsPatchSavedPlaylistUr)
+        .then(() => {
+          setHearthLikedInterface();
+          return null;
+        })
+        .catch(() => console.log('Unable to update saved playlists'));
     } else {
-      setHearthUnLiked();
+      const fetchDeleteSavedPlaylistUrl = `${Global.backendBaseUrl}usuarios/${user}/playlists_guardadas?nombre_playlist=${playlistName}`;
+
+      const requestOptionsDeleteSavedPlaylistUr = {
+        method: 'DELETE',
+      };
+
+      fetch(fetchDeleteSavedPlaylistUrl, requestOptionsDeleteSavedPlaylistUr)
+        .then(() => {
+          setHearthUnLikedInterface();
+          return null;
+        })
+        .catch(() => console.log('Unable to update saved playlists'));
     }
   };
 

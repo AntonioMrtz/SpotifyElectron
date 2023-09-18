@@ -65,6 +65,20 @@ export default function Playlist({
     }
   };
 
+  /* Like Button */
+
+  const setHearthLiked = () => {
+    setdisplayLike('');
+    setdisplayDislike(styles.displayNoneLike);
+    setLiked(true);
+  };
+
+  const setHearthUnLiked = () => {
+    setdisplayDislike('');
+    setdisplayLike(styles.displayNoneLike);
+    setLiked(false);
+  };
+
   const handleLike = (): void => {
     if (liked === false) {
       // TODO cambiar usuario real
@@ -81,14 +95,9 @@ export default function Playlist({
         fetchPatchSavedPlaylistUrl,
         requestOptionsPatchSavedPlaylistUr
       ).catch(() => console.log('Unable to update saved playlists'));
-
-      setdisplayLike('');
-      setdisplayDislike(styles.displayNoneLike);
-      setLiked(true);
+      setHearthLiked();
     } else {
-      setdisplayDislike('');
-      setdisplayLike(styles.displayNoneLike);
-      setLiked(false);
+      setHearthUnLiked();
     }
   };
 

@@ -67,6 +67,21 @@ export default function Playlist({
 
   const handleLike = (): void => {
     if (liked === false) {
+      // TODO cambiar usuario real
+
+      const user = 'usuarioprovisionalcambiar';
+
+      const fetchPatchSavedPlaylistUrl = `${Global.backendBaseUrl}usuarios/${user}/playlists_guardadas?nombre_playlist=${playlistName}`;
+
+      const requestOptionsPatchSavedPlaylistUr = {
+        method: 'PATCH',
+      };
+
+      fetch(
+        fetchPatchSavedPlaylistUrl,
+        requestOptionsPatchSavedPlaylistUr
+      ).catch(() => console.log('Unable to update saved playlists'));
+
       setdisplayLike('');
       setdisplayDislike(styles.displayNoneLike);
       setLiked(true);

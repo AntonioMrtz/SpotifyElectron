@@ -35,11 +35,17 @@ def isArtistOrUser(user_name: str) -> User_Type or null:
 
     Raises
     -------
+        400 : Bad parameters
+        404 : User not found
 
     Returns
     -------
         User_Type | null
     """
+
+    if not checkValidParameterString(user_name):
+        raise HTTPException(status_code=400, detail="Parámetros no válidos")
+
 
     if user_collection.find_one({'name': user_name}):
         return User_Type.USER
@@ -48,7 +54,8 @@ def isArtistOrUser(user_name: str) -> User_Type or null:
         return User_Type.ARTIST
 
     else:
-        return ""
+        raise HTTPException(status_code=404, detail="Usuario no existe")
+
 
 
 def check_user_exists(user_name: str) -> bool:

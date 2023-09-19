@@ -200,7 +200,4 @@ def get_whoAmI(nombre: str) -> Response:
 
     user_type = all_users_service.isArtistOrUser(nombre)
 
-    if user_type != "":
-        return Response(json.dumps({"type":user_type.value}), media_type="application/json", status_code=200)
-
-    return Response(json.dumps({}), media_type="application/json", status_code=200)
+    return Response(json.dumps({"type":user_type.value}), media_type="application/json", status_code=200)

@@ -132,3 +132,72 @@ def patch_historial(nombre: str, nombre_cancion: str) -> Response:
     return Response(None, 204)
 
 
+
+@router.patch("/{nombre}/playlists_guardadas", tags=["usuarios"])
+def patch_playlists_guardadas(nombre: str, nombre_playlist: str) -> Response:
+    """ Actualiza las listas guardadas del usuario
+
+    Parameters
+    ----------
+        nombre (str): Nombre del usuario
+        nombre_playlist (str): Nombre de la playlist
+
+    Returns
+    -------
+
+        Response 204
+
+    Raises
+    -------
+        Bad Request 400: Parámetros introducidos no són válidos o vacíos
+        Not Found 404: No existe un usuario con el nombre "nombre" | No existe una playlist con el nombre "nombre_playlist"
+    """
+
+    all_users_service.add_saved_playlist(nombre,nombre_playlist)
+    return Response(None, 204)
+
+@router.delete("/{nombre}/playlists_guardadas", tags=["usuarios"])
+def delete_playlists_guardadas(nombre: str, nombre_playlist: str) -> Response:
+    """ Elimina la playlist de las playlist guardadas del usuario
+
+    Parameters
+    ----------
+        nombre (str): Nombre del usuario
+        nombre_playlist (str): Nombre de la playlist
+
+    Returns
+    -------
+
+        Response 202
+
+    Raises
+    -------
+        Bad Request 400: Parámetros introducidos no són válidos o vacíos
+        Not Found 404: No existe un usuario con el nombre "nombre" | No existe una playlist con el nombre "nombre_playlist"
+    """
+
+    all_users_service.deleted_saved_playlist(nombre,nombre_playlist)
+    return Response(None, 202)
+
+
+@router.get("/{nombre}/whoami", tags=["usuarios"])
+def get_whoAmI(nombre: str) -> Response:
+    """ Devuelve el rol del usuario
+
+    Parameters
+    ----------
+        nombre (str): Nombre del usuario
+
+    Returns
+    -------
+        Response 200 OK | { type : "usuario | artista"}
+
+    Raises
+    -------
+        Bad Request 400: "nombre" es vacío o nulo
+        Not Found 404: No existe un usuario con el nombre "nombre"
+    """
+
+    user_type = all_users_service.isArtistOrUser(nombre)
+
+    return Response(json.dumps({"type":user_type.value}), media_type="application/json", status_code=200)

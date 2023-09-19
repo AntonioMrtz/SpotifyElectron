@@ -91,9 +91,6 @@ def test_delete_user_invalid_name(clear_test_data_db):
     assert res_delete_user.status_code == 405
 
 
-
-
-
 def test_update_playlists_correct(clear_test_data_db):
 
     name = "8232392323623823723"

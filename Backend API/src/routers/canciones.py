@@ -214,6 +214,4 @@ def get_cancion_por_genero(genero: Genre) -> Response:
     songs_dict["songs"] = filtered_songs_list
     songs_json = json.dumps(songs_dict)
 
-    print(songs_json)
-
     return Response(songs_json, media_type="application/json", status_code=200)

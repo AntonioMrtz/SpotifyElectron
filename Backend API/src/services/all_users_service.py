@@ -1,6 +1,7 @@
 from fastapi import HTTPException
 from services.utils import checkValidParameterString
 from database.Database import Database
+from model.UserType import User_Type
 from enum import Enum
 from sys import modules
 
@@ -23,10 +24,6 @@ else:
 
 MAX_NUMBER_PLAYBACK_HISTORY_SONGS = 5
 
-
-class User_Type(Enum):
-    ARTIST = "artista"
-    USER = "usuario"
 
 
 def isArtistOrUser(user_name: str) -> User_Type or null:

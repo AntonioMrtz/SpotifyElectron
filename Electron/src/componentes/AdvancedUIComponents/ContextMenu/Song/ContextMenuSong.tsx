@@ -205,13 +205,14 @@ export default function ContextMenuSong({
           <button type="button">Ir a radio de la canción</button>
           <button type="button">Ir al artista</button>
           <button type="button">Ir al álbum</button>
-          <button type="button">Mostrar créditos</button>
         </li>
         <li>
           <button type="button">Quitar de canciones que te gustan</button>
-          <button type="button" onClick={() => handleDeleteFromPlaylist()}>
-            Quitar de esta lista
-          </button>
+          {playlistName !== '' && (
+            <button type="button" onClick={() => handleDeleteFromPlaylist()}>
+              Quitar de esta lista
+            </button>
+          )}
           <button
             type="button"
             className="d-flex justify-content-between align-items-center"

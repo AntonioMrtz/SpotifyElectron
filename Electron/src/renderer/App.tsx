@@ -56,7 +56,10 @@ function App() {
             <Route path="/explorar" element=<Explorar /> />
             <Route
               path="/explorar/genre/:id"
-              element=<Genre changeSongName={changeSongName} />
+              element=<Genre
+                changeSongName={changeSongName}
+                refreshSidebarData={reloadSidebar}
+              />
             />
 
             <Route

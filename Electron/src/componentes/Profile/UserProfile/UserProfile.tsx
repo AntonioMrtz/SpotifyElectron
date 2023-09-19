@@ -86,6 +86,7 @@ export default function UserProfile({
                 photo: resFetchSongDTOJson.photo,
                 artist: resFetchSongDTOJson.artist,
                 changeSongName,
+                refreshSidebarData,
               };
 
               resolve(propsSong);
@@ -124,6 +125,7 @@ export default function UserProfile({
                 photo: resFetchSongDTOJson.photo,
                 artist: resFetchSongDTOJson.artist,
                 changeSongName,
+                refreshSidebarData,
               };
 
               resolve(propsSong);
@@ -253,6 +255,7 @@ export default function UserProfile({
                     photo={songItem.photo}
                     artist={songItem.artist}
                     changeSongName={songItem.changeSongName}
+                    refreshSidebarData={refreshSidebarData}
                   />
                 );
               })}
@@ -312,6 +315,7 @@ export default function UserProfile({
                     photo={songItem.photo}
                     artist={songItem.artist}
                     changeSongName={songItem.changeSongName}
+                    refreshSidebarData={refreshSidebarData}
                   />
                 );
               })}

@@ -3,7 +3,6 @@ from database.Database import Database
 from model.User import User
 from fastapi import HTTPException
 from services.utils import checkValidParameterString
-from services.all_users_service import check_user_exists
 import bcrypt
 from sys import modules
 
@@ -143,3 +142,63 @@ def delete_user(name: str) -> None:
     result = user_collection.delete_one({'name': name})
     if result.deleted_count == 0:
         raise HTTPException(status_code=404, detail="El usuario no existe")
+
+
+# * AUX METHODs
+
+def check_user_exists(user_name: str) -> bool:
+    """ Checks if the user exists
+
+    Parameters
+    ----------
+        user_name (str): Users's name
+
+    Raises
+    -------
+        400 : Bad Request
+
+
+    Returns
+    -------
+        Boolean
+    """
+
+    if not checkValidParameterString(user_name):
+        raise HTTPException(status_code=400, detail="Parámetros no válidos")
+
+    result_user_exists = user_collection.find_one({'name': user_name})
+
+
+def add_playback_history(user_name: str,song:str,MAX_NUMBER_PLAYBACK_HISTORY_SONGS:int):
+    user_data = user_collection.find_one({'name': user_name})
+
+    playback_history = user_data["playback_history"]
+
+    if len(playback_history) == MAX_NUMBER_PLAYBACK_HISTORY_SONGS:
+        playback_history.pop(0)
+
+    playback_history.append(song)
+
+    result = user_collection.update_one({'name': user_name},
+                                        {"$set": {'playback_history': playback_history}})
+
+def add_saved_playlist(user_name:str,playlist_name:str):
+    user_data = user_collection.find_one({'name': user_name})
+
+    saved_playlists = user_data["saved_playlists"]
+
+    saved_playlists.append(playlist_name)
+
+    result = user_collection.update_one({'name': user_name},
+                                            {"$set": {'saved_playlists': list(set(saved_playlists))}})
+
+
+def deleted_saved_playlist(user_name:str,playlist_name:str):
+    user_data = user_collection.find_one({'name': user_name})
+
+    saved_playlists = user_data["saved_playlists"]
+
+    saved_playlists.remove(playlist_name)
+
+    result = user_collection.update_one({'name': user_name},
+                                            {"$set": {'saved_playlists': saved_playlists}})

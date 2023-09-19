@@ -3,7 +3,6 @@ from database.Database import Database
 from model.Artist import Artist
 from fastapi import HTTPException
 from services.utils import checkValidParameterString
-from services.all_users_service import check_user_exists, check_song_exists
 import bcrypt
 from sys import modules
 
@@ -11,11 +10,30 @@ if "pytest" in modules:
 
     artist_collection = Database().connection["test.artista"]
     user_collection = Database().connection["test.usuario"]
+    fileSongCollection = Database().connection["test.cancion.files"]
 
 else:
 
     artist_collection = Database().connection["artista"]
     user_collection = Database().connection["usuario"]
+    fileSongCollection = Database().connection["cancion.files"]
+
+
+def check_song_exists(name: str) -> bool:
+    """ Check if the song exists or not
+
+    Parameters
+    ----------
+        name (str): Song's name
+
+    Raises
+    -------
+
+    Returns
+    -------
+        Boolean
+    """
+    return True if fileSongCollection.find_one({'name': name}) else False
 
 
 def check_artists_exists(artist_name: str) -> bool:
@@ -247,3 +265,65 @@ def get_all_artists() -> list:
         artists.append(get_artist(name=artist_file["name"]))
 
     return artists
+
+# * AUX METHODs
+
+
+def check_user_exists(user_name: str) -> bool:
+    """ Checks if the user or artists exists
+
+    Parameters
+    ----------
+        user_name (str): Users's name
+
+    Raises
+    -------
+        400 : Bad Request
+
+
+    Returns
+    -------
+        Boolean
+    """
+
+    if not checkValidParameterString(user_name):
+        raise HTTPException(status_code=400, detail="Parámetros no válidos")
+
+    result_artist_exists = artist_collection.find_one({'name': user_name})
+
+
+def add_playback_history(user_name: str,song:str,MAX_NUMBER_PLAYBACK_HISTORY_SONGS:int):
+
+    artist_data = artist_collection.find_one({'name': user_name})
+
+    playback_history = artist_data["playback_history"]
+
+    if len(playback_history) == MAX_NUMBER_PLAYBACK_HISTORY_SONGS:
+        playback_history.pop(0)
+
+    playback_history.append(song)
+
+    result = artist_collection.update_one({'name': user_name},
+                                            {"$set": {'playback_history': playback_history}})
+
+
+def add_saved_playlist(user_name: str, playlist_name: str):
+    artist_data = artist_collection.find_one({'name': user_name})
+
+    saved_playlists = artist_data["saved_playlists"]
+
+    saved_playlists.append(playlist_name)
+
+    result = artist_collection.update_one({'name': user_name},
+                                          {"$set": {'saved_playlists': list(set(saved_playlists))}})
+
+
+def deleted_saved_playlist(user_name: str, playlist_name: str):
+    artist_data = artist_collection.find_one({'name': user_name})
+
+    saved_playlists = artist_data["saved_playlists"]
+
+    saved_playlists.remove(playlist_name)
+
+    result = artist_collection.update_one({'name': user_name},
+                                          {"$set": {'saved_playlists': saved_playlists}})

@@ -4,6 +4,8 @@ from database.Database import Database
 from model.UserType import User_Type
 from enum import Enum
 from sys import modules
+import services.user_service as user_service
+import services.artist_service as artist_service
 
 if "pytest" in modules:
 
@@ -19,6 +21,13 @@ else:
     file_song_collection = Database().connection["cancion.files"]
     playlist_collection = Database().connection["playlist"]
 
+
+services_map = {
+
+    User_Type.USER : user_service,
+    User_Type.ARTIST : artist_service,
+
+}
 
 
 
@@ -145,33 +154,7 @@ def add_playback_history(user_name: str, song: str) -> None:
 
     user_type = isArtistOrUser(user_name)
 
-    if user_type == User_Type.ARTIST:
-
-        artist_data = artist_collection.find_one({'name': user_name})
-
-        playback_history = artist_data["playback_history"]
-
-        if len(playback_history) == MAX_NUMBER_PLAYBACK_HISTORY_SONGS:
-            playback_history.pop(0)
-
-        playback_history.append(song)
-
-        result = artist_collection.update_one({'name': user_name},
-                                              {"$set": {'playback_history': playback_history}})
-
-    elif user_type == User_Type.USER:
-
-        user_data = user_collection.find_one({'name': user_name})
-
-        playback_history = user_data["playback_history"]
-
-        if len(playback_history) == MAX_NUMBER_PLAYBACK_HISTORY_SONGS:
-            playback_history.pop(0)
-
-        playback_history.append(song)
-
-        result = user_collection.update_one({'name': user_name},
-                                            {"$set": {'playback_history': playback_history}})
+    services_map[user_type].add_playback_history(user_name=user_name,song=song, MAX_NUMBER_PLAYBACK_HISTORY_SONGS=MAX_NUMBER_PLAYBACK_HISTORY_SONGS)
 
 
 def add_saved_playlist(user_name: str, playlist_name: str) -> None:
@@ -202,27 +185,8 @@ def add_saved_playlist(user_name: str, playlist_name: str) -> None:
 
     user_type = isArtistOrUser(user_name)
 
-    if user_type == User_Type.ARTIST:
+    services_map[user_type].add_saved_playlist(user_name=user_name,playlist_name=playlist_name)
 
-        artist_data = artist_collection.find_one({'name': user_name})
-
-        saved_playlists = artist_data["saved_playlists"]
-
-        saved_playlists.append(playlist_name)
-
-        result = artist_collection.update_one({'name': user_name},
-                                              {"$set": {'saved_playlists': list(set(saved_playlists))}})
-
-    elif user_type == User_Type.USER:
-
-        user_data = user_collection.find_one({'name': user_name})
-
-        saved_playlists = user_data["saved_playlists"]
-
-        saved_playlists.append(playlist_name)
-
-        result = user_collection.update_one({'name': user_name},
-                                              {"$set": {'saved_playlists': list(set(saved_playlists))}})
 
 
 def deleted_saved_playlist(user_name: str, playlist_name: str) -> None:
@@ -253,24 +217,5 @@ def deleted_saved_playlist(user_name: str, playlist_name: str) -> None:
 
     user_type = isArtistOrUser(user_name)
 
-    if user_type == User_Type.ARTIST:
+    services_map[user_type].deleted_saved_playlist(user_name=user_name,playlist_name=playlist_name)
 
-        artist_data = artist_collection.find_one({'name': user_name})
-
-        saved_playlists = artist_data["saved_playlists"]
-
-        saved_playlists.remove(playlist_name)
-
-        result = artist_collection.update_one({'name': user_name},
-                                              {"$set": {'saved_playlists': saved_playlists}})
-
-    elif user_type == User_Type.USER:
-
-        user_data = user_collection.find_one({'name': user_name})
-
-        saved_playlists = user_data["saved_playlists"]
-
-        saved_playlists.remove(playlist_name)
-
-        result = user_collection.update_one({'name': user_name},
-                                              {"$set": {'saved_playlists': saved_playlists}})

@@ -291,6 +291,9 @@ def check_user_exists(user_name: str) -> bool:
 
     result_artist_exists = artist_collection.find_one({'name': user_name})
 
+    return True if result_artist_exists else False
+
+
 
 def add_playback_history(user_name: str,song:str,MAX_NUMBER_PLAYBACK_HISTORY_SONGS:int):
 
@@ -318,12 +321,39 @@ def add_saved_playlist(user_name: str, playlist_name: str):
                                           {"$set": {'saved_playlists': list(set(saved_playlists))}})
 
 
-def deleted_saved_playlist(user_name: str, playlist_name: str):
+def delete_saved_playlist(user_name: str, playlist_name: str):
     artist_data = artist_collection.find_one({'name': user_name})
 
     saved_playlists = artist_data["saved_playlists"]
 
-    saved_playlists.remove(playlist_name)
+    if playlist_name in saved_playlists:
+
+        saved_playlists.remove(playlist_name)
+
+        result = artist_collection.update_one({'name': user_name},
+                                            {"$set": {'saved_playlists': saved_playlists}})
+
+def add_playlist_to_owner(user_name: str, playlist_name: str) -> None:
+
+    artist_data = artist_collection.find_one({'name': user_name})
+
+    playlists = artist_data["playlists"]
+
+    playlists.append(playlist_name)
 
     result = artist_collection.update_one({'name': user_name},
-                                          {"$set": {'saved_playlists': saved_playlists}})
+                                          {"$set": {'playlists': list(set(playlists))}})
+
+
+def delete_playlist_from_owner(user_name: str, playlist_name: str) -> None:
+
+    artist_data = artist_collection.find_one({'name': user_name})
+
+    playlists = artist_data["playlists"]
+
+    if playlist_name in playlists:
+
+        playlists.remove(playlist_name)
+
+        result = artist_collection.update_one({'name': user_name},
+                                                {"$set": {'playlists': playlists}})

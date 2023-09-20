@@ -176,7 +176,7 @@ def delete_playlists_guardadas(nombre: str, nombre_playlist: str) -> Response:
         Not Found 404: No existe un usuario con el nombre "nombre" | No existe una playlist con el nombre "nombre_playlist"
     """
 
-    all_users_service.deleted_saved_playlist(nombre,nombre_playlist)
+    all_users_service.delete_saved_playlist(nombre,nombre_playlist)
     return Response(None, 202)
 
 

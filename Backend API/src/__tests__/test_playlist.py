@@ -1,6 +1,7 @@
 from fastapi.testclient import TestClient
 from datetime import datetime
 from test_API.api_test_playlist import create_playlist, get_playlist, delete_playlist , update_playlist, get_playlists ,get_all_playlists
+from test_API.api_test_artist import create_artist,delete_artist
 from main import app as app
 import json
 import pytest
@@ -11,9 +12,14 @@ def test_get_playlist_correct(clear_test_data_db):
     foto = "https://foto"
     descripcion = "hola"
     owner = "usuarioprueba834783478923489734298"
+    password = "password"
+
 
     formatting = "%Y-%m-%dT%H:%M:%S"
     post_date_iso8601 = datetime.strptime(datetime.now().strftime('%Y-%m-%dT%H:%M:%S'),formatting)
+
+    res_create_artist = create_artist(owner, foto, password)
+    assert res_create_artist.status_code == 201
 
     res_create_playlist = create_playlist(name=name,descripcion=descripcion,foto=foto,creador=owner)
     assert res_create_playlist.status_code == 201
@@ -38,6 +44,9 @@ def test_get_playlist_correct(clear_test_data_db):
     res_delete_playlist = delete_playlist(name=name)
     assert res_delete_playlist.status_code == 202
 
+    res_delete_artist = delete_artist(owner)
+    assert res_delete_artist.status_code == 202
+
 
 def test_get_playlist_not_found():
     name = "8232392323623823723"
@@ -51,6 +60,10 @@ def test_post_playlist_correct(clear_test_data_db):
     foto = "https://foto"
     descripcion = "hola"
     owner = "usuarioprueba834783478923489734298"
+    password = "password"
+
+    res_create_artist = create_artist(owner, foto, password)
+    assert res_create_artist.status_code == 201
 
 
     res_create_playlist = create_playlist(name=name,descripcion=descripcion,foto=foto,creador=owner)
@@ -58,6 +71,9 @@ def test_post_playlist_correct(clear_test_data_db):
 
     res_delete_playlist = delete_playlist(name=name)
     assert res_delete_playlist.status_code == 202
+
+    res_delete_artist = delete_artist(owner)
+    assert res_delete_artist.status_code == 202
 
 
 def test_delete_playlist_correct(clear_test_data_db):
@@ -65,13 +81,19 @@ def test_delete_playlist_correct(clear_test_data_db):
     foto = "https://foto"
     descripcion = "hola"
     owner = "usuarioprueba834783478923489734298"
+    password = "password"
 
+    res_create_artist = create_artist(owner, foto, password)
+    assert res_create_artist.status_code == 201
 
     res_create_playlist = create_playlist(name=name,descripcion=descripcion,foto=foto,creador=owner)
     assert res_create_playlist.status_code == 201
 
     res_delete_playlist = delete_playlist(name=name)
     assert res_delete_playlist.status_code == 202
+
+    res_delete_artist = delete_artist(owner)
+    assert res_delete_artist.status_code == 202
 
 
 def test_delete__playlist_not_found(clear_test_data_db):
@@ -102,7 +124,10 @@ def test_update_playlist_correct(clear_test_data_db):
     foto= "foto"
     descripcion = "descripcion"
     owner = "usuarioprueba834783478923489734298"
+    password = "password"
 
+    res_create_artist = create_artist(owner, foto, password)
+    assert res_create_artist.status_code == 201
 
     res_create_playlist = create_playlist(name=name,descripcion=descripcion,foto=foto,creador=owner)
     assert res_create_playlist.status_code == 201
@@ -119,12 +144,18 @@ def test_update_playlist_correct(clear_test_data_db):
     res_delete_playlist = delete_playlist(name=name)
     assert res_delete_playlist.status_code == 202
 
+    res_delete_artist = delete_artist(owner)
+    assert res_delete_artist.status_code == 202
+
 def test_update_playlist_correct_nuevo_nombre(clear_test_data_db):
     name = "8232392323623823723"
     foto= "foto"
     descripcion = "descripcion"
     owner = "usuarioprueba834783478923489734298"
+    password = "password"
 
+    res_create_artist = create_artist(owner, foto, password)
+    assert res_create_artist.status_code == 201
 
     res_create_playlist = create_playlist(name=name,descripcion=descripcion,foto=foto,creador=owner)
     assert res_create_playlist.status_code == 201
@@ -142,6 +173,9 @@ def test_update_playlist_correct_nuevo_nombre(clear_test_data_db):
     res_delete_playlist = delete_playlist(new_name)
     assert res_delete_playlist.status_code == 202
 
+    res_delete_artist = delete_artist(owner)
+    assert res_delete_artist.status_code == 202
+
 
 
 def test_get_playlists():
@@ -156,7 +190,10 @@ def test_get_playlists(clear_test_data_db):
     foto= "foto"
     descripcion = "descripcion"
     owner = "usuarioprueba834783478923489734298"
+    password = "password"
 
+    res_create_artist = create_artist(owner, foto, password)
+    assert res_create_artist.status_code == 201
 
     res_create_playlist = create_playlist(name=name,descripcion=descripcion,foto=foto,creador=owner)
     assert res_create_playlist.status_code == 201
@@ -177,6 +214,9 @@ def test_get_playlists(clear_test_data_db):
 
     res_delete_playlist = delete_playlist(new_name)
     assert res_delete_playlist.status_code == 202
+
+    res_delete_artist = delete_artist(owner)
+    assert res_delete_artist.status_code == 202
 
 
 

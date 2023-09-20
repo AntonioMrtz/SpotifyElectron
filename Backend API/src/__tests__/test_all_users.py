@@ -347,6 +347,126 @@ def test_whoami_user_invalid():
     assert res_whoami.status_code==404
 
 
+def test_add_playlist_to_owner_user_correct(clear_test_data_db):
+
+    playlist_name = "playlist"
+    user_name = "8232392323623823723"
+    description = "descripcion"
+    password = "hola"
+    foto = "https://foto"
+
+    res_create_user = create_user(name=user_name,password=password,photo=foto)
+    assert res_create_user.status_code == 201
+
+    res_create_playlist = create_playlist(playlist_name,description,foto,user_name)
+    assert res_create_playlist.status_code == 201
+
+    res_get_user = get_user(name=user_name)
+    assert res_get_user.status_code == 200
+    assert len(res_get_user.json()["playlists"])==1
+    assert res_get_user.json()["playlists"][0]==playlist_name
+
+
+    res_delete_playlist = delete_playlist(playlist_name)
+    assert res_delete_playlist.status_code == 202
+
+    res_delete_user = delete_user(user_name)
+    assert res_delete_user.status_code == 202
+
+def test_add_playlist_to_owner_user_invalid(clear_test_data_db):
+
+    playlist_name = "playlist"
+    user_name = "8232392323623823723"
+    description = "descripcion"
+    password = "hola"
+    foto = "https://foto"
+
+    res_create_playlist = create_playlist(playlist_name,description,foto,user_name)
+    assert res_create_playlist.status_code == 404
+
+    res_delete_playlist = delete_playlist(playlist_name)
+    assert res_delete_playlist.status_code == 202
+
+
+def test_add_playlist_to_owner_artist_correct(clear_test_data_db):
+
+    playlist_name = "playlist"
+    user_name = "8232392323623823723"
+    description = "descripcion"
+    password = "hola"
+    foto = "https://foto"
+
+    res_create_artist = create_artist(name=user_name,password=password,photo=foto)
+    assert res_create_artist.status_code == 201
+
+    res_create_playlist = create_playlist(playlist_name,description,foto,user_name)
+    assert res_create_playlist.status_code == 201
+
+    res_get_artist = get_artist(name=user_name)
+    assert res_get_artist.status_code == 200
+    assert len(res_get_artist.json()["playlists"])==1
+    assert res_get_artist.json()["playlists"][0]==playlist_name
+
+    res_delete_playlist = delete_playlist(playlist_name)
+    assert res_delete_playlist.status_code == 202
+
+    res_delete_user = delete_artist(user_name)
+    assert res_delete_user.status_code == 202
+
+
+def test_delete_playlist_from_owner_user_correct(clear_test_data_db):
+
+    playlist_name = "playlist"
+    user_name = "8232392323623823723"
+    description = "descripcion"
+    password = "hola"
+    foto = "https://foto"
+
+    res_create_user = create_user(name=user_name,password=password,photo=foto)
+    assert res_create_user.status_code == 201
+
+    res_create_playlist = create_playlist(playlist_name,description,foto,user_name)
+    assert res_create_playlist.status_code == 201
+
+    res_get_user = get_user(name=user_name)
+    assert res_get_user.status_code == 200
+    assert len(res_get_user.json()["playlists"])==1
+    assert res_get_user.json()["playlists"][0]==playlist_name
+
+
+    res_delete_playlist = delete_playlist(playlist_name)
+    assert res_delete_playlist.status_code == 202
+
+    res_delete_user = delete_user(user_name)
+    assert res_delete_user.status_code == 202
+
+
+def test_delete_playlist_from_owner_artist_correct(clear_test_data_db):
+
+    playlist_name = "playlist"
+    user_name = "8232392323623823723"
+    description = "descripcion"
+    password = "hola"
+    foto = "https://foto"
+
+    res_create_artist = create_artist(name=user_name,password=password,photo=foto)
+    assert res_create_artist.status_code == 201
+
+    res_create_playlist = create_playlist(playlist_name,description,foto,user_name)
+    assert res_create_playlist.status_code == 201
+
+    res_get_artist = get_artist(name=user_name)
+    assert res_get_artist.status_code == 200
+    assert len(res_get_artist.json()["playlists"])==1
+    assert res_get_artist.json()["playlists"][0]==playlist_name
+
+
+    res_delete_playlist = delete_playlist(playlist_name)
+    assert res_delete_playlist.status_code == 202
+
+    res_delete_user = delete_artist(user_name)
+    assert res_delete_user.status_code == 202
+
 
 # executes after all tests
 @pytest.fixture()

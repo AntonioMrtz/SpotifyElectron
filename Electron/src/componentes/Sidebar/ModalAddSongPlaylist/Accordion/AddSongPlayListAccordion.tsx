@@ -192,8 +192,6 @@ export default function AddSongPlayListAccordion({
       fetch(url, requestOptions)
         .then((response) => {
           if (response.status === 201) {
-            console.log('Playlist creada');
-
             handleShowConfirmationModal(
               InfoPopoverType.SUCCESS,
               MessagesInfoPopOver.PLAYLIST_ADDED_TITLE,

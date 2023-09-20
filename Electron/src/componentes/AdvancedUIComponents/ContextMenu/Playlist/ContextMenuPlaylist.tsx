@@ -253,7 +253,7 @@ export default function ContextMenuPlaylist({
           refreshSidebarData();
           navigate(`/home`);
         }
-
+        handleClose();
         return null;
       })
       .catch((error) => {

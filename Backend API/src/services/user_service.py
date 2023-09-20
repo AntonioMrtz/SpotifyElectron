@@ -168,6 +168,8 @@ def check_user_exists(user_name: str) -> bool:
 
     result_user_exists = user_collection.find_one({'name': user_name})
 
+    return True if result_user_exists else False
+
 
 def add_playback_history(user_name: str,song:str,MAX_NUMBER_PLAYBACK_HISTORY_SONGS:int):
     user_data = user_collection.find_one({'name': user_name})
@@ -193,7 +195,7 @@ def add_saved_playlist(user_name:str,playlist_name:str):
                                             {"$set": {'saved_playlists': list(set(saved_playlists))}})
 
 
-def deleted_saved_playlist(user_name:str,playlist_name:str):
+def delete_saved_playlist(user_name:str,playlist_name:str):
     user_data = user_collection.find_one({'name': user_name})
 
     saved_playlists = user_data["saved_playlists"]

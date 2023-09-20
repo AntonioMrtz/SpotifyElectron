@@ -189,7 +189,7 @@ def add_saved_playlist(user_name: str, playlist_name: str) -> None:
 
 
 
-def deleted_saved_playlist(user_name: str, playlist_name: str) -> None:
+def delete_saved_playlist(user_name: str, playlist_name: str) -> None:
     """ Updates the saved playlist of the user
 
     Parameters
@@ -217,7 +217,7 @@ def deleted_saved_playlist(user_name: str, playlist_name: str) -> None:
 
     user_type = isArtistOrUser(user_name)
 
-    services_map[user_type].deleted_saved_playlist(user_name=user_name,playlist_name=playlist_name)
+    services_map[user_type].delete_saved_playlist(user_name=user_name,playlist_name=playlist_name)
 
 
 

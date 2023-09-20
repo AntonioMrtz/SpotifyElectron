@@ -116,10 +116,6 @@ export default function Sidebar({ triggerReloadSidebar }: PropsSidebar) {
       });
   }, []);
 
-  useEffect(() => {
-    handlePlaylists();
-  }, [handlePlaylists]);
-
   /* triggered when other component wants to reload the sidebar */
   useEffect(() => {
     handlePlaylists();

@@ -326,10 +326,12 @@ def delete_saved_playlist(user_name: str, playlist_name: str):
 
     saved_playlists = artist_data["saved_playlists"]
 
-    saved_playlists.remove(playlist_name)
+    if playlist_name in saved_playlists:
 
-    result = artist_collection.update_one({'name': user_name},
-                                          {"$set": {'saved_playlists': saved_playlists}})
+        saved_playlists.remove(playlist_name)
+
+        result = artist_collection.update_one({'name': user_name},
+                                            {"$set": {'saved_playlists': saved_playlists}})
 
 def add_playlist_to_owner(user_name: str, playlist_name: str) -> None:
 
@@ -349,7 +351,9 @@ def delete_playlist_from_owner(user_name: str, playlist_name: str) -> None:
 
     playlists = artist_data["playlists"]
 
-    playlists.remove(playlist_name)
+    if playlist_name in playlists:
 
-    result = artist_collection.update_one({'name': user_name},
-                                            {"$set": {'playlists': playlists}})
+        playlists.remove(playlist_name)
+
+        result = artist_collection.update_one({'name': user_name},
+                                                {"$set": {'playlists': playlists}})

@@ -1,18 +1,18 @@
 from datetime import datetime
 from database.Database import Database
 from services.song_service import get_song
-import services.dto_service as dto_service
+from services.all_users_service import add_playlist_to_owner,delete_playlist_from_owner
 from model.Playlist import Playlist
 from model.Song import Song
 from fastapi import HTTPException
 from services.utils import checkValidParameterString
 from sys import modules
+import services.dto_service as dto_service
 
 
 if "pytest" in modules:
 
     playlistCollection = Database().connection["test.playlist"]
-
 
 else:
 
@@ -95,6 +95,8 @@ def create_playlist(name: str, photo: str, description: str, owner: str, song_na
     result = playlistCollection.insert_one(
         {'name': name, 'photo': photo if 'http' in photo else '', 'upload_date': fecha_iso8601, 'description': description, 'owner': owner, 'song_names': song_names})
 
+    add_playlist_to_owner(user_name=owner,playlist_name=name)
+
     return True if result.acknowledged else False
 
 
@@ -156,9 +158,20 @@ def delete_playlist(name: str) -> None:
     if not checkValidParameterString(name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
-    result = playlistCollection.delete_one({'name': name})
-    if result.deleted_count == 0:
-        raise HTTPException(status_code=404, detail="La playlist no existe")
+    try:
+        delete_playlist_from_owner(playlist_name=name)
+
+        result = playlistCollection.delete_one({'name': name})
+        if result.deleted_count == 0:
+            raise HTTPException(
+                status_code=404, detail="La playlist no existe")
+
+    except:
+        result = playlistCollection.delete_one({'name': name})
+        if result.deleted_count == 0:
+            raise HTTPException(
+                status_code=404, detail="La playlist no existe")
+
 
 
 def get_all_playlist() -> list:

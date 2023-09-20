@@ -219,3 +219,67 @@ def deleted_saved_playlist(user_name: str, playlist_name: str) -> None:
 
     services_map[user_type].deleted_saved_playlist(user_name=user_name,playlist_name=playlist_name)
 
+
+
+def add_playlist_to_owner(user_name: str, playlist_name: str) -> None:
+    """ Adds the playlist to the user that created it
+
+    Parameters
+    ----------
+        user_name (str): Users's name
+        playlist_name (str) : Playlist name
+
+    Raises
+    -------
+        400 : Bad Request
+        404 : User Not Found / Playlist not found
+
+    Returns
+    -------
+    """
+
+    if not checkValidParameterString(user_name) or not checkValidParameterString(playlist_name):
+        raise HTTPException(status_code=400, detail="Parámetros no válidos")
+
+
+    if not check_playlist_exists(playlist_name):
+        raise HTTPException(status_code=404, detail="La playlist no existe")
+
+    if not check_user_exists(user_name=user_name):
+        raise HTTPException(status_code=404, detail="El usuario no existe")
+
+    user_type = isArtistOrUser(user_name)
+
+    services_map[user_type].add_playlist_to_owner(user_name=user_name,playlist_name=playlist_name)
+
+
+def delete_playlist_from_owner(playlist_name: str) -> None:
+    """ Deletes the playlist from the user that created it
+
+    Parameters
+    ----------
+        playlist_name (str) : Playlist name
+
+    Raises
+    -------
+        400 : Bad Request
+        404 : User Not Found / Playlist not found
+
+    Returns
+    -------
+    """
+
+    if not checkValidParameterString(playlist_name):
+        raise HTTPException(status_code=400, detail="Parámetros no válidos")
+
+    if not check_playlist_exists(playlist_name):
+        raise HTTPException(status_code=404, detail="La playlist no existe")
+
+    user_name = playlist_collection.find_one({'name': playlist_name})["owner"]
+
+    if not check_user_exists(user_name=user_name):
+        raise HTTPException(status_code=404, detail="El usuario no existe")
+
+    user_type = isArtistOrUser(user_name)
+
+    services_map[user_type].delete_playlist_from_owner(user_name=user_name,playlist_name=playlist_name)

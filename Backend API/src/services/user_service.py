@@ -202,3 +202,29 @@ def deleted_saved_playlist(user_name:str,playlist_name:str):
 
     result = user_collection.update_one({'name': user_name},
                                             {"$set": {'saved_playlists': saved_playlists}})
+
+
+def add_playlist_to_owner(user_name: str, playlist_name: str) -> None:
+
+
+    user_data = user_collection.find_one({'name': user_name})
+
+    playlists = user_data["playlists"]
+
+    playlists.append(playlist_name)
+
+    result = user_collection.update_one({'name': user_name},
+                                            {"$set": {'playlists': list(set(playlists))}})
+
+
+
+def delete_playlist_from_owner(user_name: str, playlist_name: str) -> None:
+
+    user_data = user_collection.find_one({'name': user_name})
+
+    playlists = user_data["playlists"]
+
+    playlists.remove(playlist_name)
+
+    result = user_collection.update_one({'name': user_name},
+                                            {"$set": {'playlists': playlists}})

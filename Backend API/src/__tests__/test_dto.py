@@ -15,6 +15,10 @@ def test_get_playlist_dto_correct(clear_test_playlist_db):
     descripcion = "descripcion"
     foto = "https://foto"
     owner = "usuarioprueba834783478923489734298"
+    password = "password"
+
+    res_create_artist = create_artist(owner,foto,password)
+    assert res_create_artist.status_code == 201
 
     res_create_playlist = create_playlist(
         name=name, descripcion=descripcion, foto=foto, creador=owner)

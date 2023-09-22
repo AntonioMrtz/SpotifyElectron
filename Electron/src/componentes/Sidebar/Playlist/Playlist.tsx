@@ -8,6 +8,7 @@ import { PropsPlaylist } from '../types/propsPlaylist.module';
 export default function Playlist({
   name,
   photo,
+  owner,
   playlistStyle,
   handleUrlPlaylistClicked,
   reloadSidebar,
@@ -93,6 +94,7 @@ export default function Playlist({
           <ContextMenuPlaylist
             playlistName={name}
             handleCloseParent={handleClose}
+            owner={owner}
             refreshPlaylistData={() => {}}
             refreshSidebarData={reloadSidebar}
           />

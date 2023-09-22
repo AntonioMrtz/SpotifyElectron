@@ -1,5 +1,5 @@
 import Popover from '@mui/material/Popover';
-import { useEffect, useReducer, useState } from 'react';
+import { useCallback, useEffect, useReducer, useState } from 'react';
 import Global from 'global/global';
 import { useNavigate } from 'react-router-dom';
 import LoadingCircle from 'componentes/AdvancedUIComponents/LoadingCircle/LoadingCircle';
@@ -96,6 +96,7 @@ const reducerConfirmationMenu = (
 
 export default function ContextMenuPlaylist({
   playlistName,
+  owner,
   handleCloseParent,
   refreshSidebarData,
 }: PropsContextMenuPlaylist) {
@@ -172,9 +173,27 @@ export default function ContextMenuPlaylist({
       });
   };
 
+  const [isOwnerPlaylist, setIsOwnerPlaylist] = useState<boolean>();
+
+  const disabledButton = {
+    color: isOwnerPlaylist ? 'var(--pure-white)' : 'var(--grey)',
+  };
+
+  const handleOwner = useCallback(() => {
+    // TODO cambiar usuario real
+
+    const usuarioprovisionalcambiar = 'usuarioprovisionalcambiar';
+
+    // eslint-disable-next-line no-unused-expressions
+    owner === usuarioprovisionalcambiar
+      ? setIsOwnerPlaylist(true)
+      : setIsOwnerPlaylist(false);
+  }, [owner]);
+
   useEffect(() => {
     handlePlaylists();
-  }, []);
+    handleOwner();
+  }, [handleOwner]);
 
   const handleAddPlaylistToPlaylist = async (
     dstPlaylistName: string,
@@ -283,6 +302,8 @@ export default function ContextMenuPlaylist({
           <button type="button">Crear lista similar</button>
           <button
             type="button"
+            disabled={!isOwnerPlaylist}
+            style={disabledButton}
             onClick={() => handleDeletePlaylist(playlistName)}
           >
             Eliminar

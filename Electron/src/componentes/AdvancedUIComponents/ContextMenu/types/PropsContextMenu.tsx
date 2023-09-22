@@ -8,6 +8,7 @@ export interface PropsContextMenu {
 
 export interface PropsContextMenuPlaylist extends PropsContextMenu {
   playlistName: string;
+  owner: string;
 }
 
 export interface PropsContextMenuSong extends PropsContextMenu {

@@ -143,6 +143,7 @@ export default function PlaylistCard({
           <ContextMenuPlaylist
             playlistName={name}
             handleCloseParent={handleCloseContextMenu}
+            owner={owner}
             refreshPlaylistData={() => {}}
             refreshSidebarData={refreshSidebarData}
           />

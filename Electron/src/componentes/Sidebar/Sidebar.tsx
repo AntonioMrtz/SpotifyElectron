@@ -97,6 +97,7 @@ export default function Sidebar({ triggerReloadSidebar }: PropsSidebar) {
                 playlist.photo === ''
                   ? defaultThumbnailPlaylist
                   : playlist.photo,
+              owner : playlist.owner,
               handleUrlPlaylistClicked,
               reloadSidebar: handlePlaylists,
               playlistStyle: '',
@@ -213,6 +214,7 @@ export default function Sidebar({ triggerReloadSidebar }: PropsSidebar) {
                       handleUrlPlaylistClicked={handleUrlPlaylistClicked}
                       name={playlist.name}
                       photo={playlist.photo}
+                      owner={playlist.owner}
                       playlistStyle={playlistStyle} // Pasar el estilo como prop
                       reloadSidebar={handlePlaylists}
                     />

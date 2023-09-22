@@ -41,7 +41,8 @@ export default function AddSongPlayListAccordion({
   const [isArtist, setIsArtist] = useState(false);
 
   const checkIsArtist = async () => {
-    const fetchUrlWhoAmI = `${Global.backendBaseUrl}usuarios/whoami`;
+    const usuarioprovisional = 'usuarioprovisionalcambiar';
+    const fetchUrlWhoAmI = `${Global.backendBaseUrl}usuarios/${usuarioprovisional}/whoami`;
 
     const resFetchWhoAmI = await fetch(fetchUrlWhoAmI);
 

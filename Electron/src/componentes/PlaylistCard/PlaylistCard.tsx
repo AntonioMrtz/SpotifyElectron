@@ -75,8 +75,12 @@ export default function PlaylistCard({
   }, [isOpen]);
 
   return (
-    <span className={`rounded ${styles.card}`}>
-      <Link to={urlPlaylist} key={urlPlaylist + name}>
+    <>
+      <Link
+        to={urlPlaylist}
+        key={urlPlaylist + name}
+        className={`rounded ${styles.card}`}
+      >
         <div
           className={`${styles.imgContainer}`}
           onContextMenu={handleOpenContextMenu}
@@ -149,6 +153,6 @@ export default function PlaylistCard({
           />
         </Popover>
       </div>
-    </span>
+    </>
   );
 }

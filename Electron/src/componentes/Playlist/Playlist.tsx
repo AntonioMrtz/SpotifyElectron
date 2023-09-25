@@ -130,6 +130,7 @@ export default function Playlist({
       fetch(fetchPatchSavedPlaylistUrl, requestOptionsPatchSavedPlaylistUr)
         .then(() => {
           setHearthLikedInterface();
+          triggerReloadSidebar();
           return null;
         })
         .catch(() => console.log('Unable to update saved playlists'));
@@ -143,6 +144,7 @@ export default function Playlist({
       fetch(fetchDeleteSavedPlaylistUrl, requestOptionsDeleteSavedPlaylistUr)
         .then(() => {
           setHearthUnLikedInterface();
+          triggerReloadSidebar();
           return null;
         })
         .catch(() => console.log('Unable to update saved playlists'));

@@ -183,11 +183,11 @@ export default function ContextMenuPlaylist({
     // TODO cambiar usuario real
 
     const usuarioprovisionalcambiar = 'usuarioprovisionalcambiar';
-
-    // eslint-disable-next-line no-unused-expressions
-    owner === usuarioprovisionalcambiar
-      ? setIsOwnerPlaylist(true)
-      : setIsOwnerPlaylist(false);
+    if (owner === usuarioprovisionalcambiar) {
+      setIsOwnerPlaylist(true);
+    } else {
+      setIsOwnerPlaylist(false);
+    }
   }, [owner]);
 
   useEffect(() => {

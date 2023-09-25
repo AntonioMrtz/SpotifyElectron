@@ -574,99 +574,109 @@ export default function Playlist({
         </Popover>
       </div>
 
-      <Modal
-        className=""
-        open={openModalUpdatePlaylist}
-        onClose={() => {
-          setopenModalUpdatePlaylist(false);
-        }}
-        aria-labelledby="modal-modal-confirmation"
-        aria-describedby="modal-modal-confirmation-description"
-      >
-        <Box sx={style} className={`${styles.wrapperUpdatePlaylistModal}`}>
-          <header className="d-flex flex-row justify-content-between align-items-center">
-            <h1>Editar información</h1>
-            <button
-              type="button"
-              onClick={() => {
-                setopenModalUpdatePlaylist(false);
-              }}
-            >
-              <i className="fa-solid fa-xmark" />
-            </button>
-          </header>
+      {
+        // TODO cambiar usuario real
 
-          <form>
-            <div className="d-flex flex-column p-0">
-              <div className="d-flex flex-row container-fluid p-0">
-                <div className={` ${styles.wrapperUpdateThumbnail}`}>
-                  <img src={`${thumbnailUpdatePlaylist}`} alt="" />
-                </div>
-
-                <div
-                  className={`container-fluid pe-0 ${styles.wrapperUpdateTextData}`}
+        owner === 'usuarioprovisionalcambiar' && (
+          <Modal
+            className=""
+            open={openModalUpdatePlaylist}
+            onClose={() => {
+              setopenModalUpdatePlaylist(false);
+            }}
+            aria-labelledby="modal-modal-confirmation"
+            aria-describedby="modal-modal-confirmation-description"
+          >
+            <Box sx={style} className={`${styles.wrapperUpdatePlaylistModal}`}>
+              <header className="d-flex flex-row justify-content-between align-items-center">
+                <h1>Editar información</h1>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setopenModalUpdatePlaylist(false);
+                  }}
                 >
-                  <div className={`form-floating mb-3 ${styles.inputPlaylist}`}>
-                    <input
-                      name="nombre"
-                      type="text"
-                      defaultValue={playlistName}
-                      className="form-control"
-                      id="nombre"
-                      placeholder="Añade un nombre"
-                      onChange={handleChangeForm}
-                    />
-                    <label htmlFor="floatingInput">Nombre</label>
-                  </div>
+                  <i className="fa-solid fa-xmark" />
+                </button>
+              </header>
 
-                  <div className={`form-floating mb-3 ${styles.inputPlaylist}`}>
-                    <div className="form-floating">
-                      <textarea
-                        name="descripcion"
-                        className="form-control"
-                        defaultValue={description}
-                        placeholder="Añade una descripción"
-                        id="descripcion"
-                        style={{ height: ' 100px' }}
-                        onChange={handleChangeForm}
-                      />
-                      <label htmlFor="floatingTextarea2">Descripción</label>
+              <form>
+                <div className="d-flex flex-column p-0">
+                  <div className="d-flex flex-row container-fluid p-0">
+                    <div className={` ${styles.wrapperUpdateThumbnail}`}>
+                      <img src={`${thumbnailUpdatePlaylist}`} alt="" />
+                    </div>
+
+                    <div
+                      className={`container-fluid pe-0 ${styles.wrapperUpdateTextData}`}
+                    >
+                      <div
+                        className={`form-floating mb-3 ${styles.inputPlaylist}`}
+                      >
+                        <input
+                          name="nombre"
+                          type="text"
+                          defaultValue={playlistName}
+                          className="form-control"
+                          id="nombre"
+                          placeholder="Añade un nombre"
+                          onChange={handleChangeForm}
+                        />
+                        <label htmlFor="floatingInput">Nombre</label>
+                      </div>
+
+                      <div
+                        className={`form-floating mb-3 ${styles.inputPlaylist}`}
+                      >
+                        <div className="form-floating">
+                          <textarea
+                            name="descripcion"
+                            className="form-control"
+                            defaultValue={description}
+                            placeholder="Añade una descripción"
+                            id="descripcion"
+                            style={{ height: ' 100px' }}
+                            onChange={handleChangeForm}
+                          />
+                          <label htmlFor="floatingTextarea2">Descripción</label>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-            <div
-              className={`container-fluid d-flex p-0 ${styles.wrapperUpdateTextData}`}
-            >
-              <div
-                className={`form-floating container-fluid p-0 ${styles.inputPlaylist}`}
-              >
-                <input
-                  name="foto"
-                  type="text"
-                  className="form-control"
-                  id="foto"
-                  defaultValue={
-                    thumbnail === defaultThumbnailPlaylist ? '' : thumbnail
-                  }
-                  placeholder="Url de la nueva foto"
-                  onChange={handleChangeForm}
-                />
-                <label htmlFor="foto">Url de la miniatura</label>
-              </div>
-            </div>
+                <div
+                  className={`container-fluid d-flex p-0 ${styles.wrapperUpdateTextData}`}
+                >
+                  <div
+                    className={`form-floating container-fluid p-0 ${styles.inputPlaylist}`}
+                  >
+                    <input
+                      name="foto"
+                      type="text"
+                      className="form-control"
+                      id="foto"
+                      defaultValue={
+                        thumbnail === defaultThumbnailPlaylist ? '' : thumbnail
+                      }
+                      placeholder="Url de la nueva foto"
+                      onChange={handleChangeForm}
+                    />
+                    <label htmlFor="foto">Url de la miniatura</label>
+                  </div>
+                </div>
 
-            <div
-              className={`d-flex flex-row justify-content-end pt-2 ${styles.wrapperUpdateButton} ${styles.inputPlaylist}`}
-            >
-              <button type="button" onClick={handleUpdatePlaylist}>
-                Guardar
-              </button>
-            </div>
-          </form>
-        </Box>
-      </Modal>
+                <div
+                  className={`d-flex flex-row justify-content-end pt-2 ${styles.wrapperUpdateButton} ${styles.inputPlaylist}`}
+                >
+                  <button type="button" onClick={handleUpdatePlaylist}>
+                    Guardar
+                  </button>
+                </div>
+              </form>
+            </Box>
+          </Modal>
+        )
+      }
     </div>
   );
 }

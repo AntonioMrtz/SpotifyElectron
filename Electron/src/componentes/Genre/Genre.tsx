@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Global from 'global/global';
 import { useLocation } from 'react-router-dom';
 import styles from './genre.module.css';

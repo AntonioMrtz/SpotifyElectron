@@ -7,6 +7,7 @@ import Genre from 'componentes/Genre/Genre';
 import UserProfile, {
   UserType,
 } from 'componentes/Profile/UserProfile/UserProfile';
+import AllPlaylists from 'componentes/AllPlaylists/AllPlaylists';
 import styles from './AppCss.module.css';
 import Sidebar from '../componentes/Sidebar/Sidebar';
 import Home from '../componentes/Home/Home';
@@ -78,6 +79,11 @@ function App() {
                 changeSongName={changeSongName}
                 userType={UserType.ARTIST}
               />
+            />
+
+            <Route
+              path="/allPlaylists/:id"
+              element=<AllPlaylists refreshSidebarData={reloadSidebar} />
             />
             <Route
               path="/"

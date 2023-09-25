@@ -4,6 +4,7 @@ import ContextMenuPlaylist from 'componentes/AdvancedUIComponents/ContextMenu/Pl
 import Popover, { PopoverPosition } from '@mui/material/Popover/Popover';
 import styles from './playlistCard.module.css';
 import { PropsPlaylistCard } from './types/propsPlaylistCard.module';
+import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 
 export default function PlaylistCard({
   name,
@@ -86,7 +87,7 @@ export default function PlaylistCard({
           onContextMenu={handleOpenContextMenu}
         >
           <img
-            src={photo}
+            src={photo === '' ? defaultThumbnailPlaylist : photo}
             className="card-img-top rounded"
             alt="playlist thumbnail"
           />

@@ -1,8 +1,9 @@
 import Global from 'global/global';
 import { useEffect, useState } from 'react';
 import LoadingCircle from 'componentes/AdvancedUIComponents/LoadingCircle/LoadingCircle';
+import { useNavigate } from 'react-router-dom';
 import styles from './homeCss.module.css';
-import Playlist from '../PlaylistCard/PlaylistCard';
+import PlaylistCard from '../PlaylistCard/PlaylistCard';
 import { PropsPlaylistCard } from '../PlaylistCard/types/propsPlaylistCard.module';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 
@@ -11,6 +12,8 @@ interface PropsHome {
 }
 
 export default function Home({ refreshSidebarData }: PropsHome) {
+  const navigate = useNavigate();
+
   const [playlists, setPlaylists] = useState<PropsPlaylistCard[]>();
   const [loading, setLoading] = useState(true);
 
@@ -74,7 +77,9 @@ export default function Home({ refreshSidebarData }: PropsHome) {
             <button
               type="button"
               className={`${styles.categoryTitle}`}
-              /* onClick={} */
+              onClick={() => {
+                navigate(`/allPlaylists/Especialmente para ti`);
+              }}
             >
               {' '}
               Especialmente para ti{' '}
@@ -83,7 +88,13 @@ export default function Home({ refreshSidebarData }: PropsHome) {
           <div
             className={`container-fluid d-flex ${styles.mostrarTodoContainer}`}
           >
-            <button type="button" className={`${styles.mostrarTodo}`}>
+            <button
+              type="button"
+              className={`${styles.mostrarTodo}`}
+              onClick={() => {
+                navigate(`/allPlaylists/Especialmente para ti`);
+              }}
+            >
               Mostrar todos
             </button>
           </div>
@@ -96,7 +107,7 @@ export default function Home({ refreshSidebarData }: PropsHome) {
             playlists &&
             playlists.map((playlist) => {
               return (
-                <Playlist
+                <PlaylistCard
                   name={playlist.name}
                   photo={playlist.photo}
                   description={playlist.description}
@@ -121,7 +132,9 @@ export default function Home({ refreshSidebarData }: PropsHome) {
             <button
               type="button"
               className={`${styles.categoryTitle}`}
-              /* onClick={} */
+              onClick={() => {
+                navigate(`/allPlaylists/Especialmente para ti`);
+              }}
             >
               Escuchado recientemente
             </button>
@@ -129,7 +142,13 @@ export default function Home({ refreshSidebarData }: PropsHome) {
           <div
             className={`container-fluid d-flex ${styles.mostrarTodoContainer}`}
           >
-            <button type="button" className={`${styles.mostrarTodo}`}>
+            <button
+              type="button"
+              className={`${styles.mostrarTodo}`}
+              onClick={() => {
+                navigate(`/allPlaylists/Especialmente para ti`);
+              }}
+            >
               Mostrar todos
             </button>
           </div>
@@ -142,7 +161,7 @@ export default function Home({ refreshSidebarData }: PropsHome) {
             playlists &&
             playlists.map((playlist) => {
               return (
-                <Playlist
+                <PlaylistCard
                   name={playlist.name}
                   photo={playlist.photo}
                   description={playlist.description}

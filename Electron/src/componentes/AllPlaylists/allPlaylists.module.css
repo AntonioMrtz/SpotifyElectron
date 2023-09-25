@@ -1,0 +1,25 @@
+.categoryTitle {
+
+    padding-top: 8% !important;
+    padding-left: 5%;
+
+}
+
+.categoryTitle h1 {
+
+    padding-bottom: 1%;
+    display: flex;
+    justify-content: start;
+    background: transparent;
+    border: none;
+    color: var(--pure-white);
+    font-size: 1.35rem;
+    font-weight: 800;
+
+}
+
+.wrapperPlaylists {
+
+    row-gap: 20px;
+
+}

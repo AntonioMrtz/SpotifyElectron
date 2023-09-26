@@ -34,7 +34,7 @@ def login_user(name: str,password:str) -> json:
     if not check_user_exists(user_name=name):
         raise HTTPException(status_code=404, detail="El usuario no existe")
 
-    if isArtistOrUser==User_Type.ARTIST:
+    if isArtistOrUser(user_name=name)==User_Type.ARTIST:
         user = get_artist(name)
         user_type = User_Type.ARTIST
 

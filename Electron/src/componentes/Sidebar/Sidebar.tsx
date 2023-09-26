@@ -80,25 +80,27 @@ export default function Sidebar({ triggerReloadSidebar }: PropsSidebar) {
 
   const [loading, setLoading] = useState(true);
 
-  const handlePlaylists = useCallback(async () => {
+  const handlePlaylists = useCallback(() => {
     // TODO cambiar usuario real
 
     const usuarioprovisionalcambiar = 'usuarioprovisionalcambiar';
 
     const fetchUrlGetUser = `${Global.backendBaseUrl}usuarios/${usuarioprovisionalcambiar}`;
-    const resFetchUrlGetUser = await fetch(fetchUrlGetUser);
-    const resFetchUrlGetUserJson = await resFetchUrlGetUser.json();
-
-    const sidebarPlaylistNames = resFetchUrlGetUserJson.saved_playlists
-      .concat(resFetchUrlGetUserJson.playlists)
-      .join(',');
-
-    fetch(
-      `${Global.backendBaseUrl}playlists/multiple/${sidebarPlaylistNames}`,
-      {
-        headers: { 'Access-Control-Allow-Origin': '*' },
-      }
-    )
+    fetch(fetchUrlGetUser)
+      .then((resFetchUrlGetUser) => resFetchUrlGetUser.json())
+      .then((resFetchUrlGetUserJson) => {
+        return resFetchUrlGetUserJson.saved_playlists
+          .concat(resFetchUrlGetUserJson.playlists)
+          .join(',');
+      })
+      .then((sidebarPlaylistNames) => {
+        return fetch(
+          `${Global.backendBaseUrl}playlists/multiple/${sidebarPlaylistNames}`,
+          {
+            headers: { 'Access-Control-Allow-Origin': '*' },
+          }
+        );
+      })
       .then((res) => res.json())
       .then((res) => {
         if (res.playlists) {
@@ -131,7 +133,6 @@ export default function Sidebar({ triggerReloadSidebar }: PropsSidebar) {
         console.log('No se pudieron obtener las playlists');
       });
   }, []);
-
   /* triggered when other component wants to reload the sidebar */
   useEffect(() => {
     handlePlaylists();

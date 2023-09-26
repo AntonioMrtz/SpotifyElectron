@@ -27,11 +27,19 @@ export default function StartMenu({ setIsLogged }: PropsStartMenu) {
         throw new Error('Unable to login');
       }
 
+      const fetchParameters = new URLSearchParams();
+      fetchParameters.append('username', 'usuarioprovisionalcambiar');
+      fetchParameters.append('password', 'usuarioprovisionalcambiar');
+
       const requestOptions = {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: fetchParameters.toString(),
       };
 
-      const fetchUrlLogin = `${Global.backendBaseUrl}login/${formData.nombre}?password=${formData.password}`;
+      const fetchUrlLogin = `${Global.backendBaseUrl}login/`;
       const resFetchUrlLogin = await fetch(fetchUrlLogin, requestOptions);
       const resFetchUrlLoginJson = await resFetchUrlLogin.json();
 

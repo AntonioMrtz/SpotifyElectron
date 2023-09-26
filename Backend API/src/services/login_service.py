@@ -52,15 +52,13 @@ def login_user(name: str,password:str) -> json:
 
     jwt = {
 
-        'user': name,
-        'role': user_type.value
+        'access_token': name,
+        'role': user_type.value,
+        "token_type" : "bearer",
 
     }
 
-    jwt_json = json.dumps(jwt)
-
-
-    return jwt_json
+    return jwt
 
 
 

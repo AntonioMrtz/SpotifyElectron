@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
 from routers import playlists, canciones, generos, usuarios, artistas , login
+
 
 app = FastAPI(title="SpotifyElectronAPI",
               description="API created with FastAPI Python to serve as backend for SpotifyElectron App",

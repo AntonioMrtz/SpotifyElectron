@@ -21,18 +21,16 @@ export default function StartMenu() {
           <label
             htmlFor="username"
             className="d-flex flex-column justify-content-start"
-            placeholder="Nombre de usuario"
           >
             Nombre de usuario
-            <input type="text" />
+            <input type="text" placeholder="Nombre de usuario" />
           </label>
           <label
             htmlFor="password"
             className="d-flex flex-column justify-content-start"
-            placeholder="Contraseña"
           >
             Contraseña
-            <input type="text" />
+            <input type="password" placeholder="Contraseña" />
           </label>
 
           <button type="button" className={`${styles.loginButton}`}>
@@ -45,8 +43,21 @@ export default function StartMenu() {
         <div
           className={`d-flex w-100 justify-content-center ${styles.wrapperRegisterText}`}
         >
-          <p>¿No tienes cuenta?</p>
-          <p style={{}}>Registrate en Spotify</p>
+          <p style={{ color: 'var(--secondary-white)', marginRight: '8px' }}>
+            ¿No tienes cuenta?
+          </p>
+          <button
+            type="button"
+            style={{
+              color: 'var(--pure-white)',
+              textDecoration: 'underline',
+              border: 'none',
+              backgroundColor: 'transparent',
+              padding: '0px',
+            }}
+          >
+            Registrate en Spotify
+          </button>
         </div>
       </div>
     </div>

@@ -42,10 +42,28 @@ export default function ContextMenuSong({
   const [loading, setLoading] = useState(true);
 
   const handlePlaylists = () => {
-    fetch(`${Global.backendBaseUrl}playlists/`, {
-      headers: { 'Access-Control-Allow-Origin': '*' },
-    })
-      .then((res) => res.json())
+    // TODO cambiar usuario real
+
+    const usuarioprovisionalcambiar = 'usuarioprovisionalcambiar';
+
+    const fetchUrlGetUser = `${Global.backendBaseUrl}usuarios/${usuarioprovisionalcambiar}`;
+
+    fetch(fetchUrlGetUser)
+      .then((resFetchUrlGetUser) => resFetchUrlGetUser.json())
+      .then((resFetchUrlGetUserJson) => {
+        return resFetchUrlGetUserJson.playlists.join(',');
+      })
+      .then((sidebarPlaylistNames) => {
+        return fetch(
+          `${Global.backendBaseUrl}playlists/multiple/${sidebarPlaylistNames}`,
+          {
+            headers: { 'Access-Control-Allow-Origin': '*' },
+          }
+        );
+      })
+      .then((resFetchPlaylists) => {
+        return resFetchPlaylists.json();
+      })
       .then((res) => {
         const playlistNamesFromFetch: string[] = [];
 

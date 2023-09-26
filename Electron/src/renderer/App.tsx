@@ -8,6 +8,7 @@ import UserProfile, {
   UserType,
 } from 'componentes/Profile/UserProfile/UserProfile';
 import AllPlaylists from 'componentes/AllPlaylists/AllPlaylists';
+import StartMenu from 'componentes/StartMenu/StartMenu';
 import styles from './AppCss.module.css';
 import Sidebar from '../componentes/Sidebar/Sidebar';
 import Home from '../componentes/Home/Home';
@@ -37,8 +38,13 @@ function App() {
     setSongName(songNameInput);
   };
 
-  return (
-    <div className={`App d-flex flex-column ${styles.appBackground}`}>
+  return <StartMenu />;
+}
+
+export default App;
+
+{
+  /* <div className={`App d-flex flex-column ${styles.appBackground}`}>
       <StickyHeader />
 
       <div className="d-flex">
@@ -98,8 +104,5 @@ function App() {
         </div>
       </div>
       <Footer songName={songName} />
-    </div>
-  );
+    </div> */
 }
-
-export default App;

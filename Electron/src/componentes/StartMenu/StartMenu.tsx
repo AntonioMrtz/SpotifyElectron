@@ -21,8 +21,8 @@ export default function StartMenu({ setIsLogged }: PropsStartMenu) {
     });
   };
 
-  const handleLogin = () => {
-    /* try {
+  const handleLogin = async () => {
+    try {
       if (!formData.nombre || !formData.password) {
         throw new Error('Unable to login');
       }
@@ -31,22 +31,20 @@ export default function StartMenu({ setIsLogged }: PropsStartMenu) {
         method: 'POST',
       };
 
-      const fetchUrlLogin = `${Global.backendBaseUrl}login/?nombre=${formData.nombre}&password=${formData.password}`;
+      const fetchUrlLogin = `${Global.backendBaseUrl}login/${formData.nombre}?password=${formData.password}`;
       const resFetchUrlLogin = await fetch(fetchUrlLogin, requestOptions);
       const resFetchUrlLoginJson = await resFetchUrlLogin.json();
 
-      localStorage.setItem('jwt', resFetchUrlLoginJson.jwt);
-
-      navigate('/', { replace: true });
-
       if (resFetchUrlLogin.status !== 200) {
+        setIsLogged(false);
         throw new Error('Unable to login');
+      } else {
+        localStorage.setItem('jwt', JSON.stringify(resFetchUrlLoginJson));
+        setIsLogged(true);
       }
     } catch {
       console.log('Unable to login');
-    } */
-    localStorage.setItem('jwt', 'hola');
-    setIsLogged(true);
+    }
   };
 
   return (
@@ -76,6 +74,7 @@ export default function StartMenu({ setIsLogged }: PropsStartMenu) {
               id="nombre"
               placeholder="Nombre de usuario"
               onChange={handleChange}
+              spellCheck={false}
             />
           </label>
           <label
@@ -89,6 +88,7 @@ export default function StartMenu({ setIsLogged }: PropsStartMenu) {
               id="password"
               placeholder="Contraseña"
               onChange={handleChange}
+              spellCheck={false}
             />
           </label>
 

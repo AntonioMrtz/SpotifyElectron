@@ -56,7 +56,7 @@ export default function StartMenu() {
               padding: '0px',
             }}
           >
-            Registrate en Spotify
+            Registrate en Spotify Electron
           </button>
         </div>
       </div>

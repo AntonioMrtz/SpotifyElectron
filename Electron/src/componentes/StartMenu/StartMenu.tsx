@@ -1,7 +1,54 @@
+import { ChangeEvent, useState } from 'react';
+import Global from 'global/global';
 import styles from './startMenu.module.css';
 import SpotifyElectronLogo from '../../assets/imgs/SpotifyElectronLogo.png';
 
-export default function StartMenu() {
+interface PropsStartMenu {
+  setIsLogged: Function;
+}
+
+export default function StartMenu({ setIsLogged }: PropsStartMenu) {
+  const [formData, setFormData] = useState({
+    nombre: '',
+    password: '',
+  });
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleLogin = () => {
+    /* try {
+      if (!formData.nombre || !formData.password) {
+        throw new Error('Unable to login');
+      }
+
+      const requestOptions = {
+        method: 'POST',
+      };
+
+      const fetchUrlLogin = `${Global.backendBaseUrl}login/?nombre=${formData.nombre}&password=${formData.password}`;
+      const resFetchUrlLogin = await fetch(fetchUrlLogin, requestOptions);
+      const resFetchUrlLoginJson = await resFetchUrlLogin.json();
+
+      localStorage.setItem('jwt', resFetchUrlLoginJson.jwt);
+
+      navigate('/', { replace: true });
+
+      if (resFetchUrlLogin.status !== 200) {
+        throw new Error('Unable to login');
+      }
+    } catch {
+      console.log('Unable to login');
+    } */
+    localStorage.setItem('jwt', 'hola');
+    setIsLogged(true);
+  };
+
   return (
     <div className={`${styles.mainModalContainer}`}>
       <div className={`${styles.contentWrapper}`}>
@@ -23,17 +70,33 @@ export default function StartMenu() {
             className="d-flex flex-column justify-content-start"
           >
             Nombre de usuario
-            <input type="text" placeholder="Nombre de usuario" />
+            <input
+              type="text"
+              name="nombre"
+              id="nombre"
+              placeholder="Nombre de usuario"
+              onChange={handleChange}
+            />
           </label>
           <label
             htmlFor="password"
             className="d-flex flex-column justify-content-start"
           >
             Contraseña
-            <input type="password" placeholder="Contraseña" />
+            <input
+              type="password"
+              name="password"
+              id="password"
+              placeholder="Contraseña"
+              onChange={handleChange}
+            />
           </label>
 
-          <button type="button" className={`${styles.loginButton}`}>
+          <button
+            type="button"
+            className={`${styles.loginButton}`}
+            onClick={handleLogin}
+          >
             Iniciar sesión
           </button>
         </div>

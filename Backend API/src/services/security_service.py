@@ -47,10 +47,6 @@ def get_jwt_token(token: Annotated[str, Depends(oauth2_scheme)]) -> TokenData:
         headers={"WWW-Authenticate": "Bearer"},
     )
 
-    print(type(token), "\n")
-    print(repr(token))
-
-    payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username: str = payload.get("access_token")

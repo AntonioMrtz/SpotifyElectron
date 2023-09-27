@@ -244,7 +244,7 @@ export default function UserProfile({
           >
             Canciones más populares del artista
           </h2>
-          <div className="d-flex flex-row flex-wrap " style={{ gap: '15px' }}>
+          <div className="d-flex flex-row flex-wrap">
             {uploadedSongs &&
               uploadedSongs.map((songItem, index) => {
                 return (

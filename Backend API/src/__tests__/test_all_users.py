@@ -9,7 +9,7 @@ from test_API.api_test_playlist import create_playlist,delete_playlist
 import json
 import pytest
 
-""" def test_patch_playback_history_user_correct(clear_test_data_db):
+def test_patch_playback_history_user_correct(clear_test_data_db):
 
     name = "8232392323623823723"
     password = "hola"
@@ -295,7 +295,7 @@ def test_delete_saved_playlist_user_correct(clear_test_data_db):
     assert res_delete_playlist.status_code == 202
 
     res_delete_user = delete_user(user_name)
-    assert res_delete_user.status_code == 202 """
+    assert res_delete_user.status_code == 202
 
 def test_whoami_artist(clear_test_data_db):
 
@@ -365,7 +365,7 @@ def test_whoami_jwt_invalid():
     assert res_whoami.status_code==401
 
 
-"""def test_add_playlist_to_owner_user_correct(clear_test_data_db):
+def test_add_playlist_to_owner_user_correct(clear_test_data_db):
 
     playlist_name = "playlist"
     user_name = "8232392323623823723"
@@ -484,7 +484,7 @@ def test_delete_playlist_from_owner_artist_correct(clear_test_data_db):
 
     res_delete_user = delete_artist(user_name)
     assert res_delete_user.status_code == 202
- """
+
 
 # executes after all tests
 @pytest.fixture()

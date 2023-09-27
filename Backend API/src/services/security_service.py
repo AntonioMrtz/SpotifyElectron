@@ -6,15 +6,18 @@ from datetime import datetime, timedelta
 from dotenv import load_dotenv
 from services.user_service import get_user
 from model.TokenData import TokenData
+from model.Artist import Artist
+from model.User import User
 from services.utils import checkValidParameterString
 from services.all_users_service import check_user_exists, isArtistOrUser
 from services.artist_service import get_artist
 from services.user_service import get_user
 from model.UserType import User_Type
+import services.user_service as user_service
+import services.artist_service as artist_service
 import os
 import json
 import bcrypt
-
 
 SECRET_KEY = os.getenv("SECRET_KEY_SIGN")
 ALGORITHM = "HS256"
@@ -23,6 +26,7 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 30
 load_dotenv()
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="usuarios/whoami/")
+
 
 
 def create_access_token(data: dict, expires_delta: Union[timedelta, None] = None):
@@ -36,7 +40,7 @@ def create_access_token(data: dict, expires_delta: Union[timedelta, None] = None
     return encoded_jwt
 
 
-def get_jwt_token(token: Annotated[str, Depends(oauth2_scheme)]):
+def get_jwt_token(token: Annotated[str, Depends(oauth2_scheme)]) -> TokenData:
 
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
@@ -52,26 +56,35 @@ def get_jwt_token(token: Annotated[str, Depends(oauth2_scheme)]):
             raise credentials_exception
         token_data = TokenData(
             username=username, role=role, token_type=token_type)
-        return token_data.get_json()
+        return token_data
 
     except JWTError:
-        raise
+        raise HTTPException(status_code=401, detail="Credenciales inválidos")
 
 
 
 
-def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
+
+def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]) -> Union[Artist,User]:
 
     jwt : TokenData = get_jwt_token(token)
 
-    user = get_user(name=jwt.username)
+    if jwt.token_type==User_Type.ARTIST:
+        user = get_artist(jwt.username)
+
+    else:
+        user = get_user(jwt.username)
+
     if user is None:
         raise credentials_exception
     return user
 
 
 def login_user(name: str, password: str) -> json:
-    """ Returns a Playlist with his songs"
+    """
+    TODO actualizar y documentar otras
+
+    Returns a Playlist with his songs"
 
     Parameters
     ----------
@@ -111,12 +124,14 @@ def login_user(name: str, password: str) -> json:
         raise HTTPException(
             status_code=401, detail="Las credenciales no son válidas")
 
-    jwt = {
+    jwt_data = {
 
         'access_token': name,
         'role': user_type.value,
         "token_type": "bearer",
 
     }
+
+    jwt = create_access_token(jwt_data)
 
     return jwt

@@ -19,8 +19,13 @@ def delete_playlist_saved(user_name: str, playlist_name: str):
         f"/usuarios/{user_name}/playlists_guardadas/?nombre_playlist={playlist_name}")
     return response
 
-def whoami(user_name:str):
+def whoami(token:str):
+
+    headers = {
+        "Authorization": f"{token}"
+    }
+
     response = client.get(
-        f"/usuarios/{user_name}/whoami")
+        f"/usuarios/whoami",headers=headers)
     return response
 

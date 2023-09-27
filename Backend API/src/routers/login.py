@@ -36,9 +36,7 @@ def login_usuario(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]) ->
 
     jwt = security_service.login_user(form_data.username,form_data.password)
 
-    access_token = security_service.create_access_token(jwt)
-
-    access_token_json = json.dumps(access_token)
+    access_token_json = json.dumps(jwt)
 
     return Response(access_token_json, media_type="application/json", status_code=200)
 

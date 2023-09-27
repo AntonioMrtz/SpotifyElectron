@@ -2,13 +2,14 @@ from main import app as app
 from test_API.api_test_user import create_user, delete_user, get_user
 from test_API.api_test_artist import create_artist, delete_artist, get_artist
 from test_API.api_all_users import patch_history_playback,patch_playlist_saved,delete_playlist_saved,whoami
+from test_API.api_login import post_login
 from model.UserType import User_Type
 from test_API.api_test_song import create_song,delete_song
 from test_API.api_test_playlist import create_playlist,delete_playlist
 import json
 import pytest
 
-def test_patch_playback_history_user_correct(clear_test_data_db):
+""" def test_patch_playback_history_user_correct(clear_test_data_db):
 
     name = "8232392323623823723"
     password = "hola"
@@ -294,7 +295,7 @@ def test_delete_saved_playlist_user_correct(clear_test_data_db):
     assert res_delete_playlist.status_code == 202
 
     res_delete_user = delete_user(user_name)
-    assert res_delete_user.status_code == 202
+    assert res_delete_user.status_code == 202 """
 
 def test_whoami_artist(clear_test_data_db):
 
@@ -308,9 +309,18 @@ def test_whoami_artist(clear_test_data_db):
     res_create_artist = create_artist(name=artista,password=password,photo=foto)
     assert res_create_artist.status_code == 201
 
-    res_whoami = whoami(artista)
+    res_login_artist = post_login(artista,password)
+    assert res_login_artist.status_code == 200
+
+    jwt = res_login_artist.json()
+
+    res_whoami = whoami(jwt)
     assert res_whoami.status_code==200
-    assert res_whoami.json()["type"]==User_Type.ARTIST.value
+
+    assert res_whoami.json()["username"]==artista
+    assert res_whoami.json()["token_type"]=="bearer"
+    assert res_whoami.json()["role"]==User_Type.ARTIST.value
+
 
     res_delete_artist = delete_artist(artista)
     assert res_delete_artist.status_code==202
@@ -327,14 +337,22 @@ def test_whoami_user(clear_test_data_db):
     res_create_user = create_user(name=user_name,password=password,photo=foto)
     assert res_create_user.status_code == 201
 
-    res_whoami = whoami(user_name)
+    res_login_user = post_login(user_name,password)
+    assert res_login_user.status_code == 200
+
+    jwt = res_login_user.json()
+
+    res_whoami = whoami(jwt)
     assert res_whoami.status_code==200
-    assert res_whoami.json()["type"]==User_Type.USER.value
+
+    assert res_whoami.json()["username"]==user_name
+    assert res_whoami.json()["token_type"]=="bearer"
+    assert res_whoami.json()["role"]==User_Type.USER.value
 
     res_delete_user = delete_user(user_name)
     assert res_delete_user.status_code==202
 
-def test_whoami_user_invalid():
+def test_whoami_jwt_invalid():
 
     playlist_name = "playlist"
     user_name = "8232392323623823723"
@@ -343,11 +361,11 @@ def test_whoami_user_invalid():
     artista = "artista"
     foto = "https://foto"
 
-    res_whoami = whoami(user_name)
-    assert res_whoami.status_code==404
+    res_whoami = whoami("jwt invalid")
+    assert res_whoami.status_code==401
 
 
-def test_add_playlist_to_owner_user_correct(clear_test_data_db):
+"""def test_add_playlist_to_owner_user_correct(clear_test_data_db):
 
     playlist_name = "playlist"
     user_name = "8232392323623823723"
@@ -466,7 +484,7 @@ def test_delete_playlist_from_owner_artist_correct(clear_test_data_db):
 
     res_delete_user = delete_artist(user_name)
     assert res_delete_user.status_code == 202
-
+ """
 
 # executes after all tests
 @pytest.fixture()

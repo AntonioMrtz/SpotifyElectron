@@ -1,7 +1,6 @@
 from fastapi.testclient import TestClient
 from datetime import datetime
 from test_API.api_test_artist import create_artist, delete_artist, get_artist, update_artist , get_artists
-from main import app as app
 import bcrypt
 import json
 import pytest

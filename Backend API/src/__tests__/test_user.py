@@ -1,7 +1,6 @@
 from fastapi.testclient import TestClient
 from datetime import datetime
 from test_API.api_test_user import create_user, delete_user, get_user, update_user
-from main import app as app
 import json
 import pytest
 import bcrypt

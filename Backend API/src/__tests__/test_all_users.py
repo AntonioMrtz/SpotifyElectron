@@ -1,4 +1,3 @@
-from main import app as app
 from test_API.api_test_user import create_user, delete_user, get_user
 from test_API.api_test_artist import create_artist, delete_artist, get_artist
 from test_API.api_all_users import patch_history_playback,patch_playlist_saved,delete_playlist_saved,whoami

@@ -29,17 +29,50 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="usuarios/whoami/")
 
 
 def create_access_token(data: dict, expires_delta: Union[timedelta, None] = None):
-    to_encode = data.copy()
-    if expires_delta:
-        expire = datetime.utcnow() + expires_delta
-    else:
-        expire = datetime.utcnow() + timedelta(minutes=15)
-    to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
-    return encoded_jwt
+    """ Create a jwt token from data with a expire date
+
+    Parameters
+    ----------
+        data (dict): Info to be stored in the token
+        expires_delta (timedelta) : Expire time of the token
+
+    Raises
+    -------
+        JWTError
+
+    Returns
+    -------
+        Jwt token
+    """
+
+    try:
+        to_encode = data.copy()
+        if expires_delta:
+            expire = datetime.utcnow() + expires_delta
+        else:
+            expire = datetime.utcnow() + timedelta(minutes=15)
+        to_encode.update({"exp": expire})
+        encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+        return encoded_jwt
+    except JWTError:
+        raise HTTPException(status_code=401, detail="Credenciales inválidos")
 
 
 def get_jwt_token(token: Annotated[str, Depends(oauth2_scheme)]) -> TokenData:
+    """ Decrypt jwt data and returns data from it
+
+    Parameters
+    ----------
+        token (jwt token)
+
+    Raises
+    -------
+        401 : Bad credentials
+
+    Returns
+    -------
+        TokenData
+    """
 
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
@@ -58,14 +91,27 @@ def get_jwt_token(token: Annotated[str, Depends(oauth2_scheme)]) -> TokenData:
             username=username, role=role, token_type=token_type)
         return token_data
 
-        """ return TokenData(
-            username="usuarioprovisionalcambiar", role="usuario", token_type="token_type") """
-
     except JWTError:
         raise HTTPException(status_code=401, detail="Credenciales inválidos")
 
 
 def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]) -> Union[Artist, User]:
+    """ From a jwt token returns the User or the Artist
+
+    Parameters
+    ----------
+        token (jwt token)
+
+    Raises
+    -------
+        400 : Bad Request
+        401 : Bad credentials
+        404 : User not found
+
+    Returns
+    -------
+        Jwt token
+    """
 
     jwt: TokenData = get_jwt_token(token)
 
@@ -81,10 +127,7 @@ def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]) -> Union[Art
 
 
 def login_user(name: str, password: str) -> json:
-    """
-    TODO actualizar y documentar otras
-
-    Returns a Playlist with his songs"
+    """ Checks user credentials and return a jwt token"
 
     Parameters
     ----------
@@ -96,6 +139,7 @@ def login_user(name: str, password: str) -> json:
         400 : Bad Request
         401 : Bad credentials
         404 : User not found
+        JWTError
 
     Returns
     -------

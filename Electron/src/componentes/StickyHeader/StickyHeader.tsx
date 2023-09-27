@@ -12,10 +12,17 @@ export default function StickyHeader() {
     'https://i.scdn.co/image/ab67757000003b82ae8c728abc415a173667ff85'
   );
 
-  // TODO cambiar usuario real
+  const handleProfileButon = async () => {
+    const resFetchWhoAmIUser = await fetch(
+      `${Global.backendBaseUrl}usuarios/whoami`,
+      {
+        headers: { Authorization: Global.getToken() },
+      }
+    );
 
-  const handleProfileButon = () => {
-    navigate(`/user/${'usuarioprovisionalcambiar'}`);
+    const resFetchWhoAmIJson = await resFetchWhoAmIUser.json();
+
+    navigate(`/user/${resFetchWhoAmIJson.username}`);
   };
 
   const [visibleBackground, setVisibleBackground] = useState({});

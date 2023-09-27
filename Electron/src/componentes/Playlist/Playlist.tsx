@@ -80,8 +80,6 @@ export default function Playlist({
     setLiked(false);
   };
   const loadPlaylistLikedStatus = async () => {
-    // TODO cambiar usuario real
-
     const user = 'usuarioprovisionalcambiar';
 
     const resFetchWhoAmIUser = await fetch(

@@ -36,8 +36,6 @@ export default function AddSongPlayListAccordion({
 }: PropsAddSongPlayListAccordion) {
   /* Check user type */
 
-  // TODO cambiar usuario real
-
   const [isArtist, setIsArtist] = useState(false);
 
   const checkIsArtist = async () => {
@@ -50,10 +48,11 @@ export default function AddSongPlayListAccordion({
 
     const resFetchWhoAmIJson = await resFetchWhoAmIUser.json();
 
-    // eslint-disable-next-line no-unused-expressions
-    resFetchWhoAmIJson.role === UserType.ARTIST
-      ? setIsArtist(true)
-      : setIsArtist(false);
+    if (resFetchWhoAmIJson.role === UserType.ARTIST) {
+      setIsArtist(true);
+    } else {
+      setIsArtist(false);
+    }
   };
 
   useEffect(() => {

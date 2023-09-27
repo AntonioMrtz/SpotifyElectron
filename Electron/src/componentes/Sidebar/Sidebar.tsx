@@ -80,12 +80,17 @@ export default function Sidebar({ triggerReloadSidebar }: PropsSidebar) {
 
   const [loading, setLoading] = useState(true);
 
-  const handlePlaylists = useCallback(() => {
-    // TODO cambiar usuario real
+  const handlePlaylists = useCallback(async () => {
+    const resFetchWhoAmIUser = await fetch(
+      `${Global.backendBaseUrl}usuarios/whoami`,
+      {
+        headers: { Authorization: Global.getToken() },
+      }
+    );
 
-    const usuarioprovisionalcambiar = 'usuarioprovisionalcambiar';
+    const resFetchWhoAmIJson = await resFetchWhoAmIUser.json();
 
-    const fetchUrlGetUser = `${Global.backendBaseUrl}usuarios/${usuarioprovisionalcambiar}`;
+    const fetchUrlGetUser = `${Global.backendBaseUrl}usuarios/${resFetchWhoAmIJson.username}`;
     fetch(fetchUrlGetUser)
       .then((resFetchUrlGetUser) => resFetchUrlGetUser.json())
       .then((resFetchUrlGetUserJson) => {

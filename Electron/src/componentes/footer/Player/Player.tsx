@@ -111,11 +111,18 @@ export default function Player({
         `${Global.backendBaseUrl}canciones/dto/${songName}`
       );
 
-      // TODO cambiar usuario real
+      const resFetchWhoAmIUser = await fetch(
+        `${Global.backendBaseUrl}usuarios/whoami`,
+        {
+          headers: { Authorization: Global.getToken() },
+        }
+      );
 
-      const usuarioprovisionalcambiar = 'usuarioprovisionalcambiar';
+      const resFetchWhoAmIJson = await resFetchWhoAmIUser.json();
 
-      const fetchPatchPlayBackHistory: string = `${Global.backendBaseUrl}usuarios/${usuarioprovisionalcambiar}/historial?nombre_cancion=${songName}`;
+      const { username } = resFetchWhoAmIJson.username;
+
+      const fetchPatchPlayBackHistory: string = `${Global.backendBaseUrl}usuarios/${username}/historial?nombre_cancion=${songName}`;
 
       const requestOptionsUpdatePlaybackHistory = {
         method: 'PATCH',

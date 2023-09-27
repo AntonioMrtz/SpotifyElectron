@@ -41,12 +41,19 @@ export default function ContextMenuSong({
 
   const [loading, setLoading] = useState(true);
 
-  const handlePlaylists = () => {
-    // TODO cambiar usuario real
+  const handlePlaylists = async () => {
+    const resFetchWhoAmIUser = await fetch(
+      `${Global.backendBaseUrl}usuarios/whoami`,
+      {
+        headers: { Authorization: Global.getToken() },
+      }
+    );
 
-    const usuarioprovisionalcambiar = 'usuarioprovisionalcambiar';
+    const resFetchWhoAmIJson = await resFetchWhoAmIUser.json();
 
-    const fetchUrlGetUser = `${Global.backendBaseUrl}usuarios/${usuarioprovisionalcambiar}`;
+    const { username } = resFetchWhoAmIJson;
+
+    const fetchUrlGetUser = `${Global.backendBaseUrl}usuarios/${username}`;
 
     fetch(fetchUrlGetUser)
       .then((resFetchUrlGetUser) => resFetchUrlGetUser.json())

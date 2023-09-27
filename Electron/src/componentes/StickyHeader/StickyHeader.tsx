@@ -3,14 +3,40 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import Global from 'global/global';
 import styles from './stickyHeader.module.css';
 import groupIcon from '../../assets/imgs/groupIcon.png';
+import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 
 export default function StickyHeader() {
   const navigate = useNavigate();
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [profileIcon, setProfileIcon] = useState(
-    'https://i.scdn.co/image/ab67757000003b82ae8c728abc415a173667ff85'
-  );
+  const [profileIcon, setProfileIcon] = useState(defaultThumbnailPlaylist);
+
+  const handleThumbnail = async () => {
+    const resFetchWhoAmIUser = await fetch(
+      `${Global.backendBaseUrl}usuarios/whoami`,
+      {
+        headers: { Authorization: Global.getToken() },
+      }
+    );
+
+    const resFetchWhoAmIJson = await resFetchWhoAmIUser.json();
+
+    const resFetchUser = await fetch(
+      `${Global.backendBaseUrl}usuarios/${resFetchWhoAmIJson.username}`,
+      {
+        headers: { Authorization: Global.getToken() },
+      }
+    );
+
+    const resFetchUserJson = await resFetchUser.json();
+
+    if (resFetchUserJson && resFetchUserJson.photo) {
+      setProfileIcon(
+        resFetchUserJson.photo === ''
+          ? defaultThumbnailPlaylist
+          : resFetchUserJson.photo
+      );
+    }
+  };
 
   const handleProfileButon = async () => {
     const resFetchWhoAmIUser = await fetch(
@@ -51,8 +77,8 @@ export default function StickyHeader() {
   };
 
   useEffect(() => {
+    handleThumbnail();
     window.addEventListener('scroll', handleScroll);
-
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };

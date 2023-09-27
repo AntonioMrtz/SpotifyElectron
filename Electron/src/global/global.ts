@@ -42,6 +42,16 @@ namespace Global {
     Trap: '#00AA00', // Verde oscuro
     Reggaeton: '#00AAAA', // Cian oscuro
   };
+
+  export const getToken = () => {
+    const jwt = localStorage.getItem('jwt');
+
+    if (jwt) {
+      return jwt;
+    }
+
+    return '';
+  };
 }
 
 export default Global;

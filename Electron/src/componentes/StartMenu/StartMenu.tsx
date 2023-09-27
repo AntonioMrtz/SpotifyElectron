@@ -47,7 +47,7 @@ export default function StartMenu({ setIsLogged }: PropsStartMenu) {
         setIsLogged(false);
         throw new Error('Unable to login');
       } else {
-        localStorage.setItem('jwt', JSON.stringify(resFetchUrlLoginJson));
+        localStorage.setItem('jwt', resFetchUrlLoginJson);
         setIsLogged(true);
       }
     } catch {

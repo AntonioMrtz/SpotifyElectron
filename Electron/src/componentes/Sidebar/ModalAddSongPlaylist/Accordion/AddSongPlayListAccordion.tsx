@@ -41,15 +41,17 @@ export default function AddSongPlayListAccordion({
   const [isArtist, setIsArtist] = useState(false);
 
   const checkIsArtist = async () => {
-    const usuarioprovisional = 'usuarioprovisionalcambiar';
-    const fetchUrlWhoAmI = `${Global.backendBaseUrl}usuarios/${usuarioprovisional}/whoami`;
+    const resFetchWhoAmIUser = await fetch(
+      `${Global.backendBaseUrl}usuarios/whoami`,
+      {
+        headers: { Authorization: Global.getToken() },
+      }
+    );
 
-    const resFetchWhoAmI = await fetch(fetchUrlWhoAmI);
-
-    const resFetchWhoAmIJson = await resFetchWhoAmI.json();
+    const resFetchWhoAmIJson = await resFetchWhoAmIUser.json();
 
     // eslint-disable-next-line no-unused-expressions
-    resFetchWhoAmIJson.type === UserType.ARTIST
+    resFetchWhoAmIJson.role === UserType.ARTIST
       ? setIsArtist(true)
       : setIsArtist(false);
   };

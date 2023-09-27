@@ -28,7 +28,6 @@ load_dotenv()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="usuarios/whoami/")
 
 
-
 def create_access_token(data: dict, expires_delta: Union[timedelta, None] = None):
     to_encode = data.copy()
     if expires_delta:
@@ -47,6 +46,11 @@ def get_jwt_token(token: Annotated[str, Depends(oauth2_scheme)]) -> TokenData:
         detail="Could not validate credentials",
         headers={"WWW-Authenticate": "Bearer"},
     )
+
+    print(type(token), "\n")
+    print(repr(token))
+
+    payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username: str = payload.get("access_token")
@@ -58,18 +62,18 @@ def get_jwt_token(token: Annotated[str, Depends(oauth2_scheme)]) -> TokenData:
             username=username, role=role, token_type=token_type)
         return token_data
 
+        """ return TokenData(
+            username="usuarioprovisionalcambiar", role="usuario", token_type="token_type") """
+
     except JWTError:
         raise HTTPException(status_code=401, detail="Credenciales inválidos")
 
 
+def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]) -> Union[Artist, User]:
 
+    jwt: TokenData = get_jwt_token(token)
 
-
-def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]) -> Union[Artist,User]:
-
-    jwt : TokenData = get_jwt_token(token)
-
-    if jwt.token_type==User_Type.ARTIST:
+    if jwt.token_type == User_Type.ARTIST:
         user = get_artist(jwt.username)
 
     else:

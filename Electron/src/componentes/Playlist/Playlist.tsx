@@ -85,27 +85,36 @@ export default function Playlist({
     const user = 'usuarioprovisionalcambiar';
 
     const resFetchWhoAmIUser = await fetch(
-      `${Global.backendBaseUrl}usuarios/${user}/whoami`
+      `${Global.backendBaseUrl}usuarios/whoami`,
+      {
+        headers: {
+          Authorization: Global.getToken(),
+          'Access-Control-Allow-Origin': '*',
+        },
+      }
     );
     const resFetchWhoAmIUserJson = await resFetchWhoAmIUser.json();
 
     let resFetchGetUserJson;
 
-    if (resFetchWhoAmIUserJson.type === UserType.USER) {
+    if (resFetchWhoAmIUserJson.role === UserType.USER) {
       const fetchGetUser = `${Global.backendBaseUrl}${UserType.USER}s/${user}`;
 
       const resFetchGetUser = await fetch(fetchGetUser);
       if (resFetchGetUser.status === 200)
         resFetchGetUserJson = await resFetchGetUser.json();
-    } else if (resFetchWhoAmIUserJson.type === UserType.ARTIST) {
+    } else if (resFetchWhoAmIUserJson.role === UserType.ARTIST) {
       const fetchGetArtist = `${Global.backendBaseUrl}${UserType.ARTIST}s/${user}`;
 
       const resFetchGetArtist = await fetch(fetchGetArtist);
       if (resFetchGetArtist.status === 200)
         resFetchGetUserJson = await resFetchGetArtist.json();
+    } else {
+      console.log('Unable to get User from Token');
     }
 
     if (
+      resFetchGetUserJson &&
       resFetchGetUserJson.saved_playlists &&
       resFetchGetUserJson.saved_playlists.includes(playlistName)
     ) {

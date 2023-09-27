@@ -1,5 +1,5 @@
 from fastapi.responses import Response
-from fastapi import APIRouter, Depends  , HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 from typing import Annotated, Union
 import json
@@ -10,7 +10,6 @@ router = APIRouter(
     prefix="/login",
     tags=["login"],
 )
-
 
 
 @router.post("/", tags=["login"])
@@ -33,11 +32,8 @@ def login_usuario(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]) ->
         Not Found 404: No existe el usuario
     """
 
-
-    jwt = security_service.login_user(form_data.username,form_data.password)
+    jwt = security_service.login_user(form_data.username, form_data.password)
 
     access_token_json = json.dumps(jwt)
 
     return Response(access_token_json, media_type="application/json", status_code=200)
-
-

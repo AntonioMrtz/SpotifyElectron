@@ -1,5 +1,5 @@
 from fastapi.responses import Response
-from fastapi import APIRouter, Depends , Header , HTTPException
+from fastapi import APIRouter, Depends, Header, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 from typing import Annotated, Union
 import services.user_service as user_service
@@ -35,7 +35,6 @@ def get_whoAmI(authorization: Annotated[Union[str, None], Header()] = None) -> R
             status_code=401, detail="Authorization header is missing")
 
     jwt_token = security_service.get_jwt_token(authorization)
-
 
     jwt_token_json = jwt_token.get_json()
 
@@ -160,9 +159,9 @@ def patch_historial(nombre: str, nombre_cancion: str) -> Response:
         Not Found 404: No existe un usuario con el nombre "nombre" | No existe una canción con el nombre "nombre_cancion"
     """
 
-    all_users_service.add_playback_history(user_name=nombre,song=nombre_cancion)
+    all_users_service.add_playback_history(
+        user_name=nombre, song=nombre_cancion)
     return Response(None, 204)
-
 
 
 @router.patch("/{nombre}/playlists_guardadas", tags=["usuarios"])
@@ -185,8 +184,9 @@ def patch_playlists_guardadas(nombre: str, nombre_playlist: str) -> Response:
         Not Found 404: No existe un usuario con el nombre "nombre" | No existe una playlist con el nombre "nombre_playlist"
     """
 
-    all_users_service.add_saved_playlist(nombre,nombre_playlist)
+    all_users_service.add_saved_playlist(nombre, nombre_playlist)
     return Response(None, 204)
+
 
 @router.delete("/{nombre}/playlists_guardadas", tags=["usuarios"])
 def delete_playlists_guardadas(nombre: str, nombre_playlist: str) -> Response:
@@ -210,4 +210,3 @@ def delete_playlists_guardadas(nombre: str, nombre_playlist: str) -> Response:
 
     all_users_service.delete_saved_playlist(nombre, nombre_playlist)
     return Response(None, 202)
-

@@ -320,7 +320,6 @@ def test_whoami_artist(clear_test_data_db):
     assert res_whoami.json()["token_type"]=="bearer"
     assert res_whoami.json()["role"]==User_Type.ARTIST.value
 
-
     res_delete_artist = delete_artist(artista)
     assert res_delete_artist.status_code==202
 

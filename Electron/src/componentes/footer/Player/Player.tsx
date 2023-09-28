@@ -6,6 +6,7 @@ import {
   useCallback,
 } from 'react';
 import Global from 'global/global';
+import Token from 'global/token';
 import styles from './player.module.css';
 import TimeSlider from './TimeSlider/TimeSlider';
 
@@ -111,16 +112,7 @@ export default function Player({
         `${Global.backendBaseUrl}canciones/dto/${songName}`
       );
 
-      const resFetchWhoAmIUser = await fetch(
-        `${Global.backendBaseUrl}usuarios/whoami`,
-        {
-          headers: { Authorization: Global.getToken() },
-        }
-      );
-
-      const resFetchWhoAmIJson = await resFetchWhoAmIUser.json();
-
-      const { username } = resFetchWhoAmIJson.username;
+      const username = Token.getTokenUsername();
 
       const fetchPatchPlayBackHistory: string = `${Global.backendBaseUrl}usuarios/${username}/historial?nombre_cancion=${songName}`;
 

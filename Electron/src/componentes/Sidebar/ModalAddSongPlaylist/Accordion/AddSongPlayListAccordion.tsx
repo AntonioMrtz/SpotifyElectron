@@ -7,6 +7,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import LibraryMusicRoundedIcon from '@mui/icons-material/LibraryMusicRounded';
 import AudiotrackIcon from '@mui/icons-material/Audiotrack';
 import Global from 'global/global';
+import Token from 'global/token';
 import { InfoPopoverType } from 'componentes/AdvancedUIComponents/InfoPopOver/types/InfoPopover';
 import ConfirmationModal from 'componentes/AdvancedUIComponents/InfoPopOver/InfoPopover';
 import { UserType } from 'componentes/Profile/UserProfile/UserProfile';
@@ -39,16 +40,9 @@ export default function AddSongPlayListAccordion({
   const [isArtist, setIsArtist] = useState(false);
 
   const checkIsArtist = async () => {
-    const resFetchWhoAmIUser = await fetch(
-      `${Global.backendBaseUrl}usuarios/whoami`,
-      {
-        headers: { Authorization: Global.getToken() },
-      }
-    );
+    const role = Token.getTokenRole();
 
-    const resFetchWhoAmIJson = await resFetchWhoAmIUser.json();
-
-    if (resFetchWhoAmIJson.role === UserType.ARTIST) {
+    if (role === UserType.ARTIST) {
       setIsArtist(true);
     } else {
       setIsArtist(false);
@@ -199,11 +193,9 @@ export default function AddSongPlayListAccordion({
         }
       });
 
-      // TODO cambiar usuario real
+      const username = Token.getTokenUsername();
 
-      const usuarioprovisional = 'usuarioprovisionalcambiar';
-
-      url.searchParams.set('creador', usuarioprovisional);
+      url.searchParams.set('creador', username);
 
       if (!url.searchParams.get('descripcion')) {
         url.searchParams.set('descripcion', '');

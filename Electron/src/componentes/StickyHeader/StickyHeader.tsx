@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Global from 'global/global';
+import Token from 'global/token';
 import styles from './stickyHeader.module.css';
 import groupIcon from '../../assets/imgs/groupIcon.png';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
@@ -11,20 +12,10 @@ export default function StickyHeader() {
   const [profileIcon, setProfileIcon] = useState(defaultThumbnailPlaylist);
 
   const handleThumbnail = async () => {
-    const resFetchWhoAmIUser = await fetch(
-      `${Global.backendBaseUrl}usuarios/whoami`,
-      {
-        headers: { Authorization: Global.getToken() },
-      }
-    );
-
-    const resFetchWhoAmIJson = await resFetchWhoAmIUser.json();
+    const username = Token.getTokenUsername();
 
     const resFetchUser = await fetch(
-      `${Global.backendBaseUrl}usuarios/${resFetchWhoAmIJson.username}`,
-      {
-        headers: { Authorization: Global.getToken() },
-      }
+      `${Global.backendBaseUrl}usuarios/${username}`
     );
 
     const resFetchUserJson = await resFetchUser.json();
@@ -39,16 +30,9 @@ export default function StickyHeader() {
   };
 
   const handleProfileButon = async () => {
-    const resFetchWhoAmIUser = await fetch(
-      `${Global.backendBaseUrl}usuarios/whoami`,
-      {
-        headers: { Authorization: Global.getToken() },
-      }
-    );
+    const username = Token.getTokenUsername();
 
-    const resFetchWhoAmIJson = await resFetchWhoAmIUser.json();
-
-    navigate(`/user/${resFetchWhoAmIJson.username}`);
+    navigate(`/user/${username}`);
   };
 
   const [visibleBackground, setVisibleBackground] = useState({});

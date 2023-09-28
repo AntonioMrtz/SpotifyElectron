@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import LoadingCircle from 'componentes/AdvancedUIComponents/LoadingCircle/LoadingCircle';
 import InfoPopover from 'componentes/AdvancedUIComponents/InfoPopOver/InfoPopover';
 import { InfoPopoverType } from 'componentes/AdvancedUIComponents/InfoPopOver/types/InfoPopover';
+import Token from 'global/token';
 import styles from '../contextMenu.module.css';
 import { PropsContextMenuPlaylist } from '../types/PropsContextMenu';
 
@@ -151,16 +152,7 @@ export default function ContextMenuPlaylist({
   const [loading, setLoading] = useState(true);
 
   const handlePlaylists = async () => {
-    const resFetchWhoAmIUser = await fetch(
-      `${Global.backendBaseUrl}usuarios/whoami`,
-      {
-        headers: { Authorization: Global.getToken() },
-      }
-    );
-
-    const resFetchWhoAmIJson = await resFetchWhoAmIUser.json();
-
-    const { username } = resFetchWhoAmIJson;
+    const username = Token.getTokenUsername();
 
     const fetchUrlGetUser = `${Global.backendBaseUrl}usuarios/${username}`;
 
@@ -229,16 +221,9 @@ export default function ContextMenuPlaylist({
   };
 
   const handleOwner = useCallback(async () => {
-    const resFetchWhoAmIUser = await fetch(
-      `${Global.backendBaseUrl}usuarios/whoami`,
-      {
-        headers: { Authorization: Global.getToken() },
-      }
-    );
+    const username = Token.getTokenUsername();
 
-    const resFetchWhoAmIJson = await resFetchWhoAmIUser.json();
-
-    if (owner === resFetchWhoAmIJson.username) {
+    if (owner === username) {
       setIsOwnerPlaylist(true);
     } else {
       setIsOwnerPlaylist(false);

@@ -1,9 +1,10 @@
 import Popover from '@mui/material/Popover';
 import { useEffect, useState } from 'react';
-import Global from 'global/global';
 import LoadingCircle from 'componentes/AdvancedUIComponents/LoadingCircle/LoadingCircle';
 import InfoPopover from 'componentes/AdvancedUIComponents/InfoPopOver/InfoPopover';
 import { InfoPopoverType } from 'componentes/AdvancedUIComponents/InfoPopOver/types/InfoPopover';
+import Global from 'global/global';
+import Token from 'global/token';
 import styles from '../contextMenu.module.css';
 import { PropsContextMenuSong } from '../types/PropsContextMenu';
 
@@ -42,16 +43,7 @@ export default function ContextMenuSong({
   const [loading, setLoading] = useState(true);
 
   const handlePlaylists = async () => {
-    const resFetchWhoAmIUser = await fetch(
-      `${Global.backendBaseUrl}usuarios/whoami`,
-      {
-        headers: { Authorization: Global.getToken() },
-      }
-    );
-
-    const resFetchWhoAmIJson = await resFetchWhoAmIUser.json();
-
-    const { username } = resFetchWhoAmIJson;
+    const username = Token.getTokenUsername();
 
     const fetchUrlGetUser = `${Global.backendBaseUrl}usuarios/${username}`;
 

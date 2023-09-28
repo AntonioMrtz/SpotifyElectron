@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import Global from 'global/global';
+import Token from 'global/token';
 import LoadingCircle from 'componentes/AdvancedUIComponents/LoadingCircle/LoadingCircle';
 import styles from './sideBarCss.module.css';
 import Playlist from './Playlist/Playlist';
@@ -80,12 +81,10 @@ export default function Sidebar({ triggerReloadSidebar }: PropsSidebar) {
 
   const [loading, setLoading] = useState(true);
 
-  const handlePlaylists = useCallback(() => {
-    // TODO cambiar usuario real
+  const handlePlaylists = useCallback(async () => {
+    const username = Token.getTokenUsername();
 
-    const usuarioprovisionalcambiar = 'usuarioprovisionalcambiar';
-
-    const fetchUrlGetUser = `${Global.backendBaseUrl}usuarios/${usuarioprovisionalcambiar}`;
+    const fetchUrlGetUser = `${Global.backendBaseUrl}usuarios/${username}`;
     fetch(fetchUrlGetUser)
       .then((resFetchUrlGetUser) => resFetchUrlGetUser.json())
       .then((resFetchUrlGetUserJson) => {

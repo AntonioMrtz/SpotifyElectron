@@ -7,6 +7,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import LibraryMusicRoundedIcon from '@mui/icons-material/LibraryMusicRounded';
 import AudiotrackIcon from '@mui/icons-material/Audiotrack';
 import Global from 'global/global';
+import Token from 'global/token';
 import { InfoPopoverType } from 'componentes/AdvancedUIComponents/InfoPopOver/types/InfoPopover';
 import ConfirmationModal from 'componentes/AdvancedUIComponents/InfoPopOver/InfoPopover';
 import { UserType } from 'componentes/Profile/UserProfile/UserProfile';
@@ -36,22 +37,16 @@ export default function AddSongPlayListAccordion({
 }: PropsAddSongPlayListAccordion) {
   /* Check user type */
 
-  // TODO cambiar usuario real
-
   const [isArtist, setIsArtist] = useState(false);
 
   const checkIsArtist = async () => {
-    const usuarioprovisional = 'usuarioprovisionalcambiar';
-    const fetchUrlWhoAmI = `${Global.backendBaseUrl}usuarios/${usuarioprovisional}/whoami`;
+    const role = Token.getTokenRole();
 
-    const resFetchWhoAmI = await fetch(fetchUrlWhoAmI);
-
-    const resFetchWhoAmIJson = await resFetchWhoAmI.json();
-
-    // eslint-disable-next-line no-unused-expressions
-    resFetchWhoAmIJson.type === UserType.ARTIST
-      ? setIsArtist(true)
-      : setIsArtist(false);
+    if (role === UserType.ARTIST) {
+      setIsArtist(true);
+    } else {
+      setIsArtist(false);
+    }
   };
 
   useEffect(() => {
@@ -198,11 +193,9 @@ export default function AddSongPlayListAccordion({
         }
       });
 
-      // TODO cambiar usuario real
+      const username = Token.getTokenUsername();
 
-      const usuarioprovisional = 'usuarioprovisionalcambiar';
-
-      url.searchParams.set('creador', usuarioprovisional);
+      url.searchParams.set('creador', username);
 
       if (!url.searchParams.get('descripcion')) {
         url.searchParams.set('descripcion', '');

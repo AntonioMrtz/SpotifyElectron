@@ -1,13 +1,44 @@
 from fastapi.responses import Response
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends, Header, HTTPException
+from fastapi.security import OAuth2PasswordRequestForm
+from typing import Annotated, Union
 import services.user_service as user_service
 import services.all_users_service as all_users_service
+import services.security_service as security_service
 import json
 
 router = APIRouter(
     prefix="/usuarios",
     tags=["usuarios"],
 )
+
+
+@router.get("/whoami", tags=["usuarios"])
+def get_whoAmI(authorization: Annotated[Union[str, None], Header()] = None) -> Response:
+    """ Devuelve la información del token jwt del usuario
+
+        Parameters
+        ----------
+
+        Returns
+        -------
+            Response 200 OK | TokenData as Json
+
+        Raises
+        -------
+            Bad Request 400: "nombre" es vacío o nulo
+            Not Found 404: No existe un usuario con el nombre "nombre"
+        """
+
+    if authorization is None:
+        raise HTTPException(
+            status_code=401, detail="Authorization header is missing")
+
+    jwt_token = security_service.get_jwt_token(authorization)
+
+    jwt_token_json = jwt_token.get_json()
+
+    return Response(jwt_token_json, media_type="application/json", status_code=200)
 
 
 @router.get("/{nombre}", tags=["usuarios"])
@@ -128,9 +159,9 @@ def patch_historial(nombre: str, nombre_cancion: str) -> Response:
         Not Found 404: No existe un usuario con el nombre "nombre" | No existe una canción con el nombre "nombre_cancion"
     """
 
-    all_users_service.add_playback_history(user_name=nombre,song=nombre_cancion)
+    all_users_service.add_playback_history(
+        user_name=nombre, song=nombre_cancion)
     return Response(None, 204)
-
 
 
 @router.patch("/{nombre}/playlists_guardadas", tags=["usuarios"])
@@ -153,8 +184,9 @@ def patch_playlists_guardadas(nombre: str, nombre_playlist: str) -> Response:
         Not Found 404: No existe un usuario con el nombre "nombre" | No existe una playlist con el nombre "nombre_playlist"
     """
 
-    all_users_service.add_saved_playlist(nombre,nombre_playlist)
+    all_users_service.add_saved_playlist(nombre, nombre_playlist)
     return Response(None, 204)
+
 
 @router.delete("/{nombre}/playlists_guardadas", tags=["usuarios"])
 def delete_playlists_guardadas(nombre: str, nombre_playlist: str) -> Response:
@@ -176,28 +208,5 @@ def delete_playlists_guardadas(nombre: str, nombre_playlist: str) -> Response:
         Not Found 404: No existe un usuario con el nombre "nombre" | No existe una playlist con el nombre "nombre_playlist"
     """
 
-    all_users_service.delete_saved_playlist(nombre,nombre_playlist)
+    all_users_service.delete_saved_playlist(nombre, nombre_playlist)
     return Response(None, 202)
-
-
-@router.get("/{nombre}/whoami", tags=["usuarios"])
-def get_whoAmI(nombre: str) -> Response:
-    """ Devuelve el rol del usuario
-
-    Parameters
-    ----------
-        nombre (str): Nombre del usuario
-
-    Returns
-    -------
-        Response 200 OK | { type : "usuario | artista"}
-
-    Raises
-    -------
-        Bad Request 400: "nombre" es vacío o nulo
-        Not Found 404: No existe un usuario con el nombre "nombre"
-    """
-
-    user_type = all_users_service.isArtistOrUser(nombre)
-
-    return Response(json.dumps({"type":user_type.value}), media_type="application/json", status_code=200)

@@ -1,21 +1,38 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Global from 'global/global';
+import Token from 'global/token';
 import styles from './stickyHeader.module.css';
 import groupIcon from '../../assets/imgs/groupIcon.png';
+import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 
 export default function StickyHeader() {
   const navigate = useNavigate();
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [profileIcon, setProfileIcon] = useState(
-    'https://i.scdn.co/image/ab67757000003b82ae8c728abc415a173667ff85'
-  );
+  const [profileIcon, setProfileIcon] = useState(defaultThumbnailPlaylist);
 
-  // TODO cambiar usuario real
+  const handleThumbnail = async () => {
+    const username = Token.getTokenUsername();
 
-  const handleProfileButon = () => {
-    navigate(`/user/${'usuarioprovisionalcambiar'}`);
+    const resFetchUser = await fetch(
+      `${Global.backendBaseUrl}usuarios/${username}`
+    );
+
+    const resFetchUserJson = await resFetchUser.json();
+
+    if (resFetchUserJson && resFetchUserJson.photo) {
+      setProfileIcon(
+        resFetchUserJson.photo === ''
+          ? defaultThumbnailPlaylist
+          : resFetchUserJson.photo
+      );
+    }
+  };
+
+  const handleProfileButon = async () => {
+    const username = Token.getTokenUsername();
+
+    navigate(`/user/${username}`);
   };
 
   const [visibleBackground, setVisibleBackground] = useState({});
@@ -44,8 +61,8 @@ export default function StickyHeader() {
   };
 
   useEffect(() => {
+    handleThumbnail();
     window.addEventListener('scroll', handleScroll);
-
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };

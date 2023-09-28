@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import LoadingCircle from 'componentes/AdvancedUIComponents/LoadingCircle/LoadingCircle';
 import InfoPopover from 'componentes/AdvancedUIComponents/InfoPopOver/InfoPopover';
 import { InfoPopoverType } from 'componentes/AdvancedUIComponents/InfoPopOver/types/InfoPopover';
+import Token from 'global/token';
 import styles from '../contextMenu.module.css';
 import { PropsContextMenuPlaylist } from '../types/PropsContextMenu';
 
@@ -150,8 +151,48 @@ export default function ContextMenuPlaylist({
   const [playlistNames, setPlaylistNames] = useState<string[]>();
   const [loading, setLoading] = useState(true);
 
-  const handlePlaylists = () => {
-    fetch(`${Global.backendBaseUrl}playlists/`, {
+  const handlePlaylists = async () => {
+    const username = Token.getTokenUsername();
+
+    const fetchUrlGetUser = `${Global.backendBaseUrl}usuarios/${username}`;
+
+    fetch(fetchUrlGetUser)
+      .then((resFetchUrlGetUser) => resFetchUrlGetUser.json())
+      .then((resFetchUrlGetUserJson) => {
+        return resFetchUrlGetUserJson.playlists.join(',');
+      })
+      .then((sidebarPlaylistNames) => {
+        return fetch(
+          `${Global.backendBaseUrl}playlists/multiple/${sidebarPlaylistNames}`,
+          {
+            headers: { 'Access-Control-Allow-Origin': '*' },
+          }
+        );
+      })
+      .then((resFetchPlaylists) => {
+        return resFetchPlaylists.json();
+      })
+      .then((res) => {
+        const playlistNamesFromFetch: string[] = [];
+
+        if (res.playlists) {
+          res.playlists.forEach((obj: any) => {
+            const playlistObject = JSON.parse(obj);
+            playlistNamesFromFetch.push(playlistObject.name);
+          });
+        }
+
+        setPlaylistNames(playlistNamesFromFetch);
+        setLoading(false);
+
+        return null;
+      })
+      .catch((error) => {
+        console.log(error);
+        console.log('No se pudieron obtener las playlists');
+      });
+
+    /* fetch(`${Global.backendBaseUrl}playlists/`, {
       headers: { 'Access-Control-Allow-Origin': '*' },
     })
       .then((res) => res.json())
@@ -170,7 +211,7 @@ export default function ContextMenuPlaylist({
       .catch((error) => {
         console.log(error);
         console.log('No se pudieron obtener las playlists');
-      });
+      }); */
   };
 
   const [isOwnerPlaylist, setIsOwnerPlaylist] = useState<boolean>();
@@ -179,11 +220,10 @@ export default function ContextMenuPlaylist({
     color: isOwnerPlaylist ? 'var(--pure-white)' : 'var(--grey)',
   };
 
-  const handleOwner = useCallback(() => {
-    // TODO cambiar usuario real
+  const handleOwner = useCallback(async () => {
+    const username = Token.getTokenUsername();
 
-    const usuarioprovisionalcambiar = 'usuarioprovisionalcambiar';
-    if (owner === usuarioprovisionalcambiar) {
+    if (owner === username) {
       setIsOwnerPlaylist(true);
     } else {
       setIsOwnerPlaylist(false);

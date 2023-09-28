@@ -1,7 +1,6 @@
 from fastapi.testclient import TestClient
 from datetime import datetime
 from test_API.api_test_artist import create_artist, delete_artist, get_artist, update_artist , get_artists
-from main import app as app
 import bcrypt
 import json
 import pytest
@@ -23,7 +22,7 @@ def test_get_artist_correct(clear_test_data_db):
     assert res_get_artist.json()["name"]==name
     assert res_get_artist.json()["photo"]==foto
 
-     # check password
+    # check password
 
     utf8_password = res_get_artist.json()["password"].encode('utf-8')
     assert bcrypt.checkpw(password.encode('utf-8'),utf8_password)==True

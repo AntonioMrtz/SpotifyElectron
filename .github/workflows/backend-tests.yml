@@ -26,7 +26,9 @@ jobs:
         working-directory: Backend API/src # Change to your backend API src directory path
         run: python -m pytest -s
         env: 
-          MONGO_PASS: ${{ secrets.MONGO_PASS }} 
+          MONGO_PASS: ${{ secrets.MONGO_PASS }}
+          SECRET_KEY_SIGN : ${{ secrets.SECRET_KEY_SIGN }}
+
 
       - name: Fail workflow on test failure
         if: ${{ failure() }}

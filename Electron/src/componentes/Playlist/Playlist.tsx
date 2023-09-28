@@ -3,6 +3,7 @@
 import { ChangeEvent, FormEvent, useEffect, useState, MouseEvent } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Global from 'global/global';
+import Token from 'global/token';
 import { PropsSongs } from 'componentes/Sidebar/types/propsSongs.module';
 import { FastAverageColor } from 'fast-average-color';
 import Modal from '@mui/material/Modal';
@@ -80,32 +81,29 @@ export default function Playlist({
     setLiked(false);
   };
   const loadPlaylistLikedStatus = async () => {
-    // TODO cambiar usuario real
-
-    const user = 'usuarioprovisionalcambiar';
-
-    const resFetchWhoAmIUser = await fetch(
-      `${Global.backendBaseUrl}usuarios/${user}/whoami`
-    );
-    const resFetchWhoAmIUserJson = await resFetchWhoAmIUser.json();
+    const username = Token.getTokenUsername();
+    const role = Token.getTokenRole();
 
     let resFetchGetUserJson;
 
-    if (resFetchWhoAmIUserJson.type === UserType.USER) {
-      const fetchGetUser = `${Global.backendBaseUrl}${UserType.USER}s/${user}`;
+    if (role === UserType.USER) {
+      const fetchGetUser = `${Global.backendBaseUrl}${UserType.USER}s/${username}`;
 
       const resFetchGetUser = await fetch(fetchGetUser);
       if (resFetchGetUser.status === 200)
         resFetchGetUserJson = await resFetchGetUser.json();
-    } else if (resFetchWhoAmIUserJson.type === UserType.ARTIST) {
-      const fetchGetArtist = `${Global.backendBaseUrl}${UserType.ARTIST}s/${user}`;
+    } else if (role === UserType.ARTIST) {
+      const fetchGetArtist = `${Global.backendBaseUrl}${UserType.ARTIST}s/${username}`;
 
       const resFetchGetArtist = await fetch(fetchGetArtist);
       if (resFetchGetArtist.status === 200)
         resFetchGetUserJson = await resFetchGetArtist.json();
+    } else {
+      console.log('Unable to get User from Token');
     }
 
     if (
+      resFetchGetUserJson &&
       resFetchGetUserJson.saved_playlists &&
       resFetchGetUserJson.saved_playlists.includes(playlistName)
     ) {
@@ -116,12 +114,10 @@ export default function Playlist({
   };
 
   const handleLike = (): void => {
-    // TODO cambiar usuario real
-
-    const user = 'usuarioprovisionalcambiar';
+    const username = Token.getTokenUsername();
 
     if (liked === false) {
-      const fetchPatchSavedPlaylistUrl = `${Global.backendBaseUrl}usuarios/${user}/playlists_guardadas?nombre_playlist=${playlistName}`;
+      const fetchPatchSavedPlaylistUrl = `${Global.backendBaseUrl}usuarios/${username}/playlists_guardadas?nombre_playlist=${playlistName}`;
 
       const requestOptionsPatchSavedPlaylistUr = {
         method: 'PATCH',
@@ -135,7 +131,7 @@ export default function Playlist({
         })
         .catch(() => console.log('Unable to update saved playlists'));
     } else {
-      const fetchDeleteSavedPlaylistUrl = `${Global.backendBaseUrl}usuarios/${user}/playlists_guardadas?nombre_playlist=${playlistName}`;
+      const fetchDeleteSavedPlaylistUrl = `${Global.backendBaseUrl}usuarios/${username}/playlists_guardadas?nombre_playlist=${playlistName}`;
 
       const requestOptionsDeleteSavedPlaylistUr = {
         method: 'DELETE',
@@ -576,109 +572,105 @@ export default function Playlist({
         </Popover>
       </div>
 
-      {
-        // TODO cambiar usuario real
+      {owner === Token.getTokenUsername() && (
+        <Modal
+          className=""
+          open={openModalUpdatePlaylist}
+          onClose={() => {
+            setopenModalUpdatePlaylist(false);
+          }}
+          aria-labelledby="modal-modal-confirmation"
+          aria-describedby="modal-modal-confirmation-description"
+        >
+          <Box sx={style} className={`${styles.wrapperUpdatePlaylistModal}`}>
+            <header className="d-flex flex-row justify-content-between align-items-center">
+              <h1>Editar información</h1>
+              <button
+                type="button"
+                onClick={() => {
+                  setopenModalUpdatePlaylist(false);
+                }}
+              >
+                <i className="fa-solid fa-xmark" />
+              </button>
+            </header>
 
-        owner === 'usuarioprovisionalcambiar' && (
-          <Modal
-            className=""
-            open={openModalUpdatePlaylist}
-            onClose={() => {
-              setopenModalUpdatePlaylist(false);
-            }}
-            aria-labelledby="modal-modal-confirmation"
-            aria-describedby="modal-modal-confirmation-description"
-          >
-            <Box sx={style} className={`${styles.wrapperUpdatePlaylistModal}`}>
-              <header className="d-flex flex-row justify-content-between align-items-center">
-                <h1>Editar información</h1>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setopenModalUpdatePlaylist(false);
-                  }}
-                >
-                  <i className="fa-solid fa-xmark" />
-                </button>
-              </header>
+            <form>
+              <div className="d-flex flex-column p-0">
+                <div className="d-flex flex-row container-fluid p-0">
+                  <div className={` ${styles.wrapperUpdateThumbnail}`}>
+                    <img src={`${thumbnailUpdatePlaylist}`} alt="" />
+                  </div>
 
-              <form>
-                <div className="d-flex flex-column p-0">
-                  <div className="d-flex flex-row container-fluid p-0">
-                    <div className={` ${styles.wrapperUpdateThumbnail}`}>
-                      <img src={`${thumbnailUpdatePlaylist}`} alt="" />
+                  <div
+                    className={`container-fluid pe-0 ${styles.wrapperUpdateTextData}`}
+                  >
+                    <div
+                      className={`form-floating mb-3 ${styles.inputPlaylist}`}
+                    >
+                      <input
+                        name="nombre"
+                        type="text"
+                        defaultValue={playlistName}
+                        className="form-control"
+                        id="nombre"
+                        placeholder="Añade un nombre"
+                        onChange={handleChangeForm}
+                      />
+                      <label htmlFor="floatingInput">Nombre</label>
                     </div>
 
                     <div
-                      className={`container-fluid pe-0 ${styles.wrapperUpdateTextData}`}
+                      className={`form-floating mb-3 ${styles.inputPlaylist}`}
                     >
-                      <div
-                        className={`form-floating mb-3 ${styles.inputPlaylist}`}
-                      >
-                        <input
-                          name="nombre"
-                          type="text"
-                          defaultValue={playlistName}
+                      <div className="form-floating">
+                        <textarea
+                          name="descripcion"
                           className="form-control"
-                          id="nombre"
-                          placeholder="Añade un nombre"
+                          defaultValue={description}
+                          placeholder="Añade una descripción"
+                          id="descripcion"
+                          style={{ height: ' 100px' }}
                           onChange={handleChangeForm}
                         />
-                        <label htmlFor="floatingInput">Nombre</label>
-                      </div>
-
-                      <div
-                        className={`form-floating mb-3 ${styles.inputPlaylist}`}
-                      >
-                        <div className="form-floating">
-                          <textarea
-                            name="descripcion"
-                            className="form-control"
-                            defaultValue={description}
-                            placeholder="Añade una descripción"
-                            id="descripcion"
-                            style={{ height: ' 100px' }}
-                            onChange={handleChangeForm}
-                          />
-                          <label htmlFor="floatingTextarea2">Descripción</label>
-                        </div>
+                        <label htmlFor="floatingTextarea2">Descripción</label>
                       </div>
                     </div>
                   </div>
                 </div>
+              </div>
+              <div
+                className={`container-fluid d-flex p-0 ${styles.wrapperUpdateTextData}`}
+              >
                 <div
-                  className={`container-fluid d-flex p-0 ${styles.wrapperUpdateTextData}`}
+                  className={`form-floating container-fluid p-0 ${styles.inputPlaylist}`}
                 >
-                  <div
-                    className={`form-floating container-fluid p-0 ${styles.inputPlaylist}`}
-                  >
-                    <input
-                      name="foto"
-                      type="text"
-                      className="form-control"
-                      id="foto"
-                      defaultValue={
-                        thumbnail === defaultThumbnailPlaylist ? '' : thumbnail
-                      }
-                      placeholder="Url de la nueva foto"
-                      onChange={handleChangeForm}
-                    />
-                    <label htmlFor="foto">Url de la miniatura</label>
-                  </div>
+                  <input
+                    name="foto"
+                    type="text"
+                    className="form-control"
+                    id="foto"
+                    defaultValue={
+                      thumbnail === defaultThumbnailPlaylist ? '' : thumbnail
+                    }
+                    placeholder="Url de la nueva foto"
+                    onChange={handleChangeForm}
+                  />
+                  <label htmlFor="foto">Url de la miniatura</label>
                 </div>
+              </div>
 
-                <div
-                  className={`d-flex flex-row justify-content-end pt-2 ${styles.wrapperUpdateButton} ${styles.inputPlaylist}`}
-                >
-                  <button type="button" onClick={handleUpdatePlaylist}>
-                    Guardar
-                  </button>
-                </div>
-              </form>
-            </Box>
-          </Modal>
-        )
-      }
+              <div
+                className={`d-flex flex-row justify-content-end pt-2 ${styles.wrapperUpdateButton} ${styles.inputPlaylist}`}
+              >
+                <button type="button" onClick={handleUpdatePlaylist}>
+                  Guardar
+                </button>
+              </div>
+            </form>
+          </Box>
+        </Modal>
+      )}
     </div>
   );
 }

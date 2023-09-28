@@ -222,7 +222,7 @@ export default function UserProfile({
                 />
               )}
 
-              <p style={{ textTransform: 'capitalize' }}>
+              <p style={{ textTransform: 'capitalize', marginTop: '4px' }}>
                 {userType} {userType === UserType.ARTIST && 'verificado'}
               </p>
             </div>

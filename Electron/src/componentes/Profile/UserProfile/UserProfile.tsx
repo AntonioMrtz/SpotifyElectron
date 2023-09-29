@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { FastAverageColor } from 'fast-average-color';
 import Global from 'global/global';
-import { PropsPlaylistCard } from 'componentes/PlaylistCard/types/propsPlaylistCard.module';
+import { PropsPlaylistCard } from 'componentes/Cards/PlaylistCard/types/propsPlaylistCard';
 import SongCard, { PropsSongCard } from 'componentes/SongCard/SongCard';
-import PlaylistCard from 'componentes/PlaylistCard/PlaylistCard';
+import PlaylistCard from 'componentes/Cards/PlaylistCard/PlaylistCard';
 import { useParams } from 'react-router-dom';
 import styles from './userProfile.module.css';
 import defaultThumbnailPlaylist from '../../../assets/imgs/DefaultThumbnailPlaylist.jpg';

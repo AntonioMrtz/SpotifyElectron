@@ -1,20 +1,13 @@
-import { useParams } from 'react-router-dom';
 import { useCallback, useEffect, useState } from 'react';
+import { PropsPlaylistCard } from 'componentes/Cards/PlaylistCard/types/propsPlaylistCard';
+import PlaylistCard from 'componentes/Cards/PlaylistCard/PlaylistCard';
 import Global from 'global/global';
-import { PropsPlaylistCard } from 'componentes/PlaylistCard/types/propsPlaylistCard.module';
-import PlaylistCard from 'componentes/PlaylistCard/PlaylistCard';
-import styles from './allPlaylists.module.css';
-import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
+import { PropsItemsPlaylist } from '../types/PropsItems';
+import defaultThumbnailPlaylist from '../../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 
-interface PropsAllPlaylists {
-  refreshSidebarData: Function;
-}
-
-export default function AllPlaylists({
+export default function ItemsPlaylist({
   refreshSidebarData,
-}: PropsAllPlaylists) {
-  const { id } = useParams();
-
+}: PropsItemsPlaylist) {
   const [playlists, setPlaylists] = useState<PropsPlaylistCard[]>();
 
   const handlePlaylists = useCallback(() => {
@@ -47,39 +40,29 @@ export default function AllPlaylists({
         }
         return null;
       })
-      .catch((error) => {
-        console.log(error);
+      .catch(() => {
         console.log('No se pudieron obtener las playlists');
       });
   }, [refreshSidebarData]);
 
   useEffect(() => {
     handlePlaylists();
-  }, [handlePlaylists, id]);
+  }, [handlePlaylists]);
 
   return (
-    <div
-      className={`container-fluid d-flex flex-column ${styles.categoryTitle}`}
-    >
-      <h1>{id}</h1>
-
-      <div
-        className={`d-flex container-fluid flex-wrap ${styles.wrapperPlaylists} p-0`}
-      >
-        {playlists &&
-          playlists.map((playlist) => {
-            return (
-              <PlaylistCard
-                name={playlist.name}
-                photo={playlist.photo}
-                description={playlist.description}
-                owner={playlist.owner}
-                key={playlist.name + playlist.description}
-                refreshSidebarData={refreshSidebarData}
-              />
-            );
-          })}
-      </div>
-    </div>
+    // eslint-disable-next-line react/jsx-no-useless-fragment
+    <>
+      {playlists &&
+        playlists.map((playlist) => (
+          <PlaylistCard
+            name={playlist?.name || 'No Name'}
+            photo={playlist?.photo || defaultThumbnailPlaylist}
+            description={playlist?.description || 'No Description'}
+            owner={playlist?.owner || 'Unknown Owner'}
+            key={`${playlist?.name}-${playlist?.owner}`}
+            refreshSidebarData={refreshSidebarData}
+          />
+        ))}
+    </>
   );
 }

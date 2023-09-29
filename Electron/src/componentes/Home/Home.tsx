@@ -1,10 +1,12 @@
 import Global from 'global/global';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import LoadingCircle from 'componentes/AdvancedUIComponents/LoadingCircle/LoadingCircle';
 import { useNavigate } from 'react-router-dom';
+import ArtistCard from 'componentes/Cards/ArtistCard/ArtistCard';
+import { PropsArtistCard } from 'componentes/Cards/ArtistCard/types/propsArtistCard';
 import styles from './homeCss.module.css';
-import PlaylistCard from '../PlaylistCard/PlaylistCard';
-import { PropsPlaylistCard } from '../PlaylistCard/types/propsPlaylistCard.module';
+import PlaylistCard from '../Cards/PlaylistCard/PlaylistCard';
+import { PropsPlaylistCard } from '../Cards/PlaylistCard/types/propsPlaylistCard';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 
 interface PropsHome {
@@ -15,9 +17,9 @@ export default function Home({ refreshSidebarData }: PropsHome) {
   const navigate = useNavigate();
 
   const [playlists, setPlaylists] = useState<PropsPlaylistCard[]>();
-  const [loading, setLoading] = useState(true);
+  const [loadingPlaylists, setLoadingPlaylists] = useState(true);
 
-  const handlePlaylists = () => {
+  const handlePlaylists = useCallback(() => {
     fetch(`${Global.backendBaseUrl}playlists/`, {
       headers: { 'Access-Control-Allow-Origin': '*' },
     })
@@ -45,7 +47,7 @@ export default function Home({ refreshSidebarData }: PropsHome) {
               propsPlaylists.push(propsPlaylist);
 
               setPlaylists(propsPlaylists);
-              setLoading(false);
+              setLoadingPlaylists(false);
             });
         }
         return null;
@@ -54,12 +56,48 @@ export default function Home({ refreshSidebarData }: PropsHome) {
         console.log(error);
         console.log('No se pudieron obtener las playlists');
       });
-  };
+  }, [refreshSidebarData]);
+
+  const [artists, setArtists] = useState<PropsArtistCard[]>();
+  const [loadingArtists, setLoadingArtists] = useState(true);
+
+  const handleArtists = useCallback(() => {
+    fetch(`${Global.backendBaseUrl}artistas/`, {
+      headers: { 'Access-Control-Allow-Origin': '*' },
+    })
+      .then((resFetchArtistas) => resFetchArtistas.json())
+      .then((resFetchArtistasJson) => {
+        if (resFetchArtistasJson.artists) {
+          const propsArtists: PropsArtistCard[] = [];
+
+          resFetchArtistasJson.artists.forEach((resArtistFetch: any) => {
+            const resArtistFetchJson = JSON.parse(resArtistFetch);
+
+            const propsArtist: PropsArtistCard = {
+              name: resArtistFetchJson.name,
+              photo:
+                resArtistFetchJson.photo === ''
+                  ? defaultThumbnailPlaylist
+                  : resArtistFetchJson.photo,
+            };
+
+            propsArtists.push(propsArtist);
+
+            setArtists(propsArtists);
+            setLoadingArtists(false);
+          });
+        }
+        return null;
+      })
+      .catch(() => {
+        console.log('Unable to get artists');
+      });
+  }, []);
 
   useEffect(() => {
+    handleArtists();
     handlePlaylists();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [handlePlaylists, handleArtists]);
 
   return (
     <div
@@ -78,7 +116,7 @@ export default function Home({ refreshSidebarData }: PropsHome) {
               type="button"
               className={`${styles.categoryTitle}`}
               onClick={() => {
-                navigate(`/allPlaylists/Especialmente para ti`);
+                navigate(`/showAllItemsPlaylist/Especialmente para ti`);
               }}
             >
               {' '}
@@ -92,7 +130,7 @@ export default function Home({ refreshSidebarData }: PropsHome) {
               type="button"
               className={`${styles.mostrarTodo}`}
               onClick={() => {
-                navigate(`/allPlaylists/Especialmente para ti`);
+                navigate(`/showAllItemsPlaylist/Especialmente para ti`);
               }}
             >
               Mostrar todos
@@ -101,9 +139,9 @@ export default function Home({ refreshSidebarData }: PropsHome) {
         </header>
 
         <ul className={`container-fluid d-flex flex-row ${styles.row}`}>
-          {loading && <LoadingCircle />}
+          {loadingPlaylists && <LoadingCircle />}
 
-          {!loading &&
+          {!loadingPlaylists &&
             playlists &&
             playlists.map((playlist) => {
               return (
@@ -133,10 +171,10 @@ export default function Home({ refreshSidebarData }: PropsHome) {
               type="button"
               className={`${styles.categoryTitle}`}
               onClick={() => {
-                navigate(`/allPlaylists/Especialmente para ti`);
+                navigate(`/showAllItemsArtist/Artistas recomendados`);
               }}
             >
-              Escuchado recientemente
+              Artistas destacados
             </button>
           </div>
           <div
@@ -146,7 +184,7 @@ export default function Home({ refreshSidebarData }: PropsHome) {
               type="button"
               className={`${styles.mostrarTodo}`}
               onClick={() => {
-                navigate(`/allPlaylists/Especialmente para ti`);
+                navigate(`/showAllItemsArtist/Artistas recomendados`);
               }}
             >
               Mostrar todos
@@ -155,19 +193,16 @@ export default function Home({ refreshSidebarData }: PropsHome) {
         </header>
 
         <section className={`container-fluid d-flex flex-row ${styles.row}`}>
-          {loading && <LoadingCircle />}
+          {loadingArtists && <LoadingCircle />}
 
-          {!loading &&
-            playlists &&
-            playlists.map((playlist) => {
+          {!loadingArtists &&
+            artists &&
+            artists.map((artist) => {
               return (
-                <PlaylistCard
-                  name={playlist.name}
-                  photo={playlist.photo}
-                  description={playlist.description}
-                  owner={playlist.owner}
-                  key={playlist.name + playlist.description}
-                  refreshSidebarData={refreshSidebarData}
+                <ArtistCard
+                  name={artist.name}
+                  photo={artist.photo}
+                  key={artist.name}
                 />
               );
             })}

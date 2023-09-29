@@ -7,8 +7,9 @@ import Genre from 'componentes/Genre/Genre';
 import UserProfile, {
   UserType,
 } from 'componentes/Profile/UserProfile/UserProfile';
-import AllPlaylists from 'componentes/AllPlaylists/AllPlaylists';
+import ShowAllItems from 'componentes/ShowAllItems/ShowAllItems';
 import StartMenu from 'componentes/StartMenu/StartMenu';
+import { ShowAllItemsTypes } from 'componentes/ShowAllItems/types/PropsShowAllItems';
 import styles from './AppCss.module.css';
 import Sidebar from '../componentes/Sidebar/Sidebar';
 import Home from '../componentes/Home/Home';
@@ -88,8 +89,25 @@ function App() {
                 />
 
                 <Route
-                  path="/allPlaylists/:id"
-                  element=<AllPlaylists refreshSidebarData={reloadSidebar} />
+                  path="/showAllItemsPlaylist/:id"
+                  element=<ShowAllItems
+                    refreshSidebarData={reloadSidebar}
+                    type={ShowAllItemsTypes.PLAYLIST}
+                  />
+                />
+                <Route
+                  path="/showAllItemsArtist/:id"
+                  element=<ShowAllItems
+                    refreshSidebarData={reloadSidebar}
+                    type={ShowAllItemsTypes.ARTIST}
+                  />
+                />
+                <Route
+                  path="/showAllItemsSong/:id"
+                  element=<ShowAllItems
+                    refreshSidebarData={reloadSidebar}
+                    type={ShowAllItemsTypes.SONG}
+                  />
                 />
                 <Route
                   path="/"

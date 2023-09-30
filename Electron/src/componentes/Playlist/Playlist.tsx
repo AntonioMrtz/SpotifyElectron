@@ -508,7 +508,7 @@ export default function Playlist({
               Título
             </span>
             <span
-              className={` ${styles.songTitleTable}`}
+              className={`d-flex justify-content-end ${styles.songTitleTable}`}
               style={{ color: 'var(--secondary-white)', whiteSpace: 'nowrap' }}
             >
               Número de reproducciones

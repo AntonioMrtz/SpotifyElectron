@@ -3,14 +3,8 @@ import { PropsSongs } from 'componentes/Sidebar/types/propsSongs.module';
 import ContextMenuSong from 'componentes/AdvancedUIComponents/ContextMenu/Song/ContextMenuSong';
 import Popover, { PopoverPosition } from '@mui/material/Popover';
 import { useNavigate } from 'react-router-dom';
+import { secondsToMinutesSeconds } from 'utils/date';
 import styles from '../playlist.module.css';
-
-const secondsToMinutesSeconds: Function = (secs: number) => {
-  const minutes = Math.floor(secs / 60);
-  const seconds = (secs - minutes * 60) / 100;
-
-  return (minutes + seconds).toFixed(2).replace('.', ':');
-};
 
 export default function Song({
   name,

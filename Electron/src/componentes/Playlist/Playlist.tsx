@@ -11,6 +11,7 @@ import Box from '@mui/material/Box';
 import ContextMenuPlaylist from 'componentes/AdvancedUIComponents/ContextMenu/Playlist/ContextMenuPlaylist';
 import Popover, { PopoverPosition } from '@mui/material/Popover/Popover';
 import { UserType } from 'componentes/Profile/UserProfile/UserProfile';
+import { secondsToHoursAndMinutesFormatted } from 'utils/date';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 import Song from './Song/Song';
 import styles from './playlist.module.css';
@@ -18,14 +19,6 @@ import styles from './playlist.module.css';
 interface PropsPlaylist {
   changeSongName: Function;
   triggerReloadSidebar: Function;
-}
-
-function secondsToHoursAndMinutes(seconds: number) {
-  const hours = Math.floor(seconds / 3600);
-  const remainingSeconds = seconds % 3600;
-  const minutes = Math.floor(remainingSeconds / 60);
-
-  return `${hours} h ${minutes} min `;
 }
 
 export default function Playlist({
@@ -435,7 +428,7 @@ export default function Playlist({
               <p>{numberSongs} canciones</p>
               <p className="me-2 ms-2">•</p>
               <p>
-                {secondsToHoursAndMinutes(getTotalDurationPlaylist())}{' '}
+                {secondsToHoursAndMinutesFormatted(getTotalDurationPlaylist())}{' '}
                 aproximadamente
               </p>
             </div>

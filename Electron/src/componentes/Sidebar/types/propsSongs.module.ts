@@ -4,6 +4,7 @@ export interface PropsSongs {
   artistName: string;
   index: number;
   duration: number;
+  playCount: number;
   handleSongCliked: Function;
   /* Refresh data on playlist menu after a modification */
   refreshPlaylistData: Function;

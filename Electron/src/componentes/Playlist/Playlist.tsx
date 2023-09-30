@@ -244,6 +244,7 @@ export default function Playlist({
                       name: songName,
                       playlistName,
                       artistName: '',
+                      playCount: 0,
                       duration: 0,
                       index: 0,
                       handleSongCliked: changeSongName,
@@ -252,6 +253,7 @@ export default function Playlist({
                     };
                     propsSong.artistName = resFetchSongDTOJson.artist;
                     propsSong.duration = resFetchSongDTOJson.duration;
+                    propsSong.playCount = resFetchSongDTOJson.number_of_plays;
 
                     resolve(propsSong);
                     return propsSong;
@@ -513,6 +515,12 @@ export default function Playlist({
               Título
             </span>
             <span
+              className={` ${styles.songTitleTable}`}
+              style={{ color: 'var(--secondary-white)', whiteSpace: 'nowrap' }}
+            >
+              Número de reproducciones
+            </span>
+            <span
               className={` d-flex justify-content-center ${styles.gridItem}`}
             >
               <i className="fa-regular fa-clock" />
@@ -527,6 +535,7 @@ export default function Playlist({
                   name={song.name}
                   playlistName={playlistName}
                   artistName={song.artistName}
+                  playCount={song.playCount}
                   index={index + 1}
                   duration={song.duration}
                   handleSongCliked={changeSongName}

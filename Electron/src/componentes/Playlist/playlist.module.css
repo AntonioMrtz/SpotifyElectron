@@ -250,7 +250,7 @@
 
 .gridContainer {
   display: grid;
-  grid-template-columns: 0.2fr 8fr 1fr;
+  grid-template-columns: 0.2fr 7fr 1fr 1fr;
   grid-gap: 10px;
 }
 

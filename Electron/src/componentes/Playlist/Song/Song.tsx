@@ -76,10 +76,10 @@ export default function Song({
           {artistName}
         </button>
       </span>
-      <span className={` d-flex justify-content-center ${styles.gridItem}`}>
+      <span className={` d-flex justify-content-end ${styles.gridItem}`}>
         {playCount}
       </span>
-      <span className={` d-flex justify-content-center ${styles.gridItem}`}>
+      <span className={` d-flex justify-content-end ${styles.gridItem}`}>
         {secondsToMinutesSeconds(duration)}
       </span>
 

@@ -513,9 +513,7 @@ export default function Playlist({
             >
               Número de reproducciones
             </span>
-            <span
-              className={` d-flex justify-content-center ${styles.gridItem}`}
-            >
+            <span className={` d-flex justify-content-end ${styles.gridItem}`}>
               <i className="fa-regular fa-clock" />
             </span>
           </li>

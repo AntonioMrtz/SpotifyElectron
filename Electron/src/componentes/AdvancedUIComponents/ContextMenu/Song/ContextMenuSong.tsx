@@ -4,7 +4,7 @@ import LoadingCircle from 'componentes/AdvancedUIComponents/LoadingCircle/Loadin
 import InfoPopover from 'componentes/AdvancedUIComponents/InfoPopOver/InfoPopover';
 import { InfoPopoverType } from 'componentes/AdvancedUIComponents/InfoPopOver/types/InfoPopover';
 import Global from 'global/global';
-import Token from 'global/token';
+import Token from 'utils/token';
 import styles from '../contextMenu.module.css';
 import { PropsContextMenuSong } from '../types/PropsContextMenu';
 

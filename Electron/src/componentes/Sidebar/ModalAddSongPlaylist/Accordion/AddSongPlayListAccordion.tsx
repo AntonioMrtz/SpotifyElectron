@@ -7,7 +7,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import LibraryMusicRoundedIcon from '@mui/icons-material/LibraryMusicRounded';
 import AudiotrackIcon from '@mui/icons-material/Audiotrack';
 import Global from 'global/global';
-import Token from 'global/token';
+import Token from 'utils/token';
 import { InfoPopoverType } from 'componentes/AdvancedUIComponents/InfoPopOver/types/InfoPopover';
 import ConfirmationModal from 'componentes/AdvancedUIComponents/InfoPopOver/InfoPopover';
 import { UserType } from 'componentes/Profile/UserProfile/UserProfile';

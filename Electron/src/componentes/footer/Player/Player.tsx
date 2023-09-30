@@ -6,7 +6,7 @@ import {
   useCallback,
 } from 'react';
 import Global from 'global/global';
-import Token from 'global/token';
+import Token from 'utils/token';
 import styles from './player.module.css';
 import TimeSlider from './TimeSlider/TimeSlider';
 

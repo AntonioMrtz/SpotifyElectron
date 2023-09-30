@@ -3,7 +3,7 @@
 import { ChangeEvent, FormEvent, useEffect, useState, MouseEvent } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Global from 'global/global';
-import Token from 'global/token';
+import Token from 'utils/token';
 import { PropsSongs } from 'componentes/Sidebar/types/propsSongs.module';
 import { FastAverageColor } from 'fast-average-color';
 import Modal from '@mui/material/Modal';

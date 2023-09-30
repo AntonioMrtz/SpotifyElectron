@@ -1,10 +1,8 @@
 import { useEffect, useState } from 'react';
 import Global from 'global/global';
+import genreColorsMap from 'utils/genre';
 import styles from './explorar.module.css';
 import GenreCard from './GenreCard/GenreCard';
-
-/* interface PropsExplorar {
-} */
 
 export default function Explorar() {
   const [generos, setGeneros] = useState<{}>();
@@ -41,7 +39,7 @@ export default function Explorar() {
                 <GenreCard
                   key={genero as string}
                   name={genero as string}
-                  color={Global.genreColors[genero as string]}
+                  color={genreColorsMap[genero as string]}
                 />
               );
             })}

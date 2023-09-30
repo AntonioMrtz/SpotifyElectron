@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import Global from 'global/global';
-import Token from 'global/token';
+import Token from 'utils/token';
 import LoadingCircle from 'componentes/AdvancedUIComponents/LoadingCircle/LoadingCircle';
 import styles from './sideBarCss.module.css';
 import Playlist from './Playlist/Playlist';

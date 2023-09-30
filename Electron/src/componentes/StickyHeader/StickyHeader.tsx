@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Global from 'global/global';
-import Token from 'global/token';
+import Token from 'utils/token';
 import styles from './stickyHeader.module.css';
 import groupIcon from '../../assets/imgs/groupIcon.png';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';

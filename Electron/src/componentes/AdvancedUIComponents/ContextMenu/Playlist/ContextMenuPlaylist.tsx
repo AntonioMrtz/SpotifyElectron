@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import LoadingCircle from 'componentes/AdvancedUIComponents/LoadingCircle/LoadingCircle';
 import InfoPopover from 'componentes/AdvancedUIComponents/InfoPopOver/InfoPopover';
 import { InfoPopoverType } from 'componentes/AdvancedUIComponents/InfoPopOver/types/InfoPopover';
-import Token from 'global/token';
+import Token from 'utils/token';
 import styles from '../contextMenu.module.css';
 import { PropsContextMenuPlaylist } from '../types/PropsContextMenu';
 

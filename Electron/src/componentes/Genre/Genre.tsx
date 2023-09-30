@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import Global from 'global/global';
 import { useLocation } from 'react-router-dom';
+import genreColorsMap from 'utils/genre';
 import styles from './genre.module.css';
 import SongCard from '../SongCard/SongCard';
 
@@ -72,7 +73,7 @@ export default function Genre({
       <div
         className={`d-flex align-items-end container-fluid ${styles.headerGenre}`}
         style={{
-          backgroundColor: `${Global.genreColors[genreName]}`,
+          backgroundColor: `${genreColorsMap[genreName]}`,
           paddingTop: 'var(--pading-top-sticky-header)',
         }}
       >

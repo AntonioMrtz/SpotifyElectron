@@ -11,6 +11,7 @@ import Box from '@mui/material/Box';
 import ContextMenuPlaylist from 'componentes/AdvancedUIComponents/ContextMenu/Playlist/ContextMenuPlaylist';
 import Popover, { PopoverPosition } from '@mui/material/Popover/Popover';
 import { secondsToHoursAndMinutesFormatted } from 'utils/date';
+import { UserType, backendPathFromUserType } from 'utils/role';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 import Song from './Song/Song';
 import styles from './playlist.module.css';
@@ -78,14 +79,18 @@ export default function Playlist({
 
     let resFetchGetUserJson;
 
-    if (role === Global.UserType.USER) {
-      const fetchGetUser = `${Global.backendBaseUrl}${Global.UserType.USER}s/${username}`;
+    if (role === UserType.USER) {
+      const fetchGetUser = `${Global.backendBaseUrl}${
+        backendPathFromUserType[UserType.USER]
+      }/${username}`;
 
       const resFetchGetUser = await fetch(fetchGetUser);
       if (resFetchGetUser.status === 200)
         resFetchGetUserJson = await resFetchGetUser.json();
-    } else if (role === Global.UserType.ARTIST) {
-      const fetchGetArtist = `${Global.backendBaseUrl}${Global.UserType.ARTIST}s/${username}`;
+    } else if (role === UserType.ARTIST) {
+      const fetchGetArtist = `${Global.backendBaseUrl}${
+        backendPathFromUserType[UserType.ARTIST]
+      }/${username}`;
 
       const resFetchGetArtist = await fetch(fetchGetArtist);
       if (resFetchGetArtist.status === 200)

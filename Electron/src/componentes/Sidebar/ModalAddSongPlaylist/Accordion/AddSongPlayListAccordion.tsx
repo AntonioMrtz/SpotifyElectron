@@ -11,6 +11,7 @@ import Token from 'utils/token';
 import { InfoPopoverType } from 'componentes/AdvancedUIComponents/InfoPopOver/types/InfoPopover';
 import ConfirmationModal from 'componentes/AdvancedUIComponents/InfoPopOver/InfoPopover';
 import { UserType } from 'utils/role';
+import LoadingCircleSmall from 'componentes/AdvancedUIComponents/LoadingCircle/LoadingCircleSmallNoPadding';
 import GenreOption from './GenreOption/GenreOption';
 import styles from './addSongPlayListAccordion.module.css';
 
@@ -77,6 +78,7 @@ export default function AddSongPlayListAccordion({
 
   const [songFile, setSongFile] = useState<File>();
   const [thumbnailUploadSong, setThumbnailUploadSong] = useState<string>();
+  const [loadingUploadSong, setLoadingUploadSong] = useState(false);
 
   const [formDataSong, setFormDataSong] = useState({
     nombre: '',
@@ -107,9 +109,12 @@ export default function AddSongPlayListAccordion({
   };
 
   const handleSubmitSong = (event: FormEvent<HTMLButtonElement>) => {
-    const url = new URL(`${Global.backendBaseUrl}canciones/`);
-
     event.preventDefault();
+    setLoadingUploadSong(true);
+
+    const userName = Token.getTokenUsername();
+
+    const url = new URL(`${Global.backendBaseUrl}canciones/`);
 
     if (formDataSong && songFile) {
       Object.entries(formDataSong).forEach(([key, value]) => {
@@ -117,6 +122,7 @@ export default function AddSongPlayListAccordion({
           url.searchParams.set(key, value);
         }
       });
+      url.searchParams.set('artista', userName);
 
       const formDataFile = new FormData();
       formDataFile.append('file', songFile);
@@ -143,6 +149,8 @@ export default function AddSongPlayListAccordion({
               MessagesInfoPopOver.SONG_NOT_ADDED_DESCRIPTION
             );
           }
+          setLoadingUploadSong(false);
+
           return null;
         })
         .finally(() => {
@@ -150,6 +158,7 @@ export default function AddSongPlayListAccordion({
         })
         .catch((error) => {
           console.error('Error:', error);
+          setLoadingUploadSong(false);
         });
     }
   };
@@ -372,7 +381,7 @@ export default function AddSongPlayListAccordion({
               className={`container-fluid d-flex flex-column p-0 ${styles.formAddSong}`}
             >
               <div className="container-fluid d-flex flex-row p-0">
-                <div className="p-0 mb-3 me-3">
+                <div className="p-0 mb-3 w-100">
                   <input
                     type="text"
                     id="nombre"
@@ -380,17 +389,6 @@ export default function AddSongPlayListAccordion({
                     placeholder="Nombre de la cancion"
                     className={` ${styles.input}`}
                     onChange={handleChangeSong}
-                    required
-                  />
-                </div>
-                <div className="mb-3">
-                  <input
-                    type="text"
-                    id="artista"
-                    placeholder="Artista"
-                    className={` ${styles.input}`}
-                    onChange={handleChangeSong}
-                    name="artista"
                     required
                   />
                 </div>
@@ -458,9 +456,9 @@ export default function AddSongPlayListAccordion({
               <button
                 type="button"
                 onClick={handleSubmitSong}
-                className={`btn btn-lg ${styles.btnSend}`}
+                className={`btn btn-lg ${styles.btnSend} d-flex flex-row justify-content-center`}
               >
-                Subir
+                Subir {loadingUploadSong && <LoadingCircleSmall />}
               </button>
             </form>
 

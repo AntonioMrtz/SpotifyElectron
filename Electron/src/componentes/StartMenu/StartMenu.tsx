@@ -28,8 +28,8 @@ export default function StartMenu({ setIsLogged }: PropsStartMenu) {
       }
 
       const fetchParameters = new URLSearchParams();
-      fetchParameters.append('username', 'usuarioprovisionalcambiar');
-      fetchParameters.append('password', 'usuarioprovisionalcambiar');
+      fetchParameters.append('username', formData.nombre);
+      fetchParameters.append('password', formData.password);
 
       const requestOptions = {
         method: 'POST',
@@ -70,7 +70,7 @@ export default function StartMenu({ setIsLogged }: PropsStartMenu) {
         <hr />
 
         <h1>Inicia sesión en Spotify Electron</h1>
-        <div className={`d-flex flex-column ${styles.formWrapper}`}>
+        <form className={`d-flex flex-column ${styles.formWrapper}`}>
           <label
             htmlFor="username"
             className="d-flex flex-column justify-content-start"
@@ -107,7 +107,7 @@ export default function StartMenu({ setIsLogged }: PropsStartMenu) {
           >
             Iniciar sesión
           </button>
-        </div>
+        </form>
 
         <hr style={{ marginTop: '32px' }} />
 

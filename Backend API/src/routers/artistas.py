@@ -136,3 +136,30 @@ def get_artistas() -> Response:
     artist_json = json.dumps(artists_dict)
 
     return Response(artist_json, media_type="application/json", status_code=200)
+
+
+@router.get("/{nombre}/reproducciones", tags=["artistas"])
+def get_reproducciones_artista(nombre: str) -> Response:
+    """
+    Devuelve el número de reproducciones totales de las canciones del artista
+
+    Parameters
+    ----------
+
+    Returns
+    -------
+        Response 200 OK
+
+    Raises
+    -------
+        Bad Request 400: "nombre" es vacío o nulo
+        Not Found 404: No existe un artista con el nombre "nombre"
+    """
+
+    play_count = artist_service.get_play_count_artist(user_name=nombre)
+
+    play_count_dict = {"play_count": play_count}
+
+    play_count_json = json.dumps(play_count_dict)
+
+    return Response(play_count_json, media_type="application/json", status_code=200)

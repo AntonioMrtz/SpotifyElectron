@@ -35,6 +35,30 @@ def check_song_exists(name: str) -> bool:
     """
     return True if fileSongCollection.find_one({'name': name}) else False
 
+def check_user_exists(user_name: str) -> bool:
+    """ Checks if the user or artists exists
+
+    Parameters
+    ----------
+        user_name (str): Users's name
+
+    Raises
+    -------
+        400 : Bad Request
+
+
+    Returns
+    -------
+        Boolean
+    """
+
+    if not checkValidParameterString(user_name):
+        raise HTTPException(status_code=400, detail="Parámetros no válidos")
+
+    result_artist_exists = artist_collection.find_one({'name': user_name})
+
+    return True if result_artist_exists else False
+
 
 def check_artists_exists(artist_name: str) -> bool:
     """ Checks if the user or artists exists
@@ -266,34 +290,51 @@ def get_all_artists() -> list:
 
     return artists
 
-# * AUX METHODs
 
-
-def check_user_exists(user_name: str) -> bool:
-    """ Checks if the user or artists exists
+def get_play_count_artist(user_name: str) -> int:
+    """ Returns the total play count of all the artist songs
 
     Parameters
     ----------
-        user_name (str): Users's name
+        user_name (str) : Artist name
 
     Raises
     -------
         400 : Bad Request
-
+        404 : Artist Not Found
 
     Returns
     -------
-        Boolean
+        int
     """
 
     if not checkValidParameterString(user_name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
-    result_artist_exists = artist_collection.find_one({'name': user_name})
+    if not check_artists_exists(user_name):
+        raise HTTPException(status_code=404, detail="El artista no existe")
 
-    return True if result_artist_exists else False
+
+    resultado = fileSongCollection.aggregate([
+        {"$match": {"artist": user_name}},
+        {"$group": {"_id": None, "total": {"$sum": "$number_of_plays"}}}
+    ])
+
+    # Obtener el resultado total directamente
+    resultado_total = next(resultado, None)
+
+    if resultado_total is not None:
+        total_plays = resultado_total["total"]
+        return total_plays
+    else:
+        # Manejar el caso en el que no hay documentos que coincidan con la condición
+        return 0  # o cualquier otro valor predeterminado que desees devolver
 
 
+
+
+
+# * AUX METHODs
 
 def add_playback_history(user_name: str,song:str,MAX_NUMBER_PLAYBACK_HISTORY_SONGS:int):
 

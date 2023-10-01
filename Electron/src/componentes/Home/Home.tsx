@@ -47,9 +47,12 @@ export default function Home({ refreshSidebarData }: PropsHome) {
               propsPlaylists.push(propsPlaylist);
 
               setPlaylists(propsPlaylists);
-              setLoadingPlaylists(false);
             });
         }
+        return null;
+      })
+      .then(() => {
+        setLoadingPlaylists(false);
         return null;
       })
       .catch((error) => {
@@ -84,9 +87,12 @@ export default function Home({ refreshSidebarData }: PropsHome) {
             propsArtists.push(propsArtist);
 
             setArtists(propsArtists);
-            setLoadingArtists(false);
           });
         }
+        return null;
+      })
+      .then(() => {
+        setLoadingArtists(false);
         return null;
       })
       .catch(() => {

@@ -93,14 +93,17 @@ export default function Sidebar({ triggerReloadSidebar }: PropsSidebar) {
           .join(',');
       })
       .then((sidebarPlaylistNames) => {
-        return fetch(
-          `${Global.backendBaseUrl}playlists/multiple/${sidebarPlaylistNames}`,
-          {
-            headers: { 'Access-Control-Allow-Origin': '*' },
-          }
-        );
+        if (sidebarPlaylistNames) {
+          return fetch(
+            `${Global.backendBaseUrl}playlists/multiple/${sidebarPlaylistNames}`,
+            {
+              headers: { 'Access-Control-Allow-Origin': '*' },
+            }
+          );
+        }
+        return null;
       })
-      .then((res) => res.json())
+      .then((res) => res?.json())
       .then((res) => {
         if (res.playlists) {
           const propsPlaylists: PropsPlaylist[] = [];
@@ -130,6 +133,7 @@ export default function Sidebar({ triggerReloadSidebar }: PropsSidebar) {
       .catch((error) => {
         console.log(error);
         console.log('No se pudieron obtener las playlists');
+        setLoading(false);
       });
   }, []);
   /* triggered when other component wants to reload the sidebar */

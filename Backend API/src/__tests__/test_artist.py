@@ -1,6 +1,7 @@
 from fastapi.testclient import TestClient
 from datetime import datetime
-from test_API.api_test_artist import create_artist, delete_artist, get_artist, update_artist , get_artists
+from test_API.api_test_artist import create_artist, delete_artist, get_artist, update_artist, get_artists, get_play_count_artist
+from test_API.api_test_song import create_song, delete_song, patch_song_number_plays
 import bcrypt
 import json
 import pytest
@@ -114,6 +115,45 @@ def test_update_playlists_correct(clear_test_data_db):
 
 
     res_delete_artist = delete_artist(name=name)
+    assert res_delete_artist.status_code == 202
+
+def test_get_play_count_artist_correct(clear_test_data_db):
+
+    song_name = "8232392323623823723989"
+    song_name_2 = "82323923236238237239892"
+    file_path = "__tests__/assets/song.mp3"
+    artista = "8232392323623823723"
+    genero = "Pop"
+    foto = "https://foto"
+    password = "hola"
+
+    res_create_artist = create_artist(name=artista,password=password,photo=foto)
+    assert res_create_artist.status_code == 201
+
+    res_create_song = create_song(name=song_name,file_path=file_path,artista=artista,genero=genero,foto=foto)
+    assert res_create_song.status_code == 201
+
+    res_create_song = create_song(name=song_name_2,file_path=file_path,artista=artista,genero=genero,foto=foto)
+    assert res_create_song.status_code == 201
+
+    res_patch_song = patch_song_number_plays(name=song_name)
+    assert res_patch_song.status_code==204
+
+    res_patch_song = patch_song_number_plays(name=song_name_2)
+    assert res_patch_song.status_code==204
+
+    res_get_play_count_artist = get_play_count_artist(artista)
+    assert res_get_play_count_artist.status_code == 200
+    assert res_get_play_count_artist.json()["play_count"]==2
+
+
+    res_delete_song = delete_song(song_name)
+    assert res_delete_song.status_code == 202
+
+    res_delete_song = delete_song(song_name_2)
+    assert res_delete_song.status_code == 202
+
+    res_delete_artist = delete_artist(artista)
     assert res_delete_artist.status_code == 202
 
 

@@ -47,3 +47,8 @@ def delete_artist(name: str):
 def get_artists():
     response = client.get(f"/artistas/")
     return response
+
+
+def get_play_count_artist(name: str):
+    response = client.get(f"/artistas/{name}/reproducciones")
+    return response

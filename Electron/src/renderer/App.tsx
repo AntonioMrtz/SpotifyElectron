@@ -4,12 +4,10 @@ import Playlist from 'componentes/Playlist/Playlist';
 import StickyHeader from 'componentes/StickyHeader/StickyHeader';
 import Global from 'global/global';
 import Genre from 'componentes/Genre/Genre';
-import UserProfile, {
-  UserType,
-} from 'componentes/Profile/UserProfile/UserProfile';
 import ShowAllItems from 'componentes/ShowAllItems/ShowAllItems';
 import StartMenu from 'componentes/StartMenu/StartMenu';
 import { ShowAllItemsTypes } from 'componentes/ShowAllItems/types/PropsShowAllItems';
+import UserProfile from 'componentes/Profile/UserProfile/UserProfile';
 import styles from './AppCss.module.css';
 import Sidebar from '../componentes/Sidebar/Sidebar';
 import Home from '../componentes/Home/Home';
@@ -75,7 +73,7 @@ function App() {
                   element=<UserProfile
                     refreshSidebarData={reloadSidebar}
                     changeSongName={changeSongName}
-                    userType={UserType.USER}
+                    userType={Global.UserType.USER}
                   />
                 />
 
@@ -84,7 +82,7 @@ function App() {
                   element=<UserProfile
                     refreshSidebarData={reloadSidebar}
                     changeSongName={changeSongName}
-                    userType={UserType.ARTIST}
+                    userType={Global.UserType.ARTIST}
                   />
                 />
 

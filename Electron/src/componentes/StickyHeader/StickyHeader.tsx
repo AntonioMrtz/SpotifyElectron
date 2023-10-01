@@ -6,6 +6,11 @@ import styles from './stickyHeader.module.css';
 import groupIcon from '../../assets/imgs/groupIcon.png';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 
+const linkUserTypeMap: Record<string, string> = {
+  artista: 'artist',
+  usuario: 'user',
+};
+
 export default function StickyHeader() {
   const navigate = useNavigate();
 
@@ -13,9 +18,10 @@ export default function StickyHeader() {
 
   const handleThumbnail = async () => {
     const username = Token.getTokenUsername();
+    const type = Token.getTokenRole();
 
     const resFetchUser = await fetch(
-      `${Global.backendBaseUrl}usuarios/${username}`
+      `${Global.backendBaseUrl}${type}s/${username}`
     );
 
     const resFetchUserJson = await resFetchUser.json();
@@ -31,8 +37,9 @@ export default function StickyHeader() {
 
   const handleProfileButon = async () => {
     const username = Token.getTokenUsername();
+    const type = Token.getTokenRole();
 
-    navigate(`/user/${username}`);
+    navigate(`/${linkUserTypeMap[type]}/${username}`);
   };
 
   const [visibleBackground, setVisibleBackground] = useState({});

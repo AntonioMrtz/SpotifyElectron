@@ -10,7 +10,6 @@ import Global from 'global/global';
 import Token from 'utils/token';
 import { InfoPopoverType } from 'componentes/AdvancedUIComponents/InfoPopOver/types/InfoPopover';
 import ConfirmationModal from 'componentes/AdvancedUIComponents/InfoPopOver/InfoPopover';
-import { UserType } from 'componentes/Profile/UserProfile/UserProfile';
 import GenreOption from './GenreOption/GenreOption';
 import styles from './addSongPlayListAccordion.module.css';
 
@@ -42,7 +41,7 @@ export default function AddSongPlayListAccordion({
   const checkIsArtist = async () => {
     const role = Token.getTokenRole();
 
-    if (role === UserType.ARTIST) {
+    if (role === Global.UserType.ARTIST) {
       setIsArtist(true);
     } else {
       setIsArtist(false);

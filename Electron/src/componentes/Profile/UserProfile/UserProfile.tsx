@@ -8,13 +8,8 @@ import { useParams } from 'react-router-dom';
 import styles from './userProfile.module.css';
 import defaultThumbnailPlaylist from '../../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 
-export enum UserType {
-  USER = 'usuario',
-  ARTIST = 'artista',
-}
-
 interface PropsUserProfile {
-  userType: UserType;
+  userType: Global.UserType;
   refreshSidebarData: Function;
   changeSongName: Function;
 }
@@ -174,9 +169,9 @@ export default function UserProfile({
     loadPlaylists(resGetUserJson);
     setThumbnail(resGetUserJson.photo);
 
-    if (userType === UserType.USER) {
+    if (userType === Global.UserType.USER) {
       loadPlaybackHistory(resGetUserJson);
-    } else if (userType === UserType.ARTIST) {
+    } else if (userType === Global.UserType.ARTIST) {
       loadSongsFromArtist(resGetUserJson);
       loadPlayCount();
     }
@@ -229,7 +224,7 @@ export default function UserProfile({
           />
           <div className="d-flex flex-column">
             <div className="d-flex flex-row align-items-center">
-              {userType === UserType.ARTIST && (
+              {userType === Global.UserType.ARTIST && (
                 <img
                   style={{ width: '24px', height: '24px' }}
                   alt="verified icon"
@@ -239,7 +234,7 @@ export default function UserProfile({
               )}
 
               <p style={{ textTransform: 'capitalize', marginTop: '4px' }}>
-                {userType} {userType === UserType.ARTIST && 'verificado'}
+                {userType} {userType === Global.UserType.ARTIST && 'verificado'}
               </p>
             </div>
             <h1>{id}</h1>
@@ -250,14 +245,14 @@ export default function UserProfile({
                 fontSize: '0.75rem',
               }}
             >
-              {userType === UserType.ARTIST &&
+              {userType === Global.UserType.ARTIST &&
                 `${artistPlayCount} reproducciones totales`}
             </p>
           </div>
         </div>
       </div>
 
-      {userType === UserType.ARTIST && (
+      {userType === Global.UserType.ARTIST && (
         <div className="p-4">
           <h2
             style={{
@@ -317,7 +312,7 @@ export default function UserProfile({
         </div>
       </div>
 
-      {userType === UserType.USER && (
+      {userType === Global.UserType.USER && (
         <div className="p-4">
           <h2
             style={{

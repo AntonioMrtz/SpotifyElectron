@@ -9,6 +9,11 @@ namespace Global {
     canGoBack: boolean | undefined;
     canGoForward: boolean | undefined;
   }
+
+  export enum UserType {
+    USER = 'usuario',
+    ARTIST = 'artista',
+  }
 }
 
 export default Global;

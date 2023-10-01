@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import Global from 'global/global';
 import Token from 'utils/token';
 import LoadingCircle from 'componentes/AdvancedUIComponents/LoadingCircle/LoadingCircle';
+import { backendPathFromUserType } from 'utils/role';
 import styles from './sideBarCss.module.css';
 import Playlist from './Playlist/Playlist';
 import ModalAddSongPlaylist from './ModalAddSongPlaylist/ModalAddSongPlaylist';
@@ -83,8 +84,9 @@ export default function Sidebar({ triggerReloadSidebar }: PropsSidebar) {
 
   const handlePlaylists = useCallback(async () => {
     const username = Token.getTokenUsername();
+    const role = Token.getTokenRole();
 
-    const fetchUrlGetUser = `${Global.backendBaseUrl}usuarios/${username}`;
+    const fetchUrlGetUser = `${Global.backendBaseUrl}${backendPathFromUserType[role]}/${username}`;
     fetch(fetchUrlGetUser)
       .then((resFetchUrlGetUser) => resFetchUrlGetUser.json())
       .then((resFetchUrlGetUserJson) => {

@@ -5,6 +5,7 @@ import InfoPopover from 'componentes/AdvancedUIComponents/InfoPopOver/InfoPopove
 import { InfoPopoverType } from 'componentes/AdvancedUIComponents/InfoPopOver/types/InfoPopover';
 import Global from 'global/global';
 import Token from 'utils/token';
+import { backendPathFromUserType } from 'utils/role';
 import styles from '../contextMenu.module.css';
 import { PropsContextMenuSong } from '../types/PropsContextMenu';
 
@@ -44,8 +45,9 @@ export default function ContextMenuSong({
 
   const handlePlaylists = async () => {
     const username = Token.getTokenUsername();
+    const role = Token.getTokenRole();
 
-    const fetchUrlGetUser = `${Global.backendBaseUrl}usuarios/${username}`;
+    const fetchUrlGetUser = `${Global.backendBaseUrl}${backendPathFromUserType[role]}/${username}`;
 
     fetch(fetchUrlGetUser)
       .then((resFetchUrlGetUser) => resFetchUrlGetUser.json())

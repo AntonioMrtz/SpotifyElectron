@@ -8,6 +8,7 @@ import ShowAllItems from 'componentes/ShowAllItems/ShowAllItems';
 import StartMenu from 'componentes/StartMenu/StartMenu';
 import { ShowAllItemsTypes } from 'componentes/ShowAllItems/types/PropsShowAllItems';
 import UserProfile from 'componentes/Profile/UserProfile/UserProfile';
+import { UserType } from 'utils/role';
 import styles from './AppCss.module.css';
 import Sidebar from '../componentes/Sidebar/Sidebar';
 import Home from '../componentes/Home/Home';
@@ -73,7 +74,7 @@ function App() {
                   element=<UserProfile
                     refreshSidebarData={reloadSidebar}
                     changeSongName={changeSongName}
-                    userType={Global.UserType.USER}
+                    userType={UserType.USER}
                   />
                 />
 
@@ -82,7 +83,7 @@ function App() {
                   element=<UserProfile
                     refreshSidebarData={reloadSidebar}
                     changeSongName={changeSongName}
-                    userType={Global.UserType.ARTIST}
+                    userType={UserType.ARTIST}
                   />
                 />
 

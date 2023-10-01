@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Global from 'global/global';
 import Token from 'utils/token';
+import { backendPathFromUserType } from 'utils/role';
 import styles from './stickyHeader.module.css';
 import groupIcon from '../../assets/imgs/groupIcon.png';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
@@ -18,10 +19,10 @@ export default function StickyHeader() {
 
   const handleThumbnail = async () => {
     const username = Token.getTokenUsername();
-    const type = Token.getTokenRole();
+    const role = Token.getTokenRole();
 
     const resFetchUser = await fetch(
-      `${Global.backendBaseUrl}${type}s/${username}`
+      `${Global.backendBaseUrl}${backendPathFromUserType[role]}/${username}`
     );
 
     const resFetchUserJson = await resFetchUser.json();

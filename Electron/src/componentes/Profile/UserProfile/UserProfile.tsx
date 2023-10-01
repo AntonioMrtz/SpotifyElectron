@@ -5,11 +5,12 @@ import { PropsPlaylistCard } from 'componentes/Cards/PlaylistCard/types/propsPla
 import SongCard, { PropsSongCard } from 'componentes/SongCard/SongCard';
 import PlaylistCard from 'componentes/Cards/PlaylistCard/PlaylistCard';
 import { useParams } from 'react-router-dom';
+import { UserType, backendPathFromUserType } from 'utils/role';
 import styles from './userProfile.module.css';
 import defaultThumbnailPlaylist from '../../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 
 interface PropsUserProfile {
-  userType: Global.UserType;
+  userType: UserType;
   refreshSidebarData: Function;
   changeSongName: Function;
 }
@@ -159,7 +160,7 @@ export default function UserProfile({
   };
 
   const handleLoadProfile = async () => {
-    const fetchUrlGetUser = `${Global.backendBaseUrl}${userType}s/${id}`;
+    const fetchUrlGetUser = `${Global.backendBaseUrl}${backendPathFromUserType[userType]}/${id}`;
 
     const resGetUser = await fetch(fetchUrlGetUser);
 
@@ -169,9 +170,9 @@ export default function UserProfile({
     loadPlaylists(resGetUserJson);
     setThumbnail(resGetUserJson.photo);
 
-    if (userType === Global.UserType.USER) {
+    if (userType === UserType.USER) {
       loadPlaybackHistory(resGetUserJson);
-    } else if (userType === Global.UserType.ARTIST) {
+    } else if (userType === UserType.ARTIST) {
       loadSongsFromArtist(resGetUserJson);
       loadPlayCount();
     }
@@ -224,7 +225,7 @@ export default function UserProfile({
           />
           <div className="d-flex flex-column">
             <div className="d-flex flex-row align-items-center">
-              {userType === Global.UserType.ARTIST && (
+              {userType === UserType.ARTIST && (
                 <img
                   style={{ width: '24px', height: '24px' }}
                   alt="verified icon"
@@ -234,7 +235,7 @@ export default function UserProfile({
               )}
 
               <p style={{ textTransform: 'capitalize', marginTop: '4px' }}>
-                {userType} {userType === Global.UserType.ARTIST && 'verificado'}
+                {userType} {userType === UserType.ARTIST && 'verificado'}
               </p>
             </div>
             <h1>{id}</h1>
@@ -245,14 +246,14 @@ export default function UserProfile({
                 fontSize: '0.75rem',
               }}
             >
-              {userType === Global.UserType.ARTIST &&
+              {userType === UserType.ARTIST &&
                 `${artistPlayCount} reproducciones totales`}
             </p>
           </div>
         </div>
       </div>
 
-      {userType === Global.UserType.ARTIST && (
+      {userType === UserType.ARTIST && (
         <div className="p-4">
           <h2
             style={{
@@ -312,7 +313,7 @@ export default function UserProfile({
         </div>
       </div>
 
-      {userType === Global.UserType.USER && (
+      {userType === UserType.USER && (
         <div className="p-4">
           <h2
             style={{

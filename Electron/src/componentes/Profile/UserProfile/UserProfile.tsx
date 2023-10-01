@@ -32,6 +32,7 @@ export default function UserProfile({
   const [playlists, setPlaylists] = useState<PropsPlaylistCard[]>([]);
   const [playbackHistory, setPlaybackHistory] = useState<PropsSongCard[]>([]);
   const [uploadedSongs, setUploadedSongs] = useState<PropsSongCard[]>([]);
+  const [artistPlayCount, setArtistPlayCount] = useState(0);
 
   const loadPlaylists = async (resGetUserJson: any) => {
     const playlistPromises: Promise<any>[] = [];
@@ -148,6 +149,20 @@ export default function UserProfile({
       });
   };
 
+  const loadPlayCount = () => {
+    fetch(`${Global.backendBaseUrl}artistas/${id}/reproducciones`)
+      .then((resFetchPlayCount) => {
+        return resFetchPlayCount.json();
+      })
+      .then((resFetchPlayCountJson) => {
+        setArtistPlayCount(resFetchPlayCountJson.play_count);
+        return null;
+      })
+      .catch(() => {
+        console.log('Unable to get play count from artist');
+      });
+  };
+
   const handleLoadProfile = async () => {
     const fetchUrlGetUser = `${Global.backendBaseUrl}${userType}s/${id}`;
 
@@ -163,6 +178,7 @@ export default function UserProfile({
       loadPlaybackHistory(resGetUserJson);
     } else if (userType === UserType.ARTIST) {
       loadSongsFromArtist(resGetUserJson);
+      loadPlayCount();
     }
   };
 
@@ -227,6 +243,16 @@ export default function UserProfile({
               </p>
             </div>
             <h1>{id}</h1>
+            <p
+              style={{
+                textTransform: 'capitalize',
+                marginTop: '4px',
+                fontSize: '0.75rem',
+              }}
+            >
+              {userType === UserType.ARTIST &&
+                `${artistPlayCount} reproducciones totales`}
+            </p>
           </div>
         </div>
       </div>

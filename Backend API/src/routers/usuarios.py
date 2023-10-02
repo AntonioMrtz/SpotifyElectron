@@ -1,10 +1,11 @@
+import services.user_service as user_service
+import services.all_users_service as all_users_service
+import services.security_service as security_service
 from fastapi.responses import Response
 from fastapi import APIRouter, Depends, Header, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 from typing import Annotated, Union
-import services.user_service as user_service
-import services.all_users_service as all_users_service
-import services.security_service as security_service
+from services.security_service import get_jwt_token
 import json
 
 router = APIRouter(
@@ -91,7 +92,7 @@ def post_usuario(nombre: str, foto: str, password: str) -> Response:
 
 
 @router.put("/{nombre}", tags=["usuarios"])
-def update_usuario(nombre: str, foto: str, historial_canciones: list, playlists: list,  playlists_guardadas: list) -> Response:
+def update_usuario(nombre: str, foto: str, historial_canciones: list, playlists: list,  playlists_guardadas: list,authorization: Annotated[Union[str, None], Header()] = None) -> Response:
     """ Actualiza los parámetros del usuario con nombre "nombre"
 
     Parameters
@@ -105,6 +106,7 @@ def update_usuario(nombre: str, foto: str, historial_canciones: list, playlists:
     Returns
     -------
         Response 204 No content
+        Response 401 Unauthorized
 
     Raises
     -------
@@ -112,8 +114,13 @@ def update_usuario(nombre: str, foto: str, historial_canciones: list, playlists:
         Not Found 404: No existe un usuario con el nombre "nombre"
     """
 
-    user_service.update_user(
-        name=nombre, photo=foto, playback_history=historial_canciones, playlists=playlists, saved_playlists=playlists_guardadas)
+    if authorization is None:
+        raise HTTPException(
+            status_code=401, detail="Authorization header is missing")
+
+    jwt_token = get_jwt_token(authorization)
+
+    user_service.update_user(name=nombre, photo=foto, playback_history=historial_canciones, playlists=playlists, saved_playlists=playlists_guardadas,token=jwt_token)
     return Response(None, 204)
 
 

@@ -9,7 +9,15 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { app, BrowserWindow, shell, ipcMain, clipboard, Data } from 'electron';
+import {
+  app,
+  BrowserWindow,
+  shell,
+  ipcMain,
+  clipboard,
+  Data,
+  session,
+} from 'electron';
 import Global from 'global/global';
 import { resolveHtmlPath } from './util';
 
@@ -109,11 +117,24 @@ const createWindow = async () => {
     if (!mainWindow) {
       throw new Error('"mainWindow" is not defined');
     }
+
     if (process.env.START_MINIMIZED) {
       mainWindow.minimize();
     } else {
       mainWindow.show();
     }
+
+    session.defaultSession.webRequest.onBeforeSendHeaders(
+      { urls: ['*://*/*'] },
+      async (details, callback) => {
+        details.requestHeaders.Authorization =
+          await mainWindow?.webContents.executeJavaScript(
+            'localStorage.getItem("jwt");',
+            true
+          );
+        callback({ requestHeaders: details.requestHeaders });
+      }
+    );
   });
 
   mainWindow.on('closed', () => {
@@ -150,3 +171,16 @@ app
     });
   })
   .catch(console.log);
+
+/* const getToken = () => {
+  if (!localStorage) {
+    return;
+  }
+  const jwt = localStorage.getItem('jwt');
+
+  if (jwt) {
+    return jwt;
+  }
+
+  return '';
+}; */

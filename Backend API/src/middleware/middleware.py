@@ -25,17 +25,17 @@ class CheckJwtAuth(BaseHTTPMiddleware):
             return False
 
     async def dispatch(self, request : Request, call_next):
-        #try:
-        if self.bypass_request(request):
-            response = await call_next(request)
-            return response
+        try:
+            if self.bypass_request(request):
+                response = await call_next(request)
+                return response
 
-        jwt = request.headers["authorization"]
-        if check_jwt_is_valid(jwt):
-            response = await call_next(request)
-            return response
-        else:
-            return Response(content="Credenciales inválidos", status_code=401)
+            jwt = request.headers["authorization"]
+            if check_jwt_is_valid(jwt):
+                response = await call_next(request)
+                return response
+            else:
+                return Response(content="Credenciales inválidos", status_code=401)
 
-        #except:
+        except:
             return Response(content="Credenciales inválidos", status_code=401)

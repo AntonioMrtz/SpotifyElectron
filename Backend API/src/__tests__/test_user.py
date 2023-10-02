@@ -112,15 +112,12 @@ def test_update_playlists_correct(clear_test_data_db):
     assert res_delete_user.status_code == 202
 
 
-
-
-
 # executes after all tests
 @pytest.fixture()
 def clear_test_data_db():
-    """ name = "8232392323623823723"
+    name = "8232392323623823723"
     delete_user(name=name)
 
     yield
     name = "8232392323623823723"
-    delete_user(name=name) """
+    delete_user(name=name)

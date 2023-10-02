@@ -20,8 +20,20 @@ else:
 
 
 def check_jwt_is_user(token: TokenData, user: str) -> bool:
+    """ Check if user is the same as token user
 
-    #TODO documentar
+    Parameters
+    ----------
+        token (TokenData) : token with user data
+        user (str): user name
+
+    Raises
+    -------
+
+    Returns
+    -------
+        Boolean
+    """
 
     if token.username == user:
         return True

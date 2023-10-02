@@ -45,8 +45,20 @@ def check_song_exists(name: str) -> bool:
 
 
 def check_jwt_user_is_song_artist(token: TokenData, artist: str) -> bool:
+    """ Check if the user is the song artist
 
-    #TODO documentar
+    Parameters
+    ----------
+        token (TokenData): token with the user data
+        artist (str) : artist name
+
+    Raises
+    -------
+
+    Returns
+    -------
+        Boolean
+    """
 
     if token.username == artist:
         return True

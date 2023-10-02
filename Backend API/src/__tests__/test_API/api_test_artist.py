@@ -4,9 +4,9 @@ from fastapi.testclient import TestClient
 client = TestClient(app)
 
 
-def get_artist(name: str):
+def get_artist(name: str,headers : dict):
 
-    response = client.get(f"/artistas/{name}")
+    response = client.get(f"/artistas/{name}",headers=headers)
     return response
 
 

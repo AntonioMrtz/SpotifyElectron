@@ -1,4 +1,6 @@
-from fastapi import FastAPI, APIRouter, UploadFile, status
+from fastapi import FastAPI, APIRouter, UploadFile, status , Depends , Header , HTTPException
+from typing import Annotated,Union
+from services.security_service import get_jwt_token
 from model.Genre import Genre
 from fastapi.responses import Response
 import services.dto_service as dto_service
@@ -36,7 +38,7 @@ def get_cancion(nombre: str) -> Response:
 
 
 @router.post("/")
-async def post_cancion(nombre: str, artista: str, genero: Genre, foto: str, file: UploadFile) -> Response:
+async def post_cancion(nombre: str, artista: str, genero: Genre, foto: str, file: UploadFile,authorization: Annotated[Union[str, None], Header()] = None) -> Response:
     """ Registra la canción con los parámetros "nombre","artista" y "género"
 
     Parameters
@@ -57,7 +59,14 @@ async def post_cancion(nombre: str, artista: str, genero: Genre, foto: str, file
     """
 
     readFile = await file.read()
-    await song_service.create_song(nombre, artista, genero, foto, readFile)
+
+    if authorization is None:
+        raise HTTPException(
+            status_code=401, detail="Authorization header is missing")
+
+    jwt_token = get_jwt_token(authorization)
+
+    await song_service.create_song(nombre, artista, genero, foto, readFile,jwt_token)
     return Response(None, 201)
 
 

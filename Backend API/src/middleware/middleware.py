@@ -8,7 +8,7 @@ class CheckJwtAuth(BaseHTTPMiddleware):
     bypass_urls = {
 
         "GET": [ "/usuarios/whoami","/usuarios/whoami/","/docs","/docs/","/openapi.json"],
-        "POST": ["/usuarios/","/usuarios","/login/","/login"],
+        "POST": ["/usuarios/","/usuarios","/login/","/login","/artistas/","/artistas"],
     }
 
     bypass_methods = ["DELETE"]

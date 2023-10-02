@@ -6,6 +6,7 @@ from fastapi.responses import Response
 from model.Genre import Genre
 from model.Song import Song
 from services.artist_service import check_artists_exists, add_song_artist, delete_song_artist
+from model.TokenData import TokenData
 import base64
 import json
 import io
@@ -41,6 +42,17 @@ def check_song_exists(name: str) -> bool:
         Boolean
     """
     return True if fileSongCollection.find_one({'name': name}) else False
+
+
+def check_jwt_user_is_song_artist(token: TokenData, artist: str) -> bool:
+
+    #TODO documentar
+
+    if token.username == artist:
+        return True
+    else:
+        raise HTTPException(
+            status_code=401, detail="El usuario no es el creador de la canción")
 
 
 def get_song(name: str) -> Song:
@@ -134,7 +146,7 @@ def get_all_songs() -> list:
     return songs
 
 
-async def create_song(name: str, artist: str, genre: Genre, photo: str, file) -> None:
+async def create_song(name: str, artist: str, genre: Genre, photo: str, file, token : TokenData) -> None:
     """ Returns a Song file with attributes and a song encoded in base64 "
 
     Parameters
@@ -144,11 +156,14 @@ async def create_song(name: str, artist: str, genre: Genre, photo: str, file) ->
         genre (Genre): Genre of the song
         photo (str) : Url of the song thumbnail
         file (FileUpload): Mp3 file of the song
+        token (TokenData) : jwt token decoded
+
 
     Raises
     -------
         400 : Bad Request
         404 : Artist Not Found / Song not found
+        401 : Invalid credentials
 
     Returns
     -------
@@ -158,11 +173,16 @@ async def create_song(name: str, artist: str, genre: Genre, photo: str, file) ->
         raise HTTPException(
             status_code=400, detail="Parámetros no válidos o vacíos")
 
+    check_jwt_user_is_song_artist(token=token,artist=artist)
+
+    check_artists_exists(artist_name=artist)
+
     if check_song_exists(name=name):
         raise HTTPException(status_code=400, detail="La canción ya existe")
 
     if not check_artists_exists(artist_name=artist):
         raise HTTPException(status_code=404, detail="El artista no existe")
+
 
     try:
         # Assuming 'audio_bytes' contains the audio data in bytes

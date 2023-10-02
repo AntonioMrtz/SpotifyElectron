@@ -147,7 +147,7 @@ def get_cancion_dto(nombre: str) -> Response:
 
 
 @router.put("/{nombre}")
-def update_song(nombre: str,artist: str = None, foto: str = None, genre: Genre = None, nuevo_nombre: str = None) -> Response:
+def update_song(nombre: str, foto: str = None, genre: Genre = None, nuevo_nombre: str = None,authorization: Annotated[Union[str, None], Header()] = None) -> Response:
     """ Actualiza los parámetros de la cancion con nombre "nombre"
 
     Parameters
@@ -166,10 +166,17 @@ def update_song(nombre: str,artist: str = None, foto: str = None, genre: Genre =
     -------
         Bad Request 400: Parámetros introducidos no són válidos o vacíos
         Not Found 404: No existe una cancion con el nombre "nombre"
+        401
     """
 
+    if authorization is None:
+        raise HTTPException(
+            status_code=401, detail="Authorization header is missing")
+
+    jwt_token = get_jwt_token(authorization)
+
     song_service.update_song(
-        nombre, nuevo_nombre, foto, genre)
+        nombre, nuevo_nombre, foto, genre,jwt_token)
     return Response(None, 204)
 
 

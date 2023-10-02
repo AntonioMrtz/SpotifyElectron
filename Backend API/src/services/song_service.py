@@ -233,7 +233,7 @@ def delete_song(name: str) -> None:
         raise HTTPException(status_code=404, detail="La canción no existe")
 
 
-def update_song(name: str, nuevo_nombre: str, photo: str, genre: Genre) -> None:
+def update_song(name: str, nuevo_nombre: str, photo: str, genre: Genre,token : TokenData) -> None:
     """ Updates a song with name, url of thumbnail, duration, genre and number of plays, if empty parameter is not being updated "
 
     Parameters
@@ -243,6 +243,7 @@ def update_song(name: str, nuevo_nombre: str, photo: str, genre: Genre) -> None:
         photo (str): Url of Song thumbnail
         genre (Genre): Genre of the Song
         number_of_plays (int): Number of plays of the Song
+        token (TokenData) : token data of the user
 
     Raises
     -------
@@ -253,6 +254,7 @@ def update_song(name: str, nuevo_nombre: str, photo: str, genre: Genre) -> None:
     -------
     """
 
+
     if not checkValidParameterString(name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
@@ -260,6 +262,8 @@ def update_song(name: str, nuevo_nombre: str, photo: str, genre: Genre) -> None:
 
     if not result_song_exists:
         raise HTTPException(status_code=404, detail="La cancion no existe")
+
+    check_jwt_user_is_song_artist(token,result_song_exists.artist)
 
     if checkValidParameterString(nuevo_nombre):
         new_name = nuevo_nombre

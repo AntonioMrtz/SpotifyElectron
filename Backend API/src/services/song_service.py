@@ -146,13 +146,12 @@ def get_all_songs() -> list:
     return songs
 
 
-async def create_song(name: str, artist: str, genre: Genre, photo: str, file, token : TokenData) -> None:
+async def create_song(name: str, genre: Genre, photo: str, file, token : TokenData) -> None:
     """ Returns a Song file with attributes and a song encoded in base64 "
 
     Parameters
     ----------
         name (str): Song's name
-        artist (str) : Artist name
         genre (Genre): Genre of the song
         photo (str) : Url of the song thumbnail
         file (FileUpload): Mp3 file of the song
@@ -169,11 +168,11 @@ async def create_song(name: str, artist: str, genre: Genre, photo: str, file, to
     -------
     """
 
+    artist = token.username
+
     if not checkValidParameterString(name) or not checkValidParameterString(photo) or not checkValidParameterString(artist) or not Genre.checkValidGenre(genre.value):
         raise HTTPException(
             status_code=400, detail="Parámetros no válidos o vacíos")
-
-    check_jwt_user_is_song_artist(token=token,artist=artist)
 
     check_artists_exists(artist_name=artist)
 

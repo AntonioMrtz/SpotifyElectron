@@ -38,13 +38,12 @@ def get_cancion(nombre: str) -> Response:
 
 
 @router.post("/")
-async def post_cancion(nombre: str, artista: str, genero: Genre, foto: str, file: UploadFile,authorization: Annotated[Union[str, None], Header()] = None) -> Response:
+async def post_cancion(nombre: str,genero: Genre, foto: str, file: UploadFile,authorization: Annotated[Union[str, None], Header()] = None) -> Response:
     """ Registra la canción con los parámetros "nombre","artista" y "género"
 
     Parameters
     ----------
         nombre (str): Nombre de la canción
-        artista (str): Artista de la canción
         genero (Genre): Género musical de la canción
         foto (url): Género musical de la canción
 
@@ -56,6 +55,7 @@ async def post_cancion(nombre: str, artista: str, genero: Genre, foto: str, file
     Raises
     -------
         Bad Request 400: Parámetros introducidos no són válidos o vacíos
+        401
     """
 
     readFile = await file.read()
@@ -66,7 +66,7 @@ async def post_cancion(nombre: str, artista: str, genero: Genre, foto: str, file
 
     jwt_token = get_jwt_token(authorization)
 
-    await song_service.create_song(nombre, artista, genero, foto, readFile,jwt_token)
+    await song_service.create_song(nombre, genero, foto, readFile,jwt_token)
     return Response(None, 201)
 
 

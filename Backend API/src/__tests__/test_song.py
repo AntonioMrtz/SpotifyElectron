@@ -29,7 +29,7 @@ def test_post_cancion_correct(clear_test_data_db):
 
     jwt_headers = get_user_jwt_header(username=artista,password=password)
 
-    res_create_song = create_song(name=song_name,file_path=file_path,artista=artista,genero=genero,foto=foto,headers=jwt_headers)
+    res_create_song = create_song(name=song_name,file_path=file_path,genero=genero,foto=foto,headers=jwt_headers)
     assert res_create_song.status_code == 201
 
     res_delete_song = delete_song(song_name)
@@ -52,7 +52,7 @@ def test_post_cancion_user_as_artist(clear_test_data_db):
 
     jwt_headers = get_user_jwt_header(username=username,password=password)
 
-    res_create_song = create_song(name=song_name,file_path=file_path,artista=username,genero=genero,foto=foto,headers=jwt_headers)
+    res_create_song = create_song(name=song_name,file_path=file_path,genero=genero,foto=foto,headers=jwt_headers)
     assert res_create_song.status_code == 404
 
 
@@ -72,7 +72,7 @@ def test_post_cancion_correct_check_valid_duration(clear_test_data_db):
     jwt_headers = get_user_jwt_header(username=artista,password=password)
 
 
-    res_create_song = create_song(name=song_name,file_path=file_path,artista=artista,genero=genero,foto=foto,headers=jwt_headers)
+    res_create_song = create_song(name=song_name,file_path=file_path,genero=genero,foto=foto,headers=jwt_headers)
     assert res_create_song.status_code == 201
 
     res_get_song = get_song(name=song_name,headers=jwt_headers)
@@ -104,7 +104,7 @@ def test_post_cancion_correct_check_invalid_duration(clear_test_data_db):
     jwt_headers = get_user_jwt_header(username=artista,password=password)
 
 
-    res_create_song = create_song(name=song_name,file_path=file_path,artista=artista,genero=genero,foto=foto,headers=jwt_headers)
+    res_create_song = create_song(name=song_name,file_path=file_path,genero=genero,foto=foto,headers=jwt_headers)
     assert res_create_song.status_code == 201
 
     res_get_song = get_song(name=song_name,headers=jwt_headers)
@@ -136,7 +136,7 @@ def test_get_cancion_correct(clear_test_data_db):
     jwt_headers = get_user_jwt_header(username=artista,password=password)
 
 
-    res_create_song = create_song(name=song_name,file_path=file_path,artista=artista,genero=genero,foto=foto,headers=jwt_headers)
+    res_create_song = create_song(name=song_name,file_path=file_path,genero=genero,foto=foto,headers=jwt_headers)
     assert res_create_song.status_code == 201
 
     res_get_song = get_song(name=song_name,headers=jwt_headers)
@@ -195,7 +195,7 @@ def test_delete_cancion_correct(clear_test_data_db):
     jwt_headers = get_user_jwt_header(username=artista,password=password)
 
 
-    res_create_song = create_song(name=song_name,file_path=file_path,artista=artista,genero=genero,foto=foto,headers=jwt_headers)
+    res_create_song = create_song(name=song_name,file_path=file_path,genero=genero,foto=foto,headers=jwt_headers)
     assert res_create_song.status_code == 201
 
 
@@ -252,7 +252,7 @@ def test_patch_number_plays_cancion_correct(clear_test_data_db):
     jwt_headers = get_user_jwt_header(username=artista,password=password)
 
 
-    res_create_song = create_song(name=song_name,file_path=file_path,artista=artista,genero=genero,foto=foto,headers=jwt_headers)
+    res_create_song = create_song(name=song_name,file_path=file_path,genero=genero,foto=foto,headers=jwt_headers)
     assert res_create_song.status_code == 201
 
     res_patch_song = patch_song_number_plays(name=song_name,headers=jwt_headers)
@@ -333,7 +333,7 @@ def test_post_song_uploaded_songs_updated(clear_test_data_db):
 
     jwt_headers = get_user_jwt_header(username=artista,password=password)
 
-    res_create_song = create_song(name=song_name,file_path=file_path,artista=artista,genero=genero,foto=foto,headers=jwt_headers)
+    res_create_song = create_song(name=song_name,file_path=file_path,genero=genero,foto=foto,headers=jwt_headers)
     assert res_create_song.status_code == 201
 
     res_get_artist = get_artist(name=artista,headers=jwt_headers)
@@ -364,7 +364,7 @@ def test_post_song_uploaded_songs_bad_artist(clear_test_data_db):
     res_delete_artist = delete_artist(artista)
     assert res_delete_artist.status_code == 202
 
-    res_create_song = create_song(name=song_name,file_path=file_path,artista=artista,genero=genero,foto=foto,headers=jwt_headers)
+    res_create_song = create_song(name=song_name,file_path=file_path,genero=genero,foto=foto,headers=jwt_headers)
     assert res_create_song.status_code == 404
 
 def test_delete_song_uploaded_songs_updated(clear_test_data_db):
@@ -381,7 +381,7 @@ def test_delete_song_uploaded_songs_updated(clear_test_data_db):
 
     jwt_headers = get_user_jwt_header(username=artista,password=password)
 
-    res_create_song = create_song(name=song_name,file_path=file_path,artista=artista,genero=genero,foto=foto,headers=jwt_headers)
+    res_create_song = create_song(name=song_name,file_path=file_path,genero=genero,foto=foto,headers=jwt_headers)
     assert res_create_song.status_code == 201
 
 
@@ -409,7 +409,7 @@ def test_get_cancion_by_genre(clear_test_data_db):
 
     jwt_headers = get_user_jwt_header(username=artista,password=password)
 
-    res_create_song = create_song(name=song_name,file_path=file_path,artista=artista,genero=genero,foto=foto,headers=jwt_headers)
+    res_create_song = create_song(name=song_name,file_path=file_path,genero=genero,foto=foto,headers=jwt_headers)
     assert res_create_song.status_code == 201
 
     res_get_song_by_genre = get_songs_by_genre(genre=genero,headers=jwt_headers)

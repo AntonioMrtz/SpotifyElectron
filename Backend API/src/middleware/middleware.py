@@ -7,13 +7,16 @@ class CheckJwtAuth(BaseHTTPMiddleware):
 
     bypass_urls = {
 
-        "GET": [ "/usuarios/whoami","/usuarios/whoami/"],
+        "GET": [ "/usuarios/whoami","/usuarios/whoami/","/docs","/docs/","/openapi.json"],
         "POST": ["/usuarios/","/usuarios","/login/","/login"],
     }
 
     bypass_methods = ["DELETE"]
 
     def bypass_request(self,request : Request):
+        """ print(request.method)
+        print(request.url.path) """
+
         if request.method in self.bypass_methods:
             return True
         elif request.method in self.bypass_urls.keys() and request.url.path in self.bypass_urls[request.method]:

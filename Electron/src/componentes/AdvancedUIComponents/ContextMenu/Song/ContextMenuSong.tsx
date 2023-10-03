@@ -190,7 +190,7 @@ export default function ContextMenuSong({
         Math.floor(Math.random() * 1000)
       ).toString()}`;
 
-      const fetchPostSongUrl = `${Global.backendBaseUrl}playlists/?nombre=${newPlaylistName}&foto=foto&descripcion=Insertar+descripcion&creador=usuarioprovisionalcambiar`;
+      const fetchPostSongUrl = `${Global.backendBaseUrl}playlists/?nombre=${newPlaylistName}&foto=foto&descripcion=Insertar+descripcion`;
 
       const requestOptions = {
         method: 'POST',

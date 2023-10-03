@@ -202,10 +202,6 @@ export default function AddSongPlayListAccordion({
         }
       });
 
-      const username = Token.getTokenUsername();
-
-      url.searchParams.set('creador', username);
-
       if (!url.searchParams.get('descripcion')) {
         url.searchParams.set('descripcion', '');
       }

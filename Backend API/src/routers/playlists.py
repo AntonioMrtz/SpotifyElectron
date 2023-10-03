@@ -53,12 +53,12 @@ def post_playlist(nombre: str, foto: str, descripcion: str, nombres_canciones: l
     Returns
     -------
         Response 201 Created
-        401
-        404
 
     Raises
     -------
         Bad Request 400: Parámetros introducidos no són válidos o vacíos
+        Unauthorized 401
+        Not found 401
     """
 
     if authorization is None:
@@ -91,7 +91,7 @@ def update_playlist(nombre: str, foto: str, descripcion: str, nombres_canciones:
     Raises
     -------
         Bad Request 400: Parámetros introducidos no són válidos o vacíos
-        401
+        Unauthorized 401
         Not Found 404: No existe una playlist con el nombre "nombre"
     """
 

@@ -29,6 +29,8 @@ def check_jwt_is_user(token: TokenData, user: str) -> bool:
 
     Raises
     -------
+        Unauthorized 401
+
 
     Returns
     -------

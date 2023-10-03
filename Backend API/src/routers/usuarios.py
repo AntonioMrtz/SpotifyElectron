@@ -28,6 +28,7 @@ def get_whoAmI(authorization: Annotated[Union[str, None], Header()] = None) -> R
         Raises
         -------
             Bad Request 400: "nombre" es vacío o nulo
+            Unauthorized 401
             Not Found 404: No existe un usuario con el nombre "nombre"
         """
 
@@ -106,11 +107,11 @@ def update_usuario(nombre: str, foto: str, historial_canciones: list, playlists:
     Returns
     -------
         Response 204 No content
-        Response 401 Unauthorized
 
     Raises
     -------
         Bad Request 400: Parámetros introducidos no són válidos o vacíos
+        Unauthorized 401
         Not Found 404: No existe un usuario con el nombre "nombre"
     """
 

@@ -55,7 +55,7 @@ async def post_cancion(nombre: str, genero: Genre, foto: str, file: UploadFile, 
     Raises
     -------
         Bad Request 400: Parámetros introducidos no són válidos o vacíos
-        401
+        Unauthorized 401
     """
 
     readFile = await file.read()
@@ -165,7 +165,7 @@ def update_song(nombre: str, foto: str = None, genre: Genre = None, nuevo_nombre
     -------
         Bad Request 400: Parámetros introducidos no són válidos o vacíos
         Not Found 404: No existe una cancion con el nombre "nombre"
-        401
+        Unauthorized 401
     """
 
     if authorization is None:

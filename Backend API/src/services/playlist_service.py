@@ -21,7 +21,7 @@ else:
 
 
 def check_jwt_user_is_playlist_owner(token: TokenData, owner: str) -> bool:
-    """ Check if the user is the song artist
+    """ Check if the user is the playlist owner
 
     Parameters
     ----------
@@ -30,6 +30,7 @@ def check_jwt_user_is_playlist_owner(token: TokenData, owner: str) -> bool:
 
     Raises
     -------
+        Unauthorized 401
 
     Returns
     -------

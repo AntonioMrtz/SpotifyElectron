@@ -54,6 +54,7 @@ def check_jwt_user_is_song_artist(token: TokenData, artist: str) -> bool:
 
     Raises
     -------
+        Unauthorized 401
 
     Returns
     -------
@@ -173,8 +174,8 @@ async def create_song(name: str, genre: Genre, photo: str, file, token : TokenDa
     Raises
     -------
         400 : Bad Request
-        404 : Artist Not Found / Song not found
         401 : Invalid credentials
+        404 : Artist Not Found / Song not found
 
     Returns
     -------
@@ -260,6 +261,7 @@ def update_song(name: str, nuevo_nombre: str, photo: str, genre: Genre,token : T
     Raises
     -------
         400 : Bad Request
+        401 : Unauthorized
         404 : Song Not Found
 
     Returns

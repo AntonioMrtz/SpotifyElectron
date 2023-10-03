@@ -4,9 +4,9 @@ from fastapi.testclient import TestClient
 client = TestClient(app)
 
 
-def get_user(name: str,headers : dict):
+def get_user(name: str, headers: dict):
 
-    response = client.get(f"/usuarios/{name}",headers=headers)
+    response = client.get(f"/usuarios/{name}", headers=headers)
     return response
 
 
@@ -21,7 +21,7 @@ def create_user(name: str, photo: str, password: str):
     return response
 
 
-def update_user(name: str, photo: str, playlists: list, saved_playlists: list, playback_history: list,headers : dict):
+def update_user(name: str, photo: str, playlists: list, saved_playlists: list, playback_history: list, headers: dict):
 
     url = f"/usuarios/{name}/?foto={photo}"
 
@@ -34,7 +34,7 @@ def update_user(name: str, photo: str, playlists: list, saved_playlists: list, p
     file_type_header = {"Content-Type": "application/json"}
 
     response = client.put(
-        url, json=payload, headers={**file_type_header,**headers}
+        url, json=payload, headers={**file_type_header, **headers}
     )
 
     return response

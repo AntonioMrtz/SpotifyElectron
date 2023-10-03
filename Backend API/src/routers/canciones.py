@@ -1,5 +1,5 @@
-from fastapi import FastAPI, APIRouter, UploadFile, status , Depends , Header , HTTPException
-from typing import Annotated,Union
+from fastapi import FastAPI, APIRouter, UploadFile, status, Depends, Header, HTTPException
+from typing import Annotated, Union
 from services.security_service import get_jwt_token
 from model.Genre import Genre
 from fastapi.responses import Response
@@ -38,7 +38,7 @@ def get_cancion(nombre: str) -> Response:
 
 
 @router.post("/")
-async def post_cancion(nombre: str,genero: Genre, foto: str, file: UploadFile,authorization: Annotated[Union[str, None], Header()] = None) -> Response:
+async def post_cancion(nombre: str, genero: Genre, foto: str, file: UploadFile, authorization: Annotated[Union[str, None], Header()] = None) -> Response:
     """ Registra la canción con los parámetros "nombre","artista" y "género"
 
     Parameters
@@ -66,7 +66,7 @@ async def post_cancion(nombre: str,genero: Genre, foto: str, file: UploadFile,au
 
     jwt_token = get_jwt_token(authorization)
 
-    await song_service.create_song(nombre, genero, foto, readFile,jwt_token)
+    await song_service.create_song(nombre, genero, foto, readFile, jwt_token)
     return Response(None, 201)
 
 
@@ -145,9 +145,8 @@ def get_cancion_dto(nombre: str) -> Response:
     return Response(song_json, media_type="application/json", status_code=200)
 
 
-
 @router.put("/{nombre}")
-def update_song(nombre: str, foto: str = None, genre: Genre = None, nuevo_nombre: str = None,authorization: Annotated[Union[str, None], Header()] = None) -> Response:
+def update_song(nombre: str, foto: str = None, genre: Genre = None, nuevo_nombre: str = None, authorization: Annotated[Union[str, None], Header()] = None) -> Response:
     """ Actualiza los parámetros de la cancion con nombre "nombre"
 
     Parameters
@@ -176,7 +175,7 @@ def update_song(nombre: str, foto: str = None, genre: Genre = None, nuevo_nombre
     jwt_token = get_jwt_token(authorization)
 
     song_service.update_song(
-        nombre, nuevo_nombre, foto, genre,jwt_token)
+        nombre, nuevo_nombre, foto, genre, jwt_token)
     return Response(None, 204)
 
 

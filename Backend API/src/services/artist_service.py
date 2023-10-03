@@ -1,6 +1,7 @@
 from datetime import datetime
 from database.Database import Database
 from model.Artist import Artist
+from model.TokenData import TokenData
 from fastapi import HTTPException
 from services.utils import checkValidParameterString
 import bcrypt
@@ -81,6 +82,30 @@ def check_artists_exists(artist_name: str) -> bool:
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
     return True if artist_collection.find_one({'name': artist_name}) else False
+
+
+def check_jwt_artist_is_artist(token: TokenData, artist: str) -> bool:
+    """ Check if the user is the song artist
+
+    Parameters
+    ----------
+        token (TokenData): token with the user data
+        artist (str) : artist
+
+    Raises
+    -------
+        401
+
+    Returns
+    -------
+        Boolean
+    """
+
+    if token.username == artist:
+        return True
+    else:
+        raise HTTPException(
+            status_code=401, detail="El usuario no es el creador de la canción")
 
 
 def add_song_artist(artist_name: str, song_name: str):
@@ -209,7 +234,7 @@ def create_artist(name: str, photo: str, password: str) -> None:
     return True if result.acknowledged else False
 
 
-def update_artist(name: str, photo: str, playlists: list, saved_playlists: list, playback_history: list, uploaded_songs: list) -> None:
+def update_artist(name: str, photo: str, playlists: list, saved_playlists: list, playback_history: list, uploaded_songs: list,token : TokenData) -> None:
     """ Updates a artist , duplicated playlists and songs wont be added
 
     Parameters
@@ -219,6 +244,7 @@ def update_artist(name: str, photo: str, playlists: list, saved_playlists: list,
         playlists (list) : artists playlists
         playlists (list) : others artists playlists saved by artist with name "name"
         playback_history (list) : song names of playback history of the artist
+        token (TokenData) : token with data of the artist
 
 
     Raises
@@ -230,8 +256,11 @@ def update_artist(name: str, photo: str, playlists: list, saved_playlists: list,
     -------
     """
 
+
     if not checkValidParameterString(name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
+
+    check_jwt_artist_is_artist(token=token,artist=name)
 
     result_artist_exists = artist_collection.find_one({'name': name})
 

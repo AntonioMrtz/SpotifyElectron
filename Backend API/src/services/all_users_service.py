@@ -2,7 +2,7 @@ from fastapi import HTTPException
 from services.utils import checkValidParameterString
 from database.Database import Database
 from model.UserType import User_Type
-from enum import Enum
+from model.TokenData import TokenData
 from sys import modules
 import services.user_service as user_service
 import services.artist_service as artist_service
@@ -24,15 +24,38 @@ else:
 
 services_map = {
 
-    User_Type.USER : user_service,
-    User_Type.ARTIST : artist_service,
+    User_Type.USER: user_service,
+    User_Type.ARTIST: artist_service,
 
 }
 
 
-
 MAX_NUMBER_PLAYBACK_HISTORY_SONGS = 5
 
+
+def check_jwt_is_user(token: TokenData, user: str) -> bool:
+    """ Check if user is the same as token user
+
+    Parameters
+    ----------
+        token (TokenData) : token with user data
+        user (str): user name
+
+    Raises
+    -------
+        Unauthorized 401
+
+
+    Returns
+    -------
+        Boolean
+    """
+
+    if token.username == user:
+        return True
+    else:
+        raise HTTPException(
+            status_code=401, detail="El usuario está modificando otro usuario")
 
 
 def isArtistOrUser(user_name: str) -> User_Type or null:
@@ -55,7 +78,6 @@ def isArtistOrUser(user_name: str) -> User_Type or null:
     if not checkValidParameterString(user_name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
-
     if user_collection.find_one({'name': user_name}):
         return User_Type.USER
 
@@ -64,7 +86,6 @@ def isArtistOrUser(user_name: str) -> User_Type or null:
 
     else:
         raise HTTPException(status_code=404, detail="Usuario no existe")
-
 
 
 def check_user_exists(user_name: str) -> bool:
@@ -92,7 +113,8 @@ def check_user_exists(user_name: str) -> bool:
 
     return result_user_exists or result_artist_exists
 
-def check_song_exists(name:str) -> bool:
+
+def check_song_exists(name: str) -> bool:
     """ Check if the song exists or not
 
     Parameters
@@ -108,7 +130,8 @@ def check_song_exists(name:str) -> bool:
     """
     return True if file_song_collection.find_one({'name': name}) else False
 
-def check_playlist_exists(name:str) -> bool:
+
+def check_playlist_exists(name: str) -> bool:
     """ Check if the song exists or not
 
     Parameters
@@ -125,18 +148,20 @@ def check_playlist_exists(name:str) -> bool:
     return True if playlist_collection.find_one({'name': name}) else False
 
 
-def add_playback_history(user_name: str, song: str) -> None:
+def add_playback_history(user_name: str, song: str, token: TokenData) -> None:
     """ Updates the playback history of the user or artist
 
     Parameters
     ----------
         user_name (str): Users's name
         song (str) : Song that is going to be added to the playback history
+        token (TokenData) : token with user data
 
 
     Raises
     -------
         400 : Bad Request
+        401 : Unauthorized
         404 : User Not Found / Song not found
 
     Returns
@@ -146,6 +171,8 @@ def add_playback_history(user_name: str, song: str) -> None:
     if not checkValidParameterString(user_name) or not checkValidParameterString(song):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
+    check_jwt_is_user(token=token, user=user_name)
+
     if not check_user_exists(user_name=user_name):
         raise HTTPException(status_code=404, detail="El usuario no existe")
 
@@ -154,20 +181,24 @@ def add_playback_history(user_name: str, song: str) -> None:
 
     user_type = isArtistOrUser(user_name)
 
-    services_map[user_type].add_playback_history(user_name=user_name,song=song, MAX_NUMBER_PLAYBACK_HISTORY_SONGS=MAX_NUMBER_PLAYBACK_HISTORY_SONGS)
+    services_map[user_type].add_playback_history(
+        user_name=user_name, song=song, MAX_NUMBER_PLAYBACK_HISTORY_SONGS=MAX_NUMBER_PLAYBACK_HISTORY_SONGS)
 
 
-def add_saved_playlist(user_name: str, playlist_name: str) -> None:
+def add_saved_playlist(user_name: str, playlist_name: str, token: TokenData) -> None:
     """ Updates the saved playlist of the user
 
     Parameters
     ----------
         user_name (str): Users's name
         playlist_name (str) : Playlist thats going to be added to saved playlist of the user
+        token (TokenData) : token with user data
+
 
     Raises
     -------
         400 : Bad Request
+        401 : Unauthorized
         404 : User Not Found / Playlist not found
 
     Returns
@@ -177,6 +208,8 @@ def add_saved_playlist(user_name: str, playlist_name: str) -> None:
     if not checkValidParameterString(user_name) or not checkValidParameterString(playlist_name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
+    check_jwt_is_user(token=token, user=user_name)
+
     if not check_user_exists(user_name=user_name):
         raise HTTPException(status_code=404, detail="El usuario no existe")
 
@@ -185,21 +218,23 @@ def add_saved_playlist(user_name: str, playlist_name: str) -> None:
 
     user_type = isArtistOrUser(user_name)
 
-    services_map[user_type].add_saved_playlist(user_name=user_name,playlist_name=playlist_name)
+    services_map[user_type].add_saved_playlist(
+        user_name=user_name, playlist_name=playlist_name)
 
 
-
-def delete_saved_playlist(user_name: str, playlist_name: str) -> None:
+def delete_saved_playlist(user_name: str, playlist_name: str, token: TokenData) -> None:
     """ Updates the saved playlist of the user
 
     Parameters
     ----------
         user_name (str): Users's name
         playlist_name (str) : Playlist thats going to be deleted to saved playlist of the user
+        token (TokenData) : token with user data
 
     Raises
     -------
         400 : Bad Request
+        401 : Unauthorized
         404 : User Not Found / Playlist not found
 
     Returns
@@ -209,6 +244,8 @@ def delete_saved_playlist(user_name: str, playlist_name: str) -> None:
     if not checkValidParameterString(user_name) or not checkValidParameterString(playlist_name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
+    check_jwt_is_user(token=token, user=user_name)
+
     if not check_user_exists(user_name=user_name):
         raise HTTPException(status_code=404, detail="El usuario no existe")
 
@@ -217,21 +254,23 @@ def delete_saved_playlist(user_name: str, playlist_name: str) -> None:
 
     user_type = isArtistOrUser(user_name)
 
-    services_map[user_type].delete_saved_playlist(user_name=user_name,playlist_name=playlist_name)
+    services_map[user_type].delete_saved_playlist(
+        user_name=user_name, playlist_name=playlist_name)
 
 
-
-def add_playlist_to_owner(user_name: str, playlist_name: str) -> None:
+def add_playlist_to_owner(user_name: str, playlist_name: str, token: TokenData) -> None:
     """ Adds the playlist to the user that created it
 
     Parameters
     ----------
         user_name (str): Users's name
         playlist_name (str) : Playlist name
+        token (TokenData) : token with user data
 
     Raises
     -------
         400 : Bad Request
+        401 : Unauthorized
         404 : User Not Found / Playlist not found
 
     Returns
@@ -241,6 +280,7 @@ def add_playlist_to_owner(user_name: str, playlist_name: str) -> None:
     if not checkValidParameterString(user_name) or not checkValidParameterString(playlist_name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
+    check_jwt_is_user(token=token, user=user_name)
 
     if not check_playlist_exists(playlist_name):
         raise HTTPException(status_code=404, detail="La playlist no existe")
@@ -250,7 +290,8 @@ def add_playlist_to_owner(user_name: str, playlist_name: str) -> None:
 
     user_type = isArtistOrUser(user_name)
 
-    services_map[user_type].add_playlist_to_owner(user_name=user_name,playlist_name=playlist_name)
+    services_map[user_type].add_playlist_to_owner(
+        user_name=user_name, playlist_name=playlist_name)
 
 
 def delete_playlist_from_owner(playlist_name: str) -> None:
@@ -282,4 +323,5 @@ def delete_playlist_from_owner(playlist_name: str) -> None:
 
     user_type = isArtistOrUser(user_name)
 
-    services_map[user_type].delete_playlist_from_owner(user_name=user_name,playlist_name=playlist_name)
+    services_map[user_type].delete_playlist_from_owner(
+        user_name=user_name, playlist_name=playlist_name)

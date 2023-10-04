@@ -123,7 +123,7 @@ def create_playlist(name: str, photo: str, description: str, song_names: list, t
     result = playlistCollection.insert_one(
         {'name': name, 'photo': photo if 'http' in photo else '', 'upload_date': fecha_iso8601, 'description': description, 'owner': owner, 'song_names': song_names})
 
-    add_playlist_to_owner(user_name=owner, playlist_name=name)
+    add_playlist_to_owner(user_name=owner, playlist_name=name,token=token)
 
     return True if result.acknowledged else False
 

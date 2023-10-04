@@ -68,7 +68,8 @@ def post_playlist(nombre: str, foto: str, descripcion: str, nombres_canciones: l
     jwt_token = get_jwt_token(authorization)
 
     result = playlist_service.create_playlist(
-        nombre, foto, descripcion, nombres_canciones, jwt_token)
+        name=nombre, photo=foto, description=descripcion,song_names= nombres_canciones, token=jwt_token)
+
     return Response(None, 201)
 
 

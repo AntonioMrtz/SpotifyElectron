@@ -15,7 +15,8 @@ class CheckJwtAuth(BaseHTTPMiddleware):
 
     def bypass_request(self, request: Request):
         """ print(request.method)
-        print(request.url.path) """
+        print(request.url.path)
+        print(request.headers) """
 
         if request.method in self.bypass_methods:
             return True

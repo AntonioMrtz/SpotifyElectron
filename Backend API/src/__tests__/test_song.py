@@ -1,7 +1,6 @@
 from fastapi.testclient import TestClient
 from fastapi import UploadFile
 from model.Genre import Genre
-import io
 from test_API.api_test_song import create_song,delete_song,get_song,get_songs,patch_song_number_plays,get_songs_by_genre
 from test_API.api_test_artist import get_artist,create_artist,delete_artist
 from test_API.api_test_user import create_user,delete_user

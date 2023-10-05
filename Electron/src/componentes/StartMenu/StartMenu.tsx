@@ -36,7 +36,7 @@ export default function StartMenu({ setIsLogged }: PropsStartMenu) {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
-        //credentials: 'include', This is crucial for including cookies
+        // credentials: 'include', This is crucial for including cookies
         body: fetchParameters.toString(),
       };
 

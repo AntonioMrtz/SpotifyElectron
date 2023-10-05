@@ -112,13 +112,23 @@ const createWindow = async () => {
     const ses = mainWindow.webContents.session;
 
     // Interceptamos las solicitudes web
-    ses.webRequest.onBeforeSendHeaders((details, callback) => {
+    ses.webRequest.onBeforeSendHeaders(async (details, callback) => {
       // Agregamos la opción 'credentials' a todas las solicitudes
-      details.requestHeaders.credentials = 'include';
-      console.log('golaaaaaaaaaaaaaaaaaaaa');
+      // details.requestHeaders.credentials = 'include';
+      // console.log(details.requestHeaders);
 
-      // Continuamos con la solicitud
-      callback({ cancel: false, requestHeaders: details.requestHeaders });
+      try {
+        const cookies = await ses.cookies.get({});
+        details.requestHeaders.Authorization = cookies[0].value;
+        /* console.log(
+          '🚀 ~ file: main.ts:123 ~ ses.webRequest.onBeforeSendHeaders ~ details.requestHeaders.Authorization:',
+          details.requestHeaders.Authorization
+        ); */
+        callback({ cancel: false, requestHeaders: details.requestHeaders });
+      } catch (error) {
+        console.error('Error getting cookies:', error);
+        callback({ cancel: false, requestHeaders: details.requestHeaders });
+      }
     });
 
     if (process.env.START_MINIMIZED) {

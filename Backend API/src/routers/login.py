@@ -45,12 +45,9 @@ def login_usuario(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]) ->
     # Calculate expiration date (current UTC datetime + 10 days)
     expiration_date = current_utc_datetime + timedelta(weeks=100)
 
-    print(expiration_date)
-
-
     response = Response(access_token_json, media_type="application/json", status_code=200)
     response.set_cookie(key="jwt", value=jwt, httponly=True, path='/', samesite='None',expires=expiration_date,secure=True)
-    response.set_cookie(key="hola",value="gola",samesite='None',path='/',secure=True)
-    response.set_cookie(key="jwt2", value=jwt, httponly=True, path='/',secure=True,samesite='None')
+    #response.set_cookie(key="hola",value="gola",samesite='None',path='/',secure=True)
+    #response.set_cookie(key="jwt2", value=jwt, httponly=True, path='/',secure=True,samesite='None')
 
     return response

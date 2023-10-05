@@ -14,13 +14,11 @@ class CheckJwtAuth(BaseHTTPMiddleware):
     bypass_methods = ["DELETE"]
 
     def bypass_request(self, request: Request):
-        """ print(request.method)
+        """  print(request.method)
         print(request.url.path)
         print(request.headers) """
-        print(request.cookies)
-
-        # TODO cambiar y adaptar a usar cookies tambien
-        return True
+        """ print(f"COOKIES = \n {request.cookies}")
+        print(f"HEADERS = \n {request.headers}") """
 
         if request.method in self.bypass_methods:
             return True
@@ -30,7 +28,7 @@ class CheckJwtAuth(BaseHTTPMiddleware):
             return False
 
     async def dispatch(self, request: Request, call_next):
-        try:
+        #try:
             if self.bypass_request(request):
                 response = await call_next(request)
                 return response
@@ -42,5 +40,5 @@ class CheckJwtAuth(BaseHTTPMiddleware):
             else:
                 return Response(content="Credenciales inválidos", status_code=401)
 
-        except:
-            return Response(content="Credenciales inválidos", status_code=401)
+        #except:
+            #return Response(content="Credenciales inválidos", status_code=401)

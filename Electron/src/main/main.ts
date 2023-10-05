@@ -119,11 +119,15 @@ const createWindow = async () => {
 
       try {
         const cookies = await ses.cookies.get({});
-        details.requestHeaders.Authorization = cookies[0].value;
-        /* console.log(
-          '🚀 ~ file: main.ts:123 ~ ses.webRequest.onBeforeSendHeaders ~ details.requestHeaders.Authorization:',
-          details.requestHeaders.Authorization
-        ); */
+
+        const filteredJwtTokens = cookies.filter((cookie) => {
+          return cookie.name === 'jwt';
+        });
+
+        if (filteredJwtTokens && filteredJwtTokens[0]) {
+          details.requestHeaders.Authorization = filteredJwtTokens[0].value;
+        }
+
         callback({ cancel: false, requestHeaders: details.requestHeaders });
       } catch (error) {
         console.error('Error getting cookies:', error);

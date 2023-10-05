@@ -28,7 +28,7 @@ class CheckJwtAuth(BaseHTTPMiddleware):
             return False
 
     async def dispatch(self, request: Request, call_next):
-        #try:
+        try:
             if self.bypass_request(request):
                 response = await call_next(request)
                 return response
@@ -40,5 +40,5 @@ class CheckJwtAuth(BaseHTTPMiddleware):
             else:
                 return Response(content="Credenciales inválidos", status_code=401)
 
-        #except:
-            #return Response(content="Credenciales inválidos", status_code=401)
+        except:
+            return Response(content="Credenciales inválidos", status_code=401)

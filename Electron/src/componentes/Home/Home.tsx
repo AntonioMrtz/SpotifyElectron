@@ -20,7 +20,9 @@ export default function Home({ refreshSidebarData }: PropsHome) {
   const [loadingPlaylists, setLoadingPlaylists] = useState(true);
 
   const handlePlaylists = useCallback(() => {
-    fetch(`${Global.backendBaseUrl}playlists/`, {})
+    fetch(`${Global.backendBaseUrl}playlists/`, {
+      credentials: 'include',
+    })
       .then((resFetchPlaylists) => resFetchPlaylists.json())
       .then((resFetchPlaylistsJson) => {
         if (resFetchPlaylistsJson.playlists) {

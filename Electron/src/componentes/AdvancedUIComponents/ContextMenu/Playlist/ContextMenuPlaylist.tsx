@@ -190,27 +190,6 @@ export default function ContextMenuPlaylist({
         console.log(error);
         console.log('No se pudieron obtener las playlists');
       });
-
-    /* fetch(`${Global.backendBaseUrl}playlists/`, {
-      headers: { 'Access-Control-Allow-Origin': '*' },
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        const playlistNamesFromFetch: string[] = [];
-
-        res.playlists.forEach((playlistObj: any) => {
-          playlistNamesFromFetch.push(JSON.parse(playlistObj).name);
-        });
-
-        setPlaylistNames(playlistNamesFromFetch);
-        setLoading(false);
-
-        return null;
-      })
-      .catch((error) => {
-        console.log(error);
-        console.log('No se pudieron obtener las playlists');
-      }); */
   };
 
   const [isOwnerPlaylist, setIsOwnerPlaylist] = useState<boolean>();

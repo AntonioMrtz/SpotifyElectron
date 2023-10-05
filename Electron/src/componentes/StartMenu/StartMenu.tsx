@@ -36,11 +36,9 @@ export default function StartMenu({ setIsLogged }: PropsStartMenu) {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
-        // credentials: 'include', This is crucial for including cookies
+        credentials: 'include', // This is crucial for including cookies
         body: fetchParameters.toString(),
       };
-
-      /* credentials: 'same-origin', */
 
       const fetchUrlLogin = `${Global.backendBaseUrl}login/`;
       const resFetchUrlLogin = await fetch(fetchUrlLogin, requestOptions);

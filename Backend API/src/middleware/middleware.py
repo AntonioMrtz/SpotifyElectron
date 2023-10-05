@@ -28,6 +28,8 @@ class CheckJwtAuth(BaseHTTPMiddleware):
             return False
 
     async def dispatch(self, request: Request, call_next):
+        """ response = await call_next(request)
+        return response """
         try:
             if self.bypass_request(request):
                 response = await call_next(request)

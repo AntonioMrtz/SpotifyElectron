@@ -165,10 +165,7 @@ export default function ContextMenuPlaylist({
       })
       .then((sidebarPlaylistNames) => {
         return fetch(
-          `${Global.backendBaseUrl}playlists/multiple/${sidebarPlaylistNames}`,
-          {
-            headers: { 'Access-Control-Allow-Origin': '*' },
-          }
+          `${Global.backendBaseUrl}playlists/multiple/${sidebarPlaylistNames}`
         );
       })
       .then((resFetchPlaylists) => {
@@ -245,10 +242,7 @@ export default function ContextMenuPlaylist({
       const url = `${Global.backendBaseUrl}playlists/${dstPlaylistName}`; // Reemplaza con la URL de tu API y el nombre de la playlist
 
       const dstResponse = await fetch(
-        `${Global.backendBaseUrl}playlists/dto/${dstPlaylistName}`,
-        {
-          headers: { 'Access-Control-Allow-Origin': '*' },
-        }
+        `${Global.backendBaseUrl}playlists/dto/${dstPlaylistName}`
       );
 
       const dstPlaylistData = await dstResponse.json();
@@ -258,10 +252,7 @@ export default function ContextMenuPlaylist({
       const putUrl = `${url}?foto=${photo}&descripcion=${description}`;
 
       const srcResponse = await fetch(
-        `${Global.backendBaseUrl}playlists/dto/${srcPlaylistName}`,
-        {
-          headers: { 'Access-Control-Allow-Origin': '*' },
-        }
+        `${Global.backendBaseUrl}playlists/dto/${srcPlaylistName}`
       );
 
       const srcPlaylistData = await srcResponse.json();
@@ -301,9 +292,6 @@ export default function ContextMenuPlaylist({
     /* Delete playlist */
     fetch(`${Global.backendBaseUrl}playlists/${playlistNameToDelete}`, {
       method: 'DELETE',
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-      },
     })
       .then((response) => {
         if (!response.ok) {

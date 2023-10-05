@@ -281,10 +281,7 @@ export default function Playlist({
 
     try {
       const resGetPlaylistDTO = await fetch(
-        `${Global.backendBaseUrl}playlists/dto/${playlistName}`,
-        {
-          headers: { 'Access-Control-Allow-Origin': '*' },
-        }
+        `${Global.backendBaseUrl}playlists/dto/${playlistName}`
       );
 
       const resGetPlaylistDTOJson = await resGetPlaylistDTO.json();

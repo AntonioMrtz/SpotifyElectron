@@ -248,9 +248,7 @@ export default function AddSongPlayListAccordion({
   const [genres, setGenres] = useState<{}>();
 
   const handleGenres = () => {
-    fetch(`${Global.backendBaseUrl}generos/`, {
-      headers: { 'Access-Control-Allow-Origin': '*' },
-    })
+    fetch(`${Global.backendBaseUrl}generos/`)
       .then((res) => res.json())
       .then((res) => {
         setGenres(res);

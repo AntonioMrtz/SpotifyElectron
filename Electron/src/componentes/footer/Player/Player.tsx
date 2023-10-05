@@ -92,10 +92,7 @@ export default function Player({
       if (songName === Global.noSong) return;
 
       const resFetchSong = await fetch(
-        `${Global.backendBaseUrl}canciones/${songName}`,
-        {
-          headers: { 'Access-Control-Allow-Origin': '*' },
-        }
+        `${Global.backendBaseUrl}canciones/${songName}`
       );
 
       const resFetchSongJson = await resFetchSong.json();

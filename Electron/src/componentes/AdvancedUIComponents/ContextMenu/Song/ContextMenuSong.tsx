@@ -56,10 +56,7 @@ export default function ContextMenuSong({
       })
       .then((sidebarPlaylistNames) => {
         return fetch(
-          `${Global.backendBaseUrl}playlists/multiple/${sidebarPlaylistNames}`,
-          {
-            headers: { 'Access-Control-Allow-Origin': '*' },
-          }
+          `${Global.backendBaseUrl}playlists/multiple/${sidebarPlaylistNames}`
         );
       })
       .then((resFetchPlaylists) => {
@@ -107,10 +104,7 @@ export default function ContextMenuSong({
   const handleAddToPlaylist = async (selectedPlaylistName: string) => {
     try {
       const playlistResponse = await fetch(
-        `${Global.backendBaseUrl}playlists/dto/${selectedPlaylistName}`,
-        {
-          headers: { 'Access-Control-Allow-Origin': '*' },
-        }
+        `${Global.backendBaseUrl}playlists/dto/${selectedPlaylistName}`
       );
       const playlistData = await playlistResponse.json();
 
@@ -145,10 +139,7 @@ export default function ContextMenuSong({
   const handleDeleteFromPlaylist = async () => {
     try {
       const playlistResponse = await fetch(
-        `${Global.backendBaseUrl}playlists/dto/${playlistName}`,
-        {
-          headers: { 'Access-Control-Allow-Origin': '*' },
-        }
+        `${Global.backendBaseUrl}playlists/dto/${playlistName}`
       );
       const playlistData = await playlistResponse.json();
 

@@ -108,6 +108,19 @@ const createWindow = async () => {
       throw new Error('"mainWindow" is not defined');
     }
 
+    // Obtenemos la sesión actual de Electron
+    const ses = mainWindow.webContents.session;
+
+    // Interceptamos las solicitudes web
+    ses.webRequest.onBeforeSendHeaders((details, callback) => {
+      // Agregamos la opción 'credentials' a todas las solicitudes
+      details.requestHeaders.credentials = 'include';
+      console.log('golaaaaaaaaaaaaaaaaaaaa');
+
+      // Continuamos con la solicitud
+      callback({ cancel: false, requestHeaders: details.requestHeaders });
+    });
+
     if (process.env.START_MINIMIZED) {
       mainWindow.minimize();
     } else {

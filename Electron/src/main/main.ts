@@ -9,15 +9,7 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import {
-  app,
-  BrowserWindow,
-  shell,
-  ipcMain,
-  clipboard,
-  Data,
-  session,
-} from 'electron';
+import { app, BrowserWindow, shell, ipcMain, clipboard, Data } from 'electron';
 import Global from 'global/global';
 import { resolveHtmlPath } from './util';
 
@@ -47,8 +39,6 @@ ipcMain.handle('load-forward-url', async () => {
 });
 
 ipcMain.handle('handle-url-change', async () => {
-  // event.reply('response-handle-url-change',mainWindow?.webContents.canGoForward,mainWindow?.webContents.canGoBack)
-
   const eventResponse: Global.HandleUrlChangeResponse = {
     canGoBack: mainWindow?.webContents.canGoBack(),
     canGoForward: mainWindow?.webContents.canGoForward(),
@@ -123,18 +113,6 @@ const createWindow = async () => {
     } else {
       mainWindow.show();
     }
-
-    session.defaultSession.webRequest.onBeforeSendHeaders(
-      { urls: ['*://*/*'] },
-      async (details, callback) => {
-        details.requestHeaders.Authorization =
-          await mainWindow?.webContents.executeJavaScript(
-            'localStorage.getItem("jwt");',
-            true
-          );
-        callback({ requestHeaders: details.requestHeaders });
-      }
-    );
   });
 
   mainWindow.on('closed', () => {
@@ -171,16 +149,3 @@ app
     });
   })
   .catch(console.log);
-
-/* const getToken = () => {
-  if (!localStorage) {
-    return;
-  }
-  const jwt = localStorage.getItem('jwt');
-
-  if (jwt) {
-    return jwt;
-  }
-
-  return '';
-}; */

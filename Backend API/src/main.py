@@ -15,14 +15,25 @@ app = FastAPI(title="SpotifyElectronAPI",
 """ Cors disabled """
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["http://localhost:1212"],
     allow_credentials=True,
     allow_methods=["POST", "GET", "PUT", "DELETE", "PATCH"],
-    allow_headers=["*"],
+    max_age=3600,
+
+
+)
+"""     allow_headers=['Set-Cookie','Access-Control-Allow-Origin'], expose_headers=["Set-Cookie"],
+ """
+
+""" app.add_middleware(
+    CORSMiddleware,
+    #allow_origins=["http://localhost:1212"],
+    allow_origins='*',
+    allow_credentials=True,
+    allow_methods=["POST", "GET", "PUT", "DELETE", "PATCH"],
     max_age=3600,
 )
-
-
+ """
 app.add_middleware(CheckJwtAuth)
 
 

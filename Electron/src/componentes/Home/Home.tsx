@@ -20,9 +20,7 @@ export default function Home({ refreshSidebarData }: PropsHome) {
   const [loadingPlaylists, setLoadingPlaylists] = useState(true);
 
   const handlePlaylists = useCallback(() => {
-    fetch(`${Global.backendBaseUrl}playlists/`, {
-      headers: { 'Access-Control-Allow-Origin': '*' },
-    })
+    fetch(`${Global.backendBaseUrl}playlists/`, {})
       .then((resFetchPlaylists) => resFetchPlaylists.json())
       .then((resFetchPlaylistsJson) => {
         if (resFetchPlaylistsJson.playlists) {

@@ -17,6 +17,10 @@ class CheckJwtAuth(BaseHTTPMiddleware):
         """ print(request.method)
         print(request.url.path)
         print(request.headers) """
+        print(request.cookies)
+
+        # TODO cambiar y adaptar a usar cookies tambien
+        return True
 
         if request.method in self.bypass_methods:
             return True

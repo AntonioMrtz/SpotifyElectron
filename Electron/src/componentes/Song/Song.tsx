@@ -4,7 +4,7 @@ import ContextMenuSong from 'componentes/AdvancedUIComponents/ContextMenu/Song/C
 import Popover, { PopoverPosition } from '@mui/material/Popover';
 import { useNavigate } from 'react-router-dom';
 import { secondsToMinutesSeconds } from 'utils/date';
-import styles from '../playlist.module.css';
+import styles from '../../pages/Playlist/playlist.module.css';
 
 export default function Song({
   name,

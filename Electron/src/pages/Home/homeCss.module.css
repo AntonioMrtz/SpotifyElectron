@@ -64,5 +64,6 @@
 
   padding-left: 3%;
   flex-wrap: nowrap;
+  gap: 15px;
 
 }

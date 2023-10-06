@@ -13,7 +13,7 @@ import Popover, { PopoverPosition } from '@mui/material/Popover/Popover';
 import { secondsToHoursAndMinutesFormatted } from 'utils/date';
 import { UserType, backendPathFromUserType } from 'utils/role';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
-import Song from './Song/Song';
+import Song from '../../componentes/Song/Song';
 import styles from './playlist.module.css';
 
 interface PropsPlaylist {

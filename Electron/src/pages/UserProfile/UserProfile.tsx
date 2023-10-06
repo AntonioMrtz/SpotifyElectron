@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react';
 import { FastAverageColor } from 'fast-average-color';
 import Global from 'global/global';
 import { PropsPlaylistCard } from 'componentes/Cards/PlaylistCard/types/propsPlaylistCard';
-import SongCard, { PropsSongCard } from 'componentes/SongCard/SongCard';
+import SongCard, { PropsSongCard } from 'componentes/Cards/SongCard/SongCard';
 import PlaylistCard from 'componentes/Cards/PlaylistCard/PlaylistCard';
 import { useParams } from 'react-router-dom';
 import { UserType, backendPathFromUserType } from 'utils/role';
 import styles from './userProfile.module.css';
-import defaultThumbnailPlaylist from '../../../assets/imgs/DefaultThumbnailPlaylist.jpg';
+import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 
 interface PropsUserProfile {
   userType: UserType;

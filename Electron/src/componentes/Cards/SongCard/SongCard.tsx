@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import ContextMenuSong from 'componentes/AdvancedUIComponents/ContextMenu/Song/ContextMenuSong';
 import Popover, { PopoverPosition } from '@mui/material/Popover/Popover';
 import styles from './songCard.module.css';
-import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
+import defaultThumbnailPlaylist from '../../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 
 export interface PropsSongCard {
   name: string;

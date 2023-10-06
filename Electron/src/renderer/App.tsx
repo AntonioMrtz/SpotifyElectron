@@ -1,18 +1,18 @@
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import Playlist from 'componentes/Playlist/Playlist';
+import Playlist from 'pages/Playlist/Playlist';
 import StickyHeader from 'componentes/StickyHeader/StickyHeader';
 import Global from 'global/global';
-import Genre from 'componentes/Genre/Genre';
+import Genre from 'pages/Genre/Genre';
 import ShowAllItems from 'componentes/ShowAllItems/ShowAllItems';
-import StartMenu from 'componentes/StartMenu/StartMenu';
+import StartMenu from 'pages/StartMenu/StartMenu';
 import { ShowAllItemsTypes } from 'componentes/ShowAllItems/types/PropsShowAllItems';
-import UserProfile from 'componentes/Profile/UserProfile/UserProfile';
+import UserProfile from 'pages/UserProfile/UserProfile';
 import { UserType } from 'utils/role';
 import styles from './AppCss.module.css';
 import Sidebar from '../componentes/Sidebar/Sidebar';
-import Home from '../componentes/Home/Home';
-import Explorar from '../componentes/Explorar/Explorar';
+import Home from '../pages/Home/Home';
+import Explorar from '../pages/Explorar/Explorar';
 import Footer from '../componentes/footer/Footer';
 
 function App() {

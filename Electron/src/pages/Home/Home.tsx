@@ -5,8 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import ArtistCard from 'componentes/Cards/ArtistCard/ArtistCard';
 import { PropsArtistCard } from 'componentes/Cards/ArtistCard/types/propsArtistCard';
 import styles from './homeCss.module.css';
-import PlaylistCard from '../Cards/PlaylistCard/PlaylistCard';
-import { PropsPlaylistCard } from '../Cards/PlaylistCard/types/propsPlaylistCard';
+import PlaylistCard from '../../componentes/Cards/PlaylistCard/PlaylistCard';
+import { PropsPlaylistCard } from '../../componentes/Cards/PlaylistCard/types/propsPlaylistCard';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 
 interface PropsHome {

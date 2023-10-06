@@ -2,9 +2,8 @@
 
   flex: 0 0 18.5%;
   padding: 1.5%;
-  margin-right: 2%;
   background-color: var(--third-black) !important;
-  width: 10svw;
+  max-width: 12svw;
 }
 
 .card:hover .displayTruePlay {

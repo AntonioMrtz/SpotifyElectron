@@ -13,6 +13,9 @@ router = APIRouter(
 )
 
 
+DAYS_TO_EXPIRE_COOKIE = 7
+
+
 @router.post("/", tags=["login"])
 def login_usuario(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]) -> Response:
     """ Devuelve la playlist con nombre "nombre"
@@ -43,7 +46,7 @@ def login_usuario(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]) ->
     current_utc_datetime = datetime.utcnow().replace(tzinfo=utc_timezone)
 
     # Calculate expiration date (current UTC datetime + 10 days)
-    expiration_date = current_utc_datetime + timedelta(weeks=100)
+    expiration_date = current_utc_datetime + timedelta(days=DAYS_TO_EXPIRE_COOKIE)
 
     response = Response(access_token_json, media_type="application/json", status_code=200)
     response.set_cookie(key="jwt", value=jwt, httponly=True, path='/', samesite='None',expires=expiration_date,secure=True)

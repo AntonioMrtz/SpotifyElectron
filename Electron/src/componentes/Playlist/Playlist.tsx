@@ -79,34 +79,38 @@ export default function Playlist({
 
     let resFetchGetUserJson;
 
-    if (role === UserType.USER) {
-      const fetchGetUser = `${Global.backendBaseUrl}${
-        backendPathFromUserType[UserType.USER]
-      }/${username}`;
+    try {
+      if (role === UserType.USER) {
+        const fetchGetUser = `${Global.backendBaseUrl}${
+          backendPathFromUserType[UserType.USER]
+        }/${username}`;
 
-      const resFetchGetUser = await fetch(fetchGetUser);
-      if (resFetchGetUser.status === 200)
-        resFetchGetUserJson = await resFetchGetUser.json();
-    } else if (role === UserType.ARTIST) {
-      const fetchGetArtist = `${Global.backendBaseUrl}${
-        backendPathFromUserType[UserType.ARTIST]
-      }/${username}`;
+        const resFetchGetUser = await fetch(fetchGetUser);
+        if (resFetchGetUser.status === 200)
+          resFetchGetUserJson = await resFetchGetUser.json();
+      } else if (role === UserType.ARTIST) {
+        const fetchGetArtist = `${Global.backendBaseUrl}${
+          backendPathFromUserType[UserType.ARTIST]
+        }/${username}`;
 
-      const resFetchGetArtist = await fetch(fetchGetArtist);
-      if (resFetchGetArtist.status === 200)
-        resFetchGetUserJson = await resFetchGetArtist.json();
-    } else {
-      console.log('Unable to get User from Token');
-    }
+        const resFetchGetArtist = await fetch(fetchGetArtist);
+        if (resFetchGetArtist.status === 200)
+          resFetchGetUserJson = await resFetchGetArtist.json();
+      } else {
+        console.log('Unable to get User from Token');
+      }
 
-    if (
-      resFetchGetUserJson &&
-      resFetchGetUserJson.saved_playlists &&
-      resFetchGetUserJson.saved_playlists.includes(playlistName)
-    ) {
-      setHearthLikedInterface();
-    } else {
-      setHearthUnLikedInterface();
+      if (
+        resFetchGetUserJson &&
+        resFetchGetUserJson.saved_playlists &&
+        resFetchGetUserJson.saved_playlists.includes(playlistName)
+      ) {
+        setHearthLikedInterface();
+      } else {
+        setHearthUnLikedInterface();
+      }
+    } catch {
+      console.log('Unable to load playlist status');
     }
   };
 

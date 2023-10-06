@@ -1,20 +1,19 @@
-import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useEffect, useState, MouseEvent } from 'react';
+import { useLocation } from 'react-router-dom';
 import Global from 'global/global';
 import Token from 'utils/token';
 import { backendPathFromUserType } from 'utils/role';
+import Popover, { PopoverPosition } from '@mui/material/Popover/Popover';
+import ContextMenuProfile from 'componentes/AdvancedUIComponents/ContextMenu/Profile/ContextMenuProfile';
 import styles from './stickyHeader.module.css';
 import groupIcon from '../../assets/imgs/groupIcon.png';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 
-const linkUserTypeMap: Record<string, string> = {
-  artista: 'artist',
-  usuario: 'user',
-};
+interface PropsStickyHeader {
+  handleLogout: Function;
+}
 
-export default function StickyHeader() {
-  const navigate = useNavigate();
-
+export default function StickyHeader({ handleLogout }: PropsStickyHeader) {
   const [profileIcon, setProfileIcon] = useState(defaultThumbnailPlaylist);
 
   const handleThumbnail = async () => {
@@ -34,13 +33,6 @@ export default function StickyHeader() {
           : resFetchUserJson.photo
       );
     }
-  };
-
-  const handleProfileButon = async () => {
-    const username = Token.getTokenUsername();
-    const type = Token.getTokenRole();
-
-    navigate(`/${linkUserTypeMap[type]}/${username}`);
   };
 
   const [visibleBackground, setVisibleBackground] = useState({});
@@ -118,6 +110,41 @@ export default function StickyHeader() {
     setForwardArrowStyle(!arrowState.canGoForward ? styles.arrowOpacity : '');
   }, [arrowState]);
 
+  /* Context Menu */
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const [anchorPosition, setAnchorPosition] = useState<{
+    top: number;
+    left: number;
+  } | null>(null);
+
+  const open = Boolean(anchorPosition);
+  const id = open ? 'parent-popover' : undefined;
+
+  const handleOpenContextMenu = (event: MouseEvent<HTMLButtonElement>) => {
+    setIsOpen(!isOpen);
+    setAnchorPosition({
+      top: event.clientY,
+      left: event.clientX,
+    });
+  };
+
+  const handleCloseContextMenu = () => {
+    setAnchorPosition(null);
+    setIsOpen(false);
+  };
+
+  useEffect(() => {
+    if (!isOpen) {
+      handleCloseContextMenu();
+    }
+  }, [isOpen]);
+
+  const handleProfileButon = async (e: MouseEvent<HTMLButtonElement>) => {
+    handleOpenContextMenu(e);
+  };
+
   return (
     <header
       style={visibleBackground}
@@ -144,6 +171,37 @@ export default function StickyHeader() {
         <button type="button">
           <img className={`${styles.groupIcon}`} src={groupIcon} alt="" />
         </button>
+      </div>
+
+      <div>
+        <Popover
+          id={id}
+          open={open}
+          onClose={handleCloseContextMenu}
+          anchorReference="anchorPosition"
+          anchorPosition={anchorPosition as PopoverPosition}
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'left',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'left',
+          }}
+          sx={{
+            '& .MuiPaper-root': {
+              backgroundColor: 'var(--hover-white)',
+            },
+            '& . MuiPopover-root': {
+              zIndex: '1000',
+            },
+          }}
+        >
+          <ContextMenuProfile
+            handleLogout={handleLogout}
+            handleClose={handleCloseContextMenu}
+          />
+        </Popover>
       </div>
     </header>
   );

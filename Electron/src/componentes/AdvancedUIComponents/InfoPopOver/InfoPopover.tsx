@@ -51,6 +51,7 @@ export default function InfoPopover({
         onClose={handleCloseConfirmationModal}
         aria-labelledby="modal-modal-confirmation"
         aria-describedby="modal-modal-confirmation-description"
+        style={{ zIndex: '99999' }}
       >
         <Box sx={style} className={`${styles.wrapperConfirmationModal}`}>
           {' '}

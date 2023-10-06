@@ -9,6 +9,7 @@ import StartMenu from 'pages/StartMenu/StartMenu';
 import { ShowAllItemsTypes } from 'componentes/ShowAllItems/types/PropsShowAllItems';
 import UserProfile from 'pages/UserProfile/UserProfile';
 import { UserType } from 'utils/role';
+import RegisterMenu from 'pages/StartMenu/RegisterMenu';
 import styles from './AppCss.module.css';
 import Sidebar from '../componentes/Sidebar/Sidebar';
 import Home from '../pages/Home/Home';
@@ -38,15 +39,24 @@ function App() {
     setSongName(songNameInput);
   };
 
+  /* Handle login status */
+
   const [isLogged, setIsLogged] = useState(false);
 
   const handleLogout = () => {
     setIsLogged(false);
   };
 
+  /* Handle register status */
+
+  const [isSigningUp, setIsSigningUp] = useState(false);
+
   return (
     <>
-      {!isLogged && <StartMenu setIsLogged={setIsLogged} />}
+      {isSigningUp && <RegisterMenu setIsSigningUp={setIsSigningUp} />}
+      {!isLogged && !isSigningUp && (
+        <StartMenu setIsLogged={setIsLogged} setIsSigningUp={setIsSigningUp} />
+      )}
       {isLogged && (
         <div className={`App d-flex flex-column ${styles.appBackground}`}>
           <StickyHeader handleLogout={handleLogout} />

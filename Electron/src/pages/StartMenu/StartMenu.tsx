@@ -1,13 +1,25 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useState, MouseEvent } from 'react';
 import Global from 'global/global';
+import { InfoPopoverType } from 'componentes/AdvancedUIComponents/InfoPopOver/types/InfoPopover';
+import InfoPopover from 'componentes/AdvancedUIComponents/InfoPopOver/InfoPopover';
 import styles from './startMenu.module.css';
 import SpotifyElectronLogo from '../../assets/imgs/SpotifyElectronLogo.png';
 
 interface PropsStartMenu {
   setIsLogged: Function;
+  setIsSigningUp: Function;
 }
 
-export default function StartMenu({ setIsLogged }: PropsStartMenu) {
+export default function StartMenu({
+  setIsLogged,
+  setIsSigningUp,
+}: PropsStartMenu) {
+  /* Popover */
+
+  const [isOpenPopover, setisOpenPopover] = useState(false);
+
+  /* Form data */
+
   const [formData, setFormData] = useState({
     nombre: '',
     password: '',
@@ -21,7 +33,8 @@ export default function StartMenu({ setIsLogged }: PropsStartMenu) {
     });
   };
 
-  const handleLogin = async () => {
+  const handleLogin = async (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     try {
       if (!formData.nombre || !formData.password) {
         throw new Error('Unable to login');
@@ -53,7 +66,12 @@ export default function StartMenu({ setIsLogged }: PropsStartMenu) {
       }
     } catch {
       console.log('Unable to login');
+      setisOpenPopover(true);
     }
+  };
+
+  const handleClickRegister = () => {
+    setIsSigningUp(true);
   };
 
   return (
@@ -84,6 +102,7 @@ export default function StartMenu({ setIsLogged }: PropsStartMenu) {
               placeholder="Nombre de usuario"
               onChange={handleChange}
               spellCheck={false}
+              required
             />
           </label>
           <label
@@ -98,11 +117,12 @@ export default function StartMenu({ setIsLogged }: PropsStartMenu) {
               placeholder="Contraseña"
               onChange={handleChange}
               spellCheck={false}
+              required
             />
           </label>
 
           <button
-            type="button"
+            type="submit"
             className={`${styles.loginButton}`}
             onClick={handleLogin}
           >
@@ -119,6 +139,7 @@ export default function StartMenu({ setIsLogged }: PropsStartMenu) {
             ¿No tienes cuenta?
           </p>
           <button
+            onClick={handleClickRegister}
             type="button"
             style={{
               color: 'var(--pure-white)',
@@ -132,6 +153,16 @@ export default function StartMenu({ setIsLogged }: PropsStartMenu) {
           </button>
         </div>
       </div>
+
+      <InfoPopover
+        type={InfoPopoverType.ERROR}
+        handleClose={() => {
+          setisOpenPopover(false);
+        }}
+        description="Los credenciales introducidos no son válidos"
+        title="No se ha podido iniciar sesión"
+        triggerOpenConfirmationModal={isOpenPopover}
+      />
     </div>
   );
 }

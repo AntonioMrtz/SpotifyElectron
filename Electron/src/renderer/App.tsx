@@ -40,12 +40,16 @@ function App() {
 
   const [isLogged, setIsLogged] = useState(false);
 
+  const handleLogout = () => {
+    setIsLogged(false);
+  };
+
   return (
     <>
       {!isLogged && <StartMenu setIsLogged={setIsLogged} />}
       {isLogged && (
         <div className={`App d-flex flex-column ${styles.appBackground}`}>
-          <StickyHeader />
+          <StickyHeader handleLogout={handleLogout} />
 
           <div className="d-flex">
             <Sidebar triggerReloadSidebar={triggerReloadSidebar} />

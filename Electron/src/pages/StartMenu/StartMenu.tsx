@@ -1,5 +1,7 @@
 import { ChangeEvent, useState, MouseEvent } from 'react';
 import Global from 'global/global';
+import { InfoPopoverType } from 'componentes/AdvancedUIComponents/InfoPopOver/types/InfoPopover';
+import InfoPopover from 'componentes/AdvancedUIComponents/InfoPopOver/InfoPopover';
 import styles from './startMenu.module.css';
 import SpotifyElectronLogo from '../../assets/imgs/SpotifyElectronLogo.png';
 
@@ -12,6 +14,12 @@ export default function StartMenu({
   setIsLogged,
   setIsSigningUp,
 }: PropsStartMenu) {
+  /* Popover */
+
+  const [isOpenPopover, setisOpenPopover] = useState(false);
+
+  /* Form data */
+
   const [formData, setFormData] = useState({
     nombre: '',
     password: '',
@@ -58,6 +66,7 @@ export default function StartMenu({
       }
     } catch {
       console.log('Unable to login');
+      setisOpenPopover(true);
     }
   };
 
@@ -144,6 +153,16 @@ export default function StartMenu({
           </button>
         </div>
       </div>
+
+      <InfoPopover
+        type={InfoPopoverType.ERROR}
+        handleClose={() => {
+          setisOpenPopover(false);
+        }}
+        description="Los credenciales introducidos no son válidos"
+        title="No se ha podido iniciar sesión"
+        triggerOpenConfirmationModal={isOpenPopover}
+      />
     </div>
   );
 }

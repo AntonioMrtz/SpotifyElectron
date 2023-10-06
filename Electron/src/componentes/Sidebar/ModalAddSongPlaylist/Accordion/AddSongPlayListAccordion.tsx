@@ -196,6 +196,8 @@ export default function AddSongPlayListAccordion({
   };
 
   const handleSubmitPlaylist = (event: FormEvent<HTMLButtonElement>) => {
+    setIsCloseAllowed(false);
+
     const url = new URL(`${Global.backendBaseUrl}playlists/`);
 
     event.preventDefault();
@@ -237,6 +239,8 @@ export default function AddSongPlayListAccordion({
               MessagesInfoPopOver.PLAYLIST_NOT_ADDED_DESCRIPTION
             );
           }
+          setIsCloseAllowed(true);
+
           return null;
         })
         .finally(() => {
@@ -244,6 +248,7 @@ export default function AddSongPlayListAccordion({
         })
         .catch((error) => {
           console.error('Error:', error);
+          setIsCloseAllowed(true);
         });
     }
   };

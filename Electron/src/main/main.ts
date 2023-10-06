@@ -39,8 +39,6 @@ ipcMain.handle('load-forward-url', async () => {
 });
 
 ipcMain.handle('handle-url-change', async () => {
-  // event.reply('response-handle-url-change',mainWindow?.webContents.canGoForward,mainWindow?.webContents.canGoBack)
-
   const eventResponse: Global.HandleUrlChangeResponse = {
     canGoBack: mainWindow?.webContents.canGoBack(),
     canGoForward: mainWindow?.webContents.canGoForward(),
@@ -109,6 +107,34 @@ const createWindow = async () => {
     if (!mainWindow) {
       throw new Error('"mainWindow" is not defined');
     }
+
+    // Obtenemos la sesión actual de Electron
+    const ses = mainWindow.webContents.session;
+
+    // Interceptamos las solicitudes web
+    ses.webRequest.onBeforeSendHeaders(async (details, callback) => {
+      // Agregamos la opción 'credentials' a todas las solicitudes
+      // details.requestHeaders.credentials = 'include';
+      // console.log(details.requestHeaders);
+
+      try {
+        const cookies = await ses.cookies.get({});
+
+        const filteredJwtTokens = cookies.filter((cookie) => {
+          return cookie.name === 'jwt';
+        });
+
+        if (filteredJwtTokens && filteredJwtTokens[0]) {
+          details.requestHeaders.Authorization = filteredJwtTokens[0].value;
+        }
+
+        callback({ cancel: false, requestHeaders: details.requestHeaders });
+      } catch (error) {
+        console.error('Error getting cookies:', error);
+        callback({ cancel: false, requestHeaders: details.requestHeaders });
+      }
+    });
+
     if (process.env.START_MINIMIZED) {
       mainWindow.minimize();
     } else {

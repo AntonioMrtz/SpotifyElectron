@@ -202,10 +202,6 @@ export default function AddSongPlayListAccordion({
         }
       });
 
-      const username = Token.getTokenUsername();
-
-      url.searchParams.set('creador', username);
-
       if (!url.searchParams.get('descripcion')) {
         url.searchParams.set('descripcion', '');
       }
@@ -252,9 +248,7 @@ export default function AddSongPlayListAccordion({
   const [genres, setGenres] = useState<{}>();
 
   const handleGenres = () => {
-    fetch(`${Global.backendBaseUrl}generos/`, {
-      headers: { 'Access-Control-Allow-Origin': '*' },
-    })
+    fetch(`${Global.backendBaseUrl}generos/`)
       .then((res) => res.json())
       .then((res) => {
         setGenres(res);

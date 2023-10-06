@@ -31,11 +31,12 @@ export default function StartMenu({ setIsLogged }: PropsStartMenu) {
       fetchParameters.append('username', formData.nombre);
       fetchParameters.append('password', formData.password);
 
-      const requestOptions = {
+      const requestOptions: RequestInit = {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
+        credentials: 'include', // This is crucial for including cookies
         body: fetchParameters.toString(),
       };
 

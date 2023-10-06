@@ -21,7 +21,7 @@ export default function Home({ refreshSidebarData }: PropsHome) {
 
   const handlePlaylists = useCallback(() => {
     fetch(`${Global.backendBaseUrl}playlists/`, {
-      headers: { 'Access-Control-Allow-Origin': '*' },
+      credentials: 'include',
     })
       .then((resFetchPlaylists) => resFetchPlaylists.json())
       .then((resFetchPlaylistsJson) => {
@@ -65,9 +65,7 @@ export default function Home({ refreshSidebarData }: PropsHome) {
   const [loadingArtists, setLoadingArtists] = useState(true);
 
   const handleArtists = useCallback(() => {
-    fetch(`${Global.backendBaseUrl}artistas/`, {
-      headers: { 'Access-Control-Allow-Origin': '*' },
-    })
+    fetch(`${Global.backendBaseUrl}artistas/`)
       .then((resFetchArtistas) => resFetchArtistas.json())
       .then((resFetchArtistasJson) => {
         if (resFetchArtistasJson.artists) {

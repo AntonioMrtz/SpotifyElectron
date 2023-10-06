@@ -50,7 +50,7 @@ def create_access_token(data: dict, expires_delta: Union[timedelta, None] = None
         if expires_delta:
             expire = datetime.utcnow() + expires_delta
         else:
-            expire = datetime.utcnow() + timedelta(minutes=15)
+            expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
         to_encode.update({"exp": expire})
         encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
         return encoded_jwt
@@ -179,3 +179,22 @@ def login_user(name: str, password: str) -> json:
     jwt = create_access_token(jwt_data)
 
     return jwt
+
+
+def check_jwt_is_valid(token: str):
+
+    try:
+        # Decode the JWT
+        decoded_token = jwt.decode(token, SECRET_KEY, ALGORITHM)
+
+        # Verify the expiration time
+        expiration_time = datetime.utcfromtimestamp(decoded_token["exp"])
+        if expiration_time < datetime.utcnow():
+            return False  # Token has expired
+
+        # Additional checks can be added here (e.g., issuer, audience)
+
+        return True  # Token is valid
+
+    except:
+        return False  # Token has expired or is invalid

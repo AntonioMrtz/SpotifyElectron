@@ -1,5 +1,7 @@
 from fastapi.responses import Response
-from fastapi import APIRouter
+from fastapi import APIRouter, Header, HTTPException
+from typing import Optional, Union, Annotated
+from services.security_service import get_jwt_token
 import services.artist_service as artist_service
 import json
 
@@ -59,7 +61,7 @@ def post_artista(nombre: str, foto: str, password: str) -> Response:
 
 
 @router.put("/{nombre}", tags=["artistas"])
-def update_artista(nombre: str, foto: str, historial_canciones: list, playlists: list,  playlists_guardadas: list, canciones_creadas: list) -> Response:
+def update_artista(nombre: str, foto: str, historial_canciones: list, playlists: list,  playlists_guardadas: list, canciones_creadas: list, authorization: Annotated[Union[str, None], Header()] = None) -> Response:
     """ Actualiza los parámetros del artista con nombre "nombre"
 
     Parameters
@@ -78,11 +80,18 @@ def update_artista(nombre: str, foto: str, historial_canciones: list, playlists:
     Raises
     -------
         Bad Request 400: Parámetros introducidos no són válidos o vacíos
+        401
         Not Found 404: No existe un artista con el nombre "nombre"
     """
 
+    if authorization is None:
+        raise HTTPException(
+            status_code=401, detail="Authorization header is missing")
+
+    jwt_token = get_jwt_token(authorization)
+
     artist_service.update_artist(
-        name=nombre, photo=foto, playback_history=historial_canciones, playlists=playlists, saved_playlists=playlists_guardadas, uploaded_songs=canciones_creadas)
+        name=nombre, photo=foto, playback_history=historial_canciones, playlists=playlists, saved_playlists=playlists_guardadas, uploaded_songs=canciones_creadas, token=jwt_token)
     return Response(None, 204)
 
 

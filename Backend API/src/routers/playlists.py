@@ -1,7 +1,8 @@
 from fastapi.responses import Response
-from fastapi import APIRouter
-from typing import Optional
+from fastapi import APIRouter, Header, HTTPException
+from typing import Optional, Union, Annotated
 from model.Genre import Genre
+from services.security_service import get_jwt_token
 import services.playlist_service as playlist_service
 import services.dto_service as dto_service
 import json
@@ -38,7 +39,7 @@ def get_playlist(nombre: str) -> Response:
 
 
 @router.post("/", tags=["playlists"])
-def post_playlist(nombre: str, foto: str, descripcion: str, creador: str, nombres_canciones: list) -> Response:
+def post_playlist(nombre: str, foto: str, descripcion: str, nombres_canciones: list, authorization: Annotated[Union[str, None], Header()] = None) -> Response:
     """ Registra la playlist
 
     Parameters
@@ -56,15 +57,24 @@ def post_playlist(nombre: str, foto: str, descripcion: str, creador: str, nombre
     Raises
     -------
         Bad Request 400: Parámetros introducidos no són válidos o vacíos
+        Unauthorized 401
+        Not found 401
     """
 
+    if authorization is None:
+        raise HTTPException(
+            status_code=401, detail="Authorization header is missing")
+
+    jwt_token = get_jwt_token(authorization)
+
     result = playlist_service.create_playlist(
-        nombre, foto, descripcion, creador, nombres_canciones)
+        name=nombre, photo=foto, description=descripcion,song_names= nombres_canciones, token=jwt_token)
+
     return Response(None, 201)
 
 
 @router.put("/{nombre}", tags=["playlists"])
-def update_playlist(nombre: str, foto: str, descripcion: str, nombres_canciones: list, nuevo_nombre: Optional[str] = None) -> Response:
+def update_playlist(nombre: str, foto: str, descripcion: str, nombres_canciones: list, nuevo_nombre: Optional[str] = None, authorization: Annotated[Union[str, None], Header()] = None) -> Response:
     """ Actualiza los parámetros de la playlist con nombre "nombre" , las canciones repetidas son serán añadidas
 
     Parameters
@@ -82,11 +92,18 @@ def update_playlist(nombre: str, foto: str, descripcion: str, nombres_canciones:
     Raises
     -------
         Bad Request 400: Parámetros introducidos no són válidos o vacíos
+        Unauthorized 401
         Not Found 404: No existe una playlist con el nombre "nombre"
     """
 
+    if authorization is None:
+        raise HTTPException(
+            status_code=401, detail="Authorization header is missing")
+
+    jwt_token = get_jwt_token(authorization)
+
     playlist_service.update_playlist(
-        nombre, nuevo_nombre, foto, descripcion, nombres_canciones)
+        nombre, nuevo_nombre, foto, descripcion, nombres_canciones, jwt_token)
     return Response(None, 204)
 
 

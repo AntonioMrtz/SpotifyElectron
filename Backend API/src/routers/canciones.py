@@ -1,4 +1,6 @@
-from fastapi import FastAPI, APIRouter, UploadFile, status
+from fastapi import FastAPI, APIRouter, UploadFile, status, Depends, Header, HTTPException
+from typing import Annotated, Union
+from services.security_service import get_jwt_token
 from model.Genre import Genre
 from fastapi.responses import Response
 import services.dto_service as dto_service
@@ -36,13 +38,12 @@ def get_cancion(nombre: str) -> Response:
 
 
 @router.post("/")
-async def post_cancion(nombre: str, artista: str, genero: Genre, foto: str, file: UploadFile) -> Response:
+async def post_cancion(nombre: str, genero: Genre, foto: str, file: UploadFile, authorization: Annotated[Union[str, None], Header()] = None) -> Response:
     """ Registra la canción con los parámetros "nombre","artista" y "género"
 
     Parameters
     ----------
         nombre (str): Nombre de la canción
-        artista (str): Artista de la canción
         genero (Genre): Género musical de la canción
         foto (url): Género musical de la canción
 
@@ -54,10 +55,18 @@ async def post_cancion(nombre: str, artista: str, genero: Genre, foto: str, file
     Raises
     -------
         Bad Request 400: Parámetros introducidos no són válidos o vacíos
+        Unauthorized 401
     """
 
     readFile = await file.read()
-    await song_service.create_song(nombre, artista, genero, foto, readFile)
+
+    if authorization is None:
+        raise HTTPException(
+            status_code=401, detail="Authorization header is missing")
+
+    jwt_token = get_jwt_token(authorization)
+
+    await song_service.create_song(nombre, genero, foto, readFile, jwt_token)
     return Response(None, 201)
 
 
@@ -136,9 +145,8 @@ def get_cancion_dto(nombre: str) -> Response:
     return Response(song_json, media_type="application/json", status_code=200)
 
 
-
 @router.put("/{nombre}")
-def update_song(nombre: str,artist: str = None, foto: str = None, genre: Genre = None, nuevo_nombre: str = None) -> Response:
+def update_song(nombre: str, foto: str = None, genre: Genre = None, nuevo_nombre: str = None, authorization: Annotated[Union[str, None], Header()] = None) -> Response:
     """ Actualiza los parámetros de la cancion con nombre "nombre"
 
     Parameters
@@ -157,10 +165,17 @@ def update_song(nombre: str,artist: str = None, foto: str = None, genre: Genre =
     -------
         Bad Request 400: Parámetros introducidos no són válidos o vacíos
         Not Found 404: No existe una cancion con el nombre "nombre"
+        Unauthorized 401
     """
 
+    if authorization is None:
+        raise HTTPException(
+            status_code=401, detail="Authorization header is missing")
+
+    jwt_token = get_jwt_token(authorization)
+
     song_service.update_song(
-        nombre, nuevo_nombre, foto, genre)
+        nombre, nuevo_nombre, foto, genre, jwt_token)
     return Response(None, 204)
 
 

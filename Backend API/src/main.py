@@ -1,7 +1,11 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
-from routers import playlists, canciones, generos, usuarios, artistas , login
+from routers import playlists, canciones, generos, usuarios, artistas, login
+from services.security_service import check_jwt_is_valid
+from middleware.middleware import CheckJwtAuth
 
+""" from middleware import jwt_middleware
+ """
 
 app = FastAPI(title="SpotifyElectronAPI",
               description="API created with FastAPI Python to serve as backend for SpotifyElectron App",
@@ -11,12 +15,19 @@ app = FastAPI(title="SpotifyElectronAPI",
 """ Cors disabled """
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["http://localhost/", "http://localhost:1212", "https://localhost:1212/",
+                   "https://localhost", "https://localhost:1212", "https://localhost:1212/","http://127.0.0.1:8000/","http://127.0.0.1:8000","http://127.0.0.1:8000/usuarios/prueba"],
     allow_credentials=True,
     allow_methods=["POST", "GET", "PUT", "DELETE", "PATCH"],
-    allow_headers=["*"],
     max_age=3600,
+    # You can restrict this to specific headers if needed
+    allow_headers=["*"],
+
+
+
 )
+
+app.add_middleware(CheckJwtAuth)
 
 
 app.include_router(playlists.router)
@@ -25,4 +36,3 @@ app.include_router(generos.router)
 app.include_router(usuarios.router)
 app.include_router(artistas.router)
 app.include_router(login.router)
-

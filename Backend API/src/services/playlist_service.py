@@ -1,9 +1,10 @@
 from datetime import datetime
 from database.Database import Database
 from services.song_service import get_song
-from services.all_users_service import add_playlist_to_owner,delete_playlist_from_owner
+from services.all_users_service import add_playlist_to_owner, delete_playlist_from_owner, check_user_exists
 from model.Playlist import Playlist
 from model.Song import Song
+from model.TokenData import TokenData
 from fastapi import HTTPException
 from services.utils import checkValidParameterString
 from sys import modules
@@ -18,6 +19,29 @@ else:
 
     playlistCollection = Database().connection["playlist"]
 
+
+def check_jwt_user_is_playlist_owner(token: TokenData, owner: str) -> bool:
+    """ Check if the user is the playlist owner
+
+    Parameters
+    ----------
+        token (TokenData): token with the user data
+        owner (str) : owner of the playlist
+
+    Raises
+    -------
+        Unauthorized 401
+
+    Returns
+    -------
+        Boolean
+    """
+
+    if token.username == owner:
+        return True
+    else:
+        raise HTTPException(
+            status_code=401, detail="El usuario no es el creador de la canción")
 
 
 def get_playlist(name: str) -> Playlist:
@@ -61,7 +85,7 @@ def get_playlist(name: str) -> Playlist:
     return playlist
 
 
-def create_playlist(name: str, photo: str, description: str, owner: str, song_names: list) -> None:
+def create_playlist(name: str, photo: str, description: str, song_names: list, token: TokenData) -> None:
     """ Create a playlist with name, url of thumbnail and list of song names
 
     Parameters
@@ -69,8 +93,8 @@ def create_playlist(name: str, photo: str, description: str, owner: str, song_na
         name (str): Playlists's name
         photo (str): Url of playlist thumbnail
         description (str): Playlists's description
-        owner (str) : Nickname of the playlist owner
         song_names (list<str>): List of song names of the playlist
+        token (TokenData) : token with user data
 
     Raises
     -------
@@ -79,6 +103,7 @@ def create_playlist(name: str, photo: str, description: str, owner: str, song_na
     Returns
     -------
     """
+    owner = token.username
 
     fecha_actual = datetime.now()
     fecha_iso8601 = fecha_actual.strftime('%Y-%m-%dT%H:%M:%S')
@@ -92,15 +117,18 @@ def create_playlist(name: str, photo: str, description: str, owner: str, song_na
     if result_playlist_exists:
         raise HTTPException(status_code=400, detail="La playlist ya existe")
 
+    if not check_user_exists(owner):
+        raise HTTPException(status_code=404, detail="El usuario no existe")
+
     result = playlistCollection.insert_one(
         {'name': name, 'photo': photo if 'http' in photo else '', 'upload_date': fecha_iso8601, 'description': description, 'owner': owner, 'song_names': song_names})
 
-    add_playlist_to_owner(user_name=owner,playlist_name=name)
+    add_playlist_to_owner(user_name=owner, playlist_name=name,token=token)
 
     return True if result.acknowledged else False
 
 
-def update_playlist(name: str, nuevo_nombre: str, photo: str, description: str, song_names: list) -> None:
+def update_playlist(name: str, nuevo_nombre: str, photo: str, description: str, song_names: list, token: TokenData) -> None:
     """ Updates a playlist with name, url of thumbnail and list of song names [ duplicates wont be added ]
 
     Parameters
@@ -110,6 +138,8 @@ def update_playlist(name: str, nuevo_nombre: str, photo: str, description: str, 
         photo (str): Url of playlist thumbnail
         description (str): Playlists's description
         song_names (list<str>): List of song names of the playlist
+        token (TokenData) : token with user data
+
 
     Raises
     -------
@@ -127,6 +157,9 @@ def update_playlist(name: str, nuevo_nombre: str, photo: str, description: str, 
 
     if not result_playlist_exists:
         raise HTTPException(status_code=404, detail="La playlist no existe")
+
+    check_jwt_user_is_playlist_owner(
+        token=token, owner=result_playlist_exists["owner"])
 
     if checkValidParameterString(nuevo_nombre):
         new_name = nuevo_nombre
@@ -171,7 +204,6 @@ def delete_playlist(name: str) -> None:
         if result.deleted_count == 0:
             raise HTTPException(
                 status_code=404, detail="La playlist no existe")
-
 
 
 def get_all_playlist() -> list:

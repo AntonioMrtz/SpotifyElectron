@@ -15,6 +15,17 @@ namespace Token {
 
     return '';
   };
+
+  export const getTokenHeader = () => {
+    const jwt = localStorage.getItem('jwt');
+
+    if (jwt) {
+      return { Authorization: jwt };
+    }
+
+    return { Authorization: '' };
+  };
+
   export const getTokenUsername = () => {
     try {
       const jwt = getToken();

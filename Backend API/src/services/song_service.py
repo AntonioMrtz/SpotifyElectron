@@ -6,6 +6,7 @@ from fastapi.responses import Response
 from model.Genre import Genre
 from model.Song import Song
 from services.artist_service import check_artists_exists, add_song_artist, delete_song_artist
+from model.TokenData import TokenData
 import base64
 import json
 import io
@@ -41,6 +42,30 @@ def check_song_exists(name: str) -> bool:
         Boolean
     """
     return True if fileSongCollection.find_one({'name': name}) else False
+
+
+def check_jwt_user_is_song_artist(token: TokenData, artist: str) -> bool:
+    """ Check if the user is the song artist
+
+    Parameters
+    ----------
+        token (TokenData): token with the user data
+        artist (str) : artist name
+
+    Raises
+    -------
+        Unauthorized 401
+
+    Returns
+    -------
+        Boolean
+    """
+
+    if token.username == artist:
+        return True
+    else:
+        raise HTTPException(
+            status_code=401, detail="El usuario no es el creador de la canción")
 
 
 def get_song(name: str) -> Song:
@@ -134,35 +159,42 @@ def get_all_songs() -> list:
     return songs
 
 
-async def create_song(name: str, artist: str, genre: Genre, photo: str, file) -> None:
+async def create_song(name: str, genre: Genre, photo: str, file, token : TokenData) -> None:
     """ Returns a Song file with attributes and a song encoded in base64 "
 
     Parameters
     ----------
         name (str): Song's name
-        artist (str) : Artist name
         genre (Genre): Genre of the song
         photo (str) : Url of the song thumbnail
         file (FileUpload): Mp3 file of the song
+        token (TokenData) : jwt token decoded
+
 
     Raises
     -------
         400 : Bad Request
+        401 : Invalid credentials
         404 : Artist Not Found / Song not found
 
     Returns
     -------
     """
 
+    artist = token.username
+
     if not checkValidParameterString(name) or not checkValidParameterString(photo) or not checkValidParameterString(artist) or not Genre.checkValidGenre(genre.value):
         raise HTTPException(
             status_code=400, detail="Parámetros no válidos o vacíos")
+
+    check_artists_exists(artist_name=artist)
 
     if check_song_exists(name=name):
         raise HTTPException(status_code=400, detail="La canción ya existe")
 
     if not check_artists_exists(artist_name=artist):
         raise HTTPException(status_code=404, detail="El artista no existe")
+
 
     try:
         # Assuming 'audio_bytes' contains the audio data in bytes
@@ -214,7 +246,7 @@ def delete_song(name: str) -> None:
         raise HTTPException(status_code=404, detail="La canción no existe")
 
 
-def update_song(name: str, nuevo_nombre: str, photo: str, genre: Genre) -> None:
+def update_song(name: str, nuevo_nombre: str, photo: str, genre: Genre,token : TokenData) -> None:
     """ Updates a song with name, url of thumbnail, duration, genre and number of plays, if empty parameter is not being updated "
 
     Parameters
@@ -224,15 +256,18 @@ def update_song(name: str, nuevo_nombre: str, photo: str, genre: Genre) -> None:
         photo (str): Url of Song thumbnail
         genre (Genre): Genre of the Song
         number_of_plays (int): Number of plays of the Song
+        token (TokenData) : token data of the user
 
     Raises
     -------
         400 : Bad Request
+        401 : Unauthorized
         404 : Song Not Found
 
     Returns
     -------
     """
+
 
     if not checkValidParameterString(name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
@@ -241,6 +276,8 @@ def update_song(name: str, nuevo_nombre: str, photo: str, genre: Genre) -> None:
 
     if not result_song_exists:
         raise HTTPException(status_code=404, detail="La cancion no existe")
+
+    check_jwt_user_is_song_artist(token,result_song_exists.artist)
 
     if checkValidParameterString(nuevo_nombre):
         new_name = nuevo_nombre

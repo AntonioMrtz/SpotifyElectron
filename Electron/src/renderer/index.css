@@ -26,6 +26,9 @@
 
   --sticky-header-blue: #1e0f44;
 
+  --app-logo-color: #9ad9ea;
+  --app-logo-color-darker: #56afc8;
+
   /* Sidebar default width */
   --sidebar-width: 25svw;
   --sidebar-height: 90svh;

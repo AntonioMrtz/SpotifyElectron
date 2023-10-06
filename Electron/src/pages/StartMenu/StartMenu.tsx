@@ -1,13 +1,17 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useState, MouseEvent } from 'react';
 import Global from 'global/global';
 import styles from './startMenu.module.css';
 import SpotifyElectronLogo from '../../assets/imgs/SpotifyElectronLogo.png';
 
 interface PropsStartMenu {
   setIsLogged: Function;
+  setIsSigningUp: Function;
 }
 
-export default function StartMenu({ setIsLogged }: PropsStartMenu) {
+export default function StartMenu({
+  setIsLogged,
+  setIsSigningUp,
+}: PropsStartMenu) {
   const [formData, setFormData] = useState({
     nombre: '',
     password: '',
@@ -21,7 +25,8 @@ export default function StartMenu({ setIsLogged }: PropsStartMenu) {
     });
   };
 
-  const handleLogin = async () => {
+  const handleLogin = async (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     try {
       if (!formData.nombre || !formData.password) {
         throw new Error('Unable to login');
@@ -56,6 +61,10 @@ export default function StartMenu({ setIsLogged }: PropsStartMenu) {
     }
   };
 
+  const handleClickRegister = () => {
+    setIsSigningUp(true);
+  };
+
   return (
     <div className={`${styles.mainModalContainer}`}>
       <div className={`${styles.contentWrapper}`}>
@@ -84,6 +93,7 @@ export default function StartMenu({ setIsLogged }: PropsStartMenu) {
               placeholder="Nombre de usuario"
               onChange={handleChange}
               spellCheck={false}
+              required
             />
           </label>
           <label
@@ -98,11 +108,12 @@ export default function StartMenu({ setIsLogged }: PropsStartMenu) {
               placeholder="Contraseña"
               onChange={handleChange}
               spellCheck={false}
+              required
             />
           </label>
 
           <button
-            type="button"
+            type="submit"
             className={`${styles.loginButton}`}
             onClick={handleLogin}
           >
@@ -119,6 +130,7 @@ export default function StartMenu({ setIsLogged }: PropsStartMenu) {
             ¿No tienes cuenta?
           </p>
           <button
+            onClick={handleClickRegister}
             type="button"
             style={{
               color: 'var(--pure-white)',

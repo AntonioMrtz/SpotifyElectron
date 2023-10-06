@@ -26,7 +26,7 @@
 }
 
 
-.contentWrapper hr{
+.contentWrapper hr {
 
     margin: 0px 100px 32px 100px;
     border-right: none;
@@ -36,7 +36,7 @@
     border-top: 1px solid var(--secondary-white);
 }
 
-.contentWrapper h1{
+.contentWrapper h1 {
 
     color: var(--pure-white);
     text-align: center;
@@ -45,28 +45,28 @@
     font-size: 2rem !important;
 }
 
-.titleContainer{
+.titleContainer {
 
     justify-content: center;
     align-items: center;
     margin-bottom: 3rem;
 }
 
-.titleContainer img{
+.titleContainer img {
 
     max-width: 2.5rem;
     margin-right: 10px;
 
 }
 
-.titleContainer h2{
+.titleContainer h2 {
 
     color: var(--pure-white);
     margin: 0 !important;
 }
 
 
-.formWrapper{
+.formWrapper {
 
     justify-content: center;
     align-items: center;
@@ -75,7 +75,7 @@
 }
 
 
-.formWrapper label{
+.formWrapper label {
 
     color: var(--pure-white);
     font-size: 0.875rem;
@@ -85,7 +85,7 @@
 
 }
 
-.formWrapper input{
+.formWrapper input {
 
     border-radius: 4px;
     background-color: var(--secondary-black);
@@ -97,17 +97,17 @@
 
 }
 
-.formWrapper input:focus{
+.formWrapper input:focus {
 
-    box-shadow: inset 0 0 0 3px var(--pure-white,#000000);
+    box-shadow: inset 0 0 0 3px var(--pure-white, #000000);
 }
 
 
 
-.loginButton{
+.loginButton {
 
     border-radius: 999px;
-    background-color: var(--primary-green);
+    background-color: var(--app-logo-color-darker);
     border: none;
     font-size: 1rem;
     width: 100%;
@@ -116,19 +116,45 @@
     font-weight: 700;
 }
 
-.loginButton:hover{
+.loginButton:hover {
 
     transform: scale(1.08);
 }
 
-.wrapperRegisterText{
+.registerButton {
+
+    border-radius: 999px;
+    background-color: var(--app-logo-color-darker);
+    border: none;
+    font-size: 1rem;
+    width: 100%;
+    padding: 8px;
+    margin-top: 16px;
+    font-weight: 700;
+}
+
+.registerButton:hover {
+
+    transform: scale(1.04);
+}
+
+.wrapperRegisterText {
 
     font-weight: 400;
 }
 
-.wrapperRegisterText button:hover{
+.wrapperRegisterText button:hover {
 
-    color: var(--primary-green) !important;
+    color: var(--app-logo-color-darker) !important;
 
 
+}
+
+
+@media (max-width: 1336px) {
+
+    .contentWrapper h1 {
+
+        margin-bottom: 2rem !important;
+    }
 }

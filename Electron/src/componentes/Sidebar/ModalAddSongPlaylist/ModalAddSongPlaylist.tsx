@@ -30,6 +30,8 @@ export default function ModalAddSongPlaylist({
 
   const handleClose = () => setOpen(false);
 
+  const [isCloseAllowed, setIsCloseAllowed] = useState(true);
+
   return (
     <>
       <button type="button" className="btn" onClick={handleOpen}>
@@ -38,7 +40,7 @@ export default function ModalAddSongPlaylist({
 
       <Modal
         open={open}
-        onClose={handleClose}
+        onClose={isCloseAllowed === true ? handleClose : () => {}}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
@@ -46,6 +48,7 @@ export default function ModalAddSongPlaylist({
           <AddSongPlayListAccordion
             reloadSidebar={reloadSidebar}
             handleClose={handleClose}
+            setIsCloseAllowed={setIsCloseAllowed}
           />
         </Box>
       </Modal>

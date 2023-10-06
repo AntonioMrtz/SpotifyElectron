@@ -18,6 +18,7 @@ import styles from './addSongPlayListAccordion.module.css';
 interface PropsAddSongPlayListAccordion {
   handleClose: Function;
   reloadSidebar: Function;
+  setIsCloseAllowed: Function;
 }
 
 const MessagesInfoPopOver = {
@@ -35,6 +36,7 @@ const MessagesInfoPopOver = {
 export default function AddSongPlayListAccordion({
   handleClose,
   reloadSidebar,
+  setIsCloseAllowed,
 }: PropsAddSongPlayListAccordion) {
   /* Check user type */
 
@@ -111,6 +113,7 @@ export default function AddSongPlayListAccordion({
   const handleSubmitSong = (event: FormEvent<HTMLButtonElement>) => {
     event.preventDefault();
     setLoadingUploadSong(true);
+    setIsCloseAllowed(false);
 
     const userName = Token.getTokenUsername();
 
@@ -150,6 +153,7 @@ export default function AddSongPlayListAccordion({
             );
           }
           setLoadingUploadSong(false);
+          setIsCloseAllowed(true);
 
           return null;
         })
@@ -159,6 +163,7 @@ export default function AddSongPlayListAccordion({
         .catch((error) => {
           console.error('Error:', error);
           setLoadingUploadSong(false);
+          setIsCloseAllowed(true);
         });
     }
   };
@@ -191,6 +196,8 @@ export default function AddSongPlayListAccordion({
   };
 
   const handleSubmitPlaylist = (event: FormEvent<HTMLButtonElement>) => {
+    setIsCloseAllowed(false);
+
     const url = new URL(`${Global.backendBaseUrl}playlists/`);
 
     event.preventDefault();
@@ -232,6 +239,8 @@ export default function AddSongPlayListAccordion({
               MessagesInfoPopOver.PLAYLIST_NOT_ADDED_DESCRIPTION
             );
           }
+          setIsCloseAllowed(true);
+
           return null;
         })
         .finally(() => {
@@ -239,6 +248,7 @@ export default function AddSongPlayListAccordion({
         })
         .catch((error) => {
           console.error('Error:', error);
+          setIsCloseAllowed(true);
         });
     }
   };

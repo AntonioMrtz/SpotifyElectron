@@ -125,13 +125,20 @@ def get_song(name: str) -> Song:
 
     song_metadata = fileSongCollection.find_one({'name': name}) """
 
-    cloudfront_url = get_cloudfront_url(f"{bucket_base_path}{name}.mp3")
+    try:
 
+        cloudfront_url = get_cloudfront_url(f"{bucket_base_path}{name}.mp3")
 
-    song = Song(name, song["artist"], song["photo"], song["duration"], Genre(
-        song["genre"]).name, cloudfront_url , song["number_of_plays"])
+        song = Song(name=name, artist=song["artist"], photo=song["photo"], duration=song["duration"], genre=Genre(
+            song["genre"]).name, url=cloudfront_url, number_of_plays=song["number_of_plays"])
 
-    return song
+        return song
+
+    except ClientError  as e:
+        raise HTTPException(status_code=500, detail="Error interno del servidor al interactuar con AWS")
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="No se pudo subir la canción")
 
 
 def get_songs(names: list) -> list:
@@ -297,7 +304,7 @@ def delete_song(name: str) -> None:
 
 
 
-
+# ? NOT USED
 def update_song(name: str, nuevo_nombre: str, photo: str, genre: Genre,token : TokenData) -> None:
     """ Updates a song with name, url of thumbnail, duration, genre and number of plays, if empty parameter is not being updated "
 

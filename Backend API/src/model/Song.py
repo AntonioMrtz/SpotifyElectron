@@ -11,7 +11,7 @@ class Song:
     photo: str
     duration: int  # In seconds
     genre: Genre
-    file: bytes
+    url: str
     number_of_plays: int
 
     def get_json(self) -> json:

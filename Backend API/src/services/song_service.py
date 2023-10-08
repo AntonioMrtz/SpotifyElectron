@@ -246,7 +246,6 @@ async def create_song(name: str, genre: Genre, photo: str, file, token : TokenDa
         raise HTTPException(status_code=500, detail="Error interno del servidor al interactuar con MongoDB")
 
     except ClientError  as e:
-        print(e)
         raise HTTPException(status_code=500, detail="Error interno del servidor al interactuar con AWS")
 
     except Exception as e:
@@ -289,7 +288,6 @@ def delete_song(name: str) -> None:
         raise HTTPException(status_code=500, detail="Error interno del servidor al interactuar con MongoDB")
 
     except ClientError  as e:
-        print(e)
         raise HTTPException(status_code=500, detail="Error interno del servidor al interactuar con AWS")
 
     except Exception as e:

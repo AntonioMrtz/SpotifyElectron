@@ -91,12 +91,6 @@ export default function Player({
 
       if (songName === Global.noSong) return;
 
-      const resFetchSong = await fetch(
-        `${Global.backendBaseUrl}canciones/${songName}`
-      );
-
-      const resFetchSongJson = await resFetchSong.json();
-
       const requestOptions = {
         method: 'PATCH',
       };
@@ -105,8 +99,8 @@ export default function Player({
       fetch(fetchUrlUpdateSong, requestOptions).catch(() =>
         console.log('Unable to update number of plays')
       );
-      const resFetchSongDTO = await fetch(
-        `${Global.backendBaseUrl}canciones/dto/${songName}`
+      const resFetchSong = await fetch(
+        `${Global.backendBaseUrl}canciones/${songName}`
       );
 
       const username = Token.getTokenUsername();
@@ -122,19 +116,13 @@ export default function Player({
         requestOptionsUpdatePlaybackHistory
       ).catch(() => console.log('Unable to update playback history'));
 
-      const resFetchSongDTOJson = await resFetchSongDTO.json();
-      changeSongInfo(resFetchSongDTOJson);
+      const resFetchSongJson = await resFetchSong.json();
+      changeSongInfo(resFetchSongJson);
 
-      let audioBytesString = resFetchSongJson.file;
+      const audioStreamingURL = resFetchSongJson.url;
 
-      if (audioBytesString !== undefined) {
-        audioBytesString = audioBytesString
-          .replace('"', '')
-          .replace('b', '')
-          .replace("'", '')
-          .slice(0, -1);
-        const dataURI = `data:audio/mp3;base64,${audioBytesString}`;
-        audio.current = new Audio(dataURI);
+      if (audioStreamingURL !== undefined) {
+        audio.current = new Audio(audioStreamingURL);
       }
 
       if (audio.current) {

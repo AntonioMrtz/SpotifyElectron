@@ -178,7 +178,7 @@ def get_all_songs() -> list:
 
     songs: list = []
 
-    songsFiles = fileSongCollection.find()
+    songsFiles = songCollection.find()
 
     for songFile in songsFiles:
 
@@ -246,6 +246,7 @@ async def create_song(name: str, genre: Genre, photo: str, file, token : TokenDa
         raise HTTPException(status_code=500, detail="Error interno del servidor al interactuar con MongoDB")
 
     except ClientError  as e:
+        print(e)
         raise HTTPException(status_code=500, detail="Error interno del servidor al interactuar con AWS")
 
     except Exception as e:
@@ -273,14 +274,30 @@ def delete_song(name: str) -> None:
         raise HTTPException(
             status_code=400, detail="El nombre de la canción no es válido")
 
-    result = fileSongCollection.find_one({'name': name})
+    result = songCollection.find_one({'name': name})
 
-    if result and result["_id"]:
-        delete_song_artist(result["artist"], name)
-        s3_client.delete_object(Bucket=song_bucket.name, Key=f"{bucket_base_path}{name}.mp3")
+    if not result or not result["_id"]:
 
-    else:
         raise HTTPException(status_code=404, detail="La canción no existe")
+
+    try:
+        songCollection.delete_one({'name': name})
+        s3_client.delete_object(Bucket=song_bucket.name, Key=f"{bucket_base_path}{name}.mp3")
+        delete_song_artist(result["artist"], name)
+
+    except PyMongoError as e:
+        raise HTTPException(status_code=500, detail="Error interno del servidor al interactuar con MongoDB")
+
+    except ClientError  as e:
+        print(e)
+        raise HTTPException(status_code=500, detail="Error interno del servidor al interactuar con AWS")
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="No se pudo subir la canción")
+
+
+
+
 
 
 def update_song(name: str, nuevo_nombre: str, photo: str, genre: Genre,token : TokenData) -> None:

@@ -1,10 +1,13 @@
 export enum ShowAllItemsTypes {
-  PLAYLIST = 'playlist',
-  ARTIST = 'artist',
+  ALL_PLAYLISTS = 'all-playlists',
+  ALL_ARTISTS = 'all-artists',
+  ALL_PLAYLIST_FROM_USER = 'all-playlists-from-user',
+  ALL_SONGS_FROM_ARTIST = 'all-songs-from-artist',
   SONG = 'song',
 }
 
 export interface PropsAllItems {
   refreshSidebarData: Function;
   type: ShowAllItemsTypes;
+  changeSongName: Function;
 }

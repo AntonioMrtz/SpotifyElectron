@@ -68,6 +68,59 @@
 }
 
 
+.userProfileContainer h2 button:hover {
+
+    text-decoration: underline;
+}
+
+
+.categoryTitle:hover {
+
+    text-decoration: underline;
+
+}
+
+.categoryTitleContainer button {
+
+    display: flex;
+    justify-content: start;
+    background: transparent;
+    border: none;
+    color: var(--pure-white);
+    font-size: 1.35rem;
+    font-weight: 800;
+
+}
+
+.categoryTitleContainer {
+
+    flex-grow: 2;
+    padding-bottom: 1%;
+
+}
+
+.mostrarTodoContainer {
+
+    flex-shrink: 3;
+    justify-content: flex-end;
+    padding-top: 0.6%;
+    padding-right: 2%;
+
+}
+
+.mostrarTodoContainer button {
+
+    background: transparent;
+    border: none;
+    color: var(--grey);
+
+}
+
+.mostrarTodo:hover {
+
+    text-decoration: underline;
+
+}
 
 
 @media (max-height:768px) {
@@ -93,21 +146,3 @@
     }
 
 }
-
-
-/* .headerGenre h1 {
-
-    color: var(--pure-white);
-    font-size: 6rem;
-
-}
-
-
-.subheaderGenre {
-
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-    font-size: 1.5rem;
-    color: var(--pure-white);
-}
- */

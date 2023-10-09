@@ -4,7 +4,7 @@ import Global from 'global/global';
 import { PropsPlaylistCard } from 'componentes/Cards/PlaylistCard/types/propsPlaylistCard';
 import SongCard, { PropsSongCard } from 'componentes/Cards/SongCard/SongCard';
 import PlaylistCard from 'componentes/Cards/PlaylistCard/PlaylistCard';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { UserType, backendPathFromUserType } from 'utils/role';
 import styles from './userProfile.module.css';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
@@ -22,6 +22,7 @@ export default function UserProfile({
 }: PropsUserProfile) {
   // Use the useParams hook to get the id parameter from the URL
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const [thumbnail, setThumbnail] = useState<string>(defaultThumbnailPlaylist);
   const [mainColorThumbnail, setMainColorThumbnail] = useState('');
@@ -32,7 +33,7 @@ export default function UserProfile({
 
   const loadPlaylists = async (resGetUserJson: any) => {
     const playlistPromises: Promise<any>[] = [];
-    resGetUserJson.playlists.forEach((playlistName: string) => {
+    resGetUserJson.playlists.slice(0, 5).forEach((playlistName: string) => {
       playlistPromises.push(
         new Promise((resolve) => {
           fetch(`${Global.backendBaseUrl}playlists/dto/${playlistName}`)
@@ -137,7 +138,7 @@ export default function UserProfile({
 
     Promise.all(songPromises)
       .then((resSongPromises) => {
-        setUploadedSongs([...resSongPromises]);
+        setUploadedSongs([...resSongPromises.slice(0, 5)]);
         return null;
       })
       .catch(() => {
@@ -205,8 +206,22 @@ export default function UserProfile({
     fac.destroy();
   }, [thumbnail]);
 
+  /* Show all redirects */
+
+  const handleShowAllUserPlaylists = (userTypeRedirect: UserType) => {
+    navigate(
+      `/showAllPlaylistFromUser/Playlists del usuario/${id}/${userTypeRedirect}`
+    );
+  };
+
+  const handleShowAllArtistSongs = () => {
+    navigate(`/showAllSongsFromArtist/Canciones del artista/${id}}`);
+  };
+
   return (
-    <div className="d-flex flex-column container-fluid p-0">
+    <div
+      className={`d-flex flex-column container-fluid p-0 ${styles.userProfileContainer}`}
+    >
       <div
         className={`d-flex align-items-end container-fluid ${styles.headerUserProfile}`}
         style={{
@@ -255,17 +270,37 @@ export default function UserProfile({
 
       {userType === UserType.ARTIST && (
         <div className="p-4">
-          <h2
-            style={{
-              color: 'var(--pure-white)',
-              fontWeight: '700',
-              fontSize: '1.5rem',
-              marginTop: '1rem',
-              marginBottom: '1.5rem',
-            }}
-          >
-            Canciones más populares del artista
-          </h2>
+          <div className="d-flex">
+            <div className={`w-100 d-flex ${styles.categoryTitleContainer}`}>
+              <button
+                type="button"
+                className={`${styles.categoryTitle}`}
+                style={{
+                  border: 'none',
+                  backgroundColor: 'transparent',
+                  color: 'var(--pure-white)',
+                  fontWeight: '700',
+                  fontSize: '1.5rem',
+                  marginTop: '1rem',
+                  marginBottom: '1.5rem',
+                }}
+                onClick={handleShowAllArtistSongs}
+              >
+                Especialmente para ti
+              </button>
+            </div>
+            <div
+              className={`container-fluid d-flex ${styles.mostrarTodoContainer}`}
+            >
+              <button
+                type="button"
+                className={`${styles.mostrarTodo}`}
+                onClick={handleShowAllArtistSongs}
+              >
+                Mostrar todos
+              </button>
+            </div>
+          </div>
           <div className="d-flex flex-row flex-wrap">
             {uploadedSongs &&
               uploadedSongs.map((songItem, index) => {
@@ -285,17 +320,41 @@ export default function UserProfile({
         </div>
       )}
       <div className="p-4">
-        <h2
-          style={{
-            color: 'var(--pure-white)',
-            fontWeight: '700',
-            fontSize: '1.5rem',
-            marginTop: '1rem',
-            marginBottom: '1.5rem',
-          }}
-        >
-          Playlists del {userType}
-        </h2>
+        <div className="d-flex">
+          <div className={`w-100 d-flex ${styles.categoryTitleContainer}`}>
+            <button
+              type="button"
+              className={`${styles.categoryTitle}`}
+              style={{
+                border: 'none',
+                backgroundColor: 'transparent',
+                color: 'var(--pure-white)',
+                fontWeight: '700',
+                fontSize: '1.5rem',
+                marginTop: '1rem',
+                marginBottom: '1.5rem',
+              }}
+              onClick={() => {
+                handleShowAllUserPlaylists(userType);
+              }}
+            >
+              Playlists del usuario
+            </button>
+          </div>
+          <div
+            className={`container-fluid d-flex ${styles.mostrarTodoContainer}`}
+          >
+            <button
+              type="button"
+              className={`${styles.mostrarTodo}`}
+              onClick={() => {
+                handleShowAllUserPlaylists(userType);
+              }}
+            >
+              Mostrar todos
+            </button>
+          </div>
+        </div>
         <div className="d-flex flex-row flex-wrap " style={{ gap: '15px' }}>
           {playlists &&
             playlists.map((playlistItem) => {

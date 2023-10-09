@@ -1,24 +1,46 @@
 import { useParams } from 'react-router-dom';
 import styles from './showAllItems.module.css';
-import ItemsPlaylist from './Items/ItemsPlaylist';
+import ItemsPlaylist from './Items/ItemsAllPlaylists';
 import { PropsAllItems, ShowAllItemsTypes } from './types/PropsShowAllItems';
-import ItemsArtist from './Items/ItemsArtist';
+import ItemsArtist from './Items/ItemsAllArtist';
+import ItemsAllPlaylistsFromUser from './Items/ItemsAllPlaylistFromUser';
+import ItemsAllSongsFromArtist from './Items/ItemsAllSongsFromArtist';
 
-export default function AllPlaylists({
+export default function ShowAllItems({
   refreshSidebarData,
+  changeSongName,
   type,
 }: PropsAllItems) {
   const { id } = useParams();
+  const { user } = useParams();
+  const { artist } = useParams();
+  const { usertype } = useParams();
 
   // Reverse mapping object
   const itemsDisplayed: {
     [key in ShowAllItemsTypes]: typeof ItemsPlaylist | any;
   } = {
-    [ShowAllItemsTypes.PLAYLIST]: (
+    [ShowAllItemsTypes.ALL_PLAYLISTS]: (
       <ItemsPlaylist id={id} refreshSidebarData={refreshSidebarData} />
     ),
-    [ShowAllItemsTypes.ARTIST]: <ItemsArtist />,
+    [ShowAllItemsTypes.ALL_ARTISTS]: <ItemsArtist />,
     [ShowAllItemsTypes.SONG]: 'Rejected',
+    [ShowAllItemsTypes.ALL_PLAYLIST_FROM_USER]: (
+      <ItemsAllPlaylistsFromUser
+        userName={user || 'NoUser'}
+        refreshSidebarData={refreshSidebarData}
+        id={id}
+        userType={usertype || 'noType'}
+      />
+    ),
+    [ShowAllItemsTypes.ALL_SONGS_FROM_ARTIST]: (
+      <ItemsAllSongsFromArtist
+        artistName={artist || 'NoArtist'}
+        id={id}
+        refreshSidebarData={refreshSidebarData}
+        changeSongName={changeSongName}
+      />
+    ),
   };
 
   return (

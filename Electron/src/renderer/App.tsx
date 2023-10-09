@@ -105,21 +105,32 @@ function App() {
                   path="/showAllItemsPlaylist/:id"
                   element=<ShowAllItems
                     refreshSidebarData={reloadSidebar}
-                    type={ShowAllItemsTypes.PLAYLIST}
+                    type={ShowAllItemsTypes.ALL_PLAYLISTS}
+                    changeSongName={changeSongName}
                   />
                 />
                 <Route
                   path="/showAllItemsArtist/:id"
                   element=<ShowAllItems
                     refreshSidebarData={reloadSidebar}
-                    type={ShowAllItemsTypes.ARTIST}
+                    type={ShowAllItemsTypes.ALL_ARTISTS}
+                    changeSongName={changeSongName}
                   />
                 />
                 <Route
-                  path="/showAllItemsSong/:id"
+                  path="/showAllPlaylistFromUser/:id/:user/:usertype"
                   element=<ShowAllItems
                     refreshSidebarData={reloadSidebar}
-                    type={ShowAllItemsTypes.SONG}
+                    type={ShowAllItemsTypes.ALL_PLAYLIST_FROM_USER}
+                    changeSongName={changeSongName}
+                  />
+                />
+                <Route
+                  path="/showAllSongsFromArtist/:id/:artist"
+                  element=<ShowAllItems
+                    refreshSidebarData={reloadSidebar}
+                    type={ShowAllItemsTypes.ALL_SONGS_FROM_ARTIST}
+                    changeSongName={changeSongName}
                   />
                 />
                 <Route

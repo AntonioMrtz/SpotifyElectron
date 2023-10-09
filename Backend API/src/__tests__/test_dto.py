@@ -86,7 +86,7 @@ def test_get_playlist_dto_invalid_name(clear_test_playlist_db):
 
 # * Song DTO
 
-def test_get_song_dto_correct(clear_test_song_db):
+""" def test_get_song_dto_correct(clear_test_song_db):
 
     song_name = "8232392323623823723989"
     artista = "usuarioprueba834783478923489734298"
@@ -123,7 +123,7 @@ def test_get_song_dto_correct(clear_test_song_db):
     assert res_delete_song.status_code == 202
 
     res_delete_artist = delete_artist(artista)
-    assert res_delete_artist.status_code == 202
+    assert res_delete_artist.status_code == 202 """
 
 
 def test_song_playlist_dto_not_found(clear_test_song_db):

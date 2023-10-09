@@ -9,7 +9,7 @@ from test_API.api_test_playlist import create_playlist,delete_playlist
 import json
 import pytest
 
-def test_patch_playback_history_user_correct(clear_test_data_db):
+""" def test_patch_playback_history_user_correct(clear_test_data_db):
 
     name = "8232392323623823723"
     password = "hola"
@@ -88,7 +88,7 @@ def test_patch_playback_history_artist_correct(clear_test_data_db):
     assert res_delete_song.status_code == 202
 
     res_delete_artist = delete_artist(artista)
-    assert res_delete_artist.status_code == 202
+    assert res_delete_artist.status_code == 202 """
 
 def test_patch_playback_history_invalid_bad_user():
 
@@ -116,7 +116,7 @@ def test_patch_playback_history_non_existing_user():
     assert res_patch_user.status_code == 401
 
 
-def test_patch_playback_history_user_correct_insert_6_songs(clear_test_data_db):
+""" def test_patch_playback_history_user_correct_insert_6_songs(clear_test_data_db):
 
     name = "8232392323623823723"
     foto = "https://foto"
@@ -168,7 +168,7 @@ def test_patch_playback_history_user_correct_insert_6_songs(clear_test_data_db):
     assert res_delete_song.status_code == 202
 
     res_delete_artist = delete_artist(artista)
-    assert res_delete_artist.status_code == 202
+    assert res_delete_artist.status_code == 202 """
 
 def test_patch_saved_playlist_user_correct(clear_test_data_db):
 

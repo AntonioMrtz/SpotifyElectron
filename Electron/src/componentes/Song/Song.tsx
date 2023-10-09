@@ -68,13 +68,16 @@ export default function Song({
         >
           {name}
         </span>
-        <button
-          type="button"
-          onClick={handleClickArtist}
-          className={`${styles.gridItem} ${styles.artistNameContainer} p-0 `}
-        >
-          {artistName}
-        </button>
+
+        <div>
+          <button
+            type="button"
+            onClick={handleClickArtist}
+            className={`${styles.gridItem} ${styles.artistNameContainer} p-0 `}
+          >
+            {artistName}
+          </button>
+        </div>
       </span>
       <span className={` d-flex justify-content-end ${styles.gridItem}`}>
         {playCount}

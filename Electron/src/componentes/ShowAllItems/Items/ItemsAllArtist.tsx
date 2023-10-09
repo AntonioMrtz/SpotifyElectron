@@ -6,7 +6,7 @@ import Global from 'global/global';
  */
 import defaultThumbnailPlaylist from '../../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 
-export default function ItemsArtist() {
+export default function ItemsAllArtist() {
   const [artists, setArtists] = useState<PropsArtistCard[]>();
 
   const handleArtist = useCallback(() => {

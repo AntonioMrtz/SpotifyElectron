@@ -1,24 +1,33 @@
 import { useParams } from 'react-router-dom';
 import styles from './showAllItems.module.css';
-import ItemsPlaylist from './Items/ItemsPlaylist';
+import ItemsPlaylist from './Items/ItemsAllPlaylists';
 import { PropsAllItems, ShowAllItemsTypes } from './types/PropsShowAllItems';
-import ItemsArtist from './Items/ItemsArtist';
+import ItemsArtist from './Items/ItemsAllArtist';
+import ItemsAllPlaylistsFromUser from './Items/ItemsAllPlaylistFromUser';
 
 export default function AllPlaylists({
   refreshSidebarData,
   type,
 }: PropsAllItems) {
   const { id } = useParams();
+  const { user } = useParams();
 
   // Reverse mapping object
   const itemsDisplayed: {
     [key in ShowAllItemsTypes]: typeof ItemsPlaylist | any;
   } = {
-    [ShowAllItemsTypes.PLAYLIST]: (
+    [ShowAllItemsTypes.ALL_PLAYLISTS]: (
       <ItemsPlaylist id={id} refreshSidebarData={refreshSidebarData} />
     ),
-    [ShowAllItemsTypes.ARTIST]: <ItemsArtist />,
+    [ShowAllItemsTypes.ALL_ARTISTS]: <ItemsArtist />,
     [ShowAllItemsTypes.SONG]: 'Rejected',
+    [ShowAllItemsTypes.ALL_PLAYLIST_FROM_USER]: (
+      <ItemsAllPlaylistsFromUser
+        userName={user || 'NoUser'}
+        refreshSidebarData={refreshSidebarData}
+        id={id}
+      />
+    ),
   };
 
   return (

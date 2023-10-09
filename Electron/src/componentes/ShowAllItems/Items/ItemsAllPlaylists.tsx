@@ -5,7 +5,7 @@ import Global from 'global/global';
 import { PropsItemsPlaylist } from '../types/PropsItems';
 import defaultThumbnailPlaylist from '../../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 
-export default function ItemsPlaylist({
+export default function ItemsAllPlaylists({
   refreshSidebarData,
 }: PropsItemsPlaylist) {
   const [playlists, setPlaylists] = useState<PropsPlaylistCard[]>();

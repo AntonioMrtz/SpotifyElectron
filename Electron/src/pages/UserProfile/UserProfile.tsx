@@ -4,8 +4,9 @@ import Global from 'global/global';
 import { PropsPlaylistCard } from 'componentes/Cards/PlaylistCard/types/propsPlaylistCard';
 import SongCard, { PropsSongCard } from 'componentes/Cards/SongCard/SongCard';
 import PlaylistCard from 'componentes/Cards/PlaylistCard/PlaylistCard';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { UserType, backendPathFromUserType } from 'utils/role';
+import Token from 'utils/token';
 import styles from './userProfile.module.css';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 
@@ -22,6 +23,7 @@ export default function UserProfile({
 }: PropsUserProfile) {
   // Use the useParams hook to get the id parameter from the URL
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const [thumbnail, setThumbnail] = useState<string>(defaultThumbnailPlaylist);
   const [mainColorThumbnail, setMainColorThumbnail] = useState('');
@@ -32,7 +34,7 @@ export default function UserProfile({
 
   const loadPlaylists = async (resGetUserJson: any) => {
     const playlistPromises: Promise<any>[] = [];
-    resGetUserJson.playlists.forEach((playlistName: string) => {
+    resGetUserJson.playlists.slice(0, 5).forEach((playlistName: string) => {
       playlistPromises.push(
         new Promise((resolve) => {
           fetch(`${Global.backendBaseUrl}playlists/dto/${playlistName}`)
@@ -205,8 +207,18 @@ export default function UserProfile({
     fac.destroy();
   }, [thumbnail]);
 
+  /* Show all redirects */
+
+  const handleShowAllUserPlaylists = () => {
+    navigate(
+      `/showAllPlaylistFromUser/Playlists del usuario/${Token.getTokenUsername()}`
+    );
+  };
+
   return (
-    <div className="d-flex flex-column container-fluid p-0">
+    <div
+      className={`d-flex flex-column container-fluid p-0 ${styles.userProfileContainer}`}
+    >
       <div
         className={`d-flex align-items-end container-fluid ${styles.headerUserProfile}`}
         style={{
@@ -285,16 +297,22 @@ export default function UserProfile({
         </div>
       )}
       <div className="p-4">
-        <h2
-          style={{
-            color: 'var(--pure-white)',
-            fontWeight: '700',
-            fontSize: '1.5rem',
-            marginTop: '1rem',
-            marginBottom: '1.5rem',
-          }}
-        >
-          Playlists del {userType}
+        <h2>
+          <button
+            style={{
+              border: 'none',
+              backgroundColor: 'transparent',
+              color: 'var(--pure-white)',
+              fontWeight: '700',
+              fontSize: '1.5rem',
+              marginTop: '1rem',
+              marginBottom: '1.5rem',
+            }}
+            type="button"
+            onClick={handleShowAllUserPlaylists}
+          >
+            Playlists del {userType}
+          </button>
         </h2>
         <div className="d-flex flex-row flex-wrap " style={{ gap: '15px' }}>
           {playlists &&

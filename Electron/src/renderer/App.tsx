@@ -105,21 +105,21 @@ function App() {
                   path="/showAllItemsPlaylist/:id"
                   element=<ShowAllItems
                     refreshSidebarData={reloadSidebar}
-                    type={ShowAllItemsTypes.PLAYLIST}
+                    type={ShowAllItemsTypes.ALL_PLAYLISTS}
                   />
                 />
                 <Route
                   path="/showAllItemsArtist/:id"
                   element=<ShowAllItems
                     refreshSidebarData={reloadSidebar}
-                    type={ShowAllItemsTypes.ARTIST}
+                    type={ShowAllItemsTypes.ALL_ARTISTS}
                   />
                 />
                 <Route
-                  path="/showAllItemsSong/:id"
+                  path="/showAllPlaylistFromUser/:id/:user"
                   element=<ShowAllItems
                     refreshSidebarData={reloadSidebar}
-                    type={ShowAllItemsTypes.SONG}
+                    type={ShowAllItemsTypes.ALL_PLAYLIST_FROM_USER}
                   />
                 />
                 <Route

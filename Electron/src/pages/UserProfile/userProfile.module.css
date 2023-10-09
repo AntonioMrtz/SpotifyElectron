@@ -68,6 +68,11 @@
 }
 
 
+.userProfileContainer h2 button:hover{
+
+    text-decoration: underline;
+}
+
 
 
 @media (max-height:768px) {

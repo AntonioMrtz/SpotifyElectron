@@ -134,7 +134,7 @@ def test_update_playlists_correct(clear_test_data_db):
     res_delete_artist = delete_artist(name=name)
     assert res_delete_artist.status_code == 202
 
-""" def test_get_play_count_artist_correct(clear_test_data_db):
+def test_get_play_count_artist_correct(clear_test_data_db):
 
     song_name = "8232392323623823723989"
     song_name_2 = "82323923236238237239892"
@@ -173,7 +173,7 @@ def test_update_playlists_correct(clear_test_data_db):
     assert res_delete_song.status_code == 202
 
     res_delete_artist = delete_artist(artista)
-    assert res_delete_artist.status_code == 202 """
+    assert res_delete_artist.status_code == 202
 
 
 

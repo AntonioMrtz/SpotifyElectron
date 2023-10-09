@@ -11,7 +11,7 @@ if "pytest" in modules:
 
     artist_collection = Database().connection["test.artista"]
     user_collection = Database().connection["test.usuario"]
-    song_collection = Database().connection["test.canciones.streaming"]
+    song_collection =  Database().connection["test.cancion.files"]
 
 else:
 

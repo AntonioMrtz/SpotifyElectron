@@ -3,14 +3,22 @@ from typing import Annotated, Union
 from services.security_service import get_jwt_token
 from model.Genre import Genre
 from fastapi.responses import Response
+from sys import modules
 import services.dto_service as dto_service
-import services.song_service as song_service
+import services.song_service as song_service_streaming
+import services.test_services.test_song_service as song_service_database
 import json
 
 router = APIRouter(
     prefix="/canciones",
     tags=["canciones"],
 )
+
+if "pytest" in modules:
+    song_service = song_service_database
+
+else:
+    song_service = song_service_streaming
 
 
 @router.get("/{nombre}")

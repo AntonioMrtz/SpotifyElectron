@@ -270,23 +270,37 @@ export default function UserProfile({
 
       {userType === UserType.ARTIST && (
         <div className="p-4">
-          <h2>
-            <button
-              style={{
-                border: 'none',
-                backgroundColor: 'transparent',
-                color: 'var(--pure-white)',
-                fontWeight: '700',
-                fontSize: '1.5rem',
-                marginTop: '1rem',
-                marginBottom: '1.5rem',
-              }}
-              type="button"
-              onClick={handleShowAllArtistSongs}
+          <div className="d-flex">
+            <div className={`w-100 d-flex ${styles.categoryTitleContainer}`}>
+              <button
+                type="button"
+                className={`${styles.categoryTitle}`}
+                style={{
+                  border: 'none',
+                  backgroundColor: 'transparent',
+                  color: 'var(--pure-white)',
+                  fontWeight: '700',
+                  fontSize: '1.5rem',
+                  marginTop: '1rem',
+                  marginBottom: '1.5rem',
+                }}
+                onClick={handleShowAllArtistSongs}
+              >
+                Especialmente para ti
+              </button>
+            </div>
+            <div
+              className={`container-fluid d-flex ${styles.mostrarTodoContainer}`}
             >
-              Canciones del artista
-            </button>
-          </h2>
+              <button
+                type="button"
+                className={`${styles.mostrarTodo}`}
+                onClick={handleShowAllArtistSongs}
+              >
+                Mostrar todos
+              </button>
+            </div>
+          </div>
           <div className="d-flex flex-row flex-wrap">
             {uploadedSongs &&
               uploadedSongs.map((songItem, index) => {
@@ -306,25 +320,41 @@ export default function UserProfile({
         </div>
       )}
       <div className="p-4">
-        <h2>
-          <button
-            style={{
-              border: 'none',
-              backgroundColor: 'transparent',
-              color: 'var(--pure-white)',
-              fontWeight: '700',
-              fontSize: '1.5rem',
-              marginTop: '1rem',
-              marginBottom: '1.5rem',
-            }}
-            type="button"
-            onClick={() => {
-              handleShowAllUserPlaylists(userType);
-            }}
+        <div className="d-flex">
+          <div className={`w-100 d-flex ${styles.categoryTitleContainer}`}>
+            <button
+              type="button"
+              className={`${styles.categoryTitle}`}
+              style={{
+                border: 'none',
+                backgroundColor: 'transparent',
+                color: 'var(--pure-white)',
+                fontWeight: '700',
+                fontSize: '1.5rem',
+                marginTop: '1rem',
+                marginBottom: '1.5rem',
+              }}
+              onClick={() => {
+                handleShowAllUserPlaylists(userType);
+              }}
+            >
+              Playlists del usuario
+            </button>
+          </div>
+          <div
+            className={`container-fluid d-flex ${styles.mostrarTodoContainer}`}
           >
-            Playlists del {userType}
-          </button>
-        </h2>
+            <button
+              type="button"
+              className={`${styles.mostrarTodo}`}
+              onClick={() => {
+                handleShowAllUserPlaylists(userType);
+              }}
+            >
+              Mostrar todos
+            </button>
+          </div>
+        </div>
         <div className="d-flex flex-row flex-wrap " style={{ gap: '15px' }}>
           {playlists &&
             playlists.map((playlistItem) => {

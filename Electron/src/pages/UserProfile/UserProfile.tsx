@@ -6,7 +6,6 @@ import SongCard, { PropsSongCard } from 'componentes/Cards/SongCard/SongCard';
 import PlaylistCard from 'componentes/Cards/PlaylistCard/PlaylistCard';
 import { useParams, useNavigate } from 'react-router-dom';
 import { UserType, backendPathFromUserType } from 'utils/role';
-import Token from 'utils/token';
 import styles from './userProfile.module.css';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 
@@ -139,7 +138,7 @@ export default function UserProfile({
 
     Promise.all(songPromises)
       .then((resSongPromises) => {
-        setUploadedSongs([...resSongPromises]);
+        setUploadedSongs([...resSongPromises.slice(0, 5)]);
         return null;
       })
       .catch(() => {
@@ -209,10 +208,14 @@ export default function UserProfile({
 
   /* Show all redirects */
 
-  const handleShowAllUserPlaylists = () => {
+  const handleShowAllUserPlaylists = (userTypeRedirect: UserType) => {
     navigate(
-      `/showAllPlaylistFromUser/Playlists del usuario/${Token.getTokenUsername()}`
+      `/showAllPlaylistFromUser/Playlists del usuario/${id}/${userTypeRedirect}`
     );
+  };
+
+  const handleShowAllArtistSongs = () => {
+    navigate(`/showAllSongsFromArtist/Canciones del artista/${id}}`);
   };
 
   return (
@@ -267,16 +270,22 @@ export default function UserProfile({
 
       {userType === UserType.ARTIST && (
         <div className="p-4">
-          <h2
-            style={{
-              color: 'var(--pure-white)',
-              fontWeight: '700',
-              fontSize: '1.5rem',
-              marginTop: '1rem',
-              marginBottom: '1.5rem',
-            }}
-          >
-            Canciones más populares del artista
+          <h2>
+            <button
+              style={{
+                border: 'none',
+                backgroundColor: 'transparent',
+                color: 'var(--pure-white)',
+                fontWeight: '700',
+                fontSize: '1.5rem',
+                marginTop: '1rem',
+                marginBottom: '1.5rem',
+              }}
+              type="button"
+              onClick={handleShowAllArtistSongs}
+            >
+              Canciones del artista
+            </button>
           </h2>
           <div className="d-flex flex-row flex-wrap">
             {uploadedSongs &&
@@ -309,7 +318,9 @@ export default function UserProfile({
               marginBottom: '1.5rem',
             }}
             type="button"
-            onClick={handleShowAllUserPlaylists}
+            onClick={() => {
+              handleShowAllUserPlaylists(userType);
+            }}
           >
             Playlists del {userType}
           </button>

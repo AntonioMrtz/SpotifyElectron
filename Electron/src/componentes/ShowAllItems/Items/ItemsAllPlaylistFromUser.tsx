@@ -3,13 +3,13 @@ import { PropsPlaylistCard } from 'componentes/Cards/PlaylistCard/types/propsPla
 import PlaylistCard from 'componentes/Cards/PlaylistCard/PlaylistCard';
 import Global from 'global/global';
 import { backendPathFromUserType } from 'utils/role';
-import Token from 'utils/token';
 import { PropsItemsPlaylistsFromUser } from '../types/PropsItems';
 import defaultThumbnailPlaylist from '../../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 
 export default function ItemsAllPlaylistsFromUser({
   refreshSidebarData,
   userName,
+  userType,
 }: PropsItemsPlaylistsFromUser) {
   const [playlists, setPlaylists] = useState<PropsPlaylistCard[]>();
 
@@ -17,9 +17,7 @@ export default function ItemsAllPlaylistsFromUser({
     const playlistNames: string[] = [];
 
     try {
-      const fetchUrlPlaylistFromUser = `${Global.backendBaseUrl}${
-        backendPathFromUserType[Token.getTokenRole()]
-      }/${userName}`;
+      const fetchUrlPlaylistFromUser = `${Global.backendBaseUrl}${backendPathFromUserType[userType]}/${userName}`;
 
       const resFetchUrlPlaylistFromUser = await fetch(fetchUrlPlaylistFromUser);
       const resFetchUrlPlaylistFromUserJson =
@@ -61,7 +59,7 @@ export default function ItemsAllPlaylistsFromUser({
       .catch(() => {
         console.log('No se pudieron obtener las playlists');
       });
-  }, [refreshSidebarData, userName]);
+  }, [refreshSidebarData, userName, userType]);
 
   useEffect(() => {
     handlePlaylists();

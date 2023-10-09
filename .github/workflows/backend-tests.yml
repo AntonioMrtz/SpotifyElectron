@@ -28,6 +28,7 @@ jobs:
         env: 
           MONGO_PASSWORD : ${{ secrets.MONGO_PASSWORD }}
           SECRET_KEY_SIGN : ${{ secrets.SECRET_KEY_SIGN }}
+          DISTRIBUTION_ID : ${{ secrets.DISTRIBUTION_ID }}
 
 
       - name: Fail workflow on test failure

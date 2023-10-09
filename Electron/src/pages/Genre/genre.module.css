@@ -38,3 +38,8 @@
     font-size: 1.5rem;
     color: var(--pure-white);
 }
+
+.songWrapperGenre {
+
+    gap: 14px;
+}

@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import ContextMenuSong from 'componentes/AdvancedUIComponents/ContextMenu/Song/ContextMenuSong';
 import Popover, { PopoverPosition } from '@mui/material/Popover/Popover';
-import styles from './songCard.module.css';
+import { useNavigate } from 'react-router-dom';
+import styles from '../cards.module.css';
 import defaultThumbnailPlaylist from '../../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 
 export interface PropsSongCard {
@@ -19,6 +20,12 @@ export default function SongCard({
   refreshSidebarData,
   changeSongName,
 }: PropsSongCard) {
+  const navigate = useNavigate();
+
+  const handleClickArtist = () => {
+    navigate(`/artist/${artist}`);
+  };
+
   const handleClickSong = () => {
     changeSongName(name);
   };
@@ -54,24 +61,35 @@ export default function SongCard({
   return (
     <>
       <button
+        style={{
+          border: 'none',
+          backgroundColor: 'transparent',
+          textAlign: 'left',
+        }}
         type="button"
-        className={`${styles.wrapperSongCardGenre}`}
+        key={name + artist}
+        className={`rounded ${styles.card}`}
         onDoubleClick={handleClickSong}
         onContextMenu={handleRightClick}
       >
-        <div className={`${styles.wrapperImageCard}`}>
+        <div className={`${styles.imgContainer}`} onContextMenu={() => {}}>
           <img
-            className="img-fluid"
             src={photo === '' ? defaultThumbnailPlaylist : photo}
-            alt=""
+            className="card-img-top rounded"
+            alt="playlist thumbnail"
           />
         </div>
-        <div className={`${styles.wrapperTextSongGenre}`}>
-          <h5>{name}</h5>
-          <p>{artist}</p>
+        <div className={`${styles.cardBody}`}>
+          <h5 className={`${styles.tituloLista}`}>{name}</h5>
+          <button
+            type="button"
+            onClick={handleClickArtist}
+            className={`${styles.autorLista}`}
+          >
+            {artist}
+          </button>
         </div>
       </button>
-
       <div>
         <Popover
           id={id}

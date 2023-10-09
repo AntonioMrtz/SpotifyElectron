@@ -4,13 +4,17 @@ import ItemsPlaylist from './Items/ItemsAllPlaylists';
 import { PropsAllItems, ShowAllItemsTypes } from './types/PropsShowAllItems';
 import ItemsArtist from './Items/ItemsAllArtist';
 import ItemsAllPlaylistsFromUser from './Items/ItemsAllPlaylistFromUser';
+import ItemsAllSongsFromArtist from './Items/ItemsAllSongsFromArtist';
 
-export default function AllPlaylists({
+export default function ShowAllItems({
   refreshSidebarData,
+  changeSongName,
   type,
 }: PropsAllItems) {
   const { id } = useParams();
   const { user } = useParams();
+  const { artist } = useParams();
+  const { usertype } = useParams();
 
   // Reverse mapping object
   const itemsDisplayed: {
@@ -26,6 +30,15 @@ export default function AllPlaylists({
         userName={user || 'NoUser'}
         refreshSidebarData={refreshSidebarData}
         id={id}
+        userType={usertype || 'noType'}
+      />
+    ),
+    [ShowAllItemsTypes.ALL_SONGS_FROM_ARTIST]: (
+      <ItemsAllSongsFromArtist
+        artistName={artist || 'NoArtist'}
+        id={id}
+        refreshSidebarData={refreshSidebarData}
+        changeSongName={changeSongName}
       />
     ),
   };

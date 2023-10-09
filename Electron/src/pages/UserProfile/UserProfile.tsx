@@ -286,7 +286,7 @@ export default function UserProfile({
                 }}
                 onClick={handleShowAllArtistSongs}
               >
-                Especialmente para ti
+                Canciones del artista
               </button>
             </div>
             <div

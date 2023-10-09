@@ -9,8 +9,10 @@ from services.artist_service import check_artists_exists, add_song_artist, delet
 from model.TokenData import TokenData
 from sys import modules
 from pymongo.errors import PyMongoError
-import boto3
 from botocore.exceptions import ClientError
+from dotenv import load_dotenv
+import os
+import boto3
 import base64
 import json
 import io
@@ -22,7 +24,7 @@ if "pytest" in modules:
 
     gridFsSong = GridFS(Database().connection, collection='test.cancion')
     fileSongCollection = Database().connection["test.cancion.files"]
-    songCollection = Database().connection["canciones.streaming"]
+    songCollection = Database().connection["test.canciones.streaming"]
 
 
 else:
@@ -35,7 +37,10 @@ s3 = boto3.resource('s3')
 s3_client = boto3.client('s3')
 song_bucket = s3.Bucket('canciones-spotify-electron')
 bucket_base_path = "canciones/"
-distribution_id = "E1QGP8NNLHDTBO"
+distribution_id = os.getenv("DISTRIBUTION_ID")
+
+load_dotenv()
+
 
 def check_song_exists(name: str) -> bool:
     """ Check if the song exists or not

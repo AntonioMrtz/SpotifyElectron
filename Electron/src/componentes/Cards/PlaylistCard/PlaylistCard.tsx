@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, MouseEvent, useEffect } from 'react';
 import ContextMenuPlaylist from 'componentes/AdvancedUIComponents/ContextMenu/Playlist/ContextMenuPlaylist';
-import Popover, { PopoverPosition } from '@mui/material/Popover/Popover';
+import Popover, { PopoverPosition } from '@mui/material/Popover';
 import styles from '../cards.module.css';
 import { PropsPlaylistCard } from './types/propsPlaylistCard';
 import defaultThumbnailPlaylist from '../../../assets/imgs/DefaultThumbnailPlaylist.jpg';

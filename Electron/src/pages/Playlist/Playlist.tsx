@@ -9,7 +9,7 @@ import { FastAverageColor } from 'fast-average-color';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import ContextMenuPlaylist from 'componentes/AdvancedUIComponents/ContextMenu/Playlist/ContextMenuPlaylist';
-import Popover, { PopoverPosition } from '@mui/material/Popover/Popover';
+import Popover, { PopoverPosition } from '@mui/material/Popover/';
 import { secondsToHoursAndMinutesFormatted } from 'utils/date';
 import { UserType, backendPathFromUserType } from 'utils/role';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import ContextMenuSong from 'componentes/AdvancedUIComponents/ContextMenu/Song/ContextMenuSong';
-import Popover, { PopoverPosition } from '@mui/material/Popover/Popover';
+import Popover, { PopoverPosition } from '@mui/material/Popover';
 import { useNavigate } from 'react-router-dom';
 import styles from '../cards.module.css';
 import defaultThumbnailPlaylist from '../../../assets/imgs/DefaultThumbnailPlaylist.jpg';

@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import Global from 'global/global';
 import Token from 'utils/token';
 import { backendPathFromUserType } from 'utils/role';
-import Popover, { PopoverPosition } from '@mui/material/Popover/Popover';
+import Popover, { PopoverPosition } from '@mui/material/Popover';
 import ContextMenuProfile from 'componentes/AdvancedUIComponents/ContextMenu/Profile/ContextMenuProfile';
 import styles from './stickyHeader.module.css';
 import groupIcon from '../../assets/imgs/groupIcon.png';

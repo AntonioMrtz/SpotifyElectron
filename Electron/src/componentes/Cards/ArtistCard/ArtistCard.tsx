@@ -26,7 +26,7 @@ export default function ArtistCard({ name, photo }: PropsArtistCard) {
           <img
             src={photo === '' ? defaultThumbnailPlaylist : photo}
             className="card-img-top rounded"
-            alt="playlist thumbnail"
+            alt="artist thumbnail"
           />
         </div>
         <div className={`${styles.cardBody}`}>

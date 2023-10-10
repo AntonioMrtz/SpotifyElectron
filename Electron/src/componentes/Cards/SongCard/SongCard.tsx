@@ -76,7 +76,7 @@ export default function SongCard({
           <img
             src={photo === '' ? defaultThumbnailPlaylist : photo}
             className="card-img-top rounded"
-            alt="playlist thumbnail"
+            alt="song thumbnail"
           />
         </div>
         <div className={`${styles.cardBody}`}>

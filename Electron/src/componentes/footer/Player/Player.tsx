@@ -203,9 +203,24 @@ export default function Player({
   };
 
   useEffect(() => {
+    if (audio.current) {
+      audio.current.pause();
+      handlePause();
+    }
     handleMetaData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [songName, changeSongInfo]);
+
+  useEffect(() => {
+    /* Pause audio if component unmount */
+    return () => {
+      if (audio.current) {
+        console.log('ENTROPAUSE');
+        audio.current.pause();
+        handlePause();
+      }
+    };
+  }, []);
 
   return (
     <div

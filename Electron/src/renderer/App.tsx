@@ -44,6 +44,7 @@ function App() {
   const [isLogged, setIsLogged] = useState(false);
 
   const handleLogout = () => {
+    changeSongName(Global.noSong);
     setIsLogged(false);
   };
 

@@ -72,7 +72,7 @@ export default function SongCard({
         onDoubleClick={handleClickSong}
         onContextMenu={handleRightClick}
       >
-        <div className={`${styles.imgContainer}`} onContextMenu={() => {}}>
+        <div className={`${styles.imgContainer}`}>
           <img
             src={photo === '' ? defaultThumbnailPlaylist : photo}
             className="card-img-top rounded"

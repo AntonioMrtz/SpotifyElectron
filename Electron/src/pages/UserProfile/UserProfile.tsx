@@ -301,7 +301,7 @@ export default function UserProfile({
               </button>
             </div>
           </div>
-          <div className="d-flex flex-row flex-wrap">
+          <div className="d-flex flex-row flex-wrap" style={{ gap: '14px' }}>
             {uploadedSongs &&
               uploadedSongs.map((songItem, index) => {
                 return (
@@ -355,7 +355,7 @@ export default function UserProfile({
             </button>
           </div>
         </div>
-        <div className="d-flex flex-row flex-wrap " style={{ gap: '15px' }}>
+        <div className="d-flex flex-row flex-wrap " style={{ gap: '14px' }}>
           {playlists &&
             playlists.map((playlistItem) => {
               return (
@@ -385,7 +385,7 @@ export default function UserProfile({
           >
             Historial de reproducción
           </h2>
-          <div className="d-flex flex-row flex-wrap " style={{ gap: '15px' }}>
+          <div className="d-flex flex-row flex-wrap " style={{ gap: '14px' }}>
             {playbackHistory &&
               playbackHistory.map((songItem, index) => {
                 return (

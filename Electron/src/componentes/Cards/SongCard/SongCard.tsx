@@ -60,13 +60,12 @@ export default function SongCard({
 
   return (
     <>
-      <button
+      <div
         style={{
           border: 'none',
           backgroundColor: 'transparent',
           textAlign: 'left',
         }}
-        type="button"
         key={name + artist}
         className={`rounded ${styles.card}`}
         onDoubleClick={handleClickSong}
@@ -89,7 +88,7 @@ export default function SongCard({
             {artist}
           </button>
         </div>
-      </button>
+      </div>
       <div>
         <Popover
           id={id}

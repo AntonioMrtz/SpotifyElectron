@@ -82,7 +82,35 @@ export default function Player({
     setVolume();
   }, [setVolume, volume]);
 
+  /* Handles updates of DB when song is played */
+
+  const handleIncreasePlayCount = () => {
+    const requestOptions = {
+      method: 'PATCH',
+    };
+    const fetchUrlUpdateSong: string = `${Global.backendBaseUrl}canciones/${songName}/numberOfPlays`;
+
+    fetch(fetchUrlUpdateSong, requestOptions).catch(() =>
+      console.log('Unable to update number of plays')
+    );
+  };
+
+  const handleUpdatePlaybackHistory = () => {
+    const username = Token.getTokenUsername();
+
+    const fetchPatchPlayBackHistory: string = `${Global.backendBaseUrl}usuarios/${username}/historial?nombre_cancion=${songName}`;
+
+    const requestOptionsUpdatePlaybackHistory = {
+      method: 'PATCH',
+    };
+
+    fetch(fetchPatchPlayBackHistory, requestOptionsUpdatePlaybackHistory).catch(
+      () => console.log('Unable to update playback history')
+    );
+  };
+
   /* Loads the song and metadata to the Player */
+
   const handleMetaData = async () => {
     try {
       if (audio.current) {
@@ -97,30 +125,13 @@ export default function Player({
 
       const resFetchSongJson = await resFetchSong.json();
 
-      const requestOptions = {
-        method: 'PATCH',
-      };
-      const fetchUrlUpdateSong: string = `${Global.backendBaseUrl}canciones/${songName}/numberOfPlays`;
+      handleIncreasePlayCount();
 
-      fetch(fetchUrlUpdateSong, requestOptions).catch(() =>
-        console.log('Unable to update number of plays')
-      );
+      handleUpdatePlaybackHistory();
+
       const resFetchSongDTO = await fetch(
         `${Global.backendBaseUrl}canciones/dto/${songName}`
       );
-
-      const username = Token.getTokenUsername();
-
-      const fetchPatchPlayBackHistory: string = `${Global.backendBaseUrl}usuarios/${username}/historial?nombre_cancion=${songName}`;
-
-      const requestOptionsUpdatePlaybackHistory = {
-        method: 'PATCH',
-      };
-
-      fetch(
-        fetchPatchPlayBackHistory,
-        requestOptionsUpdatePlaybackHistory
-      ).catch(() => console.log('Unable to update playback history'));
 
       const resFetchSongDTOJson = await resFetchSongDTO.json();
       changeSongInfo(resFetchSongDTOJson);
@@ -173,6 +184,10 @@ export default function Player({
             audio.current.play();
             handlePlay();
             setSongDuration(audio.current.duration); // not updating every 0.5s as playback time
+
+            if (audio.current.currentTime === 0) {
+              handleIncreasePlayCount();
+            }
           }
         };
       };

@@ -93,7 +93,11 @@ export default function InfoPopover({
           <div
             className={`container-fluid d-flex flex-column justify-content-flex-end mt-4 ${styles.wrapperButton} `}
           >
-            <button type="button" onClick={handleCloseConfirmationModal}>
+            <button
+              type="button"
+              onClick={handleCloseConfirmationModal}
+              id="button-info-popover"
+            >
               Confirmar
             </button>
           </div>

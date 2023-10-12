@@ -46,12 +46,7 @@ test('Home fields', async () => {
 
 test('prueba', async () => {
   global.fetch = jest.fn((url: string) => {
-    console.log(
-      '🚀 ~ file: Home.test.tsx:14 ~ global.fetch=jest.fn ~ url:',
-      url
-    );
     if (url === `${Global.backendBaseUrl}artistas/`) {
-      console.log('ENTRO EN ARTISTAS');
       return Promise.resolve({
         json: () =>
           Promise.resolve({
@@ -73,7 +68,6 @@ test('prueba', async () => {
       });
     }
     if (url === `${Global.backendBaseUrl}playlists/`) {
-      console.log('ENTRO EN PLAYLIST');
       return Promise.resolve({
         json: () =>
           Promise.resolve({

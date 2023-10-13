@@ -1,17 +1,35 @@
 import { useCallback, useEffect, useState } from 'react';
-import { PropsPlaylistCard } from 'componentes/Cards/PlaylistCard/types/propsPlaylistCard';
-import PlaylistCard from 'componentes/Cards/PlaylistCard/PlaylistCard';
+import { PropsPlaylistCard } from 'components/Cards/PlaylistCard/types/propsPlaylistCard';
+import PlaylistCard from 'components/Cards/PlaylistCard/PlaylistCard';
 import Global from 'global/global';
-import { PropsItemsPlaylist } from '../types/PropsItems';
+import { backendPathFromUserType } from 'utils/role';
+import { PropsItemsPlaylistsFromUser } from '../types/PropsItems';
 import defaultThumbnailPlaylist from '../../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 
-export default function ItemsAllPlaylists({
+export default function ItemsAllPlaylistsFromUser({
   refreshSidebarData,
-}: PropsItemsPlaylist) {
+  userName,
+  userType,
+}: PropsItemsPlaylistsFromUser) {
   const [playlists, setPlaylists] = useState<PropsPlaylistCard[]>();
 
-  const handlePlaylists = useCallback(() => {
-    fetch(`${Global.backendBaseUrl}playlists/`)
+  const handlePlaylists = useCallback(async () => {
+    const playlistNames: string[] = [];
+
+    try {
+      const fetchUrlPlaylistFromUser = `${Global.backendBaseUrl}${backendPathFromUserType[userType]}/${userName}`;
+
+      const resFetchUrlPlaylistFromUser = await fetch(fetchUrlPlaylistFromUser);
+      const resFetchUrlPlaylistFromUserJson =
+        await resFetchUrlPlaylistFromUser.json();
+
+      playlistNames.push(resFetchUrlPlaylistFromUserJson.playlists.join(','));
+    } catch {
+      console.log('Unable to get user data');
+      return;
+    }
+
+    fetch(`${Global.backendBaseUrl}playlists/multiple/${playlistNames}`)
       .then((resFetchPlaylists) => resFetchPlaylists.json())
       .then((resFetchPlaylistsJson) => {
         if (resFetchPlaylistsJson.playlists) {
@@ -41,7 +59,7 @@ export default function ItemsAllPlaylists({
       .catch(() => {
         console.log('No se pudieron obtener las playlists');
       });
-  }, [refreshSidebarData]);
+  }, [refreshSidebarData, userName, userType]);
 
   useEffect(() => {
     handlePlaylists();

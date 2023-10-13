@@ -1,20 +1,20 @@
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import Playlist from 'pages/Playlist/Playlist';
-import StickyHeader from 'componentes/StickyHeader/StickyHeader';
+import StickyHeader from 'components/StickyHeader/StickyHeader';
 import Global from 'global/global';
 import Genre from 'pages/Genre/Genre';
-import ShowAllItems from 'componentes/ShowAllItems/ShowAllItems';
+import ShowAllItems from 'components/ShowAllItems/ShowAllItems';
 import StartMenu from 'pages/StartMenu/StartMenu';
-import { ShowAllItemsTypes } from 'componentes/ShowAllItems/types/PropsShowAllItems';
+import { ShowAllItemsTypes } from 'components/ShowAllItems/types/PropsShowAllItems';
 import UserProfile from 'pages/UserProfile/UserProfile';
 import { UserType } from 'utils/role';
 import RegisterMenu from 'pages/StartMenu/RegisterMenu';
 import styles from './AppCss.module.css';
-import Sidebar from '../componentes/Sidebar/Sidebar';
+import Sidebar from '../components/Sidebar/Sidebar';
 import Home from '../pages/Home/Home';
 import Explorar from '../pages/Explorar/Explorar';
-import Footer from '../componentes/footer/Footer';
+import Footer from '../components/footer/Footer';
 
 function App() {
   /* Scroll to the top if path is changed */

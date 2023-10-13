@@ -4,7 +4,7 @@ import Global from 'global/global';
 import Token from 'utils/token';
 import { backendPathFromUserType } from 'utils/role';
 import Popover, { PopoverPosition } from '@mui/material/Popover';
-import ContextMenuProfile from 'componentes/AdvancedUIComponents/ContextMenu/Profile/ContextMenuProfile';
+import ContextMenuProfile from 'components/AdvancedUIComponents/ContextMenu/Profile/ContextMenuProfile';
 import styles from './stickyHeader.module.css';
 import groupIcon from '../../assets/imgs/groupIcon.png';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';

@@ -3,7 +3,7 @@ import Global from 'global/global';
 import { useLocation } from 'react-router-dom';
 import genreColorsMap from 'utils/genre';
 import styles from './genre.module.css';
-import SongCard from '../../componentes/Cards/SongCard/SongCard';
+import SongCard from '../../components/Cards/SongCard/SongCard';
 
 interface PropsGenre {
   refreshSidebarData: Function;

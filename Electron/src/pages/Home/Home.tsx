@@ -1,12 +1,12 @@
 import Global from 'global/global';
 import { useCallback, useEffect, useState } from 'react';
-import LoadingCircle from 'componentes/AdvancedUIComponents/LoadingCircle/LoadingCircle';
+import LoadingCircle from 'components/AdvancedUIComponents/LoadingCircle/LoadingCircle';
 import { useNavigate } from 'react-router-dom';
-import ArtistCard from 'componentes/Cards/ArtistCard/ArtistCard';
-import { PropsArtistCard } from 'componentes/Cards/ArtistCard/types/propsArtistCard';
+import ArtistCard from 'components/Cards/ArtistCard/ArtistCard';
+import { PropsArtistCard } from 'components/Cards/ArtistCard/types/propsArtistCard';
 import styles from './homeCss.module.css';
-import PlaylistCard from '../../componentes/Cards/PlaylistCard/PlaylistCard';
-import { PropsPlaylistCard } from '../../componentes/Cards/PlaylistCard/types/propsPlaylistCard';
+import PlaylistCard from '../../components/Cards/PlaylistCard/PlaylistCard';
+import { PropsPlaylistCard } from '../../components/Cards/PlaylistCard/types/propsPlaylistCard';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 
 interface PropsHome {

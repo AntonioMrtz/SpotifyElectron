@@ -1,34 +1,23 @@
-import { useEffect, useState } from 'react';
-import ContextMenuSong from 'componentes/AdvancedUIComponents/ContextMenu/Song/ContextMenuSong';
+import { useState, useEffect, MouseEvent } from 'react';
+import { PropsSongs } from 'components/Sidebar/types/propsSongs.module';
+import ContextMenuSong from 'components/AdvancedUIComponents/ContextMenu/Song/ContextMenuSong';
 import Popover, { PopoverPosition } from '@mui/material/Popover';
 import { useNavigate } from 'react-router-dom';
-import styles from '../cards.module.css';
-import defaultThumbnailPlaylist from '../../../assets/imgs/DefaultThumbnailPlaylist.jpg';
+import { secondsToMinutesSeconds } from 'utils/date';
+import styles from '../../pages/Playlist/playlist.module.css';
 
-export interface PropsSongCard {
-  name: string;
-  artist: string;
-  photo: string;
-  refreshSidebarData: Function;
-  changeSongName: Function;
-}
-
-export default function SongCard({
+export default function Song({
   name,
-  artist,
-  photo,
+  playlistName,
+  artistName,
+  index,
+  duration,
+  playCount,
+  handleSongCliked,
+  refreshPlaylistData,
   refreshSidebarData,
-  changeSongName,
-}: PropsSongCard) {
+}: PropsSongs) {
   const navigate = useNavigate();
-
-  const handleClickArtist = () => {
-    navigate(`/artist/${artist}`);
-  };
-
-  const handleClickSong = () => {
-    changeSongName(name);
-  };
 
   const [isOpen, setIsOpen] = useState(false);
   const [anchorPosition, setAnchorPosition] = useState<{
@@ -46,7 +35,15 @@ export default function SongCard({
     }
   }, [isOpen]);
 
-  const handleRightClick = (event: any) => {
+  const handleSongClicked = () => {
+    handleSongCliked(name);
+  };
+
+  const handleClickArtist = () => {
+    navigate(`/artist/${artistName}`);
+  };
+
+  const handleRightClick = (event: MouseEvent<HTMLLIElement>) => {
     event.preventDefault();
     setIsOpen(!isOpen);
     setAnchorPosition({
@@ -59,36 +56,36 @@ export default function SongCard({
   const id = open ? 'parent-popover' : undefined;
 
   return (
-    <>
-      <div
-        style={{
-          border: 'none',
-          backgroundColor: 'transparent',
-          textAlign: 'left',
-        }}
-        key={name + artist}
-        className={`rounded ${styles.card}`}
-        onDoubleClick={handleClickSong}
-        onContextMenu={handleRightClick}
-      >
-        <div className={`${styles.imgContainer}`}>
-          <img
-            src={photo === '' ? defaultThumbnailPlaylist : photo}
-            className="card-img-top rounded"
-            alt="song thumbnail"
-          />
-        </div>
-        <div className={`${styles.cardBody}`}>
-          <h5 className={`${styles.tituloLista}`}>{name}</h5>
+    <li
+      onDoubleClick={handleSongClicked}
+      className={`container-fluid ${styles.gridContainer} align-items-center`}
+      onContextMenu={handleRightClick}
+    >
+      <span className={` ${styles.songNumberTable}`}>{index}</span>
+      <span className={`  d-flex flex-column`}>
+        <span
+          className={`${styles.songTitleTable} ${styles.titleContainer} pb-0`}
+        >
+          {name}
+        </span>
+
+        <div>
           <button
             type="button"
             onClick={handleClickArtist}
-            className={`${styles.autorLista}`}
+            className={`${styles.gridItem} ${styles.artistNameContainer} p-0 `}
           >
-            {artist}
+            {artistName}
           </button>
         </div>
-      </div>
+      </span>
+      <span className={` d-flex justify-content-end ${styles.gridItem}`}>
+        {playCount}
+      </span>
+      <span className={` d-flex justify-content-end ${styles.gridItem}`}>
+        {secondsToMinutesSeconds(duration)}
+      </span>
+
       <div>
         <Popover
           id={id}
@@ -115,13 +112,13 @@ export default function SongCard({
         >
           <ContextMenuSong
             songName={name}
-            playlistName=""
+            playlistName={playlistName}
             handleCloseParent={handleClose}
-            refreshPlaylistData={() => {}}
+            refreshPlaylistData={refreshPlaylistData}
             refreshSidebarData={refreshSidebarData}
           />
         </Popover>
       </div>
-    </>
+    </li>
   );
 }

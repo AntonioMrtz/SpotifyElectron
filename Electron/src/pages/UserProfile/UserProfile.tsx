@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { FastAverageColor } from 'fast-average-color';
 import Global from 'global/global';
-import { PropsPlaylistCard } from 'componentes/Cards/PlaylistCard/types/propsPlaylistCard';
-import SongCard, { PropsSongCard } from 'componentes/Cards/SongCard/SongCard';
-import PlaylistCard from 'componentes/Cards/PlaylistCard/PlaylistCard';
+import { PropsPlaylistCard } from 'components/Cards/PlaylistCard/types/propsPlaylistCard';
+import SongCard, { PropsSongCard } from 'components/Cards/SongCard/SongCard';
+import PlaylistCard from 'components/Cards/PlaylistCard/PlaylistCard';
 import { useParams, useNavigate } from 'react-router-dom';
 import { UserType, backendPathFromUserType } from 'utils/role';
 import styles from './userProfile.module.css';

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
-import { PropsArtistCard } from 'componentes/Cards/ArtistCard/types/propsArtistCard';
-import ArtistCard from 'componentes/Cards/ArtistCard/ArtistCard';
+import { PropsArtistCard } from 'components/Cards/ArtistCard/types/propsArtistCard';
+import ArtistCard from 'components/Cards/ArtistCard/ArtistCard';
 import Global from 'global/global';
 /* import { PropsItems } from '../types/PropsItems';
  */

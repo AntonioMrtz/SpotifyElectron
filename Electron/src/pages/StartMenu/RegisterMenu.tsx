@@ -1,7 +1,7 @@
 import { ChangeEvent, useState, MouseEvent } from 'react';
 import Global from 'global/global';
-import InfoPopover from 'componentes/AdvancedUIComponents/InfoPopOver/InfoPopover';
-import { InfoPopoverType } from 'componentes/AdvancedUIComponents/InfoPopOver/types/InfoPopover';
+import InfoPopover from 'components/AdvancedUIComponents/InfoPopOver/InfoPopover';
+import { InfoPopoverType } from 'components/AdvancedUIComponents/InfoPopOver/types/InfoPopover';
 import styles from './startMenu.module.css';
 import SpotifyElectronLogo from '../../assets/imgs/SpotifyElectronLogo.png';
 

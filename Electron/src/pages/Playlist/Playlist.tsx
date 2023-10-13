@@ -4,16 +4,16 @@ import { ChangeEvent, FormEvent, useEffect, useState, MouseEvent } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Global from 'global/global';
 import Token from 'utils/token';
-import { PropsSongs } from 'componentes/Sidebar/types/propsSongs.module';
+import { PropsSongs } from 'components/Sidebar/types/propsSongs.module';
 import { FastAverageColor } from 'fast-average-color';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
-import ContextMenuPlaylist from 'componentes/AdvancedUIComponents/ContextMenu/Playlist/ContextMenuPlaylist';
-import Popover, { PopoverPosition } from '@mui/material/Popover/Popover';
+import ContextMenuPlaylist from 'components/AdvancedUIComponents/ContextMenu/Playlist/ContextMenuPlaylist';
+import Popover, { PopoverPosition } from '@mui/material/Popover/';
 import { secondsToHoursAndMinutesFormatted } from 'utils/date';
 import { UserType, backendPathFromUserType } from 'utils/role';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
-import Song from '../../componentes/Song/Song';
+import Song from '../../components/Song/Song';
 import styles from './playlist.module.css';
 
 interface PropsPlaylist {

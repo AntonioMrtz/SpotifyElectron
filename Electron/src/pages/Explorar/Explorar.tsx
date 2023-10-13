@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Global from 'global/global';
 import genreColorsMap from 'utils/genre';
 import styles from './explorar.module.css';
-import GenreCard from '../../componentes/Cards/GenreCard/GenreCard';
+import GenreCard from '../../components/Cards/GenreCard/GenreCard';
 
 export default function Explorar() {
   const [generos, setGeneros] = useState<{}>();

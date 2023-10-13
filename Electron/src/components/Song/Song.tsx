@@ -1,6 +1,6 @@
 import { useState, useEffect, MouseEvent } from 'react';
-import { PropsSongs } from 'componentes/Sidebar/types/propsSongs.module';
-import ContextMenuSong from 'componentes/AdvancedUIComponents/ContextMenu/Song/ContextMenuSong';
+import { PropsSongs } from 'components/Sidebar/types/propsSongs.module';
+import ContextMenuSong from 'components/AdvancedUIComponents/ContextMenu/Song/ContextMenuSong';
 import Popover, { PopoverPosition } from '@mui/material/Popover';
 import { useNavigate } from 'react-router-dom';
 import { secondsToMinutesSeconds } from 'utils/date';

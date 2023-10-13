@@ -1,8 +1,8 @@
 import Popover from '@mui/material/Popover';
 import { useEffect, useState } from 'react';
-import LoadingCircle from 'componentes/AdvancedUIComponents/LoadingCircle/LoadingCircle';
-import InfoPopover from 'componentes/AdvancedUIComponents/InfoPopOver/InfoPopover';
-import { InfoPopoverType } from 'componentes/AdvancedUIComponents/InfoPopOver/types/InfoPopover';
+import LoadingCircle from 'components/AdvancedUIComponents/LoadingCircle/LoadingCircle';
+import InfoPopover from 'components/AdvancedUIComponents/InfoPopOver/InfoPopover';
+import { InfoPopoverType } from 'components/AdvancedUIComponents/InfoPopOver/types/InfoPopover';
 import Global from 'global/global';
 import Token from 'utils/token';
 import { backendPathFromUserType } from 'utils/role';

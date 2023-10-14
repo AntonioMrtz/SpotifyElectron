@@ -65,4 +65,8 @@ test('Render itemsAllPlaylist', async () => {
   });
 
   expect(component).toBeTruthy();
+
+  const songCardName = component.queryByText(songMockFetch.name);
+
+  expect(songCardName).toBeInTheDocument();
 });

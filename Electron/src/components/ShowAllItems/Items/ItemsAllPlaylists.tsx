@@ -32,9 +32,8 @@ export default function ItemsAllPlaylists({
             };
 
             propsPlaylists.push(propsPlaylist);
-
-            setPlaylists(propsPlaylists);
           });
+          setPlaylists(propsPlaylists);
         }
         return null;
       })

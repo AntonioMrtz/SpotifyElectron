@@ -45,4 +45,7 @@ test('Render ItemsAllArtist', async () => {
   });
 
   expect(component).toBeTruthy();
+
+  const artistCardName = component.queryByText('name');
+  expect(artistCardName).toBeInTheDocument();
 });

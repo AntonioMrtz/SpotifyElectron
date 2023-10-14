@@ -28,7 +28,7 @@ const songMockFetch = {
   number_of_plays: 2,
 };
 
-test('Render itemsAllPlaylist', async () => {
+test('Render items All Songs from Artist', async () => {
   global.fetch = jest.fn((url: string) => {
     if (url === `${Global.backendBaseUrl}artistas/${artistMockFetch.name}`) {
       return Promise.resolve({

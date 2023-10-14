@@ -2,8 +2,6 @@ import { useCallback, useEffect, useState } from 'react';
 import { PropsArtistCard } from 'components/Cards/ArtistCard/types/propsArtistCard';
 import ArtistCard from 'components/Cards/ArtistCard/ArtistCard';
 import Global from 'global/global';
-/* import { PropsItems } from '../types/PropsItems';
- */
 import defaultThumbnailPlaylist from '../../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 
 export default function ItemsAllArtist() {

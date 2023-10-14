@@ -54,7 +54,7 @@ test('Render StickyHeader and get User data', async () => {
   expect(component).toBeTruthy();
 });
 
-test('StickyHeader open ContextMenu', async () => {
+test('StickyHeader open ContextMenuProfile', async () => {
   const component = await act(() => {
     return render(
       <MemoryRouter initialEntries={[`/location`]}>

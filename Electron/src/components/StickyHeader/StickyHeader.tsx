@@ -165,7 +165,7 @@ export default function StickyHeader({ handleLogout }: PropsStickyHeader) {
         className={`d-flex flex-row container-fluid  ${styles.wrapperProfileOptions}`}
       >
         <button type="button" onClick={handleProfileButon}>
-          <img src={profileIcon} alt="" />
+          <img src={profileIcon} alt="profile-icon" />
         </button>
 
         <button type="button">

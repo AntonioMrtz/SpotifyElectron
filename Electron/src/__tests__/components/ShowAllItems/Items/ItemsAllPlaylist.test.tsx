@@ -28,7 +28,7 @@ test('Render itemsAllPlaylist', async () => {
           Promise.resolve({
             playlists: [
               JSON.stringify({
-                name: 'name',
+                name: playlistName,
                 photo: 'photo',
                 description: 'description',
                 upload_date: 'date',
@@ -57,4 +57,8 @@ test('Render itemsAllPlaylist', async () => {
   });
 
   expect(component).toBeTruthy();
+
+  const playlistCardName = component.queryByText(playlistDTOMockFetch.name);
+
+  expect(playlistCardName).toBeInTheDocument();
 });

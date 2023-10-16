@@ -80,6 +80,7 @@ export default function VolumeSlider({ changeVolume }: PropsVolumeSlider) {
         }}
         className={`btn ${displayUnmuted} ${styles.buttonMargins}`}
         onClick={handleMute}
+        data-testid="songconfig-speaker-button"
       >
         <i className="fa-solid fa-volume-low fa-fw" />
       </button>
@@ -106,6 +107,7 @@ export default function VolumeSlider({ changeVolume }: PropsVolumeSlider) {
         }}
         className={`btn ${displayMuted} ${styles.buttonMargins}`}
         onClick={handleMute}
+        data-testid="songconfig-speaker-button-mute"
       >
         <i className="fa-solid fa-volume-xmark" />
       </button>
@@ -127,6 +129,8 @@ export default function VolumeSlider({ changeVolume }: PropsVolumeSlider) {
         onMouseLeave={handleMouseLeave}
         onChange={handleVolume}
         value={currentValue}
+        data-testid="songconfig-slider-volume"
+        id="songconfig-slider-volume"
         sx={{
           '& .MuiSlider-track': {
             backgroundColor: isHovered

@@ -66,6 +66,7 @@ export default function SongInfo({ songInfo }: PropsSongInfo | any) {
               type="button"
               onClick={handleLike}
               className={`btn ${displaylike}`}
+              data-testid="songinfo-like-button"
             >
               <i>
                 <FavoriteBorder sx={{ fontSize: 18 }} />
@@ -75,6 +76,7 @@ export default function SongInfo({ songInfo }: PropsSongInfo | any) {
               type="button"
               onClick={handleLike}
               className={`btn ${displaydislike}`}
+              data-testid="songinfo-unlike-button"
             >
               <Favorite sx={{ fontSize: 18, color: 'var(--primary-green)' }} />
             </button>

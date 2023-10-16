@@ -286,6 +286,7 @@ export default function AddSongPlayListAccordion({
           aria-controls="panel1a-content"
           id="panel1a-header"
           style={{ border: '1px solid var(--primary-black)' }}
+          data-testid="accordion-expand-submit-playlist"
         >
           <Typography
             style={{
@@ -321,7 +322,7 @@ export default function AddSongPlayListAccordion({
                     type="text"
                     id="foto"
                     name="foto"
-                    placeholder="URL de la miniatura"
+                    placeholder="URL de la miniatura de la playlist"
                     className={` `}
                     onChange={handleChangePlaylist}
                     required
@@ -345,6 +346,7 @@ export default function AddSongPlayListAccordion({
               type="button"
               onClick={handleSubmitPlaylist}
               className={`btn btn-lg ${styles.btnSend}`}
+              data-testid="sidebar-addsongplaylistaccordion-submit-playlist"
             >
               Subir
             </button>
@@ -367,6 +369,7 @@ export default function AddSongPlayListAccordion({
             aria-controls="panel1a-content"
             id="panel1a-header"
             style={{ border: '1px solid var(--primary-black)' }}
+            data-testid="accordion-expand-submit-song"
           >
             <Typography
               style={{
@@ -390,7 +393,7 @@ export default function AddSongPlayListAccordion({
                     type="text"
                     id="nombre"
                     name="nombre"
-                    placeholder="Nombre de la cancion"
+                    placeholder="Nombre de la canción"
                     className={` ${styles.input}`}
                     onChange={handleChangeSong}
                     required
@@ -401,7 +404,7 @@ export default function AddSongPlayListAccordion({
                 <input
                   type="text"
                   id="foto"
-                  placeholder="URL de la miniatura"
+                  placeholder="URL de la miniatura de la canción"
                   className={` form-control ${styles.input}`}
                   onChange={handleChangeSong}
                   name="foto"
@@ -453,6 +456,7 @@ export default function AddSongPlayListAccordion({
                     onChange={handleChangeFile}
                     accept="audio/mp3"
                     required
+                    data-testid="sidebar-file-input"
                   />
                 </div>
               </div>
@@ -461,6 +465,7 @@ export default function AddSongPlayListAccordion({
                 type="button"
                 onClick={handleSubmitSong}
                 className={`btn btn-lg ${styles.btnSend} d-flex flex-row justify-content-center`}
+                data-testid="sidebar-addsongplaylistaccordion-submit-song"
               >
                 Subir {loadingUploadSong && <LoadingCircleSmall />}
               </button>

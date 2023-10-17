@@ -241,7 +241,12 @@ export default function Player({
         <button type="button">
           <i className="fa-solid fa-backward-step fa-fw" />
         </button>
-        <button type="button" onClick={play} className={`${displayNonePlay}`}>
+        <button
+          type="button"
+          onClick={play}
+          className={`${displayNonePlay}`}
+          data-testid="player-play-button"
+        >
           <i className="fa-solid fa-circle-play fa-fw" />
         </button>
         <button type="button" onClick={pause} className={`${displayNonePause}`}>

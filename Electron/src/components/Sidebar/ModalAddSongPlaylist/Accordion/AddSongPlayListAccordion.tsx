@@ -115,8 +115,6 @@ export default function AddSongPlayListAccordion({
     setLoadingUploadSong(true);
     setIsCloseAllowed(false);
 
-    const userName = Token.getTokenUsername();
-
     const url = new URL(`${Global.backendBaseUrl}canciones/`);
 
     if (formDataSong && songFile) {
@@ -125,7 +123,6 @@ export default function AddSongPlayListAccordion({
           url.searchParams.set(key, value);
         }
       });
-      url.searchParams.set('artista', userName);
 
       const formDataFile = new FormData();
       formDataFile.append('file', songFile);

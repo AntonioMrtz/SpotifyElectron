@@ -53,6 +53,7 @@ export default function Playlist({
       className={`container-fluid d-flex flex-row ${styles.wrapperPlaylist} ${playlistStyle}`}
       onClick={handleClickPlaylist}
       onContextMenu={handleRightClick}
+      data-testid="sidebar-playlist-wrapper"
     >
       <img src={photo} alt="" className="img-fluid img-border-2" />
 

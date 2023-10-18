@@ -291,7 +291,7 @@ export default function Playlist({
       const resGetPlaylistDTOJson = await resGetPlaylistDTO.json();
       const newSongsPutPlaylist = [...resGetPlaylistDTOJson.song_names];
 
-      const url = `${Global.backendBaseUrl}playlists/${playlistName}`; // Reemplaza con la URL de tu API y el nombre de la playlist
+      const url = `${Global.backendBaseUrl}playlists/${playlistName}`;
       const photo =
         formData.foto && formData.foto.includes('http') ? formData.foto : '';
 
@@ -414,7 +414,7 @@ export default function Playlist({
             onClick={handleOpenUpdatePlaylistModal}
             className={`${styles.wrapperThumbnail}`}
           >
-            <img className="" src={`${thumbnail}`} alt="" />
+            <img className="" src={`${thumbnail}`} alt="thumbnail-playlist" />
           </button>
 
           <div
@@ -465,6 +465,7 @@ export default function Playlist({
             type="button"
             className={`${styles.hoverableItemubheader} ${displayDislike}`}
             onClick={handleLike}
+            id="playlist-like-button"
           >
             <i
               className="fa-regular fa-heart"
@@ -475,6 +476,7 @@ export default function Playlist({
             type="button"
             className={`${displayLike}`}
             onClick={handleLike}
+            id="playlist-unlike-button"
           >
             <i
               className="fa-solid fa-heart"

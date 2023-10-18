@@ -4,7 +4,7 @@
     ".prettierrc": "jsonc",
     ".eslintignore": "ignore"
   },
-  
+
   "eslint.validate": [
     "javascript",
     "javascriptreact",
@@ -25,6 +25,7 @@
     "npm-debug.log.*": true,
     "test/**/__snapshots__": true,
     "package-lock.json": true,
-    "*.{css,sass,scss}.d.ts": true
+    "*.{css,sass,scss}.d.ts": true,
+    "coverage/**":true
   }
 }

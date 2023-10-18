@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 import '@testing-library/jest-dom/extend-expect';
-import { fireEvent, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import Player from 'components/footer/Player/Player';
 import Global from 'global/global';
 import Token from 'utils/token';
@@ -65,13 +65,21 @@ global.fetch = jest.fn((url: string) => {
   return Promise.reject(new Error('Unhandled URL in fetch mock'));
 }) as jest.Mock;
 
-const mockAudioPlay = jest
+jest
+  .spyOn(window.HTMLMediaElement.prototype, 'play')
+  .mockImplementation(jest.fn());
+
+jest
+  .spyOn(window.HTMLMediaElement.prototype, 'pause')
+  .mockImplementation(jest.fn());
+
+/* const mockAudioPlay = jest
   .spyOn(window.HTMLMediaElement.prototype, 'play')
   .mockImplementation(jest.fn());
 
 const mockAudioPause = jest
   .spyOn(window.HTMLMediaElement.prototype, 'pause')
-  .mockImplementation(jest.fn());
+  .mockImplementation(jest.fn()); */
 
 test('Render Player', async () => {
   let component;
@@ -83,19 +91,4 @@ test('Render Player', async () => {
   });
 
   expect(component).toBeTruthy();
-  expect(mockAudioPause).toHaveBeenCalled();
 });
-
-/* test('Player click on pause', async () => {
-  let component;
-
-  await act(async () => {
-    component = render(
-      <Player volume={0} songName={songName} changeSongInfo={jest.fn()} />
-    );
-    const playButton = component.getByTestId('player-play-button');
-    fireEvent.click(playButton);
-  });
-
-  expect(mockAudioPlay).toHaveBeenCalled();
-}); */

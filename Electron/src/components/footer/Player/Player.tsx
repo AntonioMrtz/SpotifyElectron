@@ -215,7 +215,6 @@ export default function Player({
     /* Pause audio if component unmount */
     return () => {
       if (audio.current) {
-        console.log('ENTROPAUSE');
         audio.current.pause();
         handlePause();
       }

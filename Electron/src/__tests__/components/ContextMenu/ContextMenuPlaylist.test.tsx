@@ -49,14 +49,6 @@ jest.spyOn(Token, 'getTokenUsername').mockReturnValue(userName);
 jest.spyOn(Token, 'getTokenRole').mockReturnValue(roleUser);
 
 global.fetch = jest.fn((url: string, options: any) => {
-  console.log(
-    '🚀 ~ file: ContextMenuPlaylist.test.tsx:52 ~ global.fetch=jest.fn ~ options:',
-    options
-  );
-  console.log(
-    '🚀 ~ file: ContextMenuPlaylist.test.tsx:52 ~ global.fetch=jest.fn ~ url:',
-    url
-  );
   if (
     url === `${Global.backendBaseUrl}playlists/dto/${playlistDTOMockFetch.name}`
   ) {

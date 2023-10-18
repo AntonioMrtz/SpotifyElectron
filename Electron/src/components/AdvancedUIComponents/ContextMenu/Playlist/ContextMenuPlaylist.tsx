@@ -273,7 +273,7 @@ export default function ContextMenuPlaylist({
       method: 'DELETE',
     })
       .then((response) => {
-        if (!response.ok) {
+        if (response.status !== 202) {
           displayConfirmationModal(ConfirmationMenuActionKind.DELETE_ERROR);
 
           throw new Error('Unable to delete playlist');

@@ -125,7 +125,8 @@ const createWindow = async () => {
         });
 
         if (filteredJwtTokens && filteredJwtTokens[0]) {
-          details.requestHeaders.Authorization = filteredJwtTokens[0].value;
+          details.requestHeaders.Authorization =
+            filteredJwtTokens[filteredJwtTokens.length - 1].value;
         }
 
         callback({ cancel: false, requestHeaders: details.requestHeaders });

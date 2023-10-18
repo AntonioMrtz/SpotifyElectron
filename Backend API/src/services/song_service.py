@@ -85,7 +85,7 @@ def check_jwt_user_is_song_artist(token: TokenData, artist: str) -> bool:
             status_code=401, detail="El usuario no es el creador de la canción")
 
 
-def get_cloudfront_url(resource_path):
+def get_cloudfront_url(resource_path : str):
     cloudfront_client = boto3.client('cloudfront')
 
     # Get the CloudFront domain name associated with the distribution
@@ -131,7 +131,7 @@ def get_song(name: str) -> Song:
     song_metadata = fileSongCollection.find_one({'name': name}) """
 
     try:
-
+        # TODO peticion a Lambda por url
         cloudfront_url = get_cloudfront_url(f"{bucket_base_path}{name}.mp3")
 
         song = Song(name=name, artist=song["artist"], photo=song["photo"], duration=song["duration"], genre=Genre(

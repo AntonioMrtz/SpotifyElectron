@@ -32,7 +32,7 @@ def lambda_handler(event, context):
         if(method=='GET'):
             return {
                 "statusCode": 200,
-                "body": json.dumps({"details": str(get_cloudfront_url(song_name))})
+                "body": json.dumps({"url": str(get_cloudfront_url(song_name))})
             }
 
         elif(method=='DELETE'):
@@ -51,24 +51,16 @@ def lambda_handler(event, context):
                 body_str = event["body"]
                 body_dict = json.loads(body_str)
                 song_data = body_dict.get("file")
-                #song_data = song_data.enconde('utf-8')
-                #encoded_bytes = base64.b64decode(song_data)
-                # Extract the base64-encoded part
                 encoded_data = song_data.split("'")[1]
                 
-                # Decode the base64-encoded string to get the bytes object
                 decoded_bytes = base64.b64decode(encoded_data)
-                
-
-                #audioBytesString = song_data.replace('"', '').replace('b', '') .replace("'", '')
-                #audioBytesString = audioBytesString[:-1]
-                #decoded_bytes = base64.b64decode(audioBytesString)
-                #audio_uri = f"data:audio/mp3;base64,{audioBytesString}"
-
-                #return audio_uri
-                
 
                 s3_client.put_object(Body=decoded_bytes, Bucket=song_bucket.name, Key=song_key)
+                return {
+                    "statusCode": 201,
+                    "body": json.dumps({"details": "Canción borrada correctamente"})
+                }       
+                    
                     
             except Exception as e:
                 return {

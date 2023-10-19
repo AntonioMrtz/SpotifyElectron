@@ -23,55 +23,65 @@ def get_cloudfront_url(resource_path:str):
 
 
 def lambda_handler(event, context):
-
+    
     try:
-
-        request_data = event["requestContext"]["http"]
-
-        path = request_data["path"]
-        method = request_data["method"]
-
+        
+        method = event["httpMethod"]
+        song_name = event["queryStringParameters"]["nombre"]
+    
         if(method=='GET'):
-            song_name = path.split("/")[-1]
-            return get_cloudfront_url(song_name)
+            return {
+                "statusCode": 200,
+                "body": json.dumps({"url": str(get_cloudfront_url(song_name))})
+            }
 
         elif(method=='DELETE'):
-            song_name = path.split("/")[-1]
             s3_client.delete_object(Bucket=song_bucket.name, Key=f"{bucket_base_path}{song_name}.mp3")
             return {
                 "statusCode": 202,
                 "body": json.dumps({"details": "Canción borrada correctamente"})
             }
-
+            
         elif(method=='POST'):
+            
+            song_key = f"{bucket_base_path}{song_name}.mp3"
+        
+            try:
+            
+                body_str = event["body"]
+                body_dict = json.loads(body_str)
+                song_data = body_dict.get("file")
+                encoded_data = song_data.split("'")[1]
+                
+                decoded_bytes = base64.b64decode(encoded_data)
 
-            input_params = event["queryStringParameters"]
-
-            song_key = f"{bucket_base_path}{input_params['nombre']}.mp3"
-
-            body_str = event["body"]
-            body_dict = json.loads(body_str)
-            song_data = body_dict.get("file")
-            song_data = song_data.encode()
-
-            byte_stream = io.BytesIO(song_data)
-
-            read_song_data = byte_stream.read()
-
-            s3_client.put_object(Body=read_song_data, Bucket=song_bucket.name, Key=song_key)
-
+                s3_client.put_object(Body=decoded_bytes, Bucket=song_bucket.name, Key=song_key)
+                return {
+                    "statusCode": 201,
+                    "body": json.dumps({"details": "Canción borrada correctamente"})
+                }       
+                    
+                    
+            except Exception as e:
+                return {
+                "statusCode": 500,
+                "body": json.dumps({"details": str(e)})
+            }
+        
+            
+            
+            
             return {
                 "statusCode": 201,
                 "body": json.dumps({"details": "Canción creada correctamente"})
             }
-
-        return path
+            
 
     except Exception as e:
         return {
             "statusCode": 500,
             "body": json.dumps({"error": str(e)})
         }
-
+    
 
 

@@ -40,9 +40,31 @@ cd Backend API ; pip install -r requirements.txt ; cd src/ ; python3 -m uvicorn 
 
 ## 4. Tests
 
+### Backend
+
 ```
 cd Backend API/src ; python3 -m pytest -s
 ```
+
+### Frontend
+
+```
+cd Electron/ ; npm run test
+
+```
+
+## 5. Containerize 
+
+### Docker
+
+```
+docker build -t spotify_electron_backend_image .
+
+docker run -d --name spotify_electron_backend -e MONGO_PASSWORD=password SECRET_KEY_SIGN=secret-key-sign -p 8000:8000 spotify_electron_backend_image
+
+```
+
+---
 
 
 ## Project's goals

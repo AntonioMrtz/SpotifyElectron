@@ -16,19 +16,16 @@ app = FastAPI(title="SpotifyElectronAPI",
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost/", "http://localhost:1212", "https://localhost:1212/",
-                   "https://localhost", "https://localhost:1212", "https://localhost:1212/","http://127.0.0.1:8000/","http://127.0.0.1:8000","http://127.0.0.1:8000/usuarios/prueba"],
+                   "https://localhost", "https://localhost:1212", "https://localhost:1212/", "http://127.0.0.1:8000/", "http://127.0.0.1:8000", "http://127.0.0.1:8000/usuarios/prueba"],
     allow_credentials=True,
     allow_methods=["POST", "GET", "PUT", "DELETE", "PATCH"],
     max_age=3600,
     # You can restrict this to specific headers if needed
     allow_headers=["*"],
 
-
-
 )
 
 app.add_middleware(CheckJwtAuth)
-
 
 app.include_router(playlists.router)
 app.include_router(canciones.router)

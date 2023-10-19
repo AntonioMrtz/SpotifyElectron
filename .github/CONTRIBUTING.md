@@ -11,7 +11,7 @@
     * chore: Used for minor changes in the code, such as dependency updates, * project configuration tweaks, etc.
     * style: Used for changes related to code formatting, style, or coding conventions, without affecting functionality.
     * test: Indicates changes to unit tests or test configuration.
-
+3. Add tests for every change you made.
 4. Go to your branch in Git and then select Pull Request and field the fields indicated in the template.
 5. Check if Github Actions CI tests are passing, any pull request with errors on CI would not be merged to the master branch.
 6. The owner of the project will check the Pull Request and then merge it with the main branch.

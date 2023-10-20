@@ -11,13 +11,13 @@ if "pytest" in modules:
 
     artist_collection = Database().connection["test.artista"]
     user_collection = Database().connection["test.usuario"]
-    song_collection =  Database().connection["test.cancion.files"]
+    songCollection = Database().connection["test.canciones.streaming"]
 
 else:
 
     artist_collection = Database().connection["artista"]
     user_collection = Database().connection["usuario"]
-    song_collection = Database().connection["canciones.streaming"]
+    songCollection = Database().connection["canciones.streaming"]
 
 
 def check_song_exists(name: str) -> bool:
@@ -34,7 +34,7 @@ def check_song_exists(name: str) -> bool:
     -------
         Boolean
     """
-    return True if song_collection.find_one({'name': name}) else False
+    return True if songCollection.find_one({'name': name}) else False
 
 def check_user_exists(user_name: str) -> bool:
     """ Checks if the user or artists exists
@@ -344,7 +344,7 @@ def get_play_count_artist(user_name: str) -> int:
         raise HTTPException(status_code=404, detail="El artista no existe")
 
 
-    resultado = song_collection.aggregate([
+    resultado = songCollection.aggregate([
         {"$match": {"artist": user_name}},
         {"$group": {"_id": None, "total": {"$sum": "$number_of_plays"}}}
     ])

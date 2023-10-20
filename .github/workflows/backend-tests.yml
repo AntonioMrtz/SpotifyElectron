@@ -29,6 +29,7 @@ jobs:
           MONGO_PASSWORD : ${{ secrets.MONGO_PASSWORD }}
           SECRET_KEY_SIGN : ${{ secrets.SECRET_KEY_SIGN }}
           DISTRIBUTION_ID : ${{ secrets.DISTRIBUTION_ID }}
+          LAMBDA_URL : ${{ secrets.LAMBDA_URL }}
 
 
       - name: Fail workflow on test failure

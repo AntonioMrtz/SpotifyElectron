@@ -6,7 +6,6 @@ from fastapi.responses import Response
 from sys import modules
 import services.dto_service as dto_service
 import services.song_service as song_service_streaming
-import services.test_services.test_song_service as song_service_database
 import json
 
 router = APIRouter(
@@ -14,11 +13,11 @@ router = APIRouter(
     tags=["canciones"],
 )
 
-if "pytest" in modules:
+""" if "pytest" in modules:
     song_service = song_service_database
 
-else:
-    song_service = song_service_streaming
+else: """
+song_service = song_service_streaming
 
 
 @router.get("/{nombre}")

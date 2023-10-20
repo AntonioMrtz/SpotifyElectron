@@ -15,6 +15,7 @@ jobs:
       uses: actions/checkout@v2
       with:
         persist-credentials: false
+        token: ${{ secrets.PAT }}
 
     - name: Configurar Python
       uses: actions/setup-python@v2

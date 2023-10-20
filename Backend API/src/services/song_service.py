@@ -262,12 +262,12 @@ async def create_song(name: str, genre: Genre, photo: str, file, token: TokenDat
             status_code=500, detail="Error interno del servidor al interactuar con MongoDB")
 
     except ClientError as e:
-        raise HTTPException(
-            status_code=500, detail=f"Error interno del servidor al interactuar con AWS {e}")
+¡ raise HTTPException(
+    status_code=500, detail=f"Error interno del servidor al interactuar con AWS {e}")
 
-    except Exception as e:
-        raise HTTPException(
-            status_code=500, detail=f"No se pudo subir la canción {e}")
+except Exception as e:
+¡ raise HTTPException(
+    status_code=500, detail=f"No se pudo subir la canción {e}")
 
 
 def delete_song(name: str) -> None:

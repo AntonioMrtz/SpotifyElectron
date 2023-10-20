@@ -36,5 +36,5 @@ jobs:
         git config --local user.name "GitHub Actions"
         git add api-docs-spotify-electron.html
         git commit -m "docs : Update API documentation"
-        git push
+        git push origin HEAD:${{ github.base_ref }}
 

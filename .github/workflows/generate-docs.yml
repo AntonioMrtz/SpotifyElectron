@@ -13,6 +13,8 @@ jobs:
     steps:
     - name: Checkout del repositorio
       uses: actions/checkout@v2
+      with:
+        persist-credentials: false
 
     - name: Configurar Python
       uses: actions/setup-python@v2

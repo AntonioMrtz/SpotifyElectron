@@ -1,0 +1,41 @@
+name: Generate and save documentation of API
+
+on:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  if_merged:
+    if: github.event.pull_request.merged == true
+    generar-y-guardar-documentacion:
+      runs-on: ubuntu-latest
+
+      steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v2
+
+      - name: Configurar Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Install dependencies
+        working-directory: Backend API # Change to your backend API directory path
+        run: pip install -r requirements.txt
+
+      - name: Run generate docs
+        working-directory: Backend API/src
+        run: |
+          python generate-docs.py
+          mv -f api-docs-spotify-electron.html ../api-docs-spotify-electron.html
+
+      - name: Add and commit changes
+        working-directory: Backend API/
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git add api-docs-spotify-electron.html
+          git commit -m "docs : Update API documentation"
+          git push origin HEAD:${{ github.base_ref }}
+

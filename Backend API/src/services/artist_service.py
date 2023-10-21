@@ -389,7 +389,7 @@ def get_artists(names: list) -> list:
     return artists
 
 
-def search_by_name(name: str) -> json:
+def search_by_name(name: str) -> list:
     """ Returns a list of Artist that contains "name" in their names
 
     Parameters
@@ -403,7 +403,7 @@ def search_by_name(name: str) -> json:
 
     Returns
     -------
-        List<Song>
+        List<Json>
     """
 
     artists_names_response = artist_collection.find(
@@ -415,15 +415,12 @@ def search_by_name(name: str) -> json:
 
     artists = get_artists(artists_names)
 
-    artists_list = []
-    [artists_list.append(artist.get_json()) for artist in artists]
+    artist_json_list = []
 
-    artists_dict = {}
+    [artist_json_list.append(artist.get_json()) for artist in artists]
 
-    artists_dict["artists"] = artists_list
-    artist_json = json.dumps(artists_dict)
+    return artist_json_list
 
-    return artist_json
 
 # * AUX METHODs
 

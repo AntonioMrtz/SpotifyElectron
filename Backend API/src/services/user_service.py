@@ -200,7 +200,7 @@ def get_users(names: list) -> list:
     return users
 
 
-def search_by_name(name: str) -> json:
+def search_by_name(name: str) -> list:
     """ Returns a list of Users that contains "name" in their names
 
     Parameters
@@ -214,7 +214,7 @@ def search_by_name(name: str) -> json:
 
     Returns
     -------
-        List<User>
+        List<Json>
     """
 
     users_names_response = user_collection.find(
@@ -226,15 +226,11 @@ def search_by_name(name: str) -> json:
 
     users = get_users(user_names)
 
-    users_list = []
-    [users_list.append(user.get_json()) for user in users]
+    users_json_list = []
 
-    users_dict = {}
+    [users_json_list.append(user.get_json()) for user in users]
 
-    users_dict["users"] = users_list
-    users_json = json.dumps(users_dict)
-
-    return users_json
+    return users_json_list
 
 
 # * AUX METHODs

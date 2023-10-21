@@ -317,7 +317,7 @@ def increase_number_plays(name: str) -> None:
         "$set": {'number_of_plays': result_song_exists.number_of_plays+1}})
 
 
-def search_by_name(name: str) -> json:
+def search_by_name(name: str) -> list:
     """ Returns a list of Songs that contains "name" in their names
 
     Parameters
@@ -331,7 +331,7 @@ def search_by_name(name: str) -> json:
 
     Returns
     -------
-        List<Song>
+        List<Json>
     """
 
     song_names_response = song_collection.find(
@@ -343,12 +343,8 @@ def search_by_name(name: str) -> json:
 
     songs = get_songs(song_names)
 
-    songs_list = []
-    [songs_list.append(song.get_json()) for song in songs]
+    songs_json_list = []
 
-    songs_dict = {}
+    [songs_json_list.append(song.get_json()) for song in songs]
 
-    songs_dict["songs"] = songs_list
-    songs_json = json.dumps(songs_dict)
-
-    return songs_json
+    return songs_json_list

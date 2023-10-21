@@ -19,12 +19,12 @@ from sys import modules
 if "pytest" in modules:
 
     gridFsSong = GridFS(Database().connection, collection='test.cancion')
-    fileSongCollection = Database().connection["test.cancion.files"]
+    file_song_collection = Database().connection["test.cancion.files"]
 
 else:
 
     gridFsSong = GridFS(Database().connection, collection='cancion')
-    fileSongCollection = Database().connection["cancion.files"]
+    file_song_collection = Database().connection["cancion.files"]
 
 
 def check_song_exists(name: str) -> bool:
@@ -41,7 +41,7 @@ def check_song_exists(name: str) -> bool:
     -------
         Boolean
     """
-    return True if fileSongCollection.find_one({'name': name}) else False
+    return True if file_song_collection.find_one({'name': name}) else False
 
 
 def check_jwt_user_is_song_artist(token: TokenData, artist: str) -> bool:
@@ -98,7 +98,7 @@ def get_song(name: str) -> Song:
     # b'ZGF0YSB0byBiZSBlbmNvZGVk'
     encoded_bytes = str(base64.b64encode(song_bytes))
 
-    song_metadata = fileSongCollection.find_one({'name': name})
+    song_metadata = file_song_collection.find_one({'name': name})
 
     song = Song(name, song_metadata["artist"], song_metadata["photo"], song_metadata["duration"], Genre(
         song_metadata["genre"]).name, encoded_bytes, song_metadata["number_of_plays"])
@@ -150,7 +150,7 @@ def get_all_songs() -> list:
 
     songs: list = []
 
-    songsFiles = fileSongCollection.find()
+    songsFiles = file_song_collection.find()
 
     for songFile in songsFiles:
 
@@ -236,7 +236,7 @@ def delete_song(name: str) -> None:
         raise HTTPException(
             status_code=400, detail="El nombre de la canción no es válido")
 
-    result = fileSongCollection.find_one({'name': name})
+    result = file_song_collection.find_one({'name': name})
 
     if result and result["_id"]:
         delete_song_artist(result["artist"], name)
@@ -281,10 +281,10 @@ def update_song(name: str, nuevo_nombre: str, photo: str, genre: Genre,token : T
 
     if checkValidParameterString(nuevo_nombre):
         new_name = nuevo_nombre
-        fileSongCollection.update_one({'name': name}, {
+        file_song_collection.update_one({'name': name}, {
             "$set": {'name': new_name, 'artist': result_song_exists.artist, 'photo': photo if photo and 'http' in photo else result_song_exists.photo, 'genre': Genre(genre).value if genre != None else Genre[result_song_exists.genre].value}})
     else:
-        fileSongCollection.update_one({'name': name}, {
+        file_song_collection.update_one({'name': name}, {
             "$set": {'name': name, 'artist': result_song_exists.artist, 'photo': photo if photo and 'http' in photo else result_song_exists.photo, 'genre': Genre(genre).value if genre != None else Genre[result_song_exists.genre].value}})
 
 
@@ -312,5 +312,42 @@ def increase_number_plays(name: str) -> None:
     if not result_song_exists:
         raise HTTPException(status_code=404, detail="La cancion no existe")
 
-    fileSongCollection.update_one({'name': name}, {
+    file_song_collection.update_one({'name': name}, {
         "$set": {'number_of_plays': result_song_exists.number_of_plays+1}})
+
+
+def search_by_name(name: str) -> json:
+    """ Returns a list of Songs that contains "name" in their names
+
+    Parameters
+    ----------
+        names (list): List of song Names
+
+    Raises
+    -------
+            400 : Bad Request
+            404 : Song not found
+
+    Returns
+    -------
+        List<Song>
+    """
+
+    song_names_response = song_collection.find(
+        {'name': {'$regex': name, '$options': 'i'}}, {"_id": 0, "name": 1})
+
+    song_names = []
+
+    [song_names.append(song["name"]) for song in song_names_response]
+
+    songs = get_songs(song_names)
+
+    songs_list = []
+    [songs_list.append(song.get_json()) for song in songs]
+
+    songs_dict = {}
+
+    songs_dict["songs"] = songs_list
+    songs_json = json.dumps(songs_dict)
+
+    return songs_json

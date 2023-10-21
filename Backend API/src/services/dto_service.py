@@ -8,12 +8,12 @@ from sys import modules
 
 if "pytest" in modules:
 
-    fileSongCollection = Database().connection["test.cancion.files"]
+    file_song_collection = Database().connection["test.cancion.files"]
     playlistCollection = Database().connection["test.playlist"]
 
 else:
 
-    fileSongCollection = Database().connection["cancion.files"]
+    file_song_collection = Database().connection["cancion.files"]
     playlistCollection = Database().connection["playlist"]
 
 
@@ -37,7 +37,7 @@ def get_song(name: str) -> SongDTO:
         raise HTTPException(
             status_code=400, detail="El nombre de la canción es vacío")
 
-    song_data = fileSongCollection.find_one({'name': name})
+    song_data = file_song_collection.find_one({'name': name})
     if song_data is None:
         raise HTTPException(
             status_code=404, detail="La canción con ese nombre no existe")
@@ -70,7 +70,7 @@ def get_songs(song_names: list) -> list:
             raise HTTPException(
                 status_code=400, detail="El nombre de la canción es vacío")
 
-        song_data = fileSongCollection.find_one({'name': name})
+        song_data = file_song_collection.find_one({'name': name})
         if song_data is None:
             raise HTTPException(
                 status_code=404, detail="La canción con ese nombre no existe")
@@ -135,7 +135,7 @@ def get_songs_by_genero(genre: Genre) -> list:
     if not Genre.checkValidGenre(genre.value):
         raise HTTPException(status_code=404, detail="El género no existe")
 
-    result_get_song_by_genre = fileSongCollection.find(
+    result_get_song_by_genre = file_song_collection.find(
         {'genre': Genre.getGenre(genre)})
 
     songs_by_genre = []

@@ -1,4 +1,3 @@
-from fastapi.testclient import TestClient
 from datetime import datetime
 from test_API.api_test_playlist import create_playlist, get_playlist, delete_playlist , update_playlist, get_playlists ,get_all_playlists
 from test_API.api_test_artist import create_artist,delete_artist

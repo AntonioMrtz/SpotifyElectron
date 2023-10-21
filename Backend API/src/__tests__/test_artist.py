@@ -1,4 +1,3 @@
-from fastapi.testclient import TestClient
 from datetime import datetime
 from test_API.api_test_artist import create_artist, delete_artist, get_artist, update_artist, get_artists, get_play_count_artist
 from test_API.api_test_song import create_song, delete_song, patch_song_number_plays

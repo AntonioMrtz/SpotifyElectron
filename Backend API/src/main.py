@@ -1,11 +1,8 @@
 from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
-from routers import playlists, canciones, generos, usuarios, artistas, login
+from routers import playlists, canciones, generos, usuarios, artistas, login , search
 from services.security_service import check_jwt_is_valid
 from middleware.middleware import CheckJwtAuth
-
-""" from middleware import jwt_middleware
- """
 
 app = FastAPI(title="SpotifyElectronAPI",
               description="API created with FastAPI Python to serve as backend for SpotifyElectron App",
@@ -33,3 +30,4 @@ app.include_router(generos.router)
 app.include_router(usuarios.router)
 app.include_router(artistas.router)
 app.include_router(login.router)
+app.include_router(search.router)

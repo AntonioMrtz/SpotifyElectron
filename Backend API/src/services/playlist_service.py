@@ -9,6 +9,7 @@ from fastapi import HTTPException
 from services.utils import checkValidParameterString
 from sys import modules
 import services.dto_service as dto_service
+import json
 
 
 if "pytest" in modules:
@@ -123,7 +124,7 @@ def create_playlist(name: str, photo: str, description: str, song_names: list, t
     result = playlistCollection.insert_one(
         {'name': name, 'photo': photo if 'http' in photo else '', 'upload_date': fecha_iso8601, 'description': description, 'owner': owner, 'song_names': song_names})
 
-    add_playlist_to_owner(user_name=owner, playlist_name=name,token=token)
+    add_playlist_to_owner(user_name=owner, playlist_name=name, token=token)
 
     return True if result.acknowledged else False
 
@@ -257,3 +258,41 @@ def get_selected_playlists(playlist_names: list) -> list:
             dto_service.get_playlist(playlist_file["name"]))
 
     return response_playlists
+
+
+def search_by_name(name: str) -> json:
+    """ Returns a list of Playlists that contains "name" in their names
+
+    Parameters
+    ----------
+        name (str): name to filter by
+
+    Raises
+    -------
+            400 : Bad Request
+            404 : Playlist not found
+
+    Returns
+    -------
+        List<PlaylistDTO>
+    """
+
+    playlist_names_response = playlistCollection.find(
+        {'name': {'$regex': name, '$options': 'i'}}, {"_id": 0, "name": 1})
+
+    playlist_names = []
+
+    [playlist_names.append(playlist["name"])
+     for playlist in playlist_names_response]
+
+    playlists = get_selected_playlists(playlist_names)
+
+    playlist_list = []
+    [playlist_list.append(playlist.get_json()) for playlist in playlists]
+
+    playlist_dict = {}
+
+    playlist_dict["playlists"] = playlist_list
+    playlist_json = json.dumps(playlist_dict)
+
+    return playlist_json

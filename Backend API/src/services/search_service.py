@@ -54,5 +54,3 @@ def search_by_name(name: str) -> json:
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"No se pudieron obtener los items por nombre | {e}")
-
-

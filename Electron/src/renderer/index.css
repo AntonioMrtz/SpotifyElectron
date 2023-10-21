@@ -94,6 +94,14 @@ p {
   display: none;
 }
 
+input:focus-visible,
+textarea:focus-visible {
+
+  outline: none !important;
+
+}
+
+
 
 @media (max-width: 1600px) {
 

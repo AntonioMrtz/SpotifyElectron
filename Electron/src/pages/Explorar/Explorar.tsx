@@ -5,6 +5,8 @@ import styles from './explorar.module.css';
 import GenreCard from '../../components/Cards/GenreCard/GenreCard';
 
 export default function Explorar() {
+  const [isSearchBarBeingUsed, setIsSearchBarBeingUsed] = useState(false);
+
   const [generos, setGeneros] = useState<{}>();
 
   const getGeneros = async () => {
@@ -25,6 +27,16 @@ export default function Explorar() {
       <div
         className={`container-fluid d-flex flex-column ${styles.columnofGeneros}`}
       >
+        <header className="container-fluid d-flex flex-row mb-4">
+          <div className={`d-flex ${styles.searchBarWrapper}`}>
+            <i className="me-2 fa-solid fa-magnifying-glass fa-fw" />
+            <input
+              type="text"
+              placeholder="¿Qué te apetece escuchar?"
+              className={`${styles.inputSearchBar}`}
+            />
+          </div>
+        </header>
         <header className="container-fluid d-flex flex-row">
           <div className={`container-fluid d-flex ${styles.columnTitle}`}>
             <h4>Explorar Todo</h4>

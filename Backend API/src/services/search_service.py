@@ -25,8 +25,8 @@ def search_by_name(name: str) -> json:
 
             songs : [ SongDTOJson , ...]
             playlists : [ PlaylistDTOJson , ...]
-            artists : [ list of artist names ]
-            users : [ list of user names ]
+            artists : [ ArtistJson , ... ]
+            users : [ UserJson , ... ]
 
         }
 

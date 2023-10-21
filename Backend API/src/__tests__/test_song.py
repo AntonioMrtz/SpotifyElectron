@@ -1,5 +1,3 @@
-from fastapi.testclient import TestClient
-from fastapi import UploadFile
 from model.Genre import Genre
 from test_API.api_test_song import create_song,delete_song,get_song,get_songs,patch_song_number_plays,get_songs_by_genre
 from test_API.api_test_artist import get_artist,create_artist,delete_artist
@@ -8,10 +6,6 @@ from test_API.api_token import get_user_jwt_header
 import json
 import pytest
 
-from main import app as app
-
-
-client = TestClient(app)
 
 
 def test_post_cancion_correct(clear_test_data_db):

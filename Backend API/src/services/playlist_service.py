@@ -287,12 +287,8 @@ def search_by_name(name: str) -> json:
 
     playlists = get_selected_playlists(playlist_names)
 
-    playlist_list = []
-    [playlist_list.append(playlist.get_json()) for playlist in playlists]
+    playlists_json_list = []
 
-    playlist_dict = {}
+    [playlists_json_list.append(playlist.get_json()) for playlist in playlists]
 
-    playlist_dict["playlists"] = playlist_list
-    playlist_json = json.dumps(playlist_dict)
-
-    return playlist_json
+    return playlists_json_list

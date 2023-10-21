@@ -13,7 +13,7 @@ if "pytest" in modules:
 
 else:
 
-    songCollection = Database().connection["canciones.streaming"]
+    song_collection = Database().connection["canciones.streaming"]
     playlistCollection = Database().connection["playlist"]
 
 
@@ -37,7 +37,7 @@ def get_song(name: str) -> SongDTO:
         raise HTTPException(
             status_code=400, detail="El nombre de la canción es vacío")
 
-    song_data = songCollection.find_one({'name': name})
+    song_data = song_collection.find_one({'name': name})
     if song_data is None:
         raise HTTPException(
             status_code=404, detail="La canción con ese nombre no existe")
@@ -70,7 +70,7 @@ def get_songs(song_names: list) -> list:
             raise HTTPException(
                 status_code=400, detail="El nombre de la canción es vacío")
 
-        song_data = songCollection.find_one({'name': name})
+        song_data = song_collection.find_one({'name': name})
         if song_data is None:
             raise HTTPException(
                 status_code=404, detail="La canción con ese nombre no existe")
@@ -135,7 +135,7 @@ def get_songs_by_genero(genre: Genre) -> list:
     if not Genre.checkValidGenre(genre.value):
         raise HTTPException(status_code=404, detail="El género no existe")
 
-    result_get_song_by_genre = songCollection.find(
+    result_get_song_by_genre = song_collection.find(
         {'genre': Genre.getGenre(genre)})
 
     songs_by_genre = []

@@ -4,8 +4,9 @@ from model.Artist import Artist
 from model.TokenData import TokenData
 from fastapi import HTTPException
 from services.utils import checkValidParameterString
-import bcrypt
 from sys import modules
+import bcrypt
+import json
 
 if "pytest" in modules:
 
@@ -361,7 +362,68 @@ def get_play_count_artist(user_name: str) -> int:
 
 
 
+def get_artists(names: list) -> list:
+    """ Returns a list of Artists that match "names" list of names
 
+    Parameters
+    ----------
+        names (list): List of artist Names
+
+    Raises
+    -------
+            400 : Bad Request
+            404 : Artist not found
+
+    Returns
+    -------
+        List<Artist>
+
+    """
+
+    artists: list = []
+
+    for artist_name in names:
+
+        artists.append(get_artist(artist_name))
+
+    return artists
+
+
+def search_by_name(name: str) -> json:
+    """ Returns a list of Artist that contains "name" in their names
+
+    Parameters
+    ----------
+        name (str) : name to search by
+
+    Raises
+    -------
+            400 : Bad Request
+            404 : Artist not found
+
+    Returns
+    -------
+        List<Song>
+    """
+
+    artists_names_response = artist_collection.find(
+        {'name': {'$regex': name, '$options': 'i'}}, {"_id": 0, "name": 1})
+
+    artists_names = []
+
+    [artists_names.append(artist["name"]) for artist in artists_names_response]
+
+    artists = get_artists(artists_names)
+
+    artists_list = []
+    [artists_list.append(artist.get_json()) for artist in artists]
+
+    artists_dict = {}
+
+    artists_dict["artists"] = artists_list
+    artist_json = json.dumps(artists_dict)
+
+    return artist_json
 
 # * AUX METHODs
 

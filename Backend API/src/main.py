@@ -26,7 +26,6 @@ app.add_middleware(
 
 app.add_middleware(CheckJwtAuth)
 
-
 app.include_router(playlists.router)
 app.include_router(canciones.router)
 app.include_router(generos.router)

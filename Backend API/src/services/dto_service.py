@@ -8,7 +8,7 @@ from sys import modules
 
 if "pytest" in modules:
 
-    songCollection = Database().connection["test.cancion.files"]
+    song_collection = Database().connection["test.cancion.files"]
     playlistCollection = Database().connection["test.playlist"]
 
 else:

@@ -6,6 +6,7 @@ from fastapi.responses import Response
 from model.Genre import Genre
 from model.Song import Song
 from services.artist_service import check_artists_exists, add_song_artist, delete_song_artist
+import services.dto_service as dto_service
 from model.TokenData import TokenData
 import base64
 import json
@@ -128,7 +129,7 @@ def get_songs(names: list) -> list:
 
     for song_name in names:
 
-        songs.append(get_song(song_name))
+        songs.append(dto_service.get_song(song_name))
 
     return songs
 

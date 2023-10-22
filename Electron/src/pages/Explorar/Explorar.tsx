@@ -41,8 +41,6 @@ export default function Explorar({
         const resFetchUrlFilterItemsByNameJson =
           await resFetchUrlFilterItemsByName.json();
 
-        console.log(resFetchUrlFilterItemsByNameJson);
-
         if (resFetchUrlFilterItemsByNameJson.songs) {
           const fetchedSongs: PropsSongCard[] = [];
 
@@ -132,6 +130,7 @@ export default function Explorar({
   }, [fetchFilteredItemsByName, filterName]);
 
   const handleChangeSearchBar = (event: ChangeEvent<HTMLInputElement>) => {
+    fetchFilteredItemsByName(event.target.value?.trim());
     setFilterName(event.target.value?.trim());
   };
 
@@ -165,6 +164,7 @@ export default function Explorar({
               placeholder="¿Qué te apetece escuchar?"
               className={`${styles.inputSearchBar}`}
               onChange={handleChangeSearchBar}
+              data-testid="explorar-input-searchbar"
             />
           </div>
         </header>

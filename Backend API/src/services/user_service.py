@@ -6,6 +6,7 @@ from services.utils import checkValidParameterString
 from model.TokenData import TokenData
 from sys import modules
 import bcrypt
+import json
 
 
 if "pytest" in modules:
@@ -42,7 +43,6 @@ def check_jwt_is_user(token: TokenData, user: str) -> bool:
     else:
         raise HTTPException(
             status_code=401, detail="El usuario está modificando otro usuario")
-
 
 
 def get_user(name: str) -> User:
@@ -114,7 +114,7 @@ def create_user(name: str, photo: str, password: str) -> None:
     return True if result.acknowledged else False
 
 
-def update_user(name: str, photo: str, playlists: list, saved_playlists: list, playback_history: list,token : TokenData) -> None:
+def update_user(name: str, photo: str, playlists: list, saved_playlists: list, playback_history: list, token: TokenData) -> None:
     """ Updates a user , duplicated playlists and songs wont be added
 
     Parameters
@@ -140,7 +140,7 @@ def update_user(name: str, photo: str, playlists: list, saved_playlists: list, p
 
     result_user_exists = user_collection.find_one({'name': name})
 
-    check_jwt_is_user(token,name);
+    check_jwt_is_user(token, name)
 
     if not result_user_exists:
         raise HTTPException(status_code=404, detail="El usuario no existe")
@@ -173,6 +173,66 @@ def delete_user(name: str) -> None:
         raise HTTPException(status_code=404, detail="El usuario no existe")
 
 
+def get_users(names: list) -> list:
+    """ Returns a list of Users that match "names" list of names
+
+    Parameters
+    ----------
+        names (list): List of user Names
+
+    Raises
+    -------
+            400 : Bad Request
+            404 : User not found
+
+    Returns
+    -------
+        List<User>
+
+    """
+
+    users: list = []
+
+    for user_name in names:
+
+        users.append(get_user(user_name))
+
+    return users
+
+
+def search_by_name(name: str) -> list:
+    """ Returns a list of Users that contains "name" in their names
+
+    Parameters
+    ----------
+        name (str) : name to search by
+
+    Raises
+    -------
+            400 : Bad Request
+            404 : User not found
+
+    Returns
+    -------
+        List<Json>
+    """
+
+    users_names_response = user_collection.find(
+        {'name': {'$regex': name, '$options': 'i'}}, {"_id": 0, "name": 1})
+
+    user_names = []
+
+    [user_names.append(user["name"]) for user in users_names_response]
+
+    users = get_users(user_names)
+
+    users_json_list = []
+
+    [users_json_list.append(user.get_json()) for user in users]
+
+    return users_json_list
+
+
 # * AUX METHODs
 
 def check_user_exists(user_name: str) -> bool:
@@ -200,7 +260,7 @@ def check_user_exists(user_name: str) -> bool:
     return True if result_user_exists else False
 
 
-def add_playback_history(user_name: str,song:str,MAX_NUMBER_PLAYBACK_HISTORY_SONGS:int):
+def add_playback_history(user_name: str, song: str, MAX_NUMBER_PLAYBACK_HISTORY_SONGS: int):
     user_data = user_collection.find_one({'name': user_name})
 
     playback_history = user_data["playback_history"]
@@ -213,7 +273,8 @@ def add_playback_history(user_name: str,song:str,MAX_NUMBER_PLAYBACK_HISTORY_SON
     result = user_collection.update_one({'name': user_name},
                                         {"$set": {'playback_history': playback_history}})
 
-def add_saved_playlist(user_name:str,playlist_name:str):
+
+def add_saved_playlist(user_name: str, playlist_name: str):
     user_data = user_collection.find_one({'name': user_name})
 
     saved_playlists = user_data["saved_playlists"]
@@ -221,10 +282,10 @@ def add_saved_playlist(user_name:str,playlist_name:str):
     saved_playlists.append(playlist_name)
 
     result = user_collection.update_one({'name': user_name},
-                                            {"$set": {'saved_playlists': list(set(saved_playlists))}})
+                                        {"$set": {'saved_playlists': list(set(saved_playlists))}})
 
 
-def delete_saved_playlist(user_name:str,playlist_name:str):
+def delete_saved_playlist(user_name: str, playlist_name: str):
     user_data = user_collection.find_one({'name': user_name})
 
     saved_playlists = user_data["saved_playlists"]
@@ -234,11 +295,10 @@ def delete_saved_playlist(user_name:str,playlist_name:str):
         saved_playlists.remove(playlist_name)
 
         result = user_collection.update_one({'name': user_name},
-                                                {"$set": {'saved_playlists': saved_playlists}})
+                                            {"$set": {'saved_playlists': saved_playlists}})
 
 
 def add_playlist_to_owner(user_name: str, playlist_name: str) -> None:
-
 
     user_data = user_collection.find_one({'name': user_name})
 
@@ -247,8 +307,7 @@ def add_playlist_to_owner(user_name: str, playlist_name: str) -> None:
     playlists.append(playlist_name)
 
     result = user_collection.update_one({'name': user_name},
-                                            {"$set": {'playlists': list(set(playlists))}})
-
+                                        {"$set": {'playlists': list(set(playlists))}})
 
 
 def delete_playlist_from_owner(user_name: str, playlist_name: str) -> None:
@@ -262,4 +321,4 @@ def delete_playlist_from_owner(user_name: str, playlist_name: str) -> None:
         playlists.remove(playlist_name)
 
         result = user_collection.update_one({'name': user_name},
-                                                {"$set": {'playlists': playlists}})
+                                            {"$set": {'playlists': playlists}})

@@ -1,4 +1,3 @@
-from fastapi.testclient import TestClient
 from datetime import datetime
 from test_API.api_test_user import create_user, delete_user, get_user, update_user
 from test_API.api_token import get_user_jwt_header

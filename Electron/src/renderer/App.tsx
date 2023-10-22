@@ -75,7 +75,13 @@ function App() {
                     triggerReloadSidebar={reloadSidebar}
                   />
                 />
-                <Route path="/explorar" element=<Explorar /> />
+                <Route
+                  path="/explorar"
+                  element=<Explorar
+                    changeSongName={changeSongName}
+                    refreshSidebar={reloadSidebar}
+                  />
+                />
                 <Route
                   path="/explorar/genre/:id"
                   element=<Genre

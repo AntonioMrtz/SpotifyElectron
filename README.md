@@ -2,7 +2,7 @@
 
 ![Spotify Electron Media Preview](https://raw.githubusercontent.com/AntonioMrtz/SpotifyElectron/master/assets/images/SpotifyElectron_MediaPreview.png)
 
-## Website
+## Website 🌐
 
 Check our [website](https://antoniomrtz.github.io/SpotifyElectron_Web/)
 
@@ -51,7 +51,7 @@ python3 -m uvicorn main:app --reload;
 * Access visual API swagger documentation at  
   * **Backend API/api-docs-spotify-electron.html**
   * Or deploying the app and accessing **http://127.0.0.1:8000/docs**
-## 4. Tests
+## 4. Tests ✔️
 
 ### Backend
 
@@ -66,7 +66,7 @@ cd Electron/;
 npm run test;
 ```
 
-## 5. Containerize 
+## 5. Containerize 🐋
 
 ### Docker
 
@@ -79,13 +79,21 @@ docker run -d --name spotify_electron_backend -e MONGO_PASSWORD=password SECRET_
 
 ---
 
-## Project's goals
+## Project's goals 🎯
 
-* Develop a Spotify Clone using Electron framework, Python API backend with FastAPI and React Interface.
-* Frontend and Backend testing
-* Work with AWS services
+* Build from scratch a streaming service like Spotify using Electron, Python and React.
+* Develop the app with the best software practices and desing the app
+to be escalable and ready for quick iterations of features.
+* Focus on security and code quality for delivering the user a safe experience.
+* Full coverage test suite for both Backend and Frontend.
+* Work with Cloud AWS services such as Lambda,S3 and Cloudfront.
+* Work as a team managing Github branches, pull requests,code reviews and Trello Board to organize tasks in different stages.
+* Reach CI/CD automatization with Github Actions. 
 * Add new extra functionality that could improve the original app.
-* Works as a team managing Github branches, pull requests,Github Actions and Trello Board to organize tasks in different stages.
+* Cross platform app with only one codebase.
+* Build a landing page for reaching users and portray all the goals, technologies and software processes.
+* Release a docker image that eases the deploy process in every deploy enviroment.
+
 
 ## How to Contribute to the project
 

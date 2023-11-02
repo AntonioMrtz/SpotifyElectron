@@ -27,6 +27,10 @@ export default function UserCard({ name, photo }: PropsUserCard) {
             src={photo === '' ? defaultThumbnailPlaylist : photo}
             className="card-img-top rounded"
             alt="user thumbnail"
+            onError={({ currentTarget }) => {
+              currentTarget.onerror = null;
+              currentTarget.src = defaultThumbnailPlaylist;
+            }}
           />
         </div>
         <div className={`${styles.cardBody}`}>

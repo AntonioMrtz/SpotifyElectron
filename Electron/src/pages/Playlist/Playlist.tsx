@@ -414,7 +414,15 @@ export default function Playlist({
             onClick={handleOpenUpdatePlaylistModal}
             className={`${styles.wrapperThumbnail}`}
           >
-            <img className="" src={`${thumbnail}`} alt="thumbnail-playlist" />
+            <img
+              className=""
+              src={`${thumbnail}`}
+              alt="thumbnail-playlist"
+              onError={({ currentTarget }) => {
+                currentTarget.onerror = null;
+                currentTarget.src = defaultThumbnailPlaylist;
+              }}
+            />
           </button>
 
           <div

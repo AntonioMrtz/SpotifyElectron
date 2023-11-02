@@ -394,7 +394,7 @@ def search_by_name(name: str) -> json:
 
     Returns
     -------
-        List<Song>
+        List<Json>
     """
 
     song_names_response = song_collection.find(
@@ -406,12 +406,8 @@ def search_by_name(name: str) -> json:
 
     songs = get_songs(song_names)
 
-    songs_list = []
-    [songs_list.append(song.get_json()) for song in songs]
+    songs_json_list = []
 
-    songs_dict = {}
+    [songs_json_list.append(song.get_json()) for song in songs]
 
-    songs_dict["songs"] = songs_list
-    songs_json = json.dumps(songs_dict)
-
-    return songs_json
+    return songs_json_list

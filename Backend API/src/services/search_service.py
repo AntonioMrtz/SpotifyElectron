@@ -22,12 +22,12 @@ def search_by_name(name: str) -> json:
     -------
         Json ->
         {
-            items : [
-                songs : [ SongDTOJson , ...]
-                playlists : [ PlaylistDTOJson , ...]
-                artists : [ list of artist names ]
-                users : [ list of user names ]
-            ]
+
+            songs : [ SongDTOJson , ...]
+            playlists : [ PlaylistDTOJson , ...]
+            artists : [ ArtistJson , ... ]
+            users : [ UserJson , ... ]
+
         }
 
     """
@@ -36,7 +36,7 @@ def search_by_name(name: str) -> json:
         raise HTTPException(
             status_code=400, detail="El nombre por el que buscar es vacío")
 
-    items = {"items":[]}
+    items = {}
 
     try:
         songs = song_service.search_by_name(name)
@@ -44,17 +44,13 @@ def search_by_name(name: str) -> json:
         users = user_service.search_by_name(name)
         artists = artist_service.search_by_name(name)
 
-        items["items"].append(songs)
-        items["items"].append(playlists)
-        items["items"].append(users)
-        items["items"].append(artists)
+        items["artistas"] = artists
+        items["playlists"] = playlists
+        items["users"] = users
+        items["songs"] = songs
 
-        items_json = json.dumps(items)
-
-        return items_json
+        return json.dumps(items)
 
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"No se pudieron obtener los items por nombre | {e}")
-
-

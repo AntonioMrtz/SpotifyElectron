@@ -79,10 +79,10 @@ export default function Explorar({
           setFilteredPlaylists(fetchedPlaylists);
         }
 
-        if (resFetchUrlFilterItemsByNameJson.artists) {
+        if (resFetchUrlFilterItemsByNameJson.artistas) {
           const fetchedArtists: PropsArtistCard[] = [];
 
-          resFetchUrlFilterItemsByNameJson.artists
+          resFetchUrlFilterItemsByNameJson.artistas
             .slice(0, 4)
             .forEach((artistJson: any) => {
               const artist = JSON.parse(artistJson);

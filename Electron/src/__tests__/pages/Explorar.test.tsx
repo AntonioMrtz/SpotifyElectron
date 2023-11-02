@@ -63,7 +63,7 @@ global.fetch = jest.fn((url: string) => {
           playlists: [JSON.stringify(playlistDTOMockFetch)],
           songs: [JSON.stringify(songMockFetch)],
           users: [JSON.stringify(userMockFetch)],
-          artists: [JSON.stringify(artistMockFetch)],
+          artistas: [JSON.stringify(artistMockFetch)],
         }),
       status: 200,
     }).catch((error) => {

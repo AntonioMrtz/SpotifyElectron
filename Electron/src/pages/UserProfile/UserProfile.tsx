@@ -237,6 +237,10 @@ export default function UserProfile({
             src={thumbnail === '' ? defaultThumbnailPlaylist : thumbnail}
             alt="thumbnail user"
             className={`${styles.thumbnailUser}`}
+            onError={({ currentTarget }) => {
+              currentTarget.onerror = null;
+              currentTarget.src = defaultThumbnailPlaylist;
+            }}
           />
           <div className="d-flex flex-column">
             <div className="d-flex flex-row align-items-center">

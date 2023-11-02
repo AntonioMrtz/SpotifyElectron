@@ -1,5 +1,6 @@
 namespace Global {
-  export const backendBaseUrl: string = 'http://127.0.0.1:8000/';
+  export const backendBaseUrl: string =
+    'https://spotifyelectron-dev-kzhm.2.ie-1.fl0.io/';
   export const repositoryUrl: string =
     'https://github.com/AntonioMrtz/SpotifyElectron/';
 

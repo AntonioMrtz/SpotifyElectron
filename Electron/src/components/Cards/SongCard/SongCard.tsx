@@ -76,6 +76,10 @@ export default function SongCard({
             src={photo === '' ? defaultThumbnailPlaylist : photo}
             className="card-img-top rounded"
             alt="song thumbnail"
+            onError={({ currentTarget }) => {
+              currentTarget.onerror = null;
+              currentTarget.src = defaultThumbnailPlaylist;
+            }}
           />
         </div>
         <div className={`${styles.cardBody}`}>

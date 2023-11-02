@@ -1,32 +1,32 @@
 import { Link, useNavigate } from 'react-router-dom';
 import styles from '../cards.module.css';
-import { PropsArtistCard } from './types/propsArtistCard';
+import { PropsUserCard } from './types/propsUserCard';
 import defaultThumbnailPlaylist from '../../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 
-export default function ArtistCard({ name, photo }: PropsArtistCard) {
+export default function UserCard({ name, photo }: PropsUserCard) {
   const navigate = useNavigate();
 
-  const urlArtist = `/artist/${name}`;
+  const urlUser = `/user/${name}`;
 
-  const handleClickArtist = (event: any) => {
+  const handleClickUser = (event: any) => {
     event.preventDefault();
     event.stopPropagation();
-    navigate(urlArtist);
+    navigate(urlUser);
   };
 
   return (
     // eslint-disable-next-line react/jsx-no-useless-fragment
     <>
       <Link
-        to={urlArtist}
-        key={urlArtist + name}
+        to={urlUser}
+        key={urlUser + name}
         className={`rounded ${styles.card}`}
       >
         <div className={`${styles.imgContainer} ${styles.imgContainerArtist}`}>
           <img
             src={photo === '' ? defaultThumbnailPlaylist : photo}
             className="card-img-top rounded"
-            alt="artist thumbnail"
+            alt="user thumbnail"
             onError={({ currentTarget }) => {
               currentTarget.onerror = null;
               currentTarget.src = defaultThumbnailPlaylist;
@@ -37,10 +37,10 @@ export default function ArtistCard({ name, photo }: PropsArtistCard) {
           <h5 className={`${styles.tituloLista}`}>{name}</h5>
           <button
             type="button"
-            onClick={handleClickArtist}
+            onClick={handleClickUser}
             className={`${styles.autorLista}`}
           >
-            Artista
+            Usuario
           </button>
         </div>
       </Link>

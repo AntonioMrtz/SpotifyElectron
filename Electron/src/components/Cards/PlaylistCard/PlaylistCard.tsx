@@ -90,6 +90,10 @@ export default function PlaylistCard({
             src={photo === '' ? defaultThumbnailPlaylist : photo}
             className="card-img-top rounded"
             alt="playlist thumbnail"
+            onError={({ currentTarget }) => {
+              currentTarget.onerror = null;
+              currentTarget.src = defaultThumbnailPlaylist;
+            }}
           />
           <button
             type="button"

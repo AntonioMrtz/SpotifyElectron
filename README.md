@@ -10,6 +10,11 @@ Check our [website](https://antoniomrtz.github.io/SpotifyElectron_Web/)
 
 ![Spotify_Electron_Software_Diagram](assets/images/master-streaming-lambda-arch.png)
 
+### Song architecture
+
+![Spotify_Electron_Software_Song_Diagram](assets/images/song_architecture_aws.png)
+
+
 ## API Endpoints
 
 ![Api Endpoints](assets/images/backend-endpoints.png)

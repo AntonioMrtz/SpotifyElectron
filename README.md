@@ -14,6 +14,10 @@ Check our [website](https://antoniomrtz.github.io/SpotifyElectron_Web/)
 
 ![Spotify_Electron_Software_Song_Diagram](assets/images/song_architecture_aws.png)
 
+### Frontend architecture
+
+![Spotify_Electron_Frontend_Diagram](assets/images/frontend-arch.png)
+
 
 ## API Endpoints
 

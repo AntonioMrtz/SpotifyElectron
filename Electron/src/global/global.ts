@@ -1,6 +1,6 @@
 namespace Global {
   export const backendBaseUrl: string =
-    'https://spotifyelectron-dev-kzhm.2.ie-1.fl0.io/';
+    'https://backend-api-qsyq.onrender.com/';
   export const repositoryUrl: string =
     'https://github.com/AntonioMrtz/SpotifyElectron/';
 

@@ -92,7 +92,7 @@ const createWindow = async () => {
     height: 800,
     minWidth: 900,
     minHeight: 730,
-    icon: path.join(RESOURCES_PATH, '/SpotifyElectronLogo.ico'),
+    icon: path.join(RESOURCES_PATH, '/icon.ico'),
     webPreferences: {
       preload: app.isPackaged
         ? path.join(__dirname, 'preload.js')

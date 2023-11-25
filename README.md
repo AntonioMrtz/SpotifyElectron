@@ -6,6 +6,10 @@
 
 Check our [website](https://antoniomrtz.github.io/SpotifyElectron_Web/)
 
+## Download Installer 🔽
+
+Donwload the installer [here](https://github.com/AntonioMrtz/SpotifyElectron/releases)
+
 ## Software Architecture
 
 ![Spotify_Electron_Software_Diagram](assets/images/master-streaming-lambda-arch.png)

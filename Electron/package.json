@@ -5,6 +5,7 @@
   "author": "Antonio Martinez Fernandez",
   "license": "MIT",
   "main": "./src/main/main.ts",
+  "icon": "assets/icon.ico",
   "scripts": {
     "build": "concurrently \"npm run build:main\" \"npm run build:renderer\"",
     "build:main": "cross-env NODE_ENV=production TS_NODE_TRANSPILE_ONLY=true webpack --config ./.erb/configs/webpack.config.main.prod.ts",
@@ -150,8 +151,8 @@
     "webpack-merge": "^5.9.0"
   },
   "build": {
-    "productName": "ElectronReact",
-    "appId": "org.erb.ElectronReact",
+    "productName": "Spotify Electron",
+    "appId": "org.erb.SpotifyElectron",
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
     "files": [

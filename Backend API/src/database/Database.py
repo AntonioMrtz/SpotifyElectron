@@ -44,10 +44,7 @@ class Database(metaclass=DatabaseMeta):
     def __init__(self):
         if Database.connection is None:
             try:
-                password = os.getenv("MONGO_PASSWORD")
-                uri = 'mongodb+srv://arso:' + \
-                    str(password) + \
-                    '@cluster0.ktobcwq.mongodb.net/?retryWrites=true&w=majority'
+                uri = os.getenv("MONGO_URI")
                 Database.connection = MongoClient(uri, server_api=ServerApi('1'))[
                     "SpotifyElectron"]
                 Database.list_collection = Database.connection["playlist"]

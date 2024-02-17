@@ -16,7 +16,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.x # Replace with the desired Python version, e.g., 3.8, 3.9, etc.
+          python-version: 3.12 # Replace with the desired Python version, e.g., 3.8, 3.9, etc.
 
       - name: Install dependencies
         working-directory: Backend API # Change to your backend API directory path
@@ -25,7 +25,7 @@ jobs:
       - name: Run tests
         working-directory: Backend API/src # Change to your backend API src directory path
         run: python -m pytest -s
-        env: 
+        env:
           MONGO_PASSWORD : ${{ secrets.MONGO_PASSWORD }}
           SECRET_KEY_SIGN : ${{ secrets.SECRET_KEY_SIGN }}
           DISTRIBUTION_ID : ${{ secrets.DISTRIBUTION_ID }}

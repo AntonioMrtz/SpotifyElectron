@@ -228,16 +228,5 @@
       "src/main/**"
     ],
     "logLevel": "quiet"
-  },
-  "peerDependenciesMeta": {
-    "@swc/core": {
-      "optional": true
-    },
-    "uglify-js": {
-      "optional": true
-    },
-    "esbuild": {
-      "optional": true
-    }
   }
 }

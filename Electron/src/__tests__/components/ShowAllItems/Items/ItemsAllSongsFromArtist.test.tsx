@@ -60,7 +60,7 @@ test('Render items All Songs from Artist', async () => {
           changeSongName={jest.fn()}
           id={artistMockFetch.name}
         />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
   });
 

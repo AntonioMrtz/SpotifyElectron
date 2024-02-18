@@ -40,7 +40,7 @@ test('Render ItemsAllArtist', async () => {
     return render(
       <BrowserRouter>
         <ItemsAllArtist />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
   });
 

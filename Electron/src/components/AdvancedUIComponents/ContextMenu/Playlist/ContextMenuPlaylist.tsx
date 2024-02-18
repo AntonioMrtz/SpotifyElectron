@@ -36,7 +36,7 @@ interface ConfirmationMenuState {
 
 const reducerConfirmationMenu = (
   state: ConfirmationMenuState,
-  action: ConfirmationMenuAction
+  action: ConfirmationMenuAction,
 ): ConfirmationMenuState => {
   switch (action.type) {
     case ConfirmationMenuActionKind.ADD_SUCCESS:
@@ -127,7 +127,7 @@ export default function ContextMenuPlaylist({
   const handleCopyToClipboard = (): void => {
     window.electron.copyToClipboard.sendMessage(
       'copy-to-clipboard',
-      Global.repositoryUrl
+      Global.repositoryUrl,
     );
     displayConfirmationModal(ConfirmationMenuActionKind.CLIPBOARD);
   };
@@ -165,7 +165,7 @@ export default function ContextMenuPlaylist({
       })
       .then((sidebarPlaylistNames) => {
         return fetch(
-          `${Global.backendBaseUrl}playlists/multiple/${sidebarPlaylistNames}`
+          `${Global.backendBaseUrl}playlists/multiple/${sidebarPlaylistNames}`,
         );
       })
       .then((resFetchPlaylists) => {
@@ -215,13 +215,13 @@ export default function ContextMenuPlaylist({
 
   const handleAddPlaylistToPlaylist = async (
     dstPlaylistName: string,
-    srcPlaylistName: string
+    srcPlaylistName: string,
   ) => {
     try {
       const url = `${Global.backendBaseUrl}playlists/${dstPlaylistName}`; // Reemplaza con la URL de tu API y el nombre de la playlist
 
       const dstResponse = await fetch(
-        `${Global.backendBaseUrl}playlists/dto/${dstPlaylistName}`
+        `${Global.backendBaseUrl}playlists/dto/${dstPlaylistName}`,
       );
 
       const dstPlaylistData = await dstResponse.json();
@@ -231,7 +231,7 @@ export default function ContextMenuPlaylist({
       const putUrl = `${url}?foto=${photo}&descripcion=${description}`;
 
       const srcResponse = await fetch(
-        `${Global.backendBaseUrl}playlists/dto/${srcPlaylistName}`
+        `${Global.backendBaseUrl}playlists/dto/${srcPlaylistName}`,
       );
 
       const srcPlaylistData = await srcResponse.json();
@@ -253,7 +253,7 @@ export default function ContextMenuPlaylist({
 
       if (updateResponse.status !== 204) {
         console.log(
-          `Unable to add songs from ${srcPlaylistName} to ${dstPlaylistName}`
+          `Unable to add songs from ${srcPlaylistName} to ${dstPlaylistName}`,
         );
         displayConfirmationModal(ConfirmationMenuActionKind.ADD_ERROR);
       } else {
@@ -261,7 +261,7 @@ export default function ContextMenuPlaylist({
       }
     } catch (error) {
       console.log(
-        `Unable to add songs from ${srcPlaylistName} to ${dstPlaylistName}`
+        `Unable to add songs from ${srcPlaylistName} to ${dstPlaylistName}`,
       );
       displayConfirmationModal(ConfirmationMenuActionKind.ADD_ERROR);
     }
@@ -369,7 +369,7 @@ export default function ContextMenuPlaylist({
                             onClick={() =>
                               handleAddPlaylistToPlaylist(
                                 playlistNameItem.toString(),
-                                playlistName
+                                playlistName,
                               )
                             }
                           >

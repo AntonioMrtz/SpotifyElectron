@@ -79,7 +79,7 @@ test('Render Explorar and get Genres', async () => {
     return render(
       <BrowserRouter>
         <Explorar changeSongName={jest.fn()} refreshSidebar={jest.fn()} />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
   });
   expect(component).toBeTruthy();
@@ -90,7 +90,7 @@ test('Explorar filter by name', async () => {
     return render(
       <BrowserRouter>
         <Explorar changeSongName={jest.fn()} refreshSidebar={jest.fn()} />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
   });
 

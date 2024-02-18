@@ -35,7 +35,7 @@ export default function Player({
   /* Play/Pause Button manager */
   const [displayNonePlay, setDisplayNonePlay] = useState('');
   const [displayNonePause, setDisplayNonePause] = useState(
-    styles.displayNonePlay
+    styles.displayNonePlay,
   );
 
   /**
@@ -91,7 +91,7 @@ export default function Player({
     const fetchUrlUpdateSong: string = `${Global.backendBaseUrl}canciones/${songName}/numberOfPlays`;
 
     fetch(fetchUrlUpdateSong, requestOptions).catch(() =>
-      console.log('Unable to update number of plays')
+      console.log('Unable to update number of plays'),
     );
   };
 
@@ -105,7 +105,7 @@ export default function Player({
     };
 
     fetch(fetchPatchPlayBackHistory, requestOptionsUpdatePlaybackHistory).catch(
-      () => console.log('Unable to update playback history')
+      () => console.log('Unable to update playback history'),
     );
   };
 
@@ -120,7 +120,7 @@ export default function Player({
       if (songName === Global.noSong) return;
 
       const resFetchSong = await fetch(
-        `${Global.backendBaseUrl}canciones/${songName}`
+        `${Global.backendBaseUrl}canciones/${songName}`,
       );
 
       const resFetchSongJson = await resFetchSong.json();
@@ -130,7 +130,7 @@ export default function Player({
       handleUpdatePlaybackHistory();
 
       const resFetchSongDTO = await fetch(
-        `${Global.backendBaseUrl}canciones/dto/${songName}`
+        `${Global.backendBaseUrl}canciones/dto/${songName}`,
       );
 
       const resFetchSongDTOJson = await resFetchSongDTO.json();

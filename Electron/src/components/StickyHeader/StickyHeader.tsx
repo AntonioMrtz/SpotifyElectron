@@ -21,7 +21,7 @@ export default function StickyHeader({ handleLogout }: PropsStickyHeader) {
     const role = Token.getTokenRole();
 
     const resFetchUser = await fetch(
-      `${Global.backendBaseUrl}${backendPathFromUserType[role]}/${username}`
+      `${Global.backendBaseUrl}${backendPathFromUserType[role]}/${username}`,
     );
 
     const resFetchUserJson = await resFetchUser.json();
@@ -30,7 +30,7 @@ export default function StickyHeader({ handleLogout }: PropsStickyHeader) {
       setProfileIcon(
         resFetchUserJson.photo === ''
           ? defaultThumbnailPlaylist
-          : resFetchUserJson.photo
+          : resFetchUserJson.photo,
       );
     }
   };
@@ -85,9 +85,8 @@ export default function StickyHeader({ handleLogout }: PropsStickyHeader) {
 
   const handleUrlChange = async () => {
     try {
-      const response = await window.electron.handleUrlChange.sendMessage(
-        'handle-url-change'
-      );
+      const response =
+        await window.electron.handleUrlChange.sendMessage('handle-url-change');
       const responseObj: Global.HandleUrlChangeResponse = {
         canGoBack: response.canGoBack,
         canGoForward: response.canGoForward,

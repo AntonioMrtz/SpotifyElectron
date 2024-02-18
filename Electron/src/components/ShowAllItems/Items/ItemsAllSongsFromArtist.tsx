@@ -49,7 +49,7 @@ export default function ItemsAllSongsFromArtist({
               .catch(() => {
                 console.log('Unable to get Songs Data from Artist');
               });
-          })
+          }),
         );
       });
 

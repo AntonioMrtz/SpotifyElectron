@@ -52,7 +52,7 @@ test('Render itemsAllPlaylist', async () => {
           refreshSidebarData={jest.fn()}
           id={playlistDTOMockFetch.name}
         />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
   });
 

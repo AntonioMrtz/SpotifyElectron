@@ -22,7 +22,7 @@ global.fetch = jest.fn(() =>
         songs: [JSON.stringify(songMockFetch)],
       }),
     status: 200,
-  })
+  }),
 ) as jest.Mock;
 
 test('Render Genre with one song', async () => {
@@ -40,7 +40,7 @@ test('Render Genre with one song', async () => {
             }
           />
         </Routes>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
   });
 

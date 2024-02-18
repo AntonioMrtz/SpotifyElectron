@@ -97,7 +97,7 @@ export default function Sidebar({ triggerReloadSidebar }: PropsSidebar) {
       .then((sidebarPlaylistNames) => {
         if (sidebarPlaylistNames) {
           return fetch(
-            `${Global.backendBaseUrl}playlists/multiple/${sidebarPlaylistNames}`
+            `${Global.backendBaseUrl}playlists/multiple/${sidebarPlaylistNames}`,
           );
         }
         return null;

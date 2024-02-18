@@ -9,17 +9,17 @@ afterEach(() => {
 
 test('render StartMenu', () => {
   expect(
-    render(<StartMenu setIsLogged={() => {}} setIsSigningUp={() => {}} />)
+    render(<StartMenu setIsLogged={() => {}} setIsSigningUp={() => {}} />),
   ).toBeTruthy();
 });
 
 test('StartMenu correct text', () => {
   const component = render(
-    <StartMenu setIsLogged={jest.fn()} setIsSigningUp={jest.fn()} />
+    <StartMenu setIsLogged={jest.fn()} setIsSigningUp={jest.fn()} />,
   );
 
   expect(component.container).toHaveTextContent(
-    'Inicia sesión en Spotify Electron'
+    'Inicia sesión en Spotify Electron',
   );
 });
 
@@ -27,14 +27,14 @@ test('Login failed', () => {
   const mockSetIsLogged = jest.fn();
 
   const component = render(
-    <StartMenu setIsLogged={mockSetIsLogged} setIsSigningUp={jest.fn()} />
+    <StartMenu setIsLogged={mockSetIsLogged} setIsSigningUp={jest.fn()} />,
   );
 
   const loginButton = component.getByText('Iniciar sesión');
   fireEvent.click(loginButton);
 
   expect(
-    component.queryByText('No se ha podido iniciar sesión')
+    component.queryByText('No se ha podido iniciar sesión'),
   ).toBeInTheDocument();
 
   const popover = document.getElementById('button-info-popover');
@@ -57,11 +57,11 @@ test('Login success', async () => {
     Promise.resolve({
       json: () => Promise.resolve({}),
       status: 200,
-    })
+    }),
   ) as jest.Mock;
 
   const component = render(
-    <StartMenu setIsLogged={setIsLogged} setIsSigningUp={setIsSigningUp} />
+    <StartMenu setIsLogged={setIsLogged} setIsSigningUp={setIsSigningUp} />,
   );
 
   // Simulate user input
@@ -89,7 +89,7 @@ test('Change to register menu', () => {
   const mockSetIsRegistering = jest.fn();
 
   const component = render(
-    <StartMenu setIsLogged={jest.fn()} setIsSigningUp={mockSetIsRegistering} />
+    <StartMenu setIsLogged={jest.fn()} setIsSigningUp={mockSetIsRegistering} />,
   );
 
   const regiserButton = component.getByText('Regístrate en Spotify Electron');

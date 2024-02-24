@@ -1,0 +1,35 @@
+name: Backend Run Black style
+
+on:
+  pull_request:
+    branches:
+      - 'master'
+      - 'master-*'
+jobs:
+
+  run_tests:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.10"
+          architecture: "x64"
+        env:
+          AGENT_TOOLSDIRECTORY: /opt/hostedtoolcache
+
+      - name: Install dependencies
+        working-directory: Backend API # Change to your backend API directory path
+        run: pip install -r requirements.txt && pip install -r requirements_test.txt && pip install -r requirements_dev.txt
+
+      - name: Run tests
+        working-directory: Backend API/src # Change to your backend API src directory path
+        run: python -m black . --check
+
+      - name: Fail workflow on test failure
+        if: ${{ failure() }}
+        run: exit 1
+

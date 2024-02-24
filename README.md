@@ -6,6 +6,25 @@
 
 Check our [website](https://antoniomrtz.github.io/SpotifyElectron_Web/)
 
+## Download Installer 🔽
+
+Donwload the installer [here](https://github.com/AntonioMrtz/SpotifyElectron/releases)
+
+## SetUp and run 🔧
+
+## 1. Clone the repository
+
+```
+git clone https://github.com/AntonioMrtz/SpotifyElectron.git
+```
+
+## 2. Setup and run
+
+[🖥 BACKEND](docs/backend//SETUP.md)
+
+[💻 FRONTEND](relative/path/to/README.md)
+
+
 ## Software Architecture
 
 ![Spotify_Electron_Software_Diagram](assets/images/master-streaming-arch.png)

@@ -1,11 +1,12 @@
-from fastapi.responses import Response
+import json
+from typing import Annotated, Optional, Union
+
+import services.dto_service as dto_service
+import services.playlist_service as playlist_service
 from fastapi import APIRouter, Header, HTTPException
-from typing import Optional, Union, Annotated
+from fastapi.responses import Response
 from model.Genre import Genre
 from services.security_service import get_jwt_token
-import services.playlist_service as playlist_service
-import services.dto_service as dto_service
-import json
 
 router = APIRouter(
     prefix="/playlists",
@@ -15,7 +16,7 @@ router = APIRouter(
 
 @router.get("/{nombre}", tags=["playlists"])
 def get_playlist(nombre: str) -> Response:
-    """ Devuelve la playlist con nombre "nombre"
+    """Devuelve la playlist con nombre "nombre"
 
     Parameters
     ----------
@@ -39,8 +40,14 @@ def get_playlist(nombre: str) -> Response:
 
 
 @router.post("/", tags=["playlists"])
-def post_playlist(nombre: str, foto: str, descripcion: str, nombres_canciones: list, authorization: Annotated[Union[str, None], Header()] = None) -> Response:
-    """ Registra la playlist
+def post_playlist(
+    nombre: str,
+    foto: str,
+    descripcion: str,
+    nombres_canciones: list,
+    authorization: Annotated[Union[str, None], Header()] = None,
+) -> Response:
+    """Registra la playlist
 
     Parameters
     ----------
@@ -62,20 +69,31 @@ def post_playlist(nombre: str, foto: str, descripcion: str, nombres_canciones: l
     """
 
     if authorization is None:
-        raise HTTPException(
-            status_code=401, detail="Authorization header is missing")
+        raise HTTPException(status_code=401, detail="Authorization header is missing")
 
     jwt_token = get_jwt_token(authorization)
 
     result = playlist_service.create_playlist(
-        name=nombre, photo=foto, description=descripcion,song_names= nombres_canciones, token=jwt_token)
+        name=nombre,
+        photo=foto,
+        description=descripcion,
+        song_names=nombres_canciones,
+        token=jwt_token,
+    )
 
     return Response(None, 201)
 
 
 @router.put("/{nombre}", tags=["playlists"])
-def update_playlist(nombre: str, foto: str, descripcion: str, nombres_canciones: list, nuevo_nombre: Optional[str] = None, authorization: Annotated[Union[str, None], Header()] = None) -> Response:
-    """ Actualiza los parámetros de la playlist con nombre "nombre" , las canciones repetidas son serán añadidas
+def update_playlist(
+    nombre: str,
+    foto: str,
+    descripcion: str,
+    nombres_canciones: list,
+    nuevo_nombre: Optional[str] = None,
+    authorization: Annotated[Union[str, None], Header()] = None,
+) -> Response:
+    """Actualiza los parámetros de la playlist con nombre "nombre" , las canciones repetidas son serán añadidas
 
     Parameters
     ----------
@@ -97,19 +115,19 @@ def update_playlist(nombre: str, foto: str, descripcion: str, nombres_canciones:
     """
 
     if authorization is None:
-        raise HTTPException(
-            status_code=401, detail="Authorization header is missing")
+        raise HTTPException(status_code=401, detail="Authorization header is missing")
 
     jwt_token = get_jwt_token(authorization)
 
     playlist_service.update_playlist(
-        nombre, nuevo_nombre, foto, descripcion, nombres_canciones, jwt_token)
+        nombre, nuevo_nombre, foto, descripcion, nombres_canciones, jwt_token
+    )
     return Response(None, 204)
 
 
 @router.delete("/{nombre}", tags=["playlists"])
 def delete_playlist(nombre: str) -> Response:
-    """ Elimina una playlist con nombre "nombre"
+    """Elimina una playlist con nombre "nombre"
 
     Parameters
     ----------
@@ -131,7 +149,7 @@ def delete_playlist(nombre: str) -> Response:
 
 @router.get("/", tags=["playlists"])
 def get_playlists() -> Response:
-    """ Devuelve todas las playlists [ SOLO nombres canciones , no el archivo de audio ]
+    """Devuelve todas las playlists [ SOLO nombres canciones , no el archivo de audio ]
 
     Parameters
     ----------
@@ -158,7 +176,7 @@ def get_playlists() -> Response:
 
 @router.get("/multiple/{nombres}", tags=["playlists"])
 def get_selected_playlists(nombres: str) -> Response:
-    """ Devuelve todas las playlists [ SOLO nombres canciones , no el archivo de audio ]
+    """Devuelve todas las playlists [ SOLO nombres canciones , no el archivo de audio ]
 
     Parameters
     ----------
@@ -171,7 +189,7 @@ def get_selected_playlists(nombres: str) -> Response:
     -------
     """
 
-    playlists = playlist_service.get_selected_playlists(nombres.split(','))
+    playlists = playlist_service.get_selected_playlists(nombres.split(","))
 
     playlist_list = []
     [playlist_list.append(playlist.get_json()) for playlist in playlists]
@@ -186,9 +204,10 @@ def get_selected_playlists(nombres: str) -> Response:
 
 # * DTO
 
+
 @router.get("/dto/{nombre}")
 def get_playlist_dto(nombre: str) -> Response:
-    """ Devuelve la playlist con nombre "nombre" con los datos necesarios para previsualización , sin el contenido de las canciones
+    """Devuelve la playlist con nombre "nombre" con los datos necesarios para previsualización , sin el contenido de las canciones
 
     Parameters
     ----------

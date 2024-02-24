@@ -1,21 +1,15 @@
-from main import app as app
 from fastapi.testclient import TestClient
-
+from main import app as app
 
 client = TestClient(app)
 
 
-def create_song(
-        name: str,
-        file_path: str,
-        genero: str,
-        foto: str,
-        headers: dict):
+def create_song(name: str, file_path: str, genero: str, foto: str, headers: dict):
 
     url = f"/canciones/?nombre={name}&genero={genero}&foto={foto}"
 
-    with open(file_path, 'rb') as file:
-        response = client.post(url, files={'file': file}, headers=headers)
+    with open(file_path, "rb") as file:
+        response = client.post(url, files={"file": file}, headers=headers)
         return response
 
 

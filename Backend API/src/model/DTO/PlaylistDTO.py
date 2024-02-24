@@ -1,7 +1,8 @@
+import json
 from dataclasses import dataclass
 from datetime import date
+
 import services.song_service as song_service
-import json
 
 
 @dataclass
@@ -11,7 +12,7 @@ class PlaylistDTO:
     photo: str
     description: str
     upload_date: str
-    owner : str
+    owner: str
     song_names: list
 
     def add_songs(self, song_names: str) -> None:

@@ -1,9 +1,10 @@
-from fastapi.responses import Response
-from fastapi import APIRouter, Header, HTTPException
-from typing import Optional, Union, Annotated
-from services.security_service import get_jwt_token
-import services.artist_service as artist_service
 import json
+from typing import Annotated, Optional, Union
+
+import services.artist_service as artist_service
+from fastapi import APIRouter, Header, HTTPException
+from fastapi.responses import Response
+from services.security_service import get_jwt_token
 
 router = APIRouter(
     prefix="/artistas",
@@ -13,7 +14,7 @@ router = APIRouter(
 
 @router.get("/{nombre}", tags=["artistas"])
 def get_artista(nombre: str) -> Response:
-    """ Devuelve el artista con nombre "nombre"
+    """Devuelve el artista con nombre "nombre"
 
     Parameters
     ----------
@@ -38,7 +39,7 @@ def get_artista(nombre: str) -> Response:
 
 @router.post("/", tags=["artistas"])
 def post_artista(nombre: str, foto: str, password: str) -> Response:
-    """ Registra el artista
+    """Registra el artista
 
     Parameters
     ----------
@@ -55,14 +56,21 @@ def post_artista(nombre: str, foto: str, password: str) -> Response:
         Bad Request 400: Parámetros introducidos no són válidos o vacíos
     """
 
-    result = artist_service.create_artist(
-        nombre, foto, password)
+    result = artist_service.create_artist(nombre, foto, password)
     return Response(None, 201)
 
 
 @router.put("/{nombre}", tags=["artistas"])
-def update_artista(nombre: str, foto: str, historial_canciones: list, playlists: list,  playlists_guardadas: list, canciones_creadas: list, authorization: Annotated[Union[str, None], Header()] = None) -> Response:
-    """ Actualiza los parámetros del artista con nombre "nombre"
+def update_artista(
+    nombre: str,
+    foto: str,
+    historial_canciones: list,
+    playlists: list,
+    playlists_guardadas: list,
+    canciones_creadas: list,
+    authorization: Annotated[Union[str, None], Header()] = None,
+) -> Response:
+    """Actualiza los parámetros del artista con nombre "nombre"
 
     Parameters
     ----------
@@ -85,19 +93,25 @@ def update_artista(nombre: str, foto: str, historial_canciones: list, playlists:
     """
 
     if authorization is None:
-        raise HTTPException(
-            status_code=401, detail="Authorization header is missing")
+        raise HTTPException(status_code=401, detail="Authorization header is missing")
 
     jwt_token = get_jwt_token(authorization)
 
     artist_service.update_artist(
-        name=nombre, photo=foto, playback_history=historial_canciones, playlists=playlists, saved_playlists=playlists_guardadas, uploaded_songs=canciones_creadas, token=jwt_token)
+        name=nombre,
+        photo=foto,
+        playback_history=historial_canciones,
+        playlists=playlists,
+        saved_playlists=playlists_guardadas,
+        uploaded_songs=canciones_creadas,
+        token=jwt_token,
+    )
     return Response(None, 204)
 
 
 @router.delete("/{nombre}", tags=["artistas"])
 def delete_artista(nombre: str) -> Response:
-    """ Elimina un artista con nombre "nombre"
+    """Elimina un artista con nombre "nombre"
 
     Parameters
     ----------
@@ -119,7 +133,7 @@ def delete_artista(nombre: str) -> Response:
 
 @router.get("/", tags=["artistas"])
 def get_artistas() -> Response:
-    """ Devuelve todos los artistas
+    """Devuelve todos los artistas
 
     Parameters
     ----------

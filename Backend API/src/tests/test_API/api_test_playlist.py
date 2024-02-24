@@ -1,6 +1,5 @@
-from main import app as app
 from fastapi.testclient import TestClient
-
+from main import app as app
 
 client = TestClient(app)
 
@@ -13,9 +12,7 @@ def create_playlist(name: str, descripcion: str, foto: str, headers: dict):
 
     file_type_header = {"Content-Type": "application/json"}
 
-    response = client.post(
-        url, json=payload, headers={**file_type_header, **headers}
-    )
+    response = client.post(url, json=payload, headers={**file_type_header, **headers})
 
     return response
 
@@ -33,12 +30,8 @@ def get_playlists(song_names: str, headers: dict):
 
 
 def update_playlist(
-        name: str,
-        descripcion: str,
-        foto: str,
-        headers: dict,
-        nuevo_nombre: str = ""
-        ):
+    name: str, descripcion: str, foto: str, headers: dict, nuevo_nombre: str = ""
+):
 
     if nuevo_nombre == "":
         url = f"/playlists/{name}/?foto={foto}&descripcion={descripcion}"
@@ -50,9 +43,7 @@ def update_playlist(
 
     file_type_header = {"Content-Type": "application/json"}
 
-    response = client.put(
-        url, json=payload, headers={**file_type_header, **headers}
-    )
+    response = client.put(url, json=payload, headers={**file_type_header, **headers})
 
     return response
 
@@ -62,6 +53,6 @@ def delete_playlist(name: str):
     return response
 
 
-def get_all_playlists(headers:dict):
-    response = client.get(f"/playlists/",headers=headers)
+def get_all_playlists(headers: dict):
+    response = client.get(f"/playlists/", headers=headers)
     return response

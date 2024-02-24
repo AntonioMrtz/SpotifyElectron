@@ -1,6 +1,7 @@
-from dataclasses import dataclass
-from model.User import User
 import json
+from dataclasses import dataclass
+
+from model.User import User
 
 
 @dataclass

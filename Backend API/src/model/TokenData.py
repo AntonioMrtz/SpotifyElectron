@@ -1,11 +1,12 @@
-from dataclasses import dataclass
 import json
+from dataclasses import dataclass
+
 
 @dataclass
-class TokenData():
+class TokenData:
     username: str
     role: str
-    token_type : str
+    token_type: str
 
     def get_json(self) -> json:
 

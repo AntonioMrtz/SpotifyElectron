@@ -1,6 +1,7 @@
-from dataclasses import dataclass
-from model.Genre import Genre
 import json
+from dataclasses import dataclass
+
+from model.Genre import Genre
 
 
 @dataclass

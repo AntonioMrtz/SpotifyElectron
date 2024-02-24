@@ -1,17 +1,13 @@
 import base64
 import io
-import json
 import os
 from sys import modules
 
-import boto3
 import librosa
 import requests
-from botocore.exceptions import ClientError
 from database.Database import Database
 from dotenv import load_dotenv
 from fastapi import HTTPException
-from fastapi.responses import Response
 from gridfs import GridFS
 from model.Genre import Genre
 from model.Song import Song
@@ -41,9 +37,6 @@ else:
 
 load_dotenv()
 
-s3 = boto3.resource("s3")
-s3_client = boto3.client("s3")
-song_bucket = s3.Bucket("canciones-spotify-electron")
 bucket_base_path = "canciones/"
 lambda_base_path = os.getenv("LAMBDA_URL")
 
@@ -84,6 +77,7 @@ def check_jwt_user_is_song_artist(token: TokenData, artist: str) -> bool:
     """
 
     if token.username == artist:
+
         return True
     else:
         raise HTTPException(

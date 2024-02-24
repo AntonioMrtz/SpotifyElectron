@@ -1,5 +1,7 @@
 namespace Global {
-  export const backendBaseUrl: string = 'http://127.0.0.1:8000/';
+  export const backendBaseUrl: string =
+    process.env.BACKEND_URL || 'no-backend-provided';
+
   export const repositoryUrl: string =
     'https://github.com/AntonioMrtz/SpotifyElectron/';
 

@@ -4,13 +4,18 @@
 
 1. Create a new branch with the feature youre implementing with the name convention type/BranchName [ej : feat/Home , fix/UserLogin]
 2. Push your changes to the new branch with one of the following prefix:
-    * feat: Indicates the addition of a new feature or functionality to the project.
-    * fix: Used when fixing a bug or error in the code.
-    * refactor: Refers to changes made to the code to improve its structure or readability, without changing its functionality.
-    * docs: Used when making changes or improvements to the project's documentation.
-    * chore: Used for minor changes in the code, such as dependency updates, * project configuration tweaks, etc.
-    * style: Used for changes related to code formatting, style, or coding conventions, without affecting functionality.
-    * test: Indicates changes to unit tests or test configuration.
+  - `feat`: indicates the addition of a new feature or functionality to the project.
+  - `fix`: used when fixing a bug or error in the code.
+  - `docs`: changes to the documentation
+  - `style`: formatting, missing semi colons, etc; no production code change
+  - `refactor`: refactoring production code, eg. renaming a variable
+  - `test`: adding missing tests, refactoring tests; no production code change
+  - `chore`: updating grunt tasks etc; no production code change
+  - `ci`: updating scripts for continuous integration
+  - `build`: update building scripts or Docker Images
+  - `perf`: update code for performance improvement
+  - `revert`: revert changes
+  - `docs`: Used when making changes or improvements to the project's documentation.
 3. Add tests for every change you made.
 4. Go to your branch in Git and then select Pull Request and field the fields indicated in the template.
 5. Check if Github Actions CI tests are passing, any pull request with errors on CI would not be merged to the master branch.

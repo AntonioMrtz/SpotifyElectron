@@ -56,8 +56,6 @@ cd src/;
 ```
 2. Run tests
 ```
-cd src/
-
 python -m pytest . // Normal test run
 
 or

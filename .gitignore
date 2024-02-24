@@ -154,17 +154,13 @@ yarn-error.log*
 
 
 # js webpacked
-
-.erb/dll/preload.js
-.erb
-.erb/**
+.erb/dll/**
+.erb/img/**
+.erb/mocks/**
+.erb/scripts/**
 
 #python
-
-
 __pycache__
+
+# env
 .env
-
-#vscode
-
-Electron/.erb/dll/preload.js

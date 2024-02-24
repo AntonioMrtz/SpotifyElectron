@@ -1,6 +1,7 @@
 namespace Global {
   export const backendBaseUrl: string =
-    'https://spotifyelectron-dev-kzhm.2.ie-1.fl0.io/';
+    process.env.BACKEND_URL || 'no-backend-provided';
+
   export const repositoryUrl: string =
     'https://github.com/AntonioMrtz/SpotifyElectron/';
 

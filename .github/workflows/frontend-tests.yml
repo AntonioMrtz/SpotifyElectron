@@ -25,3 +25,5 @@ jobs:
         npm install
         npm run build
         npm test
+      env:
+          BACKEND_URL : ${{ secrets.BACKEND_URL }}

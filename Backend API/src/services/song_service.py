@@ -334,7 +334,7 @@ def search_by_name(name: str) -> list:
         List<Json>
     """
 
-    song_names_response = song_collection.find(
+    song_names_response = file_song_collection.find(
         {'name': {'$regex': name, '$options': 'i'}}, {"_id": 0, "name": 1})
 
     song_names = []

@@ -138,7 +138,7 @@ def test_get_play_count_artist_correct(clear_test_data_db):
 
     song_name = "8232392323623823723989"
     song_name_2 = "82323923236238237239892"
-    file_path = "__tests__/assets/song.mp3"
+    file_path = "tests/assets/song.mp3"
     artista = "8232392323623823723"
     genero = "Pop"
     foto = "https://foto"

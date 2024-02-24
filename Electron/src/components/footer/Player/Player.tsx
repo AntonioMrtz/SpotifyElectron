@@ -117,7 +117,7 @@ export default function Player({
         audio.current.pause();
       }
 
-      if (songName === Global.noSong) return;
+      if (songName === Global.noSongPlaying) return;
 
       const resFetchSong = await fetch(
         `${Global.backendBaseUrl}canciones/${songName}`,

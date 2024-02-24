@@ -25,7 +25,18 @@ cd Backend API;
 
 ```
 
-3. Install the virtual enviroment and dependencies 
+3. Install AWS CLI from https://aws.amazon.com/es/cli/
+
+4. Go to your home folder for the current user, .aws and change the credentials
+```
+[default]
+aws_access_key_id=x
+aws_secret_access_key=x
+aws_session_token=token
+
+```
+
+5. Install the virtual enviroment and dependencies 
 
 ```
 python -m venv venv;

@@ -36,7 +36,7 @@ export default function Explorar({
       try {
         const fetchUrlFilterItemsByName = `${Global.backendBaseUrl}search/?nombre=${filterNameInput}`;
         const resFetchUrlFilterItemsByName = await fetch(
-          fetchUrlFilterItemsByName
+          fetchUrlFilterItemsByName,
         );
         const resFetchUrlFilterItemsByNameJson =
           await resFetchUrlFilterItemsByName.json();
@@ -118,7 +118,7 @@ export default function Explorar({
         console.log(`Unable to get filtered items | ${error}`);
       }
     },
-    [changeSongName, refreshSidebar]
+    [changeSongName, refreshSidebar],
   );
 
   useEffect(() => {

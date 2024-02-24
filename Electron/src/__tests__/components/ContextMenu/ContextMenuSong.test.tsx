@@ -113,7 +113,7 @@ test('Render ContextMenuSong', async () => {
         handleCloseParent={jest.fn()}
         refreshPlaylistData={jest.fn()}
         refreshSidebarData={jest.fn()}
-      />
+      />,
     );
   });
   expect(component).toBeTruthy();
@@ -130,7 +130,7 @@ test('ContextMenuSong quitar de esta lista', async () => {
         handleCloseParent={jest.fn()}
         refreshPlaylistData={refreshPlaylistDataMock}
         refreshSidebarData={jest.fn()}
-      />
+      />,
     );
   });
 
@@ -160,7 +160,7 @@ test('ContextMenuSong crear lista', async () => {
         handleCloseParent={jest.fn()}
         refreshPlaylistData={jest.fn()}
         refreshSidebarData={refreshSidebarMock}
-      />
+      />,
     );
   });
 
@@ -197,7 +197,7 @@ test('ContextMenuSong add to playlist', async () => {
         handleCloseParent={jest.fn()}
         refreshPlaylistData={jest.fn()}
         refreshSidebarData={jest.fn()}
-      />
+      />,
     );
   });
 

@@ -50,7 +50,7 @@ test('render Sidebar Playlist', async () => {
           handleUrlPlaylistClicked={handleUrlPlaylistClicked}
           reloadSidebar={reloadSidebar}
         />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
   });
 
@@ -98,12 +98,12 @@ test('Sidebar Playlist handle open context menu', async () => {
           handleUrlPlaylistClicked={handleUrlPlaylistClickedMock}
           reloadSidebar={reloadSidebarMock}
         />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
   });
 
   const playlistItemClickable = component.getByTestId(
-    'sidebar-playlist-wrapper'
+    'sidebar-playlist-wrapper',
   );
 
   await act(async () => {
@@ -153,12 +153,12 @@ test('Sidebar Playlist left-click', async () => {
           handleUrlPlaylistClicked={handleUrlPlaylistClickedMock}
           reloadSidebar={reloadSidebarMock}
         />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
   });
 
   const playlistItemClickable = component.getByTestId(
-    'sidebar-playlist-wrapper'
+    'sidebar-playlist-wrapper',
   );
 
   await act(async () => {

@@ -30,7 +30,7 @@ export default function Playlist({
   /* Get current Playlist Name */
   const location = useLocation();
   const playlistName = decodeURIComponent(
-    location.pathname.split('/').slice(-1)[0]
+    location.pathname.split('/').slice(-1)[0],
   );
 
   const navigate = useNavigate();
@@ -189,13 +189,13 @@ export default function Playlist({
   });
 
   const handleChangeForm = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     if (e.target.name === 'foto') {
       setThumbnailUpdatePlaylist(
         e.target.value.includes('http')
           ? e.target.value
-          : defaultThumbnailPlaylist
+          : defaultThumbnailPlaylist,
       );
     }
 
@@ -208,7 +208,7 @@ export default function Playlist({
   const loadPlaylistData = async () => {
     try {
       const resFetchGetPlaylistDTO = await fetch(
-        encodeURI(`${Global.backendBaseUrl}playlists/dto/${playlistName}`)
+        encodeURI(`${Global.backendBaseUrl}playlists/dto/${playlistName}`),
       );
       const resFetchGetPlaylistDTOJson = await resFetchGetPlaylistDTO.json();
 
@@ -219,12 +219,12 @@ export default function Playlist({
       setThumbnail(
         resFetchGetPlaylistDTOJson.photo === ''
           ? defaultThumbnailPlaylist
-          : resFetchGetPlaylistDTOJson.photo
+          : resFetchGetPlaylistDTOJson.photo,
       );
       setThumbnailUpdatePlaylist(
         resFetchGetPlaylistDTOJson.photo === ''
           ? defaultThumbnailPlaylist
-          : resFetchGetPlaylistDTOJson.photo
+          : resFetchGetPlaylistDTOJson.photo,
       );
 
       if (resFetchGetPlaylistDTOJson.song_names) {
@@ -262,7 +262,7 @@ export default function Playlist({
                   .catch(() => {
                     console.log('Unable to get Song Data');
                   });
-              })
+              }),
             );
           });
 
@@ -285,7 +285,7 @@ export default function Playlist({
 
     try {
       const resGetPlaylistDTO = await fetch(
-        `${Global.backendBaseUrl}playlists/dto/${playlistName}`
+        `${Global.backendBaseUrl}playlists/dto/${playlistName}`,
       );
 
       const resGetPlaylistDTOJson = await resGetPlaylistDTO.json();
@@ -313,7 +313,7 @@ export default function Playlist({
 
       const resFetchUpdateSong = await fetch(
         fetchUrlUpdateSong,
-        requestOptions
+        requestOptions,
       );
 
       if (resFetchUpdateSong.status !== 204) {

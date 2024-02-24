@@ -123,7 +123,7 @@ test('Render ContextMenuPlaylist', async () => {
           refreshPlaylistData={jest.fn()}
           refreshSidebarData={jest.fn()}
         />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
   });
   expect(component).toBeTruthy();
@@ -142,7 +142,7 @@ test('ContextMenuPlaylist delete Playlist success', async () => {
           refreshPlaylistData={jest.fn()}
           refreshSidebarData={refreshSidebarDataMock}
         />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
   });
 
@@ -169,7 +169,7 @@ test('ContextMenuPlaylist Add Playlist to Playlist', async () => {
           refreshPlaylistData={jest.fn()}
           refreshSidebarData={refreshSidebarDataMock}
         />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
   });
 

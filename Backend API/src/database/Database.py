@@ -7,8 +7,6 @@ import logging
 formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
 logging.basicConfig(level=logging.WARNING)
 
-load_dotenv()
-
 """ Singleton instance of the MongoDb connection """
 
 
@@ -45,13 +43,16 @@ class Database(metaclass=DatabaseMeta):
         if Database.connection is None:
             try:
                 uri = os.getenv("MONGO_URI")
+                if uri and '=' not in uri:
+                    uri+='=true&w=majority'
                 Database.connection = MongoClient(uri, server_api=ServerApi('1'))[
                     "SpotifyElectron"]
                 Database.list_collection = Database.connection["playlist"]
                 Database.song_collection = Database.connection["song"]
 
             except Exception as error:
-                logging.warning(
+                logging.critical(
                     "Error: Connection not established {}".format(error))
             else:
                 logging.info("Connection established")
+

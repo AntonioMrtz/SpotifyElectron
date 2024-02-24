@@ -26,7 +26,7 @@ def test_patch_playback_history_user_correct(clear_test_data_db):
     jwt_headers_artist = get_user_jwt_header(username=artista,password=password)
 
     song_name = "8232392323623823723989"
-    file_path = "__tests__/assets/song.mp3"
+    file_path = "tests/assets/song.mp3"
     genero = "Pop"
     foto = "https://foto"
 
@@ -65,7 +65,7 @@ def test_patch_playback_history_artist_correct(clear_test_data_db):
     assert res_create_artist.status_code == 201
 
     song_name = "8232392323623823723989"
-    file_path = "__tests__/assets/song.mp3"
+    file_path = "tests/assets/song.mp3"
     genero = "Pop"
     foto = "https://foto"
 
@@ -126,7 +126,7 @@ def test_patch_playback_history_user_correct_insert_6_songs(clear_test_data_db):
     assert res_create_user.status_code == 201
 
     song_name = "8232392323623823723989"
-    file_path = "__tests__/assets/song.mp3"
+    file_path = "tests/assets/song.mp3"
     genero = "Pop"
 
     new_song_name = "cancionnueva"
@@ -202,7 +202,6 @@ def test_patch_saved_playlist_user_correct(clear_test_data_db):
     assert res_delete_user.status_code == 202
 
 def test_patch_saved_playlist_user_not_found():
-
 
     res_patch_user = patch_playlist_saved("","",{})
     assert res_patch_user.status_code == 401

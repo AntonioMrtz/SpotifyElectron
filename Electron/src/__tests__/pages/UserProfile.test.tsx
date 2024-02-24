@@ -43,7 +43,7 @@ test('render UserProfile with User', async () => {
     Promise.resolve({
       json: () => Promise.resolve(userMock),
       status: 200,
-    })
+    }),
   ) as jest.Mock;
 
   const component = await act(() => {
@@ -52,7 +52,7 @@ test('render UserProfile with User', async () => {
         changeSongName={jest.fn()}
         refreshSidebarData={jest.fn()}
         userType={UserType.USER}
-      />
+      />,
     );
   });
 
@@ -64,7 +64,7 @@ test('render UserProfile with Artist', async () => {
     Promise.resolve({
       json: () => Promise.resolve(artistMock),
       status: 200,
-    })
+    }),
   ) as jest.Mock;
 
   const component = await act(() => {
@@ -73,7 +73,7 @@ test('render UserProfile with Artist', async () => {
         changeSongName={jest.fn()}
         refreshSidebarData={jest.fn()}
         userType={UserType.USER}
-      />
+      />,
     );
   });
 
@@ -85,7 +85,7 @@ test('UserProfile User Fields', async () => {
     Promise.resolve({
       json: () => Promise.resolve(userMock),
       status: 200,
-    })
+    }),
   ) as jest.Mock;
 
   const component = await act(() => {
@@ -94,12 +94,12 @@ test('UserProfile User Fields', async () => {
         changeSongName={jest.fn()}
         refreshSidebarData={jest.fn()}
         userType={UserType.USER}
-      />
+      />,
     );
   });
 
   expect(
-    component.queryByText('Historial de reproducción')
+    component.queryByText('Historial de reproducción'),
   ).toBeInTheDocument();
 
   expect(component.queryByText('Playlists del usuario')).toBeInTheDocument();
@@ -110,7 +110,7 @@ test('UserProfile Artist Fields', async () => {
     Promise.resolve({
       json: () => Promise.resolve(artistMock),
       status: 200,
-    })
+    }),
   ) as jest.Mock;
 
   const component = await act(() => {
@@ -119,7 +119,7 @@ test('UserProfile Artist Fields', async () => {
         changeSongName={jest.fn()}
         refreshSidebarData={jest.fn()}
         userType={UserType.ARTIST}
-      />
+      />,
     );
   });
 
@@ -225,7 +225,7 @@ test('UserProfile User load Playback history and his Playlists', async () => {
             }
           />
         </Routes>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
   });
 
@@ -347,7 +347,7 @@ test('UserProfile Artist load Songs and Playcount', async () => {
             }
           />
         </Routes>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
   });
 
@@ -358,6 +358,6 @@ test('UserProfile Artist load Songs and Playcount', async () => {
   expect(component.queryByText(songName)).toBeInTheDocument();
   expect(component.queryByText(playlistName)).toBeInTheDocument();
   expect(
-    component.queryByText(`${numPlayCount} reproducciones totales`)
+    component.queryByText(`${numPlayCount} reproducciones totales`),
   ).toBeInTheDocument();
 });

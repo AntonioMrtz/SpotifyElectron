@@ -17,7 +17,7 @@ export default function Genre({
   /* Get current Playlist Name */
   const location = useLocation();
   const genreName = decodeURIComponent(
-    location.pathname.split('/').slice(-1)[0]
+    location.pathname.split('/').slice(-1)[0],
   );
 
   type SongProps = {

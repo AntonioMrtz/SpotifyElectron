@@ -86,7 +86,7 @@ test('Render Player', async () => {
 
   await act(async () => {
     component = render(
-      <Player volume={0} songName={songName} changeSongInfo={jest.fn()} />
+      <Player volume={0} songName={songName} changeSongInfo={jest.fn()} />,
     );
   });
 

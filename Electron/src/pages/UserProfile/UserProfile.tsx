@@ -55,7 +55,7 @@ export default function UserProfile({
             .catch(() => {
               console.log('Unable to get Playlists Data');
             });
-        })
+        }),
       );
     });
 
@@ -93,7 +93,7 @@ export default function UserProfile({
             .catch(() => {
               console.log('Unable to get Songs Data');
             });
-        })
+        }),
       );
     });
 
@@ -132,7 +132,7 @@ export default function UserProfile({
             .catch(() => {
               console.log('Unable to get Songs Data from Artist');
             });
-        })
+        }),
       );
     });
 
@@ -210,7 +210,7 @@ export default function UserProfile({
 
   const handleShowAllUserPlaylists = (userTypeRedirect: UserType) => {
     navigate(
-      `/showAllPlaylistFromUser/Playlists del usuario/${id}/${userTypeRedirect}`
+      `/showAllPlaylistFromUser/Playlists del usuario/${id}/${userTypeRedirect}`,
     );
   };
 

@@ -17,7 +17,7 @@ test('render Home', async () => {
     Promise.resolve({
       json: () => Promise.resolve({}),
       status: 200,
-    })
+    }),
   ) as jest.Mock;
 
   const component = await act(() => {
@@ -32,7 +32,7 @@ test('Home fields', async () => {
     Promise.resolve({
       json: () => Promise.resolve({}),
       status: 200,
-    })
+    }),
   ) as jest.Mock;
 
   const component = await act(() => {
@@ -96,7 +96,7 @@ test('prueba', async () => {
     return render(
       <BrowserRouter>
         <Home refreshSidebarData={jest.fn()} />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
   });
 

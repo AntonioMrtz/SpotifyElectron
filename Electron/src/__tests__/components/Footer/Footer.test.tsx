@@ -8,7 +8,7 @@ test('Render footer', () => {
   const component = render(
     <BrowserRouter>
       <Footer songName="" />
-    </BrowserRouter>
+    </BrowserRouter>,
   );
   expect(component).toBeTruthy();
 });

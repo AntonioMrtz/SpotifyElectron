@@ -34,7 +34,7 @@ function App() {
 
   /* Handle change song name */
 
-  const [songName, setSongName] = useState(Global.noSong);
+  const [songName, setSongName] = useState(Global.noSongPlaying);
   const changeSongName = (songNameInput: string): void => {
     setSongName(songNameInput);
   };
@@ -44,7 +44,7 @@ function App() {
   const [isLogged, setIsLogged] = useState(false);
 
   const handleLogout = () => {
-    changeSongName(Global.noSong);
+    changeSongName(Global.noSongPlaying);
     setIsLogged(false);
   };
 

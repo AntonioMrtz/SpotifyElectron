@@ -111,7 +111,7 @@ test('Playlist user role get all info', async () => {
             }
           />
         </Routes>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
   });
   expect(component).toBeTruthy();
@@ -211,13 +211,13 @@ test('Playlist user role hit like button', async () => {
             }
           />
         </Routes>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
   });
 
   await act(async () => {
     const likeButton = component.container.querySelector(
-      '#playlist-like-button'
+      '#playlist-like-button',
     );
     if (likeButton) {
       fireEvent.click(likeButton);
@@ -225,7 +225,7 @@ test('Playlist user role hit like button', async () => {
   });
 
   const unlikeButton = component.container.querySelector(
-    '#playlist-unlike-button'
+    '#playlist-unlike-button',
   );
   expect(unlikeButton).toBeVisible();
 });
@@ -320,13 +320,13 @@ test('Playlist user role get unlike button', async () => {
             }
           />
         </Routes>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
   });
 
   await act(async () => {
     const unlikeButton = component.container.querySelector(
-      '#playlist-unlike-button'
+      '#playlist-unlike-button',
     );
     if (unlikeButton) {
       fireEvent.click(unlikeButton);
@@ -441,7 +441,7 @@ test('Playlist user role update playlist', async () => {
             }
           />
         </Routes>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
   });
 

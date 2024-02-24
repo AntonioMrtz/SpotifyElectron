@@ -28,7 +28,6 @@ def delete_playlist_saved(user_name: str, playlist_name: str, headers: dict):
 
 
 def whoami(token: str):
-
     headers = {"Authorization": f"{token}"}
 
     response = client.get(f"/usuarios/whoami", headers=headers)

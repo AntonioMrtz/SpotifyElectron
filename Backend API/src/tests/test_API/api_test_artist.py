@@ -5,13 +5,11 @@ client = TestClient(app)
 
 
 def get_artist(name: str, headers: dict):
-
     response = client.get(f"/artistas/{name}", headers=headers)
     return response
 
 
 def create_artist(name: str, photo: str, password: str):
-
     url = f"/artistas/?nombre={name}&foto={photo}&password={password}"
 
     response = client.post(url)
@@ -28,7 +26,6 @@ def update_artist(
     uploaded_songs: list,
     headers: dict,
 ):
-
     url = f"/artistas/{name}/?foto={photo}"
 
     payload = {

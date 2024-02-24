@@ -7,7 +7,6 @@ client = TestClient(app)
 
 
 def test_get_generos_correct():
-
     artista = "artista"
     foto = "https://foto"
     password = "hola"

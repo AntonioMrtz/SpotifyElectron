@@ -10,13 +10,11 @@ from model.TokenData import TokenData
 from services.utils import checkValidParameterString
 
 if "pytest" in modules:
-
     artist_collection = Database().connection["test.artista"]
     user_collection = Database().connection["test.usuario"]
     song_collection = Database().connection["test.canciones.streaming"]
 
 else:
-
     artist_collection = Database().connection["artista"]
     user_collection = Database().connection["usuario"]
     song_collection = Database().connection["canciones.streaming"]
@@ -428,7 +426,6 @@ def get_artists(names: list) -> list:
     artists: list = []
 
     for artist_name in names:
-
         artists.append(get_artist(artist_name))
 
     return artists
@@ -474,7 +471,6 @@ def search_by_name(name: str) -> list:
 def add_playback_history(
     user_name: str, song: str, MAX_NUMBER_PLAYBACK_HISTORY_SONGS: int
 ):
-
     artist_data = artist_collection.find_one({"name": user_name})
 
     playback_history = artist_data["playback_history"]
@@ -507,7 +503,6 @@ def delete_saved_playlist(user_name: str, playlist_name: str):
     saved_playlists = artist_data["saved_playlists"]
 
     if playlist_name in saved_playlists:
-
         saved_playlists.remove(playlist_name)
 
         result = artist_collection.update_one(
@@ -516,7 +511,6 @@ def delete_saved_playlist(user_name: str, playlist_name: str):
 
 
 def add_playlist_to_owner(user_name: str, playlist_name: str) -> None:
-
     artist_data = artist_collection.find_one({"name": user_name})
 
     playlists = artist_data["playlists"]
@@ -529,13 +523,11 @@ def add_playlist_to_owner(user_name: str, playlist_name: str) -> None:
 
 
 def delete_playlist_from_owner(user_name: str, playlist_name: str) -> None:
-
     artist_data = artist_collection.find_one({"name": user_name})
 
     playlists = artist_data["playlists"]
 
     if playlist_name in playlists:
-
         playlists.remove(playlist_name)
 
         result = artist_collection.update_one(

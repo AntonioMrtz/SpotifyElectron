@@ -10,12 +10,10 @@ from model.User import User
 from services.utils import checkValidParameterString
 
 if "pytest" in modules:
-
     user_collection = Database().connection["test.usuario"]
     artist_collection = Database().connection["test.artista"]
 
 else:
-
     user_collection = Database().connection["usuario"]
     artist_collection = Database().connection["artista"]
 
@@ -228,7 +226,6 @@ def get_users(names: list) -> list:
     users: list = []
 
     for user_name in names:
-
         users.append(get_user(user_name))
 
     return users
@@ -331,7 +328,6 @@ def delete_saved_playlist(user_name: str, playlist_name: str):
     saved_playlists = user_data["saved_playlists"]
 
     if playlist_name in saved_playlists:
-
         saved_playlists.remove(playlist_name)
 
         result = user_collection.update_one(
@@ -340,7 +336,6 @@ def delete_saved_playlist(user_name: str, playlist_name: str):
 
 
 def add_playlist_to_owner(user_name: str, playlist_name: str) -> None:
-
     user_data = user_collection.find_one({"name": user_name})
 
     playlists = user_data["playlists"]
@@ -353,13 +348,11 @@ def add_playlist_to_owner(user_name: str, playlist_name: str) -> None:
 
 
 def delete_playlist_from_owner(user_name: str, playlist_name: str) -> None:
-
     user_data = user_collection.find_one({"name": user_name})
 
     playlists = user_data["playlists"]
 
     if playlist_name in playlists:
-
         playlists.remove(playlist_name)
 
         result = user_collection.update_one(

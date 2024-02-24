@@ -180,7 +180,6 @@ def login_user(name: str, password: str) -> json:
 
 
 def check_jwt_is_valid(token: str):
-
     try:
         # Decode the JWT
         decoded_token = jwt.decode(token, SECRET_KEY, ALGORITHM)

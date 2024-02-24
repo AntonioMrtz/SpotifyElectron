@@ -6,7 +6,6 @@ from model.Genre import Genre
 
 @dataclass
 class SongDTO:
-
     name: str
     artist: str
     photo: str

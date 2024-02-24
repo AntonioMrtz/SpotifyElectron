@@ -5,13 +5,11 @@ client = TestClient(app)
 
 
 def get_user(name: str, headers: dict):
-
     response = client.get(f"/usuarios/{name}", headers=headers)
     return response
 
 
 def create_user(name: str, photo: str, password: str):
-
     url = f"/usuarios/?nombre={name}&foto={photo}&password={password}"
 
     response = client.post(url)
@@ -27,7 +25,6 @@ def update_user(
     playback_history: list,
     headers: dict,
 ):
-
     url = f"/usuarios/{name}/?foto={photo}"
 
     payload = {

@@ -91,7 +91,6 @@ def test_delete_user_invalid_name(clear_test_data_db):
 
 
 def test_update_playlists_correct(clear_test_data_db):
-
     name = "8232392323623823723"
     foto = "https://foto"
     password = "hola"

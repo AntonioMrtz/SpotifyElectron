@@ -5,7 +5,6 @@ from test_API.api_test_user import create_user, delete_user
 
 
 def test_login_artist(clear_test_data_db):
-
     user_name = "8232392323623823723"
     password = "hola"
     artista = "artista"
@@ -22,7 +21,6 @@ def test_login_artist(clear_test_data_db):
 
 
 def test_login_user(clear_test_data_db):
-
     user_name = "8232392323623823723"
     password = "hola"
     artista = "artista"
@@ -39,7 +37,6 @@ def test_login_user(clear_test_data_db):
 
 
 def test_login_user_not_found():
-
     user_name = "8232392323623823723"
     password = "hola"
 
@@ -48,7 +45,6 @@ def test_login_user_not_found():
 
 
 def test_login_user_bad_password(clear_test_data_db):
-
     user_name = "8232392323623823723"
     password = "hola"
     bad_password = "bad password"

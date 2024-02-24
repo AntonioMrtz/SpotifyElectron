@@ -4,7 +4,6 @@ from starlette.middleware.base import BaseHTTPMiddleware
 
 
 class CheckJwtAuth(BaseHTTPMiddleware):
-
     bypass_urls = {
         "GET": [
             "/usuarios/whoami",

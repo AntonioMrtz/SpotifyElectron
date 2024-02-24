@@ -92,7 +92,6 @@ def test_delete_artist_not_found(clear_test_data_db):
 
 
 def test_delete_artist_invalid_name(clear_test_data_db):
-
     name = ""
 
     res_delete_artist = delete_artist(name=name)
@@ -100,7 +99,6 @@ def test_delete_artist_invalid_name(clear_test_data_db):
 
 
 def test_get_artists_correct():
-
     name = "8232392323623823723"
     foto = "https://foto"
     password = "hola"
@@ -118,7 +116,6 @@ def test_get_artists_correct():
 
 
 def test_update_playlists_correct(clear_test_data_db):
-
     name = "8232392323623823723"
     foto = "https://foto"
     password = "hola"
@@ -151,7 +148,6 @@ def test_update_playlists_correct(clear_test_data_db):
 
 
 def test_get_play_count_artist_correct(clear_test_data_db):
-
     song_name = "8232392323623823723989"
     song_name_2 = "82323923236238237239892"
     file_path = "tests/assets/song.mp3"

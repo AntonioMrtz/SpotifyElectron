@@ -131,7 +131,6 @@ def test_delete__playlist_not_found(clear_test_data_db):
 
 
 def test_delete_playlist_invalid_name(clear_test_data_db):
-
     name = ""
 
     res_delete_playlist = delete_playlist(name=name)
@@ -139,7 +138,6 @@ def test_delete_playlist_invalid_name(clear_test_data_db):
 
 
 def test_get_playlist_correct():
-
     name = ""
     artist = "8232392323623823723"
     foto = "https://foto"
@@ -232,7 +230,6 @@ def test_update_playlist_correct_nuevo_nombre(clear_test_data_db):
 
 
 def test_get_playlists(clear_test_data_db):
-
     foto = "foto"
     owner = "usuarioprueba834783478923489734298"
     password = "password"
@@ -250,7 +247,6 @@ def test_get_playlists(clear_test_data_db):
 
 
 def test_get_playlists(clear_test_data_db):
-
     name = "8232392323623823723"
     foto = "foto"
     descripcion = "descripcion"

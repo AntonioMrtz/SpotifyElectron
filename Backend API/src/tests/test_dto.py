@@ -12,7 +12,6 @@ from test_API.api_token import get_user_jwt_header
 
 
 def test_get_playlist_dto_correct(clear_test_playlist_db):
-
     name = "8232392323623823723"
     descripcion = "descripcion"
     foto = "https://foto"
@@ -44,7 +43,6 @@ def test_get_playlist_dto_correct(clear_test_playlist_db):
 
 
 def test_get_playlist_dto_not_found(clear_test_playlist_db):
-
     name = "8232392323623823723"
     descripcion = "descripcion"
     foto = "https://foto"
@@ -64,7 +62,6 @@ def test_get_playlist_dto_not_found(clear_test_playlist_db):
 
 
 def test_get_playlist_dto_invalid_name(clear_test_playlist_db):
-
     name = ""
 
     descripcion = "descripcion"
@@ -88,7 +85,6 @@ def test_get_playlist_dto_invalid_name(clear_test_playlist_db):
 
 
 def test_get_song_dto_correct(clear_test_song_db):
-
     song_name = "8232392323623823723989"
     artista = "usuarioprueba834783478923489734298"
     genero = "Pop"
@@ -128,7 +124,6 @@ def test_get_song_dto_correct(clear_test_song_db):
 
 
 def test_song_playlist_dto_not_found(clear_test_song_db):
-
     artista = "usuarioprueba834783478923489734298"
     foto = "https://foto"
     password = "hola"
@@ -148,7 +143,6 @@ def test_song_playlist_dto_not_found(clear_test_song_db):
 
 
 def test_get_song_dto_invalid_name(clear_test_song_db):
-
     artista = "usuarioprueba834783478923489734298"
     foto = "https://foto"
     password = "hola"

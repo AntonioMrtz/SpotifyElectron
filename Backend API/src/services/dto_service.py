@@ -8,12 +8,10 @@ from model.Genre import Genre
 from services.utils import checkValidParameterString
 
 if "pytest" in modules:
-
     song_collection = Database().connection["test.canciones.streaming"]
     playlistCollection = Database().connection["test.playlist"]
 
 else:
-
     song_collection = Database().connection["canciones.streaming"]
     playlistCollection = Database().connection["playlist"]
 
@@ -73,7 +71,6 @@ def get_songs(song_names: list) -> list:
     respone_songs_dto = []
 
     for name in song_names:
-
         if not checkValidParameterString(name):
             raise HTTPException(
                 status_code=400, detail="El nombre de la canción es vacío"
@@ -165,7 +162,6 @@ def get_songs_by_genero(genre: Genre) -> list:
     songs_by_genre = []
 
     for song_data in result_get_song_by_genre:
-
         songs_by_genre.append(
             SongDTO(
                 name=song_data["name"],

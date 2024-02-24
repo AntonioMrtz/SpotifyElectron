@@ -9,14 +9,12 @@ from model.UserType import User_Type
 from services.utils import checkValidParameterString
 
 if "pytest" in modules:
-
     user_collection = Database().connection["test.usuario"]
     artist_collection = Database().connection["test.artista"]
     song_collection = Database().connection["test.canciones.streaming"]
     playlist_collection = Database().connection["test.playlist"]
 
 else:
-
     user_collection = Database().connection["usuario"]
     artist_collection = Database().connection["artista"]
     song_collection = Database().connection["canciones.streaming"]

@@ -17,7 +17,6 @@ from test_API.api_token import get_user_jwt_header
 
 
 def test_patch_playback_history_user_correct(clear_test_data_db):
-
     name = "8232392323623823723"
     password = "hola"
     artista = "artista"
@@ -67,7 +66,6 @@ def test_patch_playback_history_user_correct(clear_test_data_db):
 
 
 def test_patch_playback_history_artist_correct(clear_test_data_db):
-
     name = "8232392323623823723"
     foto = "https://foto"
     password = "hola"
@@ -112,7 +110,6 @@ def test_patch_playback_history_artist_correct(clear_test_data_db):
 
 
 def test_patch_playback_history_invalid_bad_user():
-
     name = "8232392323623823723"
     foto = "https://foto"
     password = "hola"
@@ -133,13 +130,11 @@ def test_patch_playback_history_invalid_bad_user():
 
 
 def test_patch_playback_history_non_existing_user():
-
     res_patch_user = patch_history_playback("usuario1", "cancion1", {})
     assert res_patch_user.status_code == 401
 
 
 def test_patch_playback_history_user_correct_insert_6_songs(clear_test_data_db):
-
     name = "8232392323623823723"
     foto = "https://foto"
     password = "hola"
@@ -208,7 +203,6 @@ def test_patch_playback_history_user_correct_insert_6_songs(clear_test_data_db):
 
 
 def test_patch_saved_playlist_user_correct(clear_test_data_db):
-
     playlist_name = "playlist"
     user_name = "8232392323623823723"
     description = "descripcion"
@@ -244,13 +238,11 @@ def test_patch_saved_playlist_user_correct(clear_test_data_db):
 
 
 def test_patch_saved_playlist_user_not_found():
-
     res_patch_user = patch_playlist_saved("", "", {})
     assert res_patch_user.status_code == 401
 
 
 def test_patch_saved_playlist_artist_correct(clear_test_data_db):
-
     playlist_name = "playlist"
     description = "descripcion"
     password = "hola"
@@ -283,7 +275,6 @@ def test_patch_saved_playlist_artist_correct(clear_test_data_db):
 
 
 def test_delete_saved_playlist_artist_correct(clear_test_data_db):
-
     playlist_name = "playlist"
     description = "descripcion"
     password = "hola"
@@ -320,7 +311,6 @@ def test_delete_saved_playlist_artist_correct(clear_test_data_db):
 
 
 def test_delete_saved_playlist_user_invalid():
-
     playlist_name = "playlist"
     user_name = "8232392323623823723"
     description = "descripcion"
@@ -340,7 +330,6 @@ def test_delete_saved_playlist_user_invalid():
 
 
 def test_delete_saved_playlist_user_correct(clear_test_data_db):
-
     playlist_name = "playlist"
     user_name = "8232392323623823723"
     description = "descripcion"
@@ -377,7 +366,6 @@ def test_delete_saved_playlist_user_correct(clear_test_data_db):
 
 
 def test_whoami_artist(clear_test_data_db):
-
     playlist_name = "playlist"
     user_name = "8232392323623823723"
     description = "descripcion"
@@ -405,7 +393,6 @@ def test_whoami_artist(clear_test_data_db):
 
 
 def test_whoami_user(clear_test_data_db):
-
     playlist_name = "playlist"
     user_name = "8232392323623823723"
     description = "descripcion"
@@ -433,7 +420,6 @@ def test_whoami_user(clear_test_data_db):
 
 
 def test_whoami_jwt_invalid():
-
     playlist_name = "playlist"
     user_name = "8232392323623823723"
     description = "descripcion"
@@ -446,7 +432,6 @@ def test_whoami_jwt_invalid():
 
 
 def test_add_playlist_to_owner_user_correct(clear_test_data_db):
-
     playlist_name = "playlist"
     user_name = "8232392323623823723"
     description = "descripcion"
@@ -476,7 +461,6 @@ def test_add_playlist_to_owner_user_correct(clear_test_data_db):
 
 
 def test_add_playlist_to_owner_user_invalid(clear_test_data_db):
-
     playlist_name = "playlist"
     user_name = "8232392323623823723"
     description = "descripcion"
@@ -488,7 +472,6 @@ def test_add_playlist_to_owner_user_invalid(clear_test_data_db):
 
 
 def test_add_playlist_to_owner_artist_correct(clear_test_data_db):
-
     playlist_name = "playlist"
     user_name = "8232392323623823723"
     description = "descripcion"
@@ -518,7 +501,6 @@ def test_add_playlist_to_owner_artist_correct(clear_test_data_db):
 
 
 def test_delete_playlist_from_owner_user_correct(clear_test_data_db):
-
     playlist_name = "playlist"
     user_name = "8232392323623823723"
     description = "descripcion"
@@ -548,7 +530,6 @@ def test_delete_playlist_from_owner_user_correct(clear_test_data_db):
 
 
 def test_delete_playlist_from_owner_artist_correct(clear_test_data_db):
-
     playlist_name = "playlist"
     user_name = "8232392323623823723"
     description = "descripcion"

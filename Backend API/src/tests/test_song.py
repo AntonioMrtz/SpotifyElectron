@@ -16,7 +16,6 @@ from test_API.api_token import get_user_jwt_header
 
 
 def test_post_cancion_correct(clear_test_data_db):
-
     song_name = "8232392323623823723989"
     file_path = "tests/assets/song.mp3"
     artista = "artista"
@@ -46,7 +45,6 @@ def test_post_cancion_correct(clear_test_data_db):
 
 
 def test_post_cancion_user_as_artist(clear_test_data_db):
-
     song_name = "8232392323623823723989"
     file_path = "tests/assets/song.mp3"
     username = "artista"
@@ -70,7 +68,6 @@ def test_post_cancion_user_as_artist(clear_test_data_db):
 
 
 def test_post_cancion_correct_check_valid_duration(clear_test_data_db):
-
     song_name = "8232392323623823723989"
     file_path = "tests/assets/song_4_seconds.mp3"
     artista = "artista"
@@ -105,7 +102,6 @@ def test_post_cancion_correct_check_valid_duration(clear_test_data_db):
 
 
 def test_post_cancion_correct_check_invalid_duration(clear_test_data_db):
-
     song_name = "8232392323623823723989"
     file_path = "tests/assets/song.mp3"
     artista = "artista"
@@ -140,7 +136,6 @@ def test_post_cancion_correct_check_invalid_duration(clear_test_data_db):
 
 
 def test_get_cancion_correct(clear_test_data_db):
-
     song_name = "8232392323623823723989"
     file_path = "tests/assets/song.mp3"
     artista = "artista"
@@ -179,7 +174,6 @@ def test_get_cancion_correct(clear_test_data_db):
 
 
 def test_get_cancion_invalid_name(clear_test_data_db):
-
     artista = "artista"
     foto = "https://foto"
     password = "hola"
@@ -199,7 +193,6 @@ def test_get_cancion_invalid_name(clear_test_data_db):
 
 
 def test_delete_cancion_correct(clear_test_data_db):
-
     song_name = "8232392323623823723989"
     file_path = "tests/assets/song.mp3"
     artista = "artista"
@@ -231,7 +224,6 @@ def test_delete_cancion_correct(clear_test_data_db):
 
 
 def test_delete_cancion_not_found():
-
     song_name = "8232392323623823723989"
 
     res_delete_song = delete_song(song_name)
@@ -239,7 +231,6 @@ def test_delete_cancion_not_found():
 
 
 def test_get_canciones_correct(clear_test_data_db):
-
     artista = "artista"
     foto = "https://foto"
     password = "hola"
@@ -257,7 +248,6 @@ def test_get_canciones_correct(clear_test_data_db):
 
 
 def test_patch_number_plays_cancion_correct(clear_test_data_db):
-
     song_name = "8232392323623823723989"
     artista = "artista"
     genero = "Pop"
@@ -300,7 +290,6 @@ def test_patch_number_plays_cancion_correct(clear_test_data_db):
 
 
 def test_patch_song_not_found(clear_test_data_db):
-
     song_name = "8232392323623823723989"
     artista = "artista"
     genero = "Pop"
@@ -322,7 +311,6 @@ def test_patch_song_not_found(clear_test_data_db):
 
 
 def test_patch_song_invalid_name(clear_test_data_db):
-
     song_name = "8232392323623823723989"
     artista = "artista"
     genero = "Pop"
@@ -344,7 +332,6 @@ def test_patch_song_invalid_name(clear_test_data_db):
 
 
 def test_post_song_uploaded_songs_updated(clear_test_data_db):
-
     song_name = "8232392323623823723989"
     file_path = "tests/assets/song.mp3"
     artista = "artista"
@@ -379,7 +366,6 @@ def test_post_song_uploaded_songs_updated(clear_test_data_db):
 
 
 def test_post_song_uploaded_songs_bad_artist(clear_test_data_db):
-
     song_name = "8232392323623823723989"
     file_path = "tests/assets/song.mp3"
     artista = "artista"
@@ -406,7 +392,6 @@ def test_post_song_uploaded_songs_bad_artist(clear_test_data_db):
 
 
 def test_delete_song_uploaded_songs_updated(clear_test_data_db):
-
     song_name = "8232392323623823723989"
     file_path = "tests/assets/song.mp3"
     artista = "artista"
@@ -440,7 +425,6 @@ def test_delete_song_uploaded_songs_updated(clear_test_data_db):
 
 
 def test_get_cancion_by_genre(clear_test_data_db):
-
     song_name = "8232392323623823723989"
     file_path = "tests/assets/song.mp3"
     artista = "artista"
@@ -474,7 +458,6 @@ def test_get_cancion_by_genre(clear_test_data_db):
 
 
 def test_get_cancion_by_genre_bad_genre(clear_test_data_db):
-
     genero = "RockInventado"
 
     artista = "artista"

@@ -6,11 +6,9 @@ from model.User import User
 
 @dataclass
 class Artist(User):
-
     uploaded_songs: list
 
     def get_json(self) -> json:
-
         user_json = super().get_json()
         data = json.loads(user_json)
 

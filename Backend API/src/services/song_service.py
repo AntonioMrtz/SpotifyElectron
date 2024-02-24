@@ -23,14 +23,12 @@ from services.utils import checkValidParameterString
 """ Insert songs with format [files,chunks] https://www.mongodb.com/docs/manual/core/gridfs/"""
 
 if "pytest" in modules:
-
     gridFsSong = GridFS(Database().connection, collection="test.cancion")
     file_song_collection = Database().connection["test.cancion.files"]
     song_collection = Database().connection["test.canciones.streaming"]
 
 
 else:
-
     gridFsSong = GridFS(Database().connection, collection="cancion")
     file_song_collection = Database().connection["cancion.files"]
     song_collection = Database().connection["canciones.streaming"]
@@ -77,7 +75,6 @@ def check_jwt_user_is_song_artist(token: TokenData, artist: str) -> bool:
     """
 
     if token.username == artist:
-
         return True
     else:
         raise HTTPException(
@@ -168,7 +165,6 @@ def get_songs(names: list) -> list:
     songs: list = []
 
     for song_name in names:
-
         songs.append(get_song(song_name))
 
     return songs
@@ -194,7 +190,6 @@ def get_all_songs() -> list:
     songsFiles = song_collection.find()
 
     for songFile in songsFiles:
-
         songs.append(get_song(songFile["name"]))
 
     return songs
@@ -251,7 +246,6 @@ async def create_song(
         duration = 0
 
     try:
-
         # b'ZGF0YSB0byBiZSBlbmNvZGVk'
         encoded_bytes = str(base64.b64encode(file))
 
@@ -321,7 +315,6 @@ def delete_song(name: str) -> None:
     result = song_collection.find_one({"name": name})
 
     if not result or not result["_id"]:
-
         raise HTTPException(status_code=404, detail="La canción no existe")
 
     try:

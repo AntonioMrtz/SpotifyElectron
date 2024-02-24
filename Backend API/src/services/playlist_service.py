@@ -17,11 +17,9 @@ from services.song_service import get_song
 from services.utils import checkValidParameterString
 
 if "pytest" in modules:
-
     playlistCollection = Database().connection["test.playlist"]
 
 else:
-
     playlistCollection = Database().connection["playlist"]
 
 
@@ -207,7 +205,6 @@ def update_playlist(
         )
 
     else:
-
         playlistCollection.update_one(
             {"name": name},
             {

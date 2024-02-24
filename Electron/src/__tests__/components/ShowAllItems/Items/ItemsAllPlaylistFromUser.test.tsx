@@ -64,7 +64,7 @@ test('Render itemsAllPlaylistFromUser', async () => {
           refreshSidebarData={jest.fn()}
           id={artistMockFetch.name}
         />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
   });
 

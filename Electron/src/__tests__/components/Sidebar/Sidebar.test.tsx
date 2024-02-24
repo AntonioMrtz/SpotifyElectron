@@ -68,7 +68,7 @@ test('render Sidebar', async () => {
     return render(
       <BrowserRouter>
         <Sidebar triggerReloadSidebar />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
   });
 

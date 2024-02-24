@@ -40,7 +40,7 @@ test('render AddSongPlaylistAccordion', async () => {
           reloadSidebar={reloadSidebarMock}
           setIsCloseAllowed={setIsCloseAllowed}
         />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
   });
 
@@ -78,12 +78,12 @@ test('AddSongPlaylistAccordion submit playlist correct', async () => {
           reloadSidebar={reloadSidebarMock}
           setIsCloseAllowed={setIsCloseAllowed}
         />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
   });
 
   const accordionExpandPlaylist = component.getByTestId(
-    'accordion-expand-submit-playlist'
+    'accordion-expand-submit-playlist',
   );
 
   await act(async () => {
@@ -91,15 +91,15 @@ test('AddSongPlaylistAccordion submit playlist correct', async () => {
   });
 
   expect(
-    component.getByText('Crear lista de reproducción')
+    component.getByText('Crear lista de reproducción'),
   ).toBeInTheDocument();
 
   const inputName = component.getByPlaceholderText('Nombre de la playlist');
   const inputPhoto = component.getByPlaceholderText(
-    'URL de la miniatura de la playlist'
+    'URL de la miniatura de la playlist',
   );
   const inputDescripcion = component.getByPlaceholderText(
-    'Descripción de la playlist'
+    'Descripción de la playlist',
   );
 
   fireEvent.change(inputName, {
@@ -113,7 +113,7 @@ test('AddSongPlaylistAccordion submit playlist correct', async () => {
   });
 
   const submitPlaylistButton = component.getByTestId(
-    'sidebar-addsongplaylistaccordion-submit-playlist'
+    'sidebar-addsongplaylistaccordion-submit-playlist',
   );
 
   await act(async () => {
@@ -154,12 +154,12 @@ test('AddSongPlaylistAccordion submit song correct', async () => {
           reloadSidebar={reloadSidebarMock}
           setIsCloseAllowed={setIsCloseAllowed}
         />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
   });
 
   const accordionExpandSong = component.getByTestId(
-    'accordion-expand-submit-song'
+    'accordion-expand-submit-song',
   );
 
   await act(async () => {
@@ -170,7 +170,7 @@ test('AddSongPlaylistAccordion submit song correct', async () => {
 
   const inputName = component.getByPlaceholderText('Nombre de la canción');
   const inputPhoto = component.getByPlaceholderText(
-    'URL de la miniatura de la playlist'
+    'URL de la miniatura de la playlist',
   );
   const eligeUnGeneroOption = component.getByText('❗ Elige un género');
 
@@ -195,7 +195,7 @@ test('AddSongPlaylistAccordion submit song correct', async () => {
   fireEvent.change(fileInputElement, { target: { files: [file] } });
 
   const submitSongButton = component.getByTestId(
-    'sidebar-addsongplaylistaccordion-submit-song'
+    'sidebar-addsongplaylistaccordion-submit-song',
   );
 
   await act(async () => {

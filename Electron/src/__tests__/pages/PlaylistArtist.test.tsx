@@ -93,7 +93,7 @@ test('Playlist artist role get all info', async () => {
             }
           />
         </Routes>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
   });
   expect(component).toBeTruthy();

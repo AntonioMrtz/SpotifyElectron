@@ -56,7 +56,7 @@ export default function ContextMenuSong({
       })
       .then((sidebarPlaylistNames) => {
         return fetch(
-          `${Global.backendBaseUrl}playlists/multiple/${sidebarPlaylistNames}`
+          `${Global.backendBaseUrl}playlists/multiple/${sidebarPlaylistNames}`,
         );
       })
       .then((resFetchPlaylists) => {
@@ -96,7 +96,7 @@ export default function ContextMenuSong({
   const handleCopyToClipboard = (): void => {
     window.electron.copyToClipboard.sendMessage(
       'copy-to-clipboard',
-      Global.repositoryUrl
+      Global.repositoryUrl,
     );
     setTriggerOpenConfirmationModal(true);
   };
@@ -104,7 +104,7 @@ export default function ContextMenuSong({
   const handleAddToPlaylist = async (selectedPlaylistName: string) => {
     try {
       const playlistResponse = await fetch(
-        `${Global.backendBaseUrl}playlists/dto/${selectedPlaylistName}`
+        `${Global.backendBaseUrl}playlists/dto/${selectedPlaylistName}`,
       );
       const playlistData = await playlistResponse.json();
 
@@ -139,7 +139,7 @@ export default function ContextMenuSong({
   const handleDeleteFromPlaylist = async () => {
     try {
       const playlistResponse = await fetch(
-        `${Global.backendBaseUrl}playlists/dto/${playlistName}`
+        `${Global.backendBaseUrl}playlists/dto/${playlistName}`,
       );
       const playlistData = await playlistResponse.json();
 
@@ -149,7 +149,7 @@ export default function ContextMenuSong({
       const fetchUrlUpdateSong = `${url}?foto=${photo}&descripcion=${description}`;
 
       const newSongsPutPlaylist = playlistData.song_names.filter(
-        (songNameFetch: any) => songNameFetch !== songName
+        (songNameFetch: any) => songNameFetch !== songName,
       );
 
       const requestOptions = {
@@ -178,7 +178,7 @@ export default function ContextMenuSong({
   const handleCrearLista = async () => {
     try {
       const newPlaylistName = `Playlist${Math.trunc(
-        Math.floor(Math.random() * 1000)
+        Math.floor(Math.random() * 1000),
       ).toString()}`;
 
       const fetchPostSongUrl = `${Global.backendBaseUrl}playlists/?nombre=${newPlaylistName}&foto=foto&descripcion=Insertar+descripcion`;

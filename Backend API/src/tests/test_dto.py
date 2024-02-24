@@ -91,7 +91,7 @@ def test_get_song_dto_correct(clear_test_song_db):
     artista = "usuarioprueba834783478923489734298"
     genero = "Pop"
     foto = "https://foto"
-    file_path = "__tests__/assets/song.mp3"
+    file_path = "tests/assets/song.mp3"
 
     foto = "https://foto"
     password = "hola"

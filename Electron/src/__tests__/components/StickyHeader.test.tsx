@@ -47,7 +47,7 @@ test('Render StickyHeader and get User data', async () => {
             element={<StickyHeader handleLogout={jest.fn()} />}
           />
         </Routes>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
   });
 
@@ -64,7 +64,7 @@ test('StickyHeader open ContextMenuProfile', async () => {
             element={<StickyHeader handleLogout={jest.fn()} />}
           />
         </Routes>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
   });
 

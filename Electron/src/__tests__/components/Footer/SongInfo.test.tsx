@@ -8,7 +8,7 @@ test('Render Song info', () => {
   const component = render(
     <BrowserRouter>
       <SongInfo />
-    </BrowserRouter>
+    </BrowserRouter>,
   );
   expect(component).toBeTruthy();
 });
@@ -17,7 +17,7 @@ test('Song info click like', async () => {
   const component = render(
     <BrowserRouter>
       <SongInfo />
-    </BrowserRouter>
+    </BrowserRouter>,
   );
 
   const buttonLike = component.queryByTestId('songinfo-like-button');
@@ -37,7 +37,7 @@ test('Song info click unlike', async () => {
   const component = render(
     <BrowserRouter>
       <SongInfo />
-    </BrowserRouter>
+    </BrowserRouter>,
   );
 
   const buttonLike = component.queryByTestId('songinfo-like-button');

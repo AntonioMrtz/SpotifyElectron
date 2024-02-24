@@ -15,7 +15,7 @@ test('RegisterMenu correct text', () => {
   const component = render(<RegisterMenu setIsSigningUp={jest.fn()} />);
 
   expect(component.container).toHaveTextContent(
-    'Regístrate en Spotify Electron'
+    'Regístrate en Spotify Electron',
   );
 });
 
@@ -23,7 +23,7 @@ test('Register failed not all required inputs filled', () => {
   const mockSetIsSigningUp = jest.fn();
 
   const component = render(
-    <RegisterMenu setIsSigningUp={mockSetIsSigningUp} />
+    <RegisterMenu setIsSigningUp={mockSetIsSigningUp} />,
   );
 
   const registerButton = component.getByText('Registrar');
@@ -31,8 +31,8 @@ test('Register failed not all required inputs filled', () => {
 
   expect(
     component.queryByText(
-      'No se han introducido todos los datos de registro obligatorios'
-    )
+      'No se han introducido todos los datos de registro obligatorios',
+    ),
   ).toBeInTheDocument();
 
   const popover = document.getElementById('button-info-popover');
@@ -45,8 +45,8 @@ test('Register failed not all required inputs filled', () => {
 
   expect(
     component.queryByText(
-      'No se han introducido todos los datos de registro obligatorios'
-    )
+      'No se han introducido todos los datos de registro obligatorios',
+    ),
   ).toBeNull();
   expect(popover).not.toBeVisible();
 });
@@ -55,7 +55,7 @@ test('Register failed bad input', () => {
   const mockSetIsSigningUp = jest.fn();
 
   const component = render(
-    <RegisterMenu setIsSigningUp={mockSetIsSigningUp} />
+    <RegisterMenu setIsSigningUp={mockSetIsSigningUp} />,
   );
 
   const registerButton = component.getByText('Registrar');
@@ -63,8 +63,8 @@ test('Register failed bad input', () => {
 
   expect(
     component.queryByText(
-      'No se han introducido todos los datos de registro obligatorios'
-    )
+      'No se han introducido todos los datos de registro obligatorios',
+    ),
   ).toBeInTheDocument();
 
   const popover = document.getElementById('button-info-popover');
@@ -77,8 +77,8 @@ test('Register failed bad input', () => {
 
   expect(
     component.queryByText(
-      'No se han introducido todos los datos de registro obligatorios'
-    )
+      'No se han introducido todos los datos de registro obligatorios',
+    ),
   ).toBeNull();
   expect(popover).not.toBeVisible();
 });
@@ -90,11 +90,11 @@ test('Register failed different password inputs', () => {
     Promise.resolve({
       json: () => Promise.resolve({}),
       status: 200,
-    })
+    }),
   ) as jest.Mock;
 
   const component = render(
-    <RegisterMenu setIsSigningUp={mockSetIsSigningUp} />
+    <RegisterMenu setIsSigningUp={mockSetIsSigningUp} />,
   );
 
   // Simulate user input
@@ -103,7 +103,7 @@ test('Register failed different password inputs', () => {
   const inputPhoto = component.getByPlaceholderText('Foto de perfil');
   const inputPassword = component.getByPlaceholderText('Contraseña');
   const inputConfirmPassword = component.getByPlaceholderText(
-    'Confirma tu contraseña'
+    'Confirma tu contraseña',
   );
 
   fireEvent.change(inputName, {
@@ -123,7 +123,7 @@ test('Register failed different password inputs', () => {
   fireEvent.click(registerButton);
 
   expect(
-    component.queryByText('Las contraseñas no coinciden')
+    component.queryByText('Las contraseñas no coinciden'),
   ).toBeInTheDocument();
 });
 
@@ -134,11 +134,11 @@ test('Register success', async () => {
     Promise.resolve({
       json: () => Promise.resolve({}),
       status: 201,
-    })
+    }),
   ) as jest.Mock;
 
   const component = render(
-    <RegisterMenu setIsSigningUp={mockSetIsSigningUp} />
+    <RegisterMenu setIsSigningUp={mockSetIsSigningUp} />,
   );
 
   // Simulate user input
@@ -147,7 +147,7 @@ test('Register success', async () => {
   const inputPhoto = component.getByPlaceholderText('Foto de perfil');
   const inputPassword = component.getByPlaceholderText('Contraseña');
   const inputConfirmPassword = component.getByPlaceholderText(
-    'Confirma tu contraseña'
+    'Confirma tu contraseña',
   );
 
   fireEvent.change(inputName, {
@@ -182,11 +182,11 @@ test('Change to login menu', () => {
   const mockSetIsSigningUp = jest.fn();
 
   const component = render(
-    <RegisterMenu setIsSigningUp={mockSetIsSigningUp} />
+    <RegisterMenu setIsSigningUp={mockSetIsSigningUp} />,
   );
 
   const regiserButton = component.getByText(
-    'Inicia sesión en Spotify Electron'
+    'Inicia sesión en Spotify Electron',
   );
   fireEvent.click(regiserButton);
 

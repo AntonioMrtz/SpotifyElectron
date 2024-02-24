@@ -68,7 +68,7 @@ export default function AddSongPlayListAccordion({
   const handleShowConfirmationModal = (
     typeInput: InfoPopoverType,
     titleInput: string,
-    descriptionInput: string
+    descriptionInput: string,
   ) => {
     setType(typeInput);
     setTitle(titleInput);
@@ -90,7 +90,7 @@ export default function AddSongPlayListAccordion({
   });
 
   const handleChangeSong = (
-    event: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    event: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     if (event.target && event.target.name) {
       if (event.target.name === 'foto') {
@@ -139,14 +139,14 @@ export default function AddSongPlayListAccordion({
             handleShowConfirmationModal(
               InfoPopoverType.SUCCESS,
               MessagesInfoPopOver.SONG_ADDED_TITLE,
-              MessagesInfoPopOver.SONG_ADDED_DESCRIPTION
+              MessagesInfoPopOver.SONG_ADDED_DESCRIPTION,
             );
           } else {
             console.log('No se a creado la cancion');
             handleShowConfirmationModal(
               InfoPopoverType.ERROR,
               MessagesInfoPopOver.SONG_NOT_ADDED_TITLE,
-              MessagesInfoPopOver.SONG_NOT_ADDED_DESCRIPTION
+              MessagesInfoPopOver.SONG_NOT_ADDED_DESCRIPTION,
             );
           }
           setLoadingUploadSong(false);
@@ -178,7 +178,7 @@ export default function AddSongPlayListAccordion({
   const handleChangePlaylist = (
     event: ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >
+    >,
   ) => {
     if (event.target && event.target.name) {
       if (event.target.name === 'foto') {
@@ -224,7 +224,7 @@ export default function AddSongPlayListAccordion({
             handleShowConfirmationModal(
               InfoPopoverType.SUCCESS,
               MessagesInfoPopOver.PLAYLIST_ADDED_TITLE,
-              MessagesInfoPopOver.PLAYLIST_ADDED_DESCRIPTION
+              MessagesInfoPopOver.PLAYLIST_ADDED_DESCRIPTION,
             );
             reloadSidebar();
           } else {
@@ -233,7 +233,7 @@ export default function AddSongPlayListAccordion({
             handleShowConfirmationModal(
               InfoPopoverType.ERROR,
               MessagesInfoPopOver.PLAYLIST_NOT_ADDED_TITLE,
-              MessagesInfoPopOver.PLAYLIST_NOT_ADDED_DESCRIPTION
+              MessagesInfoPopOver.PLAYLIST_NOT_ADDED_DESCRIPTION,
             );
           }
           setIsCloseAllowed(true);

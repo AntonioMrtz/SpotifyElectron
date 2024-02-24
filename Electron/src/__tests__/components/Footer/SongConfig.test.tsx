@@ -11,7 +11,7 @@ test('Render Song Config', () => {
   const component = render(
     <BrowserRouter>
       <SongConfig changeVolume={mockChangeVolume} />
-    </BrowserRouter>
+    </BrowserRouter>,
   );
   expect(component).toBeTruthy();
 });
@@ -22,7 +22,7 @@ test('Render Volume Slider', () => {
   const component = render(
     <BrowserRouter>
       <VolumeSlider changeVolume={mockChangeVolume} />
-    </BrowserRouter>
+    </BrowserRouter>,
   );
   expect(component).toBeTruthy();
 });
@@ -33,7 +33,7 @@ test('Song config change volume', async () => {
   const component = render(
     <BrowserRouter>
       <VolumeSlider changeVolume={mockChangeVolume} />
-    </BrowserRouter>
+    </BrowserRouter>,
   );
 
   const slider = component.container.querySelector('input[type="range"]');
@@ -53,7 +53,7 @@ test('Song config change volume to 0', async () => {
   const component = render(
     <BrowserRouter>
       <VolumeSlider changeVolume={mockChangeVolume} />
-    </BrowserRouter>
+    </BrowserRouter>,
   );
 
   const slider = component.container.querySelector('input[type="range"]');
@@ -66,7 +66,7 @@ test('Song config change volume to 0', async () => {
 
   expect(mockChangeVolume).toHaveBeenCalledWith(0);
   expect(
-    component.getByTestId('songconfig-speaker-button-mute')
+    component.getByTestId('songconfig-speaker-button-mute'),
   ).toBeInTheDocument();
 });
 
@@ -76,7 +76,7 @@ test('Volume Slider click mute', async () => {
   const component = render(
     <BrowserRouter>
       <VolumeSlider changeVolume={mockChangeVolume} />
-    </BrowserRouter>
+    </BrowserRouter>,
   );
 
   const speakerButton = component.getByTestId('songconfig-speaker-button');
@@ -86,6 +86,6 @@ test('Volume Slider click mute', async () => {
   });
 
   expect(
-    component.getByTestId('songconfig-speaker-button-mute')
+    component.getByTestId('songconfig-speaker-button-mute'),
   ).toBeInTheDocument();
 });

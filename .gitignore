@@ -151,20 +151,23 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-
-
 # js webpacked
+.erb/dll/
+.erb/img/
+.erb/mocks/
+.erb/scripts/
+Electron/.erb/dll/preload.js
+Electron/.erb/dll/renderer.dev.dll.js
+Electron/.erb/dll/renderer.json
 
-.erb/dll/preload.js
-.erb
-.erb/**
+# release
+release/
 
 #python
-
-
 __pycache__
+venv
+htmlcov
+.coverage
+
+# env
 .env
-
-#vscode
-
-Electron/.erb/dll/preload.js

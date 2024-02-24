@@ -31,6 +31,9 @@ cd Backend API;
 python -m venv venv;
 venv/Scripts/activate
 pip install -r requirements.txt;
+pip install -r requirements_dev.txt;
+pip install -r requirements_test.txt;
+
 ```
 4. Run the app in hot reload debug mode 
 
@@ -54,8 +57,6 @@ cd src/;
 ```
 2. Run tests
 ```
-cd src/
-
 python -m pytest . // Normal test run
 
 or

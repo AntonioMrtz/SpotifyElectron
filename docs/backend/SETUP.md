@@ -86,6 +86,21 @@ python -m pytest --cov=. --cov-report=html // Test run and generate coverage in 
 
 ## 🐳 Containerize the app
 
+### Dev Enviroment
+
+1. Go to docker folder
+```
+cd docker/
+```
+
+2. Run docker compose with the script build_and_up
+```
+docker build -t spotify_electron_backend_image .
+```
+
+
+### Production Enviroment
+
 1. Build the image
 ```
 docker build -t spotify_electron_backend_image .

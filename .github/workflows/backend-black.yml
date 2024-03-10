@@ -25,11 +25,11 @@ jobs:
         working-directory: Backend API # Change to your backend API directory path
         run: pip install -r requirements.txt && pip install -r requirements_test.txt && pip install -r requirements_dev.txt
 
-      - name: Run tests
+      - name: Run style check
         working-directory: Backend API/src # Change to your backend API src directory path
         run: python -m black . --check
 
-      - name: Fail workflow on test failure
+      - name: Fail workflow on style check failure
         if: ${{ failure() }}
         run: exit 1
 

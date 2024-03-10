@@ -35,7 +35,6 @@ else:
 
 load_dotenv()
 
-bucket_base_path = "canciones/"
 lambda_base_path = os.getenv("LAMBDA_URL")
 
 

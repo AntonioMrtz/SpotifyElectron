@@ -8,3 +8,4 @@ pymongo==4.3.3
 bcrypt==4.0.1
 httpx==0.24.1
 uvicorn==0.22.0
+boto3==1.28.62

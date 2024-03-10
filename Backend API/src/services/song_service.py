@@ -36,10 +36,7 @@ else:
 
 load_dotenv()
 
-s3 = boto3.resource('s3')
-s3_client = boto3.client('s3')
-song_bucket = s3.Bucket('canciones-spotify-electron')
-bucket_base_path = "canciones/"
+
 lambda_base_path = os.getenv("LAMBDA_URL")
 
 

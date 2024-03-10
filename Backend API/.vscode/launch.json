@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "DEBUG Main",
+            "name": "DEBUG Backend app",
             "type": "debugpy",
             "request": "launch",
             "module": "uvicorn",

@@ -22,7 +22,7 @@ git clone https://github.com/AntonioMrtz/SpotifyElectron.git
 
 [🖥 BACKEND](docs/backend//SETUP.md)
 
-[💻 FRONTEND](relative/path/to/README.md)
+[💻 FRONTEND](docs/frontend//SETUP.md)
 
 
 ## Software Architecture

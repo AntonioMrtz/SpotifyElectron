@@ -84,7 +84,7 @@ cd docker/
 
 2. Run docker compose with the script build_and_up
 ```
-docker build -t spotify_electron_backend_image .
+./build_and_up.sh
 ```
 
 

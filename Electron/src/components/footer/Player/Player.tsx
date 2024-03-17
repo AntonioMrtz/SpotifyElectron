@@ -136,16 +136,10 @@ export default function Player({
       const resFetchSongDTOJson = await resFetchSongDTO.json();
       changeSongInfo(resFetchSongDTOJson);
 
-      let audioBytesString = resFetchSongJson.file;
+      const audioStreamingURL = resFetchSongJson.url;
 
-      if (audioBytesString !== undefined) {
-        audioBytesString = audioBytesString
-          .replace('"', '')
-          .replace('b', '')
-          .replace("'", '')
-          .slice(0, -1);
-        const dataURI = `data:audio/mp3;base64,${audioBytesString}`;
-        audio.current = new Audio(dataURI);
+      if (audioStreamingURL !== undefined) {
+        audio.current = new Audio(audioStreamingURL);
       }
 
       if (audio.current) {

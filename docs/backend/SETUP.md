@@ -13,7 +13,7 @@ In this section we will cover:
 1. Enter backend directory 
 
 ```
-cd Backend API;
+cd Backend;
 ```
 
 2. Create the enviroment file in root path with the following data. **Check .env.example file to see format**
@@ -31,8 +31,9 @@ cd Backend API;
 python -m venv venv;
 venv/Scripts/activate
 pip install -r requirements.txt;
-pip install -r requirements_dev.txt;
-pip install -r requirements_test.txt;
+pip install -r requirements-dev.txt;
+pip install -r requirements-test.txt;
+
 ```
 4. Run the app in hot reload debug mode 
 
@@ -46,7 +47,7 @@ python3 -m uvicorn main:app --reload;
 ## 📓 Access documentation and swagger interface
 
 * Swagger: **http://127.0.0.1:8000/docs**
-* Auto-generated documentation: **Backend API/api-docs-spotify-electron.html**
+* Auto-generated documentation: **Backend/api-docs-spotify-electron.html**
 
 ## ✔️ Run tests
 
@@ -64,6 +65,14 @@ python -m pytest --cov=. --cov-report=html // Test run and generate coverage in 
 
 ```
 
+## 🎨 Run style on code
+
+2. Run style rules
+```
+python -m isort --profile black .
+
+```
+
 ## ✏ Install the recommended extensions for VSCODE 
 
 1. Go to extensions
@@ -76,16 +85,32 @@ python -m pytest --cov=. --cov-report=html // Test run and generate coverage in 
 
 ### Dev Enviroment
 
+* Uses local mongoDB database
+* Access it via MongoExpress
+  * Connect http://localhost:8081/
+  * Use user : admin and password : pass
+
 1. Go to docker folder
 ```
 cd docker/
 ```
 
-2. Run docker compose with the script build_and_up
+2. Run docker compose with the script build_and_up_dev
 ```
-./build_and_up.sh
+./build_and_up_dev.sh
 ```
 
+### Prod Enviroment
+
+1. Go to docker folder
+```
+cd docker/
+```
+
+2. Run docker compose with the script build_and_up_prod
+```
+./build_and_up_prod.sh
+```
 
 ### Production Enviroment
 

@@ -14,6 +14,6 @@ class SongDTO:
     genre: Genre
     number_of_plays: int
 
-    def get_json(self) -> json:
+    def get_json(self) -> str:
         song_json = json.dumps(self.__dict__)
         return song_json

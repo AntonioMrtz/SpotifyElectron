@@ -5,7 +5,6 @@ import services.dto_service as dto_service
 import services.playlist_service as playlist_service
 from fastapi import APIRouter, Header, HTTPException
 from fastapi.responses import Response
-from model.Genre import Genre
 from services.security_service import get_jwt_token
 
 router = APIRouter(
@@ -93,14 +92,16 @@ def update_playlist(
     nuevo_nombre: Optional[str] = None,
     authorization: Annotated[Union[str, None], Header()] = None,
 ) -> Response:
-    """Actualiza los parámetros de la playlist con nombre "nombre" , las canciones repetidas son serán añadidas
+    """Actualiza los parámetros de la playlist con nombre "nombre" ,
+    las canciones repetidas son serán añadidas
 
     Parameters
     ----------
         nombre (str): Nombre de la playlist
         nombres_canciones (list) : Lista con las canciones de la playlist
         foto (str) : url de la foto miniatura de la playlist
-        nuevo_nombre (str Opcional [Valor por defecto = None]) : Nuevo nombre de la playlist, si es vacío no se actualiza
+        nuevo_nombre (str Opcional [default = None]) : Nuevo nombre de la playlist,
+                                                       si es vacío no se actualiza
         descripcion (str) : descripción de la playlist
 
     Returns
@@ -207,7 +208,8 @@ def get_selected_playlists(nombres: str) -> Response:
 
 @router.get("/dto/{nombre}")
 def get_playlist_dto(nombre: str) -> Response:
-    """Devuelve la playlist con nombre "nombre" con los datos necesarios para previsualización , sin el contenido de las canciones
+    """Devuelve la playlist con nombre "nombre" con los datos necesarios para
+    previsualización , sin el contenido de las canciones
 
     Parameters
     ----------

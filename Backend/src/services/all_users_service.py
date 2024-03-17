@@ -192,7 +192,8 @@ def add_saved_playlist(user_name: str, playlist_name: str, token: TokenData) -> 
     Parameters
     ----------
         user_name (str): Users's name
-        playlist_name (str) : Playlist thats going to be added to saved playlist of the user
+        playlist_name (str) : Playlist thats going to be added to saved
+                              playlist of the user
         token (TokenData) : token with user data
 
 
@@ -232,7 +233,8 @@ def delete_saved_playlist(user_name: str, playlist_name: str, token: TokenData) 
     Parameters
     ----------
         user_name (str): Users's name
-        playlist_name (str) : Playlist thats going to be deleted to saved playlist of the user
+        playlist_name (str) : Playlist thats going to be \
+                              deleted to saved playlist of the user
         token (TokenData) : token with user data
 
     Raises

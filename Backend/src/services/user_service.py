@@ -1,4 +1,3 @@
-import json
 from datetime import datetime
 from sys import modules
 
@@ -127,7 +126,9 @@ def create_user(name: str, photo: str, password: str) -> None:
         }
     )
 
-    return True if result.acknowledged else False
+    if not result.acknowledged:
+        # TODO
+        raise HTTPException(status_code=400, detail="")
 
 
 def update_user(
@@ -179,6 +180,10 @@ def update_user(
             }
         },
     )
+
+    if not result.acknowledged:
+        # TODO
+        raise HTTPException(status_code=400, detail="")
 
 
 def delete_user(name: str) -> None:
@@ -253,13 +258,11 @@ def search_by_name(name: str) -> list:
     )
 
     user_names = []
-
     [user_names.append(user["name"]) for user in users_names_response]
 
     users = get_users(user_names)
 
     users_json_list = []
-
     [users_json_list.append(user.get_json()) for user in users]
 
     return users_json_list

@@ -1,26 +1,12 @@
 [flake8]
 
-*# E501: Line too long (x > 79 characters)*
-
 extend-ignore = E501,E741
 
 exclude =
 
 .git,
-
 __pycache__,
-
-docs/source/conf.py,
-
-old,
-
-build,
-
-dist,
-
 venv,
-
-hmi
 
 max-complexity = 11
 
@@ -31,3 +17,5 @@ statistics = True
 show-source = False
 
 doctests = True
+
+max-line-length = 88

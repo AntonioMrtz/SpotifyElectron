@@ -17,7 +17,7 @@ class Playlist:
     def add_songs(self, song_names: str) -> None:
         [songs.append(song_service.get_song(song_name)) for song_name in song_names]
 
-    def get_json(self) -> json:
+    def get_json(self) -> str:
         playlist_dict = self.__dict__
 
         songs_json = []
@@ -26,7 +26,8 @@ class Playlist:
             song_json = song.get_json()
             songs_json.append(song_json)
 
-        # Eliminar el atributo song_names del diccionario , hay que serializar song primero
+        # Eliminar el atributo song_names del diccionario ,
+        # hay que serializar song primero
         playlist_dict.pop("songs", None)
         # Convertir el diccionario en una cadena JSON
         playlist_dict["songs"] = songs_json

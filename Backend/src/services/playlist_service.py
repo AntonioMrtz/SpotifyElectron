@@ -6,7 +6,6 @@ import services.dto_service as dto_service
 from database.Database import Database
 from fastapi import HTTPException
 from model.Playlist import Playlist
-from model.Song import Song
 from model.TokenData import TokenData
 from services.all_users_service import (
     add_playlist_to_owner,

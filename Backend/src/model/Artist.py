@@ -8,7 +8,7 @@ from model.User import User
 class Artist(User):
     uploaded_songs: list
 
-    def get_json(self) -> json:
+    def get_json(self) -> str:
         user_json = super().get_json()
         data = json.loads(user_json)
 

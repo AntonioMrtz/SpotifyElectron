@@ -1,5 +1,5 @@
 import json
-from typing import Annotated, Optional, Union
+from typing import Annotated, Union
 
 import services.artist_service as artist_service
 from fastapi import APIRouter, Header, HTTPException
@@ -78,7 +78,8 @@ def update_artista(
         foto (str) : url de la foto miniatura del artista
         historial_canciones (list) : 5 últimas canciones reproducidas por el artista
         playlists (list) : playlists creadas por el artista
-        playlists_guardadas (list) : playlists de otros artistas guardadas por el artista con nombre "nombre"
+        playlists_guardadas (list) : playlists de otros artistas guardadas por el
+                                     artista con nombre "nombre"
         canciones_creadas (list) : canciones creadas por el artista
 
     Returns

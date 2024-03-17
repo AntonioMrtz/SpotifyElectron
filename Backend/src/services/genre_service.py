@@ -3,7 +3,7 @@ import json
 from model.Genre import Genre
 
 
-def get_genres() -> json:
+def get_genres() -> str:
     """Returns a json with all the available genres"
 
     Parameters

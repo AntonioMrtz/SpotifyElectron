@@ -4,8 +4,6 @@ from datetime import datetime, timedelta
 from typing import Annotated, Union
 
 import bcrypt
-import services.artist_service as artist_service
-import services.user_service as user_service
 from dotenv import load_dotenv
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer

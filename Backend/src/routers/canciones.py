@@ -1,17 +1,13 @@
 import json
-from sys import modules
 from typing import Annotated, Union
 
 import services.dto_service as dto_service
 import services.song_service as song_service_streaming
 from fastapi import (
     APIRouter,
-    Depends,
-    FastAPI,
     Header,
     HTTPException,
     UploadFile,
-    status,
 )
 from fastapi.responses import Response
 from model.Genre import Genre
@@ -144,7 +140,8 @@ def delete_cancion(nombre: str) -> Response:
 
 @router.get("/dto/{nombre}")
 def get_cancion_dto(nombre: str) -> Response:
-    """Devuelve la canción con nombre "nombre" con los dato necesarios para previsualizacion sin carga el contenido de la canción
+    """Devuelve la canción con nombre "nombre" con los dato necesarios para
+    previsualizacion sin carga el contenido de la canción
 
     Parameters
     ----------

@@ -12,7 +12,7 @@ class User:
     playlists: list
     saved_playlists: list
 
-    def get_json(self) -> json:
+    def get_json(self) -> str:
         self.password = self.password.decode("utf-8")
         user_json = json.dumps(self.__dict__)
         return user_json

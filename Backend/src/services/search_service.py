@@ -8,7 +8,7 @@ from fastapi import HTTPException
 from services.utils import checkValidParameterString
 
 
-def search_by_name(name: str) -> json:
+def search_by_name(name: str) -> str:
     """Returns songs, artist and playlist that matches name
 
     Parameters

@@ -20,7 +20,10 @@ def test_get_search_by_name_correct(clear_test_data_db):
     jwt_headers = get_user_jwt_header(username=name, password=password)
 
     res_create_playlist = create_playlist(
-        name=playlist_name, descripcion=descripcion, foto=foto, headers=jwt_headers
+        name=playlist_name,
+        descripcion=descripcion,
+        foto=foto,
+        headers=jwt_headers,
     )
     assert res_create_playlist.status_code == 201
 

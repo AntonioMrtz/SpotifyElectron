@@ -1,7 +1,6 @@
 import services.genre_service as genre_service
 from fastapi import APIRouter
 from fastapi.responses import Response
-from model.Genre import Genre
 
 router = APIRouter(
     prefix="/generos",

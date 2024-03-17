@@ -11,7 +11,11 @@ from test_API.api_test_artist import (
     get_play_count_artist,
     update_artist,
 )
-from test_API.api_test_song import create_song, delete_song, patch_song_number_plays
+from test_API.api_test_song import (
+    create_song,
+    delete_song,
+    patch_song_number_plays,
+)
 from test_API.api_token import get_user_jwt_header
 
 

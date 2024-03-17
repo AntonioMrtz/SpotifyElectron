@@ -1,7 +1,5 @@
-from typing import Annotated, Union
-
 import services.search_service as search_service
-from fastapi import APIRouter, Depends, Header, HTTPException
+from fastapi import APIRouter
 from fastapi.responses import Response
 
 router = APIRouter(

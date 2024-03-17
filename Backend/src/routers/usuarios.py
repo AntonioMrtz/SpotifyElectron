@@ -1,12 +1,10 @@
-import json
 from typing import Annotated, Union
 
 import services.all_users_service as all_users_service
 import services.security_service as security_service
 import services.user_service as user_service
-from fastapi import APIRouter, Depends, Header, HTTPException
+from fastapi import APIRouter, Header, HTTPException
 from fastapi.responses import Response
-from fastapi.security import OAuth2PasswordRequestForm
 from services.security_service import get_jwt_token
 
 router = APIRouter(
@@ -87,7 +85,7 @@ def post_usuario(nombre: str, foto: str, password: str) -> Response:
         Bad Request 400: Parámetros introducidos no són válidos o vacíos
     """
 
-    result = user_service.create_user(nombre, foto, password)
+    user_service.create_user(nombre, foto, password)
     return Response(None, 201)
 
 
@@ -108,7 +106,8 @@ def update_usuario(
         foto (str) : url de la foto miniatura del usuario
         historial_canciones (list) : 5 últimas canciones reproducidas por el usuario
         playlists (list) : playlists creadas por el usuario
-        playlists_guardadas (list) : playlists de otros usuarios guardadas por el usuario con nombre "nombre"
+        playlists_guardadas (list) : playlists de otros usuarios guardadas por el
+                                     usuario con nombre "nombre"
 
     Returns
     -------
@@ -181,7 +180,8 @@ def patch_historial(
     -------
         Bad Request 400: Parámetros introducidos no són válidos o vacíos
         Unauthorized 401
-        Not Found 404: No existe un usuario con el nombre "nombre" | No existe una canción con el nombre "nombre_cancion"
+        Not Found 404: No existe un usuario con el nombre "nombre" |
+                       No existe una canción con el nombre "nombre_cancion"
     """
 
     if authorization is None:
@@ -218,7 +218,8 @@ def patch_playlists_guardadas(
     -------
         Bad Request 400: Parámetros introducidos no són válidos o vacíos
         Unauthorized 401
-        Not Found 404: No existe un usuario con el nombre "nombre" | No existe una playlist con el nombre "nombre_playlist"
+        Not Found 404: No existe un usuario con el nombre "nombre" |
+                       No existe una playlist con el nombre "nombre_playlist"
     """
 
     if authorization is None:
@@ -252,7 +253,8 @@ def delete_playlists_guardadas(
     -------
         Bad Request 400: Parámetros introducidos no són válidos o vacíos
         Unauthorized 401
-        Not Found 404: No existe un usuario con el nombre "nombre" | No existe una playlist con el nombre "nombre_playlist"
+        Not Found 404: No existe un usuario con el nombre "nombre" |
+                       No existe una playlist con el nombre "nombre_playlist"
     """
 
     if authorization is None:

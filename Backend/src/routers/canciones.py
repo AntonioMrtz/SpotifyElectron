@@ -3,12 +3,7 @@ from typing import Annotated, Union
 
 import services.dto_service as dto_service
 import services.song_service as song_service_streaming
-from fastapi import (
-    APIRouter,
-    Header,
-    HTTPException,
-    UploadFile,
-)
+from fastapi import APIRouter, Header, HTTPException, UploadFile
 from fastapi.responses import Response
 from model.Genre import Genre
 from services.security_service import get_jwt_token

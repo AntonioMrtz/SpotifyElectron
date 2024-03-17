@@ -11,13 +11,13 @@ from services.utils import checkValidParameterString
 if "pytest" in modules:
     user_collection = Database().connection["test.usuario"]
     artist_collection = Database().connection["test.artista"]
-    song_collection = Database().connection["test.canciones.streaming"]
+    file_song_collection = Database().connection["test.cancion.files"]
     playlist_collection = Database().connection["test.playlist"]
 
 else:
     user_collection = Database().connection["usuario"]
     artist_collection = Database().connection["artista"]
-    song_collection = Database().connection["canciones.streaming"]
+    file_song_collection = Database().connection["cancion.files"]
     playlist_collection = Database().connection["playlist"]
 
 
@@ -126,7 +126,7 @@ def check_song_exists(name: str) -> bool:
     -------
         Boolean
     """
-    return True if song_collection.find_one({"name": name}) else False
+    return True if file_song_collection.find_one({"name": name}) else False
 
 
 def check_playlist_exists(name: str) -> bool:

@@ -2,12 +2,7 @@ from datetime import datetime
 
 import bcrypt
 import pytest
-from test_API.api_test_user import (
-    create_user,
-    delete_user,
-    get_user,
-    update_user,
-)
+from test_API.api_test_user import create_user, delete_user, get_user, update_user
 from test_API.api_token import get_user_jwt_header
 
 

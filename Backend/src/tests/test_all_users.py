@@ -1,5 +1,3 @@
-import json
-
 import pytest
 from model.UserType import User_Type
 from test_API.api_all_users import (

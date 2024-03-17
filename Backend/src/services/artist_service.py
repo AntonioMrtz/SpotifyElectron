@@ -1,11 +1,12 @@
 from datetime import datetime
+from sys import modules
+
+import bcrypt
 from database.Database import Database
+from fastapi import HTTPException
 from model.Artist import Artist
 from model.TokenData import TokenData
-from fastapi import HTTPException
 from services.utils import checkValidParameterString
-from sys import modules
-import bcrypt
 
 if "pytest" in modules:
     artist_collection = Database().connection["test.artista"]
@@ -32,7 +33,8 @@ def check_song_exists(name: str) -> bool:
     -------
         Boolean
     """
-    return True if file_song_collection.find_one({'name': name}) else False
+    return True if file_song_collection.find_one({"name": name}) else False
+
 
 def check_user_exists(user_name: str) -> bool:
     """Checks if the user or artists exists
@@ -384,11 +386,12 @@ def get_play_count_artist(user_name: str) -> int:
     if not check_artists_exists(user_name):
         raise HTTPException(status_code=404, detail="El artista no existe")
 
-
-    resultado = file_song_collection.aggregate([
-        {"$match": {"artist": user_name}},
-        {"$group": {"_id": None, "total": {"$sum": "$number_of_plays"}}}
-    ])
+    resultado = file_song_collection.aggregate(
+        [
+            {"$match": {"artist": user_name}},
+            {"$group": {"_id": None, "total": {"$sum": "$number_of_plays"}}},
+        ]
+    )
 
     # Obtener el resultado total directamente
     resultado_total = next(resultado, None)

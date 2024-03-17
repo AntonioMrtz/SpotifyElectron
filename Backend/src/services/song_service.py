@@ -1,18 +1,15 @@
 import base64
 import io
-import os
 from sys import modules
 
 import librosa
-import requests
+import services.dto_service as dto_service
 from database.Database import Database
-from dotenv import load_dotenv
 from fastapi import HTTPException
 from gridfs import GridFS
 from model.Genre import Genre
 from model.Song import Song
 from model.TokenData import TokenData
-from pymongo.errors import PyMongoError
 from services.artist_service import (
     add_song_artist,
     check_artists_exists,
@@ -23,19 +20,14 @@ from services.utils import checkValidParameterString
 """ Insert songs with format [files,chunks] https://www.mongodb.com/docs/manual/core/gridfs/"""
 
 if "pytest" in modules:
+
     gridFsSong = GridFS(Database().connection, collection="test.cancion")
     file_song_collection = Database().connection["test.cancion.files"]
-    song_collection = Database().connection["test.canciones.streaming"]
-
 
 else:
+
     gridFsSong = GridFS(Database().connection, collection="cancion")
     file_song_collection = Database().connection["cancion.files"]
-    song_collection = Database().connection["canciones.streaming"]
-
-load_dotenv()
-
-lambda_base_path = os.getenv("LAMBDA_URL")
 
 
 def check_song_exists(name: str) -> bool:
@@ -52,8 +44,7 @@ def check_song_exists(name: str) -> bool:
     -------
         Boolean
     """
-
-    return True if song_collection.find_one({"name": name}) else False
+    return True if file_song_collection.find_one({"name": name}) else False
 
 
 def check_jwt_user_is_song_artist(token: TokenData, artist: str) -> bool:
@@ -82,7 +73,7 @@ def check_jwt_user_is_song_artist(token: TokenData, artist: str) -> bool:
 
 
 def get_song(name: str) -> Song:
-    """Returns a Song file with attributes and streaming url "
+    """Returns a Song file with attributes and a song encoded in base64 "
 
     Parameters
     ----------
@@ -101,46 +92,29 @@ def get_song(name: str) -> Song:
     if name is None or name == "":
         raise HTTPException(status_code=400, detail="El nombre de la canción es vacío")
 
-    song = song_collection.find_one({"name": name})
-    if song is None or not check_song_exists(name=name):
+    song_bytes = gridFsSong.find_one({"name": name})
+    if song_bytes is None or not check_song_exists(name=name):
         raise HTTPException(
             status_code=404, detail="La canción con ese nombre no existe"
         )
 
-    try:
-        params = {
-            "nombre": name,
-        }
-        res = requests.get(f"{lambda_base_path}", params=params)
-        if res.status_code != 200:
-            raise ClientError(
-                {"Error": {"Code": res.status_code, "Message": res.content}},
-                "operation_name",
-            )
+    song_bytes = song_bytes.read()
+    # b'ZGF0YSB0byBiZSBlbmNvZGVk'
+    encoded_bytes = str(base64.b64encode(song_bytes))
 
-        response_json = res.json()
-        cloudfront_url = response_json["url"]
+    song_metadata = file_song_collection.find_one({"name": name})
 
-        song = Song(
-            name=name,
-            artist=song["artist"],
-            photo=song["photo"],
-            duration=song["duration"],
-            genre=Genre(song["genre"]).name,
-            url=cloudfront_url,
-            number_of_plays=song["number_of_plays"],
-        )
+    song = Song(
+        name,
+        song_metadata["artist"],
+        song_metadata["photo"],
+        song_metadata["duration"],
+        Genre(song_metadata["genre"]).name,
+        encoded_bytes,
+        song_metadata["number_of_plays"],
+    )
 
-        return song
-
-    except ClientError as e:
-        raise HTTPException(
-            status_code=500,
-            detail=f"Error interno del servidor al interactuar con AWS {e}",
-        )
-
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"No se pudo subir la canción {e}")
+    return song
 
 
 def get_songs(names: list) -> list:
@@ -164,7 +138,8 @@ def get_songs(names: list) -> list:
     songs: list = []
 
     for song_name in names:
-        songs.append(get_song(song_name))
+
+        songs.append(dto_service.get_song(song_name))
 
     return songs
 
@@ -186,9 +161,10 @@ def get_all_songs() -> list:
 
     songs: list = []
 
-    songsFiles = song_collection.find()
+    songsFiles = file_song_collection.find()
 
     for songFile in songsFiles:
+
         songs.append(get_song(songFile["name"]))
 
     return songs
@@ -217,6 +193,7 @@ async def create_song(
     Returns
     -------
     """
+
     artist = token.username
 
     if (
@@ -226,6 +203,8 @@ async def create_song(
         or not Genre.checkValidGenre(genre.value)
     ):
         raise HTTPException(status_code=400, detail="Parámetros no válidos o vacíos")
+
+    check_artists_exists(artist_name=artist)
 
     if check_song_exists(name=name):
         raise HTTPException(status_code=400, detail="La canción ya existe")
@@ -240,54 +219,31 @@ async def create_song(
         # Calculate the duration in seconds
         duration = librosa.get_duration(y=audio_data, sr=sample_rate)
 
+        file_id = gridFsSong.put(
+            file,
+            name=name,
+            artist=artist,
+            duration=duration,
+            genre=str(genre.value),
+            photo=photo,
+            number_of_plays=0,
+        )
+
     #! If its not a sound file
     except:
         duration = 0
 
-    try:
-        # b'ZGF0YSB0byBiZSBlbmNvZGVk'
-        encoded_bytes = str(base64.b64encode(file))
-
-        params = {"nombre": name}
-
-        request_data_body = {
-            "file": encoded_bytes,
-        }
-        res = requests.post(
-            f"{lambda_base_path}", json=request_data_body, params=params
-        )
-        if res.status_code != 201:
-            raise ClientError(
-                {"Error": {"Code": res.status_code, "Message": res.content}},
-                "operation_name",
-            )
-
-        file_id = song_collection.insert_one(
-            {
-                "name": name,
-                "artist": artist,
-                "duration": duration,
-                "genre": str(genre.value),
-                "photo": photo,
-                "number_of_plays": 0,
-            }
-        )
-        add_song_artist(artist, name)
-
-    except PyMongoError as e:
-        raise HTTPException(
-            status_code=500,
-            detail="Error interno del servidor al interactuar con MongoDB",
+        file_id = gridFsSong.put(
+            file,
+            name=name,
+            artist=artist,
+            duration=duration,
+            genre=str(genre.value),
+            photo=photo,
+            number_of_plays=0,
         )
 
-    except ClientError as e:
-        raise HTTPException(
-            status_code=500,
-            detail=f"Error interno del servidor al interactuar con AWS {e}",
-        )
-
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"No se pudo subir la canción {e}")
+    add_song_artist(artist, name)
 
 
 def delete_song(name: str) -> None:
@@ -311,41 +267,16 @@ def delete_song(name: str) -> None:
             status_code=400, detail="El nombre de la canción no es válido"
         )
 
-    result = song_collection.find_one({"name": name})
+    result = file_song_collection.find_one({"name": name})
 
-    if not result or not result["_id"]:
+    if result and result["_id"]:
+        delete_song_artist(result["artist"], name)
+        gridFsSong.delete(result["_id"])
+
+    else:
         raise HTTPException(status_code=404, detail="La canción no existe")
 
-    try:
-        params = {
-            "nombre": name,
-        }
-        res = requests.delete(f"{lambda_base_path}", params=params)
-        if res.status_code != 202:
-            raise ClientError(
-                {"Error": {"Code": res.status_code, "Message": res.content}},
-                "operation_name",
-            )
 
-        song_collection.delete_one({"name": name})
-        delete_song_artist(result["artist"], name)
-
-    except PyMongoError as e:
-        raise HTTPException(
-            status_code=500,
-            detail="Error interno del servidor al interactuar con MongoDB",
-        )
-
-    except ClientError as e:
-        raise HTTPException(
-            status_code=500, detail="Error interno del servidor al interactuar con AWS"
-        )
-
-    except Exception as e:
-        raise HTTPException(status_code=500, detail="No se pudo subir la canción")
-
-
-# ? NOT USED
 def update_song(
     name: str, nuevo_nombre: str, photo: str, genre: Genre, token: TokenData
 ) -> None:
@@ -443,7 +374,7 @@ def increase_number_plays(name: str) -> None:
     if not result_song_exists:
         raise HTTPException(status_code=404, detail="La cancion no existe")
 
-    song_collection.update_one(
+    file_song_collection.update_one(
         {"name": name},
         {"$set": {"number_of_plays": result_song_exists.number_of_plays + 1}},
     )
@@ -466,7 +397,7 @@ def search_by_name(name: str) -> list:
         List<Json>
     """
 
-    song_names_response = song_collection.find(
+    song_names_response = file_song_collection.find(
         {"name": {"$regex": name, "$options": "i"}}, {"_id": 0, "name": 1}
     )
 

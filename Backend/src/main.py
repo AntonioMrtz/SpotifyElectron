@@ -1,15 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from middleware.middleware import CheckJwtAuth
-from routers import (
-    artistas,
-    canciones,
-    generos,
-    login,
-    playlists,
-    search,
-    usuarios,
-)
+from routers import artistas, canciones, generos, login, playlists, search, usuarios
 
 app = FastAPI(
     title="SpotifyElectronAPI",

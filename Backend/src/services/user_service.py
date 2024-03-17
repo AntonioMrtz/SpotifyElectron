@@ -1,27 +1,24 @@
 from datetime import datetime
-from database.Database import Database
-from model.User import User
-from fastapi import HTTPException
-from services.utils import checkValidParameterString
-from model.TokenData import TokenData
 from sys import modules
-import bcrypt
-import json
 
+import bcrypt
+from database.Database import Database
+from fastapi import HTTPException
+from model.TokenData import TokenData
+from model.User import User
+from services.utils import checkValidParameterString
 
 if "pytest" in modules:
-
     user_collection = Database().connection["test.usuario"]
     artist_collection = Database().connection["test.artista"]
 
 else:
-
     user_collection = Database().connection["usuario"]
     artist_collection = Database().connection["artista"]
 
 
 def check_jwt_is_user(token: TokenData, user: str) -> bool:
-    """ Check if user is the same as token user
+    """Check if user is the same as token user
 
     Parameters
     ----------
@@ -42,11 +39,12 @@ def check_jwt_is_user(token: TokenData, user: str) -> bool:
         return True
     else:
         raise HTTPException(
-            status_code=401, detail="El usuario está modificando otro usuario")
+            status_code=401, detail="El usuario está modificando otro usuario"
+        )
 
 
 def get_user(name: str) -> User:
-    """ Returns user with name "name"
+    """Returns user with name "name"
 
     Parameters
     ----------
@@ -65,22 +63,30 @@ def get_user(name: str) -> User:
     if not checkValidParameterString(name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
-    user_data = user_collection.find_one({'name': name})
+    user_data = user_collection.find_one({"name": name})
 
     if user_data is None:
         raise HTTPException(
-            status_code=404, detail="El usuario con ese nombre no existe")
+            status_code=404, detail="El usuario con ese nombre no existe"
+        )
 
     date = user_data["register_date"][:-1]
 
-    user = User(name=user_data["name"], photo=user_data["photo"], register_date=date, password=user_data["password"],
-                playback_history=user_data["playback_history"], playlists=user_data["playlists"], saved_playlists=user_data["saved_playlists"])
+    user = User(
+        name=user_data["name"],
+        photo=user_data["photo"],
+        register_date=date,
+        password=user_data["password"],
+        playback_history=user_data["playback_history"],
+        playlists=user_data["playlists"],
+        saved_playlists=user_data["saved_playlists"],
+    )
 
     return user
 
 
 def create_user(name: str, photo: str, password: str) -> None:
-    """ Creates a user
+    """Creates a user
 
     Parameters
     ----------
@@ -97,7 +103,7 @@ def create_user(name: str, photo: str, password: str) -> None:
     """
 
     current_date = datetime.now()
-    date_iso8601 = current_date.strftime('%Y-%m-%dT%H:%M:%S')
+    date_iso8601 = current_date.strftime("%Y-%m-%dT%H:%M:%S")
 
     if not checkValidParameterString(name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
@@ -105,17 +111,35 @@ def create_user(name: str, photo: str, password: str) -> None:
     if check_user_exists(name):
         raise HTTPException(status_code=400, detail="El usuario ya existe")
 
-    utf8_password = password.encode('utf-8')
+    utf8_password = password.encode("utf-8")
     hashed_password = bcrypt.hashpw(utf8_password, bcrypt.gensalt())
 
     result = user_collection.insert_one(
-        {'name': name, 'photo': photo if 'http' in photo else '', 'register_date': date_iso8601, 'password': hashed_password, 'saved_playlists': [], 'playlists': [], 'playback_history': []})
+        {
+            "name": name,
+            "photo": photo if "http" in photo else "",
+            "register_date": date_iso8601,
+            "password": hashed_password,
+            "saved_playlists": [],
+            "playlists": [],
+            "playback_history": [],
+        }
+    )
 
-    return True if result.acknowledged else False
+    if not result.acknowledged:
+        # TODO
+        raise HTTPException(status_code=400, detail="")
 
 
-def update_user(name: str, photo: str, playlists: list, saved_playlists: list, playback_history: list, token: TokenData) -> None:
-    """ Updates a user , duplicated playlists and songs wont be added
+def update_user(
+    name: str,
+    photo: str,
+    playlists: list,
+    saved_playlists: list,
+    playback_history: list,
+    token: TokenData,
+) -> None:
+    """Updates a user , duplicated playlists and songs wont be added
 
     Parameters
     ----------
@@ -138,19 +162,32 @@ def update_user(name: str, photo: str, playlists: list, saved_playlists: list, p
     if not checkValidParameterString(name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
-    result_user_exists = user_collection.find_one({'name': name})
+    result_user_exists = user_collection.find_one({"name": name})
 
     check_jwt_is_user(token, name)
 
     if not result_user_exists:
         raise HTTPException(status_code=404, detail="El usuario no existe")
 
-    result = user_collection.update_one({'name': name},
-                                        {"$set": {'photo': photo if 'http' in photo else '', 'saved_playlists': list(set(saved_playlists)), 'playlists': list(set(playlists)), 'playback_history': list(set(playback_history))}})
+    result = user_collection.update_one(
+        {"name": name},
+        {
+            "$set": {
+                "photo": photo if "http" in photo else "",
+                "saved_playlists": list(set(saved_playlists)),
+                "playlists": list(set(playlists)),
+                "playback_history": list(set(playback_history)),
+            }
+        },
+    )
+
+    if not result.acknowledged:
+        # TODO
+        raise HTTPException(status_code=400, detail="")
 
 
 def delete_user(name: str) -> None:
-    """ Deletes a user by name
+    """Deletes a user by name
 
     Parameters
     ----------
@@ -168,13 +205,13 @@ def delete_user(name: str) -> None:
     if not checkValidParameterString(name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
-    result = user_collection.delete_one({'name': name})
+    result = user_collection.delete_one({"name": name})
     if result.deleted_count == 0:
         raise HTTPException(status_code=404, detail="El usuario no existe")
 
 
 def get_users(names: list) -> list:
-    """ Returns a list of Users that match "names" list of names
+    """Returns a list of Users that match "names" list of names
 
     Parameters
     ----------
@@ -194,14 +231,13 @@ def get_users(names: list) -> list:
     users: list = []
 
     for user_name in names:
-
         users.append(get_user(user_name))
 
     return users
 
 
 def search_by_name(name: str) -> list:
-    """ Returns a list of Users that contains "name" in their names
+    """Returns a list of Users that contains "name" in their names
 
     Parameters
     ----------
@@ -218,16 +254,15 @@ def search_by_name(name: str) -> list:
     """
 
     users_names_response = user_collection.find(
-        {'name': {'$regex': name, '$options': 'i'}}, {"_id": 0, "name": 1})
+        {"name": {"$regex": name, "$options": "i"}}, {"_id": 0, "name": 1}
+    )
 
     user_names = []
-
     [user_names.append(user["name"]) for user in users_names_response]
 
     users = get_users(user_names)
 
     users_json_list = []
-
     [users_json_list.append(user.get_json()) for user in users]
 
     return users_json_list
@@ -235,8 +270,9 @@ def search_by_name(name: str) -> list:
 
 # * AUX METHODs
 
+
 def check_user_exists(user_name: str) -> bool:
-    """ Checks if the user exists
+    """Checks if the user exists
 
     Parameters
     ----------
@@ -255,13 +291,15 @@ def check_user_exists(user_name: str) -> bool:
     if not checkValidParameterString(user_name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
-    result_user_exists = user_collection.find_one({'name': user_name})
+    result_user_exists = user_collection.find_one({"name": user_name})
 
     return True if result_user_exists else False
 
 
-def add_playback_history(user_name: str, song: str, MAX_NUMBER_PLAYBACK_HISTORY_SONGS: int):
-    user_data = user_collection.find_one({'name': user_name})
+def add_playback_history(
+    user_name: str, song: str, MAX_NUMBER_PLAYBACK_HISTORY_SONGS: int
+):
+    user_data = user_collection.find_one({"name": user_name})
 
     playback_history = user_data["playback_history"]
 
@@ -270,55 +308,56 @@ def add_playback_history(user_name: str, song: str, MAX_NUMBER_PLAYBACK_HISTORY_
 
     playback_history.append(song)
 
-    result = user_collection.update_one({'name': user_name},
-                                        {"$set": {'playback_history': playback_history}})
+    result = user_collection.update_one(
+        {"name": user_name}, {"$set": {"playback_history": playback_history}}
+    )
 
 
 def add_saved_playlist(user_name: str, playlist_name: str):
-    user_data = user_collection.find_one({'name': user_name})
+    user_data = user_collection.find_one({"name": user_name})
 
     saved_playlists = user_data["saved_playlists"]
 
     saved_playlists.append(playlist_name)
 
-    result = user_collection.update_one({'name': user_name},
-                                        {"$set": {'saved_playlists': list(set(saved_playlists))}})
+    result = user_collection.update_one(
+        {"name": user_name}, {"$set": {"saved_playlists": list(set(saved_playlists))}}
+    )
 
 
 def delete_saved_playlist(user_name: str, playlist_name: str):
-    user_data = user_collection.find_one({'name': user_name})
+    user_data = user_collection.find_one({"name": user_name})
 
     saved_playlists = user_data["saved_playlists"]
 
     if playlist_name in saved_playlists:
-
         saved_playlists.remove(playlist_name)
 
-        result = user_collection.update_one({'name': user_name},
-                                            {"$set": {'saved_playlists': saved_playlists}})
+        result = user_collection.update_one(
+            {"name": user_name}, {"$set": {"saved_playlists": saved_playlists}}
+        )
 
 
 def add_playlist_to_owner(user_name: str, playlist_name: str) -> None:
-
-    user_data = user_collection.find_one({'name': user_name})
+    user_data = user_collection.find_one({"name": user_name})
 
     playlists = user_data["playlists"]
 
     playlists.append(playlist_name)
 
-    result = user_collection.update_one({'name': user_name},
-                                        {"$set": {'playlists': list(set(playlists))}})
+    result = user_collection.update_one(
+        {"name": user_name}, {"$set": {"playlists": list(set(playlists))}}
+    )
 
 
 def delete_playlist_from_owner(user_name: str, playlist_name: str) -> None:
-
-    user_data = user_collection.find_one({'name': user_name})
+    user_data = user_collection.find_one({"name": user_name})
 
     playlists = user_data["playlists"]
 
     if playlist_name in playlists:
-
         playlists.remove(playlist_name)
 
-        result = user_collection.update_one({'name': user_name},
-                                            {"$set": {'playlists': playlists}})
+        result = user_collection.update_one(
+            {"name": user_name}, {"$set": {"playlists": playlists}}
+        )

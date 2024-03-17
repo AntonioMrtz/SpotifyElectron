@@ -1,41 +1,42 @@
-from services.utils import checkValidParameterString
+import io
+import json
+import os
+from sys import modules
+
+import boto3
+import librosa
+from botocore.exceptions import ClientError
 from database.Database import Database
-from gridfs import GridFS
+from dotenv import load_dotenv
 from fastapi import HTTPException
-from fastapi.responses import Response
+from gridfs import GridFS
 from model.Genre import Genre
 from model.Song import Song
-from services.artist_service import check_artists_exists, add_song_artist, delete_song_artist
 from model.TokenData import TokenData
-from sys import modules
 from pymongo.errors import PyMongoError
-from botocore.exceptions import ClientError
-from dotenv import load_dotenv
-import os
-import boto3
-import base64
-import json
-import io
-import librosa
+from services.artist_service import (
+    add_song_artist,
+    check_artists_exists,
+    delete_song_artist,
+)
+from services.utils import checkValidParameterString
 
 """ Insert songs with format [files,chunks] https://www.mongodb.com/docs/manual/core/gridfs/"""
 
 if "pytest" in modules:
 
-    gridFsSong = GridFS(Database().connection, collection='test.cancion')
-    file_song_collection = Database().connection["test.cancion.files"]
+    gridFsSong = GridFS(Database().connection, collection="test.cancion")
     song_collection = Database().connection["test.canciones.streaming"]
 
 
 else:
 
-    gridFsSong = GridFS(Database().connection, collection='cancion')
-    file_song_collection = Database().connection["cancion.files"]
+    gridFsSong = GridFS(Database().connection, collection="cancion")
     song_collection = Database().connection["canciones.streaming"]
 
-s3 = boto3.resource('s3')
-s3_client = boto3.client('s3')
-song_bucket = s3.Bucket('canciones-spotify-electron')
+s3 = boto3.resource("s3")
+s3_client = boto3.client("s3")
+song_bucket = s3.Bucket("canciones-spotify-electron")
 bucket_base_path = "canciones/"
 distribution_id = os.getenv("DISTRIBUTION_ID")
 
@@ -43,7 +44,7 @@ load_dotenv()
 
 
 def check_song_exists(name: str) -> bool:
-    """ Check if the song exists or not
+    """Check if the song exists or not
 
     Parameters
     ----------
@@ -57,12 +58,11 @@ def check_song_exists(name: str) -> bool:
         Boolean
     """
 
-    return True if song_collection.find_one({'name': name}) else False
-
+    return True if song_collection.find_one({"name": name}) else False
 
 
 def check_jwt_user_is_song_artist(token: TokenData, artist: str) -> bool:
-    """ Check if the user is the song artist
+    """Check if the user is the song artist
 
     Parameters
     ----------
@@ -82,15 +82,16 @@ def check_jwt_user_is_song_artist(token: TokenData, artist: str) -> bool:
         return True
     else:
         raise HTTPException(
-            status_code=401, detail="El usuario no es el creador de la canción")
+            status_code=401, detail="El usuario no es el creador de la canción"
+        )
 
 
-def get_cloudfront_url(resource_path : str):
-    cloudfront_client = boto3.client('cloudfront')
+def get_cloudfront_url(resource_path: str):
+    cloudfront_client = boto3.client("cloudfront")
 
     # Get the CloudFront domain name associated with the distribution
     response = cloudfront_client.get_distribution(Id=distribution_id)
-    domain_name = response['Distribution']['DomainName']
+    domain_name = response["Distribution"]["DomainName"]
 
     # Construct the CloudFront URL
     cloudfront_url = f"https://{domain_name}/{resource_path}"
@@ -99,7 +100,7 @@ def get_cloudfront_url(resource_path : str):
 
 
 def get_song(name: str) -> Song:
-    """ Returns a Song file with attributes and streaming url "
+    """Returns a Song file with attributes and streaming url "
 
     Parameters
     ----------
@@ -116,13 +117,13 @@ def get_song(name: str) -> Song:
     """
 
     if name is None or name == "":
-        raise HTTPException(
-            status_code=400, detail="El nombre de la canción es vacío")
+        raise HTTPException(status_code=400, detail="El nombre de la canción es vacío")
 
-    song = song_collection.find_one({'name': name})
+    song = song_collection.find_one({"name": name})
     if song is None or not check_song_exists(name=name):
         raise HTTPException(
-            status_code=404, detail="La canción con ese nombre no existe")
+            status_code=404, detail="La canción con ese nombre no existe"
+        )
 
     """ song_bytes = song_bytes.read()
     # b'ZGF0YSB0byBiZSBlbmNvZGVk'
@@ -134,20 +135,29 @@ def get_song(name: str) -> Song:
         # TODO peticion a Lambda por url
         cloudfront_url = get_cloudfront_url(f"{bucket_base_path}{name}.mp3")
 
-        song = Song(name=name, artist=song["artist"], photo=song["photo"], duration=song["duration"], genre=Genre(
-            song["genre"]).name, url=cloudfront_url, number_of_plays=song["number_of_plays"])
+        song = Song(
+            name=name,
+            artist=song["artist"],
+            photo=song["photo"],
+            duration=song["duration"],
+            genre=Genre(song["genre"]).name,
+            url=cloudfront_url,
+            number_of_plays=song["number_of_plays"],
+        )
 
         return song
 
-    except ClientError  as e:
-        raise HTTPException(status_code=500, detail="Error interno del servidor al interactuar con AWS")
+    except ClientError as e:
+        raise HTTPException(
+            status_code=500, detail="Error interno del servidor al interactuar con AWS"
+        )
 
     except Exception as e:
         raise HTTPException(status_code=500, detail="No se pudo subir la canción")
 
 
 def get_songs(names: list) -> list:
-    """ Returns a list of Songs that match "names" list of names  "
+    """Returns a list of Songs that match "names" list of names  "
 
     Parameters
     ----------
@@ -174,7 +184,7 @@ def get_songs(names: list) -> list:
 
 
 def get_all_songs() -> list:
-    """ Returns a list of all Songs file"
+    """Returns a list of all Songs file"
 
     Parameters
     ----------
@@ -199,8 +209,10 @@ def get_all_songs() -> list:
     return songs
 
 
-async def create_song(name: str, genre: Genre, photo: str, file, token : TokenData) -> None:
-    """ Returns a Song file with attributes and a song encoded in base64 "
+async def create_song(
+    name: str, genre: Genre, photo: str, file, token: TokenData
+) -> None:
+    """Returns a Song file with attributes and a song encoded in base64 "
 
     Parameters
     ----------
@@ -223,9 +235,13 @@ async def create_song(name: str, genre: Genre, photo: str, file, token : TokenDa
 
     artist = token.username
 
-    if not checkValidParameterString(name) or not checkValidParameterString(photo) or not checkValidParameterString(artist) or not Genre.checkValidGenre(genre.value):
-        raise HTTPException(
-            status_code=400, detail="Parámetros no válidos o vacíos")
+    if (
+        not checkValidParameterString(name)
+        or not checkValidParameterString(photo)
+        or not checkValidParameterString(artist)
+        or not Genre.checkValidGenre(genre.value)
+    ):
+        raise HTTPException(status_code=400, detail="Parámetros no válidos o vacíos")
 
     check_artists_exists(artist_name=artist)
 
@@ -234,7 +250,6 @@ async def create_song(name: str, genre: Genre, photo: str, file, token : TokenDa
 
     if not check_artists_exists(artist_name=artist):
         raise HTTPException(status_code=404, detail="El artista no existe")
-
 
     try:
         # Assuming 'audio_bytes' contains the audio data in bytes
@@ -248,25 +263,39 @@ async def create_song(name: str, genre: Genre, photo: str, file, token : TokenDa
         duration = 0
 
     try:
-        s3_client.put_object(Body=file, Bucket=song_bucket.name, Key=f"{bucket_base_path}{name}.mp3")
+        s3_client.put_object(
+            Body=file, Bucket=song_bucket.name, Key=f"{bucket_base_path}{name}.mp3"
+        )
 
-        file_id = song_collection.insert_one({
-            'name': name, 'artist': artist, 'duration': duration, 'genre': str(genre.value), 'photo': photo, 'number_of_plays': 0})
+        file_id = song_collection.insert_one(
+            {
+                "name": name,
+                "artist": artist,
+                "duration": duration,
+                "genre": str(genre.value),
+                "photo": photo,
+                "number_of_plays": 0,
+            }
+        )
         add_song_artist(artist, name)
 
     except PyMongoError as e:
-        raise HTTPException(status_code=500, detail="Error interno del servidor al interactuar con MongoDB")
+        raise HTTPException(
+            status_code=500,
+            detail="Error interno del servidor al interactuar con MongoDB",
+        )
 
-    except ClientError  as e:
-        raise HTTPException(status_code=500, detail="Error interno del servidor al interactuar con AWS")
+    except ClientError as e:
+        raise HTTPException(
+            status_code=500, detail="Error interno del servidor al interactuar con AWS"
+        )
 
     except Exception as e:
         raise HTTPException(status_code=500, detail="No se pudo subir la canción")
 
 
-
 def delete_song(name: str) -> None:
-    """ Delete the song with his asociated chunk files "
+    """Delete the song with his asociated chunk files "
 
     Parameters
     ----------
@@ -283,35 +312,42 @@ def delete_song(name: str) -> None:
 
     if not checkValidParameterString(name):
         raise HTTPException(
-            status_code=400, detail="El nombre de la canción no es válido")
+            status_code=400, detail="El nombre de la canción no es válido"
+        )
 
-    result = song_collection.find_one({'name': name})
+    result = song_collection.find_one({"name": name})
 
     if not result or not result["_id"]:
 
         raise HTTPException(status_code=404, detail="La canción no existe")
 
     try:
-        songCollection.delete_one({'name': name})
-        s3_client.delete_object(Bucket=song_bucket.name, Key=f"{bucket_base_path}{name}.mp3")
+        song_collection.delete_one({"name": name})
+        s3_client.delete_object(
+            Bucket=song_bucket.name, Key=f"{bucket_base_path}{name}.mp3"
+        )
         delete_song_artist(result["artist"], name)
 
     except PyMongoError as e:
-        raise HTTPException(status_code=500, detail="Error interno del servidor al interactuar con MongoDB")
+        raise HTTPException(
+            status_code=500,
+            detail="Error interno del servidor al interactuar con MongoDB",
+        )
 
-    except ClientError  as e:
-        raise HTTPException(status_code=500, detail="Error interno del servidor al interactuar con AWS")
+    except ClientError as e:
+        raise HTTPException(
+            status_code=500, detail="Error interno del servidor al interactuar con AWS"
+        )
 
     except Exception as e:
         raise HTTPException(status_code=500, detail="No se pudo subir la canción")
 
 
-
-
-
 # ? NOT USED
-def update_song(name: str, nuevo_nombre: str, photo: str, genre: Genre,token : TokenData) -> None:
-    """ Updates a song with name, url of thumbnail, duration, genre and number of plays, if empty parameter is not being updated "
+def update_song(
+    name: str, nuevo_nombre: str, photo: str, genre: Genre, token: TokenData
+) -> None:
+    """Updates a song with name, url of thumbnail, duration, genre and number of plays, if empty parameter is not being updated "
 
     Parameters
     ----------
@@ -332,7 +368,6 @@ def update_song(name: str, nuevo_nombre: str, photo: str, genre: Genre,token : T
     -------
     """
 
-
     if not checkValidParameterString(name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
@@ -341,19 +376,49 @@ def update_song(name: str, nuevo_nombre: str, photo: str, genre: Genre,token : T
     if not result_song_exists:
         raise HTTPException(status_code=404, detail="La cancion no existe")
 
-    check_jwt_user_is_song_artist(token,result_song_exists.artist)
+    check_jwt_user_is_song_artist(token, result_song_exists.artist)
 
     if checkValidParameterString(nuevo_nombre):
         new_name = nuevo_nombre
-        file_song_collection.update_one({'name': name}, {
-            "$set": {'name': new_name, 'artist': result_song_exists.artist, 'photo': photo if photo and 'http' in photo else result_song_exists.photo, 'genre': Genre(genre).value if genre != None else Genre[result_song_exists.genre].value}})
+        song_collection.update_one(
+            {"name": name},
+            {
+                "$set": {
+                    "name": new_name,
+                    "artist": result_song_exists.artist,
+                    "photo": (
+                        photo if photo and "http" in photo else result_song_exists.photo
+                    ),
+                    "genre": (
+                        Genre(genre).value
+                        if genre != None
+                        else Genre[result_song_exists.genre].value
+                    ),
+                }
+            },
+        )
     else:
-        file_song_collection.update_one({'name': name}, {
-            "$set": {'name': name, 'artist': result_song_exists.artist, 'photo': photo if photo and 'http' in photo else result_song_exists.photo, 'genre': Genre(genre).value if genre != None else Genre[result_song_exists.genre].value}})
+        song_collection.update_one(
+            {"name": name},
+            {
+                "$set": {
+                    "name": name,
+                    "artist": result_song_exists.artist,
+                    "photo": (
+                        photo if photo and "http" in photo else result_song_exists.photo
+                    ),
+                    "genre": (
+                        Genre(genre).value
+                        if genre != None
+                        else Genre[result_song_exists.genre].value
+                    ),
+                }
+            },
+        )
 
 
 def increase_number_plays(name: str) -> None:
-    """ Increase the number of plays of a song
+    """Increase the number of plays of a song
 
     Parameters
     ----------
@@ -376,12 +441,14 @@ def increase_number_plays(name: str) -> None:
     if not result_song_exists:
         raise HTTPException(status_code=404, detail="La cancion no existe")
 
-    song_collection.update_one({'name': name}, {
-        "$set": {'number_of_plays': result_song_exists.number_of_plays+1}})
+    song_collection.update_one(
+        {"name": name},
+        {"$set": {"number_of_plays": result_song_exists.number_of_plays + 1}},
+    )
 
 
 def search_by_name(name: str) -> json:
-    """ Returns a list of Songs that contains "name" in their names
+    """Returns a list of Songs that contains "name" in their names
 
     Parameters
     ----------
@@ -398,7 +465,8 @@ def search_by_name(name: str) -> json:
     """
 
     song_names_response = song_collection.find(
-        {'name': {'$regex': name, '$options': 'i'}}, {"_id": 0, "name": 1})
+        {"name": {"$regex": name, "$options": "i"}}, {"_id": 0, "name": 1}
+    )
 
     song_names = []
 

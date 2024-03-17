@@ -1,14 +1,15 @@
-from services.utils import checkValidParameterString
-from fastapi import HTTPException
-import services.song_service as song_service
-import services.playlist_service as playlist_service
-import services.user_service as user_service
-import services.artist_service as artist_service
 import json
 
+import services.artist_service as artist_service
+import services.playlist_service as playlist_service
+import services.song_service as song_service
+import services.user_service as user_service
+from fastapi import HTTPException
+from services.utils import checkValidParameterString
 
-def search_by_name(name: str) -> json:
-    """ Returns songs, artist and playlist that matches name
+
+def search_by_name(name: str) -> str:
+    """Returns songs, artist and playlist that matches name
 
     Parameters
     ----------
@@ -34,7 +35,8 @@ def search_by_name(name: str) -> json:
 
     if not checkValidParameterString(name):
         raise HTTPException(
-            status_code=400, detail="El nombre por el que buscar es vacío")
+            status_code=400, detail="El nombre por el que buscar es vacío"
+        )
 
     items = {}
 
@@ -53,4 +55,5 @@ def search_by_name(name: str) -> json:
 
     except Exception as e:
         raise HTTPException(
-            status_code=500, detail=f"No se pudieron obtener los items por nombre | {e}")
+            status_code=500, detail=f"No se pudieron obtener los items por nombre | {e}"
+        )

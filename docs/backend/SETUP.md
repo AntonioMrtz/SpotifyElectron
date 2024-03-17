@@ -25,25 +25,14 @@ cd Backend;
 
 ```
 
-3. Install AWS CLI from https://aws.amazon.com/es/cli/
-
-4. Go to your home folder for the current user, .aws and change the credentials
-```
-[default]
-aws_access_key_id=x
-aws_secret_access_key=x
-aws_session_token=token
-
-```
-
-5. Install the virtual enviroment and dependencies 
+3. Install the virtual enviroment and dependencies 
 
 ```
 python -m venv venv;
 venv/Scripts/activate
 pip install -r requirements.txt;
-pip install -r requirements_dev.txt;
-pip install -r requirements_test.txt;
+pip install -r requirements-dev.txt;
+pip install -r requirements-test.txt;
 
 ```
 4. Run the app in hot reload debug mode 
@@ -76,6 +65,14 @@ python -m pytest --cov=. --cov-report=html // Test run and generate coverage in 
 
 ```
 
+## 🎨 Run style on code
+
+2. Run style rules
+```
+python -m isort --profile black .
+
+```
+
 ## ✏ Install the recommended extensions for VSCODE 
 
 1. Go to extensions
@@ -88,26 +85,29 @@ python -m pytest --cov=. --cov-report=html // Test run and generate coverage in 
 
 ### Dev Enviroment
 
+* Uses local mongoDB database
+* Access it via MongoExpress
+  * Connect http://localhost:8081/
+  * Use user : admin and password : pass
+
 1. Go to docker folder
 ```
 cd docker/
 ```
 
-2. Run docker compose with the script build_and_up
+2. Run docker compose with the script build_and_up_dev
 ```
-./build_and_up.sh
-```
-
-
-### Production Enviroment
-
-1. Build the image
-```
-docker build -t spotify_electron_backend_image .
+./build_and_up_dev.sh
 ```
 
-2. Run the container with the enviroment variables
-```
-docker run -d --name spotify_electron_backend -e MONGO_URI=mongo-uri SECRET_KEY_SIGN=secret-key-sign LAMBDA_URL=lambda-url -p 8000:8000 spotify_electron_backend_image
+### Prod Enviroment
 
+1. Go to docker folder
+```
+cd docker/
+```
+
+2. Run docker compose with the script build_and_up_prod
+```
+./build_and_up_prod.sh
 ```

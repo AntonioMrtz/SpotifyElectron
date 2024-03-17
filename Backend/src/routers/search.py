@@ -1,9 +1,6 @@
-from fastapi import APIRouter, Depends, Header, HTTPException
-from fastapi.responses import Response
 import services.search_service as search_service
-from typing import Annotated, Union
-
-
+from fastapi import APIRouter
+from fastapi.responses import Response
 
 router = APIRouter(
     prefix="/search",
@@ -11,9 +8,9 @@ router = APIRouter(
 )
 
 
-@router.get("/",tags=["search"])
+@router.get("/", tags=["search"])
 def get_search_nombre(nombre: str) -> Response:
-    """ Devuelve los items con un nombre similar
+    """Devuelve los items con un nombre similar
 
     Parameters
     ----------

@@ -4,32 +4,46 @@ from starlette.middleware.base import BaseHTTPMiddleware
 
 
 class CheckJwtAuth(BaseHTTPMiddleware):
-
     bypass_urls = {
-
-        "GET": ["/usuarios/whoami", "/usuarios/whoami/", "/docs", "/docs/", "/openapi.json"],
-        "POST": ["/usuarios/", "/usuarios", "/login/", "/login", "/artistas/", "/artistas"],
+        "GET": [
+            "/usuarios/whoami",
+            "/usuarios/whoami/",
+            "/docs",
+            "/docs/",
+            "/openapi.json",
+        ],
+        "POST": [
+            "/usuarios/",
+            "/usuarios",
+            "/login/",
+            "/login",
+            "/artistas/",
+            "/artistas",
+        ],
     }
 
     bypass_methods = ["DELETE"]
 
     def bypass_request(self, request: Request):
-        """  print(request.method)
+        """print(request.method)
         print(request.url.path)
-        print(request.headers) """
+        print(request.headers)"""
         """ print(f"COOKIES = \n {request.cookies}")
         print(f"HEADERS = \n {request.headers}") """
 
         if request.method in self.bypass_methods:
             return True
-        elif request.method in self.bypass_urls.keys() and request.url.path in self.bypass_urls[request.method]:
+        elif (
+            request.method in self.bypass_urls.keys()
+            and request.url.path in self.bypass_urls[request.method]
+        ):
             return True
         else:
             return False
 
     async def dispatch(self, request: Request, call_next):
-        """ response = await call_next(request)
-        return response """
+        """response = await call_next(request)
+        return response"""
         try:
             if self.bypass_request(request):
                 response = await call_next(request)

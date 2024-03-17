@@ -1,8 +1,6 @@
-from fastapi.responses import Response
-from fastapi import APIRouter
-from model.Genre import Genre
 import services.genre_service as genre_service
-
+from fastapi import APIRouter
+from fastapi.responses import Response
 
 router = APIRouter(
     prefix="/generos",
@@ -12,7 +10,7 @@ router = APIRouter(
 
 @router.get("/")
 def get_generos() -> Response:
-    """ Devuelve el enumerado Género
+    """Devuelve el enumerado Género
 
     Parameters
     ----------

@@ -1,9 +1,10 @@
+import logging
+import os
+
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
-import os
-import logging
 
-formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+formatter = logging.Formatter("%(asctime)s %(levelname)s %(message)s")
 logging.basicConfig(level=logging.WARNING)
 
 """ Singleton instance of the MongoDb connection """
@@ -30,8 +31,8 @@ class DatabaseMeta(type):
 
 
 class Database(metaclass=DatabaseMeta):
+    """Direct connection to the MongoDB client"""
 
-    """ Direct connection to the MongoDB client """
     connection = None
     """ Connection to the list database """
     list_collection = None
@@ -42,14 +43,13 @@ class Database(metaclass=DatabaseMeta):
         if Database.connection is None:
             try:
                 uri = os.getenv("MONGO_URI")
-                Database.connection = MongoClient(uri, server_api=ServerApi('1'))[
-                    "SpotifyElectron"]
+                Database.connection = MongoClient(uri, server_api=ServerApi("1"))[
+                    "SpotifyElectron"
+                ]
                 Database.list_collection = Database.connection["playlist"]
                 Database.song_collection = Database.connection["song"]
 
             except Exception as error:
-                logging.critical(
-                    "Error: Connection not established {}".format(error))
+                logging.critical("Error: Connection not established {}".format(error))
             else:
                 logging.info("Connection established")
-

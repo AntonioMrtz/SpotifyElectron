@@ -1,15 +1,14 @@
-from dataclasses import dataclass
-from model.User import User
 import json
+from dataclasses import dataclass
+
+from model.User import User
 
 
 @dataclass
 class Artist(User):
-
     uploaded_songs: list
 
-    def get_json(self) -> json:
-
+    def get_json(self) -> str:
         user_json = super().get_json()
         data = json.loads(user_json)
 

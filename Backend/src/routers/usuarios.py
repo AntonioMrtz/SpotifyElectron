@@ -1,12 +1,11 @@
-import services.user_service as user_service
+from typing import Annotated, Union
+
 import services.all_users_service as all_users_service
 import services.security_service as security_service
+import services.user_service as user_service
+from fastapi import APIRouter, Header, HTTPException
 from fastapi.responses import Response
-from fastapi import APIRouter, Depends, Header, HTTPException
-from fastapi.security import OAuth2PasswordRequestForm
-from typing import Annotated, Union
 from services.security_service import get_jwt_token
-import json
 
 router = APIRouter(
     prefix="/usuarios",
@@ -16,25 +15,24 @@ router = APIRouter(
 
 @router.get("/whoami", tags=["usuarios"])
 def get_whoAmI(authorization: Annotated[Union[str, None], Header()] = None) -> Response:
-    """ Devuelve la información del token jwt del usuario
+    """Devuelve la información del token jwt del usuario
 
-        Parameters
-        ----------
+    Parameters
+    ----------
 
-        Returns
-        -------
-            Response 200 OK | TokenData as Json
+    Returns
+    -------
+        Response 200 OK | TokenData as Json
 
-        Raises
-        -------
-            Bad Request 400: "nombre" es vacío o nulo
-            Unauthorized 401
-            Not Found 404: No existe un usuario con el nombre "nombre"
-        """
+    Raises
+    -------
+        Bad Request 400: "nombre" es vacío o nulo
+        Unauthorized 401
+        Not Found 404: No existe un usuario con el nombre "nombre"
+    """
 
     if authorization is None:
-        raise HTTPException(
-            status_code=401, detail="Authorization header is missing")
+        raise HTTPException(status_code=401, detail="Authorization header is missing")
 
     jwt_token = security_service.get_jwt_token(authorization)
 
@@ -45,7 +43,7 @@ def get_whoAmI(authorization: Annotated[Union[str, None], Header()] = None) -> R
 
 @router.get("/{nombre}", tags=["usuarios"])
 def get_user(nombre: str) -> Response:
-    """ Devuelve el usuario con nombre "nombre"
+    """Devuelve el usuario con nombre "nombre"
 
     Parameters
     ----------
@@ -70,7 +68,7 @@ def get_user(nombre: str) -> Response:
 
 @router.post("/", tags=["usuarios"])
 def post_usuario(nombre: str, foto: str, password: str) -> Response:
-    """ Registra el usuario
+    """Registra el usuario
 
     Parameters
     ----------
@@ -87,14 +85,20 @@ def post_usuario(nombre: str, foto: str, password: str) -> Response:
         Bad Request 400: Parámetros introducidos no són válidos o vacíos
     """
 
-    result = user_service.create_user(
-        nombre, foto, password)
+    user_service.create_user(nombre, foto, password)
     return Response(None, 201)
 
 
 @router.put("/{nombre}", tags=["usuarios"])
-def update_usuario(nombre: str, foto: str, historial_canciones: list, playlists: list,  playlists_guardadas: list, authorization: Annotated[Union[str, None], Header()] = None) -> Response:
-    """ Actualiza los parámetros del usuario con nombre "nombre"
+def update_usuario(
+    nombre: str,
+    foto: str,
+    historial_canciones: list,
+    playlists: list,
+    playlists_guardadas: list,
+    authorization: Annotated[Union[str, None], Header()] = None,
+) -> Response:
+    """Actualiza los parámetros del usuario con nombre "nombre"
 
     Parameters
     ----------
@@ -102,7 +106,8 @@ def update_usuario(nombre: str, foto: str, historial_canciones: list, playlists:
         foto (str) : url de la foto miniatura del usuario
         historial_canciones (list) : 5 últimas canciones reproducidas por el usuario
         playlists (list) : playlists creadas por el usuario
-        playlists_guardadas (list) : playlists de otros usuarios guardadas por el usuario con nombre "nombre"
+        playlists_guardadas (list) : playlists de otros usuarios guardadas por el
+                                     usuario con nombre "nombre"
 
     Returns
     -------
@@ -116,19 +121,24 @@ def update_usuario(nombre: str, foto: str, historial_canciones: list, playlists:
     """
 
     if authorization is None:
-        raise HTTPException(
-            status_code=401, detail="Authorization header is missing")
+        raise HTTPException(status_code=401, detail="Authorization header is missing")
 
     jwt_token = get_jwt_token(authorization)
 
-    user_service.update_user(name=nombre, photo=foto, playback_history=historial_canciones,
-                             playlists=playlists, saved_playlists=playlists_guardadas, token=jwt_token)
+    user_service.update_user(
+        name=nombre,
+        photo=foto,
+        playback_history=historial_canciones,
+        playlists=playlists,
+        saved_playlists=playlists_guardadas,
+        token=jwt_token,
+    )
     return Response(None, 204)
 
 
 @router.delete("/{nombre}", tags=["usuarios"])
 def delete_usuario(nombre: str) -> Response:
-    """ Elimina un usuario con nombre "nombre"
+    """Elimina un usuario con nombre "nombre"
 
     Parameters
     ----------
@@ -149,8 +159,12 @@ def delete_usuario(nombre: str) -> Response:
 
 
 @router.patch("/{nombre}/historial", tags=["usuarios"])
-def patch_historial(nombre: str, nombre_cancion: str, authorization: Annotated[Union[str, None], Header()] = None) -> Response:
-    """ Actualiza el historial de canciones del usuario
+def patch_historial(
+    nombre: str,
+    nombre_cancion: str,
+    authorization: Annotated[Union[str, None], Header()] = None,
+) -> Response:
+    """Actualiza el historial de canciones del usuario
 
     Parameters
     ----------
@@ -166,24 +180,29 @@ def patch_historial(nombre: str, nombre_cancion: str, authorization: Annotated[U
     -------
         Bad Request 400: Parámetros introducidos no són válidos o vacíos
         Unauthorized 401
-        Not Found 404: No existe un usuario con el nombre "nombre" | No existe una canción con el nombre "nombre_cancion"
+        Not Found 404: No existe un usuario con el nombre "nombre" |
+                       No existe una canción con el nombre "nombre_cancion"
     """
 
     if authorization is None:
-        raise HTTPException(
-            status_code=401, detail="Authorization header is missing")
+        raise HTTPException(status_code=401, detail="Authorization header is missing")
 
     jwt_token = get_jwt_token(authorization)
 
     all_users_service.add_playback_history(
-        user_name=nombre, song=nombre_cancion, token=jwt_token)
+        user_name=nombre, song=nombre_cancion, token=jwt_token
+    )
 
     return Response(None, 204)
 
 
 @router.patch("/{nombre}/playlists_guardadas", tags=["usuarios"])
-def patch_playlists_guardadas(nombre: str, nombre_playlist: str, authorization: Annotated[Union[str, None], Header()] = None) -> Response:
-    """ Actualiza las listas guardadas del usuario
+def patch_playlists_guardadas(
+    nombre: str,
+    nombre_playlist: str,
+    authorization: Annotated[Union[str, None], Header()] = None,
+) -> Response:
+    """Actualiza las listas guardadas del usuario
 
     Parameters
     ----------
@@ -199,23 +218,26 @@ def patch_playlists_guardadas(nombre: str, nombre_playlist: str, authorization: 
     -------
         Bad Request 400: Parámetros introducidos no són válidos o vacíos
         Unauthorized 401
-        Not Found 404: No existe un usuario con el nombre "nombre" | No existe una playlist con el nombre "nombre_playlist"
+        Not Found 404: No existe un usuario con el nombre "nombre" |
+                       No existe una playlist con el nombre "nombre_playlist"
     """
 
     if authorization is None:
-        raise HTTPException(
-            status_code=401, detail="Authorization header is missing")
+        raise HTTPException(status_code=401, detail="Authorization header is missing")
 
     jwt_token = get_jwt_token(authorization)
 
-    all_users_service.add_saved_playlist(
-        nombre, nombre_playlist, token=jwt_token)
+    all_users_service.add_saved_playlist(nombre, nombre_playlist, token=jwt_token)
     return Response(None, 204)
 
 
 @router.delete("/{nombre}/playlists_guardadas", tags=["usuarios"])
-def delete_playlists_guardadas(nombre: str, nombre_playlist: str, authorization: Annotated[Union[str, None], Header()] = None) -> Response:
-    """ Elimina la playlist de las playlist guardadas del usuario
+def delete_playlists_guardadas(
+    nombre: str,
+    nombre_playlist: str,
+    authorization: Annotated[Union[str, None], Header()] = None,
+) -> Response:
+    """Elimina la playlist de las playlist guardadas del usuario
 
     Parameters
     ----------
@@ -231,15 +253,14 @@ def delete_playlists_guardadas(nombre: str, nombre_playlist: str, authorization:
     -------
         Bad Request 400: Parámetros introducidos no són válidos o vacíos
         Unauthorized 401
-        Not Found 404: No existe un usuario con el nombre "nombre" | No existe una playlist con el nombre "nombre_playlist"
+        Not Found 404: No existe un usuario con el nombre "nombre" |
+                       No existe una playlist con el nombre "nombre_playlist"
     """
 
     if authorization is None:
-        raise HTTPException(
-            status_code=401, detail="Authorization header is missing")
+        raise HTTPException(status_code=401, detail="Authorization header is missing")
 
     jwt_token = get_jwt_token(authorization)
 
-    all_users_service.delete_saved_playlist(
-        nombre, nombre_playlist, token=jwt_token)
+    all_users_service.delete_saved_playlist(nombre, nombre_playlist, token=jwt_token)
     return Response(None, 202)

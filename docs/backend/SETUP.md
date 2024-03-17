@@ -65,6 +65,14 @@ python -m pytest --cov=. --cov-report=html // Test run and generate coverage in 
 
 ```
 
+## 🎨 Run style on code
+
+2. Run style rules
+```
+python -m isort --profile black .
+
+```
+
 ## ✏ Install the recommended extensions for VSCODE 
 
 1. Go to extensions

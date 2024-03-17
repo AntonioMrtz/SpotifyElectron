@@ -1,12 +1,17 @@
-from fastapi import FastAPI, APIRouter, UploadFile, status, Depends, Header, HTTPException
+import json
 from typing import Annotated, Union
-from services.security_service import get_jwt_token
-from model.Genre import Genre
-from fastapi.responses import Response
-from sys import modules
+
 import services.dto_service as dto_service
 import services.song_service as song_service_streaming
-import json
+from fastapi import (
+    APIRouter,
+    Header,
+    HTTPException,
+    UploadFile,
+)
+from fastapi.responses import Response
+from model.Genre import Genre
+from services.security_service import get_jwt_token
 
 router = APIRouter(
     prefix="/canciones",
@@ -22,7 +27,7 @@ song_service = song_service_streaming
 
 @router.get("/{nombre}")
 def get_cancion(nombre: str) -> Response:
-    """ Devuelve la canción con nombre "nombre"
+    """Devuelve la canción con nombre "nombre"
 
     Parameters
     ----------
@@ -45,8 +50,14 @@ def get_cancion(nombre: str) -> Response:
 
 
 @router.post("/")
-async def post_cancion(nombre: str, genero: Genre, foto: str, file: UploadFile, authorization: Annotated[Union[str, None], Header()] = None) -> Response:
-    """ Registra la canción con los parámetros "nombre","artista" y "género"
+async def post_cancion(
+    nombre: str,
+    genero: Genre,
+    foto: str,
+    file: UploadFile,
+    authorization: Annotated[Union[str, None], Header()] = None,
+) -> Response:
+    """Registra la canción con los parámetros "nombre","artista" y "género"
 
     Parameters
     ----------
@@ -68,8 +79,7 @@ async def post_cancion(nombre: str, genero: Genre, foto: str, file: UploadFile, 
     readFile = await file.read()
 
     if authorization is None:
-        raise HTTPException(
-            status_code=401, detail="Authorization header is missing")
+        raise HTTPException(status_code=401, detail="Authorization header is missing")
 
     jwt_token = get_jwt_token(authorization)
 
@@ -79,7 +89,7 @@ async def post_cancion(nombre: str, genero: Genre, foto: str, file: UploadFile, 
 
 @router.get("/")
 def get_canciones() -> Response:
-    """ Devuelve todas las canciones
+    """Devuelve todas las canciones
 
     Parameters
     ----------
@@ -107,7 +117,7 @@ def get_canciones() -> Response:
 
 @router.delete("/{nombre}")
 def delete_cancion(nombre: str) -> Response:
-    """ Borra una canción a partir de "nombre"
+    """Borra una canción a partir de "nombre"
 
     Parameters
     ----------
@@ -130,7 +140,8 @@ def delete_cancion(nombre: str) -> Response:
 
 @router.get("/dto/{nombre}")
 def get_cancion_dto(nombre: str) -> Response:
-    """ Devuelve la canción con nombre "nombre" con los dato necesarios para previsualizacion sin carga el contenido de la canción
+    """Devuelve la canción con nombre "nombre" con los dato necesarios para
+    previsualizacion sin carga el contenido de la canción
 
     Parameters
     ----------
@@ -153,8 +164,14 @@ def get_cancion_dto(nombre: str) -> Response:
 
 
 @router.put("/{nombre}")
-def update_song(nombre: str, foto: str = None, genre: Genre = None, nuevo_nombre: str = None, authorization: Annotated[Union[str, None], Header()] = None) -> Response:
-    """ Actualiza los parámetros de la cancion con nombre "nombre"
+def update_song(
+    nombre: str,
+    foto: str = None,
+    genre: Genre = None,
+    nuevo_nombre: str = None,
+    authorization: Annotated[Union[str, None], Header()] = None,
+) -> Response:
+    """Actualiza los parámetros de la cancion con nombre "nombre"
 
     Parameters
     ----------
@@ -176,19 +193,17 @@ def update_song(nombre: str, foto: str = None, genre: Genre = None, nuevo_nombre
     """
 
     if authorization is None:
-        raise HTTPException(
-            status_code=401, detail="Authorization header is missing")
+        raise HTTPException(status_code=401, detail="Authorization header is missing")
 
     jwt_token = get_jwt_token(authorization)
 
-    song_service.update_song(
-        nombre, nuevo_nombre, foto, genre, jwt_token)
+    song_service.update_song(nombre, nuevo_nombre, foto, genre, jwt_token)
     return Response(None, 204)
 
 
 @router.patch("/{nombre}/numberOfPlays")
 def increase_number_plays_song(nombre: str) -> Response:
-    """ Incrementa el número de visitas de la cancion con nombre "nombre"
+    """Incrementa el número de visitas de la cancion con nombre "nombre"
 
     Parameters
     ----------
@@ -210,7 +225,7 @@ def increase_number_plays_song(nombre: str) -> Response:
 
 @router.get("/generos/{genero}")
 def get_cancion_por_genero(genero: Genre) -> Response:
-    """ Obtiene todas las playlist de un género
+    """Obtiene todas las playlist de un género
 
     Parameters
     ----------

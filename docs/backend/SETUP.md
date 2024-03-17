@@ -21,7 +21,6 @@ cd Backend;
 ```
 * MONGO_URI= uri for connecting into a MongoDB database
 * SECRET_KEY_SIGN= 32 byte key for signing tokens in backend
-* LAMBDA_URL= URL of Lambda API for accesing AWS services and managing song
 
 ```
 
@@ -110,17 +109,4 @@ cd docker/
 2. Run docker compose with the script build_and_up_prod
 ```
 ./build_and_up_prod.sh
-```
-
-### Production Enviroment
-
-1. Build the image
-```
-docker build -t spotify_electron_backend_image .
-```
-
-2. Run the container with the enviroment variables
-```
-docker run -d --name spotify_electron_backend -e MONGO_URI=mongo-uri SECRET_KEY_SIGN=secret-key-sign LAMBDA_URL=lambda-url -p 8000:8000 spotify_electron_backend_image
-
 ```

@@ -40,10 +40,6 @@ export default function Explorar({
         );
         const resFetchUrlFilterItemsByNameJson =
           await resFetchUrlFilterItemsByName.json();
-        console.log(
-          '🚀 ~ file: Explorar.tsx:43 ~ resFetchUrlFilterItemsByName:',
-          resFetchUrlFilterItemsByNameJson
-        );
 
         if (resFetchUrlFilterItemsByNameJson.songs) {
           const fetchedSongs: PropsSongCard[] = [];

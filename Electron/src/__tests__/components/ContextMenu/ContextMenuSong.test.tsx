@@ -27,7 +27,7 @@ const playlistDTOMockFetch = {
   photo: 'playlist',
   description: 'des',
   upload_date: 'date',
-  owner: artistMockFetch,
+  owner: userName,
   song_names: [],
 };
 

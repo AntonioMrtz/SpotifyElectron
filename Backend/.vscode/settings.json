@@ -1,0 +1,9 @@
+{
+    "python.analysis.typeCheckingMode": "basic",
+<<<<<<< HEAD:Backend API/.vscode/settings.json
+=======
+    "flake8.args": [
+        "--max-line-length=88"
+    ],
+>>>>>>> 5c9c76fe8f535afdcf7d0f0489b77b40ff0d7e0e:Backend/.vscode/settings.json
+}

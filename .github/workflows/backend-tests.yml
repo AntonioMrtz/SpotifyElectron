@@ -1,4 +1,4 @@
-name: Backend API Tests
+name: Backend Tests
 
 on:
   pull_request:
@@ -22,16 +22,17 @@ jobs:
           AGENT_TOOLSDIRECTORY: /opt/hostedtoolcache
 
       - name: Install dependencies
-        working-directory: Backend API # Change to your backend API directory path
-        run: pip install -r requirements.txt && pip install -r requirements_test.txt
+        working-directory: Backend
+        run: pip install -r requirements.txt && pip install -r requirements-test.txt
 
       - name: Run tests
-        working-directory: Backend API/src # Change to your backend API src directory path
+        working-directory: Backend/src
         run: python -m pytest -s
         env:
           MONGO_URI : ${{ secrets.MONGO_URI }}
           SECRET_KEY_SIGN : ${{ secrets.SECRET_KEY_SIGN }}
           DISTRIBUTION_ID : ${{ secrets.DISTRIBUTION_ID }}
+          LAMBDA_URL : ${{ secrets.LAMBDA_URL }}
 
 
       - name: Fail workflow on test failure

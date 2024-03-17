@@ -43,11 +43,8 @@ class Database(metaclass=DatabaseMeta):
         if Database.connection is None:
             try:
                 uri = os.getenv("MONGO_URI")
-                if uri and "=" not in uri:
-                    uri += "=true&w=majority"
-                Database.connection = MongoClient(uri, server_api=ServerApi("1"))[
-                    "SpotifyElectron"
-                ]
+                Database.connection = MongoClient(uri, server_api=ServerApi('1'))[
+                    "SpotifyElectron"]
                 Database.list_collection = Database.connection["playlist"]
                 Database.song_collection = Database.connection["song"]
 

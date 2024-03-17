@@ -1,5 +1,10 @@
 services:
 
+  backend:
+    extends:
+      file: docker-compose-base.yml
+      service: backend
+
   mongo:
     image: mongo
     container_name: mongodb
@@ -20,13 +25,3 @@ services:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: root
       ME_CONFIG_MONGODB_URL: mongodb://root:root@mongo:27017/
-
-  backend:
-    container_name: backend
-    build:
-      context: ../
-      dockerfile: Dockerfile
-    ports:
-      - 8000:8000
-    env_file:
-          - ../.env

@@ -31,21 +31,6 @@
             },
             "console": "integratedTerminal",
             "justMyCode": false
-        },
-        {
-            "name": "Python: Prueba",
-            "type": "debugpy",
-            "request": "launch",
-            "module": "pytest",
-            "args": [
-                "tests"
-            ],
-            "cwd": "${workspaceFolder}/src/tests/test_all_users.py",
-            "env": {
-                "PYTHONPATH": "${workspaceFolder}"
-            },
-            "console": "integratedTerminal",
-            "justMyCode": false
         }
     ]
 }

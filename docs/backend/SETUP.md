@@ -77,16 +77,32 @@ python -m pytest --cov=. --cov-report=html // Test run and generate coverage in 
 
 ### Dev Enviroment
 
+* Uses local mongoDB database
+* Access it via MongoExpress
+  * Connect http://localhost:8081/
+  * Use user : admin and password : pass
+
 1. Go to docker folder
 ```
 cd docker/
 ```
 
-2. Run docker compose with the script build_and_up
+2. Run docker compose with the script build_and_up_dev
 ```
-./build_and_up.sh
+./build_and_up_dev.sh
 ```
 
+### Prod Enviroment
+
+1. Go to docker folder
+```
+cd docker/
+```
+
+2. Run docker compose with the script build_and_up_prod
+```
+./build_and_up_prod.sh
+```
 
 ### Production Enviroment
 

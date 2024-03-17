@@ -69,7 +69,7 @@ python -m pytest --cov=. --cov-report=html // Test run and generate coverage in 
 
 2. Run style rules
 ```
-python -m isort --profile black --line-length=79 .
+python -m isort --profile black .
 
 ```
 

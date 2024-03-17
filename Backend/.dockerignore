@@ -1,0 +1,45 @@
+# Exclude version control system directories
+.git
+.svn
+
+# Exclude Python bytecode files
+__pycache__
+**/__pycache__/
+
+# Exclude Python pytest cache
+
+**/.pytest_cache/
+
+
+
+# Exclude environment-specific settings
+.env.example
+.env
+
+# Exclude any local development settings
+*.log
+*.sqlite
+
+# Exclude any cached or temporary files
+*.pyc
+*.pyo
+*.pyd
+
+
+# Exclude any build-related files
+*.bak
+.DS_Store
+
+# Exclude the virtual environment directory (if applicable)
+**/venv/
+
+# Exclude docs
+api-docs-spotify-electron.html
+generate-docs.py
+
+
+# Exclude test coverage
+**/htmlcov/
+
+# Exclude tests
+**/tests/

@@ -23,25 +23,21 @@ jobs:
         python-version: 3.9
 
     - name: Install dependencies
-      working-directory: Backend API
+      working-directory: Backend
       run: pip install -r requirements.txt
 
     - name: Run generate docs
-      working-directory: Backend API/src
+      working-directory: Backend/src
       run: |
         python generate-docs.py
         mv -f api-docs-spotify-electron.html ../api-docs-spotify-electron.html
 
     - name: Add and commit changes
-      working-directory: Backend API/
+      working-directory: Backend/
       run: |
         git config --local user.email "actions@github.com"
         git config --local user.name "GitHub Actions"
-        git add api-docs-spotify-electron.html
-        git commit -m "docs : Update API documentation"
-
     - name: Pushing to the protected branch 'protected'
-      uses: CasperWA/push-protected@v2
       with:
         token: ${{ secrets.PAT }}
         branch: ${{ github.base_ref }}

@@ -46,7 +46,7 @@ git clone https://github.com/AntonioMrtz/SpotifyElectron.git
 to be escalable and ready for quick iterations of features.
 * Focus on security and code quality for delivering the user a safe experience.
 * Full coverage test suite for both Backend and Frontend.
-* Work with Cloud AWS services such as Lambda,S3 and Cloudfront.
+* Work with Cloud AWS services such as Lambda, S3 and Cloudfront.
 * Work as a team managing Github branches, pull requests,code reviews and Trello Board to organize tasks in different stages.
 * Reach CI/CD automatization with Github Actions. 
 * Add new extra functionality that could improve the original app.

@@ -432,7 +432,7 @@ def get_artists(names: list) -> list:
 
 
 def search_by_name(name: str) -> json:
-    """ Returns a list of Artist that contains "name" in their names
+    """Returns a list of Artist that contains "name" in their names
 
     Parameters
     ----------
@@ -449,7 +449,8 @@ def search_by_name(name: str) -> json:
     """
 
     artists_names_response = artist_collection.find(
-        {'name': {'$regex': name, '$options': 'i'}}, {"_id": 0, "name": 1})
+        {"name": {"$regex": name, "$options": "i"}}, {"_id": 0, "name": 1}
+    )
 
     artists_names = []
 
@@ -465,7 +466,7 @@ def search_by_name(name: str) -> json:
 
 
 def search_by_name(name: str) -> json:
-    """ Returns a list of Artist that contains "name" in their names
+    """Returns a list of Artist that contains "name" in their names
 
     Parameters
     ----------
@@ -482,7 +483,8 @@ def search_by_name(name: str) -> json:
     """
 
     artists_names_response = artist_collection.find(
-        {'name': {'$regex': name, '$options': 'i'}}, {"_id": 0, "name": 1})
+        {"name": {"$regex": name, "$options": "i"}}, {"_id": 0, "name": 1}
+    )
 
     artists_names = []
 
@@ -495,6 +497,7 @@ def search_by_name(name: str) -> json:
     [artist_json_list.append(artist.get_json()) for artist in artists]
 
     return artist_json_list
+
 
 # * AUX METHODs
 

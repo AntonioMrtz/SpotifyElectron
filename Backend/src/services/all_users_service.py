@@ -126,7 +126,7 @@ def check_song_exists(name: str) -> bool:
     -------
         Boolean
     """
-    return True if song_collection.find_one({'name': name}) else False
+    return True if song_collection.find_one({"name": name}) else False
 
 
 def check_playlist_exists(name: str) -> bool:

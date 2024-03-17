@@ -42,6 +42,7 @@ def check_jwt_is_user(token: TokenData, user: str) -> bool:
             status_code=401, detail="El usuario está modificando otro usuario"
         )
 
+
 def get_user(name: str) -> User:
     """Returns user with name "name"
 

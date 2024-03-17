@@ -22,11 +22,11 @@ jobs:
           AGENT_TOOLSDIRECTORY: /opt/hostedtoolcache
 
       - name: Install dependencies
-        working-directory: Backend API # Change to your backend API directory path
-        run: pip install -r requirements.txt && pip install -r requirements_test.txt && pip install -r requirements_dev.txt
+        working-directory: Backend/
+        run: pip install -r requirements.txt && pip install -r requirements-test.txt && pip install -r requirements-dev.txt
 
       - name: Run style check
-        working-directory: Backend API/src # Change to your backend API src directory path
+        working-directory: Backend/src
         run: python -m black . --check
 
       - name: Fail workflow on style check failure

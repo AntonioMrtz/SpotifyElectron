@@ -13,7 +13,7 @@ In this section we will cover:
 1. Enter backend directory 
 
 ```
-cd Backend API;
+cd Backend;
 ```
 
 2. Create the enviroment file in root path with the following data. **Check .env.example file to see format**
@@ -58,7 +58,7 @@ python3 -m uvicorn main:app --reload;
 ## 📓 Access documentation and swagger interface
 
 * Swagger: **http://127.0.0.1:8000/docs**
-* Auto-generated documentation: **Backend API/api-docs-spotify-electron.html**
+* Auto-generated documentation: **Backend/api-docs-spotify-electron.html**
 
 ## ✔️ Run tests
 

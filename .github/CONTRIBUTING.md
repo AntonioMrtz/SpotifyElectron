@@ -30,5 +30,5 @@
 ## MUST-HAVE SOFTWARE
 
 * Node.js
-* Python / Python3
+* Python >= 3.9
 * Git

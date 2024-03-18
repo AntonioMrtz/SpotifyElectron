@@ -1,5 +1,5 @@
 from fastapi.testclient import TestClient
-from main import app as app
+from src.main import app as app
 from test_API.api_test_artist import create_artist, delete_artist
 from test_API.api_token import get_user_jwt_header
 

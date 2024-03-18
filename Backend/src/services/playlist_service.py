@@ -2,18 +2,18 @@ import json
 from datetime import datetime
 from sys import modules
 
-import services.dto_service as dto_service
-from database.Database import Database
+import src.services.dto_service as dto_service
+from src.database.Database import Database
 from fastapi import HTTPException
-from model.Playlist import Playlist
-from model.TokenData import TokenData
-from services.all_users_service import (
+from src.model.Playlist import Playlist
+from src.model.TokenData import TokenData
+from src.services.all_users_service import (
     add_playlist_to_owner,
     check_user_exists,
     delete_playlist_from_owner,
 )
-from services.song_service import get_song
-from services.utils import checkValidParameterString
+from src.services.song_service import get_song
+from src.services.utils import checkValidParameterString
 
 if "pytest" in modules:
     playlistCollection = Database().connection["test.playlist"]

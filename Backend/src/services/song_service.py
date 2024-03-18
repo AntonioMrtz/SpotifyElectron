@@ -6,20 +6,20 @@ from sys import modules
 import boto3
 import librosa
 from botocore.exceptions import ClientError
-from database.Database import Database
+from src.database.Database import Database
 from dotenv import load_dotenv
 from fastapi import HTTPException
 from gridfs import GridFS
-from model.Genre import Genre
-from model.Song import Song
-from model.TokenData import TokenData
+from src.model.Genre import Genre
+from src.model.Song import Song
+from src.model.TokenData import TokenData
 from pymongo.errors import PyMongoError
-from services.artist_service import (
+from src.services.artist_service import (
     add_song_artist,
     check_artists_exists,
     delete_song_artist,
 )
-from services.utils import checkValidParameterString
+from src.services.utils import checkValidParameterString
 
 """ Insert songs with format [files,chunks] https://www.mongodb.com/docs/manual/core/gridfs/"""
 

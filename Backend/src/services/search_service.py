@@ -1,11 +1,11 @@
 import json
 
-import services.artist_service as artist_service
-import services.playlist_service as playlist_service
-import services.song_service as song_service
-import services.user_service as user_service
+import src.services.artist_service as artist_service
+import src.services.playlist_service as playlist_service
+import src.services.song_service as song_service
+import src.services.user_service as user_service
 from fastapi import HTTPException
-from services.utils import checkValidParameterString
+from src.services.utils import checkValidParameterString
 
 
 def search_by_name(name: str) -> str:

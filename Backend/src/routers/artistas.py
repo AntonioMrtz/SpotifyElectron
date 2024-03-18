@@ -1,10 +1,10 @@
 import json
 from typing import Annotated, Union
 
-import services.artist_service as artist_service
+import src.services.artist_service as artist_service
 from fastapi import APIRouter, Header, HTTPException
 from fastapi.responses import Response
-from services.security_service import get_jwt_token
+from src.services.security_service import get_jwt_token
 
 router = APIRouter(
     prefix="/artistas",

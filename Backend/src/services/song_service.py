@@ -3,19 +3,18 @@ import io
 from sys import modules
 
 import librosa
-import services.dto_service as dto_service
-from database.Database import Database
+from src.database.Database import Database
 from fastapi import HTTPException
 from gridfs import GridFS
-from model.Genre import Genre
-from model.Song import Song
-from model.TokenData import TokenData
-from services.artist_service import (
+from src.model.Genre import Genre
+from src.model.Song import Song
+from src.model.TokenData import TokenData
+from src.services.artist_service import (
     add_song_artist,
     check_artists_exists,
     delete_song_artist,
 )
-from services.utils import checkValidParameterString
+from src.services.utils import checkValidParameterString
 
 """ Insert songs with format [files,chunks] https://www.mongodb.com/docs/manual/core/gridfs/"""
 

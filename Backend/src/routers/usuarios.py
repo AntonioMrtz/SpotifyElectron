@@ -1,11 +1,11 @@
 from typing import Annotated, Union
 
-import services.all_users_service as all_users_service
-import services.security_service as security_service
-import services.user_service as user_service
+import src.services.all_users_service as all_users_service
+import src.services.security_service as security_service
+import src.services.user_service as user_service
 from fastapi import APIRouter, Header, HTTPException
 from fastapi.responses import Response
-from services.security_service import get_jwt_token
+from src.services.security_service import get_jwt_token
 
 router = APIRouter(
     prefix="/usuarios",

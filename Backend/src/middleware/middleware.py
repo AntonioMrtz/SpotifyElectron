@@ -1,5 +1,5 @@
 from fastapi import Request, Response
-from services.security_service import check_jwt_is_valid
+from src.services.security_service import check_jwt_is_valid
 from starlette.middleware.base import BaseHTTPMiddleware
 
 

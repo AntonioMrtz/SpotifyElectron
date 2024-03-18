@@ -27,10 +27,9 @@ jobs:
       run: pip install -r requirements.txt
 
     - name: Run generate docs
-      working-directory: Backend/src
+      working-directory: Backend/
       run: |
         python generate-docs.py
-        mv -f api-docs-spotify-electron.html ../api-docs-spotify-electron.html
 
     - name: Add and commit changes
       working-directory: Backend/

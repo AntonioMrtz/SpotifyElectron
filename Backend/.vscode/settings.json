@@ -4,8 +4,8 @@
         "--max-line-length=88"
     ],
     "python.testing.pytestArgs": [
-        "src"
+        "tests"
     ],
     "python.testing.unittestEnabled": false,
-    "python.testing.pytestEnabled": true,
+    "python.testing.pytestEnabled": true
 }

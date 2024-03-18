@@ -1,11 +1,11 @@
 from sys import modules
 
-from database.Database import Database
+from src.database.Database import Database
 from fastapi import HTTPException
-from model.DTO.PlaylistDTO import PlaylistDTO
-from model.DTO.SongDTO import SongDTO
-from model.Genre import Genre
-from services.utils import checkValidParameterString
+from src.model.DTO.PlaylistDTO import PlaylistDTO
+from src.model.DTO.SongDTO import SongDTO
+from src.model.Genre import Genre
+from src.services.utils import checkValidParameterString
 
 if "pytest" in modules:
 

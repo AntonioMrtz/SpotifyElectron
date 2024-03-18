@@ -1,12 +1,12 @@
 from sys import modules
 
-import services.artist_service as artist_service
-import services.user_service as user_service
-from database.Database import Database
+import src.services.artist_service as artist_service
+import src.services.user_service as user_service
+from src.database.Database import Database
 from fastapi import HTTPException
-from model.TokenData import TokenData
-from model.UserType import User_Type
-from services.utils import checkValidParameterString
+from src.model.TokenData import TokenData
+from src.model.UserType import User_Type
+from src.services.utils import checkValidParameterString
 
 if "pytest" in modules:
     user_collection = Database().connection["test.usuario"]

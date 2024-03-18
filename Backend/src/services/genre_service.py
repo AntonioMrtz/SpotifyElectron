@@ -1,6 +1,6 @@
 import json
 
-from model.Genre import Genre
+from src.model.Genre import Genre
 
 
 def get_genres() -> str:

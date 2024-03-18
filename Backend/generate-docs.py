@@ -2,7 +2,7 @@
 
 import json
 
-from main import app
+from src.main import app
 
 HTML_TEMPLATE = """<!DOCTYPE html>
 <html>

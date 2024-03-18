@@ -26,8 +26,8 @@ jobs:
         run: pip install -r requirements.txt && pip install -r requirements-test.txt
 
       - name: Run tests
-        working-directory: Backend/src
-        run: python -m pytest -s
+        working-directory: Backend/
+        run: python -m pytest .
         env:
           MONGO_URI : ${{ secrets.MONGO_URI }}
           SECRET_KEY_SIGN : ${{ secrets.SECRET_KEY_SIGN }}

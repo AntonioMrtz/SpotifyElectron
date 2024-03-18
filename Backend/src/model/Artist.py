@@ -1,7 +1,7 @@
 import json
 from dataclasses import dataclass
 
-from model.User import User
+from src.model.User import User
 
 
 @dataclass

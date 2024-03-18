@@ -1,7 +1,7 @@
 import logging
 
 import pytest
-from model.Genre import Genre
+from src.model.Genre import Genre
 from test_API.api_test_artist import create_artist, delete_artist
 from test_API.api_test_dto import get_playlist_dto, get_song_dto
 from test_API.api_test_playlist import (

@@ -8,14 +8,14 @@ from dotenv import load_dotenv
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
-from model.Artist import Artist
-from model.TokenData import TokenData
-from model.User import User
-from model.UserType import User_Type
-from services.all_users_service import check_user_exists, isArtistOrUser
-from services.artist_service import get_artist
-from services.user_service import get_user
-from services.utils import checkValidParameterString
+from src.model.Artist import Artist
+from src.model.TokenData import TokenData
+from src.model.User import User
+from src.model.UserType import User_Type
+from src.services.all_users_service import check_user_exists, isArtistOrUser
+from src.services.artist_service import get_artist
+from src.services.user_service import get_user
+from src.services.utils import checkValidParameterString
 
 SECRET_KEY = os.getenv("SECRET_KEY_SIGN")
 ALGORITHM = "HS256"

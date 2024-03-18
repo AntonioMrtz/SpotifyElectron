@@ -1,4 +1,4 @@
-import services.genre_service as genre_service
+import src.services.genre_service as genre_service
 from fastapi import APIRouter
 from fastapi.responses import Response
 

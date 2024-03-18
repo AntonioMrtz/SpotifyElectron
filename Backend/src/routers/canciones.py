@@ -1,8 +1,8 @@
 import json
 from typing import Annotated, Union
 
-import services.dto_service as dto_service
-import services.song_service as song_service_streaming
+import src.services.dto_service as dto_service
+import src.services.song_service as song_service_streaming
 from fastapi import (
     APIRouter,
     Header,
@@ -10,8 +10,8 @@ from fastapi import (
     UploadFile,
 )
 from fastapi.responses import Response
-from model.Genre import Genre
-from services.security_service import get_jwt_token
+from src.model.Genre import Genre
+from src.services.security_service import get_jwt_token
 
 router = APIRouter(
     prefix="/canciones",

@@ -26,7 +26,7 @@ jobs:
         run: pip install -r requirements.txt && pip install -r requirements-test.txt && pip install -r requirements-dev.txt
 
       - name: Run style check
-        working-directory: Backend/src
+        working-directory: Backend/
         run: python -m black . --check
 
       - name: Fail workflow on style check failure

@@ -10,10 +10,10 @@
             "request": "launch",
             "module": "uvicorn",
             "args": [
-                "main:app",
+                "src.main:app",
                 "--reload"
             ],
-            "cwd": "${workspaceFolder}/src/",
+            "cwd": "${workspaceFolder}/",
             "jinja": true,
             "justMyCode": false
         },
@@ -25,10 +25,7 @@
             "args": [
                 "tests"
             ],
-            "cwd": "${workspaceFolder}/src/",
-            "env": {
-                "PYTHONPATH": "${workspaceFolder}"
-            },
+            "cwd": "${workspaceFolder}/",
             "console": "integratedTerminal",
             "justMyCode": false
         }

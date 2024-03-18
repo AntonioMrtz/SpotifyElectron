@@ -1,4 +1,4 @@
-import services.search_service as search_service
+import src.services.search_service as search_service
 from fastapi import APIRouter
 from fastapi.responses import Response
 

@@ -1,11 +1,11 @@
 import json
 from typing import Annotated, Optional, Union
 
-import services.dto_service as dto_service
-import services.playlist_service as playlist_service
+import src.services.dto_service as dto_service
+import src.services.playlist_service as playlist_service
 from fastapi import APIRouter, Header, HTTPException
 from fastapi.responses import Response
-from services.security_service import get_jwt_token
+from src.services.security_service import get_jwt_token
 
 router = APIRouter(
     prefix="/playlists",

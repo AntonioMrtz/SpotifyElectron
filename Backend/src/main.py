@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from middleware.middleware import CheckJwtAuth
-from routers import (
+from src.middleware.middleware import CheckJwtAuth
+from src.routers import (
     artistas,
     canciones,
     generos,

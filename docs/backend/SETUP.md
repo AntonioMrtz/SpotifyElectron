@@ -28,7 +28,7 @@ cd Backend;
 
 ```
 python -m venv venv;
-venv/Scripts/activate
+venv/Scripts/activate;
 pip install -r requirements.txt;
 pip install -r requirements-dev.txt;
 pip install -r requirements-test.txt;
@@ -37,11 +37,12 @@ pip install -r requirements-test.txt;
 4. Run the app in hot reload debug mode 
 
 ```
-cd src/;
-python3 -m uvicorn main:app --reload;
+python -m uvicorn src.main:app --reload;
 ```
 
 5. The app will be deploy at **http://127.0.0.1:8000/**
+
+6. You can also launch the app and tests with the VSCODE scripts included in the .vscode folder
 
 ## 📓 Access documentation and swagger interface
 
@@ -50,23 +51,19 @@ python3 -m uvicorn main:app --reload;
 
 ## ✔️ Run tests
 
-1. Go to src folder
-```
-cd src/;
-```
-2. Run tests
+1. Run tests
 ```
 python -m pytest . // Normal test run
 
 or
 
-python -m pytest --cov=. --cov-report=html // Test run and generate coverage in folder src/htmlcov/index
+python -m pytest --cov=. --cov-report=html // Test run and generate coverage in folder htmlcov/index.html
 
 ```
 
 ## 🎨 Run style on code
 
-2. Run style rules
+1. Run style rules
 ```
 python -m isort --profile black .
 
@@ -82,6 +79,11 @@ python -m isort --profile black .
 
 ## 🐳 Containerize the app
 
+1. Go to docker folder
+```
+cd docker/
+```
+
 ### Dev Enviroment
 
 * Uses local mongoDB database
@@ -89,10 +91,6 @@ python -m isort --profile black .
   * Connect http://localhost:8081/
   * Use user : admin and password : pass
 
-1. Go to docker folder
-```
-cd docker/
-```
 
 2. Run docker compose with the script build_and_up_dev
 ```
@@ -100,11 +98,6 @@ cd docker/
 ```
 
 ### Prod Enviroment
-
-1. Go to docker folder
-```
-cd docker/
-```
 
 2. Run docker compose with the script build_and_up_prod
 ```

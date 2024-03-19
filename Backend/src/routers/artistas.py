@@ -4,7 +4,7 @@ from typing import Annotated, Union
 import src.services.artist_service as artist_service
 from fastapi import APIRouter, Header, HTTPException
 from fastapi.responses import Response
-from src.services.security_service import get_jwt_token
+import src.services.security_service as security_service
 
 router = APIRouter(
     prefix="/artistas",
@@ -96,7 +96,7 @@ def update_artista(
     if authorization is None:
         raise HTTPException(status_code=401, detail="Authorization header is missing")
 
-    jwt_token = get_jwt_token(authorization)
+    jwt_token = security_service.get_jwt_token(authorization)
 
     artist_service.update_artist(
         name=nombre,

@@ -1,6 +1,5 @@
 import json
 from dataclasses import dataclass
-from datetime import datetime
 
 import src.services.song_service as song_service
 
@@ -15,7 +14,7 @@ class Playlist:
     songs: list
 
     def add_songs(self, song_names: str) -> None:
-        [songs.append(song_service.get_song(song_name)) for song_name in song_names]
+        [self.songs.append(song_service.get_song(song_name)) for song_name in song_names]
 
     def get_json(self) -> str:
         playlist_dict = self.__dict__

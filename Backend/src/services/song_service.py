@@ -2,34 +2,28 @@ import base64
 import io
 import os
 from sys import modules
+from typing import List
 
 import librosa
 import requests
 from src.database.Database import Database
 from dotenv import load_dotenv
 from fastapi import HTTPException
-from gridfs import GridFS
 from src.model.Genre import Genre
 from src.model.Song import Song
 from src.model.TokenData import TokenData
 from pymongo.errors import PyMongoError
-from src.services.artist_service import (
-    add_song_artist,
-    check_artists_exists,
-    delete_song_artist,
-)
+import src.services.artist_service as artist_service
 from src.services.utils import checkValidParameterString
 
 """ Insert songs with format [files,chunks] https://www.mongodb.com/docs/manual/core/gridfs/"""
 
 if "pytest" in modules:
-    gridFsSong = GridFS(Database().connection, collection="test.cancion")
     file_song_collection = Database().connection["test.cancion.files"]
     song_collection = Database().connection["test.canciones.streaming"]
 
 
 else:
-    gridFsSong = GridFS(Database().connection, collection="cancion")
     file_song_collection = Database().connection["cancion.files"]
     song_collection = Database().connection["canciones.streaming"]
 
@@ -113,6 +107,7 @@ def get_song(name: str) -> Song:
         }
         res = requests.get(f"{lambda_base_path}", params=params)
         if res.status_code != 200:
+            # TODO
             raise ClientError(
                 {"Error": {"Code": res.status_code, "Message": res.content}},
                 "operation_name",
@@ -132,8 +127,8 @@ def get_song(name: str) -> Song:
         )
 
         return song
-
     except ClientError as e:
+        # TODO
         raise HTTPException(
             status_code=500,
             detail=f"Error interno del servidor al interactuar con AWS {e}",
@@ -230,7 +225,7 @@ async def create_song(
     if check_song_exists(name=name):
         raise HTTPException(status_code=400, detail="La canción ya existe")
 
-    if not check_artists_exists(artist_name=artist):
+    if not artist_service.check_artists_exists(artist_name=artist):
         raise HTTPException(status_code=404, detail="El artista no existe")
 
     try:
@@ -257,6 +252,7 @@ async def create_song(
             f"{lambda_base_path}", json=request_data_body, params=params
         )
         if res.status_code != 201:
+            # TODO
             raise ClientError(
                 {"Error": {"Code": res.status_code, "Message": res.content}},
                 "operation_name",
@@ -272,7 +268,7 @@ async def create_song(
                 "number_of_plays": 0,
             }
         )
-        add_song_artist(artist, name)
+        artist_service.add_song_artist(artist, name)
 
     except PyMongoError as e:
         raise HTTPException(
@@ -281,6 +277,7 @@ async def create_song(
         )
 
     except ClientError as e:
+        # TODO
         raise HTTPException(
             status_code=500,
             detail=f"Error interno del servidor al interactuar con AWS {e}",
@@ -322,13 +319,14 @@ def delete_song(name: str) -> None:
         }
         res = requests.delete(f"{lambda_base_path}", params=params)
         if res.status_code != 202:
+            # TODO
             raise ClientError(
                 {"Error": {"Code": res.status_code, "Message": res.content}},
                 "operation_name",
             )
 
         song_collection.delete_one({"name": name})
-        delete_song_artist(result["artist"], name)
+        artist_service.delete_song_artist(result["artist"], name)
 
     except PyMongoError as e:
         raise HTTPException(
@@ -337,6 +335,7 @@ def delete_song(name: str) -> None:
         )
 
     except ClientError as e:
+        # TODO
         raise HTTPException(
             status_code=500, detail="Error interno del servidor al interactuar con AWS"
         )
@@ -349,6 +348,7 @@ def delete_song(name: str) -> None:
 def update_song(
     name: str, nuevo_nombre: str, photo: str, genre: Genre, token: TokenData
 ) -> None:
+    # TODO, check if correct ( file_song_collection...)
     """Updates a song with name, url of thumbnail, duration, genre and number of plays, if empty parameter is not being updated "
 
     Parameters
@@ -481,3 +481,51 @@ def search_by_name(name: str) -> list:
     [songs_json_list.append(song.get_json()) for song in songs]
 
     return songs_json_list
+
+
+def get_artist_playback_count(artist_name: str) -> int:
+    """The total playback count for all artist songs
+
+    Args:
+        artist_name (str): the artist name
+
+    Returns:
+        int: the number of playback count for the artists songs
+    """
+    result_number_playback_count_query = song_collection.aggregate(
+        [
+            {"$match": {"artist": artist_name}},
+            {"$group": {"_id": None, "total": {"$sum": "$number_of_plays"}}},
+        ]
+    )
+    result_number_playback_count_query = next(result_number_playback_count_query, None)
+
+    if result_number_playback_count_query is not None:
+        total_plays = result_number_playback_count_query["total"]
+        return total_plays
+    else:
+        return 0
+
+
+def get_songs_by_genre(genre: Genre) -> List[Song]:
+    # TODO
+    result_get_song_by_genre = song_collection.find({"genre": Genre.getGenre(genre)})
+    songs_by_genre = []
+
+    for song_data in result_get_song_by_genre:
+        songs_by_genre.append(
+            Song(
+                name=song_data["name"],
+                artist=song_data["artist"],
+                photo=song_data["photo"],
+                duration=song_data["duration"],
+                genre=Genre(song_data["genre"]).name,
+                number_of_plays=song_data["number_of_plays"],
+                url="no_url_get_songs_by_genre",
+            )
+        )
+
+    return songs_by_genre
+
+
+# TODO convertir json -> Song objeto

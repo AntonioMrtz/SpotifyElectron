@@ -10,11 +10,9 @@ from src.services.utils import checkValidParameterString
 
 if "pytest" in modules:
     user_collection = Database().connection["test.usuario"]
-    artist_collection = Database().connection["test.artista"]
 
 else:
     user_collection = Database().connection["usuario"]
-    artist_collection = Database().connection["artista"]
 
 
 def check_jwt_is_user(token: TokenData, user: str) -> bool:

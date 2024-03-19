@@ -12,9 +12,9 @@ from src.model.Artist import Artist
 from src.model.TokenData import TokenData
 from src.model.User import User
 from src.model.UserType import User_Type
-from src.services.all_users_service import check_user_exists, isArtistOrUser
-from src.services.artist_service import get_artist
-from src.services.user_service import get_user
+import src.services.all_users_service as all_users_service
+import src.services.artist_service as artist_service
+import src.services.user_service as user_service
 from src.services.utils import checkValidParameterString
 
 SECRET_KEY = os.getenv("SECRET_KEY_SIGN")
@@ -115,12 +115,13 @@ def get_current_user(
     jwt: TokenData = get_jwt_token(token)
 
     if jwt.token_type == User_Type.ARTIST:
-        user = get_artist(jwt.username)
+        user = artist_service.get_artist(jwt.username)
 
     else:
-        user = get_user(jwt.username)
+        user = user_service.get_user(jwt.username)
 
     if user is None:
+        # TODO
         raise credentials_exception
     return user
 
@@ -148,15 +149,15 @@ def login_user(name: str, password: str) -> json:
     if not checkValidParameterString(name) or not checkValidParameterString(password):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
-    if not check_user_exists(user_name=name):
+    if not all_users_service.check_user_exists(user_name=name):
         raise HTTPException(status_code=404, detail="El usuario no existe")
 
-    if isArtistOrUser(user_name=name) == User_Type.ARTIST:
-        user = get_artist(name)
+    if all_users_service.isArtistOrUser(user_name=name) == User_Type.ARTIST:
+        user = artist_service.get_artist(name)
         user_type = User_Type.ARTIST
 
     else:
-        user = get_user(name)
+        user = user_service.get_user(name)
         user_type = User_Type.USER
 
     # check password

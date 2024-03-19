@@ -7,33 +7,13 @@ from fastapi import HTTPException
 from src.model.Artist import Artist
 from src.model.TokenData import TokenData
 from src.services.utils import checkValidParameterString
+import src.services.song_service as song_service
 
 if "pytest" in modules:
     artist_collection = Database().connection["test.artista"]
-    user_collection = Database().connection["test.usuario"]
-    song_collection = Database().connection["test.canciones.streaming"]
 
 else:
     artist_collection = Database().connection["artista"]
-    user_collection = Database().connection["usuario"]
-    song_collection = Database().connection["canciones.streaming"]
-
-
-def check_song_exists(name: str) -> bool:
-    """Check if the song exists or not
-
-    Parameters
-    ----------
-        name (str): Song's name
-
-    Raises
-    -------
-
-    Returns
-    -------
-        Boolean
-    """
-    return True if song_collection.find_one({"name": name}) else False
 
 
 def check_user_exists(user_name: str) -> bool:
@@ -134,9 +114,6 @@ def add_song_artist(artist_name: str, song_name: str):
 
     if not check_artists_exists(artist_name=artist_name):
         raise HTTPException(status_code=404, detail="El artista no existe")
-
-    if not check_song_exists(song_name):
-        raise HTTPException(status_code=404, detail="La canción no existe")
 
     result = artist_collection.update_one(
         {"name": artist_name}, {"$push": {"uploaded_songs": song_name}}
@@ -239,6 +216,11 @@ def create_artist(name: str, photo: str, password: str) -> None:
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
     if check_user_exists(name):
+        raise HTTPException(
+            status_code=400, detail="El nombre de artista ya existe como usuario"
+        )
+
+    if check_artists_exists(name):
         raise HTTPException(status_code=400, detail="El artista ya existe")
 
     utf8_password = password.encode("utf-8")
@@ -386,22 +368,7 @@ def get_play_count_artist(user_name: str) -> int:
     if not check_artists_exists(user_name):
         raise HTTPException(status_code=404, detail="El artista no existe")
 
-    resultado = song_collection.aggregate(
-        [
-            {"$match": {"artist": user_name}},
-            {"$group": {"_id": None, "total": {"$sum": "$number_of_plays"}}},
-        ]
-    )
-
-    # Obtener el resultado total directamente
-    resultado_total = next(resultado, None)
-
-    if resultado_total is not None:
-        total_plays = resultado_total["total"]
-        return total_plays
-    else:
-        # Manejar el caso en el que no hay documentos que coincidan con la condición
-        return 0  # o cualquier otro valor predeterminado que desees devolver
+    return song_service.get_artist_playback_count(user_name)
 
 
 def get_artists(names: list) -> list:

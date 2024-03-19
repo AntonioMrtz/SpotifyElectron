@@ -5,7 +5,6 @@ import src.services.security_service as security_service
 import src.services.user_service as user_service
 from fastapi import APIRouter, Header, HTTPException
 from fastapi.responses import Response
-from src.services.security_service import get_jwt_token
 
 router = APIRouter(
     prefix="/usuarios",
@@ -123,7 +122,7 @@ def update_usuario(
     if authorization is None:
         raise HTTPException(status_code=401, detail="Authorization header is missing")
 
-    jwt_token = get_jwt_token(authorization)
+    jwt_token = security_service.get_jwt_token(authorization)
 
     user_service.update_user(
         name=nombre,
@@ -187,7 +186,7 @@ def patch_historial(
     if authorization is None:
         raise HTTPException(status_code=401, detail="Authorization header is missing")
 
-    jwt_token = get_jwt_token(authorization)
+    jwt_token = security_service.get_jwt_token(authorization)
 
     all_users_service.add_playback_history(
         user_name=nombre, song=nombre_cancion, token=jwt_token
@@ -225,7 +224,7 @@ def patch_playlists_guardadas(
     if authorization is None:
         raise HTTPException(status_code=401, detail="Authorization header is missing")
 
-    jwt_token = get_jwt_token(authorization)
+    jwt_token = security_service.get_jwt_token(authorization)
 
     all_users_service.add_saved_playlist(nombre, nombre_playlist, token=jwt_token)
     return Response(None, 204)
@@ -260,7 +259,7 @@ def delete_playlists_guardadas(
     if authorization is None:
         raise HTTPException(status_code=401, detail="Authorization header is missing")
 
-    jwt_token = get_jwt_token(authorization)
+    jwt_token = security_service.get_jwt_token(authorization)
 
     all_users_service.delete_saved_playlist(nombre, nombre_playlist, token=jwt_token)
     return Response(None, 202)

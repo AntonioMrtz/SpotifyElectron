@@ -1,5 +1,3 @@
-import logging
-
 import pytest
 from src.model.Genre import Genre
 from test_API.api_test_artist import create_artist, delete_artist

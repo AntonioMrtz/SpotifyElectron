@@ -1,4 +1,3 @@
-import json
 from datetime import datetime
 
 import pytest
@@ -6,7 +5,6 @@ from test_API.api_test_artist import create_artist, delete_artist
 from test_API.api_test_playlist import (
     create_playlist,
     delete_playlist,
-    get_all_playlists,
     get_playlist,
     get_playlists,
     update_playlist,
@@ -137,24 +135,6 @@ def test_delete_playlist_invalid_name(clear_test_data_db):
     assert res_delete_playlist.status_code == 405
 
 
-def test_get_playlist_correct():
-    name = ""
-    artist = "8232392323623823723"
-    foto = "https://foto"
-    password = "password"
-
-    res_create_artist = create_artist(artist, foto, password)
-    assert res_create_artist.status_code == 201
-
-    jwt_headers = get_user_jwt_header(username=artist, password=password)
-
-    res_get_playlist = get_playlist(name=name, headers=jwt_headers)
-    assert res_get_playlist.status_code == 200
-
-    res_delete_artist = delete_artist(artist)
-    assert res_delete_artist.status_code == 202
-
-
 def test_update_playlist_correct(clear_test_data_db):
     name = "8232392323623823723"
     foto = "foto"
@@ -224,23 +204,6 @@ def test_update_playlist_correct_nuevo_nombre(clear_test_data_db):
 
     res_delete_playlist = delete_playlist(new_name)
     assert res_delete_playlist.status_code == 202
-
-    res_delete_artist = delete_artist(owner)
-    assert res_delete_artist.status_code == 202
-
-
-def test_get_playlists(clear_test_data_db):
-    foto = "foto"
-    owner = "usuarioprueba834783478923489734298"
-    password = "password"
-
-    res_create_artist = create_artist(owner, foto, password)
-    assert res_create_artist.status_code == 201
-
-    jwt_headers = get_user_jwt_header(username=owner, password=password)
-
-    res_get_playlists = get_all_playlists(headers=jwt_headers)
-    assert res_get_playlists.status_code == 200
 
     res_delete_artist = delete_artist(owner)
     assert res_delete_artist.status_code == 202

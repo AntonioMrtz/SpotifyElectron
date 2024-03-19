@@ -5,8 +5,8 @@ from src.routers import artistas, canciones, generos, login, playlists, search, 
 
 app = FastAPI(
     title="SpotifyElectronAPI",
-    description="API created with FastAPI Python to manage backend for \
-        Spotify Electron App https://github.com/AntonioMrtz/SpotifyElectron",
+    description="API created with FastAPI Python to serve \
+        as backend for SpotifyElectron App",
     version="0.0.1",
 )
 
@@ -22,7 +22,6 @@ app.add_middleware(
         "https://localhost:1212/",
         "http://127.0.0.1:8000/",
         "http://127.0.0.1:8000",
-        "http://127.0.0.1:8000/usuarios/",
     ],
     allow_credentials=True,
     allow_methods=["POST", "GET", "PUT", "DELETE", "PATCH"],

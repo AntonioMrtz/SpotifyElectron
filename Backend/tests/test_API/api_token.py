@@ -1,4 +1,3 @@
-import pytest
 from test_API.api_login import post_login
 
 

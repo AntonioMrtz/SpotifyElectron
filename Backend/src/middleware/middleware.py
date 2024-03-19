@@ -25,7 +25,9 @@ class CheckJwtAuth(BaseHTTPMiddleware):
     bypass_methods = ["DELETE"]
 
     def bypass_request(self, request: Request):
-        """print(request.method)
+        """
+        TODO clean
+        print(request.method)
         print(request.url.path)
         print(request.headers)"""
         """ print(f"COOKIES = \n {request.cookies}")

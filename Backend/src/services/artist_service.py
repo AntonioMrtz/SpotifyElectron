@@ -432,40 +432,6 @@ def search_by_name(name: str) -> json:
     return artist_json_list
 
 
-def search_by_name(name: str) -> json:
-    """Returns a list of Artist that contains "name" in their names
-
-    Parameters
-    ----------
-        name (str) : name to search by
-
-    Raises
-    -------
-            400 : Bad Request
-            404 : Artist not found
-
-    Returns
-    -------
-        List<Json>
-    """
-
-    artists_names_response = artist_collection.find(
-        {"name": {"$regex": name, "$options": "i"}}, {"_id": 0, "name": 1}
-    )
-
-    artists_names = []
-
-    [artists_names.append(artist["name"]) for artist in artists_names_response]
-
-    artists = get_artists(artists_names)
-
-    artist_json_list = []
-
-    [artist_json_list.append(artist.get_json()) for artist in artists]
-
-    return artist_json_list
-
-
 # * AUX METHODs
 
 

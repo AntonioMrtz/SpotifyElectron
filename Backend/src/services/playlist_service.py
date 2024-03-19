@@ -60,7 +60,6 @@ def check_playlist_exists(name: str) -> bool:
     return True if playlist_collection.find_one({"name": name}) else False
 
 
-
 def get_playlist(name: str) -> Playlist:
     """Returns a Playlist with his songs"
 
@@ -159,7 +158,9 @@ def create_playlist(
         }
     )
 
-    all_users_service.add_playlist_to_owner(user_name=owner, playlist_name=name, token=token)
+    all_users_service.add_playlist_to_owner(
+        user_name=owner, playlist_name=name, token=token
+    )
 
     return True if result.acknowledged else False
 

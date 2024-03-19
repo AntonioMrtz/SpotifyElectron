@@ -1,7 +1,7 @@
 from typing import List
 
 import src.services.playlist_service as playlist_service
-import src.services.song_service as song_service
+import src.services.song_services.song_service_aws_lambda as song_service_aws_lambda
 from fastapi import HTTPException
 from src.model.DTO.PlaylistDTO import PlaylistDTO
 from src.model.DTO.SongDTO import SongDTO
@@ -28,7 +28,7 @@ def get_song(name: str) -> SongDTO:
     if not checkValidParameterString(name):
         raise HTTPException(status_code=400, detail="El nombre de la canción es vacío")
 
-    song = song_service.get_song(name)
+    song = song_service_aws_lambda.get_song(name)
     if song is None:
         raise HTTPException(
             status_code=404, detail="La canción con ese nombre no existe"
@@ -70,7 +70,7 @@ def get_songs(song_names: list) -> list:
                 status_code=400, detail="El nombre de la canción es vacío"
             )
 
-        song_data = song_service.get_song(name)
+        song_data = song_service_aws_lambda.get_song(name)
         if song_data is None:
             raise HTTPException(
                 status_code=404, detail="La canción con ese nombre no existe"
@@ -142,7 +142,7 @@ def get_songs_by_genero(genre: Genre) -> List[SongDTO]:
     if not Genre.checkValidGenre(genre.value):
         raise HTTPException(status_code=404, detail="El género no existe")
 
-    songs_by_genre = song_service.get_songs_by_genre(genre)
+    songs_by_genre = song_service_aws_lambda.get_songs_by_genre(genre)
     songs_dto_by_genre = []
 
     for song in songs_by_genre:

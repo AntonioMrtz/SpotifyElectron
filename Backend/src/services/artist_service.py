@@ -2,7 +2,7 @@ from datetime import datetime
 from sys import modules
 
 import bcrypt
-import src.services.song_service as song_service
+import src.services.song_services.song_service_aws_lambda as song_service_aws_lambda
 from fastapi import HTTPException
 from src.database.Database import Database
 from src.model.Artist import Artist
@@ -368,7 +368,7 @@ def get_play_count_artist(user_name: str) -> int:
     if not check_artists_exists(user_name):
         raise HTTPException(status_code=404, detail="El artista no existe")
 
-    return song_service.get_artist_playback_count(user_name)
+    return song_service_aws_lambda.get_artist_playback_count(user_name)
 
 
 def get_artists(names: list) -> list:

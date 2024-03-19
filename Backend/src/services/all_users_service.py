@@ -1,6 +1,6 @@
 import src.services.artist_service as artist_service
 import src.services.playlist_service as playlist_service
-import src.services.song_service as song_service
+import src.services.song_services.song_service_aws_lambda as song_service_aws_lambda
 import src.services.user_service as user_service
 from fastapi import HTTPException
 from src.model.TokenData import TokenData
@@ -100,7 +100,7 @@ def add_playback_history(user_name: str, song: str, token: TokenData) -> None:
     if not check_user_exists(user_name=user_name):
         raise HTTPException(status_code=404, detail="El usuario no existe")
 
-    if not song_service.check_song_exists(song):
+    if not song_service_aws_lambda.check_song_exists(song):
         raise HTTPException(status_code=404, detail="La canción no existe")
 
     user_type = isArtistOrUser(user_name)

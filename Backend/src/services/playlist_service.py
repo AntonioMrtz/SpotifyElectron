@@ -4,7 +4,7 @@ from sys import modules
 
 import src.services.all_users_service as all_users_service
 import src.services.dto_service as dto_service
-import src.services.song_service as song_service
+import src.services.song_services.song_service_aws_lambda as song_service_aws_lambda
 from fastapi import HTTPException
 from src.database.Database import Database
 from src.model.Playlist import Playlist
@@ -90,7 +90,7 @@ def get_playlist(name: str) -> Playlist:
     playlist_songs = []
 
     [
-        playlist_songs.append(song_service.get_song(song_name))
+        playlist_songs.append(song_service_aws_lambda.get_song(song_name))
         for song_name in playlist_data["song_names"]
     ]
 

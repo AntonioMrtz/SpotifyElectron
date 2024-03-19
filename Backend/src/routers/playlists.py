@@ -3,9 +3,9 @@ from typing import Annotated, Optional, Union
 
 import src.services.dto_service as dto_service
 import src.services.playlist_service as playlist_service
+import src.services.security_service as security_service
 from fastapi import APIRouter, Header, HTTPException
 from fastapi.responses import Response
-import src.services.security_service as security_service
 
 router = APIRouter(
     prefix="/playlists",

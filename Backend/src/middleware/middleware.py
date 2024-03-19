@@ -1,5 +1,5 @@
-from fastapi import Request, Response
 import src.services.security_service as security_service
+from fastapi import Request, Response
 from starlette.middleware.base import BaseHTTPMiddleware
 
 

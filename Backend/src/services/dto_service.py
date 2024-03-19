@@ -1,12 +1,12 @@
 from typing import List
 
+import src.services.playlist_service as playlist_service
+import src.services.song_service as song_service
 from fastapi import HTTPException
 from src.model.DTO.PlaylistDTO import PlaylistDTO
 from src.model.DTO.SongDTO import SongDTO
 from src.model.Genre import Genre
 from src.services.utils import checkValidParameterString
-import src.services.song_service as song_service
-import src.services.playlist_service as playlist_service
 
 
 def get_song(name: str) -> SongDTO:

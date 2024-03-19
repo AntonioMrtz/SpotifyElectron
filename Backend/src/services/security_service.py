@@ -4,6 +4,9 @@ from datetime import datetime, timedelta
 from typing import Annotated, Union
 
 import bcrypt
+import src.services.all_users_service as all_users_service
+import src.services.artist_service as artist_service
+import src.services.user_service as user_service
 from dotenv import load_dotenv
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
@@ -12,9 +15,6 @@ from src.model.Artist import Artist
 from src.model.TokenData import TokenData
 from src.model.User import User
 from src.model.UserType import User_Type
-import src.services.all_users_service as all_users_service
-import src.services.artist_service as artist_service
-import src.services.user_service as user_service
 from src.services.utils import checkValidParameterString
 
 SECRET_KEY = os.getenv("SECRET_KEY_SIGN")

@@ -2,14 +2,13 @@ import json
 from datetime import datetime
 from sys import modules
 
+import src.services.all_users_service as all_users_service
 import src.services.dto_service as dto_service
-from src.database.Database import Database
+import src.services.song_service as song_service
 from fastapi import HTTPException
+from src.database.Database import Database
 from src.model.Playlist import Playlist
 from src.model.TokenData import TokenData
-import src.services.all_users_service as all_users_service
-
-import src.services.song_service as song_service
 from src.services.utils import checkValidParameterString
 
 if "pytest" in modules:

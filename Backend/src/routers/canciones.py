@@ -2,16 +2,11 @@ import json
 from typing import Annotated, Union
 
 import src.services.dto_service as dto_service
+import src.services.security_service as security_service
 import src.services.song_service as song_service_streaming
-from fastapi import (
-    APIRouter,
-    Header,
-    HTTPException,
-    UploadFile,
-)
+from fastapi import APIRouter, Header, HTTPException, UploadFile
 from fastapi.responses import Response
 from src.model.Genre import Genre
-import src.services.security_service as security_service
 
 router = APIRouter(
     prefix="/canciones",

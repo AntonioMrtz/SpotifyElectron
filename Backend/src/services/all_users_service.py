@@ -1,12 +1,11 @@
 import src.services.artist_service as artist_service
-import src.services.user_service as user_service
-import src.services.song_service as song_service
 import src.services.playlist_service as playlist_service
+import src.services.song_service as song_service
+import src.services.user_service as user_service
 from fastapi import HTTPException
 from src.model.TokenData import TokenData
 from src.model.UserType import User_Type
 from src.services.utils import checkValidParameterString
-
 
 services_map = {
     User_Type.USER: user_service,

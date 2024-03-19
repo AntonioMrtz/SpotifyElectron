@@ -6,14 +6,14 @@ from typing import List
 
 import librosa
 import requests
-from src.database.Database import Database
+import src.services.artist_service as artist_service
 from dotenv import load_dotenv
 from fastapi import HTTPException
+from pymongo.errors import PyMongoError
+from src.database.Database import Database
 from src.model.Genre import Genre
 from src.model.Song import Song
 from src.model.TokenData import TokenData
-from pymongo.errors import PyMongoError
-import src.services.artist_service as artist_service
 from src.services.utils import checkValidParameterString
 
 """ Insert songs with format [files,chunks] https://www.mongodb.com/docs/manual/core/gridfs/"""

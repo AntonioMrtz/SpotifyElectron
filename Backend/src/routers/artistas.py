@@ -2,9 +2,9 @@ import json
 from typing import Annotated, Union
 
 import src.services.artist_service as artist_service
+import src.services.security_service as security_service
 from fastapi import APIRouter, Header, HTTPException
 from fastapi.responses import Response
-import src.services.security_service as security_service
 
 router = APIRouter(
     prefix="/artistas",

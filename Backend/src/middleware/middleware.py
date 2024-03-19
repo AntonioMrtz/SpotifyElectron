@@ -1,5 +1,5 @@
+import src.services.security_service as security_service
 from fastapi import Request, Response
-from src.services.security_service import check_jwt_is_valid
 from starlette.middleware.base import BaseHTTPMiddleware
 
 
@@ -50,7 +50,7 @@ class CheckJwtAuth(BaseHTTPMiddleware):
                 return response
 
             jwt = request.headers["authorization"]
-            if check_jwt_is_valid(jwt):
+            if security_service.check_jwt_is_valid(jwt):
                 response = await call_next(request)
                 return response
             else:

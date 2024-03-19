@@ -2,16 +2,11 @@ import json
 from typing import Annotated, Union
 
 import src.services.dto_service as dto_service
+import src.services.security_service as security_service
 import src.services.song_service as song_service_streaming
-from fastapi import (
-    APIRouter,
-    Header,
-    HTTPException,
-    UploadFile,
-)
+from fastapi import APIRouter, Header, HTTPException, UploadFile
 from fastapi.responses import Response
 from src.model.Genre import Genre
-from src.services.security_service import get_jwt_token
 
 router = APIRouter(
     prefix="/canciones",
@@ -81,7 +76,7 @@ async def post_cancion(
     if authorization is None:
         raise HTTPException(status_code=401, detail="Authorization header is missing")
 
-    jwt_token = get_jwt_token(authorization)
+    jwt_token = security_service.get_jwt_token(authorization)
 
     await song_service.create_song(nombre, genero, foto, readFile, jwt_token)
     return Response(None, 201)
@@ -195,7 +190,7 @@ def update_song(
     if authorization is None:
         raise HTTPException(status_code=401, detail="Authorization header is missing")
 
-    jwt_token = get_jwt_token(authorization)
+    jwt_token = security_service.get_jwt_token(authorization)
 
     song_service.update_song(nombre, nuevo_nombre, foto, genre, jwt_token)
     return Response(None, 204)

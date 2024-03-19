@@ -3,9 +3,9 @@ from typing import Annotated, Optional, Union
 
 import src.services.dto_service as dto_service
 import src.services.playlist_service as playlist_service
+import src.services.security_service as security_service
 from fastapi import APIRouter, Header, HTTPException
 from fastapi.responses import Response
-from src.services.security_service import get_jwt_token
 
 router = APIRouter(
     prefix="/playlists",
@@ -70,7 +70,7 @@ def post_playlist(
     if authorization is None:
         raise HTTPException(status_code=401, detail="Authorization header is missing")
 
-    jwt_token = get_jwt_token(authorization)
+    jwt_token = security_service.get_jwt_token(authorization)
 
     result = playlist_service.create_playlist(
         name=nombre,
@@ -118,7 +118,7 @@ def update_playlist(
     if authorization is None:
         raise HTTPException(status_code=401, detail="Authorization header is missing")
 
-    jwt_token = get_jwt_token(authorization)
+    jwt_token = security_service.get_jwt_token(authorization)
 
     playlist_service.update_playlist(
         nombre, nuevo_nombre, foto, descripcion, nombres_canciones, jwt_token

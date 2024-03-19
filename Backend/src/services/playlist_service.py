@@ -2,24 +2,20 @@ import json
 from datetime import datetime
 from sys import modules
 
+import src.services.all_users_service as all_users_service
 import src.services.dto_service as dto_service
-from src.database.Database import Database
+import src.services.song_service as song_service
 from fastapi import HTTPException
+from src.database.Database import Database
 from src.model.Playlist import Playlist
 from src.model.TokenData import TokenData
-from src.services.all_users_service import (
-    add_playlist_to_owner,
-    check_user_exists,
-    delete_playlist_from_owner,
-)
-from src.services.song_service import get_song
 from src.services.utils import checkValidParameterString
 
 if "pytest" in modules:
-    playlistCollection = Database().connection["test.playlist"]
+    playlist_collection = Database().connection["test.playlist"]
 
 else:
-    playlistCollection = Database().connection["playlist"]
+    playlist_collection = Database().connection["playlist"]
 
 
 def check_jwt_user_is_playlist_owner(token: TokenData, owner: str) -> bool:
@@ -47,6 +43,23 @@ def check_jwt_user_is_playlist_owner(token: TokenData, owner: str) -> bool:
         )
 
 
+def check_playlist_exists(name: str) -> bool:
+    """Check if the song exists or not
+
+    Parameters
+    ----------
+        name (str): Playlist's name
+
+    Raises
+    -------
+
+    Returns
+    -------
+        Boolean
+    """
+    return True if playlist_collection.find_one({"name": name}) else False
+
+
 def get_playlist(name: str) -> Playlist:
     """Returns a Playlist with his songs"
 
@@ -67,7 +80,7 @@ def get_playlist(name: str) -> Playlist:
     if not checkValidParameterString(name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
-    playlist_data = playlistCollection.find_one({"name": name})
+    playlist_data = playlist_collection.find_one({"name": name})
 
     if playlist_data is None:
         raise HTTPException(
@@ -77,7 +90,7 @@ def get_playlist(name: str) -> Playlist:
     playlist_songs = []
 
     [
-        playlist_songs.append(get_song(song_name))
+        playlist_songs.append(song_service.get_song(song_name))
         for song_name in playlist_data["song_names"]
     ]
 
@@ -126,15 +139,15 @@ def create_playlist(
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
     songs = dto_service.get_songs(song_names)
-    result_playlist_exists = playlistCollection.find_one({"name": name})
+    result_playlist_exists = playlist_collection.find_one({"name": name})
 
     if result_playlist_exists:
         raise HTTPException(status_code=400, detail="La playlist ya existe")
 
-    if not check_user_exists(owner):
+    if not all_users_service.check_user_exists(owner):
         raise HTTPException(status_code=404, detail="El usuario no existe")
 
-    result = playlistCollection.insert_one(
+    result = playlist_collection.insert_one(
         {
             "name": name,
             "photo": photo if "http" in photo else "",
@@ -145,7 +158,9 @@ def create_playlist(
         }
     )
 
-    add_playlist_to_owner(user_name=owner, playlist_name=name, token=token)
+    all_users_service.add_playlist_to_owner(
+        user_name=owner, playlist_name=name, token=token
+    )
 
     return True if result.acknowledged else False
 
@@ -182,7 +197,7 @@ def update_playlist(
     if not checkValidParameterString(name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
-    result_playlist_exists = playlistCollection.find_one({"name": name})
+    result_playlist_exists = playlist_collection.find_one({"name": name})
 
     if not result_playlist_exists:
         raise HTTPException(status_code=404, detail="La playlist no existe")
@@ -191,7 +206,7 @@ def update_playlist(
 
     if checkValidParameterString(nuevo_nombre):
         new_name = nuevo_nombre
-        playlistCollection.update_one(
+        playlist_collection.update_one(
             {"name": name},
             {
                 "$set": {
@@ -204,7 +219,7 @@ def update_playlist(
         )
 
     else:
-        playlistCollection.update_one(
+        playlist_collection.update_one(
             {"name": name},
             {
                 "$set": {
@@ -237,14 +252,14 @@ def delete_playlist(name: str) -> None:
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
     try:
-        delete_playlist_from_owner(playlist_name=name)
+        all_users_service.delete_playlist_from_owner(playlist_name=name)
 
-        result = playlistCollection.delete_one({"name": name})
+        result = playlist_collection.delete_one({"name": name})
         if result.deleted_count == 0:
             raise HTTPException(status_code=404, detail="La playlist no existe")
 
     except:
-        result = playlistCollection.delete_one({"name": name})
+        result = playlist_collection.delete_one({"name": name})
         if result.deleted_count == 0:
             raise HTTPException(status_code=404, detail="La playlist no existe")
 
@@ -266,7 +281,7 @@ def get_all_playlist() -> list:
     """
 
     playlists: list = []
-    playlists_files = playlistCollection.find()
+    playlists_files = playlist_collection.find()
 
     for playlist_file in playlists_files:
         playlists.append(dto_service.get_playlist(playlist_file["name"]))
@@ -293,7 +308,7 @@ def get_selected_playlists(playlist_names: list) -> list:
     filter_contained_playlist_names = {"name": {"$in": playlist_names}}
 
     response_playlists = []
-    playlists_files = playlistCollection.find(filter_contained_playlist_names)
+    playlists_files = playlist_collection.find(filter_contained_playlist_names)
 
     for playlist_file in playlists_files:
         response_playlists.append(dto_service.get_playlist(playlist_file["name"]))
@@ -318,7 +333,7 @@ def search_by_name(name: str) -> json:
         List<PlaylistDTO>
     """
 
-    playlist_names_response = playlistCollection.find(
+    playlist_names_response = playlist_collection.find(
         {"name": {"$regex": name, "$options": "i"}}, {"_id": 0, "name": 1}
     )
 

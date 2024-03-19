@@ -2,19 +2,17 @@ from datetime import datetime
 from sys import modules
 
 import bcrypt
-from src.database.Database import Database
 from fastapi import HTTPException
+from src.database.Database import Database
 from src.model.TokenData import TokenData
 from src.model.User import User
 from src.services.utils import checkValidParameterString
 
 if "pytest" in modules:
     user_collection = Database().connection["test.usuario"]
-    artist_collection = Database().connection["test.artista"]
 
 else:
     user_collection = Database().connection["usuario"]
-    artist_collection = Database().connection["artista"]
 
 
 def check_jwt_is_user(token: TokenData, user: str) -> bool:

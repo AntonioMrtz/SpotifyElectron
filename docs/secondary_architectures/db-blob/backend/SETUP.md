@@ -62,10 +62,10 @@ python -m pytest --cov=. --cov-report=html // Test run and generate coverage in 
 
 ## 🎨 Run style on code
 
-1. Run style rules
+1. Run style rules and sort imports
 ```
 python -m isort --profile black .
-
+python -m black .
 ```
 
 ## ✏ Install the recommended extensions for VSCODE 

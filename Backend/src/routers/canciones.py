@@ -13,6 +13,10 @@ router = APIRouter(
     tags=["canciones"],
 )
 
+""" if "pytest" in modules:
+    song_service = song_service_database
+
+else: """
 song_service = song_service_streaming
 
 

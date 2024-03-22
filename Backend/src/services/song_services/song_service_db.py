@@ -3,9 +3,9 @@ import io
 from sys import modules
 
 import librosa
-from src.database.Database import Database
 from fastapi import HTTPException
 from gridfs import GridFS
+from src.database.Database import Database
 from src.model.Genre import Genre
 from src.model.Song import Song
 from src.model.TokenData import TokenData

@@ -6,14 +6,14 @@ from sys import modules
 import boto3
 import librosa
 from botocore.exceptions import ClientError
-from src.database.Database import Database
 from dotenv import load_dotenv
 from fastapi import HTTPException
 from gridfs import GridFS
+from pymongo.errors import PyMongoError
+from src.database.Database import Database
 from src.model.Genre import Genre
 from src.model.Song import Song
 from src.model.TokenData import TokenData
-from pymongo.errors import PyMongoError
 from src.services.artist_service import (
     add_song_artist,
     check_artists_exists,

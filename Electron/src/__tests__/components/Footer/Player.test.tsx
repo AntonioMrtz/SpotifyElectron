@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
 import '@testing-library/jest-dom/extend-expect';
 import { render } from '@testing-library/react';
-import Player from 'components/footer/Player/Player';
+import PlayerStreaming from 'components/footer/Player/PlayerStreaming';
 import Global from 'global/global';
 import Token from 'utils/token';
 import { UserType } from 'utils/role';
@@ -86,7 +86,7 @@ test('Render Player', async () => {
 
   await act(async () => {
     component = render(
-      <Player volume={0} songName={songName} changeSongInfo={jest.fn()} />,
+      <PlayerStreaming volume={0} songName={songName} changeSongInfo={jest.fn()} />,
     );
   });
 

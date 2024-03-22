@@ -2,7 +2,7 @@ import { useState } from 'react';
 import styles from './footer.module.css';
 import SongInfo from './SongInfo/SongInfo';
 import SongConfig from './SongConfig/SongConfig';
-import Player from './Player/Player';
+import PlayerStreaming from './Player/PlayerStreaming';
 
 interface PropsFooter {
   songName: string;
@@ -18,7 +18,7 @@ export default function Footer({ songName }: PropsFooter) {
     >
       <SongInfo songInfo={songInfo} />
 
-      <Player
+      <PlayerStreaming
         volume={volume}
         songName={songName}
         changeSongInfo={setSongInfo}

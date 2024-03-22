@@ -16,7 +16,7 @@ interface PropsPlayer {
   changeSongInfo: (data: JSON) => void;
 }
 
-export default function Player({
+export default function PlayerFiles({
   volume,
   songName,
   changeSongInfo,
@@ -82,35 +82,7 @@ export default function Player({
     setVolume();
   }, [setVolume, volume]);
 
-  /* Handles updates of DB when song is played */
-
-  const handleIncreasePlayCount = () => {
-    const requestOptions = {
-      method: 'PATCH',
-    };
-    const fetchUrlUpdateSong: string = `${Global.backendBaseUrl}canciones/${songName}/numberOfPlays`;
-
-    fetch(fetchUrlUpdateSong, requestOptions).catch(() =>
-      console.log('Unable to update number of plays'),
-    );
-  };
-
-  const handleUpdatePlaybackHistory = () => {
-    const username = Token.getTokenUsername();
-
-    const fetchPatchPlayBackHistory: string = `${Global.backendBaseUrl}usuarios/${username}/historial?nombre_cancion=${songName}`;
-
-    const requestOptionsUpdatePlaybackHistory = {
-      method: 'PATCH',
-    };
-
-    fetch(fetchPatchPlayBackHistory, requestOptionsUpdatePlaybackHistory).catch(
-      () => console.log('Unable to update playback history'),
-    );
-  };
-
   /* Loads the song and metadata to the Player */
-
   const handleMetaData = async () => {
     try {
       if (audio.current) {
@@ -119,22 +91,33 @@ export default function Player({
 
       if (songName === Global.noSongPlaying) return;
 
+      const requestOptions = {
+        method: 'PATCH',
+      };
+      const fetchUrlUpdateSong: string = `${Global.backendBaseUrl}canciones/${songName}/numberOfPlays`;
+
+      fetch(fetchUrlUpdateSong, requestOptions).catch(() =>
+        console.log('Unable to update number of plays'),
+      );
       const resFetchSong = await fetch(
         `${Global.backendBaseUrl}canciones/${songName}`,
       );
 
+      const username = Token.getTokenUsername();
+
+      const fetchPatchPlayBackHistory: string = `${Global.backendBaseUrl}usuarios/${username}/historial?nombre_cancion=${songName}`;
+
+      const requestOptionsUpdatePlaybackHistory = {
+        method: 'PATCH',
+      };
+
+      fetch(
+        fetchPatchPlayBackHistory,
+        requestOptionsUpdatePlaybackHistory,
+      ).catch(() => console.log('Unable to update playback history'));
+
       const resFetchSongJson = await resFetchSong.json();
-
-      handleIncreasePlayCount();
-
-      handleUpdatePlaybackHistory();
-
-      const resFetchSongDTO = await fetch(
-        `${Global.backendBaseUrl}canciones/dto/${songName}`,
-      );
-
-      const resFetchSongDTOJson = await resFetchSongDTO.json();
-      changeSongInfo(resFetchSongDTOJson);
+      changeSongInfo(resFetchSongJson);
 
       const audioStreamingURL = resFetchSongJson.url;
 
@@ -178,10 +161,6 @@ export default function Player({
             audio.current.play();
             handlePlay();
             setSongDuration(audio.current.duration); // not updating every 0.5s as playback time
-
-            if (audio.current.currentTime === 0) {
-              handleIncreasePlayCount();
-            }
           }
         };
       };
@@ -203,23 +182,9 @@ export default function Player({
   };
 
   useEffect(() => {
-    if (audio.current) {
-      audio.current.pause();
-      handlePause();
-    }
     handleMetaData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [songName, changeSongInfo]);
-
-  useEffect(() => {
-    /* Pause audio if component unmount */
-    return () => {
-      if (audio.current) {
-        audio.current.pause();
-        handlePause();
-      }
-    };
-  }, []);
 
   return (
     <div
@@ -234,12 +199,7 @@ export default function Player({
         <button type="button">
           <i className="fa-solid fa-backward-step fa-fw" />
         </button>
-        <button
-          type="button"
-          onClick={play}
-          className={`${displayNonePlay}`}
-          data-testid="player-play-button"
-        >
+        <button type="button" onClick={play} className={`${displayNonePlay}`}>
           <i className="fa-solid fa-circle-play fa-fw" />
         </button>
         <button type="button" onClick={pause} className={`${displayNonePause}`}>

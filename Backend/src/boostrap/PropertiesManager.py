@@ -33,13 +33,14 @@ class _PropertiesManager:
         architecture_type = os.getenv(ARCHITECTURE_ENV_NAME, DEFAULT_ARCHITECTURE)
         if not architecture_type:
             # TODO convert to log
+            architecture_type = DEFAULT_ARCHITECTURE
+            self.__setattr__(ARCHITECTURE_ENV_NAME, DEFAULT_ARCHITECTURE)
             print(f"No architecture type selected, using {DEFAULT_ARCHITECTURE}")
-        else:
-            # TODO convert to log
-            print(f"Architecture selected : {architecture_type}")
-            self.__setattr__(ARCHITECTURE_ENV_NAME, architecture_type)
-            print(f"Running init method for architecture : {architecture_type}")
-            # TODO
+        self.__setattr__(ARCHITECTURE_ENV_NAME, architecture_type)
+        # TODO convert to log
+        print(f"Architecture selected : {architecture_type}")
+        # TODO
+        print(f"Running init method for architecture : {architecture_type}")
 
     def __load_env_variables(self, env_names: List[str]):
         # TODO

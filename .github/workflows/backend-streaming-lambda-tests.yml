@@ -1,4 +1,4 @@
-name: Backend Tests
+name: Streaming Lambda Backend Tests
 
 on:
   pull_request:
@@ -34,17 +34,6 @@ jobs:
           DISTRIBUTION_ID : ${{ secrets.DISTRIBUTION_ID }}
           LAMBDA_URL : ${{ secrets.LAMBDA_URL }}
           ARCH : "STREAMING_LAMBDA"
-          ENV_VALUE : "PROD"
-
-      - name: Run tests Database Blob Architecture
-        working-directory: Backend/
-        run: python -m pytest .
-        env:
-          MONGO_URI : ${{ secrets.MONGO_URI }}
-          SECRET_KEY_SIGN : ${{ secrets.SECRET_KEY_SIGN }}
-          DISTRIBUTION_ID : ${{ secrets.DISTRIBUTION_ID }}
-          LAMBDA_URL : ${{ secrets.LAMBDA_URL }}
-          ARCH : "DB_BLOB"
           ENV_VALUE : "PROD"
 
       - name: Fail workflow on test failure

@@ -21,6 +21,8 @@ cd Backend;
 ```
 * MONGO_URI= uri for connecting into a MongoDB database
 * SECRET_KEY_SIGN= 32 byte key for signing tokens in backend
+* ARCH= DB_BLOB, song architecture
+* ENV_VALUE= PROD, prod or test
 ```
 
 3. Install the virtual enviroment and dependencies 

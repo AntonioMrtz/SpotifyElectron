@@ -2,6 +2,7 @@ from datetime import datetime
 
 import bcrypt
 import pytest
+from pytest import fixture
 from test_API.api_test_artist import (
     create_artist,
     delete_artist,
@@ -12,6 +13,11 @@ from test_API.api_test_artist import (
 )
 from test_API.api_test_song import create_song, delete_song, patch_song_number_plays
 from test_API.api_token import get_user_jwt_header
+
+
+@fixture(scope="module", autouse=True)
+def set_up(trigger_app_start):
+    pass
 
 
 def test_get_artist_correct(clear_test_data_db):
@@ -37,7 +43,7 @@ def test_get_artist_correct(clear_test_data_db):
     # check password
 
     utf8_password = res_get_artist.json()["password"].encode("utf-8")
-    assert bcrypt.checkpw(password.encode("utf-8"), utf8_password) == True
+    assert bcrypt.checkpw(password.encode("utf-8"), utf8_password) is True
 
     try:
         fecha = res_get_artist.json()["register_date"]

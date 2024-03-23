@@ -1,6 +1,7 @@
 from datetime import datetime
 
 import pytest
+from pytest import fixture
 from test_API.api_test_artist import create_artist, delete_artist
 from test_API.api_test_playlist import (
     create_playlist,
@@ -10,6 +11,11 @@ from test_API.api_test_playlist import (
     update_playlist,
 )
 from test_API.api_token import get_user_jwt_header
+
+
+@fixture(scope="module", autouse=True)
+def set_up(trigger_app_start):
+    pass
 
 
 def test_get_playlist_correct(clear_test_data_db):

@@ -1,4 +1,4 @@
-import pytest
+from pytest import fixture
 from src.model.UserType import User_Type
 from test_API.api_all_users import (
     delete_playlist_saved,
@@ -12,6 +12,11 @@ from test_API.api_test_playlist import create_playlist, delete_playlist
 from test_API.api_test_song import create_song, delete_song
 from test_API.api_test_user import create_user, delete_user, get_user
 from test_API.api_token import get_user_jwt_header
+
+
+@fixture(scope="module", autouse=True)
+def set_up(trigger_app_start):
+    pass
 
 
 def test_patch_playback_history_user_correct(clear_test_data_db):
@@ -64,7 +69,6 @@ def test_patch_playback_history_user_correct(clear_test_data_db):
 
 
 def test_patch_playback_history_artist_correct(clear_test_data_db):
-    name = "8232392323623823723"
     foto = "https://foto"
     password = "hola"
     artista = "artista"
@@ -108,7 +112,6 @@ def test_patch_playback_history_artist_correct(clear_test_data_db):
 
 
 def test_patch_playback_history_invalid_bad_user():
-    name = "8232392323623823723"
     foto = "https://foto"
     password = "hola"
     artista = "artista"
@@ -205,7 +208,6 @@ def test_patch_saved_playlist_user_correct(clear_test_data_db):
     user_name = "8232392323623823723"
     description = "descripcion"
     password = "hola"
-    artista = "artista"
     foto = "https://foto"
 
     res_create_user = create_user(name=user_name, password=password, photo=foto)
@@ -237,7 +239,7 @@ def test_patch_saved_playlist_user_correct(clear_test_data_db):
 
 def test_patch_saved_playlist_user_not_found():
     res_patch_user = patch_playlist_saved("", "", {})
-    assert res_patch_user.status_code == 401
+    assert res_patch_user.status_code == 404 or res_patch_user.status_code == 401
 
 
 def test_patch_saved_playlist_artist_correct(clear_test_data_db):
@@ -310,8 +312,6 @@ def test_delete_saved_playlist_artist_correct(clear_test_data_db):
 
 def test_delete_saved_playlist_user_invalid():
     playlist_name = "playlist"
-    user_name = "8232392323623823723"
-    description = "descripcion"
     password = "hola"
     artista = "artista"
     foto = "https://foto"
@@ -364,9 +364,6 @@ def test_delete_saved_playlist_user_correct(clear_test_data_db):
 
 
 def test_whoami_artist(clear_test_data_db):
-    playlist_name = "playlist"
-    user_name = "8232392323623823723"
-    description = "descripcion"
     password = "hola"
     artista = "artista"
     foto = "https://foto"
@@ -391,11 +388,8 @@ def test_whoami_artist(clear_test_data_db):
 
 
 def test_whoami_user(clear_test_data_db):
-    playlist_name = "playlist"
     user_name = "8232392323623823723"
-    description = "descripcion"
     password = "hola"
-    artista = "artista"
     foto = "https://foto"
 
     res_create_user = create_user(name=user_name, password=password, photo=foto)
@@ -418,13 +412,6 @@ def test_whoami_user(clear_test_data_db):
 
 
 def test_whoami_jwt_invalid():
-    playlist_name = "playlist"
-    user_name = "8232392323623823723"
-    description = "descripcion"
-    password = "hola"
-    artista = "artista"
-    foto = "https://foto"
-
     res_whoami = whoami("jwt invalid")
     assert res_whoami.status_code == 401
 
@@ -460,9 +447,7 @@ def test_add_playlist_to_owner_user_correct(clear_test_data_db):
 
 def test_add_playlist_to_owner_user_invalid(clear_test_data_db):
     playlist_name = "playlist"
-    user_name = "8232392323623823723"
     description = "descripcion"
-    password = "hola"
     foto = "https://foto"
 
     res_create_playlist = create_playlist(playlist_name, description, foto, {})
@@ -557,7 +542,7 @@ def test_delete_playlist_from_owner_artist_correct(clear_test_data_db):
 
 
 # executes after all tests
-@pytest.fixture()
+@fixture()
 def clear_test_data_db():
     name = "8232392323623823723"
     song_name = "8232392323623823723989"

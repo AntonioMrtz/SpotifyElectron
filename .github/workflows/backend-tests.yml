@@ -33,7 +33,8 @@ jobs:
           SECRET_KEY_SIGN : ${{ secrets.SECRET_KEY_SIGN }}
           DISTRIBUTION_ID : ${{ secrets.DISTRIBUTION_ID }}
           LAMBDA_URL : ${{ secrets.LAMBDA_URL }}
-
+          ARCH : ${{ secrets.STREAMING_LAMBDA }}
+          ENV_VALUE : ${{ secrets.PROD }}
 
       - name: Fail workflow on test failure
         if: ${{ failure() }}

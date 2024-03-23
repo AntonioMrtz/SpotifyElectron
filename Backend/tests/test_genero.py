@@ -1,9 +1,15 @@
 from fastapi.testclient import TestClient
+from pytest import fixture
 from src.main import app as app
 from test_API.api_test_artist import create_artist, delete_artist
 from test_API.api_token import get_user_jwt_header
 
 client = TestClient(app)
+
+
+@fixture(scope="module", autouse=True)
+def set_up(trigger_app_start):
+    pass
 
 
 def test_get_generos_correct():
@@ -16,7 +22,7 @@ def test_get_generos_correct():
 
     jwt_headers = get_user_jwt_header(username=artista, password=password)
 
-    response = client.get(f"/generos/", headers=jwt_headers)
+    response = client.get("/generos/", headers=jwt_headers)
     assert response.status_code == 200
 
     res_delete_artist = delete_artist(artista)

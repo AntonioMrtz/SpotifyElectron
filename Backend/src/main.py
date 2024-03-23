@@ -2,6 +2,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from src.boostrap.PropertiesManager import PropertiesManager
 from src.middleware.middleware import CheckJwtAuth
 from src.routers import artistas, canciones, generos, login, playlists, search, usuarios
 
@@ -15,7 +16,7 @@ async def lifespan_handler(app: FastAPI):
     app : FastAPI
         the app object that is going to be created
     """
-
+    # TODO print init
     app.include_router(playlists.router)
     app.include_router(canciones.router)
     app.include_router(generos.router)
@@ -23,7 +24,20 @@ async def lifespan_handler(app: FastAPI):
     app.include_router(artistas.router)
     app.include_router(login.router)
     app.include_router(search.router)
+    yield
+    # teardown app
+    # TODO print teardown
 
+
+app = FastAPI(
+    title="SpotifyElectronAPI",
+    description="API created with FastAPI Python to serve \
+        as backend for Spotify Electron music streaming Desktop App",
+    version="1.0.0",
+    lifespan=lifespan_handler,
+)
+
+if PropertiesManager.is_production_enviroment():
     app.add_middleware(
         CORSMiddleware,
         allow_origins=[
@@ -42,14 +56,3 @@ async def lifespan_handler(app: FastAPI):
         allow_headers=["*"],
     )
     app.add_middleware(CheckJwtAuth)
-    yield
-    # teardown app
-
-
-app = FastAPI(
-    title="SpotifyElectronAPI",
-    description="API created with FastAPI Python to serve \
-        as backend for Spotify Electron music streaming Desktop App",
-    version="0.0.1",
-    lifespan=lifespan_handler,
-)

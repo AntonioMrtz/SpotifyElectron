@@ -25,7 +25,7 @@ jobs:
         working-directory: Backend
         run: pip install -r requirements.txt && pip install -r requirements-test.txt
 
-      - name: Run tests
+      - name: Run tests Streaming lambda Architecture
         working-directory: Backend/
         run: python -m pytest .
         env:
@@ -33,8 +33,19 @@ jobs:
           SECRET_KEY_SIGN : ${{ secrets.SECRET_KEY_SIGN }}
           DISTRIBUTION_ID : ${{ secrets.DISTRIBUTION_ID }}
           LAMBDA_URL : ${{ secrets.LAMBDA_URL }}
-          ARCH : ${{ secrets.ARCH }}
-          ENV_VALUE : ${{ secrets.ENV_VALUE }}
+          ARCH : "STREAMING_LAMBDA"
+          ENV_VALUE : "PROD"
+
+      - name: Run tests Database Blob Architecture
+        working-directory: Backend/
+        run: python -m pytest .
+        env:
+          MONGO_URI : ${{ secrets.MONGO_URI }}
+          SECRET_KEY_SIGN : ${{ secrets.SECRET_KEY_SIGN }}
+          DISTRIBUTION_ID : ${{ secrets.DISTRIBUTION_ID }}
+          LAMBDA_URL : ${{ secrets.LAMBDA_URL }}
+          ARCH : "DB_BLOB"
+          ENV_VALUE : "PROD"
 
       - name: Fail workflow on test failure
         if: ${{ failure() }}

@@ -2,7 +2,7 @@ import os
 from typing import List
 
 from dotenv import load_dotenv
-from src.constants.constants import (
+from src.constants.set_up_constants import (
     ARCHITECTURE_ENV_NAME,
     DEFAULT_ARCHITECTURE,
     DISTRIBUTION_ID_ENV_NAME,
@@ -37,7 +37,9 @@ class _PropertiesManager:
         else:
             # TODO convert to log
             print(f"Architecture selected : {architecture_type}")
+            self.__setattr__(ARCHITECTURE_ENV_NAME, architecture_type)
             print(f"Running init method for architecture : {architecture_type}")
+            # TODO
 
     def __load_env_variables(self, env_names: List[str]):
         # TODO

@@ -1,11 +1,13 @@
 import io
 import json
-import os
 from sys import modules
+from typing import List
 
 import boto3
 import librosa
+from boostrap.PropertiesManager import PropertiesManager
 from botocore.exceptions import ClientError
+from constants.set_up_constants import DISTRIBUTION_ID_ENV_NAME
 from dotenv import load_dotenv
 from fastapi import HTTPException
 from gridfs import GridFS
@@ -34,11 +36,13 @@ else:
     gridFsSong = GridFS(Database().connection, collection="cancion")
     song_collection = Database().connection["canciones.streaming"]
 
-s3 = boto3.resource("s3")
-s3_client = boto3.client("s3")
-song_bucket = s3.Bucket("canciones-spotify-electron")
-bucket_base_path = "canciones/"
-distribution_id = os.getenv("DISTRIBUTION_ID")
+S3_BUCKET_NAME = "canciones-spotify-electron"
+S3_BUCKET_BASE_PATH = "canciones/"
+S3_RESOURCE = "s3"
+
+s3 = boto3.resource(S3_RESOURCE)
+s3_client = boto3.client(S3_RESOURCE)
+song_bucket = s3.Bucket(S3_BUCKET_NAME)
 
 load_dotenv()
 
@@ -90,7 +94,9 @@ def get_cloudfront_url(resource_path: str):
     cloudfront_client = boto3.client("cloudfront")
 
     # Get the CloudFront domain name associated with the distribution
-    response = cloudfront_client.get_distribution(Id=distribution_id)
+    response = cloudfront_client.get_distribution(
+        Id=getattr(PropertiesManager, DISTRIBUTION_ID_ENV_NAME)
+    )
     domain_name = response["Distribution"]["DomainName"]
 
     # Construct the CloudFront URL
@@ -133,7 +139,7 @@ def get_song(name: str) -> Song:
 
     try:
         # TODO peticion a Lambda por url
-        cloudfront_url = get_cloudfront_url(f"{bucket_base_path}{name}.mp3")
+        cloudfront_url = get_cloudfront_url(f"{S3_BUCKET_BASE_PATH}{name}.mp3")
 
         song = Song(
             name=name,
@@ -264,7 +270,7 @@ async def create_song(
 
     try:
         s3_client.put_object(
-            Body=file, Bucket=song_bucket.name, Key=f"{bucket_base_path}{name}.mp3"
+            Body=file, Bucket=song_bucket.name, Key=f"{S3_BUCKET_BASE_PATH}{name}.mp3"
         )
 
         file_id = song_collection.insert_one(
@@ -324,7 +330,7 @@ def delete_song(name: str) -> None:
     try:
         song_collection.delete_one({"name": name})
         s3_client.delete_object(
-            Bucket=song_bucket.name, Key=f"{bucket_base_path}{name}.mp3"
+            Bucket=song_bucket.name, Key=f"{S3_BUCKET_BASE_PATH}{name}.mp3"
         )
         delete_song_artist(result["artist"], name)
 
@@ -479,3 +485,47 @@ def search_by_name(name: str) -> json:
     [songs_json_list.append(song.get_json()) for song in songs]
 
     return songs_json_list
+
+
+def get_artist_playback_count(artist_name: str) -> int:
+    """The total playback count for all artist songs
+
+    Args:
+        artist_name (str): the artist name
+
+    Returns:
+        int: the number of playback count for the artists songs
+    """
+    result_number_playback_count_query = song_collection.aggregate(
+        [
+            {"$match": {"artist": artist_name}},
+            {"$group": {"_id": None, "total": {"$sum": "$number_of_plays"}}},
+        ]
+    )
+    result_number_playback_count_query = next(result_number_playback_count_query, None)
+
+    if result_number_playback_count_query is None:
+        return 0
+    total_plays = result_number_playback_count_query["total"]
+    return total_plays
+
+
+def get_songs_by_genre(genre: Genre) -> List[Song]:
+    # TODO
+    result_get_song_by_genre = song_collection.find({"genre": Genre.getGenre(genre)})
+    songs_by_genre = []
+
+    for song_data in result_get_song_by_genre:
+        songs_by_genre.append(
+            Song(
+                name=song_data["name"],
+                artist=song_data["artist"],
+                photo=song_data["photo"],
+                duration=song_data["duration"],
+                genre=Genre(song_data["genre"]).name,
+                number_of_plays=song_data["number_of_plays"],
+                url="no_url_get_songs_by_genre",
+            )
+        )
+
+    return songs_by_genre

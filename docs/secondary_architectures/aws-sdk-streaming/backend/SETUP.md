@@ -21,7 +21,9 @@ cd Backend;
 ```
 * MONGO_URI= uri for connecting into a MongoDB database
 * SECRET_KEY_SIGN= 32 byte key for signing tokens in backend
-* DISTRIBUTION_ID: id of AWS cloudfront distribution
+* DISTRIBUTION_ID= id of AWS cloudfront distribution
+* ARCH= STREAMING_SDK, song architecture
+* ENV_VALUE= PROD, prod or test
 
 ```
 

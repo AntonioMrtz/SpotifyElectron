@@ -1,5 +1,4 @@
 import json
-import os
 from datetime import datetime, timedelta
 from typing import Annotated, Union
 
@@ -7,21 +6,19 @@ import bcrypt
 import src.services.all_users_service as all_users_service
 import src.services.artist_service as artist_service
 import src.services.user_service as user_service
-from dotenv import load_dotenv
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
+from src.boostrap.PropertiesManager import PropertiesManager
+from src.constants.set_up_constants import DISTRIBUTION_ID_ENV_NAME
 from src.model.Artist import Artist
 from src.model.TokenData import TokenData
 from src.model.User import User
 from src.model.UserType import User_Type
 from src.services.utils import checkValidParameterString
 
-SECRET_KEY = os.getenv("SECRET_KEY_SIGN")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 10080  # 7 days
-
-load_dotenv()
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="usuarios/whoami/")
 
@@ -50,7 +47,11 @@ def create_access_token(data: dict, expires_delta: Union[timedelta, None] = None
         else:
             expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
         to_encode.update({"exp": expire})
-        encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+        encoded_jwt = jwt.encode(
+            to_encode,
+            getattr(PropertiesManager, DISTRIBUTION_ID_ENV_NAME),
+            algorithm=ALGORITHM,
+        )
         return encoded_jwt
     except JWTError:
         raise HTTPException(status_code=401, detail="Credenciales inválidos")
@@ -79,7 +80,11 @@ def get_jwt_token(token: Annotated[str, Depends(oauth2_scheme)]) -> TokenData:
     )
 
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        payload = jwt.decode(
+            token,
+            getattr(PropertiesManager, DISTRIBUTION_ID_ENV_NAME),
+            algorithms=[ALGORITHM],
+        )
         username: str = payload.get("access_token")
         role: str = payload.get("role")
         token_type: str = payload.get("token_type")
@@ -181,7 +186,9 @@ def login_user(name: str, password: str) -> json:
 def check_jwt_is_valid(token: str):
     try:
         # Decode the JWT
-        decoded_token = jwt.decode(token, SECRET_KEY, ALGORITHM)
+        decoded_token = jwt.decode(
+            token, getattr(PropertiesManager, DISTRIBUTION_ID_ENV_NAME), ALGORITHM
+        )
 
         # Verify the expiration time
         expiration_time = datetime.utcfromtimestamp(decoded_token["exp"])

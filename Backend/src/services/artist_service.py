@@ -3,11 +3,11 @@ from datetime import datetime
 from sys import modules
 
 import bcrypt
-import src.services.song_services.song_service_aws_lambda as song_service_aws_lambda
 from fastapi import HTTPException
 from src.database.Database import Database
 from src.model.Artist import Artist
 from src.model.TokenData import TokenData
+from src.services.song_services.song_service_provider import get_song_service
 from src.services.utils import checkValidParameterString
 
 if "pytest" in modules:
@@ -15,6 +15,8 @@ if "pytest" in modules:
 
 else:
     artist_collection = Database().connection["artista"]
+
+song_service = get_song_service()
 
 
 def check_user_exists(user_name: str) -> bool:
@@ -369,7 +371,7 @@ def get_play_count_artist(user_name: str) -> int:
     if not check_artists_exists(user_name):
         raise HTTPException(status_code=404, detail="El artista no existe")
 
-    return song_service_aws_lambda.get_artist_playback_count(user_name)
+    return song_service.get_artist_playback_count(user_name)
 
 
 def get_artists(names: list) -> list:

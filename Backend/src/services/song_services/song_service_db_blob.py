@@ -1,19 +1,18 @@
 import base64
 import io
 from sys import modules
+from typing import List
 
 import librosa
 from fastapi import HTTPException
 from gridfs import GridFS
+from src.model.SongBlob import SongBlob
 from src.database.Database import Database
 from src.model.Genre import Genre
 from src.model.Song import Song
 from src.model.TokenData import TokenData
-from src.services.artist_service import (
-    add_song_artist,
-    check_artists_exists,
-    delete_song_artist,
-)
+import src.services.artist_service as artist_service
+import src.services.dto_service as dto_service
 from src.services.utils import checkValidParameterString
 
 """ Insert songs with format [files,chunks] https://www.mongodb.com/docs/manual/core/gridfs/"""
@@ -71,7 +70,7 @@ def check_jwt_user_is_song_artist(token: TokenData, artist: str) -> bool:
         )
 
 
-def get_song(name: str) -> Song:
+def get_song(name: str) -> SongBlob:
     """Returns a Song file with attributes and a song encoded in base64 "
 
     Parameters
@@ -103,7 +102,7 @@ def get_song(name: str) -> Song:
 
     song_metadata = file_song_collection.find_one({"name": name})
 
-    song = Song(
+    song = SongBlob(
         name,
         song_metadata["artist"],
         song_metadata["photo"],
@@ -203,12 +202,12 @@ async def create_song(
     ):
         raise HTTPException(status_code=400, detail="Parámetros no válidos o vacíos")
 
-    check_artists_exists(artist_name=artist)
+    artist_service.check_artists_exists(artist_name=artist)
 
     if check_song_exists(name=name):
         raise HTTPException(status_code=400, detail="La canción ya existe")
 
-    if not check_artists_exists(artist_name=artist):
+    if not artist_service.check_artists_exists(artist_name=artist):
         raise HTTPException(status_code=404, detail="El artista no existe")
 
     try:
@@ -242,7 +241,7 @@ async def create_song(
             number_of_plays=0,
         )
 
-    add_song_artist(artist, name)
+    artist_service.add_song_artist(artist, name)
 
 
 def delete_song(name: str) -> None:
@@ -269,7 +268,7 @@ def delete_song(name: str) -> None:
     result = file_song_collection.find_one({"name": name})
 
     if result and result["_id"]:
-        delete_song_artist(result["artist"], name)
+        artist_service.delete_song_artist(result["artist"], name)
         gridFsSong.delete(result["_id"])
 
     else:
@@ -303,7 +302,7 @@ def update_song(
     if not checkValidParameterString(name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
-    result_song_exists: Song = get_song(name=name)
+    result_song_exists = get_song(name=name)
 
     if not result_song_exists:
         raise HTTPException(status_code=404, detail="La cancion no existe")
@@ -368,7 +367,7 @@ def increase_number_plays(name: str) -> None:
     if not checkValidParameterString(name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
-    result_song_exists: Song = get_song(name=name)
+    result_song_exists = get_song(name=name)
 
     if not result_song_exists:
         raise HTTPException(status_code=404, detail="La cancion no existe")
@@ -411,3 +410,49 @@ def search_by_name(name: str) -> list:
     [songs_json_list.append(song.get_json()) for song in songs]
 
     return songs_json_list
+
+
+def get_artist_playback_count(artist_name: str) -> int:
+    """The total playback count for all artist songs
+
+    Args:
+        artist_name (str): the artist name
+
+    Returns:
+        int: the number of playback count for the artists songs
+    """
+    result_number_playback_count_query = file_song_collection.aggregate(
+        [
+            {"$match": {"artist": artist_name}},
+            {"$group": {"_id": None, "total": {"$sum": "$number_of_plays"}}},
+        ]
+    )
+    result_number_playback_count_query = next(result_number_playback_count_query, None)
+
+    if result_number_playback_count_query is None:
+        return 0
+    total_plays = result_number_playback_count_query["total"]
+    return total_plays
+
+
+def get_songs_by_genre(genre: Genre) -> List[Song]:
+    # TODO
+    result_get_song_by_genre = file_song_collection.find(
+        {"genre": Genre.getGenre(genre)}
+    )
+    songs_by_genre = []
+
+    for song_data in result_get_song_by_genre:
+        songs_by_genre.append(
+            Song(
+                name=song_data["name"],
+                artist=song_data["artist"],
+                photo=song_data["photo"],
+                duration=song_data["duration"],
+                genre=Genre(song_data["genre"]).name,
+                number_of_plays=song_data["number_of_plays"],
+                url="no_url_get_songs_by_genre",
+            )
+        )
+
+    return songs_by_genre

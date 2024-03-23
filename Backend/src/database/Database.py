@@ -1,8 +1,9 @@
 import logging
-import os
 
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
+from src.boostrap.PropertiesManager import PropertiesManager
+from src.constants.set_up_constants import MONGO_URI_ENV_NAME
 
 formatter = logging.Formatter("%(asctime)s %(levelname)s %(message)s")
 logging.basicConfig(level=logging.WARNING)
@@ -42,7 +43,7 @@ class Database(metaclass=DatabaseMeta):
     def __init__(self):
         if Database.connection is None:
             try:
-                uri = os.getenv("MONGO_URI")
+                uri = getattr(PropertiesManager, MONGO_URI_ENV_NAME)
                 Database.connection = MongoClient(uri, server_api=ServerApi("1"))[
                     "SpotifyElectron"
                 ]

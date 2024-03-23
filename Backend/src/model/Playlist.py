@@ -1,8 +1,6 @@
 import json
 from dataclasses import dataclass
 
-import src.services.song_services.song_service_aws_lambda as song_service_aws_lambda
-
 
 @dataclass
 class Playlist:
@@ -15,7 +13,7 @@ class Playlist:
 
     def add_songs(self, song_names: str) -> None:
         [
-            self.songs.append(song_service_aws_lambda.get_song(song_name))
+            self.songs.append(song_service.get_song(song_name))
             for song_name in song_names
         ]
 

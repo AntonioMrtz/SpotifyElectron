@@ -24,7 +24,6 @@ async def lifespan_handler(app: FastAPI):
     app.include_router(login.router)
     app.include_router(search.router)
 
-    yield
     app.add_middleware(
         CORSMiddleware,
         allow_origins=[
@@ -43,6 +42,8 @@ async def lifespan_handler(app: FastAPI):
         allow_headers=["*"],
     )
     app.add_middleware(CheckJwtAuth)
+    yield
+    # teardown app
 
 
 app = FastAPI(

@@ -14,17 +14,24 @@ In this section we will cover:
 ```
 cd Electron;
 ```
-
-3. Install the dependencies
+2. Install the dependencies
 
 ```
 npm install
 ```
-4. Run the app in hot reload debug mode 
+3. Build the main and renderer process
+
+```
+npm run build
+```
+## ▶ Run the app in development mode
+
+1. Run the app in hot reload debug mode 
 
 ```
 npm start
 ```
+
 
 ## ✔️ Run tests
 

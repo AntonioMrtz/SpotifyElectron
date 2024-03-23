@@ -4,15 +4,15 @@ from sys import modules
 from typing import List
 
 import librosa
+import src.services.artist_service as artist_service
+import src.services.dto_service as dto_service
 from fastapi import HTTPException
 from gridfs import GridFS
-from src.model.SongBlob import SongBlob
 from src.database.Database import Database
 from src.model.Genre import Genre
 from src.model.Song import Song
+from src.model.SongBlob import SongBlob
 from src.model.TokenData import TokenData
-import src.services.artist_service as artist_service
-import src.services.dto_service as dto_service
 from src.services.utils import checkValidParameterString
 
 """ Insert songs with format [files,chunks] https://www.mongodb.com/docs/manual/core/gridfs/"""

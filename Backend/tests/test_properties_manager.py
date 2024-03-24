@@ -103,10 +103,7 @@ def test_load_architecture(clean_environment):
 
     properties_manager = _PropertiesManager()
     properties_manager.__setattr__ = Mock()
-    load_architecture_method = getattr(
-        properties_manager, "_PropertiesManager__load_architecture"
-    )
-    load_architecture_method()
+    properties_manager._load_architecture()
 
     assert properties_manager.__setattr__.call_args[0] == (
         ARCHITECTURE_ENV_NAME,
@@ -117,10 +114,7 @@ def test_load_architecture(clean_environment):
 def test_load_architecture_no_architecture_selected(clean_environment):
     properties_manager = _PropertiesManager()
     properties_manager.__setattr__ = Mock()
-    load_architecture_method = getattr(
-        properties_manager, "_PropertiesManager__load_architecture"
-    )
-    load_architecture_method()
+    properties_manager._load_architecture()
 
     assert properties_manager.__setattr__.call_args[0] == (
         ARCHITECTURE_ENV_NAME,

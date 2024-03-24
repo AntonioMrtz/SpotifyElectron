@@ -25,10 +25,10 @@ class _PropertiesManager:
             LAMBDA_URL_ENV_NAME,
             ENV_VALUE_ENV_NAME,
         ]
-        self.__load_env_variables(self.env_variables)
-        self.__load_architecture()
+        self._load_env_variables(self.env_variables)
+        self._load_architecture()
 
-    def __load_architecture(self):
+    def _load_architecture(self):
         # TODO
         architecture_type = os.getenv(ARCHITECTURE_ENV_NAME, DEFAULT_ARCHITECTURE)
         if not architecture_type:
@@ -42,7 +42,7 @@ class _PropertiesManager:
         # TODO
         print(f"Running init method for architecture : {architecture_type}")
 
-    def __load_env_variables(self, env_names: List[str]):
+    def _load_env_variables(self, env_names: List[str]):
         # TODO
         for env_name in env_names:
             env_variable_value = os.getenv(env_name)

@@ -30,6 +30,13 @@ jobs:
       working-directory: Backend/
       run: |
         python generate-docs.py
+      env:
+          MONGO_URI : ${{ secrets.MONGO_URI }}
+          SECRET_KEY_SIGN : ${{ secrets.SECRET_KEY_SIGN }}
+          DISTRIBUTION_ID : ${{ secrets.DISTRIBUTION_ID }}
+          LAMBDA_URL : ${{ secrets.LAMBDA_URL }}
+          ARCH : ${{ secrets.ARCH }}
+          ENV_VALUE : ${{ secrets.ENV_VALUE }}
 
     - name: Add and commit changes
       working-directory: Backend/

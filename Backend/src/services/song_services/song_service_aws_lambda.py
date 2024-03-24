@@ -1,15 +1,15 @@
 import base64
 import io
-import os
 from sys import modules
 from typing import List
 
 import librosa
 import requests
 import src.services.artist_service as artist_service
-from dotenv import load_dotenv
 from fastapi import HTTPException
 from pymongo.errors import PyMongoError
+from src.boostrap.PropertiesManager import PropertiesManager
+from src.constants.set_up_constants import LAMBDA_URL_ENV_NAME
 from src.database.Database import Database
 from src.model.Genre import Genre
 from src.model.Song import Song
@@ -26,10 +26,6 @@ if "pytest" in modules:
 else:
     file_song_collection = Database().connection["cancion.files"]
     song_collection = Database().connection["canciones.streaming"]
-
-load_dotenv()
-
-lambda_base_path = os.getenv("LAMBDA_URL")
 
 
 def check_song_exists(name: str) -> bool:
@@ -105,7 +101,9 @@ def get_song(name: str) -> Song:
         params = {
             "nombre": name,
         }
-        res = requests.get(f"{lambda_base_path}", params=params)
+        res = requests.get(
+            f"{getattr(PropertiesManager,LAMBDA_URL_ENV_NAME)}", params=params
+        )
         if res.status_code != 200:
             # TODO
             raise ClientError(
@@ -249,7 +247,9 @@ async def create_song(
             "file": encoded_bytes,
         }
         res = requests.post(
-            f"{lambda_base_path}", json=request_data_body, params=params
+            f"{getattr(PropertiesManager,LAMBDA_URL_ENV_NAME)}",
+            json=request_data_body,
+            params=params,
         )
         if res.status_code != 201:
             # TODO
@@ -317,7 +317,9 @@ def delete_song(name: str) -> None:
         params = {
             "nombre": name,
         }
-        res = requests.delete(f"{lambda_base_path}", params=params)
+        res = requests.delete(
+            f"{getattr(PropertiesManager,LAMBDA_URL_ENV_NAME)}", params=params
+        )
         if res.status_code != 202:
             # TODO
             raise ClientError(
@@ -500,11 +502,10 @@ def get_artist_playback_count(artist_name: str) -> int:
     )
     result_number_playback_count_query = next(result_number_playback_count_query, None)
 
-    if result_number_playback_count_query is not None:
-        total_plays = result_number_playback_count_query["total"]
-        return total_plays
-    else:
+    if result_number_playback_count_query is None:
         return 0
+    total_plays = result_number_playback_count_query["total"]
+    return total_plays
 
 
 def get_songs_by_genre(genre: Genre) -> List[Song]:

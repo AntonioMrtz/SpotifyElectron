@@ -1,8 +1,6 @@
 import json
 from dataclasses import dataclass
 
-import src.services.song_service as song_service
-
 
 @dataclass
 class Playlist:

@@ -16,7 +16,7 @@ interface PropsPlayer {
   changeSongInfo: (data: JSON) => void;
 }
 
-export default function Player({
+export default function PlayerStreaming({
   volume,
   songName,
   changeSongInfo,

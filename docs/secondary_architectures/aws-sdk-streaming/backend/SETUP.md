@@ -21,8 +21,8 @@ cd Backend;
 ```
 * MONGO_URI= uri for connecting into a MongoDB database
 * SECRET_KEY_SIGN= 32 byte key for signing tokens in backend
-* LAMBDA_URL= URL of Lambda API for accesing AWS services and managing song
-* ARCH= STREAMING_LAMBDA, song architecture
+* DISTRIBUTION_ID= id of AWS cloudfront distribution
+* ARCH= STREAMING_SDK, song architecture
 * ENV_VALUE= PROD, prod or test
 
 ```
@@ -64,6 +64,9 @@ python -m pytest --cov=. --cov-report=html // Test run and generate coverage in 
 
 ```
 
+## 🎨 Run style on code
+
+1. Run style rules
 ## 🎨 Run style on code
 
 1. Run style rules and sort imports

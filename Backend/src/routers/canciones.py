@@ -3,21 +3,17 @@ from typing import Annotated, Union
 
 import src.services.dto_service as dto_service
 import src.services.security_service as security_service
-import src.services.song_service as song_service_streaming
 from fastapi import APIRouter, Header, HTTPException, UploadFile
 from fastapi.responses import Response
 from src.model.Genre import Genre
+from src.services.song_services.song_service_provider import get_song_service
 
 router = APIRouter(
     prefix="/canciones",
     tags=["canciones"],
 )
 
-""" if "pytest" in modules:
-    song_service = song_service_database
-
-else: """
-song_service = song_service_streaming
+song_service = get_song_service()
 
 
 @router.get("/{nombre}")

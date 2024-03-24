@@ -14,26 +14,45 @@ In this section we will cover:
 ```
 cd Electron;
 ```
-
-3. Install the dependencies
+2. Install the dependencies
 
 ```
 npm install
 ```
-4. Run the app in hot reload debug mode 
+3. Build the main and renderer process
+
+```
+npm run build
+```
+
+## ▶ Select Music Player depending on Song Architecture backend ( optional )
+
+You can select a custom music player dependending if the song architecture is managed by streaming or encoded base64 bytes. By default streaming service is selected.
+
+1. Enter frontend global configuration file 
+
+```
+cd Electron/src/global/global.ts;
+```
+
+2. Select the architecture
+
+```
+export const songArchitecture: SongArchitecture = SongArchitecture.FILE_ARCHITECTURE or SongArchitecture.STREAMING_ARCHITECTURE;
+```
+
+## ▶ Run the app in development mode
+
+1. Run the app in hot reload debug mode 
 
 ```
 npm start
 ```
 
+
 ## ✔️ Run tests
 
-1. Go to Electron folder
-```
-cd Electron/;
-```
-
-2. Run tests
+1. Run tests
 
 ```
 npm run test // run tests

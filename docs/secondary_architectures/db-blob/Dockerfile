@@ -1,4 +1,3 @@
-
 FROM python:3.9-slim
 
 WORKDIR /code
@@ -7,9 +6,10 @@ RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
 COPY ./src /code/src
 
+COPY ./src /app/src
+
 WORKDIR /code/
 CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]
 
-
 #docker build -t spotify_electron_backend_image .
-#docker run -d --name spotify_electron_backend -e MONGO_URI=mongo-uri SECRET_KEY_SIGN=secret-key-sign LAMBDA_URL=lambda-url ARCH=STREAMING_LAMBDA ENV_VALUE=PROD -p 8000:8000 spotify_electron_backend_image
+#docker run -d --name spotify_electron_backend -e MONGO_URI=mongo-uri SECRET_KEY_SIGN=secret-key ARCH=DB_BLOB ENV_VALUE=PROD -p 8000:8000 spotify_electron_backend_image

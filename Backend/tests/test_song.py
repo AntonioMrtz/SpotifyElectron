@@ -1,6 +1,5 @@
-import json
-
 import pytest
+from pytest import fixture
 from src.model.Genre import Genre
 from test_API.api_test_artist import create_artist, delete_artist, get_artist
 from test_API.api_test_song import (
@@ -13,6 +12,11 @@ from test_API.api_test_song import (
 )
 from test_API.api_test_user import create_user, delete_user
 from test_API.api_token import get_user_jwt_header
+
+
+@fixture(scope="module", autouse=True)
+def set_up(trigger_app_start):
+    pass
 
 
 def test_post_cancion_correct(clear_test_data_db):
@@ -292,10 +296,6 @@ def test_patch_number_plays_cancion_correct(clear_test_data_db):
 def test_patch_song_not_found(clear_test_data_db):
     song_name = "8232392323623823723989"
     artista = "artista"
-    genero = "Pop"
-    foto = "https://foto"
-    file_path = "tests/assets/song.mp3"
-
     foto = "https://foto"
     password = "hola"
 
@@ -313,9 +313,7 @@ def test_patch_song_not_found(clear_test_data_db):
 def test_patch_song_invalid_name(clear_test_data_db):
     song_name = "8232392323623823723989"
     artista = "artista"
-    genero = "Pop"
     foto = "https://foto"
-    file_path = "tests/assets/song.mp3"
 
     foto = "https://foto"
     password = "hola"

@@ -21,10 +21,8 @@ cd Backend;
 ```
 * MONGO_URI= uri for connecting into a MongoDB database
 * SECRET_KEY_SIGN= 32 byte key for signing tokens in backend
-* LAMBDA_URL= URL of Lambda API for accesing AWS services and managing song
-* ARCH= STREAMING_LAMBDA, song architecture
+* ARCH= DB_BLOB, song architecture
 * ENV_VALUE= PROD, prod or test
-
 ```
 
 3. Install the virtual enviroment and dependencies 

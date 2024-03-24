@@ -1,12 +1,13 @@
+import json
 from datetime import datetime
 from sys import modules
 
 import bcrypt
-import src.services.song_service as song_service
 from fastapi import HTTPException
 from src.database.Database import Database
 from src.model.Artist import Artist
 from src.model.TokenData import TokenData
+from src.services.song_services.song_service_provider import get_song_service
 from src.services.utils import checkValidParameterString
 
 if "pytest" in modules:
@@ -14,6 +15,8 @@ if "pytest" in modules:
 
 else:
     artist_collection = Database().connection["artista"]
+
+song_service = get_song_service()
 
 
 def check_user_exists(user_name: str) -> bool:
@@ -397,7 +400,7 @@ def get_artists(names: list) -> list:
     return artists
 
 
-def search_by_name(name: str) -> list:
+def search_by_name(name: str) -> json:
     """Returns a list of Artist that contains "name" in their names
 
     Parameters

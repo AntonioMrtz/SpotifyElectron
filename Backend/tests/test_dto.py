@@ -1,14 +1,18 @@
-import logging
-
 import pytest
+from pytest import fixture
 from src.model.Genre import Genre
 from test_API.api_test_artist import create_artist, delete_artist
 from test_API.api_test_dto import get_playlist_dto, get_song_dto
-from test_API.api_test_playlist import create_playlist, delete_playlist, get_playlist
+from test_API.api_test_playlist import create_playlist, delete_playlist
 from test_API.api_test_song import create_song, delete_song
 from test_API.api_token import get_user_jwt_header
 
 # * Playlist DTO
+
+
+@fixture(scope="module", autouse=True)
+def set_up(trigger_app_start):
+    pass
 
 
 def test_get_playlist_dto_correct(clear_test_playlist_db):
@@ -44,7 +48,6 @@ def test_get_playlist_dto_correct(clear_test_playlist_db):
 
 def test_get_playlist_dto_not_found(clear_test_playlist_db):
     name = "8232392323623823723"
-    descripcion = "descripcion"
     foto = "https://foto"
     owner = "usuarioprueba834783478923489734298"
     password = "password"
@@ -64,7 +67,6 @@ def test_get_playlist_dto_not_found(clear_test_playlist_db):
 def test_get_playlist_dto_invalid_name(clear_test_playlist_db):
     name = ""
 
-    descripcion = "descripcion"
     foto = "https://foto"
     owner = "usuarioprueba834783478923489734298"
     password = "password"
@@ -168,7 +170,6 @@ def test_get_song_dto_invalid_name(clear_test_song_db):
 def clear_test_playlist_db():
     new_name = "82323923236238237237"
     name = "8232392323623823723"
-    song_name = "8232392323623823723989"
     artista = "usuarioprueba834783478923489734298"
     delete_playlist(name=name)
     delete_playlist(name=new_name)
@@ -177,7 +178,6 @@ def clear_test_playlist_db():
     yield
     new_name = "82323923236238237237"
     name = "8232392323623823723"
-    song_name = "8232392323623823723989"
     artista = "usuarioprueba834783478923489734298"
     delete_playlist(name=name)
     delete_playlist(name=new_name)

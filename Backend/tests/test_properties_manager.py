@@ -26,7 +26,7 @@ env_variables_mapping = {
 }
 
 
-def test_load_env_variables(clean_environment):
+def test_load_env_variables(clean_modified_environments):
 
     for env_name, value in env_variables_mapping.items():
         os.environ[env_name] = value
@@ -37,7 +37,7 @@ def test_load_env_variables(clean_environment):
         assert properties_manager.__getattribute__(env_name) == value
 
 
-def test_check_is_testing_enviroment(clean_environment):
+def test_check_is_testing_enviroment(clean_modified_environments):
 
     env_variables_mapping = {
         ENV_VALUE_ENV_NAME: TEST,
@@ -51,7 +51,7 @@ def test_check_is_testing_enviroment(clean_environment):
     assert properties_manager.is_testing_enviroment()
 
 
-def test_check_is_not_testing_enviroment(clean_environment):
+def test_check_is_not_testing_enviroment(clean_modified_environments):
 
     env_variables_mapping = {
         ENV_VALUE_ENV_NAME: PROD,
@@ -65,7 +65,7 @@ def test_check_is_not_testing_enviroment(clean_environment):
     assert not properties_manager.is_testing_enviroment()
 
 
-def test_check_is_production_enviroment(clean_environment):
+def test_check_is_production_enviroment(clean_modified_environments):
 
     env_variables_mapping = {
         ENV_VALUE_ENV_NAME: PROD,
@@ -79,7 +79,7 @@ def test_check_is_production_enviroment(clean_environment):
     assert properties_manager.is_production_enviroment()
 
 
-def test_check_is_not_production_enviroment(clean_environment):
+def test_check_is_not_production_enviroment(clean_modified_environments):
 
     env_variables_mapping = {
         ENV_VALUE_ENV_NAME: TEST,
@@ -93,7 +93,7 @@ def test_check_is_not_production_enviroment(clean_environment):
     assert not properties_manager.is_production_enviroment()
 
 
-def test_load_architecture(clean_environment):
+def test_load_architecture(clean_modified_environments):
     env_variables_mapping = {
         ARCHITECTURE_ENV_NAME: ARCH_STREAMING_SDK,
     }
@@ -111,8 +111,11 @@ def test_load_architecture(clean_environment):
     )
 
 
-def test_load_architecture_no_architecture_selected(clean_environment):
+def test_load_architecture_no_architecture_selected(clean_modified_environments):
     properties_manager = _PropertiesManager()
+    arch_env_value = os.environ[ARCHITECTURE_ENV_NAME]
+    if arch_env_value:
+        del os.environ[ARCHITECTURE_ENV_NAME]
     properties_manager.__setattr__ = Mock()
     properties_manager._load_architecture()
 

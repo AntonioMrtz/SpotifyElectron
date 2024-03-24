@@ -11,7 +11,7 @@ def trigger_app_start():
 
 
 @fixture(scope="function")
-def clean_environment():
+def clean_modified_environments():
     original_env = dict(os.environ)
     yield
     for key in os.environ.keys():

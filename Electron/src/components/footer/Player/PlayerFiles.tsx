@@ -16,7 +16,7 @@ interface PropsPlayer {
   changeSongInfo: (data: JSON) => void;
 }
 
-export default function PlayerFiles({
+export default function Player({
   volume,
   songName,
   changeSongInfo,
@@ -82,6 +82,33 @@ export default function PlayerFiles({
     setVolume();
   }, [setVolume, volume]);
 
+  /* Handles updates of DB when song is played */
+
+  const handleIncreasePlayCount = () => {
+    const requestOptions = {
+      method: 'PATCH',
+    };
+    const fetchUrlUpdateSong: string = `${Global.backendBaseUrl}canciones/${songName}/numberOfPlays`;
+
+    fetch(fetchUrlUpdateSong, requestOptions).catch(() =>
+      console.log('Unable to update number of plays'),
+    );
+  };
+
+  const handleUpdatePlaybackHistory = () => {
+    const username = Token.getTokenUsername();
+
+    const fetchPatchPlayBackHistory: string = `${Global.backendBaseUrl}usuarios/${username}/historial?nombre_cancion=${songName}`;
+
+    const requestOptionsUpdatePlaybackHistory = {
+      method: 'PATCH',
+    };
+
+    fetch(fetchPatchPlayBackHistory, requestOptionsUpdatePlaybackHistory).catch(
+      () => console.log('Unable to update playback history'),
+    );
+  };
+
   /* Loads the song and metadata to the Player */
   const handleMetaData = async () => {
     try {
@@ -91,16 +118,16 @@ export default function PlayerFiles({
 
       if (songName === Global.noSongPlaying) return;
 
-      const requestOptions = {
-        method: 'PATCH',
-      };
-      const fetchUrlUpdateSong: string = `${Global.backendBaseUrl}canciones/${songName}/numberOfPlays`;
-
-      fetch(fetchUrlUpdateSong, requestOptions).catch(() =>
-        console.log('Unable to update number of plays'),
-      );
       const resFetchSong = await fetch(
         `${Global.backendBaseUrl}canciones/${songName}`,
+      );
+
+      const resFetchSongJson = await resFetchSong.json();
+
+      handleIncreasePlayCount();
+      handleUpdatePlaybackHistory();
+      const resFetchSongDTO = await fetch(
+        `${Global.backendBaseUrl}canciones/dto/${songName}`,
       );
 
       const username = Token.getTokenUsername();
@@ -116,13 +143,19 @@ export default function PlayerFiles({
         requestOptionsUpdatePlaybackHistory,
       ).catch(() => console.log('Unable to update playback history'));
 
-      const resFetchSongJson = await resFetchSong.json();
-      changeSongInfo(resFetchSongJson);
+      const resFetchSongDTOJson = await resFetchSongDTO.json();
+      changeSongInfo(resFetchSongDTOJson);
 
-      const audioStreamingURL = resFetchSongJson.url;
+      let audioBytesString = resFetchSongJson.file;
 
-      if (audioStreamingURL !== undefined) {
-        audio.current = new Audio(audioStreamingURL);
+      if (audioBytesString !== undefined) {
+        audioBytesString = audioBytesString
+          .replace('"', '')
+          .replace('b', '')
+          .replace("'", '')
+          .slice(0, -1);
+        const dataURI = `data:audio/mp3;base64,${audioBytesString}`;
+        audio.current = new Audio(dataURI);
       }
 
       if (audio.current) {
@@ -161,6 +194,10 @@ export default function PlayerFiles({
             audio.current.play();
             handlePlay();
             setSongDuration(audio.current.duration); // not updating every 0.5s as playback time
+
+            if (audio.current.currentTime === 0) {
+              handleIncreasePlayCount();
+            }
           }
         };
       };
@@ -182,9 +219,23 @@ export default function PlayerFiles({
   };
 
   useEffect(() => {
+    if (audio.current) {
+      audio.current.pause();
+      handlePause();
+    }
     handleMetaData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [songName, changeSongInfo]);
+
+  useEffect(() => {
+    /* Pause audio if component unmount */
+    return () => {
+      if (audio.current) {
+        audio.current.pause();
+        handlePause();
+      }
+    };
+  }, []);
 
   return (
     <div
@@ -199,7 +250,12 @@ export default function PlayerFiles({
         <button type="button">
           <i className="fa-solid fa-backward-step fa-fw" />
         </button>
-        <button type="button" onClick={play} className={`${displayNonePlay}`}>
+        <button
+          type="button"
+          onClick={play}
+          className={`${displayNonePlay}`}
+          data-testid="player-play-button"
+        >
           <i className="fa-solid fa-circle-play fa-fw" />
         </button>
         <button type="button" onClick={pause} className={`${displayNonePause}`}>

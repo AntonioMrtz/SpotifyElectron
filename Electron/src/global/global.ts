@@ -1,3 +1,5 @@
+import SongArchitecture from './SongArchitecture';
+
 namespace Global {
   export const backendBaseUrl: string = 'http://127.0.0.1:8000/';
 
@@ -5,6 +7,8 @@ namespace Global {
     'https://github.com/AntonioMrtz/SpotifyElectron/';
 
   export const noSongPlaying = 'NOSONGPLAYING';
+  export const songArchitecture: SongArchitecture =
+    SongArchitecture.FILE_ARCHITECTURE;
 
   export interface HandleUrlChangeResponse {
     canGoBack: boolean | undefined;

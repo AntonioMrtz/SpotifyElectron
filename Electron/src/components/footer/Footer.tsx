@@ -1,8 +1,11 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
+import SongArchitecture from 'global/SongArchitecture';
+import Global from 'global/global';
 import styles from './footer.module.css';
 import SongInfo from './SongInfo/SongInfo';
 import SongConfig from './SongConfig/SongConfig';
 import PlayerStreaming from './Player/PlayerStreaming';
+import PlayerFiles from './Player/PlayerFiles';
 
 interface PropsFooter {
   songName: string;
@@ -18,11 +21,19 @@ export default function Footer({ songName }: PropsFooter) {
     >
       <SongInfo songInfo={songInfo} />
 
-      <PlayerStreaming
-        volume={volume}
-        songName={songName}
-        changeSongInfo={setSongInfo}
-      />
+      {Global.songArchitecture === SongArchitecture.STREAMING_ARCHITECTURE ? (
+        <PlayerStreaming
+          volume={volume}
+          songName={songName}
+          changeSongInfo={setSongInfo}
+        />
+      ) : (
+        <PlayerFiles
+          volume={volume}
+          songName={songName}
+          changeSongInfo={setSongInfo}
+        />
+      )}
 
       <SongConfig changeVolume={setVolume} />
     </div>

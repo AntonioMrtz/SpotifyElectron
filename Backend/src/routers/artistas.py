@@ -1,9 +1,9 @@
 import json
-from typing import Annotated, Union
+from typing import Annotated, List, Union
 
 import src.services.artist_service as artist_service
 import src.services.security_service as security_service
-from fastapi import APIRouter, Header, HTTPException
+from fastapi import APIRouter, Body, Header, HTTPException
 from fastapi.responses import Response
 
 router = APIRouter(
@@ -64,10 +64,10 @@ def post_artista(nombre: str, foto: str, password: str) -> Response:
 def update_artista(
     nombre: str,
     foto: str,
-    historial_canciones: list,
-    playlists: list,
-    playlists_guardadas: list,
-    canciones_creadas: list,
+    historial_canciones: List[str] = Body(...),
+    playlists: List[str] = Body(...),
+    playlists_guardadas: List[str] = Body(...),
+    canciones_creadas: List[str] = Body(...),
     authorization: Annotated[Union[str, None], Header()] = None,
 ) -> Response:
     """Actualiza los parámetros del artista con nombre "nombre"

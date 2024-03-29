@@ -5,8 +5,8 @@ on:
     branches:
       - 'master'
       - 'master-*'
-jobs:
 
+jobs:
   run_tests:
     runs-on: ubuntu-22.04
     steps:
@@ -21,15 +21,16 @@ jobs:
         env:
           AGENT_TOOLSDIRECTORY: /opt/hostedtoolcache
 
-      - name: Install dependencies
+      - name: Install dependencies and run style check
         working-directory: Backend/
-        run: pip install -r requirements.txt && pip install -r requirements-test.txt && pip install -r requirements-dev.txt
-
-      - name: Run style check
-        working-directory: Backend/
-        run: python -m black . --check
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          pip install -r requirements.txt
+          pip install -r requirements-test.txt
+          pip install -r requirements-dev.txt
+          python -m black . --check
 
       - name: Fail workflow on style check failure
         if: ${{ failure() }}
         run: exit 1
-

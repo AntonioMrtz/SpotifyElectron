@@ -1,5 +1,5 @@
+from app.model.UserType import User_Type
 from pytest import fixture
-from src.model.UserType import User_Type
 from test_API.api_all_users import (
     delete_playlist_saved,
     patch_history_playback,

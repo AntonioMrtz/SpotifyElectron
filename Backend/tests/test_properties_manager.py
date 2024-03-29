@@ -1,20 +1,19 @@
 import os
 from unittest.mock import Mock
 
-from src.constants.set_up_constants import (
+from app.boostrap.PropertiesManager import _PropertiesManager
+from app.constants.set_up_constants import (
     ARCH_STREAMING_SDK,
-    PROD,
-    MONGO_URI_ENV_NAME,
     ARCHITECTURE_ENV_NAME,
     DEFAULT_ARCHITECTURE,
     DISTRIBUTION_ID_ENV_NAME,
     ENV_VALUE_ENV_NAME,
     LAMBDA_URL_ENV_NAME,
+    MONGO_URI_ENV_NAME,
+    PROD,
     SECRET_KEY_SIGN_ENV_NAME,
     TEST,
 )
-from src.boostrap.PropertiesManager import _PropertiesManager
-
 
 env_variables_mapping = {
     ARCHITECTURE_ENV_NAME: "ARCH",

@@ -1,3 +1,4 @@
+from typing import List
 import json
 from dataclasses import dataclass
 
@@ -9,10 +10,10 @@ class PlaylistDTO:
     description: str
     upload_date: str
     owner: str
-    song_names: list
+    song_names: List[str]
 
-    def add_songs(self, song_names: str) -> None:
-        self.song_names.extends(song_names)
+    def add_songs(self, song_names: List[str]) -> None:
+        self.song_names.extend(song_names)
 
     def get_json(self) -> str:
         playlist_dict = self.__dict__

@@ -34,13 +34,9 @@ class Genre(Enum):
     REGGAETON = "Reggaeton"
 
     @staticmethod
-    def checkValidGenre(genre: str) -> bool:
+    def check_valid_genre(genre: str) -> bool:
         """Checks if the genre is valid"""
-        try:
-            Genre(genre)
-            return True
-        except ValueError:
-            return False
+        return genre in {member.value for member in Genre}
 
     @staticmethod
     def getGenre(genre: Enum) -> str:

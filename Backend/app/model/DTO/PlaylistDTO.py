@@ -1,6 +1,6 @@
-from typing import List
 import json
 from dataclasses import dataclass
+from typing import List
 
 
 @dataclass

@@ -141,7 +141,7 @@ def get_songs_by_genero(genre: Genre) -> List[SongDTO]:
     if not checkValidParameterString(genre.value):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
-    if not Genre.checkValidGenre(genre.value):
+    if not Genre.check_valid_genre(genre.value):
         raise HTTPException(status_code=404, detail="El género no existe")
 
     songs_by_genre = song_service.get_songs_by_genre(genre)

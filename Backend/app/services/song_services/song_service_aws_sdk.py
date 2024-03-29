@@ -245,7 +245,7 @@ async def create_song(
         not checkValidParameterString(name)
         or not checkValidParameterString(photo)
         or not checkValidParameterString(artist)
-        or not Genre.checkValidGenre(genre.value)
+        or not Genre.check_valid_genre(genre.value)
     ):
         raise HTTPException(status_code=400, detail="Parámetros no válidos o vacíos")
 

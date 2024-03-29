@@ -27,7 +27,7 @@ jobs:
 
       - name: Run tests Streaming lambda Architecture
         working-directory: Backend/
-        run: python -m pytest /tests/
+        run: python -m pytest tests/
         env:
           MONGO_URI : ${{ secrets.MONGO_URI }}
           SECRET_KEY_SIGN : ${{ secrets.SECRET_KEY_SIGN }}
@@ -38,7 +38,7 @@ jobs:
 
       - name: Run tests Database Blob Architecture
         working-directory: Backend/
-        run: python -m pytest /tests/
+        run: python -m pytest tests/
         env:
           MONGO_URI : ${{ secrets.MONGO_URI }}
           SECRET_KEY_SIGN : ${{ secrets.SECRET_KEY_SIGN }}

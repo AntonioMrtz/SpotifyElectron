@@ -96,8 +96,6 @@ def get_playlist(name: str) -> Playlist:
         for song_name in playlist_data["song_names"]
     ]
 
-    # [print(song.name) for song in playlist_songs]
-
     date = playlist_data["upload_date"][:-1]
 
     playlist = Playlist(
@@ -140,7 +138,6 @@ def create_playlist(
     if not checkValidParameterString(name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
-    songs = dto_service.get_songs(song_names)
     result_playlist_exists = playlist_collection.find_one({"name": name})
 
     if result_playlist_exists:
@@ -286,7 +283,7 @@ def get_all_playlist() -> list:
     playlists_files = playlist_collection.find()
 
     for playlist_file in playlists_files:
-        playlists.append(dto_service.get_playlist(playlist_file["name"]))
+        playlists.append(get_playlist(playlist_file["name"]))
 
     return playlists
 
@@ -313,7 +310,7 @@ def get_selected_playlists(playlist_names: list) -> list:
     playlists_files = playlist_collection.find(filter_contained_playlist_names)
 
     for playlist_file in playlists_files:
-        response_playlists.append(dto_service.get_playlist(playlist_file["name"]))
+        response_playlists.append(get_playlist(playlist_file["name"]))
 
     return response_playlists
 

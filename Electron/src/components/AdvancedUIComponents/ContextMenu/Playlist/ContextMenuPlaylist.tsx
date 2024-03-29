@@ -221,7 +221,7 @@ export default function ContextMenuPlaylist({
       const url = `${Global.backendBaseUrl}playlists/${dstPlaylistName}`; // Reemplaza con la URL de tu API y el nombre de la playlist
 
       const dstResponse = await fetch(
-        `${Global.backendBaseUrl}playlists/dto/${dstPlaylistName}`,
+        `${Global.backendBaseUrl}playlists/${dstPlaylistName}`,
       );
 
       const dstPlaylistData = await dstResponse.json();
@@ -231,7 +231,7 @@ export default function ContextMenuPlaylist({
       const putUrl = `${url}?foto=${photo}&descripcion=${description}`;
 
       const srcResponse = await fetch(
-        `${Global.backendBaseUrl}playlists/dto/${srcPlaylistName}`,
+        `${Global.backendBaseUrl}playlists/${srcPlaylistName}`,
       );
 
       const srcPlaylistData = await srcResponse.json();

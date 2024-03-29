@@ -2,8 +2,7 @@ import pytest
 from app.model.Genre import Genre
 from pytest import fixture
 from test_API.api_test_artist import create_artist, delete_artist
-from test_API.api_test_dto import get_playlist_dto, get_song_dto
-from test_API.api_test_playlist import create_playlist, delete_playlist
+from test_API.api_test_dto import get_song_dto
 from test_API.api_test_song import create_song, delete_song
 from test_API.api_token import get_user_jwt_header
 
@@ -13,77 +12,6 @@ from test_API.api_token import get_user_jwt_header
 @fixture(scope="module", autouse=True)
 def set_up(trigger_app_start):
     pass
-
-
-def test_get_playlist_dto_correct(clear_test_playlist_db):
-    name = "8232392323623823723"
-    descripcion = "descripcion"
-    foto = "https://foto"
-    owner = "usuarioprueba834783478923489734298"
-    password = "password"
-
-    res_create_artist = create_artist(owner, foto, password)
-    assert res_create_artist.status_code == 201
-
-    jwt_headers = get_user_jwt_header(username=owner, password=password)
-
-    res_create_playlist = create_playlist(
-        name=name, descripcion=descripcion, foto=foto, headers=jwt_headers
-    )
-    assert res_create_playlist.status_code == 201
-
-    res_get_playlist = get_playlist_dto(name=name, headers=jwt_headers)
-    assert res_get_playlist.status_code == 200
-    assert res_get_playlist.json()["name"] == name
-    assert res_get_playlist.json()["photo"] == foto
-    assert res_get_playlist.json()["description"] == descripcion
-    assert res_get_playlist.json()["owner"] == owner
-
-    res_delete_artist = delete_artist(owner)
-    assert res_delete_artist.status_code == 202
-
-    res_delete_playlist = delete_playlist(name=name)
-    assert res_delete_playlist.status_code == 202
-
-
-def test_get_playlist_dto_not_found(clear_test_playlist_db):
-    name = "8232392323623823723"
-    foto = "https://foto"
-    owner = "usuarioprueba834783478923489734298"
-    password = "password"
-
-    res_create_artist = create_artist(owner, foto, password)
-    assert res_create_artist.status_code == 201
-
-    jwt_headers = get_user_jwt_header(username=owner, password=password)
-
-    res_get_playlist = get_playlist_dto(name, headers=jwt_headers)
-    assert res_get_playlist.status_code == 404
-
-    res_delete_artist = delete_artist(owner)
-    assert res_delete_artist.status_code == 202
-
-
-def test_get_playlist_dto_invalid_name(clear_test_playlist_db):
-    name = ""
-
-    foto = "https://foto"
-    owner = "usuarioprueba834783478923489734298"
-    password = "password"
-
-    res_create_artist = create_artist(owner, foto, password)
-    assert res_create_artist.status_code == 201
-
-    jwt_headers = get_user_jwt_header(username=owner, password=password)
-
-    res_get_playlist = get_playlist_dto(name, jwt_headers)
-    assert res_get_playlist.status_code == 404
-
-    res_delete_artist = delete_artist(owner)
-    assert res_delete_artist.status_code == 202
-
-
-# * Song DTO
 
 
 def test_get_song_dto_correct(clear_test_song_db):
@@ -168,19 +96,10 @@ def test_get_song_dto_invalid_name(clear_test_song_db):
 
 @pytest.fixture()
 def clear_test_playlist_db():
-    new_name = "82323923236238237237"
-    name = "8232392323623823723"
     artista = "usuarioprueba834783478923489734298"
-    delete_playlist(name=name)
-    delete_playlist(name=new_name)
     delete_artist(artista)
-
     yield
-    new_name = "82323923236238237237"
-    name = "8232392323623823723"
     artista = "usuarioprueba834783478923489734298"
-    delete_playlist(name=name)
-    delete_playlist(name=new_name)
     delete_artist(artista)
 
 

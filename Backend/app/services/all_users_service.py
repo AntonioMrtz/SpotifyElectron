@@ -1,5 +1,6 @@
 import app.services.artist_service as artist_service
 import app.services.playlist_service as playlist_service
+import app.services.dto_service as dto_service
 import app.services.user_service as user_service
 from app.model.TokenData import TokenData
 from app.model.UserType import User_Type

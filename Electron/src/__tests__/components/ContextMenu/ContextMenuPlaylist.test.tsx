@@ -50,7 +50,8 @@ jest.spyOn(Token, 'getTokenRole').mockReturnValue(roleUser);
 
 global.fetch = jest.fn((url: string, options: any) => {
   if (
-    url === `${Global.backendBaseUrl}playlists/dto/${playlistDTOMockFetch.name}`
+    url === `${Global.backendBaseUrl}playlists/${playlistDTOMockFetch.name}` &&
+    !options
   ) {
     return Promise.resolve({
       json: () => playlistDTOMockFetch,
@@ -82,6 +83,7 @@ global.fetch = jest.fn((url: string, options: any) => {
 
   if (options && options.method) {
     if (options.method === 'DELETE') {
+      console.log('HOLAAAAAA  ');
       return Promise.resolve({
         json: () => {},
         status: 202,

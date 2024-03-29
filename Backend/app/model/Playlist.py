@@ -12,22 +12,12 @@ class Playlist(SpotifyElectronModel):
     description: str
     upload_date: str
     owner: str
-    songs: list
+    song_names: List[str]
 
-    def add_songs(self, song_names: List[str]) -> None:
-        self.songs.extend(song_names)
+    def add_songs(self, songs: List[str]) -> None:
+        self.song_names.extend(songs)
 
     def get_json(self) -> str:
-        playlist_dict = self.__dict__
-
-        songs_json = []
-
-        for song in self.songs:
-            song_json = song.get_json()
-            songs_json.append(song_json)
-
-        playlist_dict.pop("songs", None)
-        playlist_dict["songs"] = songs_json
-        playlist_json = json.dumps(playlist_dict)
-
+        json.dumps(self.__dict__)
+        playlist_json = json.dumps(self.__dict__)
         return playlist_json

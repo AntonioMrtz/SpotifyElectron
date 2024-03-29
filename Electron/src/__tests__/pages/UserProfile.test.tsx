@@ -171,8 +171,7 @@ test('UserProfile User load Playback history and his Playlists', async () => {
 
   global.fetch = jest.fn((url: string) => {
     if (
-      url ===
-      `${Global.backendBaseUrl}playlists/dto/${playlistDTOMockFetch.name}`
+      url === `${Global.backendBaseUrl}playlists/${playlistDTOMockFetch.name}`
     ) {
       return Promise.resolve({
         json: () => playlistDTOMockFetch,
@@ -280,8 +279,7 @@ test('UserProfile Artist load Songs and Playcount', async () => {
 
   global.fetch = jest.fn((url: string) => {
     if (
-      url ===
-      `${Global.backendBaseUrl}playlists/dto/${playlistDTOMockFetch.name}`
+      url === `${Global.backendBaseUrl}playlists/${playlistDTOMockFetch.name}`
     ) {
       return Promise.resolve({
         json: () => playlistDTOMockFetch,

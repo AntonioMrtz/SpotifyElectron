@@ -208,7 +208,7 @@ export default function Playlist({
   const loadPlaylistData = async () => {
     try {
       const resFetchGetPlaylistDTO = await fetch(
-        encodeURI(`${Global.backendBaseUrl}playlists/dto/${playlistName}`),
+        encodeURI(`${Global.backendBaseUrl}playlists/${playlistName}`),
       );
       const resFetchGetPlaylistDTOJson = await resFetchGetPlaylistDTO.json();
 
@@ -285,7 +285,7 @@ export default function Playlist({
 
     try {
       const resGetPlaylistDTO = await fetch(
-        `${Global.backendBaseUrl}playlists/dto/${playlistName}`,
+        `${Global.backendBaseUrl}playlists/${playlistName}`,
       );
 
       const resGetPlaylistDTOJson = await resGetPlaylistDTO.json();

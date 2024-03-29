@@ -104,7 +104,7 @@ export default function ContextMenuSong({
   const handleAddToPlaylist = async (selectedPlaylistName: string) => {
     try {
       const playlistResponse = await fetch(
-        `${Global.backendBaseUrl}playlists/dto/${selectedPlaylistName}`,
+        `${Global.backendBaseUrl}playlists/${selectedPlaylistName}`,
       );
       const playlistData = await playlistResponse.json();
 
@@ -139,7 +139,7 @@ export default function ContextMenuSong({
   const handleDeleteFromPlaylist = async () => {
     try {
       const playlistResponse = await fetch(
-        `${Global.backendBaseUrl}playlists/dto/${playlistName}`,
+        `${Global.backendBaseUrl}playlists/${playlistName}`,
       );
       const playlistData = await playlistResponse.json();
 

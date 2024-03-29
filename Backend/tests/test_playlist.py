@@ -255,6 +255,9 @@ def test_get_playlists(clear_test_data_db):
     assert res_delete_artist.status_code == 202
 
 
+# TODO test playlist comprobar interior canciones
+
+
 # executes after all tests
 @pytest.fixture()
 def clear_test_data_db():

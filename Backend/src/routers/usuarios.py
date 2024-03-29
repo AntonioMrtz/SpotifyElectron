@@ -1,9 +1,9 @@
-from typing import Annotated, Union
+from typing import Annotated, List, Union
 
 import src.services.all_users_service as all_users_service
 import src.services.security_service as security_service
 import src.services.user_service as user_service
-from fastapi import APIRouter, Header, HTTPException
+from fastapi import APIRouter, Body, Header, HTTPException
 from fastapi.responses import Response
 
 router = APIRouter(
@@ -92,9 +92,9 @@ def post_usuario(nombre: str, foto: str, password: str) -> Response:
 def update_usuario(
     nombre: str,
     foto: str,
-    historial_canciones: list,
-    playlists: list,
-    playlists_guardadas: list,
+    historial_canciones: List[str] = Body(...),
+    playlists: List[str] = Body(...),
+    playlists_guardadas: List[str] = Body(...),
     authorization: Annotated[Union[str, None], Header()] = None,
 ) -> Response:
     """Actualiza los parámetros del usuario con nombre "nombre"

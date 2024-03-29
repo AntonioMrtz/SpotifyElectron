@@ -1,9 +1,10 @@
 services:
-
   backend:
     extends:
       file: docker-compose-base.yml
       service: backend
+    environment:
+      MONGO_URI: mongodb://root:root@mongo:27017/
 
   mongo:
     image: mongo

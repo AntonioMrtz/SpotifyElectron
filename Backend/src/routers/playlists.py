@@ -1,10 +1,10 @@
 import json
-from typing import Annotated, Optional, Union
+from typing import Annotated, List, Optional, Union
 
 import src.services.dto_service as dto_service
 import src.services.playlist_service as playlist_service
 import src.services.security_service as security_service
-from fastapi import APIRouter, Header, HTTPException
+from fastapi import APIRouter, Body, Header, HTTPException
 from fastapi.responses import Response
 
 router = APIRouter(
@@ -43,7 +43,7 @@ def post_playlist(
     nombre: str,
     foto: str,
     descripcion: str,
-    nombres_canciones: list,
+    nombres_canciones: List[str] = Body(...),
     authorization: Annotated[Union[str, None], Header()] = None,
 ) -> Response:
     """Registra la playlist
@@ -88,7 +88,7 @@ def update_playlist(
     nombre: str,
     foto: str,
     descripcion: str,
-    nombres_canciones: list,
+    nombres_canciones: List[str] = Body(...),
     nuevo_nombre: Optional[str] = None,
     authorization: Annotated[Union[str, None], Header()] = None,
 ) -> Response:

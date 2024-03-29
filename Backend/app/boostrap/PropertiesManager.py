@@ -1,6 +1,13 @@
+import configparser
 import os
 from typing import List
 
+from app.constants.config_constants import (
+    APP_CONFIG_SECTION,
+    APP_FOLDER,
+    CONFIG_FILENAME,
+    RESOURCES_FOLDER,
+)
 from app.constants.set_up_constants import (
     ARCHITECTURE_ENV_NAME,
     DEFAULT_ARCHITECTURE,
@@ -27,6 +34,18 @@ class _PropertiesManager:
         ]
         self._load_env_variables(self.env_variables)
         self._load_architecture()
+        # TODO metodo separado
+        current_directory = os.getcwd()
+        self.config_file = os.path.join(
+            current_directory, APP_FOLDER, RESOURCES_FOLDER, CONFIG_FILENAME
+        )
+        self.config = configparser.ConfigParser()
+        self.config.read(self.config_file)
+        self._set_app_attributes()
+
+    def _set_app_attributes(self):
+        for key, value in self.config.items(APP_CONFIG_SECTION):
+            setattr(self, key, value)
 
     def _load_architecture(self):
         # TODO

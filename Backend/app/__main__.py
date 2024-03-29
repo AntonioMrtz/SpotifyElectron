@@ -2,6 +2,7 @@ from contextlib import asynccontextmanager
 
 import uvicorn
 from app.boostrap.PropertiesManager import PropertiesManager
+from app.constants.config_constants import APP, HOST, PORT
 from app.middleware.middleware import CheckJwtAuth
 from app.routers import artistas, canciones, generos, login, playlists, search, usuarios
 from fastapi import FastAPI
@@ -62,8 +63,8 @@ if __name__ == "__main__":
     # TODO reload true condicional
     # TODO meter config lanzar app en config.ini
     uvicorn.run(
-        "app.__main__:app",
-        host="0.0.0.0",
-        port=8000,
+        app=PropertiesManager.__getattribute__(APP),
+        host=PropertiesManager.__getattribute__(HOST),
+        port=int(PropertiesManager.__getattribute__(PORT)),
         reload=PropertiesManager.is_testing_enviroment(),
     )

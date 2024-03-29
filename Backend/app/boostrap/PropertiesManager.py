@@ -34,7 +34,9 @@ class _PropertiesManager:
         ]
         self._load_env_variables(self.env_variables)
         self._load_architecture()
-        # TODO metodo separado
+        self._load_app_config()
+
+    def _load_app_config(self):
         current_directory = os.getcwd()
         self.config_file = os.path.join(
             current_directory, APP_FOLDER, RESOURCES_FOLDER, CONFIG_FILENAME

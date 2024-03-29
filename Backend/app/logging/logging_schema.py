@@ -29,13 +29,16 @@ class SpotifyElectronFormatter(logging.Formatter):
 
 
 class SpotifyElectronLogger:
+    """Custom Logger that accepts the current file logger name and\
+        optionally an log file to store logs"""
+
     def __init__(self, logger_name, log_file=None):
         # Disable other loggers
         logging.getLogger().handlers.clear()
         logging.getLogger().propagate = False
 
         self.logger = logging.getLogger(logger_name)
-        self.logger.setLevel(logging.DEBUG)
+        self.logger.setLevel(logging.INFO)
 
         # Create a console handler
         console_handler = logging.StreamHandler()

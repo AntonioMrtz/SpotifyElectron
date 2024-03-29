@@ -5,7 +5,7 @@ from app.boostrap.PropertiesManager import PropertiesManager
 from app.constants.config_constants import APP, HOST, PORT
 from app.logging.logger_constants import LOGGING_MAIN
 from app.logging.logging_schema import SpotifyElectronLogger
-from app.middleware.middleware import CheckJwtAuth
+from app.middleware.CheckJwtAuthMiddleware import CheckJwtAuthMiddleware
 from app.routers import artistas, canciones, generos, login, playlists, search, usuarios
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -59,7 +59,7 @@ app.add_middleware(
     max_age=3600,
     allow_headers=["*"],
 )
-app.add_middleware(CheckJwtAuth)
+app.add_middleware(CheckJwtAuthMiddleware)
 
 
 if __name__ == "__main__":

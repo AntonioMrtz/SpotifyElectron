@@ -1,7 +1,6 @@
 from app.logging.logger_constants import LOGGING_EXCEPTION
 from app.logging.logging_schema import SpotifyElectronLogger
 
-
 exceptions_logger = SpotifyElectronLogger(LOGGING_EXCEPTION).getLogger()
 
 

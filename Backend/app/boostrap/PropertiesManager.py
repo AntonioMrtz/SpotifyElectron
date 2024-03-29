@@ -19,10 +19,9 @@ from app.constants.set_up_constants import (
     SECRET_KEY_SIGN_ENV_NAME,
     TEST,
 )
-from dotenv import load_dotenv
-
 from app.logging.logger_constants import LOGGING_PROPERTIES_MANAGER
 from app.logging.logging_schema import SpotifyElectronLogger
+from dotenv import load_dotenv
 
 properties_manager_logger = SpotifyElectronLogger(
     LOGGING_PROPERTIES_MANAGER

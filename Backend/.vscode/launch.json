@@ -8,11 +8,7 @@
             "name": "DEBUG Backend app",
             "type": "debugpy",
             "request": "launch",
-            "module": "uvicorn",
-            "args": [
-                "src.main:app",
-                "--reload"
-            ],
+            "module": "app",
             "cwd": "${workspaceFolder}/",
             "jinja": true,
             "justMyCode": false

@@ -1,7 +1,7 @@
 import os
 from unittest.mock import Mock
 
-from src.constants.set_up_constants import (
+from app.constants.set_up_constants import (
     ARCH_STREAMING_SDK,
     PROD,
     MONGO_URI_ENV_NAME,
@@ -13,7 +13,7 @@ from src.constants.set_up_constants import (
     SECRET_KEY_SIGN_ENV_NAME,
     TEST,
 )
-from src.boostrap.PropertiesManager import _PropertiesManager
+from app.boostrap.PropertiesManager import _PropertiesManager
 
 
 env_variables_mapping = {

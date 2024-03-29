@@ -22,7 +22,7 @@ cd Backend;
 * MONGO_URI= uri for connecting into a MongoDB database
 * SECRET_KEY_SIGN= 32 byte key for signing tokens in backend
 * ARCH= DB_BLOB, song architecture
-* ENV_VALUE= PROD, prod or test
+* ENV_VALUE= PROD, prod or test ( PROD , TEST)
 ```
 
 3. Install the virtual enviroment and dependencies 
@@ -38,7 +38,7 @@ pip install -r requirements-test.txt;
 4. Run the app in hot reload debug mode 
 
 ```
-python -m uvicorn src.main:app --reload;
+python -m app;
 ```
 
 5. The app will be deploy at **http://127.0.0.1:8000/**

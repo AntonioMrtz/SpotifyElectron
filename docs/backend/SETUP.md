@@ -23,7 +23,7 @@ cd Backend;
 * SECRET_KEY_SIGN= 32 byte key for signing tokens in backend
 * LAMBDA_URL= URL of Lambda API for accesing AWS services and managing song
 * ARCH= STREAMING_LAMBDA, song architecture
-* ENV_VALUE= PROD, prod or test
+* ENV_VALUE= PROD, prod or test ( PROD , TEST)
 
 ```
 
@@ -40,7 +40,7 @@ pip install -r requirements-test.txt;
 4. Run the app in hot reload debug mode 
 
 ```
-python -m uvicorn src.main:app --reload;
+python -m app;
 ```
 
 5. The app will be deploy at **http://127.0.0.1:8000/**
@@ -56,11 +56,11 @@ python -m uvicorn src.main:app --reload;
 
 1. Run tests
 ```
-python -m pytest . // Normal test run
+python -m pytest tests/ // Normal test run
 
 or
 
-python -m pytest --cov=. --cov-report=html // Test run and generate coverage in folder htmlcov/index.html
+python -m pytest tests/ --cov=. --cov-report=html // Test run and generate coverage in folder htmlcov/index.html
 
 ```
 

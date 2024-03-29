@@ -23,7 +23,12 @@ jobs:
 
       - name: Install dependencies
         working-directory: Backend/
-        run: pip install -r requirements.txt && pip install -r requirements-test.txt && pip install -r requirements-dev.txt
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          pip install -r requirements.txt
+          pip install -r requirements-test.txt
+          pip install -r requirements-dev.txt
 
       - name: Run style check
         working-directory: Backend/

@@ -253,7 +253,7 @@ export default function Playlist({
                       refreshSidebarData: triggerReloadSidebar,
                     };
                     propsSong.artistName = resFetchSongDTOJson.artist;
-                    propsSong.duration = resFetchSongDTOJson.duration;
+                    propsSong.duration = resFetchSongDTOJson.seconds_duration;
                     propsSong.playCount = resFetchSongDTOJson.number_of_plays;
 
                     resolve(propsSong);

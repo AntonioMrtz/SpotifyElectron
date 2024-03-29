@@ -37,7 +37,7 @@ const playlistDTOMockFetch = {
   name: songName,
   artist: userName,
   photo: 'photo',
-  duration: '180',
+  seconds_duration: '180',
   genre: 'Rock',
   number_of_plays: 2,
 }; */

@@ -448,7 +448,7 @@ def get_songs_by_genre(genre: Genre) -> List[Song]:
                 name=song_data["name"],
                 artist=song_data["artist"],
                 photo=song_data["photo"],
-                duration=song_data["duration"],
+                seconds_duration=song_data["duration"],
                 genre=Genre(song_data["genre"]).name,
                 number_of_plays=song_data["number_of_plays"],
                 url="no_url_get_songs_by_genre",

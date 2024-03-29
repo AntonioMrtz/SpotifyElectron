@@ -47,7 +47,7 @@ export default function Genre({
             name: songParsed.name,
             artist: songParsed.artist,
             photo: songParsed.photo,
-            duration: songParsed.duration,
+            duration: songParsed.seconds_duration,
             genre: songParsed.genre,
             number_of_plays: songParsed.number_of_plays,
           };

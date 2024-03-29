@@ -92,7 +92,7 @@ def get_playlist(name: str) -> Playlist:
     playlist_songs = []
 
     [
-        playlist_songs.append(song_service.get_song(song_name))
+        playlist_songs.append(dto_service.get_song(song_name).name)
         for song_name in playlist_data["song_names"]
     ]
 

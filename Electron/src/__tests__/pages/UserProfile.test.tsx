@@ -157,7 +157,7 @@ test('UserProfile User load Playback history and his Playlists', async () => {
     name: songName,
     artist: 'artist',
     photo: 'photo',
-    duration: '3',
+    seconds_duration: '3',
     genre: 'Rock',
     number_of_plays: 2,
   };
@@ -266,7 +266,7 @@ test('UserProfile Artist load Songs and Playcount', async () => {
     name: songName,
     artist: 'artist',
     photo: 'photo',
-    duration: '3',
+    seconds_duration: '3',
     genre: 'Rock',
     number_of_plays: 2,
   };

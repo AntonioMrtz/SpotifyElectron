@@ -9,7 +9,7 @@ class Song:
     name: str
     artist: str
     photo: str
-    duration: int  # In seconds
+    seconds_duration: int  # In seconds
     genre: Genre
     url: str
     number_of_plays: int

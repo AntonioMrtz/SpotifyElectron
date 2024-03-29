@@ -59,7 +59,7 @@ app.add_middleware(
     max_age=3600,
     allow_headers=["*"],
 )
-app.add_middleware(CheckJwtAuthMiddleware)
+#app.add_middleware(CheckJwtAuthMiddleware)
 
 
 if __name__ == "__main__":

@@ -40,7 +40,7 @@ def get_song(name: str) -> SongDTO:
         name=song.name,
         artist=song.artist,
         photo=song.photo,
-        duration=song.duration,
+        seconds_duration=song.seconds_duration,
         genre=song.genre,
         number_of_plays=song.number_of_plays,
     )
@@ -153,7 +153,7 @@ def get_songs_by_genero(genre: Genre) -> List[SongDTO]:
                 name=song.name,
                 artist=song.artist,
                 photo=song.photo,
-                duration=song.duration,
+                seconds_duration=song.seconds_duration,
                 genre=song.genre,
                 number_of_plays=song.number_of_plays,
             )

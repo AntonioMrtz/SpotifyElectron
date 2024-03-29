@@ -7,7 +7,7 @@ class User:
     name: str
     photo: str
     register_date: str
-    password: str
+    password: bytes
     playback_history: list
     playlists: list
     saved_playlists: list

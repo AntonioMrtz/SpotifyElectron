@@ -84,7 +84,6 @@ def post_usuario(nombre: str, foto: str, password: str) -> Response:
     -------
         Bad Request 400: Parámetros introducidos no són válidos o vacíos
     """
-    logging.getLogger("FastAPILogger").critical("prueba")
     user_service.create_user(nombre, foto, password)
     return Response(None, 201)
 

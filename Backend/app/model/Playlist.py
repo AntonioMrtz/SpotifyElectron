@@ -1,11 +1,12 @@
 import json
 from dataclasses import dataclass
+from typing import List
 
-import app.services.dto_service as dto_service
+from app.model.model_schema import SpotifyElectronModel
 
 
 @dataclass
-class Playlist:
+class Playlist(SpotifyElectronModel):
     name: str
     photo: str
     description: str
@@ -13,8 +14,8 @@ class Playlist:
     owner: str
     songs: list
 
-    def add_songs(self, song_names: str) -> None:
-        [self.songs.append(dto_service.get_song(song_name)) for song_name in song_names]
+    def add_songs(self, song_names: List[str]) -> None:
+        self.songs.extend(song_names)
 
     def get_json(self) -> str:
         playlist_dict = self.__dict__
@@ -25,10 +26,7 @@ class Playlist:
             song_json = song.get_json()
             songs_json.append(song_json)
 
-        # Eliminar el atributo song_names del diccionario ,
-        # hay que serializar song primero
         playlist_dict.pop("songs", None)
-        # Convertir el diccionario en una cadena JSON
         playlist_dict["songs"] = songs_json
         playlist_json = json.dumps(playlist_dict)
 

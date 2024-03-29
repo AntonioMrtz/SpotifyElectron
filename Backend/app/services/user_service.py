@@ -1,7 +1,7 @@
 from datetime import datetime
 from sys import modules
 
-import bcrypt
+import app.services.security_service as security_service
 from app.database.Database import Database
 from app.model.TokenData import TokenData
 from app.model.User import User
@@ -109,8 +109,7 @@ def create_user(name: str, photo: str, password: str) -> None:
     if check_user_exists(name):
         raise HTTPException(status_code=400, detail="El usuario ya existe")
 
-    utf8_password = password.encode("utf-8")
-    hashed_password = bcrypt.hashpw(utf8_password, bcrypt.gensalt())
+    hashed_password = security_service.hash_password(password)
 
     result = user_collection.insert_one(
         {

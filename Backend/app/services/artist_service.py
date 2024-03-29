@@ -2,7 +2,7 @@ import json
 from datetime import datetime
 from sys import modules
 
-import bcrypt
+import app.services.security_service as security_service
 from app.database.Database import Database
 from app.model.Artist import Artist
 from app.model.TokenData import TokenData
@@ -195,7 +195,7 @@ def get_artist(name: str) -> Artist:
     return artist
 
 
-def create_artist(name: str, photo: str, password: str) -> None:
+def create_artist(name: str, photo: str, password: str) -> bool:
     """Creates an artist
 
     Parameters
@@ -226,8 +226,7 @@ def create_artist(name: str, photo: str, password: str) -> None:
     if check_artists_exists(name):
         raise HTTPException(status_code=400, detail="El artista ya existe")
 
-    utf8_password = password.encode("utf-8")
-    hashed_password = bcrypt.hashpw(utf8_password, bcrypt.gensalt())
+    hashed_password = security_service.hash_password(password)
 
     result = artist_collection.insert_one(
         {
@@ -242,7 +241,7 @@ def create_artist(name: str, photo: str, password: str) -> None:
         }
     )
 
-    return True if result.acknowledged else False
+    return result.acknowledged
 
 
 def update_artist(

@@ -1,9 +1,9 @@
 import logging
 
-from pymongo.mongo_client import MongoClient
-from pymongo.server_api import ServerApi
 from app.boostrap.PropertiesManager import PropertiesManager
 from app.constants.set_up_constants import MONGO_URI_ENV_NAME
+from pymongo.mongo_client import MongoClient
+from pymongo.server_api import ServerApi
 
 formatter = logging.Formatter("%(asctime)s %(levelname)s %(message)s")
 logging.basicConfig(level=logging.WARNING)

@@ -4,12 +4,12 @@ from sys import modules
 
 import app.services.all_users_service as all_users_service
 import app.services.dto_service as dto_service
-from fastapi import HTTPException
 from app.database.Database import Database
 from app.model.Playlist import Playlist
 from app.model.TokenData import TokenData
 from app.services.song_services.song_service_provider import get_song_service
 from app.services.utils import checkValidParameterString
+from fastapi import HTTPException
 
 if "pytest" in modules:
     playlist_collection = Database().connection["test.playlist"]

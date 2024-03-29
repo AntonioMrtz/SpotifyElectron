@@ -1,7 +1,6 @@
 import os
 from typing import List
 
-from dotenv import load_dotenv
 from app.constants.set_up_constants import (
     ARCHITECTURE_ENV_NAME,
     DEFAULT_ARCHITECTURE,
@@ -13,6 +12,7 @@ from app.constants.set_up_constants import (
     SECRET_KEY_SIGN_ENV_NAME,
     TEST,
 )
+from dotenv import load_dotenv
 
 
 class _PropertiesManager:

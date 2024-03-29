@@ -1,12 +1,12 @@
 from typing import List
 
 import app.services.playlist_service as playlist_service
-from fastapi import HTTPException
 from app.model.DTO.PlaylistDTO import PlaylistDTO
 from app.model.DTO.SongDTO import SongDTO
 from app.model.Genre import Genre
 from app.services.song_services.song_service_provider import get_song_service
 from app.services.utils import checkValidParameterString
+from fastapi import HTTPException
 
 song_service = get_song_service()
 

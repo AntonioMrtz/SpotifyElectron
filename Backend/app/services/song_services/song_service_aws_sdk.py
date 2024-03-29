@@ -5,13 +5,6 @@ from typing import List
 
 import boto3
 import librosa
-from boostrap.PropertiesManager import PropertiesManager
-from botocore.exceptions import ClientError
-from constants.set_up_constants import DISTRIBUTION_ID_ENV_NAME
-from dotenv import load_dotenv
-from fastapi import HTTPException
-from gridfs import GridFS
-from pymongo.errors import PyMongoError
 from app.database.Database import Database
 from app.model.Genre import Genre
 from app.model.Song import Song
@@ -22,6 +15,13 @@ from app.services.artist_service import (
     delete_song_artist,
 )
 from app.services.utils import checkValidParameterString
+from boostrap.PropertiesManager import PropertiesManager
+from botocore.exceptions import ClientError
+from constants.set_up_constants import DISTRIBUTION_ID_ENV_NAME
+from dotenv import load_dotenv
+from fastapi import HTTPException
+from gridfs import GridFS
+from pymongo.errors import PyMongoError
 
 """ Insert songs with format [files,chunks] https://www.mongodb.com/docs/manual/core/gridfs/"""
 

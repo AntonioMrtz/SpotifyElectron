@@ -1,11 +1,11 @@
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 from app.boostrap.PropertiesManager import PropertiesManager
 from app.middleware.middleware import CheckJwtAuth
 from app.routers import artistas, canciones, generos, login, playlists, search, usuarios
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 
 @asynccontextmanager

@@ -2,13 +2,10 @@ import json
 from datetime import datetime, timedelta
 from typing import Annotated, Union
 
-import bcrypt
 import app.services.all_users_service as all_users_service
 import app.services.artist_service as artist_service
 import app.services.user_service as user_service
-from fastapi import Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordBearer
-from jose import JWTError, jwt
+import bcrypt
 from app.boostrap.PropertiesManager import PropertiesManager
 from app.constants.set_up_constants import DISTRIBUTION_ID_ENV_NAME
 from app.model.Artist import Artist
@@ -16,6 +13,9 @@ from app.model.TokenData import TokenData
 from app.model.User import User
 from app.model.UserType import User_Type
 from app.services.utils import checkValidParameterString
+from fastapi import Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordBearer
+from jose import JWTError, jwt
 
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 10080  # 7 days

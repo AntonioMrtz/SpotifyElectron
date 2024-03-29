@@ -3,11 +3,9 @@ import io
 from sys import modules
 from typing import List
 
+import app.services.artist_service as artist_service
 import librosa
 import requests
-import app.services.artist_service as artist_service
-from fastapi import HTTPException
-from pymongo.errors import PyMongoError
 from app.boostrap.PropertiesManager import PropertiesManager
 from app.constants.set_up_constants import LAMBDA_URL_ENV_NAME
 from app.database.Database import Database
@@ -15,6 +13,8 @@ from app.model.Genre import Genre
 from app.model.Song import Song
 from app.model.TokenData import TokenData
 from app.services.utils import checkValidParameterString
+from fastapi import HTTPException
+from pymongo.errors import PyMongoError
 
 """ Insert songs with format [files,chunks] https://www.mongodb.com/docs/manual/core/gridfs/"""
 

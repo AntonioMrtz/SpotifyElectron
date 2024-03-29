@@ -3,12 +3,12 @@ from datetime import datetime
 from sys import modules
 
 import bcrypt
-from fastapi import HTTPException
 from app.database.Database import Database
 from app.model.Artist import Artist
 from app.model.TokenData import TokenData
 from app.services.song_services.song_service_provider import get_song_service
 from app.services.utils import checkValidParameterString
+from fastapi import HTTPException
 
 if "pytest" in modules:
     artist_collection = Database().connection["test.artista"]

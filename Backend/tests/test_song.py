@@ -1,6 +1,6 @@
 import pytest
-from pytest import fixture
 from app.model.Genre import Genre
+from pytest import fixture
 from test_API.api_test_artist import create_artist, delete_artist, get_artist
 from test_API.api_test_song import (
     create_song,

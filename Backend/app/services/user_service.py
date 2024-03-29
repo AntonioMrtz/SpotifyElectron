@@ -2,11 +2,11 @@ from datetime import datetime
 from sys import modules
 
 import bcrypt
-from fastapi import HTTPException
 from app.database.Database import Database
 from app.model.TokenData import TokenData
 from app.model.User import User
 from app.services.utils import checkValidParameterString
+from fastapi import HTTPException
 
 if "pytest" in modules:
     user_collection = Database().connection["test.usuario"]

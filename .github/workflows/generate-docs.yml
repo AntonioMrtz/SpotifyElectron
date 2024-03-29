@@ -23,15 +23,11 @@ jobs:
         python-version: 3.11
 
     - name: Install dependencies
-      working-directory: Backend
+      working-directory: Backend/
       run: |
         python -m venv venv
         source venv/bin/activate
         pip install -r requirements.txt
-
-    - name: Run generate docs
-      working-directory: Backend/
-      run: |
         python generate-docs.py
       env:
           MONGO_URI : ${{ secrets.MONGO_URI }}

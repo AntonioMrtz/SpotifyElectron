@@ -3,10 +3,14 @@ from contextlib import asynccontextmanager
 import uvicorn
 from app.boostrap.PropertiesManager import PropertiesManager
 from app.constants.config_constants import APP, HOST, PORT
+from app.logging.logger_constants import LOGGING_MAIN
+from app.logging.logging_schema import SpotifyElectronLogger
 from app.middleware.middleware import CheckJwtAuth
 from app.routers import artistas, canciones, generos, login, playlists, search, usuarios
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
+main_logger = SpotifyElectronLogger(LOGGING_MAIN).getLogger()
 
 
 @asynccontextmanager
@@ -18,7 +22,7 @@ async def lifespan_handler(app: FastAPI):
     app : FastAPI
         the app object that is going to be created
     """
-    # TODO print init
+    main_logger.info("Spotify Electron Backend Started")
     app.include_router(playlists.router)
     app.include_router(canciones.router)
     app.include_router(generos.router)
@@ -27,8 +31,7 @@ async def lifespan_handler(app: FastAPI):
     app.include_router(login.router)
     app.include_router(search.router)
     yield
-    # teardown app
-    # TODO print teardown
+    main_logger.info("Spotify Electron Backend Stopped")
 
 
 app = FastAPI(
@@ -60,8 +63,6 @@ app.add_middleware(CheckJwtAuth)
 
 
 if __name__ == "__main__":
-    # TODO reload true condicional
-    # TODO meter config lanzar app en config.ini
     uvicorn.run(
         app=PropertiesManager.__getattribute__(APP),
         host=PropertiesManager.__getattribute__(HOST),

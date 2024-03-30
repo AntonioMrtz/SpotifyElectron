@@ -1,5 +1,6 @@
 from datetime import datetime
 from sys import modules
+from typing import List
 
 import app.services.security_service as security_service
 from app.database.Database import Database
@@ -207,7 +208,7 @@ def delete_user(name: str) -> None:
         raise HTTPException(status_code=404, detail="El usuario no existe")
 
 
-def get_users(names: list) -> list:
+def get_users(names: list) -> List[User]:
     """Returns a list of Users that match "names" list of names
 
     Parameters
@@ -233,23 +234,15 @@ def get_users(names: list) -> list:
     return users
 
 
-def search_by_name(name: str) -> list:
-    """Returns a list of Users that contains "name" in their names
+def search_by_name(name: str) -> List[User]:
+    """Retrieve the users than match the name
 
-    Parameters
-    ----------
-        name (str) : name to search by
+    Args:
+        name (str): the name to match
 
-    Raises
-    -------
-            400 : Bad Request
-            404 : User not found
-
-    Returns
-    -------
-        List<Json>
+    Returns:
+        List[User]: a list with the users that match the name
     """
-
     users_names_response = user_collection.find(
         {"name": {"$regex": name, "$options": "i"}}, {"_id": 0, "name": 1}
     )
@@ -258,11 +251,11 @@ def search_by_name(name: str) -> list:
     [user_names.append(user["name"]) for user in users_names_response]
 
     users = get_users(user_names)
+    for user in users:
+        # TODO user sin contraseña
+        user.password = ""
 
-    users_json_list = []
-    [users_json_list.append(user.get_json()) for user in users]
-
-    return users_json_list
+    return users
 
 
 # * AUX METHODs

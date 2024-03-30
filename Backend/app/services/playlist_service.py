@@ -1,6 +1,7 @@
 import json
 from datetime import datetime
 from sys import modules
+from typing import List
 
 import app.services.all_users_service as all_users_service
 import app.services.dto_service as dto_service
@@ -315,21 +316,14 @@ def get_selected_playlists(playlist_names: list) -> list:
     return response_playlists
 
 
-def search_by_name(name: str) -> json:
-    """Returns a list of Playlists that contains "name" in their names
+def search_by_name(name: str) -> List[Playlist]:
+    """Retrieve the playlists than match the name
 
-    Parameters
-    ----------
-        name (str): name to filter by
+    Args:
+        name (str): the name to match
 
-    Raises
-    -------
-            400 : Bad Request
-            404 : Playlist not found
-
-    Returns
-    -------
-        List<PlaylistDTO>
+    Returns:
+        List[Playlist]: a list with the playlists that match the name
     """
 
     playlist_names_response = playlist_collection.find(
@@ -342,8 +336,4 @@ def search_by_name(name: str) -> json:
 
     playlists = get_selected_playlists(playlist_names)
 
-    playlists_json_list = []
-
-    [playlists_json_list.append(playlist.get_json()) for playlist in playlists]
-
-    return playlists_json_list
+    return playlists

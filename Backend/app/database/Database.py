@@ -45,9 +45,13 @@ class Database(metaclass=DatabaseMeta):
             except DatabasePingFailed:
                 raise
             except Exception as error:
-                database_logger.critical(f"Error: Connection not established : {error}")
+                database_logger.critical(
+                    f"Error establishing connection with database: {error}"
+                )
             else:
-                database_logger.info("Connection established successfully")
+                database_logger.info(
+                    "Connection established successfully with database"
+                )
 
     def _ping_database_connection(self) -> bool:
         """Pings database connection

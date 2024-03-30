@@ -1,6 +1,7 @@
 import json
 from datetime import datetime
 from sys import modules
+from typing import List
 
 import app.services.security_service as security_service
 from app.database.Database import Database
@@ -399,21 +400,14 @@ def get_artists(names: list) -> list:
     return artists
 
 
-def search_by_name(name: str) -> json:
-    """Returns a list of Artist that contains "name" in their names
+def search_by_name(name: str) -> List[Artist]:
+    """Retrieve the artists than match the name
 
-    Parameters
-    ----------
-        name (str) : name to search by
+    Args:
+        name (str): the name to match
 
-    Raises
-    -------
-            400 : Bad Request
-            404 : Artist not found
-
-    Returns
-    -------
-        List<Json>
+    Returns:
+        List[Artist]: a list with the artists that match the name
     """
 
     artists_names_response = artist_collection.find(
@@ -426,11 +420,7 @@ def search_by_name(name: str) -> json:
 
     artists = get_artists(artists_names)
 
-    artist_json_list = []
-
-    [artist_json_list.append(artist.get_json()) for artist in artists]
-
-    return artist_json_list
+    return artists
 
 
 # * AUX METHODs

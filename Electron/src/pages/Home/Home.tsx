@@ -30,9 +30,7 @@ export default function Home({ refreshSidebarData }: PropsHome) {
 
           resFetchPlaylistsJson.playlists
             .slice(0, 5)
-            .forEach((resPlaylistFetch: any) => {
-              const resPlaylistFetchJson = JSON.parse(resPlaylistFetch);
-
+            .forEach((resPlaylistFetchJson: any) => {
               const propsPlaylist: PropsPlaylistCard = {
                 name: resPlaylistFetchJson.name,
                 photo:

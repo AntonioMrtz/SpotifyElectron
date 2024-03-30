@@ -1,7 +1,7 @@
 import json
 from typing import Annotated, List, Optional, Union
 
-import app.services.dto_service as dto_service
+from fastapi.encoders import jsonable_encoder
 import app.services.playlist_service as playlist_service
 import app.services.security_service as security_service
 from fastapi import APIRouter, Body, Header, HTTPException
@@ -163,13 +163,9 @@ def get_playlists() -> Response:
     -------
     """
     playlists = playlist_service.get_all_playlist()
-
-    playlist_list = []
-    [playlist_list.append(playlist.get_json()) for playlist in playlists]
-
     playlist_dict = {}
+    playlist_dict["playlists"] = jsonable_encoder(playlists)
 
-    playlist_dict["playlists"] = playlist_list
     playlist_json = json.dumps(playlist_dict)
 
     return Response(playlist_json, media_type="application/json", status_code=200)

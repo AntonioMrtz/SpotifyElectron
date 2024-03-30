@@ -35,9 +35,7 @@ def test_get_search_by_name_correct(clear_test_data_db):
 
     res_search_by_name = get_search_by_name("playlist", jwt_headers)
     assert res_search_by_name.status_code == 200
-    assert (
-        json.loads(res_search_by_name.json()["playlists"][0])["name"] == playlist_name
-    )
+    assert res_search_by_name.json()["playlists"][0]["name"] == playlist_name
 
     res_delete_playlist = delete_playlist(name=playlist_name)
     assert res_delete_playlist.status_code == 202

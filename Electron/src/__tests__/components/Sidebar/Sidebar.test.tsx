@@ -52,7 +52,7 @@ test('render Sidebar', async () => {
       return Promise.resolve({
         json: () =>
           Promise.resolve({
-            playlists: [JSON.stringify(playlistDTOMockFetch)],
+            playlists: [playlistDTOMockFetch],
           }),
         status: 200,
       }).catch((error) => {

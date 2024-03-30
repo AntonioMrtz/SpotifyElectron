@@ -35,24 +35,24 @@ export default function ItemsAllPlaylistsFromUser({
         if (resFetchPlaylistsJson.playlists) {
           const propsPlaylists: PropsPlaylistCard[] = [];
 
-          resFetchPlaylistsJson.playlists.forEach((resPlaylistFetch: any) => {
-            const resPlaylistFetchJson = JSON.parse(resPlaylistFetch);
+          resFetchPlaylistsJson.playlists.forEach(
+            (resPlaylistFetchJson: any) => {
+              const propsPlaylist: PropsPlaylistCard = {
+                name: resPlaylistFetchJson.name,
+                photo:
+                  resPlaylistFetchJson.photo === ''
+                    ? defaultThumbnailPlaylist
+                    : resPlaylistFetchJson.photo,
+                description: resPlaylistFetchJson.description,
+                refreshSidebarData,
+                owner: resPlaylistFetchJson.owner,
+              };
 
-            const propsPlaylist: PropsPlaylistCard = {
-              name: resPlaylistFetchJson.name,
-              photo:
-                resPlaylistFetchJson.photo === ''
-                  ? defaultThumbnailPlaylist
-                  : resPlaylistFetchJson.photo,
-              description: resPlaylistFetchJson.description,
-              refreshSidebarData,
-              owner: resPlaylistFetchJson.owner,
-            };
+              propsPlaylists.push(propsPlaylist);
 
-            propsPlaylists.push(propsPlaylist);
-
-            setPlaylists(propsPlaylists);
-          });
+              setPlaylists(propsPlaylists);
+            },
+          );
         }
         return null;
       })

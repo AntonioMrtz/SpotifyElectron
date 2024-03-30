@@ -66,8 +66,7 @@ export default function ContextMenuSong({
         const playlistNamesFromFetch: string[] = [];
 
         if (res.playlists) {
-          res.playlists.forEach((obj: any) => {
-            const playlistObject = JSON.parse(obj);
+          res.playlists.forEach((playlistObject: any) => {
             playlistNamesFromFetch.push(playlistObject.name);
           });
         }

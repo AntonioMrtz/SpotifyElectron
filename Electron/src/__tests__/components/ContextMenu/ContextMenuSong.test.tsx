@@ -58,7 +58,7 @@ global.fetch = jest.fn((url: string, options: any) => {
     return Promise.resolve({
       json: () =>
         Promise.resolve({
-          playlists: [JSON.stringify(playlistDTOMockFetch)],
+          playlists: [playlistDTOMockFetch],
         }),
       status: 200,
     }).catch((error) => {

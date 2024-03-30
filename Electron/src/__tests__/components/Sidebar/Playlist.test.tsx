@@ -75,7 +75,7 @@ test('Sidebar Playlist handle open context menu', async () => {
       return Promise.resolve({
         json: () =>
           Promise.resolve({
-            playlists: [JSON.stringify(playlistDTOMockFetch)],
+            playlists: [playlistDTOMockFetch],
           }),
         status: 200,
       }).catch((error) => {
@@ -130,7 +130,7 @@ test('Sidebar Playlist left-click', async () => {
       return Promise.resolve({
         json: () =>
           Promise.resolve({
-            playlists: [JSON.stringify(playlistDTOMockFetch)],
+            playlists: [playlistDTOMockFetch],
           }),
         status: 200,
       }).catch((error) => {

@@ -1,6 +1,8 @@
 import json
 from typing import Annotated, Union
 
+from fastapi.encoders import jsonable_encoder
+
 import app.services.dto_service as dto_service
 import app.services.security_service as security_service
 from app.model.Genre import Genre
@@ -232,14 +234,10 @@ def get_cancion_por_genero(genero: Genre) -> Response:
         Not Found 404: Género no existe
     """
 
-    filtered_songs = dto_service.get_songs_by_genero(genero)
-
-    filtered_songs_list = []
-    [filtered_songs_list.append(song.get_json()) for song in filtered_songs]
-
+    songs = dto_service.get_songs_by_genero(genero)
     songs_dict = {}
+    songs_dict["songs"] = jsonable_encoder(songs)
 
-    songs_dict["songs"] = filtered_songs_list
     songs_json = json.dumps(songs_dict)
 
     return Response(songs_json, media_type="application/json", status_code=200)

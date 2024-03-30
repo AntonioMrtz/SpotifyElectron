@@ -1,6 +1,8 @@
 import json
 from typing import Annotated, List, Union
 
+from fastapi.encoders import jsonable_encoder
+
 import app.services.artist_service as artist_service
 import app.services.security_service as security_service
 from fastapi import APIRouter, Body, Header, HTTPException
@@ -150,16 +152,12 @@ def get_artistas() -> Response:
     """
 
     artists = artist_service.get_all_artists()
-
-    artists_list = []
-    [artists_list.append(artist.get_json()) for artist in artists]
-
     artists_dict = {}
+    artists_dict["artists"] = jsonable_encoder(artists)
 
-    artists_dict["artists"] = artists_list
-    artist_json = json.dumps(artists_dict)
+    artists_json = json.dumps(artists_dict)
 
-    return Response(artist_json, media_type="application/json", status_code=200)
+    return Response(artists_json, media_type="application/json", status_code=200)
 
 
 @router.get("/{nombre}/reproducciones", tags=["artistas"])

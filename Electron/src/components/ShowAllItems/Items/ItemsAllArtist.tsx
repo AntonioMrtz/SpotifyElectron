@@ -14,9 +14,7 @@ export default function ItemsAllArtist() {
         if (resFetchArtistasJson.artists) {
           const propsArtists: PropsArtistCard[] = [];
 
-          resFetchArtistasJson.artists.forEach((resArtistFetch: any) => {
-            const resArtistFetchJson = JSON.parse(resArtistFetch);
-
+          resFetchArtistasJson.artists.forEach((resArtistFetchJson: any) => {
             const propsArtist: PropsArtistCard = {
               name: resArtistFetchJson.name,
               photo:

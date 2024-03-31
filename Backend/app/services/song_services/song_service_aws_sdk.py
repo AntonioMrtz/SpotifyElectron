@@ -3,6 +3,8 @@ import json
 from sys import modules
 from typing import List
 
+import app.services.artist_service as artist_service
+import app.services.dto_service as dto_service
 import boto3
 import librosa
 from app.database.Database import Database
@@ -10,8 +12,6 @@ from app.model.DTO.SongDTO import SongDTO
 from app.model.Genre import Genre
 from app.model.Song import Song
 from app.model.TokenData import TokenData
-import app.services.artist_service as artist_service
-import app.services.dto_service as dto_service
 from app.services.utils import checkValidParameterString
 from boostrap.PropertiesManager import PropertiesManager
 from botocore.exceptions import ClientError

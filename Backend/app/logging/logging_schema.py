@@ -1,7 +1,15 @@
 import logging
+import sys
+from logging import Formatter, StreamHandler
+from logging.handlers import RotatingFileHandler
+from typing import Union
+
+from app.boostrap.LogPropertiesManager import LogPropertiesManager
+from app.constants.config_constants import LOG_FILE, LOG_LEVEL
+from app.logging.logger_constants import DEBUG, INFO
 
 
-class SpotifyElectronFormatter(logging.Formatter):
+class SpotifyElectronFormatter(Formatter):
     FORMATS = {
         logging.DEBUG: (
             "%(asctime)s - %(name)s - \033[94m%(levelname)s\033[0m - %(message)s"
@@ -36,42 +44,50 @@ class SpotifyElectronLogger:
         # Disable other loggers
         logging.getLogger().handlers.clear()
         logging.getLogger().propagate = False
+        self._log_level_mapping = {INFO: logging.INFO, DEBUG: logging.DEBUG}
 
         self.logger = logging.getLogger(logger_name)
-        self.logger.setLevel(logging.INFO)
+        self.logger.setLevel(self._get_log_level())
+        self._manage_file_handler()
+        self._manage_console_handler()
 
-        # Create a console handler
-        console_handler = logging.StreamHandler()
-        console_handler.setLevel(
-            logging.DEBUG
-        )  # Set the logging level for this handler
+    def _manage_file_handler(self):
+        """Adds logging handler depending if log file has been provided or not"""
+        if not LogPropertiesManager.is_log_file_provided():
+            return
+        file_log_handler = RotatingFileHandler(
+            LogPropertiesManager.__getattribute__(LOG_FILE),
+            maxBytes=50000,
+            backupCount=5,
+        )
+        self._add_handler(file_log_handler)
 
-        # Create a formatter
-        console_formatter = SpotifyElectronFormatter()
+    def _manage_console_handler(self):
+        """Adds logging console handler"""
+        stream_handler = StreamHandler(sys.stdout)
+        self._add_handler(stream_handler)
 
-        # Set the formatter for the console handler
-        console_handler.setFormatter(console_formatter)
+    def _add_handler(self, handler: Union[StreamHandler, RotatingFileHandler]):
+        """Add handler to logger
 
-        # Add the console handler to the logger
-        self.logger.addHandler(console_handler)
+        Args:
+            handler (Union[StreamHandler, RotatingFileHandler]): the handler to add
+        """
 
-        # Create a file handler if log_file is provided
-        if log_file:
-            file_handler = logging.FileHandler(log_file)
-            file_handler.setLevel(
-                logging.ERROR
-            )  # Set the logging level for this handler
+        handler.setLevel(self._get_log_level())
+        formatter = SpotifyElectronFormatter()
+        handler.setFormatter(formatter)
+        self.logger.addHandler(handler)
 
-            # Create a formatter for the file handler
-            file_formatter = logging.Formatter(
-                "%(asctime)s - %(name)s - %(levelname)s - %(message)s \n"
-            )
-
-            # Set the formatter for the file handler
-            file_handler.setFormatter(file_formatter)
-
-            # Add the file handler to the logger
-            self.logger.addHandler(file_handler)
+    def _get_log_level(self) -> int:
+        try:
+            log_level = LogPropertiesManager.__getattribute__(LOG_LEVEL)
+            if log_level is None:
+                return logging.INFO
+            mapped_log_level = self._log_level_mapping[log_level]
+            return mapped_log_level
+        except Exception:
+            return logging.INFO
 
     def getLogger(self):
         return self.logger

@@ -1,8 +1,9 @@
+import json
+
 import app.services.search_service as search_service
 from fastapi import APIRouter
-from fastapi.responses import Response
 from fastapi.encoders import jsonable_encoder
-import json
+from fastapi.responses import Response
 
 router = APIRouter(
     prefix="/search",

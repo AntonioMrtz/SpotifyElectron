@@ -2,10 +2,12 @@ import configparser
 import os
 from typing import List
 
+import app.logging.logging_schema as logging_schema
 from app.constants.config_constants import (
     APP_CONFIG_SECTION,
     APP_FOLDER,
     CONFIG_FILENAME,
+    LOG_FILE,
     RESOURCES_FOLDER,
 )
 from app.constants.set_up_constants import (
@@ -20,10 +22,9 @@ from app.constants.set_up_constants import (
     TEST,
 )
 from app.logging.logger_constants import LOGGING_PROPERTIES_MANAGER
-from app.logging.logging_schema import SpotifyElectronLogger
 from dotenv import load_dotenv
 
-properties_manager_logger = SpotifyElectronLogger(
+properties_manager_logger = logging_schema.SpotifyElectronLogger(
     LOGGING_PROPERTIES_MANAGER
 ).getLogger()
 
@@ -34,6 +35,8 @@ class _PropertiesManager:
     def __init__(self) -> None:
         properties_manager_logger.info("Initializing PropertiesManager")
         load_dotenv()
+        self.current_directory = os.getcwd()
+        self.config_sections = [APP_CONFIG_SECTION]
         self.env_variables = [
             MONGO_URI_ENV_NAME,
             SECRET_KEY_SIGN_ENV_NAME,
@@ -43,21 +46,33 @@ class _PropertiesManager:
         ]
         self._load_env_variables(self.env_variables)
         self._load_architecture()
-        self._load_app_config()
+        for config_section in self.config_sections:
+            self._load_config_variables(CONFIG_FILENAME, config_section)
 
-    def _load_app_config(self):
-        """Loads app attributes from .ini file and stores them as class attributes"""
-        current_directory = os.getcwd()
+    def _load_config_variables(self, config_filename: str, config_section: str):
+        """Loads attributes from .ini file and stores them as class attributes
+
+        Args:
+            config_filename (str): the name of the config file
+            config_section (str): the section inside of the config file
+        """
         self.config_file = os.path.join(
-            current_directory, APP_FOLDER, RESOURCES_FOLDER, CONFIG_FILENAME
+            self.current_directory, APP_FOLDER, RESOURCES_FOLDER, config_filename
         )
         self.config = configparser.ConfigParser()
         self.config.read(self.config_file)
-        self._set_app_attributes()
+        self._set_attributes(config_section)
 
-    def _set_app_attributes(self):
-        """Sets app atributes from .ini file into class attributes"""
-        for key, value in self.config.items(APP_CONFIG_SECTION):
+    def _set_attributes(self, config_section: str):
+        """Sets app atributes from .ini file into class attributes,\
+            if value its empty string it will load None
+
+        Args:
+            config_section (str): the config file section to load
+        """
+        for key, value in self.config.items(config_section):
+            if value == "":
+                value = None
             setattr(self, key, value)
 
     def _load_architecture(self):
@@ -94,10 +109,28 @@ class _PropertiesManager:
         properties_manager_logger.info(f"Enviroment variables loaded : {env_names}")
 
     def is_production_enviroment(self) -> bool:
+        """Checks if the enviroment is production
+
+        Returns:
+            bool: Returns if its production enviroment
+        """
         return self.__getattribute__(ENV_VALUE_ENV_NAME) == PROD
 
     def is_testing_enviroment(self) -> bool:
+        """Checks if the enviroment is testing
+
+        Returns:
+            bool: Returns if its testing enviroment
+        """
         return self.__getattribute__(ENV_VALUE_ENV_NAME) == TEST
+
+    def is_log_file_provided(self) -> bool:
+        """Checks if theres a valid log file provided
+
+        Returns:
+            bool: Returns if theres a valid log provided
+        """
+        return self.__getattribute__(LOG_FILE) is not None
 
 
 PropertiesManager = _PropertiesManager()

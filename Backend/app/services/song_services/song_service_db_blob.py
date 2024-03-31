@@ -3,11 +3,11 @@ import io
 from sys import modules
 from typing import List
 
-from app.model.DTO.SongDTO import SongDTO
 import app.services.artist_service as artist_service
 import app.services.dto_service as dto_service
 import librosa
 from app.database.Database import Database
+from app.model.DTO.SongDTO import SongDTO
 from app.model.Genre import Genre
 from app.model.Song import Song
 from app.model.SongBlob import SongBlob

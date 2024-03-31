@@ -41,7 +41,7 @@ def search_by_name(name: str) -> dict:
             "artistas": artists,
             "playlists": playlists,
             "users": users,
-            "songs": songs
+            "songs": songs,
         }
 
         return items

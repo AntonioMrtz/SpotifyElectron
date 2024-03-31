@@ -23,6 +23,7 @@ async def lifespan_handler(app: FastAPI):
         the app object that is going to be created
     """
     main_logger.info("Spotify Electron Backend Started")
+
     app.include_router(playlists.router)
     app.include_router(canciones.router)
     app.include_router(generos.router)
@@ -59,7 +60,7 @@ app.add_middleware(
     max_age=3600,
     allow_headers=["*"],
 )
-# app.add_middleware(CheckJwtAuthMiddleware)
+app.add_middleware(CheckJwtAuthMiddleware)
 
 
 if __name__ == "__main__":

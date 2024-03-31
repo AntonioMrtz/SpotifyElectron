@@ -40,23 +40,29 @@ class SpotifyElectronLogger:
     """Custom Logger that accepts the current file logger name and\
         optionally an log file to store logs"""
 
+    _log_properties_manager = LogPropertiesManager()
+
     def __init__(self, logger_name, log_file=None):
+        # borg pattern shared stated
+        self.log_properties_manager = SpotifyElectronLogger._log_properties_manager
+
         # Disable other loggers
         logging.getLogger().handlers.clear()
         logging.getLogger().propagate = False
         self._log_level_mapping = {INFO: logging.INFO, DEBUG: logging.DEBUG}
 
         self.logger = logging.getLogger(logger_name)
+
         self.logger.setLevel(self._get_log_level())
         self._manage_file_handler()
         self._manage_console_handler()
 
     def _manage_file_handler(self):
         """Adds logging handler depending if log file has been provided or not"""
-        if not LogPropertiesManager.is_log_file_provided():
+        if not self.log_properties_manager.is_log_file_provided():
             return
         file_log_handler = RotatingFileHandler(
-            LogPropertiesManager.__getattribute__(LOG_FILE),
+            self.log_properties_manager.__getattribute__(LOG_FILE),
             maxBytes=50000,
             backupCount=5,
         )
@@ -81,7 +87,7 @@ class SpotifyElectronLogger:
 
     def _get_log_level(self) -> int:
         try:
-            log_level = LogPropertiesManager.__getattribute__(LOG_LEVEL)
+            log_level = self.log_properties_manager.__getattribute__(LOG_LEVEL)
             if log_level is None:
                 return logging.INFO
             mapped_log_level = self._log_level_mapping[log_level]

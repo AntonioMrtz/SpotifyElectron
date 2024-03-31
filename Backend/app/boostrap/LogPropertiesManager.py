@@ -12,7 +12,7 @@ from app.constants.set_up_constants import ENV_VALUE_ENV_NAME, PROD
 from dotenv import load_dotenv
 
 
-class _LogPropertiesManager:
+class LogPropertiesManager:
     """Parses and stores enviroment and config files"""
 
     def __init__(self) -> None:
@@ -64,6 +64,3 @@ class _LogPropertiesManager:
         """
         env_value = os.getenv(ENV_VALUE_ENV_NAME, PROD)
         return env_value == PROD
-
-
-LogPropertiesManager = _LogPropertiesManager()

@@ -75,7 +75,7 @@ class CheckJwtAuthMiddleware(BaseHTTPMiddleware):
                 f"Error dispatching request {request} with error : {dispatch_error}"
             )
             return Response(
-                content=f"Invalid Credentials : {dispatch_error}",
+                content="Invalid Credentials",
                 status_code=HTTP_401_UNAUTHORIZED,
             )
 

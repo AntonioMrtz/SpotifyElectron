@@ -42,33 +42,38 @@ class Database(metaclass=DatabaseMeta):
                     "SpotifyElectron"
                 ]
                 self._ping_database_connection()
-            except DatabasePingFailed:
-                raise
+            except DatabasePingFailed as error:
+                self._handle_database_connection_error(error)
             except Exception as error:
-                database_logger.critical(
-                    f"Error establishing connection with database: {error}"
-                )
-            else:
-                database_logger.info(
-                    "Connection established successfully with database"
-                )
+                self._handle_database_connection_error(error)
 
-    def _ping_database_connection(self) -> bool:
-        """Pings database connection
-
-        Raises:
-            DatabasePingFailed: if ping failed
-
-        Returns:
-            bool: if ping was successful
-        """
-        if self.connection is not None:
+    def _ping_database_connection(self):
+        """Pings database connection"""
+        if self.connection is None:
+            return
+        try:
             ping_result = self.connection.command("ping")
             if not ping_result:
                 raise DatabasePingFailed()
-        return True
+        except Exception:
+            raise DatabasePingFailed()
+
+    def _handle_database_connection_error(self, error: Exception) -> None:
+        """Handles database connection errors"""
+        database_logger.critical(
+            f"Error establishing connection with database: {error}"
+        )
+
+    @staticmethod
+    def get_instance():
+        """Method to retrieve the singleton instance"""
+        return Database()
 
 
 class DatabasePingFailed(SpotifyElectronException):
+    """Exception for database ping failure"""
+
+    DATABASE_PING_FAILED = "Ping to the database failed"
+
     def __init__(self):
-        super().__init__("DatabasePingFailed")
+        super().__init__(self.DATABASE_PING_FAILED)

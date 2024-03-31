@@ -1,9 +1,9 @@
 import os
 from unittest.mock import MagicMock, Mock, patch
 
-from pytest import raises
 from app.constants.set_up_constants import MONGO_URI_ENV_NAME
 from app.database.Database import Database, DatabaseMeta, DatabasePingFailed
+from pytest import raises
 
 
 @patch("app.database.Database.MongoClient")

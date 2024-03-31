@@ -7,6 +7,7 @@ from pytest import fixture
 @fixture(scope="module")
 def trigger_app_start():
     from app.__main__ import app
+
     with TestClient(app):
         yield
 

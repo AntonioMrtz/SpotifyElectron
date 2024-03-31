@@ -2,7 +2,6 @@ import configparser
 import os
 from typing import List
 
-from app.logging.logging_schema import SpotifyElectronLogger
 from app.constants.config_constants import (
     APP_CONFIG_SECTION,
     APP_FOLDER,
@@ -22,6 +21,7 @@ from app.constants.set_up_constants import (
     TEST,
 )
 from app.logging.logger_constants import LOGGING_PROPERTIES_MANAGER
+from app.logging.logging_schema import SpotifyElectronLogger
 from dotenv import load_dotenv
 
 properties_manager_logger = SpotifyElectronLogger(

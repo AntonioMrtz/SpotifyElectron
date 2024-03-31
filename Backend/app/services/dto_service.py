@@ -1,7 +1,5 @@
 from typing import List
 
-import app.services.playlist_service as playlist_service
-from app.model.DTO.PlaylistDTO import PlaylistDTO
 from app.model.DTO.SongDTO import SongDTO
 from app.model.Genre import Genre
 from app.services.song_services.song_service_provider import get_song_service
@@ -40,7 +38,7 @@ def get_song(name: str) -> SongDTO:
         name=song.name,
         artist=song.artist,
         photo=song.photo,
-        duration=song.duration,
+        seconds_duration=song.seconds_duration,
         genre=song.genre,
         number_of_plays=song.number_of_plays,
     )
@@ -83,43 +81,6 @@ def get_songs(song_names: list) -> list:
     return respone_songs_dto
 
 
-def get_playlist(name: str) -> PlaylistDTO:
-    """Returns a playlist's metadata without his song's audio files"
-
-    Parameters
-    ----------
-        name (str) : name of the playlist
-
-    Raises
-    -------
-        400 : Bad Request
-        404 : Playlist not found
-
-    Returns
-    -------
-        PlaylistDTO
-    """
-
-    if not checkValidParameterString(name):
-        raise HTTPException(status_code=400, detail="El nombre de la playlist es vacío")
-
-    playlist = playlist_service.get_playlist(name)
-
-    if playlist is None:
-        raise HTTPException(
-            status_code=404, detail="La playlist con ese nombre no existe"
-        )
-
-    return PlaylistDTO(
-        name=playlist.name,
-        photo=playlist.photo,
-        description=playlist.description,
-        upload_date=playlist.upload_date,
-        song_names=playlist.songs,
-        owner=playlist.owner,
-    )
-
-
 def get_songs_by_genero(genre: Genre) -> List[SongDTO]:
     """Increase the number of plays of a song
 
@@ -141,7 +102,7 @@ def get_songs_by_genero(genre: Genre) -> List[SongDTO]:
     if not checkValidParameterString(genre.value):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
-    if not Genre.checkValidGenre(genre.value):
+    if not Genre.check_valid_genre(genre.value):
         raise HTTPException(status_code=404, detail="El género no existe")
 
     songs_by_genre = song_service.get_songs_by_genre(genre)
@@ -153,7 +114,7 @@ def get_songs_by_genero(genre: Genre) -> List[SongDTO]:
                 name=song.name,
                 artist=song.artist,
                 photo=song.photo,
-                duration=song.duration,
+                seconds_duration=song.seconds_duration,
                 genre=song.genre,
                 number_of_plays=song.number_of_plays,
             )

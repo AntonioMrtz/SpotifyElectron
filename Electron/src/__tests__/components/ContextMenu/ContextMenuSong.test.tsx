@@ -35,7 +35,7 @@ const playlistDTOMockFetch = {
   name: songName,
   artist: userName,
   photo: 'photo',
-  duration: '180',
+  seconds_duration: '180',
   genre: 'Rock',
   number_of_plays: 2,
 }; */
@@ -45,7 +45,7 @@ jest.spyOn(Token, 'getTokenRole').mockReturnValue(roleUser);
 
 global.fetch = jest.fn((url: string, options: any) => {
   if (
-    url === `${Global.backendBaseUrl}playlists/dto/${playlistDTOMockFetch.name}`
+    url === `${Global.backendBaseUrl}playlists/${playlistDTOMockFetch.name}`
   ) {
     return Promise.resolve({
       json: () => playlistDTOMockFetch,
@@ -58,7 +58,7 @@ global.fetch = jest.fn((url: string, options: any) => {
     return Promise.resolve({
       json: () =>
         Promise.resolve({
-          playlists: [JSON.stringify(playlistDTOMockFetch)],
+          playlists: [playlistDTOMockFetch],
         }),
       status: 200,
     }).catch((error) => {

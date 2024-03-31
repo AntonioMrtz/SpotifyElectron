@@ -1,4 +1,3 @@
-import json
 from datetime import datetime, timedelta
 from typing import Annotated, Union
 
@@ -131,7 +130,33 @@ def get_current_user(
     return user
 
 
-def login_user(name: str, password: str) -> json:
+def hash_password(plain_password: str) -> bytes:
+    """Hash a password with a randomly-generated salt
+
+    Args:
+        plain_password (str): plain text password
+
+    Returns:
+        bytes: the hashed password
+    """
+    hashed_password = bcrypt.hashpw(plain_password.encode(), bcrypt.gensalt())
+    return hashed_password
+
+
+def verify_password(plain_password: str, hashed_password: bytes) -> bool:
+    """Verifies if plan text password is the same as a hashed password
+
+    Args:
+        plain_password (str): plain text password
+        hashed_password (bytes): hashed password
+
+    Returns:
+        bool: if both passwords are the same
+    """
+    return bcrypt.checkpw(plain_password.encode(), hashed_password)
+
+
+def login_user(name: str, password: str) -> str:
     """Checks user credentials and return a jwt token"
 
     Parameters
@@ -165,11 +190,8 @@ def login_user(name: str, password: str) -> json:
         user = user_service.get_user(name)
         user_type = User_Type.USER
 
-    # check password
-
-    utf8_password = user.password
-
-    if not bcrypt.checkpw(password.encode("utf-8"), utf8_password):
+    hashed_password = user.password
+    if not verify_password(password, hashed_password):
         raise HTTPException(status_code=401, detail="Las credenciales no son válidas")
 
     jwt_data = {

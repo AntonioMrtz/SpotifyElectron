@@ -3,17 +3,15 @@ import json
 from sys import modules
 from typing import List
 
+import app.services.artist_service as artist_service
+import app.services.dto_service as dto_service
 import boto3
 import librosa
 from app.database.Database import Database
+from app.model.DTO.SongDTO import SongDTO
 from app.model.Genre import Genre
 from app.model.Song import Song
 from app.model.TokenData import TokenData
-from app.services.artist_service import (
-    add_song_artist,
-    check_artists_exists,
-    delete_song_artist,
-)
 from app.services.utils import checkValidParameterString
 from boostrap.PropertiesManager import PropertiesManager
 from botocore.exceptions import ClientError
@@ -145,7 +143,7 @@ def get_song(name: str) -> Song:
             name=name,
             artist=song["artist"],
             photo=song["photo"],
-            duration=song["duration"],
+            seconds_duration=song["duration"],
             genre=Genre(song["genre"]).name,
             url=cloudfront_url,
             number_of_plays=song["number_of_plays"],
@@ -245,16 +243,16 @@ async def create_song(
         not checkValidParameterString(name)
         or not checkValidParameterString(photo)
         or not checkValidParameterString(artist)
-        or not Genre.checkValidGenre(genre.value)
+        or not Genre.check_valid_genre(genre.value)
     ):
         raise HTTPException(status_code=400, detail="Parámetros no válidos o vacíos")
 
-    check_artists_exists(artist_name=artist)
+    artist_service.check_artists_exists(artist_name=artist)
 
     if check_song_exists(name=name):
         raise HTTPException(status_code=400, detail="La canción ya existe")
 
-    if not check_artists_exists(artist_name=artist):
+    if not artist_service.check_artists_exists(artist_name=artist):
         raise HTTPException(status_code=404, detail="El artista no existe")
 
     try:
@@ -283,7 +281,7 @@ async def create_song(
                 "number_of_plays": 0,
             }
         )
-        add_song_artist(artist, name)
+        artist_service.add_song_artist(artist, name)
 
     except PyMongoError as e:
         raise HTTPException(
@@ -332,7 +330,7 @@ def delete_song(name: str) -> None:
         s3_client.delete_object(
             Bucket=song_bucket.name, Key=f"{S3_BUCKET_BASE_PATH}{name}.mp3"
         )
-        delete_song_artist(result["artist"], name)
+        artist_service.delete_song_artist(result["artist"], name)
 
     except PyMongoError as e:
         raise HTTPException(
@@ -453,23 +451,15 @@ def increase_number_plays(name: str) -> None:
     )
 
 
-def search_by_name(name: str) -> json:
-    """Returns a list of Songs that contains "name" in their names
+def search_by_name(name: str) -> List[SongDTO]:
+    """Retrieve the songs than match the name
 
-    Parameters
-    ----------
-        names (list): List of song Names
+    Args:
+        name (str): the name to match
 
-    Raises
-    -------
-            400 : Bad Request
-            404 : Song not found
-
-    Returns
-    -------
-        List<Json>
+    Returns:
+        List[SongDTO]: a list with the songs that match the name
     """
-
     song_names_response = song_collection.find(
         {"name": {"$regex": name, "$options": "i"}}, {"_id": 0, "name": 1}
     )
@@ -478,13 +468,9 @@ def search_by_name(name: str) -> json:
 
     [song_names.append(song["name"]) for song in song_names_response]
 
-    songs = get_songs(song_names)
+    songs = dto_service.get_songs(song_names)
 
-    songs_json_list = []
-
-    [songs_json_list.append(song.get_json()) for song in songs]
-
-    return songs_json_list
+    return songs
 
 
 def get_artist_playback_count(artist_name: str) -> int:
@@ -521,7 +507,7 @@ def get_songs_by_genre(genre: Genre) -> List[Song]:
                 name=song_data["name"],
                 artist=song_data["artist"],
                 photo=song_data["photo"],
-                duration=song_data["duration"],
+                seconds_duration=song_data["duration"],
                 genre=Genre(song_data["genre"]).name,
                 number_of_plays=song_data["number_of_plays"],
                 url="no_url_get_songs_by_genre",

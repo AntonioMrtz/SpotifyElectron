@@ -1,12 +1,13 @@
 import json
 from dataclasses import dataclass
+from typing import List
 
 from app.model.User import User
 
 
 @dataclass
 class Artist(User):
-    uploaded_songs: list
+    uploaded_songs: List[str]
 
     def get_json(self) -> str:
         user_json = super().get_json()

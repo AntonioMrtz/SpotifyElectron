@@ -1,5 +1,3 @@
-import json
-
 import app.services.artist_service as artist_service
 import app.services.playlist_service as playlist_service
 import app.services.user_service as user_service
@@ -10,29 +8,18 @@ from fastapi import HTTPException
 song_service = get_song_service()
 
 
-def search_by_name(name: str) -> str:
-    """Returns songs, artist and playlist that matches name
+def search_by_name(name: str) -> dict:
+    """Returns items that match the given name
 
-    Parameters
-    ----------
-        name (str) : name to search by
+    Args:
+        name (str): the name to match
 
-    Raises
-    -------
-        400 : Bad Request
+    Raises:
+        Bad Request 400 HTTPException: the given name its empty
+        Bad Request 500 HTTPException: an error occurred when retrieving items
 
-    Returns
-    -------
-        Json ->
-        {
-
-            songs : [ SongDTOJson , ...]
-            playlists : [ PlaylistDTOJson , ...]
-            artists : [ ArtistJson , ... ]
-            users : [ UserJson , ... ]
-
-        }
-
+    Returns:
+        dict: the items that match the name on a dict
     """
 
     if not checkValidParameterString(name):
@@ -43,17 +30,21 @@ def search_by_name(name: str) -> str:
     items = {}
 
     try:
+        # TODO ASYNC
         songs = song_service.search_by_name(name)
         playlists = playlist_service.search_by_name(name)
-        users = user_service.search_by_name(name)
         artists = artist_service.search_by_name(name)
+        users = user_service.search_by_name(name)
 
-        items["artistas"] = artists
-        items["playlists"] = playlists
-        items["users"] = users
-        items["songs"] = songs
+        # Create a dictionary to store the results
+        items = {
+            "artistas": artists,
+            "playlists": playlists,
+            "users": users,
+            "songs": songs,
+        }
 
-        return json.dumps(items)
+        return items
 
     except Exception as e:
         raise HTTPException(

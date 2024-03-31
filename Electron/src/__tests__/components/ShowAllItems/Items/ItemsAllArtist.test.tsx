@@ -17,7 +17,7 @@ test('Render ItemsAllArtist', async () => {
         json: () =>
           Promise.resolve({
             artists: [
-              JSON.stringify({
+              {
                 name: 'name',
                 photo: 'photo',
                 register_date: 'date',
@@ -25,7 +25,7 @@ test('Render ItemsAllArtist', async () => {
                 playback_history: [],
                 playlists: [],
                 saved_playlists: [],
-              }),
+              },
             ],
           }),
         status: 200,

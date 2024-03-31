@@ -1,6 +1,7 @@
 import json
 from datetime import datetime
 from sys import modules
+from typing import List
 
 import app.services.all_users_service as all_users_service
 import app.services.dto_service as dto_service
@@ -92,11 +93,9 @@ def get_playlist(name: str) -> Playlist:
     playlist_songs = []
 
     [
-        playlist_songs.append(song_service.get_song(song_name))
+        playlist_songs.append(dto_service.get_song(song_name).name)
         for song_name in playlist_data["song_names"]
     ]
-
-    # [print(song.name) for song in playlist_songs]
 
     date = playlist_data["upload_date"][:-1]
 
@@ -140,7 +139,6 @@ def create_playlist(
     if not checkValidParameterString(name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
-    songs = dto_service.get_songs(song_names)
     result_playlist_exists = playlist_collection.find_one({"name": name})
 
     if result_playlist_exists:
@@ -286,7 +284,7 @@ def get_all_playlist() -> list:
     playlists_files = playlist_collection.find()
 
     for playlist_file in playlists_files:
-        playlists.append(dto_service.get_playlist(playlist_file["name"]))
+        playlists.append(get_playlist(playlist_file["name"]))
 
     return playlists
 
@@ -313,26 +311,19 @@ def get_selected_playlists(playlist_names: list) -> list:
     playlists_files = playlist_collection.find(filter_contained_playlist_names)
 
     for playlist_file in playlists_files:
-        response_playlists.append(dto_service.get_playlist(playlist_file["name"]))
+        response_playlists.append(get_playlist(playlist_file["name"]))
 
     return response_playlists
 
 
-def search_by_name(name: str) -> json:
-    """Returns a list of Playlists that contains "name" in their names
+def search_by_name(name: str) -> List[Playlist]:
+    """Retrieve the playlists than match the name
 
-    Parameters
-    ----------
-        name (str): name to filter by
+    Args:
+        name (str): the name to match
 
-    Raises
-    -------
-            400 : Bad Request
-            404 : Playlist not found
-
-    Returns
-    -------
-        List<PlaylistDTO>
+    Returns:
+        List[Playlist]: a list with the playlists that match the name
     """
 
     playlist_names_response = playlist_collection.find(
@@ -345,8 +336,4 @@ def search_by_name(name: str) -> json:
 
     playlists = get_selected_playlists(playlist_names)
 
-    playlists_json_list = []
-
-    [playlists_json_list.append(playlist.get_json()) for playlist in playlists]
-
-    return playlists_json_list
+    return playlists

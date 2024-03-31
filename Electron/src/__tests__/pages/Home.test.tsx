@@ -51,7 +51,7 @@ test('prueba', async () => {
         json: () =>
           Promise.resolve({
             artists: [
-              JSON.stringify({
+              {
                 name: 'name',
                 photo: 'photo',
                 register_date: 'date',
@@ -59,7 +59,7 @@ test('prueba', async () => {
                 playback_history: [],
                 playlists: [],
                 saved_playlists: [],
-              }),
+              },
             ],
           }),
         status: 200,

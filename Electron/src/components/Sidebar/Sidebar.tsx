@@ -107,8 +107,7 @@ export default function Sidebar({ triggerReloadSidebar }: PropsSidebar) {
         if (res.playlists) {
           const propsPlaylists: PropsPlaylist[] = [];
 
-          res.playlists.forEach((playlistFetchObject: any) => {
-            const playlist = JSON.parse(playlistFetchObject);
+          res.playlists.forEach((playlist: any) => {
             const propsPlaylist: PropsPlaylist = {
               name: playlist.name,
               photo:

@@ -27,14 +27,14 @@ test('Render itemsAllPlaylist', async () => {
         json: () =>
           Promise.resolve({
             playlists: [
-              JSON.stringify({
+              {
                 name: playlistName,
                 photo: 'photo',
                 description: 'description',
                 upload_date: 'date',
                 owner: 'owner',
                 songs: [],
-              }),
+              },
             ],
           }),
         status: 200,

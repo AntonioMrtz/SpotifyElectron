@@ -33,12 +33,12 @@ class Genre(Enum):
     TRAP = "Trap"
     REGGAETON = "Reggaeton"
 
-    def checkValidGenre(genre: str) -> bool:
+    @staticmethod
+    def check_valid_genre(genre: str) -> bool:
         """Checks if the genre is valid"""
-        if Genre(genre) is None:
-            return False
-        return True
+        return genre in {member.value for member in Genre}
 
-    def getGenre(genre: str) -> str:
-        """Returns genre string"""
+    @staticmethod
+    def getGenre(genre: Enum) -> str:
+        # TODO raise exception if not
         return str(genre.value)

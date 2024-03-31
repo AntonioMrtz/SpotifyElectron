@@ -36,7 +36,7 @@ export default function UserProfile({
     resGetUserJson.playlists.slice(0, 5).forEach((playlistName: string) => {
       playlistPromises.push(
         new Promise((resolve) => {
-          fetch(`${Global.backendBaseUrl}playlists/dto/${playlistName}`)
+          fetch(`${Global.backendBaseUrl}playlists/${playlistName}`)
             .then((resFetchPlaylistDTO) => {
               return resFetchPlaylistDTO.json();
             })

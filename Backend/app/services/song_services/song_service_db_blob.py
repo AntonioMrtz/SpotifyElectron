@@ -7,6 +7,7 @@ import app.services.artist_service as artist_service
 import app.services.dto_service as dto_service
 import librosa
 from app.database.Database import Database
+from app.model.DTO.SongDTO import SongDTO
 from app.model.Genre import Genre
 from app.model.Song import Song
 from app.model.SongBlob import SongBlob
@@ -198,7 +199,7 @@ async def create_song(
         not checkValidParameterString(name)
         or not checkValidParameterString(photo)
         or not checkValidParameterString(artist)
-        or not Genre.checkValidGenre(genre.value)
+        or not Genre.check_valid_genre(genre.value)
     ):
         raise HTTPException(status_code=400, detail="Parámetros no válidos o vacíos")
 
@@ -378,23 +379,15 @@ def increase_number_plays(name: str) -> None:
     )
 
 
-def search_by_name(name: str) -> list:
-    """Returns a list of Songs that contains "name" in their names
+def search_by_name(name: str) -> List[SongDTO]:
+    """Retrieve the songs than match the name
 
-    Parameters
-    ----------
-        names (list): List of song Names
+    Args:
+        name (str): the name to match
 
-    Raises
-    -------
-            400 : Bad Request
-            404 : Song not found
-
-    Returns
-    -------
-        List<Json>
+    Returns:
+        List[SongDTO]: a list with the songs that match the name
     """
-
     song_names_response = file_song_collection.find(
         {"name": {"$regex": name, "$options": "i"}}, {"_id": 0, "name": 1}
     )
@@ -403,13 +396,9 @@ def search_by_name(name: str) -> list:
 
     [song_names.append(song["name"]) for song in song_names_response]
 
-    songs = get_songs(song_names)
+    songs = dto_service.get_songs(song_names)
 
-    songs_json_list = []
-
-    [songs_json_list.append(song.get_json()) for song in songs]
-
-    return songs_json_list
+    return songs
 
 
 def get_artist_playback_count(artist_name: str) -> int:
@@ -448,7 +437,7 @@ def get_songs_by_genre(genre: Genre) -> List[Song]:
                 name=song_data["name"],
                 artist=song_data["artist"],
                 photo=song_data["photo"],
-                duration=song_data["duration"],
+                seconds_duration=song_data["duration"],
                 genre=Genre(song_data["genre"]).name,
                 number_of_plays=song_data["number_of_plays"],
                 url="no_url_get_songs_by_genre",

@@ -41,15 +41,13 @@ export default function Genre({
       .then((resGetSongsByGenreUrlJson) => {
         const songsFromFetch: SongProps[] = [];
         resGetSongsByGenreUrlJson.songs.forEach((song: any) => {
-          const songParsed = JSON.parse(song);
-
           const songProp: SongProps = {
-            name: songParsed.name,
-            artist: songParsed.artist,
-            photo: songParsed.photo,
-            duration: songParsed.duration,
-            genre: songParsed.genre,
-            number_of_plays: songParsed.number_of_plays,
+            name: song.name,
+            artist: song.artist,
+            photo: song.photo,
+            duration: song.seconds_duration,
+            genre: song.genre,
+            number_of_plays: song.number_of_plays,
           };
 
           songsFromFetch.push(songProp);

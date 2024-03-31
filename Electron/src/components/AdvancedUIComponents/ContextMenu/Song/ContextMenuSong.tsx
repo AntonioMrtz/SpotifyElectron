@@ -66,8 +66,7 @@ export default function ContextMenuSong({
         const playlistNamesFromFetch: string[] = [];
 
         if (res.playlists) {
-          res.playlists.forEach((obj: any) => {
-            const playlistObject = JSON.parse(obj);
+          res.playlists.forEach((playlistObject: any) => {
             playlistNamesFromFetch.push(playlistObject.name);
           });
         }
@@ -104,7 +103,7 @@ export default function ContextMenuSong({
   const handleAddToPlaylist = async (selectedPlaylistName: string) => {
     try {
       const playlistResponse = await fetch(
-        `${Global.backendBaseUrl}playlists/dto/${selectedPlaylistName}`,
+        `${Global.backendBaseUrl}playlists/${selectedPlaylistName}`,
       );
       const playlistData = await playlistResponse.json();
 
@@ -139,7 +138,7 @@ export default function ContextMenuSong({
   const handleDeleteFromPlaylist = async () => {
     try {
       const playlistResponse = await fetch(
-        `${Global.backendBaseUrl}playlists/dto/${playlistName}`,
+        `${Global.backendBaseUrl}playlists/${playlistName}`,
       );
       const playlistData = await playlistResponse.json();
 

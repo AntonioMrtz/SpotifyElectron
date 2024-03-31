@@ -1,6 +1,7 @@
 from datetime import datetime
 
-import bcrypt
+import app.services.security_service as security_service
+import app.services.user_service as user_service
 import pytest
 from pytest import fixture
 from test_API.api_test_user import create_user, delete_user, get_user, update_user
@@ -31,11 +32,6 @@ def test_get_user_correct(clear_test_data_db):
     assert res_get_user.status_code == 200
     assert res_get_user.json()["name"] == name
     assert res_get_user.json()["photo"] == foto
-
-    # check password
-
-    utf8_password = res_get_user.json()["password"].encode("utf-8")
-    assert bcrypt.checkpw(password.encode("utf-8"), utf8_password) is True
 
     try:
         fecha = res_get_user.json()["register_date"]
@@ -123,6 +119,31 @@ def test_update_playlists_correct(clear_test_data_db):
 
     res_delete_user = delete_user(name=name)
     assert res_delete_user.status_code == 202
+
+
+def test_check_encrypted_password_correct():
+    name = "8232392323623823723"
+    foto = "https://foto"
+    password = "hola"
+    user_service.create_user(name, foto, password)
+    user = user_service.get_user(name)
+    generated_password = user.password
+
+    assert security_service.verify_password(password, generated_password)
+    user_service.delete_user(name)
+
+
+def test_check_encrypted_password_different():
+    name = "8232392323623823723"
+    foto = "https://foto"
+    password = "hola"
+    user_service.create_user(name, foto, password)
+    user = user_service.get_user(name)
+    password = "hola2"
+    generated_password = user.password
+
+    assert not security_service.verify_password(password, generated_password)
+    user_service.delete_user(name)
 
 
 # executes after all tests

@@ -10,7 +10,7 @@ const songMockFetch = {
   name: 'cancion',
   artist: 'artist',
   photo: 'photo',
-  duration: '3',
+  seconds_duration: '3',
   genre: 'Rock',
   number_of_plays: 2,
 };

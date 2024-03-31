@@ -46,8 +46,7 @@ export default function Explorar({
 
           resFetchUrlFilterItemsByNameJson.songs
             .slice(0, 4)
-            .forEach((songJson: any) => {
-              const song = JSON.parse(songJson);
+            .forEach((song: any) => {
               fetchedSongs.push({
                 name: song.name,
                 artist: song.artist,
@@ -65,8 +64,7 @@ export default function Explorar({
 
           resFetchUrlFilterItemsByNameJson.playlists
             .slice(0, 4)
-            .forEach((playlistJson: any) => {
-              const playlist = JSON.parse(playlistJson);
+            .forEach((playlist: any) => {
               fetchedPlaylists.push({
                 name: playlist.name,
                 photo: playlist.photo,
@@ -84,8 +82,7 @@ export default function Explorar({
 
           resFetchUrlFilterItemsByNameJson.artistas
             .slice(0, 4)
-            .forEach((artistJson: any) => {
-              const artist = JSON.parse(artistJson);
+            .forEach((artist: any) => {
               fetchedArtists.push({
                 name: artist.name,
                 photo: artist.photo,
@@ -100,8 +97,7 @@ export default function Explorar({
 
           resFetchUrlFilterItemsByNameJson.users
             .slice(0, 4)
-            .forEach((userJson: any) => {
-              const user = JSON.parse(userJson);
+            .forEach((user: any) => {
               fetchedUsers.push({
                 name: user.name,
                 photo: user.photo,

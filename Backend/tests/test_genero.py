@@ -1,4 +1,5 @@
 from app.__main__ import app
+from app.model.Genre import Genre
 from fastapi.testclient import TestClient
 from pytest import fixture
 from test_API.api_test_artist import create_artist, delete_artist
@@ -27,3 +28,13 @@ def test_get_generos_correct():
 
     res_delete_artist = delete_artist(artista)
     assert res_delete_artist.status_code == 202
+
+
+def test_check_valid_genre_correct():
+    valid_genre = Genre.AMBIENT
+    assert Genre.check_valid_genre(valid_genre.value)
+
+
+def test_check_valid_genre_invalid():
+    invalid_genre = "invalid_genre"
+    assert not Genre.check_valid_genre(invalid_genre)

@@ -44,7 +44,7 @@ const songMockFetch = {
   name: songName,
   artist: 'username fake song',
   photo: 'photo',
-  duration: '180',
+  seconds_duration: '180',
   genre: 'Rock',
   number_of_plays: 2,
 };
@@ -60,10 +60,10 @@ global.fetch = jest.fn((url: string) => {
     return Promise.resolve({
       json: () =>
         Promise.resolve({
-          playlists: [JSON.stringify(playlistDTOMockFetch)],
-          songs: [JSON.stringify(songMockFetch)],
-          users: [JSON.stringify(userMockFetch)],
-          artistas: [JSON.stringify(artistMockFetch)],
+          playlists: [playlistDTOMockFetch],
+          songs: [songMockFetch],
+          users: [userMockFetch],
+          artistas: [artistMockFetch],
         }),
       status: 200,
     }).catch((error) => {

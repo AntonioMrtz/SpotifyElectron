@@ -1,14 +1,12 @@
-import logging
-
 from app.boostrap.PropertiesManager import PropertiesManager
 from app.constants.set_up_constants import MONGO_URI_ENV_NAME
+from app.exceptions.exceptions_schema import SpotifyElectronException
+from app.logging.logger_constants import LOGGING_DATABASE
+from app.logging.logging_schema import SpotifyElectronLogger
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 
-formatter = logging.Formatter("%(asctime)s %(levelname)s %(message)s")
-logging.basicConfig(level=logging.WARNING)
-
-""" Singleton instance of the MongoDb connection """
+database_logger = SpotifyElectronLogger(LOGGING_DATABASE).getLogger()
 
 
 class DatabaseMeta(type):
@@ -32,25 +30,50 @@ class DatabaseMeta(type):
 
 
 class Database(metaclass=DatabaseMeta):
-    """Direct connection to the MongoDB client"""
+    """Singleton instance of the MongoDb connection"""
 
     connection = None
-    """ Connection to the list database """
-    list_collection = None
-    """ Connection to the song database """
-    song_collection = None
 
     def __init__(self):
-        if Database.connection is None:
+        if self.connection is None:
             try:
                 uri = getattr(PropertiesManager, MONGO_URI_ENV_NAME)
-                Database.connection = MongoClient(uri, server_api=ServerApi("1"))[
+                self.connection = MongoClient(uri, server_api=ServerApi("1"))[
                     "SpotifyElectron"
                 ]
-                Database.list_collection = Database.connection["playlist"]
-                Database.song_collection = Database.connection["song"]
-
+                self._ping_database_connection()
+            except DatabasePingFailed as error:
+                self._handle_database_connection_error(error)
             except Exception as error:
-                logging.critical("Error: Connection not established {}".format(error))
-            else:
-                logging.info("Connection established")
+                self._handle_database_connection_error(error)
+
+    def _ping_database_connection(self):
+        """Pings database connection"""
+        if self.connection is None:
+            return
+        try:
+            ping_result = self.connection.command("ping")
+            if not ping_result:
+                raise DatabasePingFailed()
+        except Exception:
+            raise DatabasePingFailed()
+
+    def _handle_database_connection_error(self, error: Exception) -> None:
+        """Handles database connection errors"""
+        database_logger.critical(
+            f"Error establishing connection with database: {error}"
+        )
+
+    @staticmethod
+    def get_instance():
+        """Method to retrieve the singleton instance"""
+        return Database()
+
+
+class DatabasePingFailed(SpotifyElectronException):
+    """Exception for database ping failure"""
+
+    DATABASE_PING_FAILED = "Ping to the database failed"
+
+    def __init__(self):
+        super().__init__(self.DATABASE_PING_FAILED)

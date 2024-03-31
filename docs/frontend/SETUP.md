@@ -81,12 +81,17 @@ npm run lint
 
 ## ✔️ Package app for production
 
-1. Build the app
+1. Select wanted architecture by going to global.ts
+```
+export const songArchitecture: SongArchitecture = SongArchitecture.STREAMING_ARCHITECTURE;
+```
+
+2. Build the app
 
 ```
 npm run build
 ```
-2. Package the app for the current system and generate installer
+3. Package the app for the current system and generate installer
 
 ```
 npm run package

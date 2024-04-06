@@ -58,7 +58,7 @@ def login_usuario(
         value=jwt,
         httponly=True,
         path="/",
-        samesite="None",
+        samesite="none",
         expires=expiration_date,
         secure=True,
     )

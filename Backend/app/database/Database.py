@@ -5,6 +5,7 @@ from app.logging.logger_constants import LOGGING_DATABASE
 from app.logging.logging_schema import SpotifyElectronLogger
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
+from pymongo.errors import ConnectionFailure
 
 database_logger = SpotifyElectronLogger(LOGGING_DATABASE).getLogger()
 
@@ -44,6 +45,8 @@ class Database(metaclass=DatabaseMeta):
                 self._ping_database_connection()
             except DatabasePingFailed as error:
                 self._handle_database_connection_error(error)
+            except UnexpectedDatabasePingFailed as error:
+                self._handle_database_connection_error(error)
             except Exception as error:
                 self._handle_database_connection_error(error)
 
@@ -55,8 +58,10 @@ class Database(metaclass=DatabaseMeta):
             ping_result = self.connection.command("ping")
             if not ping_result:
                 raise DatabasePingFailed()
-        except Exception:
+        except ConnectionFailure:
             raise DatabasePingFailed()
+        except Exception as error:
+            raise UnexpectedDatabasePingFailed(error)
 
     def _handle_database_connection_error(self, error: Exception) -> None:
         """Handles database connection errors"""
@@ -77,3 +82,12 @@ class DatabasePingFailed(SpotifyElectronException):
 
     def __init__(self):
         super().__init__(self.DATABASE_PING_FAILED)
+
+
+class UnexpectedDatabasePingFailed(SpotifyElectronException):
+    """Exception for unexpected database ping failure"""
+
+    UNEXPECTED_DATABASE_PING_FAILED = "Unexpected error while pinging to the database"
+
+    def __init__(self, exception: Exception):
+        super().__init__(f"{self.UNEXPECTED_DATABASE_PING_FAILED} : {exception}")

@@ -6,6 +6,13 @@ from app.constants.config_constants import APP, HOST, PORT
 from app.logging.logger_constants import LOGGING_MAIN
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.middleware.CheckJwtAuthMiddleware import CheckJwtAuthMiddleware
+from app.middleware.cors_middleware_config import (
+    allow_credentials,
+    allowed_headers,
+    allowed_methods,
+    allowed_origins,
+    max_age,
+)
 from app.routers import artistas, canciones, generos, login, playlists, search, usuarios
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -45,20 +52,11 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost/",
-        "http://localhost:1212",
-        "https://localhost:1212/",
-        "https://localhost",
-        "https://localhost:1212",
-        "https://localhost:1212/",
-        "http://127.0.0.1:8000/",
-        "http://127.0.0.1:8000",
-    ],
-    allow_credentials=True,
-    allow_methods=["POST", "GET", "PUT", "DELETE", "PATCH"],
-    max_age=3600,
-    allow_headers=["*"],
+    allow_origins=allowed_origins,
+    allow_credentials=allow_credentials,
+    allow_methods=allowed_methods,
+    max_age=max_age,
+    allow_headers=allowed_headers,
 )
 app.add_middleware(CheckJwtAuthMiddleware)
 

@@ -14,7 +14,11 @@ from fastapi import APIRouter, Body, Header, HTTPException
 from fastapi.responses import Response
 from starlette.status import (
     HTTP_200_OK,
+    HTTP_201_CREATED,
+    HTTP_202_ACCEPTED,
+    HTTP_204_NO_CONTENT,
     HTTP_400_BAD_REQUEST,
+    HTTP_401_UNAUTHORIZED,
     HTTP_404_NOT_FOUND,
     HTTP_500_INTERNAL_SERVER_ERROR,
 )
@@ -103,7 +107,9 @@ def post_playlist(
     """
 
     if authorization is None:
-        raise HTTPException(status_code=401, detail="Authorization header is missing")
+        raise HTTPException(
+            status_code=HTTP_401_UNAUTHORIZED, detail="Authorization header is missing"
+        )
 
     try:
         jwt_token = security_service.get_jwt_token(authorization)
@@ -116,7 +122,7 @@ def post_playlist(
             token=jwt_token,
         )
 
-        return Response(None, 201)
+        return Response(None, HTTP_201_CREATED)
     except BadParameterException:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
@@ -173,7 +179,7 @@ def update_playlist(
         playlist_service.update_playlist(
             nombre, nuevo_nombre, foto, descripcion, nombres_canciones, jwt_token
         )
-        return Response(None, 204)
+        return Response(None, HTTP_204_NO_CONTENT)
     except BadParameterException:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
@@ -209,7 +215,7 @@ def delete_playlist(nombre: str) -> Response:
 
     try:
         playlist_service.delete_playlist(nombre)
-        return Response(None, 202)
+        return Response(status_code=HTTP_202_ACCEPTED)
     except BadParameterException:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
@@ -245,7 +251,9 @@ def get_playlists() -> Response:
             playlists, "playlists"
         )
 
-        return Response(playlist_json, media_type="application/json", status_code=200)
+        return Response(
+            playlist_json, media_type="application/json", status_code=HTTP_200_OK
+        )
     except BadParameterException:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
@@ -288,7 +296,9 @@ def get_selected_playlists(nombres: str) -> Response:
             playlists, "playlists"
         )
 
-        return Response(playlist_json, media_type="application/json", status_code=200)
+        return Response(
+            playlist_json, media_type="application/json", status_code=HTTP_200_OK
+        )
     except BadParameterException:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,

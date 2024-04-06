@@ -123,7 +123,7 @@ def get_selected_playlists(names: List[str]) -> List[Playlist]:
 def get_playlist_search_by_name(name: str) -> List[Playlist]:
     try:
         documents = playlist_collection.find(
-            {"name": {"$regex": name, "$options": "i"}}, {"_id": 0, "name": 1}
+            {"name": {"$regex": name, "$options": "i"}}
         )
         return [get_playlist_from_document(document) for document in documents]
     except Exception as error:

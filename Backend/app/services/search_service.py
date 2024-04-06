@@ -1,6 +1,7 @@
 import app.services.artist_service as artist_service
 import app.services.playlist_service as playlist_service
 import app.services.user_service as user_service
+from app.exceptions.services_exceptions import BadParameterException
 from app.services.song_services.song_service_provider import get_song_service
 from app.services.utils import checkValidParameterString
 from fastapi import HTTPException
@@ -22,14 +23,11 @@ def search_by_name(name: str) -> dict:
         dict: the items that match the name on a dict
     """
 
-    if not checkValidParameterString(name):
-        raise HTTPException(
-            status_code=400, detail="El nombre por el que buscar es vacío"
-        )
-
     items = {}
 
     try:
+        checkValidParameterString(name)
+
         # TODO ASYNC
         songs = song_service.search_by_name(name)
         playlists = playlist_service.search_by_name(name)
@@ -45,7 +43,8 @@ def search_by_name(name: str) -> dict:
         }
 
         return items
-
+    except BadParameterException:
+        raise
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"No se pudieron obtener los items por nombre | {e}"

@@ -1,11 +1,9 @@
 import json
 from dataclasses import dataclass
 
-from app.model.model_schema import SpotifyElectronModel
-
 
 @dataclass
-class TokenData(SpotifyElectronModel):
+class TokenData:
     username: str
     role: str
     token_type: str

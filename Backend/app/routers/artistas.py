@@ -7,6 +7,7 @@ import app.services.security_service as security_service
 from fastapi import APIRouter, Body, Header, HTTPException
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import Response
+from starlette.status import HTTP_200_OK
 
 router = APIRouter(
     prefix="/artistas",

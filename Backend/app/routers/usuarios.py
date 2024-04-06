@@ -1,7 +1,7 @@
-import logging
 from typing import Annotated, List, Union
 
 import app.services.all_users_service as all_users_service
+import app.services.http_encode_service as http_encode_service
 import app.services.security_service as security_service
 import app.services.user_service as user_service
 from fastapi import APIRouter, Body, Header, HTTPException
@@ -61,7 +61,7 @@ def get_user(nombre: str) -> Response:
 
     usuario = user_service.get_user(nombre)
 
-    usuario_json = usuario.get_json()
+    usuario_json = http_encode_service.get_json(usuario)
 
     return Response(usuario_json, media_type="application/json", status_code=200)
 

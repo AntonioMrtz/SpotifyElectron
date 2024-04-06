@@ -1,6 +1,7 @@
 import json
 from typing import Annotated, List, Optional, Union
 
+import app.services.http_encode_service as http_encode_service
 import app.services.playlist_service as playlist_service
 import app.services.security_service as security_service
 from fastapi import APIRouter, Body, Header, HTTPException
@@ -32,8 +33,7 @@ def get_playlist(nombre: str) -> Response:
     """
 
     playlist = playlist_service.get_playlist(nombre)
-
-    playlist_json = playlist.get_json()
+    playlist_json = http_encode_service.get_json(playlist)
 
     return Response(playlist_json, media_type="application/json", status_code=200)
 
@@ -72,7 +72,7 @@ def post_playlist(
 
     jwt_token = security_service.get_jwt_token(authorization)
 
-    result = playlist_service.create_playlist(
+    playlist_service.create_playlist(
         name=nombre,
         photo=foto,
         description=descripcion,
@@ -220,6 +220,6 @@ def get_playlist_dto(nombre: str) -> Response:
     """
 
     playlist = playlist_service.get_playlist(nombre)
-    playlist_json = playlist.get_json()
+    playlist_json = http_encode_service.get_json(playlist)
 
     return Response(playlist_json, media_type="application/json", status_code=200)

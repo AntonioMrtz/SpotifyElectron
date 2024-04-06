@@ -2,6 +2,7 @@ import json
 from typing import Annotated, List, Union
 
 import app.services.artist_service as artist_service
+import app.services.http_encode_service as http_encode_service
 import app.services.security_service as security_service
 from fastapi import APIRouter, Body, Header, HTTPException
 from fastapi.encoders import jsonable_encoder
@@ -32,8 +33,7 @@ def get_artista(nombre: str) -> Response:
     """
 
     artista = artist_service.get_artist(nombre)
-
-    artista_json = artista.get_json()
+    artista_json = http_encode_service.get_json(artista)
 
     return Response(artista_json, media_type="application/json", status_code=200)
 
@@ -57,7 +57,7 @@ def post_artista(nombre: str, foto: str, password: str) -> Response:
         Bad Request 400: Parámetros introducidos no són válidos o vacíos
     """
 
-    result = artist_service.create_artist(nombre, foto, password)
+    artist_service.create_artist(nombre, foto, password)
     return Response(None, 201)
 
 

@@ -196,7 +196,7 @@ def get_artist(name: str) -> Artist:
     return artist
 
 
-def create_artist(name: str, photo: str, password: str):
+def create_artist(name: str, photo: str, password: str) -> bool:
     """Creates an artist
 
     Parameters
@@ -242,10 +242,7 @@ def create_artist(name: str, photo: str, password: str):
         }
     )
 
-    if not result.acknowledged:
-        raise HTTPException(
-            status_code=500, detail="Hubo un error durante la creación del artista"
-        )
+    return result.acknowledged
 
 
 def update_artist(

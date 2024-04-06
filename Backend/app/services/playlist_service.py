@@ -162,10 +162,7 @@ def create_playlist(
         user_name=owner, playlist_name=name, token=token
     )
 
-    if not result.acknowledged:
-        raise HTTPException(
-            status_code=500, detail="Hubo un error durante la creación del artista"
-        )
+    return True if result.acknowledged else False
 
 
 def update_playlist(

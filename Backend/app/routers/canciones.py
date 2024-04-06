@@ -2,7 +2,6 @@ import json
 from typing import Annotated, Union
 
 import app.services.dto_service as dto_service
-import app.services.http_encode_service as http_encode_service
 import app.services.security_service as security_service
 from app.model.Genre import Genre
 from app.services.song_services.song_service_provider import get_song_service
@@ -37,7 +36,7 @@ def get_cancion(nombre: str) -> Response:
     """
 
     song = song_service.get_song(nombre)
-    song_json = http_encode_service.get_json(song)
+    song_json = song.get_json()
 
     return Response(song_json, media_type="application/json", status_code=200)
 
@@ -151,7 +150,7 @@ def get_cancion_dto(nombre: str) -> Response:
     """
 
     song = dto_service.get_song(nombre)
-    song_json = http_encode_service.get_json(song)
+    song_json = song.get_json()
 
     return Response(song_json, media_type="application/json", status_code=200)
 
@@ -218,7 +217,7 @@ def increase_number_plays_song(nombre: str) -> Response:
 
 @router.get("/generos/{genero}")
 def get_cancion_por_genero(genero: Genre) -> Response:
-    """Obtiene todas las cancioness de un género
+    """Obtiene todas las playlist de un género
 
     Parameters
     ----------

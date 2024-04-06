@@ -1,6 +1,8 @@
-import app.services.http_encode_service as http_encode_service
+import json
+
 import app.services.search_service as search_service
 from fastapi import APIRouter
+from fastapi.encoders import jsonable_encoder
 from fastapi.responses import Response
 
 router = APIRouter(
@@ -20,6 +22,7 @@ def get_search_nombre(nombre: str) -> Response:
         Response: the response including a json with all the items
     """
     items = search_service.search_by_name(name=nombre)
-    items_json = http_encode_service.get_json(items)
+    items_dict = jsonable_encoder(items)
+    items_json = json.dumps(items_dict)
 
     return Response(items_json, media_type="application/json", status_code=200)

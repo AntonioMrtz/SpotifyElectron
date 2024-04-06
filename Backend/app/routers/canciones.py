@@ -1,5 +1,4 @@
-import json
-from typing import Annotated, Union
+from typing import Annotated, Optional, Union
 
 import app.services.dto_service as dto_service
 import app.services.http_encode_service as http_encode_service
@@ -7,7 +6,6 @@ import app.services.security_service as security_service
 from app.model.Genre import Genre
 from app.services.song_services.song_service_provider import get_song_service
 from fastapi import APIRouter, Header, HTTPException, UploadFile
-from fastapi.encoders import jsonable_encoder
 from fastapi.responses import Response
 
 router = APIRouter(
@@ -96,14 +94,7 @@ def get_canciones() -> Response:
     """
 
     songs = song_service.get_all_songs()
-
-    songs_list = []
-    [songs_list.append(song.get_json()) for song in songs]
-
-    songs_dict = {}
-
-    songs_dict["songs"] = songs_list
-    songs_json = json.dumps(songs_dict)
+    songs_json = http_encode_service.get_json_with_iterable_field(songs, "songs")
 
     return Response(songs_json, media_type="application/json", status_code=200)
 
@@ -159,9 +150,9 @@ def get_cancion_dto(nombre: str) -> Response:
 @router.put("/{nombre}")
 def update_song(
     nombre: str,
-    foto: str = None,
-    genre: Genre = None,
-    nuevo_nombre: str = None,
+    foto: Optional[str] = None,
+    genre: Optional[Genre] = None,
+    nuevo_nombre: Optional[str] = None,
     authorization: Annotated[Union[str, None], Header()] = None,
 ) -> Response:
     """Actualiza los parámetros de la cancion con nombre "nombre"
@@ -235,9 +226,6 @@ def get_cancion_por_genero(genero: Genre) -> Response:
     """
 
     songs = dto_service.get_songs_by_genero(genero)
-    songs_dict = {}
-    songs_dict["songs"] = jsonable_encoder(songs)
-
-    songs_json = json.dumps(songs_dict)
+    songs_json = http_encode_service.get_json_with_iterable_field(songs, "songs")
 
     return Response(songs_json, media_type="application/json", status_code=200)

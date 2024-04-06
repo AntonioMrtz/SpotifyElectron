@@ -1,11 +1,9 @@
-import json
 from typing import Annotated, List, Optional, Union
 
 import app.services.http_encode_service as http_encode_service
 import app.services.playlist_service as playlist_service
 import app.services.security_service as security_service
 from fastapi import APIRouter, Body, Header, HTTPException
-from fastapi.encoders import jsonable_encoder
 from fastapi.responses import Response
 
 router = APIRouter(
@@ -163,10 +161,9 @@ def get_playlists() -> Response:
     -------
     """
     playlists = playlist_service.get_all_playlist()
-    playlist_dict = {}
-    playlist_dict["playlists"] = jsonable_encoder(playlists)
-
-    playlist_json = json.dumps(playlist_dict)
+    playlist_json = http_encode_service.get_json_with_iterable_field(
+        playlists, "playlists"
+    )
 
     return Response(playlist_json, media_type="application/json", status_code=200)
 
@@ -188,11 +185,9 @@ def get_selected_playlists(nombres: str) -> Response:
 
     playlists = playlist_service.get_selected_playlists(nombres.split(","))
 
-    playlists = playlist_service.get_all_playlist()
-    playlist_dict = {}
-    playlist_dict["playlists"] = jsonable_encoder(playlists)
-
-    playlist_json = json.dumps(playlist_dict)
+    playlist_json = http_encode_service.get_json_with_iterable_field(
+        playlists, "playlists"
+    )
 
     return Response(playlist_json, media_type="application/json", status_code=200)
 

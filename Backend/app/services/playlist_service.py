@@ -1,7 +1,7 @@
 import json
 from datetime import datetime
 from sys import modules
-from typing import List
+from typing import List, Optional
 
 import app.services.all_users_service as all_users_service
 import app.services.dto_service as dto_service
@@ -170,7 +170,7 @@ def create_playlist(
 
 def update_playlist(
     name: str,
-    nuevo_nombre: str,
+    nuevo_nombre: Optional[str],
     photo: str,
     description: str,
     song_names: list,

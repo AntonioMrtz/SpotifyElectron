@@ -35,8 +35,7 @@ def get_whoAmI(authorization: Annotated[Union[str, None], Header()] = None) -> R
         raise HTTPException(status_code=401, detail="Authorization header is missing")
 
     jwt_token = security_service.get_jwt_token(authorization)
-
-    jwt_token_json = jwt_token.get_json()
+    jwt_token_json = http_encode_service.get_json(jwt_token)
 
     return Response(jwt_token_json, media_type="application/json", status_code=200)
 
@@ -60,7 +59,6 @@ def get_user(nombre: str) -> Response:
     """
 
     usuario = user_service.get_user(nombre)
-
     usuario_json = http_encode_service.get_json(usuario)
 
     return Response(usuario_json, media_type="application/json", status_code=200)

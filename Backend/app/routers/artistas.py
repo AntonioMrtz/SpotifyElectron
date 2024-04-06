@@ -179,8 +179,8 @@ def get_reproducciones_artista(nombre: str) -> Response:
 
     play_count = artist_service.get_play_count_artist(user_name=nombre)
 
-    play_count_dict = {"play_count": play_count}
-
-    play_count_json = json.dumps(play_count_dict)
+    play_count_json = http_encode_service.get_json_with_iterable_field(
+        play_count, "play_count"
+    )
 
     return Response(play_count_json, media_type="application/json", status_code=200)

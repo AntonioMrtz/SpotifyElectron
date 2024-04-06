@@ -1,8 +1,9 @@
-import json
 from datetime import datetime, timedelta, timezone
 from typing import Annotated
 
 import app.services.security_service as security_service
+import app.services.http_encode_service as http_encode_service
+
 from fastapi import APIRouter, Depends
 from fastapi.responses import Response
 from fastapi.security import OAuth2PasswordRequestForm
@@ -40,7 +41,7 @@ def login_usuario(
 
     jwt = security_service.login_user(form_data.username, form_data.password)
 
-    access_token_json = json.dumps(jwt)
+    access_token_json = http_encode_service.get_json(jwt)
 
     utc_timezone = timezone.utc
 

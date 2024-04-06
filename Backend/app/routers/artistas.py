@@ -24,7 +24,7 @@ def get_artista(nombre: str) -> Response:
 
     Returns
     -------
-        Response 200 OK
+        Response HTTP_200_OK OK
 
     Raises
     -------
@@ -35,7 +35,9 @@ def get_artista(nombre: str) -> Response:
     artista = artist_service.get_artist(nombre)
     artista_json = http_encode_service.get_json(artista)
 
-    return Response(artista_json, media_type="application/json", status_code=200)
+    return Response(
+        artista_json, media_type="application/json", status_code=HTTP_200_OK
+    )
 
 
 @router.post("/", tags=["artistas"])
@@ -142,7 +144,7 @@ def get_artistas() -> Response:
 
     Returns
     -------
-        Response 200 OK
+        Response HTTP_200_OK OK
 
     Raises
     -------
@@ -156,7 +158,9 @@ def get_artistas() -> Response:
 
     artists_json = json.dumps(artists_dict)
 
-    return Response(artists_json, media_type="application/json", status_code=200)
+    return Response(
+        artists_json, media_type="application/json", status_code=HTTP_200_OK
+    )
 
 
 @router.get("/{nombre}/reproducciones", tags=["artistas"])
@@ -169,7 +173,7 @@ def get_reproducciones_artista(nombre: str) -> Response:
 
     Returns
     -------
-        Response 200 OK
+        Response HTTP_200_OK OK
 
     Raises
     -------
@@ -183,4 +187,6 @@ def get_reproducciones_artista(nombre: str) -> Response:
         play_count, "play_count"
     )
 
-    return Response(play_count_json, media_type="application/json", status_code=200)
+    return Response(
+        play_count_json, media_type="application/json", status_code=HTTP_200_OK
+    )

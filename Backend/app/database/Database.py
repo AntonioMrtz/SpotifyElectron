@@ -1,6 +1,9 @@
 from app.boostrap.PropertiesManager import PropertiesManager
 from app.constants.set_up_constants import MONGO_URI_ENV_NAME
-from app.exceptions.exceptions_schema import SpotifyElectronException
+from app.exceptions.database_exceptions import (
+    DatabasePingFailed,
+    UnexpectedDatabasePingFailed,
+)
 from app.logging.logger_constants import LOGGING_DATABASE
 from app.logging.logging_schema import SpotifyElectronLogger
 from pymongo.errors import ConnectionFailure
@@ -73,21 +76,3 @@ class Database(metaclass=DatabaseMeta):
     def get_instance():
         """Method to retrieve the singleton instance"""
         return Database()
-
-
-class DatabasePingFailed(SpotifyElectronException):
-    """Exception for database ping failure"""
-
-    DATABASE_PING_FAILED = "Ping to the database failed"
-
-    def __init__(self):
-        super().__init__(self.DATABASE_PING_FAILED)
-
-
-class UnexpectedDatabasePingFailed(SpotifyElectronException):
-    """Exception for unexpected database ping failure"""
-
-    UNEXPECTED_DATABASE_PING_FAILED = "Unexpected error while pinging to the database"
-
-    def __init__(self, exception: Exception):
-        super().__init__(f"{self.UNEXPECTED_DATABASE_PING_FAILED} : {exception}")

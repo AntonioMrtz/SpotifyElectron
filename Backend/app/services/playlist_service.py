@@ -1,24 +1,28 @@
-import json
 from datetime import datetime
-from sys import modules
 from typing import List, Optional
 
+import app.repositories.playlist_repository as playlist_repository
 import app.services.all_users_service as all_users_service
-import app.services.dto_service as dto_service
-from app.database.Database import Database
+from app.constants.domain_constants import PLAYLIST
+from app.exceptions.repository_exceptions import (
+    ItemNotFoundException,
+    RepositoryException,
+)
+from app.exceptions.services_exceptions import (
+    BadParameterException,
+    ServiceException,
+    UnAuthorizedException,
+)
+from app.logging.logger_constants import LOGGING_PLAYLISTS_SERVICE
+from app.logging.logging_schema import SpotifyElectronLogger
 from app.model.Playlist import Playlist
 from app.model.TokenData import TokenData
 from app.services.song_services.song_service_provider import get_song_service
 from app.services.utils import checkValidParameterString
-from fastapi import HTTPException
-
-if "pytest" in modules:
-    playlist_collection = Database().connection["test.playlist"]
-
-else:
-    playlist_collection = Database().connection["playlist"]
 
 song_service = get_song_service()
+
+playlist_service_logger = SpotifyElectronLogger(LOGGING_PLAYLISTS_SERVICE).getLogger()
 
 
 def check_jwt_user_is_playlist_owner(token: TokenData, owner: str) -> bool:
@@ -40,10 +44,7 @@ def check_jwt_user_is_playlist_owner(token: TokenData, owner: str) -> bool:
 
     if token.username == owner:
         return True
-    else:
-        raise HTTPException(
-            status_code=401, detail="El usuario no es el creador de la canción"
-        )
+    raise UnAuthorizedException(owner)
 
 
 def check_playlist_exists(name: str) -> bool:
@@ -60,11 +61,11 @@ def check_playlist_exists(name: str) -> bool:
     -------
         Boolean
     """
-    return True if playlist_collection.find_one({"name": name}) else False
+    return playlist_repository.check_playlist_exists(name)
 
 
 def get_playlist(name: str) -> Playlist:
-    """Returns a Playlist with his songs"
+    """Returns a Playlist with his songs
 
     Parameters
     ----------
@@ -79,36 +80,23 @@ def get_playlist(name: str) -> Playlist:
     -------
         Playlist object
     """
-
-    if not checkValidParameterString(name):
-        raise HTTPException(status_code=400, detail="Parámetros no válidos")
-
-    playlist_data = playlist_collection.find_one({"name": name})
-
-    if playlist_data is None:
-        raise HTTPException(
-            status_code=404, detail="La playlist con ese nombre no existe"
+    try:
+        playlist = playlist_repository.get_playlist_by_name(name)
+        return playlist
+    except BadParameterException:
+        playlist_service_logger.error(f"Bad Parameter : {name}")
+        raise
+    except ItemNotFoundException:
+        playlist_service_logger.error(f"Playlist not found : {name}")
+        raise
+    except RepositoryException as error:
+        playlist_service_logger.error(
+            f"Unhandled error in Playlist Repository : {error}"
         )
-
-    playlist_songs = []
-
-    [
-        playlist_songs.append(dto_service.get_song(song_name).name)
-        for song_name in playlist_data["song_names"]
-    ]
-
-    date = playlist_data["upload_date"][:-1]
-
-    playlist = Playlist(
-        name,
-        playlist_data["photo"],
-        playlist_data["description"],
-        date,
-        playlist_data["owner"],
-        playlist_songs,
-    )
-
-    return playlist
+        raise ServiceException(PLAYLIST)
+    except Exception as error:
+        playlist_service_logger.error(f"Unhandled error in Playlist Service : {error}")
+        raise ServiceException(PLAYLIST)
 
 
 def create_playlist(
@@ -131,52 +119,58 @@ def create_playlist(
     Returns
     -------
     """
-    owner = token.username
+    try:
+        owner = token.username
 
-    fecha_actual = datetime.now()
-    fecha_iso8601 = fecha_actual.strftime("%Y-%m-%dT%H:%M:%S")
+        current_date = datetime.now()
+        date_iso8601 = current_date.strftime("%Y-%m-%dT%H:%M:%S")
 
-    if not checkValidParameterString(name):
-        raise HTTPException(status_code=400, detail="Parámetros no válidos")
+        checkValidParameterString(name)
 
-    result_playlist_exists = playlist_collection.find_one({"name": name})
+        result_playlist_exists = playlist_repository.check_playlist_exists(name)
+        if result_playlist_exists:
+            raise BadParameterException(name)
 
-    if result_playlist_exists:
-        raise HTTPException(status_code=400, detail="La playlist ya existe")
+        if not all_users_service.check_user_exists(owner):
+            raise ItemNotFoundException(owner)
 
-    if not all_users_service.check_user_exists(owner):
-        raise HTTPException(status_code=404, detail="El usuario no existe")
-
-    result = playlist_collection.insert_one(
-        {
-            "name": name,
-            "photo": photo if "http" in photo else "",
-            "upload_date": fecha_iso8601,
-            "description": description,
-            "owner": owner,
-            "song_names": song_names,
-        }
-    )
-
-    all_users_service.add_playlist_to_owner(
-        user_name=owner, playlist_name=name, token=token
-    )
-
-    if not result.acknowledged:
-        raise HTTPException(
-            status_code=500, detail="Hubo un error durante la creación del artista"
+        playlist_repository.insert_playlist(
+            name,
+            photo if "http" in photo else "",
+            date_iso8601,
+            description,
+            owner,
+            song_names,
         )
+
+        all_users_service.add_playlist_to_owner(
+            user_name=owner, playlist_name=name, token=token
+        )
+    except BadParameterException:
+        playlist_service_logger.error(f"Bad Parameter : {name}")
+        raise
+    except ItemNotFoundException:
+        playlist_service_logger.error(f"Playlist not found : {name}")
+        raise
+    except RepositoryException as error:
+        playlist_service_logger.error(
+            f"Unhandled error in Playlist Repository : {error}"
+        )
+        raise ServiceException(PLAYLIST)
+    except Exception as error:
+        playlist_service_logger.error(f"Unhandled error in Playlist Service : {error}")
+        raise ServiceException(PLAYLIST)
 
 
 def update_playlist(
     name: str,
-    nuevo_nombre: Optional[str],
+    new_name: Optional[str],
     photo: str,
     description: str,
     song_names: list,
     token: TokenData,
 ) -> None:
-    """Updates a playlist with name, url of thumbnail and list of song names [ duplicates wont be added ]
+    """Updates a playlist with name, url of thumbnail and list of song names
 
     Parameters
     ----------
@@ -197,42 +191,43 @@ def update_playlist(
     -------
     """
 
-    if not checkValidParameterString(name):
-        raise HTTPException(status_code=400, detail="Parámetros no válidos")
+    try:
+        checkValidParameterString(name)
 
-    result_playlist_exists = playlist_collection.find_one({"name": name})
+        result_playlist_exists = playlist_repository.check_playlist_exists(name)
+        if not result_playlist_exists:
+            raise ItemNotFoundException(name)
 
-    if not result_playlist_exists:
-        raise HTTPException(status_code=404, detail="La playlist no existe")
+        playlist = playlist_repository.get_playlist_by_name(name)
 
-    check_jwt_user_is_playlist_owner(token=token, owner=result_playlist_exists["owner"])
+        check_jwt_user_is_playlist_owner(token=token, owner=playlist.owner)
 
-    if checkValidParameterString(nuevo_nombre):
-        new_name = nuevo_nombre
-        playlist_collection.update_one(
-            {"name": name},
-            {
-                "$set": {
-                    "name": new_name,
-                    "description": description,
-                    "photo": photo if "http" in photo else "",
-                    "song_names": list(set(song_names)),
-                }
-            },
+        if new_name is not None and checkValidParameterString(new_name):
+            playlist_repository.update_playlist(
+                name,
+                new_name,
+                photo if "http" in photo else "",
+                description,
+                song_names,
+            )
+            return
+        playlist_repository.update_playlist(
+            name, name, photo if "http" in photo else "", description, song_names
         )
-
-    else:
-        playlist_collection.update_one(
-            {"name": name},
-            {
-                "$set": {
-                    "name": name,
-                    "description": description,
-                    "photo": photo if "http" in photo else "",
-                    "song_names": list(set(song_names)),
-                }
-            },
+    except BadParameterException:
+        playlist_service_logger.error(f"Bad Parameter : {name}")
+        raise
+    except ItemNotFoundException:
+        playlist_service_logger.error(f"Playlist not found : {name}")
+        raise
+    except RepositoryException as error:
+        playlist_service_logger.error(
+            f"Unhandled error in Playlist Repository : {error}"
         )
+        raise ServiceException(PLAYLIST)
+    except Exception as error:
+        playlist_service_logger.error(f"Unhandled error in Playlist Service : {error}")
+        raise ServiceException(PLAYLIST)
 
 
 def delete_playlist(name: str) -> None:
@@ -251,24 +246,28 @@ def delete_playlist(name: str) -> None:
     -------
     """
 
-    if not checkValidParameterString(name):
-        raise HTTPException(status_code=400, detail="Parámetros no válidos")
-
     try:
+        checkValidParameterString(name)
         all_users_service.delete_playlist_from_owner(playlist_name=name)
+        playlist_repository.delete_playlist(name)
+    except BadParameterException:
+        playlist_service_logger.error(f"Bad Parameter : {name}")
+        raise
+    except ItemNotFoundException:
+        playlist_service_logger.error(f"Playlist not found : {name}")
+        raise
+    except RepositoryException as error:
+        playlist_service_logger.error(
+            f"Unhandled error in Playlist Repository : {error}"
+        )
+        raise ServiceException(PLAYLIST)
+    except Exception as error:
+        playlist_service_logger.error(f"Unhandled error in Playlist Service : {error}")
+        raise ServiceException(PLAYLIST)
 
-        result = playlist_collection.delete_one({"name": name})
-        if result.deleted_count == 0:
-            raise HTTPException(status_code=404, detail="La playlist no existe")
 
-    except:
-        result = playlist_collection.delete_one({"name": name})
-        if result.deleted_count == 0:
-            raise HTTPException(status_code=404, detail="La playlist no existe")
-
-
-def get_all_playlist() -> list:
-    """Returns all playlists in a DTO object"
+def get_all_playlist() -> List[Playlist]:
+    """Returns all playlists"
 
     Parameters
     ----------
@@ -280,20 +279,24 @@ def get_all_playlist() -> list:
 
     Returns
     -------
-        List<PlaylistDTO>
+        List<Playlist>
     """
 
-    playlists: list = []
-    playlists_files = playlist_collection.find()
+    try:
+        playlists = playlist_repository.get_all_playlists()
+        return playlists
+    except RepositoryException as error:
+        playlist_service_logger.error(
+            f"Unhandled error in Playlist Repository : {error}"
+        )
+        raise ServiceException(PLAYLIST)
+    except Exception as error:
+        playlist_service_logger.error(f"Unhandled error in Playlist Service : {error}")
+        raise ServiceException(PLAYLIST)
 
-    for playlist_file in playlists_files:
-        playlists.append(get_playlist(playlist_file["name"]))
 
-    return playlists
-
-
-def get_selected_playlists(playlist_names: list) -> list:
-    """Returns the selected playlists DTO object"
+def get_selected_playlists(playlist_names: List[str]) -> List[Playlist]:
+    """Returns the selected playlists"
 
     Parameters
     ----------
@@ -305,18 +308,20 @@ def get_selected_playlists(playlist_names: list) -> list:
 
     Returns
     -------
-        List<PlaylistDTO>
+        List<Playlist>
     """
 
-    filter_contained_playlist_names = {"name": {"$in": playlist_names}}
-
-    response_playlists = []
-    playlists_files = playlist_collection.find(filter_contained_playlist_names)
-
-    for playlist_file in playlists_files:
-        response_playlists.append(get_playlist(playlist_file["name"]))
-
-    return response_playlists
+    try:
+        playlists = playlist_repository.get_selected_playlists(playlist_names)
+        return playlists
+    except RepositoryException as error:
+        playlist_service_logger.error(
+            f"Unhandled error in Playlist Repository : {error}"
+        )
+        raise ServiceException(PLAYLIST)
+    except Exception as error:
+        playlist_service_logger.error(f"Unhandled error in Playlist Service : {error}")
+        raise ServiceException(PLAYLIST)
 
 
 def search_by_name(name: str) -> List[Playlist]:
@@ -328,15 +333,14 @@ def search_by_name(name: str) -> List[Playlist]:
     Returns:
         List[Playlist]: a list with the playlists that match the name
     """
-
-    playlist_names_response = playlist_collection.find(
-        {"name": {"$regex": name, "$options": "i"}}, {"_id": 0, "name": 1}
-    )
-
-    playlist_names = []
-
-    [playlist_names.append(playlist["name"]) for playlist in playlist_names_response]
-
-    playlists = get_selected_playlists(playlist_names)
-
-    return playlists
+    try:
+        playlists = playlist_repository.get_playlist_search_by_name(name)
+        return playlists
+    except RepositoryException as error:
+        playlist_service_logger.error(
+            f"Unhandled error in Playlist Repository : {error}"
+        )
+        raise ServiceException(PLAYLIST)
+    except Exception as error:
+        playlist_service_logger.error(f"Unhandled error in Playlist Service : {error}")
+        raise ServiceException(PLAYLIST)

@@ -45,9 +45,7 @@ class CheckJwtAuthMiddleware(BaseHTTPMiddleware):
         """
 
         check_jwt_auth_middleware_logger.debug(
-            f"Request method {request.method}\n \
-            Request URL {request.url}\n \
-            Request headers {request.headers}"
+            f"Request method {request.method}\n Request URL {request.url}\n"
         )
 
         if request.method in self.bypass_methods:
@@ -70,10 +68,7 @@ class CheckJwtAuthMiddleware(BaseHTTPMiddleware):
 
             jwt = request.headers["authorization"]
             return await self._handle_jwt_validation(jwt, request, call_next)
-        except Exception as dispatch_error:
-            check_jwt_auth_middleware_logger.error(
-                f"Error dispatching request {request} with error : {dispatch_error}"
-            )
+        except Exception:
             return Response(
                 content="Invalid Credentials",
                 status_code=HTTP_401_UNAUTHORIZED,

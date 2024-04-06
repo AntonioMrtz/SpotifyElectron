@@ -69,9 +69,7 @@ def object_to_json(object: Any) -> str:
     try:
         jsonable_object = jsonable_encoder(object)
         json_object = json.dumps(jsonable_object)
-        http_encode_service.critical(
-            f"Success encoding object into json : {json_object}"
-        )
+        http_encode_service.debug(f"Success encoding object into json : {json_object}")
         return json_object
     except Exception as error:
         http_encode_service.critical(f"Error encoding object into json: {error}")

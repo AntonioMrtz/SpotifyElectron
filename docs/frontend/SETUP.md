@@ -19,10 +19,21 @@ cd Electron;
 ```
 npm install
 ```
-3. Build the main and renderer process
+3. Select wanted architecture by going to global.ts
+```
+export const songArchitecture: SongArchitecture = SongArchitecture.STREAMING_ARCHITECTURE;
+```
+
+4. Build the main and renderer process
 
 ```
 npm run build
+```
+
+5. Run the project
+
+```
+npm start
 ```
 
 ## ▶ Select Music Player depending on Song Architecture backend ( optional )

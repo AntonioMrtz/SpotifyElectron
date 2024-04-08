@@ -19,11 +19,11 @@ cd Backend;
 2. Create the enviroment file in root path with the following data. **Check .env.example file to see format**
 
 ```
-* MONGO_URI= uri for connecting into a MongoDB database
+* MONGO_URI= uri for connecting into a MongoDB database ( mongodb://root:root@localhost:27017/ )
 * SECRET_KEY_SIGN= 32 byte key for signing tokens in backend
-* LAMBDA_URL= URL of Lambda API for accesing AWS services and managing song
-* ARCH= STREAMING_LAMBDA, song architecture
-* ENV_VALUE= PROD, prod or test ( PROD , TEST)
+* LAMBDA_URL= URL of Lambda API for accesing AWS services and managing song ( only needed in STREAMING_LAMBDA architecture )
+* ARCH= song architecture ( STREAMING_LAMBDA | DB_BLOB | STREAMING_SDK )
+* ENV_VALUE= prod or test ( PROD | TEST)
 
 ```
 

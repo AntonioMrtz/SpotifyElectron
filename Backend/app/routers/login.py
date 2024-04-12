@@ -1,11 +1,12 @@
 import json
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from typing import Annotated
 
-import app.services.security_service as security_service
 from fastapi import APIRouter, Depends
 from fastapi.responses import Response
 from fastapi.security import OAuth2PasswordRequestForm
+
+import app.services.security_service as security_service
 
 router = APIRouter(
     prefix="/login",
@@ -42,7 +43,7 @@ def login_usuario(
 
     access_token_json = json.dumps(jwt)
 
-    utc_timezone = timezone.utc
+    utc_timezone = UTC
 
     # Get the current UTC datetime
     current_utc_datetime = datetime.utcnow().replace(tzinfo=utc_timezone)

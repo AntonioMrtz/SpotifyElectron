@@ -1,6 +1,5 @@
 import json
 from dataclasses import dataclass
-from typing import List
 
 from app.model.model_schema import SpotifyElectronModel
 
@@ -11,9 +10,9 @@ class User(SpotifyElectronModel):
     photo: str
     register_date: str
     password: bytes
-    playback_history: List[str]
-    playlists: List[str]
-    saved_playlists: List[str]
+    playback_history: list[str]
+    playlists: list[str]
+    saved_playlists: list[str]
 
     def get_json(self) -> str:
         user_dict = self.__dict__

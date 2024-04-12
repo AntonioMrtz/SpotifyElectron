@@ -1,6 +1,5 @@
 import json
 from dataclasses import dataclass
-from typing import List
 
 from app.model.model_schema import SpotifyElectronModel
 
@@ -12,9 +11,9 @@ class Playlist(SpotifyElectronModel):
     description: str
     upload_date: str
     owner: str
-    song_names: List[str]
+    song_names: list[str]
 
-    def add_songs(self, songs: List[str]) -> None:
+    def add_songs(self, songs: list[str]) -> None:
         self.song_names.extend(songs)
 
     def get_json(self) -> str:

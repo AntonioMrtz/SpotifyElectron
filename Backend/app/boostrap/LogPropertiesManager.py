@@ -1,6 +1,8 @@
 import configparser
 import os
 
+from dotenv import load_dotenv
+
 from app.constants.config_constants import (
     APP_FOLDER,
     CONFIG_FILENAME,
@@ -9,7 +11,6 @@ from app.constants.config_constants import (
     RESOURCES_FOLDER,
 )
 from app.constants.set_up_constants import ENV_VALUE_ENV_NAME, PROD
-from dotenv import load_dotenv
 
 
 class LogPropertiesManager:

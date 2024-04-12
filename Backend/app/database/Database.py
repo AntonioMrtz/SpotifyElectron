@@ -1,11 +1,12 @@
+from pymongo.errors import ConnectionFailure
+from pymongo.mongo_client import MongoClient
+from pymongo.server_api import ServerApi
+
 from app.boostrap.PropertiesManager import PropertiesManager
 from app.constants.set_up_constants import MONGO_URI_ENV_NAME
 from app.exceptions.exceptions_schema import SpotifyElectronException
 from app.logging.logger_constants import LOGGING_DATABASE
 from app.logging.logging_schema import SpotifyElectronLogger
-from pymongo.mongo_client import MongoClient
-from pymongo.server_api import ServerApi
-from pymongo.errors import ConnectionFailure
 
 database_logger = SpotifyElectronLogger(LOGGING_DATABASE).getLogger()
 

@@ -1,6 +1,7 @@
 import configparser
 import os
-from typing import List
+
+from dotenv import load_dotenv
 
 from app.constants.config_constants import (
     APP_CONFIG_SECTION,
@@ -22,7 +23,6 @@ from app.constants.set_up_constants import (
 )
 from app.logging.logger_constants import LOGGING_PROPERTIES_MANAGER
 from app.logging.logging_schema import SpotifyElectronLogger
-from dotenv import load_dotenv
 
 properties_manager_logger = SpotifyElectronLogger(
     LOGGING_PROPERTIES_MANAGER
@@ -91,7 +91,7 @@ class _PropertiesManager:
             f"Running init method for architecture : {architecture_type}"
         )
 
-    def _load_env_variables(self, env_names: List[str]):
+    def _load_env_variables(self, env_names: list[str]):
         """Load enviroment variables into class attributes
 
         Args:

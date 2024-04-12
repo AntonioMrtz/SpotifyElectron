@@ -1,13 +1,13 @@
 from datetime import datetime
 from sys import modules
-from typing import List
+
+from fastapi import HTTPException
 
 import app.services.security_service as security_service
 from app.database.Database import Database
 from app.model.TokenData import TokenData
 from app.model.User import User
 from app.services.utils import checkValidParameterString
-from fastapi import HTTPException
 
 if "pytest" in modules:
     user_collection = Database().connection["test.usuario"]
@@ -208,7 +208,7 @@ def delete_user(name: str) -> None:
         raise HTTPException(status_code=404, detail="El usuario no existe")
 
 
-def get_users(names: list) -> List[User]:
+def get_users(names: list) -> list[User]:
     """Returns a list of Users that match "names" list of names
 
     Parameters
@@ -234,7 +234,7 @@ def get_users(names: list) -> List[User]:
     return users
 
 
-def search_by_name(name: str) -> List[User]:
+def search_by_name(name: str) -> list[User]:
     """Retrieve the users than match the name
 
     Args:

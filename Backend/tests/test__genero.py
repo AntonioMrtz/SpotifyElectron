@@ -1,9 +1,10 @@
-from app.__main__ import app
-from app.model.Genre import Genre
 from fastapi.testclient import TestClient
 from pytest import fixture
 from test_API.api_test_artist import create_artist, delete_artist
 from test_API.api_token import get_user_jwt_header
+
+from app.__main__ import app
+from app.model.Genre import Genre
 
 client = TestClient(app)
 

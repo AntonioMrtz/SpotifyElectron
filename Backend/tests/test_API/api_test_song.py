@@ -1,5 +1,6 @@
-from app.__main__ import app
 from fastapi.testclient import TestClient
+
+from app.__main__ import app
 
 client = TestClient(app)
 
@@ -23,7 +24,7 @@ def delete_song(name: str):
 
 
 def get_songs(headers: dict):
-    response = client.get(f"/canciones/", headers=headers)
+    response = client.get("/canciones/", headers=headers)
     return response
 
 

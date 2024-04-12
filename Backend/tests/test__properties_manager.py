@@ -26,7 +26,6 @@ env_variables_mapping = {
 
 
 def test_load_env_variables(clean_modified_environments):
-
     for env_name, value in env_variables_mapping.items():
         os.environ[env_name] = value
 
@@ -37,7 +36,6 @@ def test_load_env_variables(clean_modified_environments):
 
 
 def test_check_is_testing_enviroment(clean_modified_environments):
-
     env_variables_mapping = {
         ENV_VALUE_ENV_NAME: TEST,
     }
@@ -51,7 +49,6 @@ def test_check_is_testing_enviroment(clean_modified_environments):
 
 
 def test_check_is_not_testing_enviroment(clean_modified_environments):
-
     env_variables_mapping = {
         ENV_VALUE_ENV_NAME: PROD,
     }
@@ -65,7 +62,6 @@ def test_check_is_not_testing_enviroment(clean_modified_environments):
 
 
 def test_check_is_production_enviroment(clean_modified_environments):
-
     env_variables_mapping = {
         ENV_VALUE_ENV_NAME: PROD,
     }
@@ -79,7 +75,6 @@ def test_check_is_production_enviroment(clean_modified_environments):
 
 
 def test_check_is_not_production_enviroment(clean_modified_environments):
-
     env_variables_mapping = {
         ENV_VALUE_ENV_NAME: TEST,
     }

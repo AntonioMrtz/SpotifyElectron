@@ -1,0 +1,36 @@
+name: Backend Run Black style
+
+on:
+  pull_request:
+    branches:
+      - 'master'
+      - 'master-*'
+
+jobs:
+  run_tests:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.11"
+          architecture: "x64"
+        env:
+          AGENT_TOOLSDIRECTORY: /opt/hostedtoolcache
+
+      - name: Install dependencies and run style check
+        working-directory: Backend/
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          pip install -r requirements.txt
+          pip install -r requirements-test.txt
+          pip install -r requirements-dev.txt
+          python -m black . --check
+
+      - name: Fail workflow on style check failure
+        if: ${{ failure() }}
+        run: exit 1

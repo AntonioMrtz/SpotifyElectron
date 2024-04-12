@@ -1,11 +1,13 @@
 import base64
 import io
 from sys import modules
-from typing import List
+
+import librosa
+from fastapi import HTTPException
+from gridfs import GridFS
 
 import app.services.artist_service as artist_service
 import app.services.dto_service as dto_service
-import librosa
 from app.database.Database import Database
 from app.model.DTO.SongDTO import SongDTO
 from app.model.Genre import Genre
@@ -13,18 +15,14 @@ from app.model.Song import Song
 from app.model.SongBlob import SongBlob
 from app.model.TokenData import TokenData
 from app.services.utils import checkValidParameterString
-from fastapi import HTTPException
-from gridfs import GridFS
 
 """ Insert songs with format [files,chunks] https://www.mongodb.com/docs/manual/core/gridfs/"""
 
 if "pytest" in modules:
-
     gridFsSong = GridFS(Database().connection, collection="test.cancion")
     file_song_collection = Database().connection["test.cancion.files"]
 
 else:
-
     gridFsSong = GridFS(Database().connection, collection="cancion")
     file_song_collection = Database().connection["cancion.files"]
 
@@ -137,7 +135,6 @@ def get_songs(names: list) -> list:
     songs: list = []
 
     for song_name in names:
-
         songs.append(dto_service.get_song(song_name))
 
     return songs
@@ -163,7 +160,6 @@ def get_all_songs() -> list:
     songsFiles = file_song_collection.find()
 
     for songFile in songsFiles:
-
         songs.append(get_song(songFile["name"]))
 
     return songs
@@ -379,7 +375,7 @@ def increase_number_plays(name: str) -> None:
     )
 
 
-def search_by_name(name: str) -> List[SongDTO]:
+def search_by_name(name: str) -> list[SongDTO]:
     """Retrieve the songs than match the name
 
     Args:
@@ -424,7 +420,7 @@ def get_artist_playback_count(artist_name: str) -> int:
     return total_plays
 
 
-def get_songs_by_genre(genre: Genre) -> List[Song]:
+def get_songs_by_genre(genre: Genre) -> list[Song]:
     # TODO
     result_get_song_by_genre = file_song_collection.find(
         {"genre": Genre.getGenre(genre)}

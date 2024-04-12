@@ -9,7 +9,7 @@ In this section we will cover:
 
 ## 🛠 Setup the proyect
 
-1. Enter frontend directory 
+1. Enter frontend directory
 
 ```
 cd Electron;
@@ -40,7 +40,7 @@ npm start
 
 You can select a custom music player dependending if the song architecture is managed by streaming or encoded base64 bytes. By default streaming service is selected.
 
-1. Enter frontend global configuration file 
+1. Enter frontend global configuration file
 
 ```
 cd Electron/src/global/global.ts;
@@ -54,7 +54,7 @@ export const songArchitecture: SongArchitecture = SongArchitecture.FILE_ARCHITEC
 
 ## ▶ Run the app in development mode
 
-1. Run the app in hot reload debug mode 
+1. Run the app in hot reload debug mode
 
 ```
 npm start
@@ -81,7 +81,7 @@ npm run lint
 ```
 
 
-## ✏ Install the recommended extensions for VSCODE 
+## ✏ Install the recommended extensions for VSCODE
 
 1. Go to extensions
 2. Select filter extensions

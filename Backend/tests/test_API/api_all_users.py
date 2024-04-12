@@ -1,5 +1,6 @@
-from app.__main__ import app
 from fastapi.testclient import TestClient
+
+from app.__main__ import app
 
 client = TestClient(app)
 
@@ -30,5 +31,5 @@ def delete_playlist_saved(user_name: str, playlist_name: str, headers: dict):
 def whoami(token: str):
     headers = {"Authorization": f"{token}"}
 
-    response = client.get(f"/usuarios/whoami", headers=headers)
+    response = client.get("/usuarios/whoami", headers=headers)
     return response

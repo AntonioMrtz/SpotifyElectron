@@ -10,7 +10,7 @@ In this section we will cover:
 
 ## 🛠 Setup the proyect
 
-1. Enter backend directory 
+1. Enter backend directory
 
 ```
 cd Backend;
@@ -27,7 +27,7 @@ cd Backend;
 
 ```
 
-3. Install the virtual enviroment and dependencies 
+3. Install the virtual enviroment and dependencies
 
 ```
 python -m venv venv;
@@ -37,7 +37,7 @@ pip install -r requirements-dev.txt;
 pip install -r requirements-test.txt;
 
 ```
-4. Run the app in hot reload debug mode 
+4. Run the app in hot reload debug mode
 
 ```
 python -m app;
@@ -63,16 +63,39 @@ or
 python -m pytest tests/ --cov=. --cov-report=html // Test run and generate coverage in folder htmlcov/index.html
 
 ```
+## ⚓ Pre-commit
 
-## 🎨 Run style on code
+### Set up
+
+1. Install pre-commits hooks
+
+```
+pre-commit install
+```
+### Install
+
+1. Force pre-commit run on all files
+
+
+```
+pre-commit run --all-files
+```
+
+
+## 🎨 Run style and linting on code
 
 1. Run style rules and sort imports
 ```
-python -m isort --profile black .
-python -m black .
+python -m ruff format
+```
+2. Run linting
+
+```
+python -m ruff check --fix
 ```
 
-## ✏ Install the recommended extensions for VSCODE 
+
+## ✏ Install the recommended extensions for VSCODE
 
 1. Go to extensions
 2. Select filter extensions

@@ -1,4 +1,4 @@
-name: Ruff
+name: Run Ruff Format Backend
 on:
   pull_request:
     branches:

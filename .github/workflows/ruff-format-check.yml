@@ -1,4 +1,4 @@
-name: Run Ruff Format Backend
+name: Check Ruff format and styling
 on:
   pull_request:
     branches:

@@ -1,11 +1,13 @@
 {
   "recommendations": [
     "ms-python.python",
+    "ms-python.black-formatter",
+    "ms-python.flake8",
     "ms-python.debugpy",
     "ms-python.vscode-pylance",
     "njpwerner.autodocstring",
     "njqdev.vscode-python-typehint",
-    "editorconfig.editorconfig",
-    "charliermarsh.ruff"
+    "ms-python.isort",
+    "editorconfig.editorconfig"
   ]
 }

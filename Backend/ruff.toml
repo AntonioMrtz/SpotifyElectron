@@ -1,9 +1,5 @@
 target-version = "py311"
 
-# Same as Black.
-line-length = 88
-indent-width = 4
-
 [lint]
 extend-select = [
     "UP",  # pyupgrade
@@ -12,14 +8,3 @@ extend-select = [
     "SIM",
     "R"
 ]
-
-# Allow fix for all enabled rules (when `--fix`) is provided.
-fixable = ["ALL"]
-unfixable = []
-
-[format]
-quote-style = "double"
-indent-style = "space"
-skip-magic-trailing-comma = false
-line-ending = "auto"
-

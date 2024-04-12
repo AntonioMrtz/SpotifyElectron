@@ -48,7 +48,7 @@ def delete_artist(name: str):
 
 
 def get_artists(headers: dict):
-    response = client.get(f"/artistas/", headers=headers)
+    response = client.get("/artistas/", headers=headers)
     return response
 
 

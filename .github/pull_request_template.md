@@ -4,7 +4,7 @@
 
 ## Commit type
 
-<!-- 
+<!--
 
 !!CHECK ONE!!
 
@@ -58,4 +58,3 @@
 <!-- Mention the team members assigned to review and merge this pull request. -->
 
 @AntonioMrtz <!-- Default -->
-

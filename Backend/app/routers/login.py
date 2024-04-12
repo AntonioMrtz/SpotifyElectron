@@ -18,7 +18,7 @@ DAYS_TO_EXPIRE_COOKIE = 7
 
 @router.post("/", tags=["login"])
 def login_usuario(
-    form_data: Annotated[OAuth2PasswordRequestForm, Depends()]
+    form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
 ) -> Response:
     """Devuelve la playlist con nombre "nombre"
 

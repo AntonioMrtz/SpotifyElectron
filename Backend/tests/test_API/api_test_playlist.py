@@ -50,5 +50,5 @@ def delete_playlist(name: str):
 
 
 def get_all_playlists(headers: dict):
-    response = client.get(f"/playlists/", headers=headers)
+    response = client.get("/playlists/", headers=headers)
     return response

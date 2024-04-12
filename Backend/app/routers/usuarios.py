@@ -1,4 +1,3 @@
-import logging
 from typing import Annotated, List, Union
 
 import app.services.all_users_service as all_users_service

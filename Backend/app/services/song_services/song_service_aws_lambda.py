@@ -272,7 +272,7 @@ async def create_song(
         )
         artist_service.add_song_artist(artist, name)
 
-    except PyMongoError as e:
+    except PyMongoError:
         raise HTTPException(
             status_code=500,
             detail="Error interno del servidor al interactuar con MongoDB",
@@ -332,19 +332,19 @@ def delete_song(name: str) -> None:
         song_collection.delete_one({"name": name})
         artist_service.delete_song_artist(result["artist"], name)
 
-    except PyMongoError as e:
+    except PyMongoError:
         raise HTTPException(
             status_code=500,
             detail="Error interno del servidor al interactuar con MongoDB",
         )
 
-    except ClientError as e:
+    except ClientError:
         # TODO
         raise HTTPException(
             status_code=500, detail="Error interno del servidor al interactuar con AWS"
         )
 
-    except Exception as e:
+    except Exception:
         raise HTTPException(status_code=500, detail="No se pudo subir la canción")
 
 

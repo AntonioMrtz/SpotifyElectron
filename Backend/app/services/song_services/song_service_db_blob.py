@@ -19,12 +19,10 @@ from gridfs import GridFS
 """ Insert songs with format [files,chunks] https://www.mongodb.com/docs/manual/core/gridfs/"""
 
 if "pytest" in modules:
-
     gridFsSong = GridFS(Database().connection, collection="test.cancion")
     file_song_collection = Database().connection["test.cancion.files"]
 
 else:
-
     gridFsSong = GridFS(Database().connection, collection="cancion")
     file_song_collection = Database().connection["cancion.files"]
 
@@ -137,7 +135,6 @@ def get_songs(names: list) -> list:
     songs: list = []
 
     for song_name in names:
-
         songs.append(dto_service.get_song(song_name))
 
     return songs
@@ -163,7 +160,6 @@ def get_all_songs() -> list:
     songsFiles = file_song_collection.find()
 
     for songFile in songsFiles:
-
         songs.append(get_song(songFile["name"]))
 
     return songs

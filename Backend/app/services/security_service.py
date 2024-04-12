@@ -97,7 +97,7 @@ def get_jwt_token(token: Annotated[str, Depends(oauth2_scheme)]) -> TokenData:
 
 
 def get_current_user(
-    token: Annotated[str, Depends(oauth2_scheme)]
+    token: Annotated[str, Depends(oauth2_scheme)],
 ) -> Union[Artist, User]:
     """From a jwt token returns the User or the Artist
 

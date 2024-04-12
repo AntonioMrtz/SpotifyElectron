@@ -1,5 +1,4 @@
 import io
-import json
 from sys import modules
 from typing import List
 
@@ -24,13 +23,11 @@ from pymongo.errors import PyMongoError
 """ Insert songs with format [files,chunks] https://www.mongodb.com/docs/manual/core/gridfs/"""
 
 if "pytest" in modules:
-
     gridFsSong = GridFS(Database().connection, collection="test.cancion")
     song_collection = Database().connection["test.canciones.streaming"]
 
 
 else:
-
     gridFsSong = GridFS(Database().connection, collection="cancion")
     song_collection = Database().connection["canciones.streaming"]
 
@@ -151,12 +148,12 @@ def get_song(name: str) -> Song:
 
         return song
 
-    except ClientError as e:
+    except ClientError:
         raise HTTPException(
             status_code=500, detail="Error interno del servidor al interactuar con AWS"
         )
 
-    except Exception as e:
+    except Exception:
         raise HTTPException(status_code=500, detail="No se pudo subir la canción")
 
 
@@ -181,7 +178,6 @@ def get_songs(names: list) -> list:
     songs: list = []
 
     for song_name in names:
-
         songs.append(get_song(song_name))
 
     return songs
@@ -207,7 +203,6 @@ def get_all_songs() -> list:
     songsFiles = song_collection.find()
 
     for songFile in songsFiles:
-
         songs.append(get_song(songFile["name"]))
 
     return songs
@@ -283,18 +278,18 @@ async def create_song(
         )
         artist_service.add_song_artist(artist, name)
 
-    except PyMongoError as e:
+    except PyMongoError:
         raise HTTPException(
             status_code=500,
             detail="Error interno del servidor al interactuar con MongoDB",
         )
 
-    except ClientError as e:
+    except ClientError:
         raise HTTPException(
             status_code=500, detail="Error interno del servidor al interactuar con AWS"
         )
 
-    except Exception as e:
+    except Exception:
         raise HTTPException(status_code=500, detail="No se pudo subir la canción")
 
 
@@ -322,7 +317,6 @@ def delete_song(name: str) -> None:
     result = song_collection.find_one({"name": name})
 
     if not result or not result["_id"]:
-
         raise HTTPException(status_code=404, detail="La canción no existe")
 
     try:
@@ -332,18 +326,18 @@ def delete_song(name: str) -> None:
         )
         artist_service.delete_song_artist(result["artist"], name)
 
-    except PyMongoError as e:
+    except PyMongoError:
         raise HTTPException(
             status_code=500,
             detail="Error interno del servidor al interactuar con MongoDB",
         )
 
-    except ClientError as e:
+    except ClientError:
         raise HTTPException(
             status_code=500, detail="Error interno del servidor al interactuar con AWS"
         )
 
-    except Exception as e:
+    except Exception:
         raise HTTPException(status_code=500, detail="No se pudo subir la canción")
 
 

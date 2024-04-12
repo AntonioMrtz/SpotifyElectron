@@ -23,7 +23,7 @@ def delete_song(name: str):
 
 
 def get_songs(headers: dict):
-    response = client.get(f"/canciones/", headers=headers)
+    response = client.get("/canciones/", headers=headers)
     return response
 
 

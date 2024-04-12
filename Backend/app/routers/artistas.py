@@ -1,13 +1,14 @@
 import json
-from typing import Annotated, List, Union
+from typing import Annotated
 
-import app.services.artist_service as artist_service
-import app.services.http_encode_service as http_encode_service
-import app.services.security_service as security_service
 from fastapi import APIRouter, Body, Header, HTTPException
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import Response
 from starlette.status import HTTP_200_OK
+
+import app.services.artist_service as artist_service
+import app.services.http_encode_service as http_encode_service
+import app.services.security_service as security_service
 
 router = APIRouter(
     prefix="/artistas",
@@ -68,11 +69,11 @@ def post_artista(nombre: str, foto: str, password: str) -> Response:
 def update_artista(
     nombre: str,
     foto: str,
-    historial_canciones: List[str] = Body(...),
-    playlists: List[str] = Body(...),
-    playlists_guardadas: List[str] = Body(...),
-    canciones_creadas: List[str] = Body(...),
-    authorization: Annotated[Union[str, None], Header()] = None,
+    historial_canciones: list[str] = Body(...),
+    playlists: list[str] = Body(...),
+    playlists_guardadas: list[str] = Body(...),
+    canciones_creadas: list[str] = Body(...),
+    authorization: Annotated[str | None, Header()] = None,
 ) -> Response:
     """Actualiza los parámetros del artista con nombre "nombre"
 

@@ -1,5 +1,4 @@
 from sys import modules
-from typing import List
 
 from app.constants.domain_constants import PLAYLIST
 from app.database.Database import Database
@@ -57,7 +56,7 @@ def insert_playlist(
     upload_date: str,
     description: str,
     owner: str,
-    song_names: List[str],
+    song_names: list[str],
 ):
     try:
         playlist = {
@@ -94,7 +93,7 @@ def delete_playlist(name: str):
         raise RepositoryException(PLAYLIST)
 
 
-def get_all_playlists() -> List[Playlist]:
+def get_all_playlists() -> list[Playlist]:
     try:
         playlists_files = playlist_collection.find()
         return [
@@ -108,7 +107,7 @@ def get_all_playlists() -> List[Playlist]:
         raise RepositoryException(PLAYLIST)
 
 
-def get_selected_playlists(names: List[str]) -> List[Playlist]:
+def get_selected_playlists(names: list[str]) -> list[Playlist]:
     try:
         query = {"name": {"$in": names}}
         documents = playlist_collection.find(query)
@@ -120,7 +119,7 @@ def get_selected_playlists(names: List[str]) -> List[Playlist]:
         raise RepositoryException(PLAYLIST)
 
 
-def get_playlist_search_by_name(name: str) -> List[Playlist]:
+def get_playlist_search_by_name(name: str) -> list[Playlist]:
     try:
         documents = playlist_collection.find(
             {"name": {"$regex": name, "$options": "i"}}
@@ -138,7 +137,7 @@ def update_playlist(
     new_name: str,
     photo: str,
     description: str,
-    song_names: List[str],
+    song_names: list[str],
 ):
     try:
         playlist_collection.update_one(

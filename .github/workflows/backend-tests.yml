@@ -50,4 +50,3 @@ jobs:
       - name: Fail workflow on test failure
         if: ${{ failure() }}
         run: exit 1
-

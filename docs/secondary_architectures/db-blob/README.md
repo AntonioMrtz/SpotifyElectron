@@ -44,7 +44,7 @@ to be escalable and ready for quick iterations of features.
 * Full coverage test suite for both Backend and Frontend.
 * Work with Cloud AWS services such as Lambda, S3 and Cloudfront.
 * Work as a team managing Github branches, pull requests,code reviews and Trello Board to organize tasks in different stages.
-* Reach CI/CD automatization with Github Actions. 
+* Reach CI/CD automatization with Github Actions.
 * Add new extra functionality that could improve the original app.
 * Cross platform app with only one codebase.
 * Build a landing page for reaching users and portray all the goals, technologies and software processes.
@@ -84,5 +84,3 @@ to be escalable and ready for quick iterations of features.
 ### Update Playlist
 
 ![Home](../../../assets/images/Walkthrough/UpdatePlaylist.png)
-
-

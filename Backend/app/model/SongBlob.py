@@ -5,7 +5,6 @@ from app.model.Genre import Genre
 
 @dataclass
 class SongBlob:
-
     name: str
     artist: str
     photo: str

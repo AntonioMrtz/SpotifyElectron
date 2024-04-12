@@ -1,9 +1,10 @@
-import app.services.http_encode_service as http_encode_service
-import app.services.search_service as search_service
-from app.exceptions.services_exceptions import BadParameterException
 from fastapi import APIRouter
 from fastapi.responses import Response
 from starlette.status import HTTP_400_BAD_REQUEST
+
+import app.services.http_encode_service as http_encode_service
+import app.services.search_service as search_service
+from app.exceptions.services_exceptions import BadParameterException
 
 router = APIRouter(
     prefix="/search",
@@ -22,7 +23,6 @@ def get_search_nombre(nombre: str) -> Response:
         Response: the response including a json with all the items
     """
     try:
-
         items = search_service.search_by_name(name=nombre)
         items_json = http_encode_service.get_json(items)
 

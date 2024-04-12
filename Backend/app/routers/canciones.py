@@ -1,12 +1,13 @@
-from typing import Annotated, Optional, Union
+from typing import Annotated
+
+from fastapi import APIRouter, Header, HTTPException, UploadFile
+from fastapi.responses import Response
 
 import app.services.dto_service as dto_service
 import app.services.http_encode_service as http_encode_service
 import app.services.security_service as security_service
 from app.model.Genre import Genre
 from app.services.song_services.song_service_provider import get_song_service
-from fastapi import APIRouter, Header, HTTPException, UploadFile
-from fastapi.responses import Response
 
 router = APIRouter(
     prefix="/canciones",
@@ -46,7 +47,7 @@ async def post_cancion(
     genero: Genre,
     foto: str,
     file: UploadFile,
-    authorization: Annotated[Union[str, None], Header()] = None,
+    authorization: Annotated[str | None, Header()] = None,
 ) -> Response:
     """Registra la canción con los parámetros "nombre","artista" y "género"
 
@@ -150,10 +151,10 @@ def get_cancion_dto(nombre: str) -> Response:
 @router.put("/{nombre}")
 def update_song(
     nombre: str,
-    foto: Optional[str] = None,
-    genre: Optional[Genre] = None,
-    nuevo_nombre: Optional[str] = None,
-    authorization: Annotated[Union[str, None], Header()] = None,
+    foto: str | None = None,
+    genre: Genre | None = None,
+    nuevo_nombre: str | None = None,
+    authorization: Annotated[str | None, Header()] = None,
 ) -> Response:
     """Actualiza los parámetros de la cancion con nombre "nombre"
 

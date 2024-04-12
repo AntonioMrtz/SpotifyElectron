@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from typing import List
 
 
 @dataclass
@@ -9,4 +8,4 @@ class Playlist:
     description: str
     upload_date: str
     owner: str
-    song_names: List[str]
+    song_names: list[str]

@@ -1,9 +1,10 @@
 from datetime import datetime
-from typing import List, Optional
+from sys import modules
 
 import app.repositories.playlist_repository as playlist_repository
 import app.services.all_users_service as all_users_service
 from app.constants.domain_constants import PLAYLIST
+from app.database.Database import Database
 from app.exceptions.repository_exceptions import (
     ItemNotFoundException,
     RepositoryException,
@@ -19,6 +20,12 @@ from app.model.Playlist import Playlist
 from app.model.TokenData import TokenData
 from app.services.song_services.song_service_provider import get_song_service
 from app.services.utils import checkValidParameterString
+
+if "pytest" in modules:
+    playlist_collection = Database().connection["test.playlist"]
+
+else:
+    playlist_collection = Database().connection["playlist"]
 
 song_service = get_song_service()
 
@@ -164,7 +171,7 @@ def create_playlist(
 
 def update_playlist(
     name: str,
-    new_name: Optional[str],
+    new_name: str | None,
     photo: str,
     description: str,
     song_names: list,
@@ -266,7 +273,7 @@ def delete_playlist(name: str) -> None:
         raise ServiceException(PLAYLIST)
 
 
-def get_all_playlist() -> List[Playlist]:
+def get_all_playlist() -> list[Playlist]:
     """Returns all playlists"
 
     Parameters
@@ -295,7 +302,7 @@ def get_all_playlist() -> List[Playlist]:
         raise ServiceException(PLAYLIST)
 
 
-def get_selected_playlists(playlist_names: List[str]) -> List[Playlist]:
+def get_selected_playlists(playlist_names: list[str]) -> list[Playlist]:
     """Returns the selected playlists"
 
     Parameters
@@ -324,7 +331,7 @@ def get_selected_playlists(playlist_names: List[str]) -> List[Playlist]:
         raise ServiceException(PLAYLIST)
 
 
-def search_by_name(name: str) -> List[Playlist]:
+def search_by_name(name: str) -> list[Playlist]:
     """Retrieve the playlists than match the name
 
     Args:

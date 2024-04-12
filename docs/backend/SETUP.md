@@ -10,7 +10,7 @@ In this section we will cover:
 
 ## 🛠 Setup the proyect
 
-1. Enter backend directory 
+1. Enter backend directory
 
 ```
 cd Backend;
@@ -19,15 +19,15 @@ cd Backend;
 2. Create the enviroment file in root path with the following data. **Check .env.example file to see format**
 
 ```
-* MONGO_URI= uri for connecting into a MongoDB database
+* MONGO_URI= uri for connecting into a MongoDB database ( mongodb://root:root@localhost:27017/ )
 * SECRET_KEY_SIGN= 32 byte key for signing tokens in backend
-* LAMBDA_URL= URL of Lambda API for accesing AWS services and managing song
-* ARCH= STREAMING_LAMBDA, song architecture
-* ENV_VALUE= PROD, prod or test ( PROD , TEST)
+* LAMBDA_URL= URL of Lambda API for accesing AWS services and managing song ( only needed in STREAMING_LAMBDA architecture )
+* ARCH= song architecture ( STREAMING_LAMBDA | DB_BLOB | STREAMING_SDK )
+* ENV_VALUE= prod or test ( PROD | TEST)
 
 ```
 
-3. Install the virtual enviroment and dependencies 
+3. Install the virtual enviroment and dependencies
 
 ```
 python -m venv venv;
@@ -37,7 +37,7 @@ pip install -r requirements-dev.txt;
 pip install -r requirements-test.txt;
 
 ```
-4. Run the app in hot reload debug mode 
+4. Run the app in hot reload debug mode
 
 ```
 python -m app;
@@ -63,16 +63,39 @@ or
 python -m pytest tests/ --cov=. --cov-report=html // Test run and generate coverage in folder htmlcov/index.html
 
 ```
+## ⚓ Pre-commit
 
-## 🎨 Run style on code
+### Set up
+
+1. Install pre-commits hooks
+
+```
+pre-commit install
+```
+### Install
+
+1. Force pre-commit run on all files
+
+
+```
+pre-commit run --all-files
+```
+
+
+## 🎨 Run style and linting on code
 
 1. Run style rules and sort imports
 ```
-python -m isort --profile black .
-python -m black .
+python -m ruff format
+```
+2. Run linting
+
+```
+python -m ruff check --fix
 ```
 
-## ✏ Install the recommended extensions for VSCODE 
+
+## ✏ Install the recommended extensions for VSCODE
 
 1. Go to extensions
 2. Select filter extensions

@@ -1,15 +1,5 @@
-from typing import Annotated, List, Optional, Union
+from typing import Annotated
 
-import app.services.http_encode_service as http_encode_service
-import app.services.playlist_service as playlist_service
-import app.services.security_service as security_service
-from app.exceptions.http_encode_exceptions import JsonEncodeException
-from app.exceptions.repository_exceptions import ItemNotFoundException
-from app.exceptions.services_exceptions import BadParameterException
-from app.logging.commons_logging_constants import INTERNAL_SERVER_ERROR
-from app.logging.http_encode_logging_constants import ENCODING_ERROR
-from app.logging.logger_constants import LOGGING_PLAYLISTS_ROUTER
-from app.logging.logging_schema import SpotifyElectronLogger
 from fastapi import APIRouter, Body, Header, HTTPException
 from fastapi.responses import Response
 from starlette.status import (
@@ -22,6 +12,17 @@ from starlette.status import (
     HTTP_404_NOT_FOUND,
     HTTP_500_INTERNAL_SERVER_ERROR,
 )
+
+import app.services.http_encode_service as http_encode_service
+import app.services.playlist_service as playlist_service
+import app.services.security_service as security_service
+from app.exceptions.http_encode_exceptions import JsonEncodeException
+from app.exceptions.repository_exceptions import ItemNotFoundException
+from app.exceptions.services_exceptions import BadParameterException
+from app.logging.commons_logging_constants import INTERNAL_SERVER_ERROR
+from app.logging.http_encode_logging_constants import ENCODING_ERROR
+from app.logging.logger_constants import LOGGING_PLAYLISTS_ROUTER
+from app.logging.logging_schema import SpotifyElectronLogger
 
 router = APIRouter(
     prefix="/playlists",
@@ -82,8 +83,8 @@ def post_playlist(
     nombre: str,
     foto: str,
     descripcion: str,
-    nombres_canciones: List[str] = Body(...),
-    authorization: Annotated[Union[str, None], Header()] = None,
+    nombres_canciones: list[str] = Body(...),
+    authorization: Annotated[str | None, Header()] = None,
 ) -> Response:
     """Registra la playlist
 
@@ -143,9 +144,9 @@ def update_playlist(
     nombre: str,
     foto: str,
     descripcion: str,
-    nombres_canciones: List[str] = Body(...),
-    nuevo_nombre: Optional[str] = None,
-    authorization: Annotated[Union[str, None], Header()] = None,
+    nombres_canciones: list[str] = Body(...),
+    nuevo_nombre: str | None = None,
+    authorization: Annotated[str | None, Header()] = None,
 ) -> Response:
     """Actualiza los parámetros de la playlist con nombre "nombre" ,
     las canciones repetidas son serán añadidas

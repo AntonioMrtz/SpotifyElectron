@@ -10,7 +10,7 @@ In this section we will cover:
 
 ## 🛠 Setup the proyect
 
-1. Enter backend directory 
+1. Enter backend directory
 
 ```
 cd Backend;
@@ -25,7 +25,7 @@ cd Backend;
 * ENV_VALUE= PROD, prod or test ( PROD , TEST)
 ```
 
-3. Install the virtual enviroment and dependencies 
+3. Install the virtual enviroment and dependencies
 
 ```
 python -m venv venv;
@@ -35,7 +35,7 @@ pip install -r requirements-dev.txt;
 pip install -r requirements-test.txt;
 
 ```
-4. Run the app in hot reload debug mode 
+4. Run the app in hot reload debug mode
 
 ```
 python -m app;
@@ -70,7 +70,7 @@ python -m isort --profile black .
 python -m black .
 ```
 
-## ✏ Install the recommended extensions for VSCODE 
+## ✏ Install the recommended extensions for VSCODE
 
 1. Go to extensions
 2. Select filter extensions

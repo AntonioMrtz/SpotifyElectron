@@ -1,5 +1,6 @@
-from app.__main__ import app
 from fastapi.testclient import TestClient
+
+from app.__main__ import app
 
 client = TestClient(app)
 
@@ -48,7 +49,7 @@ def delete_artist(name: str):
 
 
 def get_artists(headers: dict):
-    response = client.get(f"/artistas/", headers=headers)
+    response = client.get("/artistas/", headers=headers)
     return response
 
 

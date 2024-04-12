@@ -1,12 +1,14 @@
 import base64
 import io
 from sys import modules
-from typing import List
+
+import librosa
+import requests
+from fastapi import HTTPException
+from pymongo.errors import PyMongoError
 
 import app.services.artist_service as artist_service
 import app.services.dto_service as dto_service
-import librosa
-import requests
 from app.boostrap.PropertiesManager import PropertiesManager
 from app.constants.set_up_constants import LAMBDA_URL_ENV_NAME
 from app.database.Database import Database
@@ -15,8 +17,6 @@ from app.model.Genre import Genre
 from app.model.Song import Song
 from app.model.TokenData import TokenData
 from app.services.utils import checkValidParameterString
-from fastapi import HTTPException
-from pymongo.errors import PyMongoError
 
 """ Insert songs with format [files,chunks] https://www.mongodb.com/docs/manual/core/gridfs/"""
 
@@ -272,7 +272,7 @@ async def create_song(
         )
         artist_service.add_song_artist(artist, name)
 
-    except PyMongoError as e:
+    except PyMongoError:
         raise HTTPException(
             status_code=500,
             detail="Error interno del servidor al interactuar con MongoDB",
@@ -332,19 +332,19 @@ def delete_song(name: str) -> None:
         song_collection.delete_one({"name": name})
         artist_service.delete_song_artist(result["artist"], name)
 
-    except PyMongoError as e:
+    except PyMongoError:
         raise HTTPException(
             status_code=500,
             detail="Error interno del servidor al interactuar con MongoDB",
         )
 
-    except ClientError as e:
+    except ClientError:
         # TODO
         raise HTTPException(
             status_code=500, detail="Error interno del servidor al interactuar con AWS"
         )
 
-    except Exception as e:
+    except Exception:
         raise HTTPException(status_code=500, detail="No se pudo subir la canción")
 
 
@@ -453,7 +453,7 @@ def increase_number_plays(name: str) -> None:
     )
 
 
-def search_by_name(name: str) -> List[SongDTO]:
+def search_by_name(name: str) -> list[SongDTO]:
     """Retrieve the songs than match the name
 
     Args:
@@ -499,7 +499,7 @@ def get_artist_playback_count(artist_name: str) -> int:
     return total_plays
 
 
-def get_songs_by_genre(genre: Genre) -> List[Song]:
+def get_songs_by_genre(genre: Genre) -> list[Song]:
     # TODO
     result_get_song_by_genre = song_collection.find({"genre": Genre.getGenre(genre)})
     songs_by_genre = []

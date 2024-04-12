@@ -1,3 +1,5 @@
+from fastapi import HTTPException
+
 import app.services.artist_service as artist_service
 import app.services.playlist_service as playlist_service
 import app.services.user_service as user_service
@@ -5,7 +7,6 @@ from app.model.TokenData import TokenData
 from app.model.UserType import User_Type
 from app.services.song_services.song_service_provider import get_song_service
 from app.services.utils import checkValidParameterString
-from fastapi import HTTPException
 
 MAX_NUMBER_PLAYBACK_HISTORY_SONGS = 5
 

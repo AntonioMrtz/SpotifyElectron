@@ -1,14 +1,10 @@
 from datetime import datetime, timedelta
-from typing import Annotated
-
-import bcrypt
-from fastapi import Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordBearer
-from jose import JWTError, jwt
+from typing import Annotated, Union
 
 import app.services.all_users_service as all_users_service
 import app.services.artist_service as artist_service
 import app.services.user_service as user_service
+import bcrypt
 from app.boostrap.PropertiesManager import PropertiesManager
 from app.constants.set_up_constants import DISTRIBUTION_ID_ENV_NAME
 from app.model.Artist import Artist
@@ -16,6 +12,9 @@ from app.model.TokenData import TokenData
 from app.model.User import User
 from app.model.UserType import User_Type
 from app.services.utils import checkValidParameterString
+from fastapi import Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordBearer
+from jose import JWTError, jwt
 
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 10080  # 7 days
@@ -23,7 +22,7 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 10080  # 7 days
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="usuarios/whoami/")
 
 
-def create_access_token(data: dict, expires_delta: timedelta | None = None):
+def create_access_token(data: dict, expires_delta: Union[timedelta, None] = None):
     """Create a jwt token from data with a expire date
 
     Parameters
@@ -97,7 +96,9 @@ def get_jwt_token(token: Annotated[str, Depends(oauth2_scheme)]) -> TokenData:
         raise HTTPException(status_code=401, detail="Credenciales inválidos")
 
 
-def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]) -> Artist | User:
+def get_current_user(
+    token: Annotated[str, Depends(oauth2_scheme)]
+) -> Union[Artist, User]:
     """From a jwt token returns the User or the Artist
 
     Parameters

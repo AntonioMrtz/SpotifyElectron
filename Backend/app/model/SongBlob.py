@@ -7,6 +7,7 @@ from app.model.model_schema import SpotifyElectronModel
 
 @dataclass
 class SongBlob(SpotifyElectronModel):
+
     name: str
     artist: str
     photo: str

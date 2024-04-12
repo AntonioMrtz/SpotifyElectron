@@ -1,3 +1,4 @@
+from app.model.UserType import User_Type
 from pytest import fixture
 from test_API.api_all_users import (
     delete_playlist_saved,
@@ -11,8 +12,6 @@ from test_API.api_test_playlist import create_playlist, delete_playlist
 from test_API.api_test_song import create_song, delete_song
 from test_API.api_test_user import create_user, delete_user, get_user
 from test_API.api_token import get_user_jwt_header
-
-from app.model.UserType import User_Type
 
 
 @fixture(scope="module", autouse=True)

@@ -1,12 +1,11 @@
 import json
-from typing import Annotated
-
-from fastapi import APIRouter, Body, Header, HTTPException
-from fastapi.encoders import jsonable_encoder
-from fastapi.responses import Response
+from typing import Annotated, List, Optional, Union
 
 import app.services.playlist_service as playlist_service
 import app.services.security_service as security_service
+from fastapi import APIRouter, Body, Header, HTTPException
+from fastapi.encoders import jsonable_encoder
+from fastapi.responses import Response
 
 router = APIRouter(
     prefix="/playlists",
@@ -44,8 +43,8 @@ def post_playlist(
     nombre: str,
     foto: str,
     descripcion: str,
-    nombres_canciones: list[str] = Body(...),
-    authorization: Annotated[str | None, Header()] = None,
+    nombres_canciones: List[str] = Body(...),
+    authorization: Annotated[Union[str, None], Header()] = None,
 ) -> Response:
     """Registra la playlist
 
@@ -89,9 +88,9 @@ def update_playlist(
     nombre: str,
     foto: str,
     descripcion: str,
-    nombres_canciones: list[str] = Body(...),
-    nuevo_nombre: str | None = None,
-    authorization: Annotated[str | None, Header()] = None,
+    nombres_canciones: List[str] = Body(...),
+    nuevo_nombre: Optional[str] = None,
+    authorization: Annotated[Union[str, None], Header()] = None,
 ) -> Response:
     """Actualiza los parámetros de la playlist con nombre "nombre" ,
     las canciones repetidas son serán añadidas

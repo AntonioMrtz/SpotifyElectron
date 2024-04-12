@@ -1,7 +1,7 @@
+import json
 from datetime import datetime
 from sys import modules
-
-from fastapi import HTTPException
+from typing import List
 
 import app.services.all_users_service as all_users_service
 import app.services.dto_service as dto_service
@@ -10,6 +10,7 @@ from app.model.Playlist import Playlist
 from app.model.TokenData import TokenData
 from app.services.song_services.song_service_provider import get_song_service
 from app.services.utils import checkValidParameterString
+from fastapi import HTTPException
 
 if "pytest" in modules:
     playlist_collection = Database().connection["test.playlist"]
@@ -315,7 +316,7 @@ def get_selected_playlists(playlist_names: list) -> list:
     return response_playlists
 
 
-def search_by_name(name: str) -> list[Playlist]:
+def search_by_name(name: str) -> List[Playlist]:
     """Retrieve the playlists than match the name
 
     Args:

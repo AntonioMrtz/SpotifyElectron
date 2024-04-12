@@ -1,12 +1,11 @@
 import json
-from datetime import UTC, datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Annotated
 
+import app.services.security_service as security_service
 from fastapi import APIRouter, Depends
 from fastapi.responses import Response
 from fastapi.security import OAuth2PasswordRequestForm
-
-import app.services.security_service as security_service
 
 router = APIRouter(
     prefix="/login",
@@ -19,7 +18,7 @@ DAYS_TO_EXPIRE_COOKIE = 7
 
 @router.post("/", tags=["login"])
 def login_usuario(
-    form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
+    form_data: Annotated[OAuth2PasswordRequestForm, Depends()]
 ) -> Response:
     """Devuelve la playlist con nombre "nombre"
 
@@ -43,7 +42,7 @@ def login_usuario(
 
     access_token_json = json.dumps(jwt)
 
-    utc_timezone = UTC
+    utc_timezone = timezone.utc
 
     # Get the current UTC datetime
     current_utc_datetime = datetime.utcnow().replace(tzinfo=utc_timezone)

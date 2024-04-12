@@ -1,6 +1,5 @@
-from fastapi.testclient import TestClient
-
 from app.__main__ import app
+from fastapi.testclient import TestClient
 
 client = TestClient(app)
 
@@ -51,5 +50,5 @@ def delete_playlist(name: str):
 
 
 def get_all_playlists(headers: dict):
-    response = client.get("/playlists/", headers=headers)
+    response = client.get(f"/playlists/", headers=headers)
     return response

@@ -1,9 +1,10 @@
-from fastapi import HTTPException
+from typing import List
 
 from app.model.DTO.SongDTO import SongDTO
 from app.model.Genre import Genre
 from app.services.song_services.song_service_provider import get_song_service
 from app.services.utils import checkValidParameterString
+from fastapi import HTTPException
 
 song_service = get_song_service()
 
@@ -80,7 +81,7 @@ def get_songs(song_names: list) -> list:
     return respone_songs_dto
 
 
-def get_songs_by_genero(genre: Genre) -> list[SongDTO]:
+def get_songs_by_genero(genre: Genre) -> List[SongDTO]:
     """Increase the number of plays of a song
 
     Parameters

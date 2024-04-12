@@ -1,10 +1,9 @@
-from fastapi import HTTPException
-
 import app.services.artist_service as artist_service
 import app.services.playlist_service as playlist_service
 import app.services.user_service as user_service
 from app.services.song_services.song_service_provider import get_song_service
 from app.services.utils import checkValidParameterString
+from fastapi import HTTPException
 
 song_service = get_song_service()
 

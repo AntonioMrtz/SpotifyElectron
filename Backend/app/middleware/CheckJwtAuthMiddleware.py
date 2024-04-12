@@ -1,10 +1,9 @@
-from fastapi import Request, Response
-from starlette.middleware.base import BaseHTTPMiddleware
-from starlette.status import HTTP_401_UNAUTHORIZED
-
 import app.services.security_service as security_service
 from app.logging.logger_constants import LOGGIN_CHECK_AUTH_JWT_MIDDLEWARE
 from app.logging.logging_schema import SpotifyElectronLogger
+from fastapi import Request, Response
+from starlette.middleware.base import BaseHTTPMiddleware
+from starlette.status import HTTP_401_UNAUTHORIZED
 
 check_jwt_auth_middleware_logger = SpotifyElectronLogger(
     LOGGIN_CHECK_AUTH_JWT_MIDDLEWARE
@@ -51,7 +50,9 @@ class CheckJwtAuthMiddleware(BaseHTTPMiddleware):
             Request headers {request.headers}"
         )
 
-        if request.method in self.bypass_methods or (
+        if request.method in self.bypass_methods:
+            return True
+        elif (
             request.method in self.bypass_urls.keys()
             and request.url.path in self.bypass_urls[request.method]
         ):

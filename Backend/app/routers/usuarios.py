@@ -1,11 +1,10 @@
-from typing import Annotated
-
-from fastapi import APIRouter, Body, Header, HTTPException
-from fastapi.responses import Response
+from typing import Annotated, List, Union
 
 import app.services.all_users_service as all_users_service
 import app.services.security_service as security_service
 import app.services.user_service as user_service
+from fastapi import APIRouter, Body, Header, HTTPException
+from fastapi.responses import Response
 
 router = APIRouter(
     prefix="/usuarios",
@@ -14,7 +13,7 @@ router = APIRouter(
 
 
 @router.get("/whoami", tags=["usuarios"])
-def get_whoAmI(authorization: Annotated[str | None, Header()] = None) -> Response:
+def get_whoAmI(authorization: Annotated[Union[str, None], Header()] = None) -> Response:
     """Devuelve la información del token jwt del usuario
 
     Parameters
@@ -92,10 +91,10 @@ def post_usuario(nombre: str, foto: str, password: str) -> Response:
 def update_usuario(
     nombre: str,
     foto: str,
-    historial_canciones: list[str] = Body(...),
-    playlists: list[str] = Body(...),
-    playlists_guardadas: list[str] = Body(...),
-    authorization: Annotated[str | None, Header()] = None,
+    historial_canciones: List[str] = Body(...),
+    playlists: List[str] = Body(...),
+    playlists_guardadas: List[str] = Body(...),
+    authorization: Annotated[Union[str, None], Header()] = None,
 ) -> Response:
     """Actualiza los parámetros del usuario con nombre "nombre"
 
@@ -161,7 +160,7 @@ def delete_usuario(nombre: str) -> Response:
 def patch_historial(
     nombre: str,
     nombre_cancion: str,
-    authorization: Annotated[str | None, Header()] = None,
+    authorization: Annotated[Union[str, None], Header()] = None,
 ) -> Response:
     """Actualiza el historial de canciones del usuario
 
@@ -199,7 +198,7 @@ def patch_historial(
 def patch_playlists_guardadas(
     nombre: str,
     nombre_playlist: str,
-    authorization: Annotated[str | None, Header()] = None,
+    authorization: Annotated[Union[str, None], Header()] = None,
 ) -> Response:
     """Actualiza las listas guardadas del usuario
 
@@ -234,7 +233,7 @@ def patch_playlists_guardadas(
 def delete_playlists_guardadas(
     nombre: str,
     nombre_playlist: str,
-    authorization: Annotated[str | None, Header()] = None,
+    authorization: Annotated[Union[str, None], Header()] = None,
 ) -> Response:
     """Elimina la playlist de las playlist guardadas del usuario
 

@@ -2,6 +2,7 @@ import logging
 import sys
 from logging import Formatter, StreamHandler
 from logging.handlers import RotatingFileHandler
+from typing import Union
 
 from app.boostrap.LogPropertiesManager import LogPropertiesManager
 from app.constants.config_constants import LOG_FILE, LOG_LEVEL
@@ -72,7 +73,7 @@ class SpotifyElectronLogger:
         stream_handler = StreamHandler(sys.stdout)
         self._add_handler(stream_handler)
 
-    def _add_handler(self, handler: StreamHandler | RotatingFileHandler):
+    def _add_handler(self, handler: Union[StreamHandler, RotatingFileHandler]):
         """Add handler to logger
 
         Args:

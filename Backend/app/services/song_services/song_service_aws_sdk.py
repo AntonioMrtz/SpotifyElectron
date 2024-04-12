@@ -1,8 +1,17 @@
 import io
 from sys import modules
+from typing import List
 
+import app.services.artist_service as artist_service
+import app.services.dto_service as dto_service
 import boto3
 import librosa
+from app.database.Database import Database
+from app.model.DTO.SongDTO import SongDTO
+from app.model.Genre import Genre
+from app.model.Song import Song
+from app.model.TokenData import TokenData
+from app.services.utils import checkValidParameterString
 from boostrap.PropertiesManager import PropertiesManager
 from botocore.exceptions import ClientError
 from constants.set_up_constants import DISTRIBUTION_ID_ENV_NAME
@@ -10,15 +19,6 @@ from dotenv import load_dotenv
 from fastapi import HTTPException
 from gridfs import GridFS
 from pymongo.errors import PyMongoError
-
-import app.services.artist_service as artist_service
-import app.services.dto_service as dto_service
-from app.database.Database import Database
-from app.model.DTO.SongDTO import SongDTO
-from app.model.Genre import Genre
-from app.model.Song import Song
-from app.model.TokenData import TokenData
-from app.services.utils import checkValidParameterString
 
 """ Insert songs with format [files,chunks] https://www.mongodb.com/docs/manual/core/gridfs/"""
 
@@ -445,7 +445,7 @@ def increase_number_plays(name: str) -> None:
     )
 
 
-def search_by_name(name: str) -> list[SongDTO]:
+def search_by_name(name: str) -> List[SongDTO]:
     """Retrieve the songs than match the name
 
     Args:
@@ -490,7 +490,7 @@ def get_artist_playback_count(artist_name: str) -> int:
     return total_plays
 
 
-def get_songs_by_genre(genre: Genre) -> list[Song]:
+def get_songs_by_genre(genre: Genre) -> List[Song]:
     # TODO
     result_get_song_by_genre = song_collection.find({"genre": Genre.getGenre(genre)})
     songs_by_genre = []

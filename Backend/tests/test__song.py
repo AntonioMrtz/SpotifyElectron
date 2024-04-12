@@ -1,4 +1,5 @@
 import pytest
+from app.model.Genre import Genre
 from pytest import fixture
 from test_API.api_test_artist import create_artist, delete_artist, get_artist
 from test_API.api_test_song import (
@@ -11,8 +12,6 @@ from test_API.api_test_song import (
 )
 from test_API.api_test_user import create_user, delete_user
 from test_API.api_token import get_user_jwt_header
-
-from app.model.Genre import Genre
 
 
 @fixture(scope="module", autouse=True)
@@ -97,7 +96,7 @@ def test_post_cancion_correct_check_valid_duration(clear_test_data_db):
 
     res_get_song = get_song(name=song_name, headers=jwt_headers)
     assert res_get_song.status_code == 200
-    assert str(res_get_song.json()["seconds_duration"]).split(".")[0] == "4"
+    assert "4" == str(res_get_song.json()["seconds_duration"]).split(".")[0]
 
     res_delete_song = delete_song(song_name)
     assert res_delete_song.status_code == 202

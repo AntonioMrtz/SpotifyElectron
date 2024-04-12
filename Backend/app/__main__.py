@@ -1,6 +1,9 @@
 from contextlib import asynccontextmanager
 
 import uvicorn
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
 from app.boostrap.PropertiesManager import PropertiesManager
 from app.constants.config_constants import APP, HOST, PORT
 from app.logging.logger_constants import LOGGING_MAIN
@@ -14,8 +17,6 @@ from app.middleware.cors_middleware_config import (
     max_age,
 )
 from app.routers import artistas, canciones, generos, login, playlists, search, usuarios
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
 
 main_logger = SpotifyElectronLogger(LOGGING_MAIN).getLogger()
 

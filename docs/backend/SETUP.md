@@ -63,14 +63,37 @@ or
 python -m pytest tests/ --cov=. --cov-report=html // Test run and generate coverage in folder htmlcov/index.html
 
 ```
+## ⚓ Pre-commit
 
-## 🎨 Run style on code
+### Set up
+
+1. Install pre-commits hooks
+
+```
+pre-commit install
+```
+### Install
+
+1. Force pre-commit run on all files
+
+
+```
+pre-commit run --all-files
+```
+
+
+## 🎨 Run style and linting on code
 
 1. Run style rules and sort imports
 ```
-python -m isort --profile black .
-python -m black .
+python -m ruff format
 ```
+2. Run linting
+
+```
+python -m ruff check --fix
+```
+
 
 ## ✏ Install the recommended extensions for VSCODE
 

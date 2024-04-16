@@ -1,6 +1,6 @@
 from typing import Any
 
-from app.exceptions.services_exceptions import BadParameterException
+from app.exceptions.exceptions_schema import BadParameterException
 
 
 def checkValidParameterString(parameter: Any) -> bool:

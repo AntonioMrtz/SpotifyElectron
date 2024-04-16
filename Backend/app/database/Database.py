@@ -4,7 +4,7 @@ from pymongo.server_api import ServerApi
 
 from app.boostrap.PropertiesManager import PropertiesManager
 from app.constants.set_up_constants import MONGO_URI_ENV_NAME
-from app.exceptions.database_exceptions import (
+from app.database.database_exceptions import (
     DatabasePingFailed,
     UnexpectedDatabasePingFailed,
 )
@@ -60,12 +60,23 @@ class Database(metaclass=DatabaseMeta):
             return
         try:
             ping_result = self.connection.command("ping")
-            if not ping_result:
-                raise DatabasePingFailed()
+            self._check_ping_result(ping_result)
         except ConnectionFailure:
             raise DatabasePingFailed()
         except Exception as error:
             raise UnexpectedDatabasePingFailed(error)
+
+    def _check_ping_result(self, ping_result: dict):
+        """Checks if ping result is OK
+
+        Args:
+            ping_result (dict): ping result response
+
+        Raises:
+            DatabasePingFailed: if ping result is not OK
+        """
+        if not ping_result:
+            raise DatabasePingFailed
 
     def _handle_database_connection_error(self, error: Exception) -> None:
         """Handles database connection errors"""

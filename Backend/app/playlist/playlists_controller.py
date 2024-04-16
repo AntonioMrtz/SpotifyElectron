@@ -13,16 +13,19 @@ from starlette.status import (
     HTTP_500_INTERNAL_SERVER_ERROR,
 )
 
+import app.playlist.playlists_service as playlists_service
 import app.services.http_encode_service as http_encode_service
-import app.services.playlist_service as playlist_service
 import app.services.security_service as security_service
 from app.exceptions.http_encode_exceptions import JsonEncodeException
-from app.exceptions.repository_exceptions import ItemNotFoundException
-from app.exceptions.services_exceptions import BadParameterException
 from app.logging.commons_logging_constants import INTERNAL_SERVER_ERROR
 from app.logging.http_encode_logging_constants import ENCODING_ERROR
 from app.logging.logger_constants import LOGGING_PLAYLISTS_ROUTER
 from app.logging.logging_schema import SpotifyElectronLogger
+from app.playlist.playlists_schema import (
+    PlaylistBadNameException,
+    PlaylistNotFoundException,
+    PlaylistServiceException,
+)
 
 router = APIRouter(
     prefix="/playlists",
@@ -31,48 +34,43 @@ router = APIRouter(
 
 playlist_router_logger = SpotifyElectronLogger(LOGGING_PLAYLISTS_ROUTER).getLogger()
 
+# TODO set in content of Responses messages of error from messages.ini
 
-@router.get("/{nombre}", tags=["playlists"])
-def get_playlist(nombre: str) -> Response:
-    """Devuelve la playlist con nombre "nombre"
 
-    Parameters
-    ----------
-        nombre (str): Nombre de la playlist
+@router.get("/{name}", tags=["playlists"])
+def get_playlist(name: str) -> Response:
+    """Gets playlist by name
 
-    Returns
-    -------
-        Response 200 OK
+    Args:
+        nombre (str): name
 
-    Raises
-    -------
-        Bad Request 400: "nombre" es vacío o nulo
-        Not Found 404: No existe una playlist con el nombre "nombre"
+    Returns:
+        Response: _description_
     """
 
     try:
-        playlist = playlist_service.get_playlist(nombre)
+        playlist = playlists_service.get_playlist(name)
         playlist_json = http_encode_service.get_json(playlist)
 
         return Response(
             playlist_json, media_type="application/json", status_code=HTTP_200_OK
         )
 
-    except BadParameterException:
+    except PlaylistBadNameException:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
         )
-    except ItemNotFoundException:
+    except PlaylistNotFoundException:
         return Response(
             status_code=HTTP_404_NOT_FOUND,
         )
-    except JsonEncodeException as error:
-        playlist_router_logger.error(f"{ENCODING_ERROR} :{error}")
+    except JsonEncodeException:
+        playlist_router_logger.exception(f"{ENCODING_ERROR}")
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
         )
-    except Exception as error:
-        playlist_router_logger.error(f"{INTERNAL_SERVER_ERROR} :{error}")
+    except (Exception, PlaylistServiceException):
+        playlist_router_logger.exception(f"{INTERNAL_SERVER_ERROR}")
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
         )
@@ -80,10 +78,10 @@ def get_playlist(nombre: str) -> Response:
 
 @router.post("/", tags=["playlists"])
 def post_playlist(
-    nombre: str,
-    foto: str,
-    descripcion: str,
-    nombres_canciones: list[str] = Body(...),
+    name: str,
+    photo: str,
+    description: str,
+    song_names: list[str] = Body(...),
     authorization: Annotated[str | None, Header()] = None,
 ) -> Response:
     """Registra la playlist
@@ -115,37 +113,37 @@ def post_playlist(
     try:
         jwt_token = security_service.get_jwt_token(authorization)
 
-        playlist_service.create_playlist(
-            name=nombre,
-            photo=foto,
-            description=descripcion,
-            song_names=nombres_canciones,
+        playlists_service.create_playlist(
+            name=name,
+            photo=photo,
+            description=description,
+            song_names=song_names,
             token=jwt_token,
         )
 
         return Response(None, HTTP_201_CREATED)
-    except BadParameterException:
+    except PlaylistBadNameException:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
         )
-    except ItemNotFoundException:
+    except PlaylistNotFoundException:
         return Response(
             status_code=HTTP_404_NOT_FOUND,
         )
-    except Exception as error:
-        playlist_router_logger.error(f"{INTERNAL_SERVER_ERROR} :{error}")
+    except (Exception, PlaylistServiceException):
+        playlist_router_logger.exception(f"{INTERNAL_SERVER_ERROR}")
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
         )
 
 
-@router.put("/{nombre}", tags=["playlists"])
+@router.put("/{name}", tags=["playlists"])
 def update_playlist(
-    nombre: str,
-    foto: str,
-    descripcion: str,
-    nombres_canciones: list[str] = Body(...),
-    nuevo_nombre: str | None = None,
+    name: str,
+    photo: str,
+    description: str,
+    song_names: list[str] = Body(...),
+    new_name: str | None = None,
     authorization: Annotated[str | None, Header()] = None,
 ) -> Response:
     """Actualiza los parámetros de la playlist con nombre "nombre" ,
@@ -177,27 +175,27 @@ def update_playlist(
     try:
         jwt_token = security_service.get_jwt_token(authorization)
 
-        playlist_service.update_playlist(
-            nombre, nuevo_nombre, foto, descripcion, nombres_canciones, jwt_token
+        playlists_service.update_playlist(
+            name, new_name, photo, description, song_names, jwt_token
         )
         return Response(None, HTTP_204_NO_CONTENT)
-    except BadParameterException:
+    except PlaylistBadNameException:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
         )
-    except ItemNotFoundException:
+    except PlaylistNotFoundException:
         return Response(
             status_code=HTTP_404_NOT_FOUND,
         )
-    except Exception as error:
-        playlist_router_logger.error(f"{INTERNAL_SERVER_ERROR} :{error}")
+    except (Exception, PlaylistServiceException):
+        playlist_router_logger.exception(f"{INTERNAL_SERVER_ERROR}")
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
         )
 
 
-@router.delete("/{nombre}", tags=["playlists"])
-def delete_playlist(nombre: str) -> Response:
+@router.delete("/{name}", tags=["playlists"])
+def delete_playlist(name: str) -> Response:
     """Elimina una playlist con nombre "nombre"
 
     Parameters
@@ -215,18 +213,18 @@ def delete_playlist(nombre: str) -> Response:
     """
 
     try:
-        playlist_service.delete_playlist(nombre)
+        playlists_service.delete_playlist(name)
         return Response(status_code=HTTP_202_ACCEPTED)
-    except BadParameterException:
+    except PlaylistBadNameException:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
         )
-    except ItemNotFoundException:
+    except PlaylistNotFoundException:
         return Response(
             status_code=HTTP_404_NOT_FOUND,
         )
-    except Exception as error:
-        playlist_router_logger.error(f"{INTERNAL_SERVER_ERROR} :{error}")
+    except (Exception, PlaylistServiceException):
+        playlist_router_logger.exception(f"{INTERNAL_SERVER_ERROR}")
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
         )
@@ -247,7 +245,7 @@ def get_playlists() -> Response:
     -------
     """
     try:
-        playlists = playlist_service.get_all_playlist()
+        playlists = playlists_service.get_all_playlist()
         playlist_json = http_encode_service.get_json_with_iterable_field(
             playlists, "playlists"
         )
@@ -255,28 +253,28 @@ def get_playlists() -> Response:
         return Response(
             playlist_json, media_type="application/json", status_code=HTTP_200_OK
         )
-    except BadParameterException:
+    except PlaylistBadNameException:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
         )
-    except ItemNotFoundException:
+    except PlaylistNotFoundException:
         return Response(
             status_code=HTTP_404_NOT_FOUND,
         )
-    except JsonEncodeException as error:
-        playlist_router_logger.error(f"{ENCODING_ERROR} :{error}")
+    except JsonEncodeException:
+        playlist_router_logger.exception(f"{ENCODING_ERROR}")
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
         )
-    except Exception as error:
-        playlist_router_logger.error(f"{INTERNAL_SERVER_ERROR} :{error}")
+    except (Exception, PlaylistServiceException):
+        playlist_router_logger.exception(f"{INTERNAL_SERVER_ERROR}")
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
         )
 
 
-@router.get("/multiple/{nombres}", tags=["playlists"])
-def get_selected_playlists(nombres: str) -> Response:
+@router.get("/multiple/{names}", tags=["playlists"])
+def get_selected_playlists(names: str) -> Response:
     """Devuelve todas las playlists [ SOLO nombres canciones , no el archivo de audio ]
 
     Parameters
@@ -291,7 +289,7 @@ def get_selected_playlists(nombres: str) -> Response:
     """
 
     try:
-        playlists = playlist_service.get_selected_playlists(nombres.split(","))
+        playlists = playlists_service.get_selected_playlists(names.split(","))
 
         playlist_json = http_encode_service.get_json_with_iterable_field(
             playlists, "playlists"
@@ -300,21 +298,21 @@ def get_selected_playlists(nombres: str) -> Response:
         return Response(
             playlist_json, media_type="application/json", status_code=HTTP_200_OK
         )
-    except BadParameterException:
+    except PlaylistBadNameException:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
         )
-    except ItemNotFoundException:
+    except PlaylistNotFoundException:
         return Response(
             status_code=HTTP_404_NOT_FOUND,
         )
-    except JsonEncodeException as error:
-        playlist_router_logger.error(f"{ENCODING_ERROR} :{error}")
+    except JsonEncodeException:
+        playlist_router_logger.exception(f"{ENCODING_ERROR}")
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
         )
-    except Exception as error:
-        playlist_router_logger.error(f"{INTERNAL_SERVER_ERROR} :{error}")
+    except (Exception, PlaylistServiceException):
+        playlist_router_logger.exception(f"{INTERNAL_SERVER_ERROR}")
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
         )

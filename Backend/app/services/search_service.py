@@ -1,9 +1,9 @@
 from fastapi import HTTPException
 
+import app.playlist.playlists_service as playlists_service
 import app.services.artist_service as artist_service
-import app.services.playlist_service as playlist_service
 import app.services.user_service as user_service
-from app.exceptions.services_exceptions import BadParameterException
+from app.exceptions.exceptions_schema import BadParameterException
 from app.services.song_services.song_service_provider import get_song_service
 from app.services.utils import checkValidParameterString
 
@@ -31,7 +31,7 @@ def search_by_name(name: str) -> dict:
 
         # TODO ASYNC
         songs = song_service.search_by_name(name)
-        playlists = playlist_service.search_by_name(name)
+        playlists = playlists_service.search_by_name(name)
         artists = artist_service.search_by_name(name)
         users = user_service.search_by_name(name)
 

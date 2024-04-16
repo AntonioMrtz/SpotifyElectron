@@ -375,7 +375,7 @@ test('Playlist user role update playlist', async () => {
         json: () => {},
         status: 204,
       }).catch((error) => {
-        console.log(error);
+        console.log(`${error}`);
       });
     }
 
@@ -451,7 +451,7 @@ test('Playlist user role update playlist', async () => {
   const inputName = component.getByPlaceholderText('Añade una descripción');
 
   fireEvent.change(inputName, {
-    target: { value: 'descripcion' },
+    target: { value: 'description' },
   });
 
   expect(component.queryByText('Editar información')).toBeInTheDocument();

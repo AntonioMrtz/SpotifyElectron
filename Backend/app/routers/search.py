@@ -4,7 +4,7 @@ from starlette.status import HTTP_400_BAD_REQUEST
 
 import app.services.http_encode_service as http_encode_service
 import app.services.search_service as search_service
-from app.exceptions.services_exceptions import BadParameterException
+from app.exceptions.exceptions_schema import BadParameterException
 
 router = APIRouter(
     prefix="/search",

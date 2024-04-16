@@ -1,7 +1,7 @@
 from fastapi import HTTPException
 
+import app.playlist.playlists_service as playlists_service
 import app.services.artist_service as artist_service
-import app.services.playlist_service as playlist_service
 import app.services.user_service as user_service
 from app.model.TokenData import TokenData
 from app.model.UserType import User_Type
@@ -144,7 +144,7 @@ def add_saved_playlist(user_name: str, playlist_name: str, token: TokenData) -> 
     if not check_user_exists(user_name=user_name):
         raise HTTPException(status_code=404, detail="El usuario no existe")
 
-    if not playlist_service.check_playlist_exists(playlist_name):
+    if not playlists_service.check_playlist_exists(playlist_name):
         raise HTTPException(status_code=404, detail="La playlist no existe")
 
     user_type = isArtistOrUser(user_name)
@@ -184,7 +184,7 @@ def delete_saved_playlist(user_name: str, playlist_name: str, token: TokenData) 
     if not check_user_exists(user_name=user_name):
         raise HTTPException(status_code=404, detail="El usuario no existe")
 
-    if not playlist_service.check_playlist_exists(playlist_name):
+    if not playlists_service.check_playlist_exists(playlist_name):
         raise HTTPException(status_code=404, detail="La playlist no existe")
 
     user_type = isArtistOrUser(user_name)
@@ -220,7 +220,7 @@ def add_playlist_to_owner(user_name: str, playlist_name: str, token: TokenData) 
 
     user_service.check_jwt_is_user(token=token, user=user_name)
 
-    if not playlist_service.check_playlist_exists(playlist_name):
+    if not playlists_service.check_playlist_exists(playlist_name):
         raise HTTPException(status_code=404, detail="La playlist no existe")
 
     if not check_user_exists(user_name=user_name):
@@ -252,10 +252,10 @@ def delete_playlist_from_owner(playlist_name: str) -> None:
     if not checkValidParameterString(playlist_name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
-    if not playlist_service.check_playlist_exists(playlist_name):
+    if not playlists_service.check_playlist_exists(playlist_name):
         raise HTTPException(status_code=404, detail="La playlist no existe")
 
-    user_name = playlist_service.get_playlist(playlist_name).owner
+    user_name = playlists_service.get_playlist(playlist_name).owner
 
     if not check_user_exists(user_name=user_name):
         raise HTTPException(status_code=404, detail="El usuario no existe")
@@ -265,3 +265,15 @@ def delete_playlist_from_owner(playlist_name: str) -> None:
     services_map[user_type].delete_playlist_from_owner(
         user_name=user_name, playlist_name=playlist_name
     )
+
+
+def update_playlist_name(old_playlist_name: str, new_playlist_name: str) -> None:
+    if not checkValidParameterString(
+        old_playlist_name
+    ) or not checkValidParameterString(new_playlist_name):
+        raise HTTPException(status_code=400, detail="Parámetros no válidos")
+
+    for service in services_map.values():
+        service.update_playlist_name(
+            old_playlist_name=old_playlist_name, new_playlist_name=new_playlist_name
+        )

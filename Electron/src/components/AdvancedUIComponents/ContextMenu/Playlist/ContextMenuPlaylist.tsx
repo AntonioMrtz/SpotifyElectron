@@ -227,7 +227,7 @@ export default function ContextMenuPlaylist({
       // eslint-disable-next-line camelcase
       const { photo, description, song_names } = dstPlaylistData;
 
-      const putUrl = `${url}?foto=${photo}&descripcion=${description}`;
+      const putUrl = `${url}?photo=${photo}&description=${description}`;
 
       const srcResponse = await fetch(
         `${Global.backendBaseUrl}playlists/${srcPlaylistName}`,

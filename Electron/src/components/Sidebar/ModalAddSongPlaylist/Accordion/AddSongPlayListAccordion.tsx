@@ -181,7 +181,7 @@ export default function AddSongPlayListAccordion({
     >,
   ) => {
     if (event.target && event.target.name) {
-      if (event.target.name === 'foto') {
+      if (event.target.name === 'photo') {
         setThumbnailUploadPlaylist(event.target.value);
       }
 
@@ -206,8 +206,8 @@ export default function AddSongPlayListAccordion({
         }
       });
 
-      if (!url.searchParams.get('descripcion')) {
-        url.searchParams.set('descripcion', '');
+      if (!url.searchParams.get('description')) {
+        url.searchParams.set('description', '');
       }
 
       const requestOptions = {
@@ -306,8 +306,8 @@ export default function AddSongPlayListAccordion({
                 <div className="p-0 mb-3 me-3 container-fluid">
                   <input
                     type="text"
-                    id="nombre"
-                    name="nombre"
+                    id="name"
+                    name="name"
                     placeholder="Nombre de la playlist"
                     className={` `}
                     onChange={handleChangePlaylist}
@@ -317,8 +317,8 @@ export default function AddSongPlayListAccordion({
                 <div className="mb-3 container-fluid p-0">
                   <input
                     type="text"
-                    id="foto"
-                    name="foto"
+                    id="photo"
+                    name="photo"
                     placeholder="URL de la miniatura de la playlist"
                     className={` `}
                     onChange={handleChangePlaylist}
@@ -328,8 +328,8 @@ export default function AddSongPlayListAccordion({
               </div>
               <div className="container-fluid p-0">
                 <textarea
-                  id="descripcion"
-                  name="descripcion"
+                  id="description"
+                  name="description"
                   placeholder="Descripción de la playlist"
                   className={`${styles.input}`}
                   onChange={handleChangePlaylist}

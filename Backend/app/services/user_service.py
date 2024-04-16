@@ -351,3 +351,14 @@ def delete_playlist_from_owner(user_name: str, playlist_name: str) -> None:
         result = user_collection.update_one(
             {"name": user_name}, {"$set": {"playlists": playlists}}
         )
+
+
+def update_playlist_name(old_playlist_name: str, new_playlist_name: str) -> None:
+    user_collection.update_many(
+        {"saved_playlists": old_playlist_name},
+        {"$set": {"saved_playlists.$": new_playlist_name}},
+    )
+    user_collection.update_many(
+        {"playlists": old_playlist_name},
+        {"$set": {"playlists.$": new_playlist_name}},
+    )

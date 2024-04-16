@@ -11,6 +11,10 @@
 import path from 'path';
 import { app, BrowserWindow, shell, ipcMain, clipboard, Data } from 'electron';
 import Global from 'global/global';
+import installExtension, {
+  REDUX_DEVTOOLS,
+  REACT_DEVELOPER_TOOLS,
+} from 'electron-devtools-assembler';
 import { resolveHtmlPath } from './util';
 
 let mainWindow: BrowserWindow | null = null;
@@ -61,7 +65,7 @@ if (isDebug) {
   require('electron-debug')();
 }
 
-const installExtensions = async () => {
+/* const installExtensions = async () => {
   const installer = require('electron-devtools-installer');
   const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
   const extensions = ['REACT_DEVELOPER_TOOLS'];
@@ -72,13 +76,18 @@ const installExtensions = async () => {
       forceDownload,
     )
     .catch(console.log);
+}; */
+
+const installExtensions = async () => {
+  return installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS], {
+    forceDownload,
+    loadExtensionOptions: { allowFileAccess: true },
+  })
+    .then((name) => console.log(`Added Extension:  ${name}`))
+    .catch((err) => console.log('An error occurred: ', err));
 };
 
 const createWindow = async () => {
-  if (isDebug) {
-    await installExtensions();
-  }
-
   const RESOURCES_PATH = app.isPackaged
     ? path.join(process.resourcesPath, 'assets')
     : path.join(__dirname, '../../assets');
@@ -168,6 +177,11 @@ app.on('window-all-closed', () => {
 
 app
   .whenReady()
+  .then(async () => {
+    if (isDebug) {
+      await installExtensions();
+    }
+  })
   .then(() => {
     createWindow();
     app.on('activate', () => {

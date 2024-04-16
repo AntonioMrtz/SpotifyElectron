@@ -16,7 +16,8 @@ from app.middleware.cors_middleware_config import (
     allowed_origins,
     max_age,
 )
-from app.routers import artistas, canciones, generos, login, playlists, search, usuarios
+from app.playlist import playlists_controller
+from app.routers import artistas, canciones, generos, login, search, usuarios
 
 main_logger = SpotifyElectronLogger(LOGGING_MAIN).getLogger()
 
@@ -32,7 +33,7 @@ async def lifespan_handler(app: FastAPI):
     """
     main_logger.info("Spotify Electron Backend Started")
 
-    app.include_router(playlists.router)
+    app.include_router(playlists_controller.router)
     app.include_router(canciones.router)
     app.include_router(generos.router)
     app.include_router(usuarios.router)

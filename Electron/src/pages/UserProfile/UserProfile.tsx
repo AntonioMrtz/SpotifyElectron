@@ -43,7 +43,7 @@ export default function UserProfile({
             .then((resFetchPlaylistDTOJson) => {
               const propsPlaylist: PropsPlaylistCard = {
                 name: resFetchPlaylistDTOJson.name,
-                description: resFetchPlaylistDTOJson.desdescription,
+                description: resFetchPlaylistDTOJson.description,
                 owner: resFetchPlaylistDTOJson.owner,
                 photo: resFetchPlaylistDTOJson.photo,
                 refreshSidebarData,

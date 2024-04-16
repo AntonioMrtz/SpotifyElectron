@@ -16,7 +16,7 @@ In this section we will cover:
 cd Backend;
 ```
 
-2. Use .env for development or create the enviroment file in root path with the following data.
+2. Use .env.local renameing it to .env for development or create the enviroment file in root path with the following data.
 
 ```
 * MONGO_URI= uri for connecting into a MongoDB database ( mongodb://root:root@localhost:27017/ )

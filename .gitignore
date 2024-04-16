@@ -161,3 +161,6 @@ __pycache__
 venv
 htmlcov
 .coverage
+
+
+*.env

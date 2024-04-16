@@ -407,7 +407,7 @@ test('Playlist user role update playlist', async () => {
 
     if (
       url ===
-      `${Global.backendBaseUrl}playlists/${playlistName}?foto=&descripcion=descripcion`
+      `${Global.backendBaseUrl}playlists/${playlistName}?photo=&description=description`
     ) {
       return Promise.resolve({
         json: () => {},
@@ -463,5 +463,5 @@ test('Playlist user role update playlist', async () => {
     }
   });
 
-  expect(triggerReloadSidebarMock).toHaveBeenCalledTimes(1); // Adjust the number based on your actual use case
+  expect(triggerReloadSidebarMock).toHaveBeenCalledTimes(1);
 });

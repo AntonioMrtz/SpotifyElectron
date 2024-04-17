@@ -13,6 +13,7 @@ __pycache__
 
 
 # Exclude environment-specific settings
+.env.local
 .env.example
 .env
 

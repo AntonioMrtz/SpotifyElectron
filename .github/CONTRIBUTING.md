@@ -25,10 +25,13 @@
 
 * The new branch name must be the feature that is going to be implemented.
 * Fill the fields of the pull_request_template.
-* Use the .editorconfig style template for formatting the code.
+
+## TOOLS
+
+* There are recommended extensions for VS Code inside both backend and frontend. Refer to their respective documentation for installation.
 
 ## MUST-HAVE SOFTWARE
 
-* Node.js
+* Node >= v20.12.2
 * Python >= 3.11
 * Git

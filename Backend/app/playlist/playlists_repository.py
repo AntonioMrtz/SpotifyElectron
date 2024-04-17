@@ -1,6 +1,6 @@
 from sys import modules
 
-from pymongo.results import DeleteResult, InsertOneResult
+from pymongo.results import DeleteResult, InsertOneResult, UpdateResult
 
 from app.database.Database import Database
 from app.logging.logger_constants import LOGGING_PLAYLISTS_REPOSITORY
@@ -11,6 +11,7 @@ from app.playlist.playlists_schema import (
     PlaylistInsertException,
     PlaylistNotFoundException,
     PlaylistRepositoryException,
+    PlaylistUpdateException,
     get_playlist_dao_from_document,
 )
 
@@ -41,12 +42,14 @@ def check_playlist_exists(name: str) -> bool:
     try:
         playlist = playlist_collection.find_one({"name": name}, {"_id": 1})
     except Exception as exception:
-        playlist_repository_logger.warning(
+        playlist_repository_logger.critical(
             f"Error checking if Playlist {name} exists in database"
         )
         raise PlaylistRepositoryException from exception
     else:
-        return playlist is not None
+        result = playlist is not None
+        playlist_repository_logger.debug(f"Playlist with name {name} exists : {result}")
+        return result
 
 
 def get_playlist_by_name(name: str) -> PlaylistDAO:
@@ -65,16 +68,21 @@ def get_playlist_by_name(name: str) -> PlaylistDAO:
     try:
         playlist = playlist_collection.find_one({"name": name})
         handle_playlist_exists(playlist)
-        return get_playlist_dao_from_document(playlist)  # type: ignore
+        playlist_dao = get_playlist_dao_from_document(playlist)  # type: ignore
 
     except PlaylistNotFoundException as exception:
         raise PlaylistNotFoundException from exception
 
     except Exception as exception:
-        playlist_repository_logger.exception(
+        playlist_repository_logger.critical(
             f"Error getting Playlist {name} from database"
         )
         raise PlaylistRepositoryException from exception
+    else:
+        playlist_repository_logger.debug(
+            f"Get Playlist by name returned {playlist_dao}"
+        )
+        return playlist_dao
 
 
 def insert_playlist(
@@ -112,16 +120,16 @@ def insert_playlist(
         handle_playlist_insert(result)
     except PlaylistInsertException as exception:
         playlist_repository_logger.exception(
-            f"Error inserting Playlist {name} in database"
+            f"Error inserting Playlist {playlist} in database"
         )
         raise PlaylistRepositoryException from exception
     except PlaylistRepositoryException as exception:
-        playlist_repository_logger.exception(
-            f"Unexpected error inserting playlist {name} in database"
+        playlist_repository_logger.critical(
+            f"Unexpected error inserting playlist {playlist} in database"
         )
         raise PlaylistRepositoryException from exception
     else:
-        playlist_repository_logger.debug(f"Playlist added to repository : {playlist}")
+        playlist_repository_logger.info(f"Playlist added to repository : {playlist}")
 
 
 def delete_playlist(name: str) -> None:
@@ -136,13 +144,14 @@ def delete_playlist(name: str) -> None:
     try:
         result = playlist_collection.delete_one({"name": name})
         handle_playlist_delete_count(result)
+        playlist_repository_logger.debug(f"Playlist {name} Deleted")
     except PlaylistDeleteException as exception:
         playlist_repository_logger.exception(
             f"Error deleting Playlist {name} from database"
         )
         raise PlaylistRepositoryException from exception
     except PlaylistRepositoryException as exception:
-        playlist_repository_logger.exception(
+        playlist_repository_logger.critical(
             f"Unexpected error deleting playlist {name} in database"
         )
         raise PlaylistRepositoryException from exception
@@ -159,7 +168,7 @@ def get_all_playlists() -> list[PlaylistDAO]:
     """
     try:
         playlists_files = playlist_collection.find()
-        return [
+        playlists = [
             get_playlist_dao_from_document(playlist_file)
             for playlist_file in playlists_files
         ]
@@ -168,6 +177,9 @@ def get_all_playlists() -> list[PlaylistDAO]:
             "Error getting all Playlists from database"
         )
         raise PlaylistRepositoryException from exception
+    else:
+        playlist_repository_logger.debug(f"All playlists obtained : {playlists}")
+        return playlists
 
 
 def get_selected_playlists(names: list[str]) -> list[PlaylistDAO]:
@@ -185,12 +197,17 @@ def get_selected_playlists(names: list[str]) -> list[PlaylistDAO]:
     try:
         query = {"name": {"$in": names}}
         documents = playlist_collection.find(query)
-        return [get_playlist_dao_from_document(document) for document in documents]
+        playlists = [get_playlist_dao_from_document(document) for document in documents]
     except Exception as exception:
-        playlist_repository_logger.exception(
+        playlist_repository_logger.critical(
             f"Error getting {names} Playlists from database"
         )
         raise PlaylistRepositoryException from exception
+    else:
+        playlist_repository_logger.debug(
+            f"Selected playlists obtained for {names} : {playlists}"
+        )
+        return playlists
 
 
 def get_playlist_search_by_name(name: str) -> list[PlaylistDAO]:
@@ -209,12 +226,17 @@ def get_playlist_search_by_name(name: str) -> list[PlaylistDAO]:
         documents = playlist_collection.find(
             {"name": {"$regex": name, "$options": "i"}}
         )
-        return [get_playlist_dao_from_document(document) for document in documents]
+        playlists = [get_playlist_dao_from_document(document) for document in documents]
     except Exception as exception:
-        playlist_repository_logger.exception(
+        playlist_repository_logger.critical(
             f"Error getting Playlists searched by name {name} from database"
         )
         raise PlaylistRepositoryException from exception
+    else:
+        playlist_repository_logger.debug(
+            f"Playlist searched by name {name} : {playlists}"
+        )
+        return playlists
 
 
 def update_playlist(
@@ -224,9 +246,17 @@ def update_playlist(
     description: str,
     song_names: list[str],
 ):
-    # TODO
+    """Updates playlist fields
+
+    :param str name: current name
+    :param str new_name: new name
+    :param str photo: new photo
+    :param str description: new description
+    :param list[str] song_names: new list of song names
+    :raises PlaylistRepositoryException: an error ocurred while updating
+    """
     try:
-        playlist_collection.update_one(
+        result_update = playlist_collection.update_one(
             {"name": name},
             {
                 "$set": {
@@ -237,13 +267,26 @@ def update_playlist(
                 }
             },
         )
+        handle_playlist_update(result_update)
 
-    except Exception as exception:
-        playlist_repository_logger.exception(f"Error updating playlist {name}")
+    except PlaylistInsertException as exception:
+        playlist_repository_logger.critical(
+            f"Error updating playlist {name} : new_name = {new_name}, photo = {photo}, description = {description}, song_names = {song_names}"
+        )
         raise PlaylistRepositoryException from exception
+    
+    except Exception as exception:
+        playlist_repository_logger.critical(
+            f"Unexpected error updating playlist {name} : new_name = {new_name}, photo = {photo}, description = {description}, song_names = {song_names}"
+        )
+        raise PlaylistRepositoryException from exception
+    else:
+        playlist_repository_logger.critical(
+            f"Playlisy {name} updated : new_name = {new_name}, photo = {photo}, description = {description}, song_names = {song_names}"
+        )
 
 
-def handle_playlist_exists(playlist: PlaylistDAO | None):
+def handle_playlist_exists(playlist: PlaylistDAO | None) -> None:
     """Raises an exception if playlist doesnt exists
 
     Args:
@@ -254,10 +297,9 @@ def handle_playlist_exists(playlist: PlaylistDAO | None):
     """
     if playlist is None:
         raise PlaylistNotFoundException
-    return
 
 
-def handle_playlist_delete_count(result: DeleteResult):
+def handle_playlist_delete_count(result: DeleteResult) -> None:
     """Raises an exception if playlist deletion count was 0
 
     Args:
@@ -268,10 +310,21 @@ def handle_playlist_delete_count(result: DeleteResult):
     """
     if result.deleted_count == 0:
         raise PlaylistDeleteException
-    return
+    
+def handle_playlist_update(result: UpdateResult) -> None:
+    """Raises an exception if playlist deletion count was 0
+
+    Args:
+        result (DeleteResult): the result from the deletion
+
+    Raises:
+        PlaylistDeleteException: if the deletion was not done
+    """
+    if not result.acknowledged:
+        raise PlaylistUpdateException
 
 
-def handle_playlist_insert(result: InsertOneResult):
+def handle_playlist_insert(result: InsertOneResult) -> None:
     """Raises an exception if playlist insertion was not done
 
     Args:
@@ -280,6 +333,5 @@ def handle_playlist_insert(result: InsertOneResult):
     Raises:
         PlaylistInsertException: if the insetion was not done
     """
-    if result.acknowledged == 0:
+    if not result.acknowledged:
         raise PlaylistInsertException
-    return

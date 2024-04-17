@@ -70,7 +70,7 @@ def get_playlist(name: str) -> Response:
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
         )
     except (Exception, PlaylistServiceException):
-        playlist_router_logger.exception(f"{INTERNAL_SERVER_ERROR}")
+        playlist_router_logger.critical(f"{INTERNAL_SERVER_ERROR}")
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
         )
@@ -131,7 +131,7 @@ def post_playlist(
             status_code=HTTP_404_NOT_FOUND,
         )
     except (Exception, PlaylistServiceException):
-        playlist_router_logger.exception(f"{INTERNAL_SERVER_ERROR}")
+        playlist_router_logger.critical(f"{INTERNAL_SERVER_ERROR}")
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
         )
@@ -188,7 +188,7 @@ def update_playlist(
             status_code=HTTP_404_NOT_FOUND,
         )
     except (Exception, PlaylistServiceException):
-        playlist_router_logger.exception(f"{INTERNAL_SERVER_ERROR}")
+        playlist_router_logger.critical(f"{INTERNAL_SERVER_ERROR}")
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
         )
@@ -224,7 +224,7 @@ def delete_playlist(name: str) -> Response:
             status_code=HTTP_404_NOT_FOUND,
         )
     except (Exception, PlaylistServiceException):
-        playlist_router_logger.exception(f"{INTERNAL_SERVER_ERROR}")
+        playlist_router_logger.critical(f"{INTERNAL_SERVER_ERROR}")
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
         )
@@ -267,7 +267,7 @@ def get_playlists() -> Response:
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
         )
     except (Exception, PlaylistServiceException):
-        playlist_router_logger.exception(f"{INTERNAL_SERVER_ERROR}")
+        playlist_router_logger.critical(f"{INTERNAL_SERVER_ERROR}")
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
         )
@@ -312,7 +312,7 @@ def get_selected_playlists(names: str) -> Response:
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
         )
     except (Exception, PlaylistServiceException):
-        playlist_router_logger.exception(f"{INTERNAL_SERVER_ERROR}")
+        playlist_router_logger.critical(f"{INTERNAL_SERVER_ERROR}")
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
         )

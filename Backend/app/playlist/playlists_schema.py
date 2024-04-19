@@ -99,11 +99,13 @@ class PlaylistInsertException(SpotifyElectronException):
     def __init__(self):
         super().__init__("Error inserting Playlist")
 
+
 class PlaylistUpdateException(SpotifyElectronException):
     """Exception for Playlist update"""
 
     def __init__(self):
         super().__init__("Error updating Playlist")
+
 
 class PlaylistServiceException(SpotifyElectronException):
     """Exception for Playlist Service Unexpected Exceptions"""

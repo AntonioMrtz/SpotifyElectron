@@ -9,7 +9,7 @@ from pymongo.errors import PyMongoError
 
 import app.services.artist_service as artist_service
 import app.services.dto_service as dto_service
-from app.boostrap.PropertiesManager import PropertiesManager
+from app.common.PropertiesManager import PropertiesManager
 from app.constants.set_up_constants import LAMBDA_URL_ENV_NAME
 from app.database.Database import Database
 from app.model.DTO.SongDTO import SongDTO
@@ -45,7 +45,7 @@ def check_song_exists(name: str) -> bool:
         Boolean
     """
 
-    return True if song_collection.find_one({"name": name}) else False
+    return bool(song_collection.find_one({"name": name}))
 
 
 def check_jwt_user_is_song_artist(token: TokenData, artist: str) -> bool:
@@ -65,12 +65,11 @@ def check_jwt_user_is_song_artist(token: TokenData, artist: str) -> bool:
         Boolean
     """
 
-    if token.username == artist:
-        return True
-    else:
+    if token.username != artist:
         raise HTTPException(
             status_code=401, detail="El usuario no es el creador de la canción"
         )
+    return True
 
 
 def get_song(name: str) -> Song:
@@ -107,8 +106,8 @@ def get_song(name: str) -> Song:
             f"{getattr(PropertiesManager,LAMBDA_URL_ENV_NAME)}", params=params
         )
         if res.status_code != 200:
-            # TODO
-            raise ClientError(
+            # TODO client error
+            raise Exception(
                 {"Error": {"Code": res.status_code, "Message": res.content}},
                 "operation_name",
             )
@@ -125,17 +124,16 @@ def get_song(name: str) -> Song:
             url=cloudfront_url,
             number_of_plays=song["number_of_plays"],
         )
-
-        return song
-    except ClientError as e:
-        # TODO
+    except Exception as e:
+        # TODO client error
         raise HTTPException(
             status_code=500,
             detail=f"Error interno del servidor al interactuar con AWS {e}",
         )
-
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"No se pudo subir la canción {e}")
+    else:
+        return song
 
 
 def get_songs(names: list) -> list:
@@ -236,7 +234,7 @@ async def create_song(
         duration = librosa.get_duration(y=audio_data, sr=sample_rate)
 
     #! If its not a sound file
-    except:
+    except Exception:
         duration = 0
 
     try:
@@ -254,13 +252,13 @@ async def create_song(
             params=params,
         )
         if res.status_code != 201:
-            # TODO
-            raise ClientError(
+            # TODO clienterror
+            raise Exception(
                 {"Error": {"Code": res.status_code, "Message": res.content}},
                 "operation_name",
             )
 
-        file_id = song_collection.insert_one(
+        song_collection.insert_one(
             {
                 "name": name,
                 "artist": artist,
@@ -278,8 +276,8 @@ async def create_song(
             detail="Error interno del servidor al interactuar con MongoDB",
         )
 
-    except ClientError as e:
-        # TODO
+    except Exception as e:
+        # TODO clienterror
         raise HTTPException(
             status_code=500,
             detail=f"Error interno del servidor al interactuar con AWS {e}",
@@ -323,8 +321,8 @@ def delete_song(name: str) -> None:
             f"{getattr(PropertiesManager,LAMBDA_URL_ENV_NAME)}", params=params
         )
         if res.status_code != 202:
-            # TODO
-            raise ClientError(
+            # TODO ClientError
+            raise Exception(
                 {"Error": {"Code": res.status_code, "Message": res.content}},
                 "operation_name",
             )
@@ -338,8 +336,8 @@ def delete_song(name: str) -> None:
             detail="Error interno del servidor al interactuar con MongoDB",
         )
 
-    except ClientError:
-        # TODO
+    except Exception:
+        # TODO ClientError
         raise HTTPException(
             status_code=500, detail="Error interno del servidor al interactuar con AWS"
         )
@@ -397,7 +395,7 @@ def update_song(
                     ),
                     "genre": (
                         Genre(genre).value
-                        if genre != None
+                        if genre is not None
                         else Genre[result_song_exists.genre].value
                     ),
                 }
@@ -415,7 +413,7 @@ def update_song(
                     ),
                     "genre": (
                         Genre(genre).value
-                        if genre != None
+                        if genre is not None
                         else Genre[result_song_exists.genre].value
                     ),
                 }
@@ -471,9 +469,7 @@ def search_by_name(name: str) -> list[SongDTO]:
 
     [song_names.append(song["name"]) for song in song_names_response]
 
-    songs = dto_service.get_songs(song_names)
-
-    return songs
+    return dto_service.get_songs(song_names)
 
 
 def get_artist_playback_count(artist_name: str) -> int:
@@ -495,8 +491,7 @@ def get_artist_playback_count(artist_name: str) -> int:
 
     if result_number_playback_count_query is None:
         return 0
-    total_plays = result_number_playback_count_query["total"]
-    return total_plays
+    return result_number_playback_count_query["total"]
 
 
 def get_songs_by_genre(genre: Genre) -> list[Song]:

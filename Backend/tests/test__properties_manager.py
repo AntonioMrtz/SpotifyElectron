@@ -1,7 +1,7 @@
 import os
 from unittest.mock import Mock
 
-from app.boostrap.PropertiesManager import _PropertiesManager
+from app.common.PropertiesManager import _PropertiesManager
 from app.constants.set_up_constants import (
     ARCH_STREAMING_SDK,
     ARCHITECTURE_ENV_NAME,

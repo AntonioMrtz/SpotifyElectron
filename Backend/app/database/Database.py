@@ -2,7 +2,7 @@ from pymongo.errors import ConnectionFailure
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 
-from app.boostrap.PropertiesManager import PropertiesManager
+from app.common.PropertiesManager import PropertiesManager
 from app.constants.set_up_constants import MONGO_URI_ENV_NAME
 from app.database.database_exceptions import (
     DatabasePingFailed,

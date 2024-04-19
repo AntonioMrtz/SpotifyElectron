@@ -3,9 +3,9 @@ import sys
 from logging import Formatter, StreamHandler
 from logging.handlers import RotatingFileHandler
 
-from app.boostrap.LogPropertiesManager import LogPropertiesManager
 from app.constants.config_constants import LOG_FILE, LOG_LEVEL
 from app.logging.logger_constants import DEBUG, INFO
+from app.logging.LogPropertiesManager import LogPropertiesManager
 
 
 class SpotifyElectronFormatter(Formatter):
@@ -90,9 +90,10 @@ class SpotifyElectronLogger:
             if log_level is None:
                 return logging.INFO
             mapped_log_level = self._log_level_mapping[log_level]
-            return mapped_log_level
         except Exception:
             return logging.INFO
+        else:
+            return mapped_log_level
 
     def getLogger(self):
         return self.logger

@@ -9,7 +9,7 @@ from jose import JWTError, jwt
 import app.services.all_users_service as all_users_service
 import app.services.artist_service as artist_service
 import app.services.user_service as user_service
-from app.boostrap.PropertiesManager import PropertiesManager
+from app.common.PropertiesManager import PropertiesManager
 from app.constants.set_up_constants import DISTRIBUTION_ID_ENV_NAME
 from app.model.Artist import Artist
 from app.model.TokenData import TokenData
@@ -52,9 +52,10 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
             getattr(PropertiesManager, DISTRIBUTION_ID_ENV_NAME),
             algorithm=ALGORITHM,
         )
-        return encoded_jwt
     except JWTError:
         raise HTTPException(status_code=401, detail="Credenciales inválidos")
+    else:
+        return encoded_jwt
 
 
 def get_jwt_token(token: Annotated[str, Depends(oauth2_scheme)]) -> TokenData:
@@ -91,10 +92,10 @@ def get_jwt_token(token: Annotated[str, Depends(oauth2_scheme)]) -> TokenData:
         if username is None or role is None or token_type is None:
             raise credentials_exception
         token_data = TokenData(username=username, role=role, token_type=token_type)
-        return token_data
-
     except JWTError:
         raise HTTPException(status_code=401, detail="Credenciales inválidos")
+    else:
+        return token_data
 
 
 def get_current_user(
@@ -127,7 +128,7 @@ def get_current_user(
 
     if user is None:
         # TODO
-        raise credentials_exception
+        raise Exception
     return user
 
 
@@ -140,8 +141,7 @@ def hash_password(plain_password: str) -> bytes:
     Returns:
         bytes: the hashed password
     """
-    hashed_password = bcrypt.hashpw(plain_password.encode(), bcrypt.gensalt())
-    return hashed_password
+    return bcrypt.hashpw(plain_password.encode(), bcrypt.gensalt())
 
 
 def verify_password(plain_password: str, hashed_password: bytes) -> bool:
@@ -201,9 +201,7 @@ def login_user(name: str, password: str) -> str:
         "token_type": "bearer",
     }
 
-    jwt = create_access_token(jwt_data)
-
-    return jwt
+    return create_access_token(jwt_data)
 
 
 def check_jwt_is_valid(token: str):
@@ -218,9 +216,7 @@ def check_jwt_is_valid(token: str):
         if expiration_time < datetime.utcnow():
             return False  # Token has expired
 
-        # Additional checks can be added here (e.g., issuer, audience)
-
-        return True  # Token is valid
-
-    except:
+    except Exception:
         return False  # Token has expired or is invalid
+    else:
+        return True

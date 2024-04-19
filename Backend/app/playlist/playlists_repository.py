@@ -274,7 +274,7 @@ def update_playlist(
             f"Error updating playlist {name} : new_name = {new_name}, photo = {photo}, description = {description}, song_names = {song_names}"
         )
         raise PlaylistRepositoryException from exception
-    
+
     except Exception as exception:
         playlist_repository_logger.critical(
             f"Unexpected error updating playlist {name} : new_name = {new_name}, photo = {photo}, description = {description}, song_names = {song_names}"
@@ -310,7 +310,8 @@ def handle_playlist_delete_count(result: DeleteResult) -> None:
     """
     if result.deleted_count == 0:
         raise PlaylistDeleteException
-    
+
+
 def handle_playlist_update(result: UpdateResult) -> None:
     """Raises an exception if playlist deletion count was 0
 

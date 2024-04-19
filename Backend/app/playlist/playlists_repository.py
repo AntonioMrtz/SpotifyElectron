@@ -3,7 +3,7 @@ from sys import modules
 from pymongo.results import DeleteResult, InsertOneResult, UpdateResult
 
 from app.database.Database import Database
-from app.logging.logger_constants import LOGGING_PLAYLISTS_REPOSITORY
+from app.logging.logger_constants import LOGGING_PLAYLIST_REPOSITORY
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.playlist.playlists_schema import (
     PlaylistDAO,
@@ -23,7 +23,7 @@ else:
 
 
 playlist_repository_logger = SpotifyElectronLogger(
-    LOGGING_PLAYLISTS_REPOSITORY
+    LOGGING_PLAYLIST_REPOSITORY
 ).getLogger()
 
 
@@ -34,7 +34,7 @@ def check_playlist_exists(name: str) -> bool:
         name (str): name of the playlist
 
     Raises:
-        PlaylistRepositoryException: an error ocurred while getting playlist from database
+        PlaylistRepositoryException: an error occurred while getting playlist from database
 
     Returns:
         bool: if the playlist exsists
@@ -60,7 +60,7 @@ def get_playlist_by_name(name: str) -> PlaylistDAO:
 
     Raises:
         PlaylistNotFoundException: playlists doesnt exists on database
-        PlaylistRepositoryException: an error ocurred while getting playlist from database
+        PlaylistRepositoryException: an error occurred while getting playlist from database
 
     Returns:
         PlaylistDAO: the playlist with the name parameter
@@ -104,7 +104,7 @@ def insert_playlist(
         song_names (list[str]): song names
 
     Raises:
-        PlaylistRepositoryException: an error ocurred while inserting playlist in database
+        PlaylistRepositoryException: an error occurred while inserting playlist in database
 
     """
     try:
@@ -139,7 +139,7 @@ def delete_playlist(name: str) -> None:
         name (str): plalists name
 
     Raises:
-        PlaylistRepositoryException: an error ocurred while deleting playlist from database
+        PlaylistRepositoryException: an error occurred while deleting playlist from database
     """
     try:
         result = playlist_collection.delete_one({"name": name})
@@ -161,7 +161,7 @@ def get_all_playlists() -> list[PlaylistDAO]:
     """Get all playlist
 
     Raises:
-        PlaylistRepositoryException: an error ocurred while getting all playlists from database
+        PlaylistRepositoryException: an error occurred while getting all playlists from database
 
     Returns:
         list[PlaylistDAO]: the list whith all the playlists
@@ -189,7 +189,7 @@ def get_selected_playlists(names: list[str]) -> list[PlaylistDAO]:
         names (list[str]): list with the names of the playlists
 
     Raises:
-        PlaylistRepositoryException: an error ocurred while getting playlists from database
+        PlaylistRepositoryException: an error occurred while getting playlists from database
 
     Returns:
         list[PlaylistDAO]: the list of playlists
@@ -217,7 +217,7 @@ def get_playlist_search_by_name(name: str) -> list[PlaylistDAO]:
         name (str): the matching name
 
     Raises:
-        PlaylistRepositoryException: an error ocurred while getting playlist from database with simimilar name
+        PlaylistRepositoryException: an error occurred while getting playlist from database with simimilar name
 
     Returns:
         list[PlaylistDAO]: the list of playlists with similar name
@@ -253,7 +253,7 @@ def update_playlist(
     :param str photo: new photo
     :param str description: new description
     :param list[str] song_names: new list of song names
-    :raises PlaylistRepositoryException: an error ocurred while updating
+    :raises PlaylistRepositoryException: an error occurred while updating
     """
     try:
         result_update = playlist_collection.update_one(

@@ -12,7 +12,7 @@ from test_API.api_test_song import (
 from test_API.api_test_user import create_user, delete_user
 from test_API.api_token import get_user_jwt_header
 
-from app.model.Genre import Genre
+from app.genre.genre_schema import Genre
 
 
 @fixture(scope="module", autouse=True)

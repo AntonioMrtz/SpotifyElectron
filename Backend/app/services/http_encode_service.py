@@ -20,7 +20,7 @@ def get_json(object: Any) -> str:
         object (Any): the object thats going to be converted into json string
 
     Raises:
-        JsonEncodeException: if an error ocurred while encoding the object \
+        JsonEncodeException: if an error occurred while encoding the object \
             into json string
 
     Returns:
@@ -39,7 +39,7 @@ def get_json_with_iterable_field(object: Any, field_name: str) -> str:
               in the dictionary
 
     Raises:
-        JsonEncodeException: if an error ocurred while encoding the object \
+        JsonEncodeException: if an error occurred while encoding the object \
             into json string
 
     Returns:
@@ -57,7 +57,7 @@ def object_to_json(object: Any) -> str:
         object (Any): the object thats going to be converted into json string
 
     Raises:
-        JsonEncodeException: if an error ocurred while encoding the object \
+        JsonEncodeException: if an error occurred while encoding the object \
             into json string
 
     Returns:

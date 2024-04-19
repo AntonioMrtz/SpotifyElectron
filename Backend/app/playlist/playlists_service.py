@@ -5,7 +5,7 @@ import app.playlist.playlists_repository as playlists_repository
 import app.services.all_users_service as all_users_service
 from app.database.Database import Database
 from app.exceptions.exceptions_schema import BadParameterException
-from app.logging.logger_constants import LOGGING_PLAYLISTS_SERVICE
+from app.logging.logger_constants import LOGGING_PLAYLIST_SERVICE
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.model.TokenData import TokenData
 from app.playlist.playlists_schema import (
@@ -30,7 +30,7 @@ else:
 
 song_service = get_song_service()
 
-playlist_service_logger = SpotifyElectronLogger(LOGGING_PLAYLISTS_SERVICE).getLogger()
+playlist_service_logger = SpotifyElectronLogger(LOGGING_PLAYLIST_SERVICE).getLogger()
 
 
 def check_jwt_user_is_playlist_owner(token: TokenData, owner: str) -> bool:

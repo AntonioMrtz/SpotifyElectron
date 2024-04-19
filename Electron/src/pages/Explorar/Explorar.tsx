@@ -132,25 +132,25 @@ export default function Explorar({
 
   /* Genres */
 
-  const [generos, setGeneros] = useState<{}>();
+  const [genres, setGenres] = useState<{}>();
 
-  const getGeneros = async () => {
-    fetch(encodeURI(`${Global.backendBaseUrl}generos/`))
+  const getGenres = async () => {
+    fetch(encodeURI(`${Global.backendBaseUrl}genres/`))
       .then((res) => res.json())
       .then(async (res) => {
-        setGeneros(res);
+        setGenres(res);
         return null;
       })
       .catch(() => console.log('Cannot get genres'));
   };
   useEffect(() => {
-    getGeneros();
+    getGenres();
   }, []);
 
   return (
     <div className={`container-fluid d-flex flex-column ${styles.principal}`}>
       <div
-        className={`container-fluid d-flex flex-column ${styles.columnofGeneros}`}
+        className={`container-fluid d-flex flex-column ${styles.columnofGenres}`}
       >
         <header className="container-fluid d-flex flex-row mb-4">
           <div className={`d-flex ${styles.searchBarWrapper}`}>
@@ -276,13 +276,13 @@ export default function Explorar({
             <div
               className={`container-fluid d-flex flex-row ${styles.cardContainer}`}
             >
-              {generos &&
-                Object.values(generos).map((genero) => {
+              {genres &&
+                Object.values(genres).map((genre) => {
                   return (
                     <GenreCard
-                      key={genero as string}
-                      name={genero as string}
-                      color={genreColorsMap[genero as string]}
+                      key={genre as string}
+                      name={genre as string}
+                      color={genreColorsMap[genre as string]}
                     />
                   );
                 })}

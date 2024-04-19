@@ -1,5 +1,11 @@
 from enum import Enum
 
+from app.exceptions.exceptions_schema import SpotifyElectronException
+from app.logging.logger_constants import LOGGING_GENRE_CLASS
+from app.logging.logging_schema import SpotifyElectronLogger
+
+genre_class_logger = SpotifyElectronLogger(LOGGING_GENRE_CLASS).getLogger()
+
 
 class Genre(Enum):
     POP = "Pop"
@@ -40,5 +46,26 @@ class Genre(Enum):
 
     @staticmethod
     def getGenre(genre: Enum) -> str:
-        # TODO raise exception if not
-        return str(genre.value)
+        try:
+            return str(genre.value)
+        except Exception as exception:
+            genre_class_logger.exception(f"Genre {genre} is not a valid Genre")
+            raise GenreNotValidException from exception
+
+
+class GenreNotValidException(SpotifyElectronException):
+    """Exception for getting a Genre from an invalid value"""
+
+    ERROR = "The genre doesnt exists"
+
+    def __init__(self):
+        super().__init__(self.ERROR)
+
+
+class GenreServiceException(SpotifyElectronException):
+    """Exception for unexpected error getting genres"""
+
+    ERROR = "Unexpected error while getting genres"
+
+    def __init__(self):
+        super().__init__(self.ERROR)

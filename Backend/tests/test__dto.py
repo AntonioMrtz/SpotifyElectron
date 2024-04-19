@@ -5,7 +5,7 @@ from test_API.api_test_dto import get_song_dto
 from test_API.api_test_song import create_song, delete_song
 from test_API.api_token import get_user_jwt_header
 
-from app.model.Genre import Genre
+from app.genre.genre_schema import Genre
 
 # * Playlist DTO
 

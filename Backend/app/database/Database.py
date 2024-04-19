@@ -61,10 +61,10 @@ class Database(metaclass=DatabaseMeta):
         try:
             ping_result = self.connection.command("ping")
             self._check_ping_result(ping_result)
-        except ConnectionFailure:
-            raise DatabasePingFailed()
-        except Exception as error:
-            raise UnexpectedDatabasePingFailed(error)
+        except ConnectionFailure as exception:
+            raise DatabasePingFailed from exception
+        except Exception as exception:
+            raise UnexpectedDatabasePingFailed from exception
 
     def _check_ping_result(self, ping_result: dict):
         """Checks if ping result is OK

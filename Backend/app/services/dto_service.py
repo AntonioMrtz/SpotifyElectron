@@ -1,7 +1,7 @@
 from fastapi import HTTPException
 
+from app.genre.genre_schema import Genre
 from app.model.DTO.SongDTO import SongDTO
-from app.model.Genre import Genre
 from app.services.song_services.song_service_provider import get_song_service
 from app.services.utils import checkValidParameterString
 

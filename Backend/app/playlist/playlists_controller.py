@@ -19,7 +19,7 @@ import app.services.security_service as security_service
 from app.exceptions.http_encode_exceptions import JsonEncodeException
 from app.logging.commons_logging_constants import INTERNAL_SERVER_ERROR
 from app.logging.http_encode_logging_constants import ENCODING_ERROR
-from app.logging.logger_constants import LOGGING_PLAYLISTS_ROUTER
+from app.logging.logger_constants import LOGGING_PLAYLIST_CONTROLLER
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.playlist.playlists_schema import (
     PlaylistBadNameException,
@@ -29,10 +29,10 @@ from app.playlist.playlists_schema import (
 
 router = APIRouter(
     prefix="/playlists",
-    tags=["playlists"],
+    tags=["Playlists"],
 )
 
-playlist_router_logger = SpotifyElectronLogger(LOGGING_PLAYLISTS_ROUTER).getLogger()
+playlist_router_logger = SpotifyElectronLogger(LOGGING_PLAYLIST_CONTROLLER).getLogger()
 
 # TODO set in content of Responses messages of error from messages.ini
 

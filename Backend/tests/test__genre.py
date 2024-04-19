@@ -4,7 +4,7 @@ from test_API.api_test_artist import create_artist, delete_artist
 from test_API.api_token import get_user_jwt_header
 
 from app.__main__ import app
-from app.model.Genre import Genre
+from app.genre.genre_schema import Genre
 
 client = TestClient(app)
 
@@ -14,7 +14,7 @@ def set_up(trigger_app_start):
     pass
 
 
-def test_get_generos_correct():
+def test_get_genres_correct():
     artista = "artista"
     foto = "https://foto"
     password = "hola"
@@ -24,18 +24,23 @@ def test_get_generos_correct():
 
     jwt_headers = get_user_jwt_header(username=artista, password=password)
 
-    response = client.get("/generos/", headers=jwt_headers)
+    response = client.get("/genres/", headers=jwt_headers)
     assert response.status_code == 200
+    assert isinstance(response.json(), dict)
+
+    genre_dict: dict = response.json()
+    for genre in Genre:
+        assert genre.value in genre_dict.values()
 
     res_delete_artist = delete_artist(artista)
     assert res_delete_artist.status_code == 202
 
 
-def test_check_valid_genre_correct():
+def test_check_genre_valid():
     valid_genre = Genre.AMBIENT
     assert Genre.check_valid_genre(valid_genre.value)
 
 
-def test_check_valid_genre_invalid():
+def test_check_genre_invalid():
     invalid_genre = "invalid_genre"
     assert not Genre.check_valid_genre(invalid_genre)

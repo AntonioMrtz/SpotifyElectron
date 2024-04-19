@@ -6,6 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.common.PropertiesManager import PropertiesManager
 from app.constants.config_constants import APP, HOST, PORT
+from app.genre import genre_controller
 from app.logging.logger_constants import LOGGING_MAIN
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.middleware.CheckJwtAuthMiddleware import CheckJwtAuthMiddleware
@@ -17,7 +18,7 @@ from app.middleware.cors_middleware_config import (
     max_age,
 )
 from app.playlist import playlists_controller
-from app.routers import artistas, canciones, generos, login, search, usuarios
+from app.routers import artistas, canciones, login, search, usuarios
 
 main_logger = SpotifyElectronLogger(LOGGING_MAIN).getLogger()
 
@@ -35,7 +36,7 @@ async def lifespan_handler(app: FastAPI):
 
     app.include_router(playlists_controller.router)
     app.include_router(canciones.router)
-    app.include_router(generos.router)
+    app.include_router(genre_controller.router)
     app.include_router(usuarios.router)
     app.include_router(artistas.router)
     app.include_router(login.router)

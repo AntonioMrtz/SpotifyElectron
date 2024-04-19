@@ -15,5 +15,5 @@ class UnexpectedDatabasePingFailed(SpotifyElectronException):
 
     ERROR = "Unexpected error while pinging to the database"
 
-    def __init__(self, exception: Exception):
-        super().__init__(f"{self.ERROR} : {exception}")
+    def __init__(self):
+        super().__init__(self.ERROR)

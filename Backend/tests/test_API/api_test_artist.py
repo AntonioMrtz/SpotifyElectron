@@ -6,16 +6,13 @@ client = TestClient(app)
 
 
 def get_artist(name: str, headers: dict):
-    response = client.get(f"/artistas/{name}", headers=headers)
-    return response
+    return client.get(f"/artistas/{name}", headers=headers)
 
 
 def create_artist(name: str, photo: str, password: str):
     url = f"/artistas/?nombre={name}&foto={photo}&password={password}"
 
-    response = client.post(url)
-
-    return response
+    return client.post(url)
 
 
 def update_artist(
@@ -38,21 +35,16 @@ def update_artist(
 
     file_type_header = {"Content-Type": "application/json"}
 
-    response = client.put(url, json=payload, headers={**file_type_header, **headers})
-
-    return response
+    return client.put(url, json=payload, headers={**file_type_header, **headers})
 
 
 def delete_artist(name: str):
-    response = client.delete(f"/artistas/{name}")
-    return response
+    return client.delete(f"/artistas/{name}")
 
 
 def get_artists(headers: dict):
-    response = client.get("/artistas/", headers=headers)
-    return response
+    return client.get("/artistas/", headers=headers)
 
 
 def get_play_count_artist(name: str, headers: dict):
-    response = client.get(f"/artistas/{name}/reproducciones", headers=headers)
-    return response
+    return client.get(f"/artistas/{name}/reproducciones", headers=headers)

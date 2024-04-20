@@ -3,9 +3,9 @@ from typing import Annotated
 from fastapi import APIRouter, Body, Header, HTTPException
 from fastapi.responses import Response
 
+import app.security.security_service as security_service
 import app.services.all_users_service as all_users_service
 import app.services.http_encode_service as http_encode_service
-import app.services.security_service as security_service
 import app.services.user_service as user_service
 
 router = APIRouter(
@@ -63,6 +63,17 @@ def get_user(nombre: str) -> Response:
     usuario_json = http_encode_service.get_json(usuario)
 
     return Response(usuario_json, media_type="application/json", status_code=200)
+
+
+@router.get("/{nombre}/playlists", tags=["usuarios"])
+def get_playlists_by_user(name: str) -> Response:
+    # TODO get playlists by user
+    # TODO hacer test
+
+    user = user_service.get_user(name)
+    user_json = http_encode_service.get_json(user)
+
+    return Response(user_json, media_type="application/json", status_code=200)
 
 
 @router.post("/", tags=["usuarios"])

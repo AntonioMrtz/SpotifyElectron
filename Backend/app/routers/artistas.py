@@ -6,9 +6,9 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.responses import Response
 from starlette.status import HTTP_200_OK
 
+import app.security.security_service as security_service
 import app.services.artist_service as artist_service
 import app.services.http_encode_service as http_encode_service
-import app.services.security_service as security_service
 
 router = APIRouter(
     prefix="/artistas",

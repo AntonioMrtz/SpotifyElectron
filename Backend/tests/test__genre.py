@@ -1,5 +1,6 @@
 from fastapi.testclient import TestClient
 from pytest import fixture
+from starlette.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_202_ACCEPTED
 from test_API.api_test_artist import create_artist, delete_artist
 from test_API.api_token import get_user_jwt_header
 
@@ -20,12 +21,12 @@ def test_get_genres_correct():
     password = "hola"
 
     res_create_artist = create_artist(name=artista, password=password, photo=foto)
-    assert res_create_artist.status_code == 201
+    assert res_create_artist.status_code == HTTP_201_CREATED
 
     jwt_headers = get_user_jwt_header(username=artista, password=password)
 
     response = client.get("/genres/", headers=jwt_headers)
-    assert response.status_code == 200
+    assert response.status_code == HTTP_200_OK
     assert isinstance(response.json(), dict)
 
     genre_dict: dict = response.json()
@@ -33,7 +34,7 @@ def test_get_genres_correct():
         assert genre.value in genre_dict.values()
 
     res_delete_artist = delete_artist(artista)
-    assert res_delete_artist.status_code == 202
+    assert res_delete_artist.status_code == HTTP_202_ACCEPTED
 
 
 def test_check_genre_valid():

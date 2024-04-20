@@ -79,9 +79,7 @@ def get_playlist_by_name(name: str) -> PlaylistDAO:
         )
         raise PlaylistRepositoryException from exception
     else:
-        playlist_repository_logger.debug(
-            f"Get Playlist by name returned {playlist_dao}"
-        )
+        playlist_repository_logger.info(f"Get Playlist by name returned {playlist_dao}")
         return playlist_dao
 
 
@@ -144,7 +142,7 @@ def delete_playlist(name: str) -> None:
     try:
         result = playlist_collection.delete_one({"name": name})
         handle_playlist_delete_count(result)
-        playlist_repository_logger.debug(f"Playlist {name} Deleted")
+        playlist_repository_logger.info(f"Playlist {name} Deleted")
     except PlaylistDeleteException as exception:
         playlist_repository_logger.exception(
             f"Error deleting Playlist {name} from database"
@@ -178,7 +176,7 @@ def get_all_playlists() -> list[PlaylistDAO]:
         )
         raise PlaylistRepositoryException from exception
     else:
-        playlist_repository_logger.debug(f"All playlists obtained : {playlists}")
+        playlist_repository_logger.info(f"All playlists obtained : {playlists}")
         return playlists
 
 
@@ -204,7 +202,7 @@ def get_selected_playlists(names: list[str]) -> list[PlaylistDAO]:
         )
         raise PlaylistRepositoryException from exception
     else:
-        playlist_repository_logger.debug(
+        playlist_repository_logger.info(
             f"Selected playlists obtained for {names} : {playlists}"
         )
         return playlists
@@ -233,7 +231,7 @@ def get_playlist_search_by_name(name: str) -> list[PlaylistDAO]:
         )
         raise PlaylistRepositoryException from exception
     else:
-        playlist_repository_logger.debug(
+        playlist_repository_logger.info(
             f"Playlist searched by name {name} : {playlists}"
         )
         return playlists
@@ -281,7 +279,7 @@ def update_playlist(
         )
         raise PlaylistRepositoryException from exception
     else:
-        playlist_repository_logger.critical(
+        playlist_repository_logger.info(
             f"Playlisy {name} updated : new_name = {new_name}, photo = {photo}, description = {description}, song_names = {song_names}"
         )
 

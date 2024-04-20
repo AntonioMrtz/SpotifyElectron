@@ -13,7 +13,7 @@ from app.genre.genre_schema import Genre
 from app.model.DTO.SongDTO import SongDTO
 from app.model.Song import Song
 from app.model.SongBlob import SongBlob
-from app.model.TokenData import TokenData
+from app.security.security_schema import TokenData
 from app.services.utils import checkValidParameterString
 
 """ Insert songs with format [files,chunks] https://www.mongodb.com/docs/manual/core/gridfs/"""

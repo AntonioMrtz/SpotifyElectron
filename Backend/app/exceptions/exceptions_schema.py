@@ -7,7 +7,6 @@ exceptions_logger = SpotifyElectronLogger(LOGGING_EXCEPTION).getLogger()
 class SpotifyElectronException(Exception):
     def __init__(self, message):
         super().__init__(message)
-        # exceptions_logger.critical(message)
 
 
 class BadParameterException(SpotifyElectronException):

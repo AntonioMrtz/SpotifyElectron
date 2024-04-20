@@ -5,7 +5,6 @@ import app.services.all_users_service as all_users_service
 from app.exceptions.exceptions_schema import BadParameterException
 from app.logging.logger_constants import LOGGING_PLAYLIST_SERVICE
 from app.logging.logging_schema import SpotifyElectronLogger
-from app.model.TokenData import TokenData
 from app.playlist.playlists_schema import (
     PlaylistAlreadyExistsException,
     PlaylistBadNameException,
@@ -16,6 +15,7 @@ from app.playlist.playlists_schema import (
     PlaylistUnAuthorizedException,
     get_playlist_dto_from_dao,
 )
+from app.security.security_schema import TokenData
 from app.services.song_services.song_service_provider import get_song_service
 from app.services.utils import checkValidParameterString
 from app.user.user_schema import UserNotFoundException
@@ -364,6 +364,7 @@ def handle_playlist_should_not_exists(name: str) -> None:
 
 
 def handle_user_should_exists(name: str) -> None:
+    # TODO mover logica excepcion a dentro de servicio all users
     """Raises an exception if user does exists
 
     Args:

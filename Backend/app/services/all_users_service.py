@@ -3,8 +3,8 @@ from fastapi import HTTPException
 import app.playlist.playlists_service as playlists_service
 import app.services.artist_service as artist_service
 import app.services.user_service as user_service
-from app.model.TokenData import TokenData
 from app.model.UserType import User_Type
+from app.security.security_schema import TokenData
 from app.services.song_services.song_service_provider import get_song_service
 from app.services.utils import checkValidParameterString
 

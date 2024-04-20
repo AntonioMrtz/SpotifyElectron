@@ -17,7 +17,10 @@ from test_API.api_test_playlist import (
     get_playlists,
     update_playlist,
 )
+from test_API.api_test_user import create_user, delete_user
 from test_API.api_token import get_user_jwt_header
+
+from tests.test_API.api_all_users import patch_playlist_saved
 
 
 @fixture(scope="module", autouse=True)
@@ -186,7 +189,65 @@ def test_update_playlist_correct():
     assert res_delete_artist.status_code == HTTP_202_ACCEPTED
 
 
-def test_update_playlist_correct_nuevo_nombre():
+def test_update_playlist_new_name_check_cascade_update_playlists_users_and_artists():
+    name = "8232392323623823723"
+    foto = "foto"
+    descripcion = "descripcion"
+    owner = "usuarioprueba834783478923489734298"
+    password = "password"
+
+    user_name = "user_name"
+
+    res_create_artist = create_artist(owner, foto, password)
+    assert res_create_artist.status_code == HTTP_201_CREATED
+
+    res_create_user = create_user(user_name, foto, password)
+    assert res_create_user.status_code == HTTP_201_CREATED
+
+    jwt_artist_headers = get_user_jwt_header(username=owner, password=password)
+    user_artist_headers = get_user_jwt_header(username=user_name, password=password)
+
+    res_create_playlist = create_playlist(
+        name=name, descripcion=descripcion, foto=foto, headers=jwt_artist_headers
+    )
+    assert res_create_playlist.status_code == HTTP_201_CREATED
+
+    res_patch_playlist_saved = patch_playlist_saved(
+        user_name=user_name, playlist_name=name, headers=user_artist_headers
+    )
+    assert res_patch_playlist_saved.status_code == 204
+
+    # TODO comprobar que playlist esta en usuario y artista , cuando se termine método de
+    # obtener playlist por usuario
+
+    new_name = "82323923236238237237"
+    new_description = "nuevadescripcion"
+
+    res_update_playlist = update_playlist(
+        name=name,
+        foto=foto,
+        descripcion=new_description,
+        nuevo_nombre=new_name,
+        headers=jwt_artist_headers,
+    )
+    assert res_update_playlist.status_code == HTTP_204_NO_CONTENT
+
+    # TODO comprobar que playlist esta en usuario y artista
+
+    res_get_playlist = get_playlist(new_name, headers=jwt_artist_headers)
+    assert res_get_playlist.status_code == HTTP_200_OK
+
+    res_delete_playlist = delete_playlist(new_name)
+    assert res_delete_playlist.status_code == HTTP_202_ACCEPTED
+
+    res_delete_artist = delete_artist(owner)
+    assert res_delete_artist.status_code == HTTP_202_ACCEPTED
+
+    res_delete_user = delete_user(user_name)
+    assert res_delete_user.status_code == HTTP_202_ACCEPTED
+
+
+def test_update_playlist_correct_new_name():
     name = "8232392323623823723"
     foto = "foto"
     descripcion = "descripcion"
@@ -263,6 +324,3 @@ def test_get_playlists():
 
     res_delete_artist = delete_artist(owner)
     assert res_delete_artist.status_code == HTTP_202_ACCEPTED
-
-
-# TODO test playlist comprobar interior canciones

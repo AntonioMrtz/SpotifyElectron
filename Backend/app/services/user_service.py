@@ -3,10 +3,10 @@ from sys import modules
 
 from fastapi import HTTPException
 
-import app.services.security_service as security_service
+import app.security.security_service as security_service
 from app.database.Database import Database
-from app.model.TokenData import TokenData
 from app.model.User import User
+from app.security.security_schema import TokenData
 from app.services.utils import checkValidParameterString
 
 if "pytest" in modules:

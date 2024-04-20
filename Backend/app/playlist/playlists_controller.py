@@ -14,8 +14,8 @@ from starlette.status import (
 )
 
 import app.playlist.playlists_service as playlists_service
+import app.security.security_service as security_service
 import app.services.http_encode_service as http_encode_service
-import app.services.security_service as security_service
 from app.exceptions.http_encode_exceptions import JsonEncodeException
 from app.logging.commons_logging_constants import INTERNAL_SERVER_ERROR
 from app.logging.http_encode_logging_constants import ENCODING_ERROR
@@ -65,7 +65,7 @@ def get_playlist(name: str) -> Response:
             status_code=HTTP_404_NOT_FOUND,
         )
     except JsonEncodeException:
-        playlist_router_logger.exception(f"{ENCODING_ERROR}")
+        playlist_router_logger.exception(f"{ENCODING_ERROR} : {playlist_json}")
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
         )
@@ -262,7 +262,7 @@ def get_playlists() -> Response:
             status_code=HTTP_404_NOT_FOUND,
         )
     except JsonEncodeException:
-        playlist_router_logger.exception(f"{ENCODING_ERROR}")
+        playlist_router_logger.exception(f"{ENCODING_ERROR} : {playlist_json}")
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
         )
@@ -307,7 +307,7 @@ def get_selected_playlists(names: str) -> Response:
             status_code=HTTP_404_NOT_FOUND,
         )
     except JsonEncodeException:
-        playlist_router_logger.exception(f"{ENCODING_ERROR}")
+        playlist_router_logger.exception(f"{ENCODING_ERROR} : {playlist_json}")
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
         )

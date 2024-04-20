@@ -3,9 +3,9 @@ from typing import Annotated
 from fastapi import APIRouter, Header, HTTPException, UploadFile
 from fastapi.responses import Response
 
+import app.security.security_service as security_service
 import app.services.dto_service as dto_service
 import app.services.http_encode_service as http_encode_service
-import app.services.security_service as security_service
 from app.genre.genre_schema import Genre
 from app.services.song_services.song_service_provider import get_song_service
 

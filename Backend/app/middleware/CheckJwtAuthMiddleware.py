@@ -2,9 +2,10 @@ from fastapi import Request, Response
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.status import HTTP_401_UNAUTHORIZED
 
-import app.services.security_service as security_service
+import app.security.security_service as security_service
 from app.logging.logger_constants import LOGGIN_CHECK_AUTH_JWT_MIDDLEWARE
 from app.logging.logging_schema import SpotifyElectronLogger
+from app.security.security_schema import JWTValidationException
 
 check_jwt_auth_middleware_logger = SpotifyElectronLogger(
     LOGGIN_CHECK_AUTH_JWT_MIDDLEWARE
@@ -50,7 +51,7 @@ class CheckJwtAuthMiddleware(BaseHTTPMiddleware):
         )
 
         if request.method in self.bypass_methods or (
-            request.method in self.bypass_urls.keys()
+            request.method in self.bypass_urls
             and request.url.path in self.bypass_urls[request.method]
         ):
             return True
@@ -62,8 +63,7 @@ class CheckJwtAuthMiddleware(BaseHTTPMiddleware):
                 check_jwt_auth_middleware_logger.debug(
                     f"Bypassed request : {request.method} {request.url}"
                 )
-                response = await call_next(request)
-                return response
+                return await call_next(request)
 
             jwt = request.headers["authorization"]
             return await self._handle_jwt_validation(jwt, request, call_next)
@@ -83,15 +83,17 @@ class CheckJwtAuthMiddleware(BaseHTTPMiddleware):
             call_next (_type_): the method for continuing the workflow
 
         Returns:
-            Response : the Response thats gonna be sended to the client,\
+            Response: the Response thats gonna be sended to the client,\
                 HTTP_401_UNAUTHORIZED if jwt is not valid
         """
-        if not security_service.check_jwt_is_valid(jwt):
-            check_jwt_auth_middleware_logger.error(
+        try:
+            security_service.check_jwt_is_valid(jwt)
+        except (JWTValidationException, Exception):
+            check_jwt_auth_middleware_logger.exception(
                 f"Request with invalid JWT {jwt} {request}"
             )
             return Response(
                 content="Invalid Credentials", status_code=HTTP_401_UNAUTHORIZED
             )
-        response = await call_next(request)
-        return response
+        else:
+            return await call_next(request)

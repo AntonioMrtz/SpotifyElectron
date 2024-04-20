@@ -1,0 +1,283 @@
+from datetime import UTC, datetime, timedelta
+from typing import Annotated
+
+import bcrypt
+from fastapi import Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordBearer
+from jose import JWTError, jwt
+
+import app.services.all_users_service as all_users_service
+import app.services.artist_service as artist_service
+import app.services.user_service as user_service
+from app.common.PropertiesManager import PropertiesManager
+from app.constants.set_up_constants import DISTRIBUTION_ID_ENV_NAME
+from app.exceptions.exceptions_schema import BadParameterException
+from app.logging.logger_constants import LOGGING_SECURITY_SERVICE
+from app.logging.logging_schema import SpotifyElectronLogger
+from app.login.login_schema import InvalidCredentialsLoginException
+from app.model.Artist import Artist
+from app.model.User import User
+from app.model.UserType import User_Type
+from app.playlist.playlists_service import handle_user_should_exists
+from app.security.security_schema import (
+    CreateJWTException,
+    JWTExpiredException,
+    JWTGetUserException,
+    JWTValidationException,
+    TokenData,
+    UnexpectedJWTException,
+    UnexpectedLoginUserException,
+    VerifyPasswordException,
+)
+from app.services.utils import checkValidParameterString
+from app.user.user_schema import UserNotFoundException
+
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 10080  # 7 days
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="usuarios/whoami/")
+
+security_service_logger = SpotifyElectronLogger(LOGGING_SECURITY_SERVICE).getLogger()
+
+
+def create_access_token(data: dict, expires_delta: timedelta | None = None) -> str:
+    """Create a jwt token from data with a expire date
+
+    Args:
+        data (dict): Info to be stored in the token
+        expires_delta (timedelta | None, optional): Expire date of the token
+
+    Raises:
+        CreateJWTException: if an error ocurred creating JWT Token
+
+    Returns:
+        str: the JWT Token created
+    """
+    try:
+        to_encode = data.copy()
+        if expires_delta:
+            expire = datetime.now(UTC) + expires_delta
+        else:
+            expire = datetime.now(UTC) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+        to_encode.update({"exp": expire})
+        encoded_jwt = jwt.encode(
+            to_encode,
+            getattr(PropertiesManager, DISTRIBUTION_ID_ENV_NAME),
+            algorithm=ALGORITHM,
+        )
+    except Exception as exception:
+        raise CreateJWTException from exception
+    else:
+        security_service_logger.info(f"JWT created from data : {data}")
+        return encoded_jwt
+
+
+def get_jwt_token(token: Annotated[str, Depends(oauth2_scheme)]) -> TokenData:
+    """Decrypt jwt data and returns data from it
+
+    Parameters
+    ----------
+        token (jwt token)
+
+    Raises
+    -------
+        401 : Bad credentials
+
+    Returns
+    -------
+        TokenData
+    """
+    # TODO hacr y documentar
+
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+
+    try:
+        payload = jwt.decode(
+            token,
+            getattr(PropertiesManager, DISTRIBUTION_ID_ENV_NAME),
+            algorithms=[ALGORITHM],
+        )
+        username: str = payload.get("access_token")
+        role: str = payload.get("role")
+        token_type: str = payload.get("token_type")
+        if username is None or role is None or token_type is None:
+            raise credentials_exception
+        token_data = TokenData(username=username, role=role, token_type=token_type)
+    except JWTError:
+        # TODO handle exceptions
+        raise HTTPException(status_code=401, detail="Credenciales inválidos")
+    except Exception as exception:
+        raise UnexpectedJWTException from exception
+    else:
+        return token_data
+
+
+def get_current_user(
+    token: Annotated[str, Depends(oauth2_scheme)],
+) -> Artist | User:
+    """Get current user from JWT Token
+
+    Args:
+        token (Annotated[str, Depends): the token
+
+    Raises:
+        UserNotFoundException: token user not found
+        JWTGetUserException: if error while retrieving user from token
+    Returns:
+        Artist | User: the user or artist associated with the JWT Token
+    """
+    try:
+        jwt = get_jwt_token(token)
+
+        if jwt.role == User_Type.ARTIST:
+            user = artist_service.get_artist(jwt.username)
+        elif jwt.role == User_Type.USER:
+            user = user_service.get_user(jwt.username)
+
+    except UserNotFoundException as exception:
+        security_service_logger.exception(f"User {jwt.username} not found")
+        raise UserNotFoundException from exception
+    except Exception as exception:
+        security_service_logger.exception(
+            f"Unexpected exception getting user from token {token}"
+        )
+        raise JWTGetUserException from exception
+    else:
+        security_service_logger.info(f"Get Current User successful : {user}")
+        return user
+
+
+def hash_password(plain_password: str) -> bytes:
+    """Hash a password with a randomly-generated salt
+
+    Args:
+        plain_password (str): plain text password
+
+    Returns:
+        bytes: the hashed password
+    """
+    return bcrypt.hashpw(plain_password.encode(), bcrypt.gensalt())
+
+
+def verify_password(plain_password: str, hashed_password: bytes):
+    """Verifies if plan text password is the same as a hashed password
+
+    Args:
+        plain_password (str): plain text password
+        hashed_password (bytes): hashed password
+
+    Raises:
+        VerifyPasswordException: if passwords dont match
+    """
+    if not bcrypt.checkpw(plain_password.encode(), hashed_password):
+        raise VerifyPasswordException
+
+
+def login_user(name: str, password: str) -> str:
+    """Checks user credentials and return a jwt token
+
+    Args:
+        name (str): Users's name
+        password (str): Users's password
+
+    Raises:
+        InvalidCredentialsLoginException: bad user credentials
+        VerifyPasswordException: failing authenticating user and password
+        UserNotFoundException: user doesnt exists
+        UnexpectedLoginUserException: unexpected error during user login
+
+    Returns:
+        str: the JWT Token
+    """
+    try:
+        checkValidParameterString(name)
+        checkValidParameterString(password)
+
+        # TODO
+        handle_user_should_exists(name)
+
+        # TODO unificar y tratar excepciones
+        if all_users_service.isArtistOrUser(user_name=name) == User_Type.ARTIST:
+            user = artist_service.get_artist(name)
+            user_type = User_Type.ARTIST
+
+        else:
+            user = user_service.get_user(name)
+            user_type = User_Type.USER
+
+        verify_password(password, user.password)
+
+        jwt_data = {
+            "access_token": name,
+            "role": user_type.value,
+            "token_type": "bearer",
+        }
+        return create_access_token(jwt_data)
+
+    except BadParameterException as exception:
+        security_service_logger.exception("Invalid login credentials")
+        raise InvalidCredentialsLoginException from exception
+    except VerifyPasswordException as exception:
+        security_service_logger.exception(
+            "Passwords Validation failed : passwords dont match"
+        )
+        raise VerifyPasswordException from exception
+    except CreateJWTException as exception:
+        security_service_logger.exception(
+            f"Error creating JWT Token from data : {jwt_data}"
+        )
+        raise VerifyPasswordException from exception
+    except UserNotFoundException as exception:
+        security_service_logger.exception(f"User {name} doesnt exists")
+        raise UserNotFoundException from exception
+    except Exception as exception:
+        security_service_logger.exception(f"Unexpected error login user : {name}")
+        raise UnexpectedLoginUserException from exception
+
+
+def check_jwt_is_valid(token: str) -> None:
+    """Check if JWT token is valid
+
+    Args:
+        token (str): the token to validate
+
+    Raises:
+        JWTValidationException: if the validation was not succesfull
+    """
+    try:
+        decoded_token = jwt.decode(
+            token, getattr(PropertiesManager, DISTRIBUTION_ID_ENV_NAME), ALGORITHM
+        )
+        handle_token_expired(decoded_token)
+
+    except JWTError as exception:
+        security_service_logger.exception(f"Error decoding token : {token}")
+        raise JWTValidationException from exception
+
+    except JWTExpiredException as exception:
+        security_service_logger.exception(f"Token is expired : {token}")
+        raise JWTValidationException from exception
+
+    except Exception as exception:
+        security_service_logger.exception(
+            f"Unexpected error validating token : {token}"
+        )
+        raise JWTValidationException from exception
+
+
+def handle_token_expired(token: dict) -> None:
+    """Checks if token is expired comparing current date with expiration date
+
+    Args:
+        token (dict): token to check
+
+    Raises:
+        JWTExpiredException: if token is expired
+    """
+    expiration_time = datetime.fromtimestamp(token["exp"], UTC)
+    if expiration_time < datetime.now(UTC):
+        raise JWTExpiredException

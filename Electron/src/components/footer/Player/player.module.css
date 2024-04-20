@@ -1,5 +1,4 @@
 .playerBarContainer p {
-
   margin-bottom: 0 !important;
   font-size: 0.75rem;
   color: var(--primary-white);
@@ -7,57 +6,44 @@
 }
 
 .playerBarContainer {
-
   justify-content: center;
   align-items: center;
   flex-grow: 1;
 }
 
 .buttonsPlayerContainer {
-
   justify-content: center;
   padding-top: 1.1%;
   align-items: center;
 }
 
 .buttonsPlayerContainer button {
-
   color: var(--secondary-white);
   padding: 0 1.25% 0 1.25%;
   font-size: 1.5rem;
   border: none;
   background-color: transparent;
-
 }
 
 .buttonsPlayerContainer button:hover {
-
   color: var(--pure-white);
-
 }
 
 .buttonsPlayerContainer button:nth-child(3),
 .buttonsPlayerContainer button:nth-child(4) {
-
   color: var(--pure-white);
   font-size: 2rem;
-
 }
 
 .playerContainer {
-
   white-space: nowrap;
   padding-bottom: 1%;
-
 }
 
-
 .displayNonePlay {
-
   display: none;
 }
 
 .displayNonePause {
-
   display: none;
 }

@@ -26,7 +26,7 @@
   border: none !important;
 }
 
-.wrapperContextMenu ul li+li {
+.wrapperContextMenu ul li + li {
   border-top: none;
   /* Elimina el borde superior del siguiente <li> */
 }

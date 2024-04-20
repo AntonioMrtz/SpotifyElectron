@@ -1,26 +1,19 @@
 .wrapperConfirmationModal {
-
   border-radius: var(--border-radius-thumbnails);
   background-color: var(--primary-white) !important;
   overflow-x: hidden;
 
-
   padding: 3% 5% 0 5% !important;
   border: 2px solid var(--secondary-green) !important;
-
-
-
 }
 
 .wrapperConfirmationModalHeader {
-
   display: grid;
   grid-template-columns: 5fr 5fr;
   grid-gap: 10px;
 }
 
 .wrapperConfirmationModalText {
-
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -28,21 +21,17 @@
 }
 
 .wrapperConfirmationModalText span {
-
   font-weight: bold;
   font-size: 1.3rem;
-
 }
 
 .wrapperButton {
-
   margin-top: 3% !important;
   margin-bottom: 3% !important;
   padding: 0% !important;
 }
 
 .wrapperButton button {
-
   background-color: var(--secondary-green);
   border-radius: var(--border-radius-rounded-button);
   border: 1px solid var(--secondary-black);
@@ -51,6 +40,4 @@
   color: var(--primary-white);
   font-size: 1.1rem;
   font-weight: bold;
-
-
 }

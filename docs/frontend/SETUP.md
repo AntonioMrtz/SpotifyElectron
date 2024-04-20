@@ -80,6 +80,17 @@ npm run test:coverage // run tests and generate coverage in coverage folder
 npm run lint
 ```
 
+## 🎨 Style
+
+1. Run the style check
+```
+npm run format:check
+```
+
+2. Run the style formatter
+```
+npm run format:format
+```
 
 ## ✏ Install the recommended extensions for VSCODE
 
@@ -105,5 +116,5 @@ npm run build
 3. Package the app for the current system and generate installer
 
 ```
-npm run package
+npm run package --win --mac --linux
 ```

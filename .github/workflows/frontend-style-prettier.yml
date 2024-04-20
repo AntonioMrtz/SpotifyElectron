@@ -1,4 +1,4 @@
-name: Eslintrc Check
+name: Frontend Style Prettier
 
 on:
   pull_request:
@@ -23,4 +23,4 @@ jobs:
       working-directory: Electron
       run: |
         npm install
-        npm run lint
+        npm run format:check

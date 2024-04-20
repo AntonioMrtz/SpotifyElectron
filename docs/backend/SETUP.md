@@ -1,14 +1,14 @@
-# 1. Setup and run BACKEND
+# 1. Set up and run BACKEND
 
 In this section we will cover:
 
-* How to setup the proyect
+* How to set up the proyect
 * Run the proyect and debug
+* Deploy docker containers for development and production
 * Run tests
 * Access documentation
-* Containerize
 
-## 🛠 Setup the proyect
+## 🛠 Set up the proyect
 
 1. Enter backend directory
 
@@ -16,7 +16,7 @@ In this section we will cover:
 cd Backend;
 ```
 
-2. Use .env.local renameing it to .env for development or create the enviroment file in root path with the following data.
+2. Use .env.local renaming it to .env for development or create the enviroment file in root path with the following data.
 
 ```
 * MONGO_URI= uri for connecting into a MongoDB database ( mongodb://root:root@localhost:27017/ )
@@ -47,20 +47,52 @@ python -m app;
 
 6. You can also launch the app and tests with the VSCODE scripts included in the .vscode folder
 
+## 🐳 Docker deployment
+
+1. Go to docker folder
+```
+cd docker/
+```
+
+### Dev Enviroment
+
+For development it is recommended to deploy the dev enviroment containers that provide:
+  * Local MongoDB Database
+  * Mongo Express administration dashboard
+      * Connect http://localhost:8081/
+      * Use user : admin and password : pass
+  * Backend Server ( stop this container if backend server is running locally already )
+
+Run this command to build and up the development containers
+```
+./build_and_up_dev.sh
+```
+
+### Prod Enviroment
+
+In production it is recommended to connect to a remote database, the prod enviroment provide:
+
+  * Backend Server
+```
+./build_and_up_prod.sh
+```
+
 ## 📓 Access documentation and swagger interface
 
 * Swagger: **http://127.0.0.1:8000/docs**
-* Auto-generated documentation: **Backend/api-docs-spotify-electron.html**
 
 ## ✔️ Run tests
 
 1. Run tests
+
+Standar test run
 ```
-python -m pytest tests/ // Normal test run
+python -m pytest tests/
+```
 
-or
-
-python -m pytest tests/ --cov=. --cov-report=html // Test run and generate coverage in folder htmlcov/index.html
+Test run and generate code coverage in folder htmlcov/index.html
+```
+python -m pytest tests/ --cov=. --cov-report=html
 
 ```
 ## ⚓ Pre-commit
@@ -102,30 +134,3 @@ python -m ruff check --fix
 3. Recommended
 4. Workspace recommended
 5. Install workspace recommended
-
-## 🐳 Containerize the app
-
-1. Go to docker folder
-```
-cd docker/
-```
-
-### Dev Enviroment
-
-* Uses local mongoDB database
-* Access it via MongoExpress
-  * Connect http://localhost:8081/
-  * Use user : admin and password : pass
-
-
-2. Run docker compose with the script build_and_up_dev
-```
-./build_and_up_dev.sh
-```
-
-### Prod Enviroment
-
-2. Run docker compose with the script build_and_up_prod
-```
-./build_and_up_prod.sh
-```

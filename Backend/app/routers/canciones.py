@@ -1,12 +1,14 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Header, HTTPException, UploadFile
+from fastapi import APIRouter, Header, UploadFile
 from fastapi.responses import Response
+from starlette.status import HTTP_401_UNAUTHORIZED
 
 import app.security.security_service as security_service
 import app.services.dto_service as dto_service
 import app.services.http_encode_service as http_encode_service
 from app.genre.genre_schema import Genre
+from app.security.security_schema import BadJWTTokenProvidedException
 from app.services.song_services.song_service_provider import get_song_service
 
 router = APIRouter(
@@ -70,13 +72,17 @@ async def post_cancion(
 
     readFile = await file.read()
 
-    if authorization is None:
-        raise HTTPException(status_code=401, detail="Authorization header is missing")
+    try:
+        jwt_token = security_service.get_jwt_token_data(authorization)
 
-    jwt_token = security_service.get_jwt_token(authorization)
-
-    await song_service.create_song(nombre, genero, foto, readFile, jwt_token)
-    return Response(None, 201)
+        await song_service.create_song(nombre, genero, foto, readFile, jwt_token)
+        return Response(None, 201)
+    except BadJWTTokenProvidedException:
+        return Response(
+            status_code=HTTP_401_UNAUTHORIZED,
+            content="Could not validate credentials",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
 
 
 @router.get("/")
@@ -177,13 +183,17 @@ def update_song(
         Unauthorized 401
     """
 
-    if authorization is None:
-        raise HTTPException(status_code=401, detail="Authorization header is missing")
+    try:
+        jwt_token = security_service.get_jwt_token_data(authorization)
 
-    jwt_token = security_service.get_jwt_token(authorization)
-
-    song_service.update_song(nombre, nuevo_nombre, foto, genre, jwt_token)
-    return Response(None, 204)
+        song_service.update_song(nombre, nuevo_nombre, foto, genre, jwt_token)
+        return Response(None, 204)
+    except BadJWTTokenProvidedException:
+        return Response(
+            status_code=HTTP_401_UNAUTHORIZED,
+            content="Could not validate credentials",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
 
 
 @router.patch("/{nombre}/numberOfPlays")

@@ -15,6 +15,33 @@ class TokenData:
         return json.dumps(self.__dict__)
 
 
+class BadJWTTokenProvidedException(SpotifyElectronException):
+    """Exception for bad JWT Token provided"""
+
+    ERROR = "Exception for bad JWT Token provided"
+
+    def __init__(self):
+        super().__init__(self.ERROR)
+
+
+class JWTNotProvidedException(SpotifyElectronException):
+    """Exception for JWT Token not provided"""
+
+    ERROR = "JWT Token not provided"
+
+    def __init__(self):
+        super().__init__(self.ERROR)
+
+
+class JWTMissingCredentialsException(SpotifyElectronException):
+    """Exception for missing credentials obtained from JWT Token"""
+
+    ERROR = "Missing credentials in JWT Token"
+
+    def __init__(self):
+        super().__init__(self.ERROR)
+
+
 class JWTGetUserException(SpotifyElectronException):
     """Exception for error getting user data from JWT Token"""
 
@@ -69,7 +96,7 @@ class VerifyPasswordException(SpotifyElectronException):
         super().__init__(self.ERROR)
 
 
-class UnexpectedJWTException(SpotifyElectronException):
+class UnexpectedGetJWTTokenException(SpotifyElectronException):
     """Exception for unexpected error getting JWT token data"""
 
     ERROR = "Unexpected error getting data from JWT"

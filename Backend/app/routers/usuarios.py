@@ -1,12 +1,14 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Body, Header, HTTPException
+from fastapi import APIRouter, Body, Header
 from fastapi.responses import Response
+from starlette.status import HTTP_401_UNAUTHORIZED
 
 import app.security.security_service as security_service
 import app.services.all_users_service as all_users_service
 import app.services.http_encode_service as http_encode_service
 import app.services.user_service as user_service
+from app.security.security_schema import BadJWTTokenProvidedException
 
 router = APIRouter(
     prefix="/usuarios",
@@ -32,13 +34,17 @@ def get_whoAmI(authorization: Annotated[str | None, Header()] = None) -> Respons
         Not Found 404: No existe un usuario con el nombre "nombre"
     """
 
-    if authorization is None:
-        raise HTTPException(status_code=401, detail="Authorization header is missing")
+    try:
+        jwt_token = security_service.get_jwt_token_data(authorization)
+        jwt_token_json = http_encode_service.get_json(jwt_token)
 
-    jwt_token = security_service.get_jwt_token(authorization)
-    jwt_token_json = http_encode_service.get_json(jwt_token)
-
-    return Response(jwt_token_json, media_type="application/json", status_code=200)
+        return Response(jwt_token_json, media_type="application/json", status_code=200)
+    except BadJWTTokenProvidedException:
+        return Response(
+            status_code=HTTP_401_UNAUTHORIZED,
+            content="Could not validate credentials",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
 
 
 @router.get("/{nombre}", tags=["usuarios"])
@@ -129,20 +135,24 @@ def update_usuario(
         Not Found 404: No existe un usuario con el nombre "nombre"
     """
 
-    if authorization is None:
-        raise HTTPException(status_code=401, detail="Authorization header is missing")
+    try:
+        jwt_token = security_service.get_jwt_token_data(authorization)
 
-    jwt_token = security_service.get_jwt_token(authorization)
-
-    user_service.update_user(
-        name=nombre,
-        photo=foto,
-        playback_history=historial_canciones,
-        playlists=playlists,
-        saved_playlists=playlists_guardadas,
-        token=jwt_token,
-    )
-    return Response(None, 204)
+        user_service.update_user(
+            name=nombre,
+            photo=foto,
+            playback_history=historial_canciones,
+            playlists=playlists,
+            saved_playlists=playlists_guardadas,
+            token=jwt_token,
+        )
+        return Response(None, 204)
+    except BadJWTTokenProvidedException:
+        return Response(
+            status_code=HTTP_401_UNAUTHORIZED,
+            content="Could not validate credentials",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
 
 
 @router.delete("/{nombre}", tags=["usuarios"])
@@ -193,16 +203,20 @@ def patch_historial(
                        No existe una canción con el nombre "nombre_cancion"
     """
 
-    if authorization is None:
-        raise HTTPException(status_code=401, detail="Authorization header is missing")
+    try:
+        jwt_token = security_service.get_jwt_token_data(authorization)
 
-    jwt_token = security_service.get_jwt_token(authorization)
+        all_users_service.add_playback_history(
+            user_name=nombre, song=nombre_cancion, token=jwt_token
+        )
 
-    all_users_service.add_playback_history(
-        user_name=nombre, song=nombre_cancion, token=jwt_token
-    )
-
-    return Response(None, 204)
+        return Response(None, 204)
+    except BadJWTTokenProvidedException:
+        return Response(
+            status_code=HTTP_401_UNAUTHORIZED,
+            content="Could not validate credentials",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
 
 
 @router.patch("/{nombre}/playlists_guardadas", tags=["usuarios"])
@@ -231,13 +245,17 @@ def patch_playlists_guardadas(
                        No existe una playlist con el nombre "nombre_playlist"
     """
 
-    if authorization is None:
-        raise HTTPException(status_code=401, detail="Authorization header is missing")
+    try:
+        jwt_token = security_service.get_jwt_token_data(authorization)
 
-    jwt_token = security_service.get_jwt_token(authorization)
-
-    all_users_service.add_saved_playlist(nombre, nombre_playlist, token=jwt_token)
-    return Response(None, 204)
+        all_users_service.add_saved_playlist(nombre, nombre_playlist, token=jwt_token)
+        return Response(None, 204)
+    except BadJWTTokenProvidedException:
+        return Response(
+            status_code=HTTP_401_UNAUTHORIZED,
+            content="Could not validate credentials",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
 
 
 @router.delete("/{nombre}/playlists_guardadas", tags=["usuarios"])
@@ -266,10 +284,16 @@ def delete_playlists_guardadas(
                        No existe una playlist con el nombre "nombre_playlist"
     """
 
-    if authorization is None:
-        raise HTTPException(status_code=401, detail="Authorization header is missing")
+    try:
+        jwt_token = security_service.get_jwt_token_data(authorization)
 
-    jwt_token = security_service.get_jwt_token(authorization)
-
-    all_users_service.delete_saved_playlist(nombre, nombre_playlist, token=jwt_token)
-    return Response(None, 202)
+        all_users_service.delete_saved_playlist(
+            nombre, nombre_playlist, token=jwt_token
+        )
+        return Response(None, 202)
+    except BadJWTTokenProvidedException:
+        return Response(
+            status_code=HTTP_401_UNAUTHORIZED,
+            content="Could not validate credentials",
+            headers={"WWW-Authenticate": "Bearer"},
+        )

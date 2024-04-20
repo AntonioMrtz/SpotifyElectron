@@ -1,8 +1,8 @@
 from datetime import UTC, datetime, timedelta
-from typing import Annotated
+from typing import Annotated, Any
 
 import bcrypt
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 
@@ -20,12 +20,14 @@ from app.model.User import User
 from app.model.UserType import User_Type
 from app.playlist.playlists_service import handle_user_should_exists
 from app.security.security_schema import (
+    BadJWTTokenProvidedException,
     CreateJWTException,
     JWTExpiredException,
     JWTGetUserException,
+    JWTMissingCredentialsException,
+    JWTNotProvidedException,
     JWTValidationException,
     TokenData,
-    UnexpectedJWTException,
     UnexpectedLoginUserException,
     VerifyPasswordException,
 )
@@ -34,6 +36,8 @@ from app.user.user_schema import UserNotFoundException
 
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 10080  # 7 days
+DAYS_TO_EXPIRE_COOKIE = 7
+
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="usuarios/whoami/")
 
@@ -72,47 +76,54 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None) -> s
         return encoded_jwt
 
 
-def get_jwt_token(token: Annotated[str, Depends(oauth2_scheme)]) -> TokenData:
+def get_jwt_token_data(
+    token: Annotated[str | None, Depends(oauth2_scheme)],
+) -> TokenData:
     """Decrypt jwt data and returns data from it
 
-    Parameters
-    ----------
-        token (jwt token)
+    Args:
+        token (Annotated[str  |  None, Depends): JWT Token
 
-    Raises
-    -------
-        401 : Bad credentials
+    Raises:
+        BadJWTTokenProvidedException: invalid token provided
 
-    Returns
-    -------
-        TokenData
+    Returns:
+        TokenData: the data provided by the JWT Token
     """
-    # TODO hacr y documentar
 
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
-
+    hanle_incoming_jwt_token(token)
     try:
         payload = jwt.decode(
-            token,
+            token,  # type: ignore
             getattr(PropertiesManager, DISTRIBUTION_ID_ENV_NAME),
             algorithms=[ALGORITHM],
         )
-        username: str = payload.get("access_token")
-        role: str = payload.get("role")
-        token_type: str = payload.get("token_type")
-        if username is None or role is None or token_type is None:
-            raise credentials_exception
-        token_data = TokenData(username=username, role=role, token_type=token_type)
-    except JWTError:
-        # TODO handle exceptions
-        raise HTTPException(status_code=401, detail="Credenciales inválidos")
+        username = payload.get("access_token")
+        role = payload.get("role")
+        token_type = payload.get("token_type")
+
+        credentials = [username, role, token_type]
+        check_are_jwt_credentials_missing(credentials)
+        token_data = TokenData(username=username, role=role, token_type=token_type)  # type: ignore
+
+    except JWTNotProvidedException as exception:
+        security_service_logger.exception("No JWT Token was provided")
+        raise BadJWTTokenProvidedException from exception
+    except JWTMissingCredentialsException as exception:
+        security_service_logger.exception(
+            f"One or more credentials obtained from JWT are missing : {credentials}"
+        )
+        raise BadJWTTokenProvidedException from exception
+    except JWTError as exception:
+        security_service_logger.exception("Error decoding JWT Token")
+        raise BadJWTTokenProvidedException from exception
     except Exception as exception:
-        raise UnexpectedJWTException from exception
+        security_service_logger.exception(
+            "Unexpected error getting data from JWT Token"
+        )
+        raise BadJWTTokenProvidedException from exception
     else:
+        security_service_logger.info(f"Token data : {token_data}")
         return token_data
 
 
@@ -131,13 +142,15 @@ def get_current_user(
         Artist | User: the user or artist associated with the JWT Token
     """
     try:
-        jwt = get_jwt_token(token)
+        jwt = get_jwt_token_data(token)
 
         if jwt.role == User_Type.ARTIST:
             user = artist_service.get_artist(jwt.username)
         elif jwt.role == User_Type.USER:
             user = user_service.get_user(jwt.username)
-
+    except BadJWTTokenProvidedException as exception:
+        security_service_logger.exception("Error getting jwt token data")
+        raise BadJWTTokenProvidedException from exception
     except UserNotFoundException as exception:
         security_service_logger.exception(f"User {jwt.username} not found")
         raise UserNotFoundException from exception
@@ -175,6 +188,16 @@ def verify_password(plain_password: str, hashed_password: bytes):
     """
     if not bcrypt.checkpw(plain_password.encode(), hashed_password):
         raise VerifyPasswordException
+
+
+def get_token_expire_date() -> datetime:
+    """Returns expire date for new token
+
+    Returns:
+        datetime: the expire date for the token
+    """
+    current_utc_datetime = datetime.now(UTC).replace(tzinfo=UTC)
+    return current_utc_datetime + timedelta(days=DAYS_TO_EXPIRE_COOKIE)
 
 
 def login_user(name: str, password: str) -> str:
@@ -252,7 +275,7 @@ def check_jwt_is_valid(token: str) -> None:
         decoded_token = jwt.decode(
             token, getattr(PropertiesManager, DISTRIBUTION_ID_ENV_NAME), ALGORITHM
         )
-        handle_token_expired(decoded_token)
+        check_token_is_expired(decoded_token)
 
     except JWTError as exception:
         security_service_logger.exception(f"Error decoding token : {token}")
@@ -269,7 +292,7 @@ def check_jwt_is_valid(token: str) -> None:
         raise JWTValidationException from exception
 
 
-def handle_token_expired(token: dict) -> None:
+def check_token_is_expired(token: dict) -> None:
     """Checks if token is expired comparing current date with expiration date
 
     Args:
@@ -281,3 +304,30 @@ def handle_token_expired(token: dict) -> None:
     expiration_time = datetime.fromtimestamp(token["exp"], UTC)
     if expiration_time < datetime.now(UTC):
         raise JWTExpiredException
+
+
+def hanle_incoming_jwt_token(token: Any) -> None:
+    """Check whether jwt token is None or not
+
+    Args:
+        token (Any): the incoming token
+
+    Raises:
+        JWTNotProvidedException: if the token is None
+    """
+    if token is None:
+        raise JWTNotProvidedException
+
+
+def check_are_jwt_credentials_missing(credentials: list[Any]):
+    """Check if any jwt credentials are missing
+
+    Args:
+        credentials (list[str]): list with the obtained credentials
+
+    Raises:
+        JWTMissingCredentialsException: if a credential is missing
+    """
+    for credential in credentials:
+        if credential is None:
+            raise JWTMissingCredentialsException

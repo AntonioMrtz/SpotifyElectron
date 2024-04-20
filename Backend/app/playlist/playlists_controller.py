@@ -1,6 +1,6 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Body, Header, HTTPException
+from fastapi import APIRouter, Body, Header
 from fastapi.responses import Response
 from starlette.status import (
     HTTP_200_OK,
@@ -26,6 +26,7 @@ from app.playlist.playlists_schema import (
     PlaylistNotFoundException,
     PlaylistServiceException,
 )
+from app.security.security_schema import BadJWTTokenProvidedException
 
 router = APIRouter(
     prefix="/playlists",
@@ -43,9 +44,6 @@ def get_playlist(name: str) -> Response:
 
     Args:
         nombre (str): name
-
-    Returns:
-        Response: _description_
     """
 
     try:
@@ -84,34 +82,17 @@ def post_playlist(
     song_names: list[str] = Body(...),
     authorization: Annotated[str | None, Header()] = None,
 ) -> Response:
-    """Registra la playlist
+    """Creates playlist
 
-    Parameters
-    ----------
-        nombre (str): Nombre de la playlist
-        foto (url): url de la imagen
-        descripcion (str): Descripcion de la playlist
-        creador (str) : creador de la playlist
-        nombres_canciones (list) : nombres de las canciones
-
-    Returns
-    -------
-        Response 201 Created
-
-    Raises
-    -------
-        Bad Request 400: Parámetros introducidos no són válidos o vacíos
-        Unauthorized 401
-        Not found 401
+    Args:
+        name (str): playlist name
+        photo (str): photo
+        description (str): description
+        song_names (list[str], optional): the list of song names. Defaults to Body(...).
     """
 
-    if authorization is None:
-        raise HTTPException(
-            status_code=HTTP_401_UNAUTHORIZED, detail="Authorization header is missing"
-        )
-
     try:
-        jwt_token = security_service.get_jwt_token(authorization)
+        jwt_token = security_service.get_jwt_token_data(authorization)
 
         playlists_service.create_playlist(
             name=name,
@@ -120,8 +101,13 @@ def post_playlist(
             song_names=song_names,
             token=jwt_token,
         )
-
         return Response(None, HTTP_201_CREATED)
+    except BadJWTTokenProvidedException:
+        return Response(
+            status_code=HTTP_401_UNAUTHORIZED,
+            content="Could not validate credentials",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
     except PlaylistBadNameException:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
@@ -146,39 +132,29 @@ def update_playlist(
     new_name: str | None = None,
     authorization: Annotated[str | None, Header()] = None,
 ) -> Response:
-    """Actualiza los parámetros de la playlist con nombre "nombre" ,
-    las canciones repetidas son serán añadidas
+    """Updates playlist data
 
-    Parameters
-    ----------
-        nombre (str): Nombre de la playlist
-        nombres_canciones (list) : Lista con las canciones de la playlist
-        foto (str) : url de la foto miniatura de la playlist
-        nuevo_nombre (str Opcional [default = None]) : Nuevo nombre de la playlist,
-                                                       si es vacío no se actualiza
-        descripcion (str) : descripción de la playlist
-
-    Returns
-    -------
-        Response 204 No content
-
-    Raises
-    -------
-        Bad Request 400: Parámetros introducidos no són válidos o vacíos
-        Unauthorized 401
-        Not Found 404: No existe una playlist con el nombre "nombre"
+    Args:
+        name (str): playlist name
+        photo (str): photo
+        description (str): description
+        song_names (list[str], optional): list of song names. Defaults to Body(...).
+        new_name (str | None, optional): new name of the playlist. Defaults to None.
     """
 
-    if authorization is None:
-        raise HTTPException(status_code=401, detail="Authorization header is missing")
-
     try:
-        jwt_token = security_service.get_jwt_token(authorization)
+        jwt_token = security_service.get_jwt_token_data(authorization)
 
         playlists_service.update_playlist(
             name, new_name, photo, description, song_names, jwt_token
         )
         return Response(None, HTTP_204_NO_CONTENT)
+    except BadJWTTokenProvidedException:
+        return Response(
+            status_code=HTTP_401_UNAUTHORIZED,
+            content="Could not validate credentials",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
     except PlaylistBadNameException:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
@@ -196,20 +172,10 @@ def update_playlist(
 
 @router.delete("/{name}", tags=["playlists"])
 def delete_playlist(name: str) -> Response:
-    """Elimina una playlist con nombre "nombre"
+    """Delete playlist
 
-    Parameters
-    ----------
-        nombre (str): Nombre de la playlist
-
-    Returns
-    -------
-        Response 202 Accepted
-
-    Raises
-    -------
-        Bad Request 400: Parámetros introducidos no són válidos o vacíos
-        Not Found 404: No existe una playlist con el nombre "nombre"
+    Args:
+        name (str): playlist name
     """
 
     try:
@@ -232,18 +198,7 @@ def delete_playlist(name: str) -> Response:
 
 @router.get("/", tags=["playlists"])
 def get_playlists() -> Response:
-    """Devuelve todas las playlists [ SOLO nombres canciones , no el archivo de audio ]
-
-    Parameters
-    ----------
-
-    Returns
-    -------
-        Response 200 OK
-
-    Raises
-    -------
-    """
+    """Return all playlists"""
     try:
         playlists = playlists_service.get_all_playlist()
         playlist_json = http_encode_service.get_json_with_iterable_field(
@@ -275,17 +230,10 @@ def get_playlists() -> Response:
 
 @router.get("/multiple/{names}", tags=["playlists"])
 def get_selected_playlists(names: str) -> Response:
-    """Devuelve todas las playlists [ SOLO nombres canciones , no el archivo de audio ]
+    """Return playlists by names
 
-    Parameters
-    ----------
-
-    Returns
-    -------
-        Response 200 OK
-
-    Raises
-    -------
+    Args:
+        names (str): names of playlists
     """
 
     try:

@@ -1,14 +1,15 @@
 import json
 from typing import Annotated
 
-from fastapi import APIRouter, Body, Header, HTTPException
+from fastapi import APIRouter, Body, Header
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import Response
-from starlette.status import HTTP_200_OK
+from starlette.status import HTTP_200_OK, HTTP_401_UNAUTHORIZED
 
 import app.security.security_service as security_service
 import app.services.artist_service as artist_service
 import app.services.http_encode_service as http_encode_service
+from app.security.security_schema import BadJWTTokenProvidedException
 
 router = APIRouter(
     prefix="/artistas",
@@ -98,21 +99,25 @@ def update_artista(
         Not Found 404: No existe un artista con el nombre "nombre"
     """
 
-    if authorization is None:
-        raise HTTPException(status_code=401, detail="Authorization header is missing")
+    try:
+        jwt_token = security_service.get_jwt_token_data(authorization)
 
-    jwt_token = security_service.get_jwt_token(authorization)
-
-    artist_service.update_artist(
-        name=nombre,
-        photo=foto,
-        playback_history=historial_canciones,
-        playlists=playlists,
-        saved_playlists=playlists_guardadas,
-        uploaded_songs=canciones_creadas,
-        token=jwt_token,
-    )
-    return Response(None, 204)
+        artist_service.update_artist(
+            name=nombre,
+            photo=foto,
+            playback_history=historial_canciones,
+            playlists=playlists,
+            saved_playlists=playlists_guardadas,
+            uploaded_songs=canciones_creadas,
+            token=jwt_token,
+        )
+        return Response(None, 204)
+    except BadJWTTokenProvidedException:
+        return Response(
+            status_code=HTTP_401_UNAUTHORIZED,
+            content="Could not validate credentials",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
 
 
 @router.delete("/{nombre}", tags=["artistas"])

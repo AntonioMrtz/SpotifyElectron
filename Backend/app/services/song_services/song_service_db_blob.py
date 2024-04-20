@@ -41,7 +41,7 @@ def check_song_exists(name: str) -> bool:
     -------
         Boolean
     """
-    return True if file_song_collection.find_one({"name": name}) else False
+    return bool(file_song_collection.find_one({"name": name}))
 
 
 def check_jwt_user_is_song_artist(token: TokenData, artist: str) -> bool:
@@ -63,10 +63,10 @@ def check_jwt_user_is_song_artist(token: TokenData, artist: str) -> bool:
 
     if token.username == artist:
         return True
-    else:
-        raise HTTPException(
-            status_code=401, detail="El usuario no es el creador de la canción"
-        )
+
+    raise HTTPException(
+        status_code=401, detail="El usuario no es el creador de la canción"
+    )
 
 
 def get_song(name: str) -> SongBlob:
@@ -101,7 +101,7 @@ def get_song(name: str) -> SongBlob:
 
     song_metadata = file_song_collection.find_one({"name": name})
 
-    song = SongBlob(
+    return SongBlob(
         name,
         song_metadata["artist"],
         song_metadata["photo"],
@@ -110,8 +110,6 @@ def get_song(name: str) -> SongBlob:
         encoded_bytes,
         song_metadata["number_of_plays"],
     )
-
-    return song
 
 
 def get_songs(names: list) -> list:
@@ -214,7 +212,7 @@ async def create_song(
         # Calculate the duration in seconds
         duration = librosa.get_duration(y=audio_data, sr=sample_rate)
 
-        file_id = gridFsSong.put(
+        gridFsSong.put(
             file,
             name=name,
             artist=artist,
@@ -225,10 +223,10 @@ async def create_song(
         )
 
     #! If its not a sound file
-    except:
+    except Exception:
         duration = 0
 
-        file_id = gridFsSong.put(
+        gridFsSong.put(
             file,
             name=name,
             artist=artist,
@@ -319,7 +317,7 @@ def update_song(
                     ),
                     "genre": (
                         Genre(genre).value
-                        if genre != None
+                        if genre is not None
                         else Genre[result_song_exists.genre].value
                     ),
                 }
@@ -337,7 +335,7 @@ def update_song(
                     ),
                     "genre": (
                         Genre(genre).value
-                        if genre != None
+                        if genre is not None
                         else Genre[result_song_exists.genre].value
                     ),
                 }
@@ -392,9 +390,7 @@ def search_by_name(name: str) -> list[SongDTO]:
 
     [song_names.append(song["name"]) for song in song_names_response]
 
-    songs = dto_service.get_songs(song_names)
-
-    return songs
+    return dto_service.get_songs(song_names)
 
 
 def get_artist_playback_count(artist_name: str) -> int:
@@ -416,8 +412,7 @@ def get_artist_playback_count(artist_name: str) -> int:
 
     if result_number_playback_count_query is None:
         return 0
-    total_plays = result_number_playback_count_query["total"]
-    return total_plays
+    return result_number_playback_count_query["total"]
 
 
 def get_songs_by_genre(genre: Genre) -> list[Song]:

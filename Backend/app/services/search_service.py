@@ -24,8 +24,6 @@ def search_by_name(name: str) -> dict:
         dict: the items that match the name on a dict
     """
 
-    items = {}
-
     try:
         checkValidParameterString(name)
 
@@ -35,18 +33,16 @@ def search_by_name(name: str) -> dict:
         artists = artist_service.search_by_name(name)
         users = user_service.search_by_name(name)
 
-        # Create a dictionary to store the results
-        items = {
-            "artistas": artists,
-            "playlists": playlists,
-            "users": users,
-            "songs": songs,
-        }
-
-        return items
     except BadParameterException:
         raise
     except Exception as e:
         raise HTTPException(
             status_code=500, detail=f"No se pudieron obtener los items por nombre | {e}"
         )
+    else:
+        return {
+            "artistas": artists,
+            "playlists": playlists,
+            "users": users,
+            "songs": songs,
+        }

@@ -36,10 +36,9 @@ def check_jwt_is_user(token: TokenData, user: str) -> bool:
 
     if token.username == user:
         return True
-    else:
-        raise HTTPException(
-            status_code=401, detail="El usuario está modificando otro usuario"
-        )
+    raise HTTPException(
+        status_code=401, detail="El usuario está modificando otro usuario"
+    )
 
 
 def get_user(name: str) -> User:
@@ -71,7 +70,7 @@ def get_user(name: str) -> User:
 
     date = user_data["register_date"][:-1]
 
-    user = User(
+    return User(
         name=user_data["name"],
         photo=user_data["photo"],
         register_date=date,
@@ -80,8 +79,6 @@ def get_user(name: str) -> User:
         playlists=user_data["playlists"],
         saved_playlists=user_data["saved_playlists"],
     )
-
-    return user
 
 
 def create_user(name: str, photo: str, password: str) -> None:
@@ -283,7 +280,7 @@ def check_user_exists(user_name: str) -> bool:
 
     result_user_exists = user_collection.find_one({"name": user_name})
 
-    return True if result_user_exists else False
+    return bool(result_user_exists)
 
 
 def add_playback_history(
@@ -298,7 +295,7 @@ def add_playback_history(
 
     playback_history.append(song)
 
-    result = user_collection.update_one(
+    user_collection.update_one(
         {"name": user_name}, {"$set": {"playback_history": playback_history}}
     )
 
@@ -310,7 +307,7 @@ def add_saved_playlist(user_name: str, playlist_name: str):
 
     saved_playlists.append(playlist_name)
 
-    result = user_collection.update_one(
+    user_collection.update_one(
         {"name": user_name}, {"$set": {"saved_playlists": list(set(saved_playlists))}}
     )
 
@@ -323,7 +320,7 @@ def delete_saved_playlist(user_name: str, playlist_name: str):
     if playlist_name in saved_playlists:
         saved_playlists.remove(playlist_name)
 
-        result = user_collection.update_one(
+        user_collection.update_one(
             {"name": user_name}, {"$set": {"saved_playlists": saved_playlists}}
         )
 
@@ -335,7 +332,7 @@ def add_playlist_to_owner(user_name: str, playlist_name: str) -> None:
 
     playlists.append(playlist_name)
 
-    result = user_collection.update_one(
+    user_collection.update_one(
         {"name": user_name}, {"$set": {"playlists": list(set(playlists))}}
     )
 
@@ -348,7 +345,7 @@ def delete_playlist_from_owner(user_name: str, playlist_name: str) -> None:
     if playlist_name in playlists:
         playlists.remove(playlist_name)
 
-        result = user_collection.update_one(
+        user_collection.update_one(
             {"name": user_name}, {"$set": {"playlists": playlists}}
         )
 

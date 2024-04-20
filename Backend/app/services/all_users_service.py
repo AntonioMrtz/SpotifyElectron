@@ -17,7 +17,7 @@ services_map = {
 song_service = get_song_service()
 
 
-def isArtistOrUser(user_name: str) -> User_Type or null:
+def isArtistOrUser(user_name: str) -> User_Type | None:
     """Checks if the user_name is user or artists
 
     Parameters
@@ -40,11 +40,10 @@ def isArtistOrUser(user_name: str) -> User_Type or null:
     if user_service.check_user_exists(user_name):
         return User_Type.USER
 
-    elif artist_service.check_artists_exists(user_name):
+    if artist_service.check_artists_exists(user_name):
         return User_Type.ARTIST
 
-    else:
-        raise HTTPException(status_code=404, detail="Usuario no existe")
+    raise HTTPException(status_code=404, detail="Usuario no existe")
 
 
 def check_user_exists(user_name: str) -> bool:

@@ -41,7 +41,7 @@ def check_user_exists(user_name: str) -> bool:
 
     result_artist_exists = artist_collection.find_one({"name": user_name})
 
-    return True if result_artist_exists else False
+    return bool(result_artist_exists)
 
 
 def check_artists_exists(artist_name: str) -> bool:
@@ -64,7 +64,7 @@ def check_artists_exists(artist_name: str) -> bool:
     if not checkValidParameterString(artist_name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
-    return True if artist_collection.find_one({"name": artist_name}) else False
+    return bool(artist_collection.find_one({"name": artist_name}))
 
 
 def check_jwt_artist_is_artist(token: TokenData, artist: str) -> bool:
@@ -86,10 +86,10 @@ def check_jwt_artist_is_artist(token: TokenData, artist: str) -> bool:
 
     if token.username == artist:
         return True
-    else:
-        raise HTTPException(
-            status_code=401, detail="El usuario no es el creador de la canción"
-        )
+
+    raise HTTPException(
+        status_code=401, detail="El usuario no es el creador de la canción"
+    )
 
 
 def add_song_artist(artist_name: str, song_name: str):
@@ -118,7 +118,7 @@ def add_song_artist(artist_name: str, song_name: str):
     if not check_artists_exists(artist_name=artist_name):
         raise HTTPException(status_code=404, detail="El artista no existe")
 
-    result = artist_collection.update_one(
+    artist_collection.update_one(
         {"name": artist_name}, {"$push": {"uploaded_songs": song_name}}
     )
 
@@ -147,7 +147,7 @@ def delete_song_artist(artist_name: str, song_name: str):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
     if check_artists_exists(artist_name=artist_name):
-        result = artist_collection.update_one(
+        artist_collection.update_one(
             {"name": artist_name}, {"$pull": {"uploaded_songs": song_name}}
         )
 
@@ -181,7 +181,7 @@ def get_artist(name: str) -> Artist:
 
     date = artist_data["register_date"][:-1]
 
-    artist = Artist(
+    return Artist(
         name=artist_data["name"],
         photo=artist_data["photo"],
         register_date=date,
@@ -191,8 +191,6 @@ def get_artist(name: str) -> Artist:
         saved_playlists=artist_data["saved_playlists"],
         uploaded_songs=artist_data["uploaded_songs"],
     )
-
-    return artist
 
 
 def create_artist(name: str, photo: str, password: str):
@@ -287,7 +285,7 @@ def update_artist(
     if not result_artist_exists:
         raise HTTPException(status_code=404, detail="El artista no existe")
 
-    result = artist_collection.update_one(
+    artist_collection.update_one(
         {"name": name},
         {
             "$set": {
@@ -420,9 +418,7 @@ def search_by_name(name: str) -> list[Artist]:
 
     [artists_names.append(artist["name"]) for artist in artists_names_response]
 
-    artists = get_artists(artists_names)
-
-    return artists
+    return get_artists(artists_names)
 
 
 # * AUX METHODs
@@ -440,7 +436,7 @@ def add_playback_history(
 
     playback_history.append(song)
 
-    result = artist_collection.update_one(
+    artist_collection.update_one(
         {"name": user_name}, {"$set": {"playback_history": playback_history}}
     )
 
@@ -452,7 +448,7 @@ def add_saved_playlist(user_name: str, playlist_name: str):
 
     saved_playlists.append(playlist_name)
 
-    result = artist_collection.update_one(
+    artist_collection.update_one(
         {"name": user_name}, {"$set": {"saved_playlists": list(set(saved_playlists))}}
     )
 
@@ -465,7 +461,7 @@ def delete_saved_playlist(user_name: str, playlist_name: str):
     if playlist_name in saved_playlists:
         saved_playlists.remove(playlist_name)
 
-        result = artist_collection.update_one(
+        artist_collection.update_one(
             {"name": user_name}, {"$set": {"saved_playlists": saved_playlists}}
         )
 
@@ -477,7 +473,7 @@ def add_playlist_to_owner(user_name: str, playlist_name: str) -> None:
 
     playlists.append(playlist_name)
 
-    result = artist_collection.update_one(
+    artist_collection.update_one(
         {"name": user_name}, {"$set": {"playlists": list(set(playlists))}}
     )
 
@@ -490,7 +486,7 @@ def delete_playlist_from_owner(user_name: str, playlist_name: str) -> None:
     if playlist_name in playlists:
         playlists.remove(playlist_name)
 
-        result = artist_collection.update_one(
+        artist_collection.update_one(
             {"name": user_name}, {"$set": {"playlists": playlists}}
         )
 

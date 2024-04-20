@@ -57,7 +57,7 @@ def check_song_exists(name: str) -> bool:
         Boolean
     """
 
-    return True if song_collection.find_one({"name": name}) else False
+    return bool(song_collection.find_one({"name": name}))
 
 
 def check_jwt_user_is_song_artist(token: TokenData, artist: str) -> bool:
@@ -79,10 +79,10 @@ def check_jwt_user_is_song_artist(token: TokenData, artist: str) -> bool:
 
     if token.username == artist:
         return True
-    else:
-        raise HTTPException(
-            status_code=401, detail="El usuario no es el creador de la canción"
-        )
+
+    raise HTTPException(
+        status_code=401, detail="El usuario no es el creador de la canción"
+    )
 
 
 def get_cloudfront_url(resource_path: str):
@@ -95,9 +95,7 @@ def get_cloudfront_url(resource_path: str):
     domain_name = response["Distribution"]["DomainName"]
 
     # Construct the CloudFront URL
-    cloudfront_url = f"https://{domain_name}/{resource_path}"
-
-    return cloudfront_url
+    return f"https://{domain_name}/{resource_path}"
 
 
 def get_song(name: str) -> Song:
@@ -136,7 +134,7 @@ def get_song(name: str) -> Song:
         # TODO peticion a Lambda por url
         cloudfront_url = get_cloudfront_url(f"{S3_BUCKET_BASE_PATH}{name}.mp3")
 
-        song = Song(
+        return Song(
             name=name,
             artist=song["artist"],
             photo=song["photo"],
@@ -145,8 +143,6 @@ def get_song(name: str) -> Song:
             url=cloudfront_url,
             number_of_plays=song["number_of_plays"],
         )
-
-        return song
 
     except ClientError:
         raise HTTPException(
@@ -258,7 +254,7 @@ async def create_song(
         duration = librosa.get_duration(y=audio_data, sr=sample_rate)
 
     #! If its not a sound file
-    except:
+    except Exception:
         duration = 0
 
     try:
@@ -266,7 +262,7 @@ async def create_song(
             Body=file, Bucket=song_bucket.name, Key=f"{S3_BUCKET_BASE_PATH}{name}.mp3"
         )
 
-        file_id = song_collection.insert_one(
+        song_collection.insert_one(
             {
                 "name": name,
                 "artist": artist,
@@ -389,7 +385,7 @@ def update_song(
                     ),
                     "genre": (
                         Genre(genre).value
-                        if genre != None
+                        if genre is not None
                         else Genre[result_song_exists.genre].value
                     ),
                 }
@@ -407,7 +403,7 @@ def update_song(
                     ),
                     "genre": (
                         Genre(genre).value
-                        if genre != None
+                        if genre is not None
                         else Genre[result_song_exists.genre].value
                     ),
                 }
@@ -462,9 +458,7 @@ def search_by_name(name: str) -> list[SongDTO]:
 
     [song_names.append(song["name"]) for song in song_names_response]
 
-    songs = dto_service.get_songs(song_names)
-
-    return songs
+    return dto_service.get_songs(song_names)
 
 
 def get_artist_playback_count(artist_name: str) -> int:
@@ -486,8 +480,7 @@ def get_artist_playback_count(artist_name: str) -> int:
 
     if result_number_playback_count_query is None:
         return 0
-    total_plays = result_number_playback_count_query["total"]
-    return total_plays
+    return result_number_playback_count_query["total"]
 
 
 def get_songs_by_genre(genre: Genre) -> list[Song]:

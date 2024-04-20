@@ -1,5 +1,4 @@
 :root {
-
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   font-synthesis: none;
@@ -46,38 +45,30 @@
   --font-size-song-footer: 1.05rem;
   --font-size-artist-footer: 0.85rem;
 
-
   /* sticky header */
 
   --pading-top-sticky-header: 3rem;
 }
 
 html {
-
   height: 100%;
 }
 
 body {
   margin: 0;
   height: 100%;
-
 }
 
 a {
-
-
   text-decoration: none;
   color: inherit;
-
 }
 
 a:hover {
-
   color: inherit;
 }
 
 ul {
-
   list-style: none;
   margin-bottom: 0 !important;
 }
@@ -96,15 +87,10 @@ p {
 
 input:focus-visible,
 textarea:focus-visible {
-
   outline: none !important;
-
 }
 
-
-
 @media (max-width: 1600px) {
-
   :root {
     --sidebar-height: 88svh;
 
@@ -113,6 +99,5 @@ textarea:focus-visible {
 
     --font-size-song-footer: 0.85rem !important;
     --font-size-artist-footer: 0.65rem !important;
-
   }
 }

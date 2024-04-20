@@ -1,5 +1,4 @@
 .card {
-
   flex: 0 0 18.5%;
   padding: 1.5%;
   background-color: var(--third-black) !important;
@@ -7,57 +6,39 @@
 }
 
 .card:hover .displayTruePlay {
-
   display: flex;
-
 }
 
 .card .displayTruePlay {
-
   display: none;
-
 }
 
 .card .buttonCardPlaylistCard {
-
   bottom: 0.5vw;
   right: 0.2vw;
   position: absolute;
   background: transparent;
   border: none;
-
 }
-
-
-
 
 .card:hover {
-
   background-color: var(--hover-white) !important;
-
 }
 
-
 .cardBody {
-
-
   padding-top: 5% !important;
   padding-left: 0% !important;
-
 }
 
 .tituloLista {
-
   width: calc(100%);
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
   color: var(--pure-white);
-
 }
 
 .autorLista {
-
   border: none;
   background-color: transparent;
   overflow: hidden;
@@ -66,55 +47,37 @@
   color: var(--grey);
   text-align: start;
   padding-left: 0 !important;
-
 }
 
-.autorLista:hover{
-
+.autorLista:hover {
   text-decoration: underline;
 }
 
 .displayNonePlay {
-
   display: none;
-
 }
 
 .playButton {
-
   color: var(--primary-green);
   font-size: 3.25vw;
   align-content: center;
-
 }
-
-
 
 .playButton:hover {
-
   transform: scale(1.05);
-
 }
-
-
 
 .card .imgContainer {
-
   position: relative;
-
-
 }
 
-.imgContainer img{
-
+.imgContainer img {
   width: 100%;
   height: auto;
   object-fit: cover;
   aspect-ratio: 1/1;
-
 }
 
-.imgContainerArtist img{
-
+.imgContainerArtist img {
   border-radius: 999px !important;
 }

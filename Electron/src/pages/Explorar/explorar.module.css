@@ -1,22 +1,16 @@
 .principal {
-
   padding: 8% 0% 0% 2%;
-
 }
 
 .columnOfGenres {
-
   padding-left: 0.5% !important;
   margin-top: 1%;
   margin-bottom: 1.5%;
 }
 
 .columnTitle {
-
   color: var(--pure-white);
   padding-bottom: 1%;
-
-
 }
 
 .cardContainer {
@@ -24,43 +18,35 @@
 }
 
 .searchBarWrapper {
-
   background-color: var(--hover-white);
   border: none;
   border-radius: 900px;
   height: 40px;
   width: 30svw;
-  margin-left: var(--bs-gutter-x, .75rem);
+  margin-left: var(--bs-gutter-x, 0.75rem);
   align-items: center;
   color: var(--pure-white);
   padding-left: 14px;
-
 }
 
 .searchBarWrapper:hover {
-
   -webkit-box-shadow: 0 0 0 1px #fff;
   box-shadow: 0 0 0 1px #fff;
-
 }
 
 .inputSearchBar {
-
   background-color: transparent;
   border: none;
   padding: 0 !important;
   width: 100%;
   color: var(--pure-white);
-
 }
 
-.searchBarWrapper:focus-within{
+.searchBarWrapper:focus-within {
   -webkit-box-shadow: 0 0 0 2px #fff;
   box-shadow: 0 0 0 2px #fff;
 }
 
 .inputSearchBar:focus-visible {
-
   outline: none !important;
-
 }

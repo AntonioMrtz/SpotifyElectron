@@ -38,13 +38,11 @@
   margin: 0 !important;
 }
 
-.ulNavigation li{
-
+.ulNavigation li {
   width: 100%;
 }
 
-.ulNavigation li button{
-
+.ulNavigation li button {
   width: 100%;
   border: none;
   background-color: transparent;

@@ -1,74 +1,52 @@
 .songInfoContainer {
-
   padding-right: 0% !important;
 }
 
 .infoCancionContainer {
-
   padding: 0 5% 0 3%;
   justify-content: center;
-
 }
 
 .songInfoContainer img {
-
   width: 64px;
   border-radius: var(--border-radius-thumbnails);
   margin-top: 2%;
   margin-bottom: 2%;
-
 }
 
 .infoCancionContainer button {
-
-
   border: none;
   background-color: transparent;
   text-align: start;
-
 }
 
 .infoCancionContainer button:hover {
-
   color: var(--primary-white) !important;
   text-decoration: underline;
-
-
 }
 
 .infoCancionContainer button:first-child {
-
   font-size: var(--font-size-song-footer);
   color: var(--primary-white);
   font-size: var(--font-size-song-footer);
-
-
 }
 
 .infoCancionContainer button:nth-child(2) {
-
   font-size: var(--font-size-artist-footer);
   color: var(--secondary-white);
-
 }
 
-
 .likeContainer {
-
   justify-content: center;
   color: var(--secondary-white);
 }
 
 .likeContainer i {
-
   color: var(--secondary-white);
 }
 
 .likeContainer button:hover i {
-
   color: var(--primary-white) !important;
-
-
 }
 
 .displayNoneLike {

@@ -1,6 +1,4 @@
 .wrapperStickyHeader {
-
-
   position: fixed;
   top: 0;
   right: 0;
@@ -10,34 +8,26 @@
   width: calc(100svw - var(--sidebar-width) - 0.5svw);
   border-radius: 14px 14px 0 0;
   height: 8svh;
-
 }
 
 /* ARROWS */
 
-
 .wrapperDirectionArrows button {
-
   color: var(--secondary-white);
 }
 
 .arrowOpacity {
-
   opacity: 0.6;
-
 }
 
 /* PROFILE and GROUP SESSION */
 
 .wrapperProfileOptions {
-
   justify-content: flex-end;
-
 }
 
 .wrapperProfileOptions button,
 .wrapperDirectionArrows button {
-
   padding: 0 !important;
   border-radius: 75px;
   background-color: var(--primary-black);
@@ -52,32 +42,20 @@
 
   width: 2rem;
   height: 2rem;
-
-
 }
 
 .wrapperProfileOptions button:hover {
-
-
   background-color: var(--third-black);
   transform: scale(1.04);
   padding: 1%;
-
-
 }
 
-
 .wrapperProfileOptions button img {
-
   width: 24px;
   height: 24px;
   border-radius: 50px;
-
-
 }
 
 .groupIcon {
-
   color: var(--primary-white);
-
 }

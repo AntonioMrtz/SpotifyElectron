@@ -1,9 +1,7 @@
 from datetime import datetime
-from sys import modules
 
 import app.playlist.playlists_repository as playlists_repository
 import app.services.all_users_service as all_users_service
-from app.database.Database import Database
 from app.exceptions.exceptions_schema import BadParameterException
 from app.logging.logger_constants import LOGGING_PLAYLIST_SERVICE
 from app.logging.logging_schema import SpotifyElectronLogger
@@ -21,12 +19,6 @@ from app.playlist.playlists_schema import (
 from app.services.song_services.song_service_provider import get_song_service
 from app.services.utils import checkValidParameterString
 from app.user.user_schema import UserNotFoundException
-
-if "pytest" in modules:
-    playlist_collection = Database().connection["test.playlist"]
-
-else:
-    playlist_collection = Database().connection["playlist"]
 
 song_service = get_song_service()
 

@@ -1,3 +1,5 @@
+import sys
+
 from pymongo.errors import ConnectionFailure
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
@@ -37,10 +39,8 @@ class DatabaseMeta(type):
 class Database(metaclass=DatabaseMeta):
     """Singleton instance of the MongoDb connection"""
 
-    connection = None
-
     def __init__(self):
-        if self.connection is None:
+        if not hasattr(self, "connection"):
             try:
                 uri = getattr(PropertiesManager, MONGO_URI_ENV_NAME)
                 self.connection = MongoClient(uri, server_api=ServerApi("1"))[
@@ -56,8 +56,6 @@ class Database(metaclass=DatabaseMeta):
 
     def _ping_database_connection(self):
         """Pings database connection"""
-        if self.connection is None:
-            return
         try:
             ping_result = self.connection.command("ping")
             self._check_ping_result(ping_result)
@@ -83,6 +81,7 @@ class Database(metaclass=DatabaseMeta):
         database_logger.critical(
             f"Error establishing connection with database: {error}"
         )
+        sys.exit("Database connection failed, stopping server")
 
     @staticmethod
     def get_instance():

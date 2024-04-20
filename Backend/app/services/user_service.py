@@ -10,10 +10,10 @@ from app.model.User import User
 from app.services.utils import checkValidParameterString
 
 if "pytest" in modules:
-    user_collection = Database().connection["test.usuario"]
+    user_collection = Database.get_instance().connection["test.usuario"]
 
 else:
-    user_collection = Database().connection["usuario"]
+    user_collection = Database.get_instance().connection["usuario"]
 
 
 def check_jwt_is_user(token: TokenData, user: str) -> bool:

@@ -13,10 +13,13 @@ from app.database.Database import (
 )
 
 
+@patch("sys.exit")
 @patch("app.database.Database.MongoClient")
-def test_raise_exception_connection_failure(MongoClient, clean_modified_environments):
+def test_raise_exception_connection_failure(
+    MongoClient, sys_exit_mock, clean_modified_environments
+):
     def raise_exception_connection_failure(*arg):
-        raise ConnectionFailure("ConnectionFailure Simulated exception")
+        raise ConnectionFailure()
 
     mock_mongo_client = Mock()
 
@@ -30,13 +33,16 @@ def test_raise_exception_connection_failure(MongoClient, clean_modified_environm
     with raises(DatabasePingFailed):
         Database()._ping_database_connection()
 
+    assert sys_exit_mock.call_count == 1
 
+
+@patch("sys.exit")
 @patch("app.database.Database.MongoClient")
 def test_raise_exception_unexpected_connection_failure(
-    MongoClient, clean_modified_environments
+    MongoClient, sys_exit_mock, clean_modified_environments
 ):
     def raise_exception_connection_failure(*arg):
-        raise UnexpectedDatabasePingFailed(Exception())
+        raise UnexpectedDatabasePingFailed()
 
     mock_mongo_client = Mock()
 
@@ -49,3 +55,5 @@ def test_raise_exception_unexpected_connection_failure(
     DatabaseMeta._instances.clear()
     with raises(UnexpectedDatabasePingFailed):
         Database()._ping_database_connection()
+
+    assert sys_exit_mock.call_count == 1

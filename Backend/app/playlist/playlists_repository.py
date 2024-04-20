@@ -16,10 +16,10 @@ from app.playlist.playlists_schema import (
 )
 
 if "pytest" in modules:
-    playlist_collection = Database().connection["test.playlist"]
+    playlist_collection = Database.get_instance().connection["test.playlist"]
 
 else:
-    playlist_collection = Database().connection["playlist"]
+    playlist_collection = Database.get_instance().connection["playlist"]
 
 
 playlist_repository_logger = SpotifyElectronLogger(

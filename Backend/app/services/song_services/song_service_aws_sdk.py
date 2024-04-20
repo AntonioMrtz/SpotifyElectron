@@ -23,13 +23,13 @@ from app.services.utils import checkValidParameterString
 """ Insert songs with format [files,chunks] https://www.mongodb.com/docs/manual/core/gridfs/"""
 
 if "pytest" in modules:
-    gridFsSong = GridFS(Database().connection, collection="test.cancion")
-    song_collection = Database().connection["test.canciones.streaming"]
+    gridFsSong = GridFS(Database.get_instance().connection, collection="test.cancion")
+    song_collection = Database.get_instance().connection["test.canciones.streaming"]
 
 
 else:
-    gridFsSong = GridFS(Database().connection, collection="cancion")
-    song_collection = Database().connection["canciones.streaming"]
+    gridFsSong = GridFS(Database.get_instance().connection, collection="cancion")
+    song_collection = Database.get_instance().connection["canciones.streaming"]
 
 S3_BUCKET_NAME = "canciones-spotify-electron"
 S3_BUCKET_BASE_PATH = "canciones/"

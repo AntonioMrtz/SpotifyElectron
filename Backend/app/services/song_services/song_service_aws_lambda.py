@@ -21,13 +21,13 @@ from app.services.utils import checkValidParameterString
 """ Insert songs with format [files,chunks] https://www.mongodb.com/docs/manual/core/gridfs/"""
 
 if "pytest" in modules:
-    file_song_collection = Database().connection["test.cancion.files"]
-    song_collection = Database().connection["test.canciones.streaming"]
+    file_song_collection = Database.get_instance().connection["test.cancion.files"]
+    song_collection = Database.get_instance().connection["test.canciones.streaming"]
 
 
 else:
-    file_song_collection = Database().connection["cancion.files"]
-    song_collection = Database().connection["canciones.streaming"]
+    file_song_collection = Database.get_instance().connection["cancion.files"]
+    song_collection = Database.get_instance().connection["canciones.streaming"]
 
 
 def check_song_exists(name: str) -> bool:

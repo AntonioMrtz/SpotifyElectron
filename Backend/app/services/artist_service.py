@@ -11,10 +11,10 @@ from app.services.song_services.song_service_provider import get_song_service
 from app.services.utils import checkValidParameterString
 
 if "pytest" in modules:
-    artist_collection = Database().connection["test.artista"]
+    artist_collection = Database.get_instance().connection["test.artista"]
 
 else:
-    artist_collection = Database().connection["artista"]
+    artist_collection = Database.get_instance().connection["artista"]
 
 song_service = get_song_service()
 

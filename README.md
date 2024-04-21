@@ -29,7 +29,7 @@ git clone https://github.com/AntonioMrtz/SpotifyElectron.git
 
 [CONTRIBUTING readme](https://github.com/AntonioMrtz/SpotifyElectron/blob/master/.github/CONTRIBUTING.md)
 
-## Project's goals 🎯
+## 🎯 Project's goals
 
 * Build from scratch a streaming service like Spotify using Electron+React and Python+FastAPI.
 * Develop the app with the best software practices and desing the app

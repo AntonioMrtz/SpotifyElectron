@@ -32,6 +32,6 @@
 
 ## MUST-HAVE SOFTWARE
 
-* Node >= v20.12.2
+* Node >= 20.12.2
 * Python >= 3.11
 * Git

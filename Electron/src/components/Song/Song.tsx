@@ -112,6 +112,7 @@ export default function Song({
         >
           <ContextMenuSong
             songName={name}
+            artistName={artistName}
             playlistName={playlistName}
             handleCloseParent={handleClose}
             refreshPlaylistData={refreshPlaylistData}

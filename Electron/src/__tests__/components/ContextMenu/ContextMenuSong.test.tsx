@@ -5,9 +5,12 @@ import ContextMenuSong from 'components/AdvancedUIComponents/ContextMenu/Song/Co
 import Global from 'global/global';
 import { UserType } from 'utils/role';
 import Token from 'utils/token';
+import * as router from 'react-router';
+import { BrowserRouter } from 'react-router-dom';
 
 const playlistName = 'playlisttest';
 const songName = 'songName';
+const artistName = 'artistName';
 const userName = 'prueba';
 const roleUser = UserType.ARTIST;
 
@@ -40,6 +43,9 @@ const playlistDTOMockFetch = {
   number_of_plays: 2,
 }; */
 
+const navigate = jest.fn();
+
+jest.spyOn(router, 'useNavigate').mockImplementation(() => navigate);
 jest.spyOn(Token, 'getTokenUsername').mockReturnValue(userName);
 jest.spyOn(Token, 'getTokenRole').mockReturnValue(roleUser);
 
@@ -107,13 +113,16 @@ global.fetch = jest.fn((url: string, options: any) => {
 test('Render ContextMenuSong', async () => {
   const component = await act(() => {
     return render(
-      <ContextMenuSong
-        playlistName={playlistName}
-        songName={songName}
-        handleCloseParent={jest.fn()}
-        refreshPlaylistData={jest.fn()}
-        refreshSidebarData={jest.fn()}
-      />,
+      <BrowserRouter>
+        <ContextMenuSong
+          playlistName={playlistName}
+          songName={songName}
+          artistName={artistName}
+          handleCloseParent={jest.fn()}
+          refreshPlaylistData={jest.fn()}
+          refreshSidebarData={jest.fn()}
+        />
+      </BrowserRouter>,
     );
   });
   expect(component).toBeTruthy();
@@ -124,13 +133,16 @@ test('ContextMenuSong quitar de esta lista', async () => {
 
   const component = await act(() => {
     return render(
-      <ContextMenuSong
-        playlistName={playlistName}
-        songName={songName}
-        handleCloseParent={jest.fn()}
-        refreshPlaylistData={refreshPlaylistDataMock}
-        refreshSidebarData={jest.fn()}
-      />,
+      <BrowserRouter>
+        <ContextMenuSong
+          playlistName={playlistName}
+          songName={songName}
+          artistName={artistName}
+          handleCloseParent={jest.fn()}
+          refreshPlaylistData={refreshPlaylistDataMock}
+          refreshSidebarData={jest.fn()}
+        />
+      </BrowserRouter>,
     );
   });
 
@@ -154,13 +166,16 @@ test('ContextMenuSong crear lista', async () => {
 
   const component = await act(() => {
     return render(
-      <ContextMenuSong
-        playlistName={playlistName}
-        songName={songName}
-        handleCloseParent={jest.fn()}
-        refreshPlaylistData={jest.fn()}
-        refreshSidebarData={refreshSidebarMock}
-      />,
+      <BrowserRouter>
+        <ContextMenuSong
+          playlistName={playlistName}
+          songName={songName}
+          artistName={artistName}
+          handleCloseParent={jest.fn()}
+          refreshPlaylistData={jest.fn()}
+          refreshSidebarData={refreshSidebarMock}
+        />
+      </BrowserRouter>,
     );
   });
 
@@ -191,13 +206,16 @@ test('ContextMenuSong crear lista', async () => {
 test('ContextMenuSong add to playlist', async () => {
   const component = await act(() => {
     return render(
-      <ContextMenuSong
-        playlistName={playlistName}
-        songName={songName}
-        handleCloseParent={jest.fn()}
-        refreshPlaylistData={jest.fn()}
-        refreshSidebarData={jest.fn()}
-      />,
+      <BrowserRouter>
+        <ContextMenuSong
+          playlistName={playlistName}
+          songName={songName}
+          artistName={artistName}
+          handleCloseParent={jest.fn()}
+          refreshPlaylistData={jest.fn()}
+          refreshSidebarData={jest.fn()}
+        />
+      </BrowserRouter>,
     );
   });
 

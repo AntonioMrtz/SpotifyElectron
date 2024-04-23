@@ -14,4 +14,5 @@ export interface PropsContextMenuPlaylist extends PropsContextMenu {
 export interface PropsContextMenuSong extends PropsContextMenu {
   playlistName: string;
   songName: string;
+  artistName: string;
 }

@@ -83,7 +83,6 @@ global.fetch = jest.fn((url: string, options: any) => {
 
   if (options && options.method) {
     if (options.method === 'DELETE') {
-      console.log('HOLAAAAAA  ');
       return Promise.resolve({
         json: () => {},
         status: 202,

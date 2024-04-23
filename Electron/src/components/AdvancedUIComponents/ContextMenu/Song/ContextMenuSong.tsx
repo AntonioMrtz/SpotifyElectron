@@ -6,6 +6,7 @@ import { InfoPopoverType } from 'components/AdvancedUIComponents/InfoPopOver/typ
 import Global from 'global/global';
 import Token from 'utils/token';
 import { backendPathFromUserType } from 'utils/role';
+import { useNavigate } from 'react-router-dom';
 import styles from '../contextMenu.module.css';
 import { PropsContextMenuSong } from '../types/PropsContextMenu';
 
@@ -17,11 +18,16 @@ const MessagesInfoPopOver = {
 
 export default function ContextMenuSong({
   songName,
+  artistName,
   playlistName,
   handleCloseParent,
   refreshPlaylistData,
   refreshSidebarData,
 }: PropsContextMenuSong) {
+  const navigate = useNavigate();
+
+  const urlArtist = `/artist/${artistName}`;
+
   const [isOpen, setIsOpen] = useState(false);
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -34,6 +40,12 @@ export default function ContextMenuSong({
   const handleClose = () => {
     setAnchorEl(null);
     handleCloseParent();
+  };
+
+  const handleClickGoToArtist = (event: any) => {
+    event.preventDefault();
+    event.stopPropagation();
+    navigate(urlArtist);
   };
 
   const open = Boolean(anchorEl);
@@ -215,7 +227,9 @@ export default function ContextMenuSong({
         </li>
         <li>
           <button type="button">Ir a radio de la canción</button>
-          <button type="button">Ir al artista</button>
+          <button type="button" onClick={(e) => handleClickGoToArtist(e)}>
+            Ir al artista
+          </button>
           <button type="button">Ir al álbum</button>
         </li>
         <li>

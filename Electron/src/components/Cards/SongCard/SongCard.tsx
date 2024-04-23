@@ -119,6 +119,7 @@ export default function SongCard({
         >
           <ContextMenuSong
             songName={name}
+            artistName={artist}
             playlistName=""
             handleCloseParent={handleClose}
             refreshPlaylistData={() => {}}

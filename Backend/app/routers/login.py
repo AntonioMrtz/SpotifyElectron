@@ -1,5 +1,5 @@
 import json
-from datetime import UTC, datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Annotated
 
 from fastapi import APIRouter, Depends
@@ -43,7 +43,7 @@ def login_usuario(
 
     access_token_json = json.dumps(jwt)
 
-    utc_timezone = UTC
+    utc_timezone = timezone.utc
 
     # Get the current UTC datetime
     current_utc_datetime = datetime.utcnow().replace(tzinfo=utc_timezone)

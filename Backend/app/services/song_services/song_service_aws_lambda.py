@@ -130,8 +130,6 @@ def get_song(name: str) -> Song:
             status_code=500,
             detail=f"Error interno del servidor al interactuar con AWS {e}",
         )
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"No se pudo subir la canción {e}")
     else:
         return song
 
@@ -283,9 +281,6 @@ async def create_song(
             detail=f"Error interno del servidor al interactuar con AWS {e}",
         )
 
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"No se pudo subir la canción {e}")
-
 
 def delete_song(name: str) -> None:
     """Delete the song with his asociated chunk files "
@@ -341,9 +336,6 @@ def delete_song(name: str) -> None:
         raise HTTPException(
             status_code=500, detail="Error interno del servidor al interactuar con AWS"
         )
-
-    except Exception:
-        raise HTTPException(status_code=500, detail="No se pudo subir la canción")
 
 
 # ? NOT USED

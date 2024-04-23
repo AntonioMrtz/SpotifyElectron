@@ -1,4 +1,4 @@
-from datetime import UTC, datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Annotated, Any
 
 import bcrypt
@@ -60,9 +60,9 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None) -> s
     try:
         to_encode = data.copy()
         if expires_delta:
-            expire = datetime.now(UTC) + expires_delta
+            expire = datetime.now(timezone.utc) + expires_delta
         else:
-            expire = datetime.now(UTC) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+            expire = datetime.now(timezone.utc) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
         to_encode.update({"exp": expire})
         encoded_jwt = jwt.encode(
             to_encode,
@@ -196,7 +196,7 @@ def get_token_expire_date() -> datetime:
     Returns:
         datetime: the expire date for the token
     """
-    current_utc_datetime = datetime.now(UTC).replace(tzinfo=UTC)
+    current_utc_datetime = datetime.now(timezone.utc).replace(tzinfo=timezone.utc)
     return current_utc_datetime + timedelta(days=DAYS_TO_EXPIRE_COOKIE)
 
 
@@ -301,8 +301,8 @@ def check_token_is_expired(token: dict) -> None:
     Raises:
         JWTExpiredException: if token is expired
     """
-    expiration_time = datetime.fromtimestamp(token["exp"], UTC)
-    if expiration_time < datetime.now(UTC):
+    expiration_time = datetime.fromtimestamp(token["exp"], timezone.utc)
+    if expiration_time < datetime.now(timezone.utc):
         raise JWTExpiredException
 
 

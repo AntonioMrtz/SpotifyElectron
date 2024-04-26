@@ -5,9 +5,9 @@ from pytest import fixture
 from test_API.api_test_user import create_user, delete_user, get_user, update_user
 from test_API.api_token import get_user_jwt_header
 
-import app.security.security_service as security_service
 import app.services.user_service as user_service
-from app.security.security_schema import VerifyPasswordException
+import app.spotify_electron.security.security_service as security_service
+from app.spotify_electron.security.security_schema import VerifyPasswordException
 
 
 @fixture(scope="module", autouse=True)

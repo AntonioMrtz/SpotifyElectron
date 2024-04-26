@@ -44,7 +44,8 @@ class SpotifyElectronFormatter(logging.Formatter):
 
 class SpotifyElectronLogger:
     """Custom Logger that accepts the current file logger name and\
-        optionally an log file to store logs"""
+    optionally an log file to store logs
+    """
 
     _log_properties_manager = LogPropertiesManager()
 
@@ -85,9 +86,10 @@ class SpotifyElectronLogger:
         """Add handler to logger
 
         Args:
+        ----
             handler (Union[StreamHandler, RotatingFileHandler]): the handler to add
-        """
 
+        """
         handler.setLevel(self._get_log_level())
         formatter = SpotifyElectronFormatter()
         handler.setFormatter(formatter)

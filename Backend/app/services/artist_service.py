@@ -3,12 +3,12 @@ from sys import modules
 
 from fastapi import HTTPException
 
-import app.security.security_service as security_service
+import app.spotify_electron.security.security_service as security_service
 from app.database.Database import Database
 from app.model.Artist import Artist
-from app.security.security_schema import TokenData
 from app.services.song_services.song_service_provider import get_song_service
 from app.services.utils import checkValidParameterString
+from app.spotify_electron.security.security_schema import TokenData
 
 if "pytest" in modules:
     artist_collection = Database.get_instance().connection["test.artista"]
@@ -27,15 +27,15 @@ def check_user_exists(user_name: str) -> bool:
         user_name (str): Users's name
 
     Raises
-    -------
+    ------
         400 : Bad Request
 
 
     Returns
     -------
         Boolean
-    """
 
+    """
     if not checkValidParameterString(user_name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
@@ -52,15 +52,15 @@ def check_artists_exists(artist_name: str) -> bool:
         artist_name (str): Artists's name
 
     Raises
-    -------
+    ------
         400 : Bad Request
 
 
     Returns
     -------
         Boolean
-    """
 
+    """
     if not checkValidParameterString(artist_name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
@@ -76,14 +76,14 @@ def check_jwt_artist_is_artist(token: TokenData, artist: str) -> bool:
         artist (str) : artist
 
     Raises
-    -------
+    ------
         401
 
     Returns
     -------
         Boolean
-    """
 
+    """
     if token.username == artist:
         return True
 
@@ -102,14 +102,14 @@ def add_song_artist(artist_name: str, song_name: str):
 
 
     Raises
-    -------
+    ------
         400 : Bad Request
         404 : Artist Not Found / Song not found
 
     Returns
     -------
-    """
 
+    """
     if not checkValidParameterString(artist_name) or not checkValidParameterString(
         song_name
     ):
@@ -133,14 +133,14 @@ def delete_song_artist(artist_name: str, song_name: str):
 
 
     Raises
-    -------
+    ------
         400 : Bad Request
         404 : Artist Not Found / Song not found
 
     Returns
     -------
-    """
 
+    """
     if not checkValidParameterString(artist_name) or not checkValidParameterString(
         song_name
     ):
@@ -160,15 +160,15 @@ def get_artist(name: str) -> Artist:
         name (str): Artist's name
 
     Raises
-    -------
+    ------
         400 : Bad Request
         404 : Artist not found
 
     Returns
     -------
         Artist
-    """
 
+    """
     if not checkValidParameterString(name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
@@ -203,13 +203,13 @@ def create_artist(name: str, photo: str, password: str):
         password (str) : Password of artists account
 
     Raises
-    -------
+    ------
         400 : Bad Request
 
     Returns
     -------
-    """
 
+    """
     current_date = datetime.now()
     date_iso8601 = current_date.strftime("%Y-%m-%dT%H:%M:%S")
 
@@ -267,14 +267,14 @@ def update_artist(
 
 
     Raises
-    -------
+    ------
         400 : Bad Request
         404 : Artist Not Found
 
     Returns
     -------
-    """
 
+    """
     if not checkValidParameterString(name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
@@ -307,14 +307,14 @@ def delete_artist(name: str) -> None:
         name (str): Artists's name
 
     Raises
-    -------
+    ------
         400 : Bad Request
         404 : Artist Not Found
 
     Returns
     -------
-    """
 
+    """
     if not checkValidParameterString(name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
@@ -330,15 +330,15 @@ def get_all_artists() -> list:
     ----------
 
     Raises
-    -------
+    ------
         400 : Bad Request
         404 : Artist Not Found
 
     Returns
     -------
         List<Artist>
-    """
 
+    """
     artists: list = []
     artists_files = artist_collection.find()
 
@@ -356,15 +356,15 @@ def get_play_count_artist(user_name: str) -> int:
         user_name (str) : Artist name
 
     Raises
-    -------
+    ------
         400 : Bad Request
         404 : Artist Not Found
 
     Returns
     -------
         int
-    """
 
+    """
     if not checkValidParameterString(user_name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
@@ -382,7 +382,7 @@ def get_artists(names: list) -> list:
         names (list): List of artist Names
 
     Raises
-    -------
+    ------
             400 : Bad Request
             404 : Artist not found
 
@@ -391,7 +391,6 @@ def get_artists(names: list) -> list:
         List<Artist>
 
     """
-
     artists: list = []
 
     for artist_name in names:
@@ -404,12 +403,14 @@ def search_by_name(name: str) -> list[Artist]:
     """Retrieve the artists than match the name
 
     Args:
+    ----
         name (str): the name to match
 
     Returns:
+    -------
         List[Artist]: a list with the artists that match the name
-    """
 
+    """
     artists_names_response = artist_collection.find(
         {"name": {"$regex": name, "$options": "i"}}, {"_id": 0, "name": 1}
     )

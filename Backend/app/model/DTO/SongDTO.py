@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from app.genre.genre_schema import Genre
+from app.spotify_electron.genre.genre_schema import Genre
 
 
 @dataclass

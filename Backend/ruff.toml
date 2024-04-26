@@ -11,7 +11,9 @@ extend-select = [
     "I",
     "SIM",
     "R",
-    "C90"
+    "C90",
+    "D201",
+    "D202"
 ]
 
 [format]

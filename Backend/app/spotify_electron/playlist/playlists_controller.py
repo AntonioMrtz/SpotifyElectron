@@ -13,20 +13,20 @@ from starlette.status import (
     HTTP_500_INTERNAL_SERVER_ERROR,
 )
 
-import app.playlist.playlists_service as playlists_service
-import app.security.security_service as security_service
 import app.services.http_encode_service as http_encode_service
+import app.spotify_electron.playlist.playlists_service as playlists_service
+import app.spotify_electron.security.security_service as security_service
 from app.exceptions.http_encode_exceptions import JsonEncodeException
 from app.logging.commons_logging_constants import INTERNAL_SERVER_ERROR
 from app.logging.http_encode_logging_constants import ENCODING_ERROR
 from app.logging.logger_constants import LOGGING_PLAYLIST_CONTROLLER
 from app.logging.logging_schema import SpotifyElectronLogger
-from app.playlist.playlists_schema import (
+from app.spotify_electron.playlist.playlists_schema import (
     PlaylistBadNameException,
     PlaylistNotFoundException,
     PlaylistServiceException,
 )
-from app.security.security_schema import BadJWTTokenProvidedException
+from app.spotify_electron.security.security_schema import BadJWTTokenProvidedException
 
 router = APIRouter(
     prefix="/playlists",
@@ -43,9 +43,10 @@ def get_playlist(name: str) -> Response:
     """Gets playlist by name
 
     Args:
+    ----
         nombre (str): name
-    """
 
+    """
     try:
         playlist = playlists_service.get_playlist(name)
         playlist_json = http_encode_service.get_json(playlist)
@@ -85,12 +86,13 @@ def post_playlist(
     """Creates playlist
 
     Args:
+    ----
         name (str): playlist name
         photo (str): photo
         description (str): description
         song_names (list[str], optional): the list of song names. Defaults to Body(...).
-    """
 
+    """
     try:
         jwt_token = security_service.get_jwt_token_data(authorization)
 
@@ -135,13 +137,14 @@ def update_playlist(
     """Updates playlist data
 
     Args:
+    ----
         name (str): playlist name
         photo (str): photo
         description (str): description
         song_names (list[str], optional): list of song names. Defaults to Body(...).
         new_name (str | None, optional): new name of the playlist. Defaults to None.
-    """
 
+    """
     try:
         jwt_token = security_service.get_jwt_token_data(authorization)
 
@@ -175,9 +178,10 @@ def delete_playlist(name: str) -> Response:
     """Delete playlist
 
     Args:
+    ----
         name (str): playlist name
-    """
 
+    """
     try:
         playlists_service.delete_playlist(name)
         return Response(status_code=HTTP_202_ACCEPTED)
@@ -233,9 +237,10 @@ def get_selected_playlists(names: str) -> Response:
     """Return playlists by names
 
     Args:
+    ----
         names (str): names of playlists
-    """
 
+    """
     try:
         playlists = playlists_service.get_selected_playlists(names.split(","))
 

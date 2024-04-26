@@ -9,12 +9,12 @@ from gridfs import GridFS
 import app.services.artist_service as artist_service
 import app.services.dto_service as dto_service
 from app.database.Database import Database
-from app.genre.genre_schema import Genre
 from app.model.DTO.SongDTO import SongDTO
 from app.model.Song import Song
 from app.model.SongBlob import SongBlob
-from app.security.security_schema import TokenData
 from app.services.utils import checkValidParameterString
+from app.spotify_electron.genre.genre_schema import Genre
+from app.spotify_electron.security.security_schema import TokenData
 
 """ Insert songs with format [files,chunks] https://www.mongodb.com/docs/manual/core/gridfs/"""
 
@@ -35,11 +35,12 @@ def check_song_exists(name: str) -> bool:
         name (str): Song's name
 
     Raises
-    -------
+    ------
 
     Returns
     -------
         Boolean
+
     """
     return bool(file_song_collection.find_one({"name": name}))
 
@@ -53,14 +54,14 @@ def check_jwt_user_is_song_artist(token: TokenData, artist: str) -> bool:
         artist (str) : artist name
 
     Raises
-    -------
+    ------
         Unauthorized 401
 
     Returns
     -------
         Boolean
-    """
 
+    """
     if token.username == artist:
         return True
 
@@ -77,15 +78,15 @@ def get_song(name: str) -> SongBlob:
         name (str): Song's name
 
     Raises
-    -------
+    ------
         400 : Bad Request
         404 : Song not found
 
     Returns
     -------
         Song object
-    """
 
+    """
     if name is None or name == "":
         raise HTTPException(status_code=400, detail="El nombre de la canción es vacío")
 
@@ -120,7 +121,7 @@ def get_songs(names: list) -> list:
         names (list): List of song Names
 
     Raises
-    -------
+    ------
             400 : Bad Request
             404 : Song not found
 
@@ -129,7 +130,6 @@ def get_songs(names: list) -> list:
         List<Song>
 
     """
-
     songs: list = []
 
     for song_name in names:
@@ -145,14 +145,13 @@ def get_all_songs() -> list:
     ----------
 
     Raises
-    -------
+    ------
 
     Returns
     -------
         List <Song>
 
     """
-
     songs: list = []
 
     songsFiles = file_song_collection.find()
@@ -178,15 +177,15 @@ async def create_song(
 
 
     Raises
-    -------
+    ------
         400 : Bad Request
         401 : Invalid credentials
         404 : Artist Not Found / Song not found
 
     Returns
     -------
-    """
 
+    """
     artist = token.username
 
     if (
@@ -247,14 +246,14 @@ def delete_song(name: str) -> None:
         name (str): Song's name
 
     Raises
-    -------
+    ------
         400 : Bad Parameters
         404 : Artist not found
 
     Returns
     -------
-    """
 
+    """
     if not checkValidParameterString(name):
         raise HTTPException(
             status_code=400, detail="El nombre de la canción no es válido"
@@ -285,15 +284,15 @@ def update_song(
         token (TokenData) : token data of the user
 
     Raises
-    -------
+    ------
         400 : Bad Request
         401 : Unauthorized
         404 : Song Not Found
 
     Returns
     -------
-    """
 
+    """
     if not checkValidParameterString(name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
@@ -351,14 +350,14 @@ def increase_number_plays(name: str) -> None:
         name (str): Song's name
 
     Raises
-    -------
+    ------
         400 : Bad Request
         404 : Song Not Found
 
     Returns
     -------
-    """
 
+    """
     if not checkValidParameterString(name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
@@ -377,10 +376,13 @@ def search_by_name(name: str) -> list[SongDTO]:
     """Retrieve the songs than match the name
 
     Args:
+    ----
         name (str): the name to match
 
     Returns:
+    -------
         List[SongDTO]: a list with the songs that match the name
+
     """
     song_names_response = file_song_collection.find(
         {"name": {"$regex": name, "$options": "i"}}, {"_id": 0, "name": 1}
@@ -397,10 +399,13 @@ def get_artist_playback_count(artist_name: str) -> int:
     """The total playback count for all artist songs
 
     Args:
+    ----
         artist_name (str): the artist name
 
     Returns:
+    -------
         int: the number of playback count for the artists songs
+
     """
     result_number_playback_count_query = file_song_collection.aggregate(
         [

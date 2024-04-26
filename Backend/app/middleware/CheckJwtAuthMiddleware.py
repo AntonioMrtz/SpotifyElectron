@@ -2,10 +2,10 @@ from fastapi import Request, Response
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.status import HTTP_401_UNAUTHORIZED
 
-import app.security.security_service as security_service
+import app.spotify_electron.security.security_service as security_service
 from app.logging.logger_constants import LOGGIN_CHECK_AUTH_JWT_MIDDLEWARE
 from app.logging.logging_schema import SpotifyElectronLogger
-from app.security.security_schema import JWTValidationException
+from app.spotify_electron.security.security_schema import JWTValidationException
 
 check_jwt_auth_middleware_logger = SpotifyElectronLogger(
     LOGGIN_CHECK_AUTH_JWT_MIDDLEWARE
@@ -40,12 +40,14 @@ class CheckJwtAuthMiddleware(BaseHTTPMiddleware):
         """Returns if the request has to be bypassed or not
 
         Args:
+        ----
             request (Request): the incoming request
 
         Returns:
+        -------
             bool: if the return has to be bypassed
-        """
 
+        """
         check_jwt_auth_middleware_logger.debug(
             f"Request method {request.method}\n Request URL {request.url}\n"
         )
@@ -78,13 +80,16 @@ class CheckJwtAuthMiddleware(BaseHTTPMiddleware):
             continues the workflow
 
         Args:
+        ----
             jwt (_type_): the jwt token
             request (_type_): the incoming request
             call_next (_type_): the method for continuing the workflow
 
         Returns:
+        -------
             Response: the Response thats gonna be sended to the client,\
                 HTTP_401_UNAUTHORIZED if jwt is not valid
+
         """
         try:
             security_service.check_jwt_is_valid(jwt)

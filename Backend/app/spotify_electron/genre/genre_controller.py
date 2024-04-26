@@ -2,8 +2,8 @@ from fastapi import APIRouter
 from fastapi.responses import Response
 from starlette.status import HTTP_200_OK, HTTP_500_INTERNAL_SERVER_ERROR
 
-import app.genre.genre_service as genre_service
-from app.genre.genre_schema import GenreServiceException
+import app.spotify_electron.genre.genre_service as genre_service
+from app.spotify_electron.genre.genre_schema import GenreServiceException
 
 router = APIRouter(
     prefix="/genres",

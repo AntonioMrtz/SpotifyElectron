@@ -6,10 +6,10 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.responses import Response
 from starlette.status import HTTP_200_OK, HTTP_401_UNAUTHORIZED
 
-import app.security.security_service as security_service
 import app.services.artist_service as artist_service
 import app.services.http_encode_service as http_encode_service
-from app.security.security_schema import BadJWTTokenProvidedException
+import app.spotify_electron.security.security_service as security_service
+from app.spotify_electron.security.security_schema import BadJWTTokenProvidedException
 
 router = APIRouter(
     prefix="/artistas",
@@ -30,11 +30,11 @@ def get_artista(nombre: str) -> Response:
         Response HTTP_200_OK OK
 
     Raises
-    -------
+    ------
         Bad Request 400: "nombre" es vacío o nulo
         Not Found 404: No existe un artista con el nombre "nombre"
-    """
 
+    """
     artista = artist_service.get_artist(nombre)
     artista_json = http_encode_service.get_json(artista)
 
@@ -58,10 +58,10 @@ def post_artista(nombre: str, foto: str, password: str) -> Response:
         Response 201 Created
 
     Raises
-    -------
+    ------
         Bad Request 400: Parámetros introducidos no són válidos o vacíos
-    """
 
+    """
     artist_service.create_artist(nombre, foto, password)
     return Response(None, 201)
 
@@ -93,12 +93,12 @@ def update_artista(
         Response 204 No content
 
     Raises
-    -------
+    ------
         Bad Request 400: Parámetros introducidos no són válidos o vacíos
         401
         Not Found 404: No existe un artista con el nombre "nombre"
-    """
 
+    """
     try:
         jwt_token = security_service.get_jwt_token_data(authorization)
 
@@ -133,11 +133,11 @@ def delete_artista(nombre: str) -> Response:
         Response 202 Accepted
 
     Raises
-    -------
+    ------
         Bad Request 400: Parámetros introducidos no són válidos o vacíos
         Not Found 404: No existe un artista con el nombre "nombre"
-    """
 
+    """
     artist_service.delete_artist(nombre)
     return Response(None, 202)
 
@@ -154,11 +154,11 @@ def get_artistas() -> Response:
         Response HTTP_200_OK OK
 
     Raises
-    -------
+    ------
         Bad Request 400: "nombre" es vacío o nulo
         Not Found 404: No existe un artista con el nombre "nombre"
-    """
 
+    """
     artists = artist_service.get_all_artists()
     artists_dict = {}
     artists_dict["artists"] = jsonable_encoder(artists)
@@ -172,8 +172,7 @@ def get_artistas() -> Response:
 
 @router.get("/{nombre}/reproducciones", tags=["artistas"])
 def get_reproducciones_artista(nombre: str) -> Response:
-    """
-    Devuelve el número de reproducciones totales de las canciones del artista
+    """Devuelve el número de reproducciones totales de las canciones del artista
 
     Parameters
     ----------
@@ -183,11 +182,11 @@ def get_reproducciones_artista(nombre: str) -> Response:
         Response HTTP_200_OK OK
 
     Raises
-    -------
+    ------
         Bad Request 400: "nombre" es vacío o nulo
         Not Found 404: No existe un artista con el nombre "nombre"
-    """
 
+    """
     play_count = artist_service.get_play_count_artist(user_name=nombre)
 
     play_count_json = http_encode_service.get_json_with_iterable_field(

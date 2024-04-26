@@ -11,15 +11,15 @@ from starlette.status import (
     HTTP_500_INTERNAL_SERVER_ERROR,
 )
 
-import app.security.security_service as security_service
 import app.services.http_encode_service as http_encode_service
-from app.login.login_schema import InvalidCredentialsLoginException
-from app.security.security_schema import (
+import app.spotify_electron.security.security_service as security_service
+from app.spotify_electron.login.login_schema import InvalidCredentialsLoginException
+from app.spotify_electron.security.security_schema import (
     CreateJWTException,
     UnexpectedLoginUserException,
     VerifyPasswordException,
 )
-from app.user.user_schema import UserNotFoundException
+from app.spotify_electron.user.user_schema import UserNotFoundException
 
 router = APIRouter(
     prefix="/login",
@@ -34,9 +34,10 @@ def login_usuario(
     """Login user
 
     Args:
+    ----
         form_data (Annotated[OAuth2PasswordRequestForm, Depends): user and password
-    """
 
+    """
     try:
         jwt = security_service.login_user(form_data.username, form_data.password)
 

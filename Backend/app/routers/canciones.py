@@ -4,12 +4,12 @@ from fastapi import APIRouter, Header, UploadFile
 from fastapi.responses import Response
 from starlette.status import HTTP_401_UNAUTHORIZED
 
-import app.security.security_service as security_service
 import app.services.dto_service as dto_service
 import app.services.http_encode_service as http_encode_service
-from app.genre.genre_schema import Genre
-from app.security.security_schema import BadJWTTokenProvidedException
+import app.spotify_electron.security.security_service as security_service
 from app.services.song_services.song_service_provider import get_song_service
+from app.spotify_electron.genre.genre_schema import Genre
+from app.spotify_electron.security.security_schema import BadJWTTokenProvidedException
 
 router = APIRouter(
     prefix="/canciones",
@@ -32,11 +32,11 @@ def get_cancion(nombre: str) -> Response:
         Response 200 OK
 
     Raises
-    -------
+    ------
         Bad Request 400: "nombre" es vacío o nulo
         Not Found 404: No existe una canción con el nombre "nombre"
-    """
 
+    """
     song = song_service.get_song(nombre)
     song_json = http_encode_service.get_json(song)
 
@@ -65,11 +65,11 @@ async def post_cancion(
         Response 201 Created
 
     Raises
-    -------
+    ------
         Bad Request 400: Parámetros introducidos no són válidos o vacíos
         Unauthorized 401
-    """
 
+    """
     readFile = await file.read()
 
     try:
@@ -97,9 +97,9 @@ def get_canciones() -> Response:
         Response 200 OK
 
     Raises
-    -------
-    """
+    ------
 
+    """
     songs = song_service.get_all_songs()
     songs_json = http_encode_service.get_json_with_iterable_field(songs, "songs")
 
@@ -119,11 +119,11 @@ def delete_cancion(nombre: str) -> Response:
         Response 202 Accepted
 
     Raises
-    -------
+    ------
         Bad Request 400 : Parámetros inválidos
         Not found 404: La canción con ese nombre no existe
-    """
 
+    """
     song_service.delete_song(nombre)
 
     return Response(None, 202)
@@ -143,11 +143,11 @@ def get_cancion_dto(nombre: str) -> Response:
         Response 200 OK
 
     Raises
-    -------
+    ------
         Bad Request 400: "nombre" es vacío o nulo
         Not Found 404: No existe una canción con el nombre "nombre"
-    """
 
+    """
     song = dto_service.get_song(nombre)
     song_json = http_encode_service.get_json(song)
 
@@ -177,12 +177,12 @@ def update_song(
         Response 204 No content
 
     Raises
-    -------
+    ------
         Bad Request 400: Parámetros introducidos no són válidos o vacíos
         Not Found 404: No existe una cancion con el nombre "nombre"
         Unauthorized 401
-    """
 
+    """
     try:
         jwt_token = security_service.get_jwt_token_data(authorization)
 
@@ -209,11 +209,11 @@ def increase_number_plays_song(nombre: str) -> Response:
         Response 204 No content
 
     Raises
-    -------
+    ------
         Bad Request 400: Parámetros introducidos no són válidos o vacíos
         Not Found 404: No existe una cancion con el nombre "nombre"
-    """
 
+    """
     song_service.increase_number_plays(nombre)
     return Response(None, 204)
 
@@ -231,11 +231,11 @@ def get_cancion_por_genero(genero: Genre) -> Response:
         Response 200 OK
 
     Raises
-    -------
+    ------
         Bad Request 400: Parámetros introducidos no són válidos o vacíos
         Not Found 404: Género no existe
-    """
 
+    """
     songs = dto_service.get_songs_by_genero(genero)
     songs_json = http_encode_service.get_json_with_iterable_field(songs, "songs")
 

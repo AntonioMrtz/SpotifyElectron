@@ -27,8 +27,10 @@ class LogPropertiesManager:
         """Loads attributes from .ini file and stores them as class attributes
 
         Args:
+        ----
             config_filename (str): the name of the config file
             config_section (str): the section inside of the config file
+
         """
         self.config_file = os.path.join(
             self.current_directory, APP_FOLDER, RESOURCES_FOLDER, config_filename
@@ -42,7 +44,9 @@ class LogPropertiesManager:
             string it will load None
 
         Args:
+        ----
             config_section (str): the config file section to load
+
         """
         for key, value in self.config.items(config_section):
             if value == "":
@@ -52,16 +56,20 @@ class LogPropertiesManager:
     def is_log_file_provided(self) -> bool:
         """Checks if theres a valid log file provided
 
-        Returns:
+        Returns
+        -------
             bool: Returns if theres a valid log provided
+
         """
         return self.__getattribute__(LOG_FILE) is not None
 
     def is_production_enviroment(self) -> bool:
         """Checks if the enviroment is production
 
-        Returns:
+        Returns
+        -------
             bool: Returns if its production enviroment
+
         """
         env_value = os.getenv(ENV_VALUE_ENV_NAME, PROD)
         return env_value == PROD

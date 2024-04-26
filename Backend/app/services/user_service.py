@@ -3,11 +3,11 @@ from sys import modules
 
 from fastapi import HTTPException
 
-import app.security.security_service as security_service
+import app.spotify_electron.security.security_service as security_service
 from app.database.Database import Database
 from app.model.User import User
-from app.security.security_schema import TokenData
 from app.services.utils import checkValidParameterString
+from app.spotify_electron.security.security_schema import TokenData
 
 if "pytest" in modules:
     user_collection = Database.get_instance().connection["test.usuario"]
@@ -25,15 +25,15 @@ def check_jwt_is_user(token: TokenData, user: str) -> bool:
         user (str): user name
 
     Raises
-    -------
+    ------
         Unauthorized 401
 
 
     Returns
     -------
         Boolean
-    """
 
+    """
     if token.username == user:
         return True
     raise HTTPException(
@@ -49,15 +49,15 @@ def get_user(name: str) -> User:
         name (str): Users's name
 
     Raises
-    -------
+    ------
         400 : Bad Request
         404 : User not found
 
     Returns
     -------
         User object
-    """
 
+    """
     if not checkValidParameterString(name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
@@ -91,13 +91,13 @@ def create_user(name: str, photo: str, password: str) -> None:
         password (str) : Password of users account
 
     Raises
-    -------
+    ------
         400 : Bad Request
 
     Returns
     -------
-    """
 
+    """
     current_date = datetime.now()
     date_iso8601 = current_date.strftime("%Y-%m-%dT%H:%M:%S")
 
@@ -146,14 +146,14 @@ def update_user(
         token (TokenData) : token data from the user
 
     Raises
-    -------
+    ------
         400 : Bad Request
         404 : User Not Found
 
     Returns
     -------
-    """
 
+    """
     if not checkValidParameterString(name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
@@ -189,14 +189,14 @@ def delete_user(name: str) -> None:
         name (str): Users's name
 
     Raises
-    -------
+    ------
         400 : Bad Request
         404 : User Not Found
 
     Returns
     -------
-    """
 
+    """
     if not checkValidParameterString(name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
@@ -213,7 +213,7 @@ def get_users(names: list) -> list[User]:
         names (list): List of user Names
 
     Raises
-    -------
+    ------
             400 : Bad Request
             404 : User not found
 
@@ -222,7 +222,6 @@ def get_users(names: list) -> list[User]:
         List<User>
 
     """
-
     users: list = []
 
     for user_name in names:
@@ -235,10 +234,13 @@ def search_by_name(name: str) -> list[User]:
     """Retrieve the users than match the name
 
     Args:
+    ----
         name (str): the name to match
 
     Returns:
+    -------
         List[User]: a list with the users that match the name
+
     """
     users_names_response = user_collection.find(
         {"name": {"$regex": name, "$options": "i"}}, {"_id": 0, "name": 1}
@@ -266,15 +268,15 @@ def check_user_exists(user_name: str) -> bool:
         user_name (str): Users's name
 
     Raises
-    -------
+    ------
         400 : Bad Request
 
 
     Returns
     -------
         Boolean
-    """
 
+    """
     if not checkValidParameterString(user_name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 

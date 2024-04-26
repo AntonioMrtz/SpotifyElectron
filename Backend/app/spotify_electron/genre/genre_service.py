@@ -1,8 +1,8 @@
 import json
 
-from app.genre.genre_schema import Genre, GenreServiceException
 from app.logging.logger_constants import LOGGING_GENRE_SERVICE
 from app.logging.logging_schema import SpotifyElectronLogger
+from app.spotify_electron.genre.genre_schema import Genre, GenreServiceException
 
 genre_service_logger = SpotifyElectronLogger(LOGGING_GENRE_SERVICE).getLogger()
 
@@ -10,11 +10,14 @@ genre_service_logger = SpotifyElectronLogger(LOGGING_GENRE_SERVICE).getLogger()
 def get_genres() -> str:
     """Returns a json with all the available genres
 
-    Raises:
+    Raises
+    ------
         UnexpectedGenreServiceError: if an unexpected error occurred
 
-    Returns:
+    Returns
+    -------
         str: _description_
+
     """
     try:
         genre_dict = {}

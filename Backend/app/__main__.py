@@ -6,10 +6,8 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.common.PropertiesManager import PropertiesManager
 from app.constants.config_constants import APP, HOST, PORT
-from app.genre import genre_controller
 from app.logging.logger_constants import LOGGING_MAIN
 from app.logging.logging_schema import SpotifyElectronLogger
-from app.login import login_controller
 from app.middleware.CheckJwtAuthMiddleware import CheckJwtAuthMiddleware
 from app.middleware.cors_middleware_config import (
     allow_credentials,
@@ -18,8 +16,11 @@ from app.middleware.cors_middleware_config import (
     allowed_origins,
     max_age,
 )
-from app.playlist import playlists_controller
-from app.routers import artistas, canciones, search, usuarios
+from app.routers import artistas, canciones, usuarios
+from app.spotify_electron.genre import genre_controller
+from app.spotify_electron.login import login_controller
+from app.spotify_electron.playlist import playlists_controller
+from app.spotify_electron.search import search
 
 main_logger = SpotifyElectronLogger(LOGGING_MAIN).getLogger()
 
@@ -32,6 +33,7 @@ async def lifespan_handler(app: FastAPI):
     ----------
     app : FastAPI
         the app object that is going to be created
+
     """
     main_logger.info("Spotify Electron Backend Started")
 

@@ -17,8 +17,7 @@ database_logger = SpotifyElectronLogger(LOGGING_DATABASE).getLogger()
 
 
 class DatabaseMeta(type):
-    """
-    The Singleton class can be implemented in different ways in Python. Some
+    """The Singleton class can be implemented in different ways in Python. Some
     possible methods include: base class, decorator, metaclass. We will use the
     metaclass because it is best suited for this purpose.
     """
@@ -26,8 +25,7 @@ class DatabaseMeta(type):
     _instances = {}
 
     def __call__(cls, *args, **kwargs):
-        """
-        Possible changes to the value of the `__init__` argument do not affect
+        """Possible changes to the value of the `__init__` argument do not affect
         the returned instance.
         """
         if cls not in cls._instances:
@@ -68,10 +66,13 @@ class Database(metaclass=DatabaseMeta):
         """Checks if ping result is OK
 
         Args:
+        ----
             ping_result (dict): ping result response
 
         Raises:
+        ------
             DatabasePingFailed: if ping result is not OK
+
         """
         if not ping_result:
             raise DatabasePingFailed

@@ -1,12 +1,12 @@
 from fastapi import HTTPException
 
-import app.playlist.playlists_service as playlists_service
 import app.services.artist_service as artist_service
 import app.services.user_service as user_service
+import app.spotify_electron.playlist.playlists_service as playlists_service
 from app.model.UserType import User_Type
-from app.security.security_schema import TokenData
 from app.services.song_services.song_service_provider import get_song_service
 from app.services.utils import checkValidParameterString
+from app.spotify_electron.security.security_schema import TokenData
 
 MAX_NUMBER_PLAYBACK_HISTORY_SONGS = 5
 
@@ -25,15 +25,15 @@ def isArtistOrUser(user_name: str) -> User_Type | None:
         user_name (str): Users's name
 
     Raises
-    -------
+    ------
         400 : Bad parameters
         404 : User not found
 
     Returns
     -------
         User_Type | null
-    """
 
+    """
     if not checkValidParameterString(user_name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
@@ -54,15 +54,15 @@ def check_user_exists(user_name: str) -> bool:
         user_name (str): Users's name
 
     Raises
-    -------
+    ------
         400 : Bad Request
 
 
     Returns
     -------
         Boolean
-    """
 
+    """
     if not checkValidParameterString(user_name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
@@ -83,15 +83,15 @@ def add_playback_history(user_name: str, song: str, token: TokenData) -> None:
 
 
     Raises
-    -------
+    ------
         400 : Bad Request
         401 : Unauthorized
         404 : User Not Found / Song not found
 
     Returns
     -------
-    """
 
+    """
     if not checkValidParameterString(user_name) or not checkValidParameterString(song):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
@@ -124,15 +124,15 @@ def add_saved_playlist(user_name: str, playlist_name: str, token: TokenData) -> 
 
 
     Raises
-    -------
+    ------
         400 : Bad Request
         401 : Unauthorized
         404 : User Not Found / Playlist not found
 
     Returns
     -------
-    """
 
+    """
     if not checkValidParameterString(user_name) or not checkValidParameterString(
         playlist_name
     ):
@@ -164,15 +164,15 @@ def delete_saved_playlist(user_name: str, playlist_name: str, token: TokenData) 
         token (TokenData) : token with user data
 
     Raises
-    -------
+    ------
         400 : Bad Request
         401 : Unauthorized
         404 : User Not Found / Playlist not found
 
     Returns
     -------
-    """
 
+    """
     if not checkValidParameterString(user_name) or not checkValidParameterString(
         playlist_name
     ):
@@ -203,15 +203,15 @@ def add_playlist_to_owner(user_name: str, playlist_name: str, token: TokenData) 
         token (TokenData) : token with user data
 
     Raises
-    -------
+    ------
         400 : Bad Request
         401 : Unauthorized
         404 : User Not Found / Playlist not found
 
     Returns
     -------
-    """
 
+    """
     if not checkValidParameterString(user_name) or not checkValidParameterString(
         playlist_name
     ):
@@ -240,14 +240,14 @@ def delete_playlist_from_owner(playlist_name: str) -> None:
         playlist_name (str) : Playlist name
 
     Raises
-    -------
+    ------
         400 : Bad Request
         404 : User Not Found / Playlist not found
 
     Returns["owner"]
     -------
-    """
 
+    """
     if not checkValidParameterString(playlist_name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 

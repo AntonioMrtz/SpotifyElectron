@@ -3,7 +3,7 @@ from fastapi.responses import Response
 from starlette.status import HTTP_400_BAD_REQUEST
 
 import app.services.http_encode_service as http_encode_service
-import app.services.search_service as search_service
+import app.spotify_electron.search.search_service as search_service
 from app.exceptions.exceptions_schema import BadParameterException
 
 router = APIRouter(
@@ -17,10 +17,13 @@ def get_search_nombre(nombre: str) -> Response:
     """Search for items that partially match name
 
     Args:
+    ----
         nombre (str): name to matcg
 
     Returns:
+    -------
         Response: the response including a json with all the items
+
     """
     try:
         items = search_service.search_by_name(name=nombre)

@@ -53,8 +53,10 @@ class _PropertiesManager:
         """Loads attributes from .ini file and stores them as class attributes
 
         Args:
+        ----
             config_filename (str): the name of the config file
             config_section (str): the section inside of the config file
+
         """
         self.config_file = os.path.join(
             self.current_directory, APP_FOLDER, RESOURCES_FOLDER, config_filename
@@ -68,7 +70,9 @@ class _PropertiesManager:
             if value its empty string it will load None
 
         Args:
+        ----
             config_section (str): the config file section to load
+
         """
         for key, value in self.config.items(config_section):
             if value == "":
@@ -77,7 +81,8 @@ class _PropertiesManager:
 
     def _load_architecture(self):
         """Loads the current architecture from enviroment and stores it as an\
-        attribute, if none is provided DEFAULT_ARCHITECTURE will be selected"""
+        attribute, if none is provided DEFAULT_ARCHITECTURE will be selected
+        """
         architecture_type = os.getenv(ARCHITECTURE_ENV_NAME, DEFAULT_ARCHITECTURE)
         if not architecture_type:
             architecture_type = DEFAULT_ARCHITECTURE
@@ -95,7 +100,9 @@ class _PropertiesManager:
         """Load enviroment variables into class attributes
 
         Args:
+        ----
             env_names (List[str]): enviroment variables names
+
         """
         for env_name in env_names:
             env_variable_value = os.getenv(env_name)
@@ -111,24 +118,30 @@ class _PropertiesManager:
     def is_production_enviroment(self) -> bool:
         """Checks if the enviroment is production
 
-        Returns:
+        Returns
+        -------
             bool: Returns if its production enviroment
+
         """
         return self.__getattribute__(ENV_VALUE_ENV_NAME) == PROD
 
     def is_testing_enviroment(self) -> bool:
         """Checks if the enviroment is testing
 
-        Returns:
+        Returns
+        -------
             bool: Returns if its testing enviroment
+
         """
         return self.__getattribute__(ENV_VALUE_ENV_NAME) == TEST
 
     def is_log_file_provided(self) -> bool:
         """Checks if theres a valid log file provided
 
-        Returns:
+        Returns
+        -------
             bool: Returns if theres a valid log provided
+
         """
         return self.__getattribute__(LOG_FILE) is not None
 

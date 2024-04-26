@@ -20,12 +20,9 @@ class _PropertiesMessagesManager:
     def __init__(self):
         # Load properties from file
         config = configparser.ConfigParser()
-        config.optionxform = (
-            lambda option: option
-        )  # <-- agregamos esta línea para mantener las mayúsculas
+        config.optionxform = lambda optionstr: optionstr
         config.read(PROPERTIES_INI_FILE_PATH)
 
-        # Loop through all sections and options to set properties dynamically
         for section in config.sections():
             for option in config.options(section):
                 value = str(config[section][option])

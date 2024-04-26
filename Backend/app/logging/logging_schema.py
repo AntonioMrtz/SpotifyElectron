@@ -1,29 +1,36 @@
 import logging
+import logging.handlers
 import sys
-from logging import Formatter, StreamHandler
-from logging.handlers import RotatingFileHandler
 
 from app.constants.config_constants import LOG_FILE, LOG_LEVEL
 from app.logging.logger_constants import DEBUG, INFO
 from app.logging.LogPropertiesManager import LogPropertiesManager
 
 
-class SpotifyElectronFormatter(Formatter):
+class SpotifyElectronFormatter(logging.Formatter):
+    MODULE_COLOR = "\033[4m"  # Underline
+    LEVEL_DEBUG_COLOR = "\033[94m"  # Blue
+    LEVEL_INFO_COLOR = "\033[92m"  # Green
+    LEVEL_WARNING_COLOR = "\033[38;5;208m"  # Orange
+    LEVEL_ERROR_COLOR = "\033[91m"  # Red
+    LEVEL_CRITICAL_COLOR = "\033[95m"  # Magenta
+    RESET_COLOR = "\033[0m"  # Reset
+
     FORMATS = {
         logging.DEBUG: (
-            "%(asctime)s - %(name)s - \033[94m%(levelname)s\033[0m - %(message)s"
+            f"%(asctime)s -  {MODULE_COLOR}%(name)s{RESET_COLOR} - {LEVEL_DEBUG_COLOR}%(levelname)s{RESET_COLOR} - %(message)s"
         ),
         logging.INFO: (
-            "%(asctime)s - %(name)s - \033[92m%(levelname)s\033[0m - %(message)s"
+            f"%(asctime)s -  {MODULE_COLOR}%(name)s{RESET_COLOR} - {LEVEL_INFO_COLOR}%(levelname)s{RESET_COLOR} - %(message)s"
         ),
         logging.WARNING: (
-            "%(asctime)s - %(name)s - \033[93m%(levelname)s\033[0m - %(message)s"
+            f"%(asctime)s -  {MODULE_COLOR}%(name)s{RESET_COLOR} - {LEVEL_WARNING_COLOR}%(levelname)s{RESET_COLOR} - %(message)s"
         ),
         logging.ERROR: (
-            "%(asctime)s - %(name)s - \033[91m%(levelname)s\033[0m - %(message)s"
+            f"%(asctime)s -  {MODULE_COLOR}%(name)s{RESET_COLOR} - {LEVEL_ERROR_COLOR}%(levelname)s{RESET_COLOR} - %(message)s"
         ),
         logging.CRITICAL: (
-            "%(asctime)s - %(name)s - \033[95m%(levelname)s\033[0m - %(message)s"
+            f"%(asctime)s -  {MODULE_COLOR}%(name)s{RESET_COLOR} - {LEVEL_CRITICAL_COLOR}%(levelname)s{RESET_COLOR} - %(message)s"
         ),
     }
 
@@ -60,7 +67,7 @@ class SpotifyElectronLogger:
         """Adds logging handler depending if log file has been provided or not"""
         if not self.log_properties_manager.is_log_file_provided():
             return
-        file_log_handler = RotatingFileHandler(
+        file_log_handler = logging.handlers.RotatingFileHandler(
             self.log_properties_manager.__getattribute__(LOG_FILE),
             maxBytes=50000,
             backupCount=5,
@@ -69,10 +76,12 @@ class SpotifyElectronLogger:
 
     def _manage_console_handler(self):
         """Adds logging console handler"""
-        stream_handler = StreamHandler(sys.stdout)
+        stream_handler = logging.StreamHandler(sys.stdout)
         self._add_handler(stream_handler)
 
-    def _add_handler(self, handler: StreamHandler | RotatingFileHandler):
+    def _add_handler(
+        self, handler: logging.StreamHandler | logging.handlers.RotatingFileHandler
+    ):
         """Add handler to logger
 
         Args:

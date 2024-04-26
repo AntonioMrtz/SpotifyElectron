@@ -8,7 +8,7 @@ namespace Global {
 
   export const noSongPlaying = 'NOSONGPLAYING';
   export const songArchitecture: SongArchitecture =
-    SongArchitecture.STREAMING_ARCHITECTURE;
+    SongArchitecture.FILE_ARCHITECTURE;
 
   export interface HandleUrlChangeResponse {
     canGoBack: boolean | undefined;

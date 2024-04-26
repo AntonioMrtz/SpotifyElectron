@@ -14,7 +14,7 @@ from app.constants.song_service_set_up_constants import (
     SONG_SERVICE_STREAMING_LAMBDA_SERVICE_MODULE_NAME,
     SONG_SERVICE_STREAMING_SDK_SERVICE_MODULE_NAME,
 )
-from app.logging.logger_constants import LOGGING_SONG_SERVICE_PROVIDER
+from app.logging.logging_constants import LOGGING_SONG_SERVICE_PROVIDER
 from app.logging.logging_schema import SpotifyElectronLogger
 
 song_services = {

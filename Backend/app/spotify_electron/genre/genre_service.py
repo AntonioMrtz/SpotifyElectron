@@ -1,6 +1,6 @@
 import json
 
-from app.logging.logger_constants import LOGGING_GENRE_SERVICE
+from app.logging.logging_constants import LOGGING_GENRE_SERVICE
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.genre.genre_schema import Genre, GenreServiceException
 

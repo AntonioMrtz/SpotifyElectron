@@ -1,7 +1,7 @@
 from enum import Enum
 
 from app.exceptions.exceptions_schema import SpotifyElectronException
-from app.logging.logger_constants import LOGGING_GENRE_CLASS
+from app.logging.logging_constants import LOGGING_GENRE_CLASS
 from app.logging.logging_schema import SpotifyElectronLogger
 
 genre_class_logger = SpotifyElectronLogger(LOGGING_GENRE_CLASS).getLogger()

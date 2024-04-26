@@ -3,7 +3,7 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.status import HTTP_401_UNAUTHORIZED
 
 import app.spotify_electron.security.security_service as security_service
-from app.logging.logger_constants import LOGGIN_CHECK_AUTH_JWT_MIDDLEWARE
+from app.logging.logging_constants import LOGGIN_CHECK_AUTH_JWT_MIDDLEWARE
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.security.security_schema import JWTValidationException
 

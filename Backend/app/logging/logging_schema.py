@@ -3,7 +3,7 @@ import logging.handlers
 import sys
 
 from app.constants.config_constants import LOG_FILE, LOG_LEVEL
-from app.logging.logger_constants import DEBUG, INFO
+from app.logging.logging_constants import DEBUG, INFO
 from app.logging.LogPropertiesManager import LogPropertiesManager
 
 

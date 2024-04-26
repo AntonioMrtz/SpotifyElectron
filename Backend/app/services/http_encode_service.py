@@ -4,7 +4,7 @@ from typing import Any
 from fastapi.encoders import jsonable_encoder
 
 from app.exceptions.http_encode_exceptions import JsonEncodeException
-from app.logging.logger_constants import LOGGING_HTTP_ENCODE_SERVICE
+from app.logging.logging_constants import LOGGING_HTTP_ENCODE_SERVICE
 from app.logging.logging_schema import SpotifyElectronLogger
 
 http_encode_service_logger = SpotifyElectronLogger(

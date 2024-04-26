@@ -10,7 +10,7 @@ from app.database.database_exceptions import (
     DatabasePingFailed,
     UnexpectedDatabasePingFailed,
 )
-from app.logging.logger_constants import LOGGING_DATABASE
+from app.logging.logging_constants import LOGGING_DATABASE
 from app.logging.logging_schema import SpotifyElectronLogger
 
 database_logger = SpotifyElectronLogger(LOGGING_DATABASE).getLogger()

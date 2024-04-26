@@ -3,7 +3,7 @@ import os
 import re
 
 from app.exceptions.exceptions_schema import SpotifyElectronException
-from app.logging.logger_constants import LOGGING_PROPERTIES_MESSAGES_MANAGER
+from app.logging.logging_constants import LOGGING_PROPERTIES_MESSAGES_MANAGER
 from app.logging.logging_schema import SpotifyElectronLogger
 
 PROPERTIES_INI_FILE_PATH = "../resources/messages.ini"

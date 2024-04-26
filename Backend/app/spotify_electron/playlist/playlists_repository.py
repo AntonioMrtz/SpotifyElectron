@@ -3,7 +3,7 @@ from sys import modules
 from pymongo.results import DeleteResult, InsertOneResult, UpdateResult
 
 from app.database.Database import Database
-from app.logging.logger_constants import LOGGING_PLAYLIST_REPOSITORY
+from app.logging.logging_constants import LOGGING_PLAYLIST_REPOSITORY
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.playlist.playlists_schema import (
     PlaylistDAO,

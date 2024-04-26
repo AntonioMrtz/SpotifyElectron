@@ -3,7 +3,7 @@ from datetime import datetime
 import app.services.all_users_service as all_users_service
 import app.spotify_electron.playlist.playlists_repository as playlists_repository
 from app.exceptions.exceptions_schema import BadParameterException
-from app.logging.logger_constants import LOGGING_PLAYLIST_SERVICE
+from app.logging.logging_constants import LOGGING_PLAYLIST_SERVICE
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.services.song_services.song_service_provider import get_song_service
 from app.services.utils import checkValidParameterString

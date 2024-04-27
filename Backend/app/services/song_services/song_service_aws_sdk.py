@@ -3,9 +3,7 @@ from sys import modules
 
 import boto3
 import librosa
-from boostrap.PropertiesManager import PropertiesManager
 from botocore.exceptions import ClientError
-from constants.set_up_constants import DISTRIBUTION_ID_ENV_NAME
 from dotenv import load_dotenv
 from fastapi import HTTPException
 from gridfs import GridFS
@@ -13,6 +11,8 @@ from pymongo.errors import PyMongoError
 
 import app.services.artist_service as artist_service
 import app.services.dto_service as dto_service
+from app.common.PropertiesManager import PropertiesManager
+from app.common.set_up_constants import DISTRIBUTION_ID_ENV_NAME
 from app.database.Database import Database
 from app.model.DTO.SongDTO import SongDTO
 from app.model.Song import Song

@@ -4,7 +4,7 @@ from unittest.mock import MagicMock, Mock, patch
 from pymongo.errors import ConnectionFailure
 from pytest import raises
 
-from app.constants.set_up_constants import MONGO_URI_ENV_NAME
+from app.common.set_up_constants import MONGO_URI_ENV_NAME
 from app.database.Database import (
     Database,
     DatabaseMeta,

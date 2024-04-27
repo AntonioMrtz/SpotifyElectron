@@ -3,14 +3,14 @@ import os
 
 from dotenv import load_dotenv
 
-from app.constants.config_constants import (
+from app.common.config_constants import (
     APP_FOLDER,
     CONFIG_FILENAME,
     LOG_CONFIG_SECTION,
     LOG_FILE,
     RESOURCES_FOLDER,
 )
-from app.constants.set_up_constants import ENV_VALUE_ENV_NAME, PROD
+from app.common.set_up_constants import ENV_VALUE_ENV_NAME, PROD
 
 
 class LogPropertiesManager:

@@ -4,8 +4,8 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.common.config_constants import APP, HOST, PORT
 from app.common.PropertiesManager import PropertiesManager
-from app.constants.config_constants import APP, HOST, PORT
 from app.logging.logging_constants import LOGGING_MAIN
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.middleware.CheckJwtAuthMiddleware import CheckJwtAuthMiddleware

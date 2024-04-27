@@ -2,20 +2,20 @@ import importlib
 from types import ModuleType
 
 from app.common.PropertiesManager import PropertiesManager
-from app.constants.set_up_constants import (
+from app.common.set_up_constants import (
     ARCH_DB_BLOB,
     ARCH_STREAMING_LAMBDA,
     ARCH_STREAMING_SDK,
     ARCHITECTURE_ENV_NAME,
 )
-from app.constants.song_service_set_up_constants import (
+from app.logging.logging_constants import LOGGING_SONG_SERVICE_PROVIDER
+from app.logging.logging_schema import SpotifyElectronLogger
+from app.spotify_electron.song.song_service_constants import (
     MODULE_PREFIX_NAME,
     SONG_SERVICE_DB_BLOB_SERVICE_MODULE_NAME,
     SONG_SERVICE_STREAMING_LAMBDA_SERVICE_MODULE_NAME,
     SONG_SERVICE_STREAMING_SDK_SERVICE_MODULE_NAME,
 )
-from app.logging.logging_constants import LOGGING_SONG_SERVICE_PROVIDER
-from app.logging.logging_schema import SpotifyElectronLogger
 
 song_services = {
     ARCH_STREAMING_LAMBDA: SONG_SERVICE_STREAMING_LAMBDA_SERVICE_MODULE_NAME,

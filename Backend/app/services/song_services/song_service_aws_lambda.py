@@ -10,7 +10,7 @@ from pymongo.errors import PyMongoError
 import app.services.artist_service as artist_service
 import app.services.dto_service as dto_service
 from app.common.PropertiesManager import PropertiesManager
-from app.constants.set_up_constants import LAMBDA_URL_ENV_NAME
+from app.common.set_up_constants import LAMBDA_URL_ENV_NAME
 from app.database.Database import Database
 from app.model.DTO.SongDTO import SongDTO
 from app.model.Song import Song

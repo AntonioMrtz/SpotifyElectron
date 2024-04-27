@@ -2,7 +2,7 @@ import os
 from unittest.mock import Mock
 
 from app.common.PropertiesManager import _PropertiesManager
-from app.constants.set_up_constants import (
+from app.common.set_up_constants import (
     ARCH_STREAMING_SDK,
     ARCHITECTURE_ENV_NAME,
     DEFAULT_ARCHITECTURE,

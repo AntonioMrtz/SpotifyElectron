@@ -10,7 +10,7 @@ import app.services.all_users_service as all_users_service
 import app.services.artist_service as artist_service
 import app.services.user_service as user_service
 from app.common.PropertiesManager import PropertiesManager
-from app.constants.set_up_constants import DISTRIBUTION_ID_ENV_NAME
+from app.common.set_up_constants import DISTRIBUTION_ID_ENV_NAME
 from app.exceptions.exceptions_schema import BadParameterException
 from app.logging.logging_constants import LOGGING_SECURITY_SERVICE
 from app.logging.logging_schema import SpotifyElectronLogger

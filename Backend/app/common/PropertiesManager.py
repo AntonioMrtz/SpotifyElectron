@@ -3,14 +3,14 @@ import os
 
 from dotenv import load_dotenv
 
-from app.constants.config_constants import (
+from app.common.config_constants import (
     APP_CONFIG_SECTION,
     APP_FOLDER,
     CONFIG_FILENAME,
     LOG_FILE,
     RESOURCES_FOLDER,
 )
-from app.constants.set_up_constants import (
+from app.common.set_up_constants import (
     ARCHITECTURE_ENV_NAME,
     DEFAULT_ARCHITECTURE,
     DISTRIBUTION_ID_ENV_NAME,

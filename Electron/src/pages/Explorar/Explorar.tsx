@@ -33,8 +33,11 @@ export default function Explorar({
 
   const fetchFilteredItemsByName = useCallback(
     async (filterNameInput: string) => {
+      if (filterNameInput === '') {
+        return;
+      }
       try {
-        const fetchUrlFilterItemsByName = `${Global.backendBaseUrl}search/?nombre=${filterNameInput}`;
+        const fetchUrlFilterItemsByName = `${Global.backendBaseUrl}search/?name=${filterNameInput}`;
         const resFetchUrlFilterItemsByName = await fetch(
           fetchUrlFilterItemsByName,
         );
@@ -77,10 +80,10 @@ export default function Explorar({
           setFilteredPlaylists(fetchedPlaylists);
         }
 
-        if (resFetchUrlFilterItemsByNameJson.artistas) {
+        if (resFetchUrlFilterItemsByNameJson.artists) {
           const fetchedArtists: PropsArtistCard[] = [];
 
-          resFetchUrlFilterItemsByNameJson.artistas
+          resFetchUrlFilterItemsByNameJson.artists
             .slice(0, 4)
             .forEach((artist: any) => {
               fetchedArtists.push({

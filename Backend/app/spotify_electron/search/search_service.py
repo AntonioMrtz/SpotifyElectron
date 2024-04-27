@@ -1,31 +1,34 @@
-from fastapi import HTTPException
-
 import app.services.artist_service as artist_service
 import app.services.user_service as user_service
 import app.spotify_electron.playlist.playlists_service as playlists_service
 from app.exceptions.exceptions_schema import BadParameterException
+from app.logging.logging_constants import LOGGING_SEARCH_SERVICE
+from app.logging.logging_schema import SpotifyElectronLogger
 from app.services.song_services.song_service_provider import get_song_service
 from app.services.utils import checkValidParameterString
+from app.spotify_electron.search.search_schema import (
+    SearchResult,
+    SearchServiceException,
+)
+
+search_service_logger = SpotifyElectronLogger(LOGGING_SEARCH_SERVICE).getLogger()
+
 
 song_service = get_song_service()
 
 
-def search_by_name(name: str) -> dict:
-    """Returns items that match the given name
+def search_by_name(name: str) -> SearchResult:
+    """Return items that partially match the given name
 
     Args:
-    ----
         name (str): the name to match
 
     Raises:
-    ------
-        Bad Request 400 HTTPException: the given name its empty
-        Bad Request 500 HTTPException: an error occurred when retrieving items
+        BadParameterException: if the name is invalid
+        SearchServiceException: if unexpected error getting items by name
 
     Returns:
-    -------
-        dict: the items that match the name on a dict
-
+        SearchResult: the items that partially match the name
     """
     try:
         checkValidParameterString(name)
@@ -36,16 +39,13 @@ def search_by_name(name: str) -> dict:
         artists = artist_service.search_by_name(name)
         users = user_service.search_by_name(name)
 
-    except BadParameterException:
-        raise
-    except Exception as e:
-        raise HTTPException(
-            status_code=500, detail=f"No se pudieron obtener los items por nombre | {e}"
+    except BadParameterException as exception:
+        search_service_logger.exception(f"Bad parameter : {name}")
+        raise BadParameterException(name) from exception
+    except Exception as exception:
+        search_service_logger.exception(
+            f"Unexpected error in Search Service searching for items with name : {name}"
         )
+        raise SearchServiceException from exception
     else:
-        return {
-            "artistas": artists,
-            "playlists": playlists,
-            "users": users,
-            "songs": songs,
-        }
+        return SearchResult(artists, playlists, users, songs)

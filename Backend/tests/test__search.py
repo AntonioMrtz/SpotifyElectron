@@ -12,6 +12,7 @@ def set_up(trigger_app_start):
 
 
 def test_get_search_by_name_correct(clear_test_data_db):
+    # TODO, crear los demas items y comprobarlos
     name = "8232392323623823723"
     foto = "https://foto"
     descripcion = "hola"

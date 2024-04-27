@@ -261,7 +261,7 @@ def login_user(name: str, password: str) -> str:
             "role": user_type.value,
             "token_type": "bearer",
         }
-        return create_access_token(jwt_data)
+        access_token_data = create_access_token(jwt_data)
 
     except BadParameterException as exception:
         security_service_logger.exception("Invalid login credentials")
@@ -282,6 +282,9 @@ def login_user(name: str, password: str) -> str:
     except Exception as exception:
         security_service_logger.exception(f"Unexpected error login user : {name}")
         raise UnexpectedLoginUserException from exception
+    else:
+        security_service_logger.info(f"User {name} logged successfully")
+        return access_token_data
 
 
 def check_jwt_is_valid(token: str) -> None:

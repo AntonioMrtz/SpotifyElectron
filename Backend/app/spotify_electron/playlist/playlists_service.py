@@ -101,6 +101,7 @@ def get_playlist(name: str) -> PlaylistDTO:
         )
         raise PlaylistServiceException from exception
     else:
+        playlist_service_logger.info(f"Playlist {name} retrieved successfully")
         return playlist_dto
 
 
@@ -147,6 +148,7 @@ def create_playlist(
         all_users_service.add_playlist_to_owner(
             user_name=owner, playlist_name=name, token=token
         )
+        playlist_service_logger.info(f"Playlist {name} created successfully")
     except PlaylistBadNameException as exception:
         playlist_service_logger.exception(f"Bad Playlist Name Parameter : {name}")
         raise PlaylistBadNameException from exception
@@ -218,6 +220,7 @@ def update_playlist(
         )
 
         all_users_service.update_playlist_name(name, new_name)
+        playlist_service_logger.info(f"Playlist {name} updated successfully")
 
     except PlaylistBadNameException as exception:
         playlist_service_logger.exception(f"Bad Parameter : {name}")
@@ -259,6 +262,8 @@ def delete_playlist(name: str) -> None:
         handle_playlist_should_exists(name)
         all_users_service.delete_playlist_from_owner(playlist_name=name)
         playlists_repository.delete_playlist(name)
+        playlist_service_logger.info(f"Playlist {name} deleted successfully")
+
     except PlaylistBadNameException as exception:
         playlist_service_logger.exception(f"Bad Parameter : {name}")
         raise PlaylistBadNameException from exception
@@ -303,6 +308,7 @@ def get_all_playlist() -> list[PlaylistDTO]:
         )
         raise PlaylistServiceException from exception
     else:
+        playlist_service_logger.info("All Playlists retrieved successfully")
         return playlists_dto
 
 
@@ -336,6 +342,9 @@ def get_selected_playlists(playlist_names: list[str]) -> list[PlaylistDTO]:
         )
         raise PlaylistServiceException from exception
     else:
+        playlist_service_logger.info(
+            f"Selected Playlists {playlist_names} retrieved successfully"
+        )
         return playlists_dto
 
 
@@ -369,6 +378,9 @@ def search_by_name(name: str) -> list[PlaylistDTO]:
         )
         raise PlaylistServiceException from exception
     else:
+        playlist_service_logger.info(
+            f"Playlists searched by name {name} retrieved successfully"
+        )
         return playlists_dto
 
 

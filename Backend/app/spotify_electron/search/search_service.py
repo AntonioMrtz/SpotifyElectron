@@ -48,4 +48,8 @@ def search_by_name(name: str) -> SearchResult:
         )
         raise SearchServiceException from exception
     else:
-        return SearchResult(artists, playlists, users, songs)
+        search_results = SearchResult(artists, playlists, users, songs)
+        search_service_logger.info(
+            f"Items searched by name {name} retrieved successfully : {search_results}"
+        )
+        return search_results

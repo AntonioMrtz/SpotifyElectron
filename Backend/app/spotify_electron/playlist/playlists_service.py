@@ -92,12 +92,12 @@ def get_playlist(name: str) -> PlaylistDTO:
         raise PlaylistNotFoundException from exception
     except PlaylistRepositoryException as exception:
         playlist_service_logger.critical(
-            f"Unhandled error in Playlist Repository : {name}"
+            f"Unexpected error in Playlist Repository getting playlist : {name}"
         )
         raise PlaylistServiceException from exception
     except Exception as exception:
         playlist_service_logger.critical(
-            f"Unhandled error in Playlist Service : {name}"
+            f"Unexpected error in Playlist Service getting playlist : {name}"
         )
         raise PlaylistServiceException from exception
     else:
@@ -157,10 +157,14 @@ def create_playlist(
         playlist_service_logger.exception(f"User not found : {name}")
         raise UserNotFoundException from exception
     except PlaylistRepositoryException as exception:
-        playlist_service_logger.critical("Unhandled error in Playlist Repository")
+        playlist_service_logger.critical(
+            f"Unexpected error in Playlist Repository creating playlisy : {name}"
+        )
         raise PlaylistServiceException from exception
     except Exception as exception:
-        playlist_service_logger.critical("Unhandled error in Playlist Service")
+        playlist_service_logger.critical(
+            f"Unexpected error in Playlist Service creating playlisy : {name}"
+        )
         raise PlaylistServiceException from exception
 
 
@@ -225,10 +229,14 @@ def update_playlist(
         playlist_service_logger.exception(f"User is not the owner of playlist : {name}")
         raise PlaylistServiceException from exception
     except PlaylistRepositoryException as exception:
-        playlist_service_logger.critical("Unhandled error in Playlist Repository")
+        playlist_service_logger.critical(
+            f"Unexpected error in Playlist Repository updating playlist : {name}"
+        )
         raise PlaylistServiceException from exception
     except Exception as exception:
-        playlist_service_logger.critical("Unhandled error in Playlist Service")
+        playlist_service_logger.critical(
+            f"Unexpected error in Playlist Service updating playlist : {name}"
+        )
         raise PlaylistServiceException from exception
 
 
@@ -258,10 +266,14 @@ def delete_playlist(name: str) -> None:
         playlist_service_logger.exception(f"Playlist not found : {name}")
         raise PlaylistNotFoundException from exception
     except PlaylistRepositoryException as exception:
-        playlist_service_logger.critical("Unhandled error in Playlist Repository")
+        playlist_service_logger.critical(
+            f"Unexpected error in Playlist Repository deleting playlist :{name}"
+        )
         raise PlaylistServiceException from exception
     except Exception as exception:
-        playlist_service_logger.critical("Unhandled error in Playlist Service")
+        playlist_service_logger.critical(
+            f"Unexpected error in Playlist Service deleting playlist :{name}"
+        )
         raise PlaylistServiceException from exception
 
 
@@ -281,10 +293,14 @@ def get_all_playlist() -> list[PlaylistDTO]:
         playlists = playlists_repository.get_all_playlists()
         playlists_dto = [get_playlist_dto_from_dao(playlist) for playlist in playlists]
     except PlaylistRepositoryException as exception:
-        playlist_service_logger.critical("Unhandled error in Playlist Repository")
+        playlist_service_logger.critical(
+            "Unexpected error in Playlist Repository getting all playlists"
+        )
         raise PlaylistServiceException from exception
     except Exception as exception:
-        playlist_service_logger.critical("Unhandled error in Playlist Service")
+        playlist_service_logger.critical(
+            "Unexpected error in Playlist Service getting all playlists"
+        )
         raise PlaylistServiceException from exception
     else:
         return playlists_dto
@@ -310,10 +326,14 @@ def get_selected_playlists(playlist_names: list[str]) -> list[PlaylistDTO]:
         playlists = playlists_repository.get_selected_playlists(playlist_names)
         playlists_dto = [get_playlist_dto_from_dao(playlist) for playlist in playlists]
     except PlaylistRepositoryException as exception:
-        playlist_service_logger.critical("Unhandled error in Playlist Repository")
+        playlist_service_logger.critical(
+            f"Unexpected error in Playlist Repository getting selected playlists : {playlist_names}"
+        )
         raise PlaylistServiceException from exception
     except Exception as exception:
-        playlist_service_logger.critical("Unhandled error in Playlist Service")
+        playlist_service_logger.critical(
+            f"Unexpected error in Playlist Service getting selected playlists : {playlist_names}"
+        )
         raise PlaylistServiceException from exception
     else:
         return playlists_dto
@@ -339,10 +359,14 @@ def search_by_name(name: str) -> list[PlaylistDTO]:
         playlists = playlists_repository.get_playlist_search_by_name(name)
         playlists_dto = [get_playlist_dto_from_dao(playlist) for playlist in playlists]
     except PlaylistRepositoryException as exception:
-        playlist_service_logger.critical("Unhandled error in Playlist Repository")
+        playlist_service_logger.critical(
+            f"Unexpected error in Playlist Repository searching playlist by name {name}"
+        )
         raise PlaylistServiceException from exception
     except Exception as exception:
-        playlist_service_logger.critical("Unhandled error in Playlist Service")
+        playlist_service_logger.critical(
+            f"Unexpected error in Playlist Service searching playlist by name {name}"
+        )
         raise PlaylistServiceException from exception
     else:
         return playlists_dto

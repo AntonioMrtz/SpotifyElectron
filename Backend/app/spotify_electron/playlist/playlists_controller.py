@@ -18,7 +18,6 @@ import app.spotify_electron.playlist.playlists_service as playlists_service
 import app.spotify_electron.security.security_service as security_service
 from app.common.PropertiesMessagesManager import PropertiesMessagesManager
 from app.exceptions.http_encode_exceptions import JsonEncodeException
-from app.logging.http_encode_logging_constants import ENCODING_ERROR
 from app.logging.logging_constants import LOGGING_PLAYLIST_CONTROLLER
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.playlist.playlists_schema import (
@@ -33,7 +32,9 @@ router = APIRouter(
     tags=["Playlists"],
 )
 
-playlist_router_logger = SpotifyElectronLogger(LOGGING_PLAYLIST_CONTROLLER).getLogger()
+playlist_controller_logger = SpotifyElectronLogger(
+    LOGGING_PLAYLIST_CONTROLLER
+).getLogger()
 
 # TODO set in content of Responses messages of error from messages.ini
 
@@ -64,12 +65,14 @@ def get_playlist(name: str) -> Response:
             status_code=HTTP_404_NOT_FOUND,
         )
     except JsonEncodeException:
-        playlist_router_logger.exception(f"{ENCODING_ERROR} : {playlist_json}")
+        playlist_controller_logger.exception(
+            f"{PropertiesMessagesManager.commonEncodingError} : {playlist_json}"
+        )
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
         )
     except (Exception, PlaylistServiceException):
-        playlist_router_logger.critical(
+        playlist_controller_logger.exception(
             f"{PropertiesMessagesManager.commonInternalServerError}"
         )
         return Response(
@@ -121,7 +124,7 @@ def post_playlist(
             status_code=HTTP_404_NOT_FOUND,
         )
     except (Exception, PlaylistServiceException):
-        playlist_router_logger.critical(
+        playlist_controller_logger.exception(
             f"{PropertiesMessagesManager.commonInternalServerError}"
         )
         return Response(
@@ -171,7 +174,7 @@ def update_playlist(
             status_code=HTTP_404_NOT_FOUND,
         )
     except (Exception, PlaylistServiceException):
-        playlist_router_logger.critical(
+        playlist_controller_logger.exception(
             f"{PropertiesMessagesManager.commonInternalServerError}"
         )
         return Response(
@@ -200,7 +203,7 @@ def delete_playlist(name: str) -> Response:
             status_code=HTTP_404_NOT_FOUND,
         )
     except (Exception, PlaylistServiceException):
-        playlist_router_logger.critical(
+        playlist_controller_logger.exception(
             f"{PropertiesMessagesManager.commonInternalServerError}"
         )
         return Response(
@@ -229,12 +232,14 @@ def get_playlists() -> Response:
             status_code=HTTP_404_NOT_FOUND,
         )
     except JsonEncodeException:
-        playlist_router_logger.exception(f"{ENCODING_ERROR} : {playlist_json}")
+        playlist_controller_logger.exception(
+            f"{PropertiesMessagesManager.commonEncodingError} : {playlist_json}"
+        )
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
         )
     except (Exception, PlaylistServiceException):
-        playlist_router_logger.critical(
+        playlist_controller_logger.exception(
             f"{PropertiesMessagesManager.commonInternalServerError}"
         )
         return Response(
@@ -270,12 +275,14 @@ def get_selected_playlists(names: str) -> Response:
             status_code=HTTP_404_NOT_FOUND,
         )
     except JsonEncodeException:
-        playlist_router_logger.exception(f"{ENCODING_ERROR} : {playlist_json}")
+        playlist_controller_logger.exception(
+            f"{PropertiesMessagesManager.commonEncodingError} : {playlist_json}"
+        )
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
         )
     except (Exception, PlaylistServiceException):
-        playlist_router_logger.critical(
+        playlist_controller_logger.exception(
             f"{PropertiesMessagesManager.commonInternalServerError}"
         )
         return Response(

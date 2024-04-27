@@ -1,6 +1,6 @@
 # Spotify Electron
 
-![Spotify Electron Media Preview](https://raw.githubusercontent.com/AntonioMrtz/SpotifyElectron/master/assets/images/SpotifyElectron_MediaPreview.png)
+![Spotify Electron Media Preview](https://raw.githubusercontent.com/AntonioMrtz/SpotifyElectron/master/assets/videos/SpotifyElectronReadmePreview.gif)
 
 ## 🌐 Website
 

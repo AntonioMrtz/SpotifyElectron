@@ -106,7 +106,7 @@ def get_playlist(name: str) -> PlaylistDTO:
 
 
 def create_playlist(
-    name: str, photo: str, description: str, song_names: list, token: TokenData
+    name: str, photo: str, description: str, song_names: list[str], token: TokenData
 ) -> None:
     """Creates a playlist
 
@@ -175,7 +175,7 @@ def update_playlist(
     new_name: str | None,
     photo: str,
     description: str,
-    song_names: list,
+    song_names: list[str],
     token: TokenData,
 ) -> None:
     """Updates a playlist

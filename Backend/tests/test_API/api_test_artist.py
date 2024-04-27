@@ -18,10 +18,10 @@ def create_artist(name: str, photo: str, password: str):
 def update_artist(
     name: str,
     photo: str,
-    playlists: list,
-    saved_playlists: list,
-    playback_history: list,
-    uploaded_songs: list,
+    playlists: list[str],
+    saved_playlists: list[str],
+    playback_history: list[str],
+    uploaded_songs: list[str],
     headers: dict,
 ):
     url = f"/artistas/{name}/?foto={photo}"

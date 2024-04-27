@@ -18,9 +18,9 @@ def create_user(name: str, photo: str, password: str):
 def update_user(
     name: str,
     photo: str,
-    playlists: list,
-    saved_playlists: list,
-    playback_history: list,
+    playlists: list[str],
+    saved_playlists: list[str],
+    playback_history: list[str],
     headers: dict,
 ):
     url = f"/usuarios/{name}/?foto={photo}"

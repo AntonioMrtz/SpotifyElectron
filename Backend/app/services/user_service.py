@@ -129,9 +129,9 @@ def create_user(name: str, photo: str, password: str) -> None:
 def update_user(
     name: str,
     photo: str,
-    playlists: list,
-    saved_playlists: list,
-    playback_history: list,
+    playlists: list[str],
+    saved_playlists: list[str],
+    playback_history: list[str],
     token: TokenData,
 ) -> None:
     """Updates a user , duplicated playlists and songs wont be added

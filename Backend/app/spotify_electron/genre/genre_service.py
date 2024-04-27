@@ -25,7 +25,7 @@ def get_genres() -> str:
             genre_dict[genre.name] = genre.value
         genres_json = json.dumps(genre_dict)
     except Exception as exception:
-        genre_service_logger.exception("Unhandled error getting genres")
+        genre_service_logger.exception("Unexpected error getting genres")
         raise GenreServiceException from exception
     else:
         genre_service_logger.info(f"Obtained genres : {genres_json}")

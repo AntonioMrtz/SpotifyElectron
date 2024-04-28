@@ -68,7 +68,7 @@ to be escalable and ready for quick iterations of features.
 
 ### Home
 
-![Home](assets/images/walkthrough_screenshots/gh/Home.png)
+![Home](assets/images/walkthrough_screenshots/Home.png)
 
 ### Playlist
 

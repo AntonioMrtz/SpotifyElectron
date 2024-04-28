@@ -68,25 +68,25 @@ to be escalable and ready for quick iterations of features.
 
 ### Home
 
-![Home](assets/images/Walkthrough/Home.png)
+![Home](assets/images/walkthrough/Home.png)
 
 ### Playlist
 
-![Home](assets/images/Walkthrough/Playlist.png)
+![Home](assets/images/walkthrough/Playlist.png)
 
 ### Upload Song
 
-![Home](assets/images/Walkthrough/UploadSong.png)
+![Home](assets/images/walkthrough/UploadSong.png)
 
 ### Explorar
 
-![Explorar](assets/images/Walkthrough/Explorar.png)
+![Explorar](assets/images/walkthrough/Explorar.png)
 
 ### Login
 
-![Login](assets/images/Walkthrough/Login.png)
+![Login](assets/images/walkthrough/Login.png)
 
 
 ### Update Playlist
 
-![Home](assets/images/Walkthrough/UpdatePlaylist.png)
+![Home](assets/images/walkthrough/UpdatePlaylist.png)

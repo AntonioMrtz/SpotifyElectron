@@ -92,7 +92,7 @@ python -m pytest tests/
 
 Test run and generate code coverage in folder htmlcov/index.html
 ```
-python -m pytest tests/ --cov=. --cov-report=html
+python -m pytest tests/ --cov=. --cov-report=html:tests/htmlcov
 
 ```
 ## ⚓ Pre-commit

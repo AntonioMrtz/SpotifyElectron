@@ -4,7 +4,7 @@
 
 ## Overview
 
-[Spotify Electron](https://antoniomrtz.github.io/SpotifyElectron_Web/) is a cross-platform music streaming desktop app made with Electron-React frontend and Python-FastAPI-AWS Backend. The main goal is to reproduce the original Spotify functionality while adding new ones like uploading songs.
+[Spotify Electron](https://antoniomrtz.github.io/SpotifyElectron_Web/) is a cross-platform music streaming desktop app made with Electron-React frontend and Python-FastAPI-AWS Backend. The main goal is to reproduce the original Spotify functionality while adding new one like uploading songs.
 
 ## 🌐 Website
 
@@ -68,25 +68,25 @@ to be escalable and ready for quick iterations of features.
 
 ### Home
 
-![Home](assets/images/walkthrough/Home.png)
+![Home](assets/images/walkthrough_screenshots/Home.png)
 
 ### Playlist
 
-![Home](assets/images/walkthrough/Playlist.png)
+![Home](assets/images/walkthrough_screenshots/Playlist.png)
 
 ### Upload Song
 
-![Home](assets/images/walkthrough/UploadSong.png)
+![Home](assets/images/walkthrough_screenshots/UploadSong.png)
 
 ### Explorar
 
-![Explorar](assets/images/walkthrough/Explorar.png)
+![Explorar](assets/images/walkthrough_screenshots/Explorar.png)
 
 ### Login
 
-![Login](assets/images/walkthrough/Login.png)
+![Login](assets/images/walkthrough_screenshots/Login.png)
 
 
 ### Update Playlist
 
-![Home](assets/images/walkthrough/UpdatePlaylist.png)
+![Home](assets/images/walkthrough_screenshots/UpdatePlaylist.png)

@@ -1,6 +1,10 @@
 # Spotify Electron
 
-![Spotify Electron Media Preview](https://raw.githubusercontent.com/AntonioMrtz/SpotifyElectron/master/assets/videos/SpotifyElectronReadmePreview.gif)
+![Spotify Electron Media Preview](assets/videos/SpotifyElectronReadmePreview.gif)
+
+## Overview
+
+[Spotify Electron](https://antoniomrtz.github.io/SpotifyElectron_Web/) is a open source cross-platform desktop music streaming app
 
 ## 🌐 Website
 
@@ -48,15 +52,15 @@ to be escalable and ready for quick iterations of features.
 
 ## Software Architecture
 
-![Spotify_Electron_Software_Diagram](assets/images/master-streaming-lambda-arch.png)
+![Spotify_Electron_Software_Diagram](assets/images/architecture/master-streaming-lambda-arch.png)
 
 ### Song architecture
 
-![Spotify_Electron_Software_Song_Diagram](assets/images/song_architecture_aws.png)
+![Spotify_Electron_Software_Song_Diagram](assets/images/architecture/song_architecture_aws.png)
 
 ### Frontend architecture
 
-![Spotify_Electron_Frontend_Diagram](assets/images/frontend-arch.png)
+![Spotify_Electron_Frontend_Diagram](assets/images/architecture/frontend-arch.png)
 
 ---
 

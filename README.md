@@ -1,6 +1,10 @@
 # Spotify Electron
 
-![Spotify Electron Media Preview](https://raw.githubusercontent.com/AntonioMrtz/SpotifyElectron/master/assets/videos/SpotifyElectronReadmePreview.gif)
+![Spotify Electron Media Preview](assets/videos/SpotifyElectronReadmePreview.gif)
+
+## Overview
+
+[Spotify Electron](https://antoniomrtz.github.io/SpotifyElectron_Web/) is a cross-platform music streaming desktop app made with Electron-React frontend and Python-FastAPI-AWS Backend. The main goal is to reproduce the original Spotify functionality while adding new ones like uploading songs.
 
 ## 🌐 Website
 
@@ -42,21 +46,21 @@ to be escalable and ready for quick iterations of features.
 * Add new extra functionality that could improve the original app.
 * Cross platform app with only one codebase.
 * Build a landing page for reaching users and portray all the goals, technologies and software processes.
-* Release a docker image that eases the deploy process in every deploy enviroment.
+* Use docker to ease local development and production deployment
 ---
 
 
 ## Software Architecture
 
-![Spotify_Electron_Software_Diagram](assets/images/master-streaming-lambda-arch.png)
+![Spotify_Electron_Software_Diagram](assets/images/architecture/master-streaming-lambda-arch.png)
 
 ### Song architecture
 
-![Spotify_Electron_Software_Song_Diagram](assets/images/song_architecture_aws.png)
+![Spotify_Electron_Software_Song_Diagram](assets/images/architecture/song_architecture_aws.png)
 
 ### Frontend architecture
 
-![Spotify_Electron_Frontend_Diagram](assets/images/frontend-arch.png)
+![Spotify_Electron_Frontend_Diagram](assets/images/architecture/frontend-arch.png)
 
 ---
 

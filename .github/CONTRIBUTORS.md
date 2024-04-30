@@ -37,7 +37,10 @@ If you have contributed to this project and your name is not listed here, please
 
 We're currently looking for contributions for the following:
 
-
+* Implementing new features
+* Fixing bugs
+* Improve the project
+* Docs Writing
 
 For more information, please refer to our [CONTRIBUTING guide](https://github.com/AntonioMrtz/SpotifyElectron/blob/master/.github/CONTRIBUTING.md).
 

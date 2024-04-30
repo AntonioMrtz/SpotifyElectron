@@ -31,7 +31,8 @@ git clone https://github.com/AntonioMrtz/SpotifyElectron.git
 
 ## 🖐 How to Contribute to the project
 
-[CONTRIBUTING readme](https://github.com/AntonioMrtz/SpotifyElectron/blob/master/.github/CONTRIBUTING.md)
+Are you interested in contributing to the project? Check our contributing rules and methodologies in
+[CONTRIBUTING readme](https://github.com/AntonioMrtz/SpotifyElectron/blob/master/.github/CONTRIBUTING.md).
 
 ## 🎯 Project's goals
 

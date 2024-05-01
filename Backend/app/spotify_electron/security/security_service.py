@@ -17,7 +17,6 @@ from app.logging.logging_schema import SpotifyElectronLogger
 from app.model.Artist import Artist
 from app.model.User import User
 from app.model.UserType import User_Type
-from app.services.utils import checkValidParameterString
 from app.spotify_electron.login.login_schema import InvalidCredentialsLoginException
 from app.spotify_electron.playlist.playlists_service import handle_user_should_exists
 from app.spotify_electron.security.security_schema import (
@@ -33,6 +32,7 @@ from app.spotify_electron.security.security_schema import (
     VerifyPasswordException,
 )
 from app.spotify_electron.user.user_schema import UserNotFoundException
+from app.spotify_electron.utils.validation.utils import validate_parameter
 
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 10080  # 7 days
@@ -239,8 +239,8 @@ def login_user(name: str, password: str) -> str:
 
     """
     try:
-        checkValidParameterString(name)
-        checkValidParameterString(password)
+        validate_parameter(name)
+        validate_parameter(password)
 
         # TODO
         handle_user_should_exists(name)

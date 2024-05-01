@@ -6,8 +6,8 @@ from fastapi import HTTPException
 import app.spotify_electron.security.security_service as security_service
 from app.database.Database import Database
 from app.model.User import User
-from app.services.utils import checkValidParameterString
 from app.spotify_electron.security.security_schema import TokenData
+from app.spotify_electron.utils.validation.utils import validate_parameter
 
 if "pytest" in modules:
     user_collection = Database.get_instance().connection["test.usuario"]
@@ -58,7 +58,7 @@ def get_user(name: str) -> User:
         User object
 
     """
-    if not checkValidParameterString(name):
+    if not validate_parameter(name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
     user_data = user_collection.find_one({"name": name})
@@ -101,7 +101,7 @@ def create_user(name: str, photo: str, password: str) -> None:
     current_date = datetime.now()
     date_iso8601 = current_date.strftime("%Y-%m-%dT%H:%M:%S")
 
-    if not checkValidParameterString(name):
+    if not validate_parameter(name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
     if check_user_exists(name):
@@ -154,7 +154,7 @@ def update_user(
     -------
 
     """
-    if not checkValidParameterString(name):
+    if not validate_parameter(name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
     result_user_exists = user_collection.find_one({"name": name})
@@ -197,7 +197,7 @@ def delete_user(name: str) -> None:
     -------
 
     """
-    if not checkValidParameterString(name):
+    if not validate_parameter(name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
     result = user_collection.delete_one({"name": name})
@@ -277,7 +277,7 @@ def check_user_exists(user_name: str) -> bool:
         Boolean
 
     """
-    if not checkValidParameterString(user_name):
+    if not validate_parameter(user_name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
     result_user_exists = user_collection.find_one({"name": user_name})

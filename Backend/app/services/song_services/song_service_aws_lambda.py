@@ -14,9 +14,9 @@ from app.common.set_up_constants import LAMBDA_URL_ENV_NAME
 from app.database.Database import Database
 from app.model.DTO.SongDTO import SongDTO
 from app.model.Song import Song
-from app.services.utils import checkValidParameterString
 from app.spotify_electron.genre.genre_schema import Genre
 from app.spotify_electron.security.security_schema import TokenData
+from app.spotify_electron.utils.validation.utils import validate_parameter
 
 """ Insert songs with format [files,chunks] https://www.mongodb.com/docs/manual/core/gridfs/"""
 
@@ -210,9 +210,9 @@ async def create_song(
     artist = token.username
 
     if (
-        not checkValidParameterString(name)
-        or not checkValidParameterString(photo)
-        or not checkValidParameterString(artist)
+        not validate_parameter(name)
+        or not validate_parameter(photo)
+        or not validate_parameter(artist)
         or not Genre.check_valid_genre(genre.value)
     ):
         raise HTTPException(status_code=400, detail="Parámetros no válidos o vacíos")
@@ -297,7 +297,7 @@ def delete_song(name: str) -> None:
     -------
 
     """
-    if not checkValidParameterString(name):
+    if not validate_parameter(name):
         raise HTTPException(
             status_code=400, detail="El nombre de la canción no es válido"
         )
@@ -363,7 +363,7 @@ def update_song(
     -------
 
     """
-    if not checkValidParameterString(name):
+    if not validate_parameter(name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
     result_song_exists: Song = get_song(name=name)
@@ -373,7 +373,7 @@ def update_song(
 
     check_jwt_user_is_song_artist(token, result_song_exists.artist)
 
-    if checkValidParameterString(nuevo_nombre):
+    if validate_parameter(nuevo_nombre):
         new_name = nuevo_nombre
         file_song_collection.update_one(
             {"name": name},
@@ -428,7 +428,7 @@ def increase_number_plays(name: str) -> None:
     -------
 
     """
-    if not checkValidParameterString(name):
+    if not validate_parameter(name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
     result_song_exists: Song = get_song(name=name)

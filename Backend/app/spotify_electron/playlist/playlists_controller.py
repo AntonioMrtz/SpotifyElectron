@@ -13,9 +13,9 @@ from starlette.status import (
     HTTP_500_INTERNAL_SERVER_ERROR,
 )
 
-import app.services.http_encode_service as http_encode_service
 import app.spotify_electron.playlist.playlists_service as playlists_service
 import app.spotify_electron.security.security_service as security_service
+import app.spotify_electron.utils.json_converter.json_converter_service as json_converter_service
 from app.common.PropertiesMessagesManager import PropertiesMessagesManager
 from app.exceptions.http_encode_exceptions import JsonEncodeException
 from app.logging.logging_constants import LOGGING_PLAYLIST_CONTROLLER
@@ -50,7 +50,7 @@ def get_playlist(name: str) -> Response:
     """
     try:
         playlist = playlists_service.get_playlist(name)
-        playlist_json = http_encode_service.get_json(playlist)
+        playlist_json = json_converter_service.get_json_from_model(playlist)
 
         return Response(
             playlist_json, media_type="application/json", status_code=HTTP_200_OK
@@ -216,7 +216,7 @@ def get_playlists() -> Response:
     """Return all playlists"""
     try:
         playlists = playlists_service.get_all_playlist()
-        playlist_json = http_encode_service.get_json_with_iterable_field(
+        playlist_json = json_converter_service.get_json_with_iterable_field_from_model(
             playlists, "playlists"
         )
 
@@ -259,7 +259,7 @@ def get_selected_playlists(names: str) -> Response:
     try:
         playlists = playlists_service.get_selected_playlists(names.split(","))
 
-        playlist_json = http_encode_service.get_json_with_iterable_field(
+        playlist_json = json_converter_service.get_json_with_iterable_field_from_model(
             playlists, "playlists"
         )
 

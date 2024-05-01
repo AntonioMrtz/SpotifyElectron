@@ -5,8 +5,8 @@ import app.services.user_service as user_service
 import app.spotify_electron.playlist.playlists_service as playlists_service
 from app.model.UserType import User_Type
 from app.services.song_services.song_service_provider import get_song_service
-from app.services.utils import checkValidParameterString
 from app.spotify_electron.security.security_schema import TokenData
+from app.spotify_electron.utils.validation.utils import validate_parameter
 
 MAX_NUMBER_PLAYBACK_HISTORY_SONGS = 5
 
@@ -34,7 +34,7 @@ def isArtistOrUser(user_name: str) -> User_Type | None:
         User_Type | null
 
     """
-    if not checkValidParameterString(user_name):
+    if not validate_parameter(user_name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
     if user_service.check_user_exists(user_name):
@@ -63,7 +63,7 @@ def check_user_exists(user_name: str) -> bool:
         Boolean
 
     """
-    if not checkValidParameterString(user_name):
+    if not validate_parameter(user_name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
     result_artist_exists = artist_service.check_artists_exists(user_name)
@@ -92,7 +92,7 @@ def add_playback_history(user_name: str, song: str, token: TokenData) -> None:
     -------
 
     """
-    if not checkValidParameterString(user_name) or not checkValidParameterString(song):
+    if not validate_parameter(user_name) or not validate_parameter(song):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
     user_service.check_jwt_is_user(token=token, user=user_name)
@@ -133,9 +133,7 @@ def add_saved_playlist(user_name: str, playlist_name: str, token: TokenData) -> 
     -------
 
     """
-    if not checkValidParameterString(user_name) or not checkValidParameterString(
-        playlist_name
-    ):
+    if not validate_parameter(user_name) or not validate_parameter(playlist_name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
     user_service.check_jwt_is_user(token=token, user=user_name)
@@ -173,9 +171,7 @@ def delete_saved_playlist(user_name: str, playlist_name: str, token: TokenData) 
     -------
 
     """
-    if not checkValidParameterString(user_name) or not checkValidParameterString(
-        playlist_name
-    ):
+    if not validate_parameter(user_name) or not validate_parameter(playlist_name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
     user_service.check_jwt_is_user(token=token, user=user_name)
@@ -212,9 +208,7 @@ def add_playlist_to_owner(user_name: str, playlist_name: str, token: TokenData) 
     -------
 
     """
-    if not checkValidParameterString(user_name) or not checkValidParameterString(
-        playlist_name
-    ):
+    if not validate_parameter(user_name) or not validate_parameter(playlist_name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
     user_service.check_jwt_is_user(token=token, user=user_name)
@@ -248,7 +242,7 @@ def delete_playlist_from_owner(playlist_name: str) -> None:
     -------
 
     """
-    if not checkValidParameterString(playlist_name):
+    if not validate_parameter(playlist_name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
     if not playlists_service.check_playlist_exists(playlist_name):
@@ -267,9 +261,9 @@ def delete_playlist_from_owner(playlist_name: str) -> None:
 
 
 def update_playlist_name(old_playlist_name: str, new_playlist_name: str) -> None:
-    if not checkValidParameterString(
-        old_playlist_name
-    ) or not checkValidParameterString(new_playlist_name):
+    if not validate_parameter(old_playlist_name) or not validate_parameter(
+        new_playlist_name
+    ):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
     for service in services_map.values():

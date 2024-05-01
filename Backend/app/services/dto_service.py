@@ -2,8 +2,8 @@ from fastapi import HTTPException
 
 from app.model.DTO.SongDTO import SongDTO
 from app.services.song_services.song_service_provider import get_song_service
-from app.services.utils import checkValidParameterString
 from app.spotify_electron.genre.genre_schema import Genre
+from app.spotify_electron.utils.validation.utils import validate_parameter
 
 song_service = get_song_service()
 
@@ -25,7 +25,7 @@ def get_song(name: str) -> SongDTO:
         SongDTO
 
     """
-    if not checkValidParameterString(name):
+    if not validate_parameter(name):
         raise HTTPException(status_code=400, detail="El nombre de la canción es vacío")
 
     song = song_service.get_song(name)
@@ -66,7 +66,7 @@ def get_songs(song_names: list) -> list:
     respone_songs_dto = []
 
     for name in song_names:
-        if not checkValidParameterString(name):
+        if not validate_parameter(name):
             raise HTTPException(
                 status_code=400, detail="El nombre de la canción es vacío"
             )
@@ -99,7 +99,7 @@ def get_songs_by_genero(genre: Genre) -> list[SongDTO]:
     List<Song>
 
     """
-    if not checkValidParameterString(genre.value):
+    if not validate_parameter(genre.value):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
     if not Genre.check_valid_genre(genre.value):

@@ -5,8 +5,8 @@ from fastapi.responses import Response
 from starlette.status import HTTP_401_UNAUTHORIZED
 
 import app.services.dto_service as dto_service
-import app.services.http_encode_service as http_encode_service
 import app.spotify_electron.security.security_service as security_service
+import app.spotify_electron.utils.json_converter.json_converter_service as json_converter_service
 from app.services.song_services.song_service_provider import get_song_service
 from app.spotify_electron.genre.genre_schema import Genre
 from app.spotify_electron.security.security_schema import BadJWTTokenProvidedException
@@ -38,7 +38,7 @@ def get_cancion(nombre: str) -> Response:
 
     """
     song = song_service.get_song(nombre)
-    song_json = http_encode_service.get_json(song)
+    song_json = json_converter_service.get_json_from_model(song)
 
     return Response(song_json, media_type="application/json", status_code=200)
 
@@ -101,7 +101,9 @@ def get_canciones() -> Response:
 
     """
     songs = song_service.get_all_songs()
-    songs_json = http_encode_service.get_json_with_iterable_field(songs, "songs")
+    songs_json = json_converter_service.get_json_with_iterable_field_from_model(
+        songs, "songs"
+    )
 
     return Response(songs_json, media_type="application/json", status_code=200)
 
@@ -149,7 +151,7 @@ def get_cancion_dto(nombre: str) -> Response:
 
     """
     song = dto_service.get_song(nombre)
-    song_json = http_encode_service.get_json(song)
+    song_json = json_converter_service.get_json_from_model(song)
 
     return Response(song_json, media_type="application/json", status_code=200)
 
@@ -237,6 +239,8 @@ def get_cancion_por_genero(genero: Genre) -> Response:
 
     """
     songs = dto_service.get_songs_by_genero(genero)
-    songs_json = http_encode_service.get_json_with_iterable_field(songs, "songs")
+    songs_json = json_converter_service.get_json_with_iterable_field_from_model(
+        songs, "songs"
+    )
 
     return Response(songs_json, media_type="application/json", status_code=200)

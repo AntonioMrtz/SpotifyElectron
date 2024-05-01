@@ -5,11 +5,11 @@ from app.exceptions.exceptions_schema import BadParameterException
 from app.logging.logging_constants import LOGGING_SEARCH_SERVICE
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.services.song_services.song_service_provider import get_song_service
-from app.services.utils import checkValidParameterString
 from app.spotify_electron.search.search_schema import (
     SearchResult,
     SearchServiceException,
 )
+from app.spotify_electron.utils.validation.utils import validate_parameter
 
 search_service_logger = SpotifyElectronLogger(LOGGING_SEARCH_SERVICE).getLogger()
 
@@ -31,7 +31,7 @@ def search_by_name(name: str) -> SearchResult:
         SearchResult: the items that partially match the name
     """
     try:
-        checkValidParameterString(name)
+        validate_parameter(name)
 
         # TODO ASYNC
         songs = song_service.search_by_name(name)

@@ -5,9 +5,9 @@ from fastapi.responses import Response
 from starlette.status import HTTP_401_UNAUTHORIZED
 
 import app.services.all_users_service as all_users_service
-import app.services.http_encode_service as http_encode_service
 import app.services.user_service as user_service
 import app.spotify_electron.security.security_service as security_service
+import app.spotify_electron.utils.json_converter.json_converter_service as json_converter_service
 from app.spotify_electron.security.security_schema import BadJWTTokenProvidedException
 
 router = APIRouter(
@@ -36,7 +36,7 @@ def get_whoAmI(authorization: Annotated[str | None, Header()] = None) -> Respons
     """
     try:
         jwt_token = security_service.get_jwt_token_data(authorization)
-        jwt_token_json = http_encode_service.get_json(jwt_token)
+        jwt_token_json = json_converter_service.get_json_from_model(jwt_token)
 
         return Response(jwt_token_json, media_type="application/json", status_code=200)
     except BadJWTTokenProvidedException:
@@ -66,7 +66,7 @@ def get_user(nombre: str) -> Response:
 
     """
     usuario = user_service.get_user(nombre)
-    usuario_json = http_encode_service.get_json(usuario)
+    usuario_json = json_converter_service.get_json_from_model(usuario)
 
     return Response(usuario_json, media_type="application/json", status_code=200)
 
@@ -77,7 +77,7 @@ def get_playlists_by_user(name: str) -> Response:
     # TODO hacer test
 
     user = user_service.get_user(name)
-    user_json = http_encode_service.get_json(user)
+    user_json = json_converter_service.get_json_from_model(user)
 
     return Response(user_json, media_type="application/json", status_code=200)
 

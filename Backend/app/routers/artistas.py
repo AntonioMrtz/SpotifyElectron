@@ -7,8 +7,8 @@ from fastapi.responses import Response
 from starlette.status import HTTP_200_OK, HTTP_401_UNAUTHORIZED
 
 import app.services.artist_service as artist_service
-import app.services.http_encode_service as http_encode_service
 import app.spotify_electron.security.security_service as security_service
+import app.spotify_electron.utils.json_converter.json_converter_service as json_converter_service
 from app.spotify_electron.security.security_schema import BadJWTTokenProvidedException
 
 router = APIRouter(
@@ -36,7 +36,7 @@ def get_artista(nombre: str) -> Response:
 
     """
     artista = artist_service.get_artist(nombre)
-    artista_json = http_encode_service.get_json(artista)
+    artista_json = json_converter_service.get_json_from_model(artista)
 
     return Response(
         artista_json, media_type="application/json", status_code=HTTP_200_OK
@@ -189,7 +189,7 @@ def get_reproducciones_artista(nombre: str) -> Response:
     """
     play_count = artist_service.get_play_count_artist(user_name=nombre)
 
-    play_count_json = http_encode_service.get_json_with_iterable_field(
+    play_count_json = json_converter_service.get_json_with_iterable_field_from_model(
         play_count, "play_count"
     )
 

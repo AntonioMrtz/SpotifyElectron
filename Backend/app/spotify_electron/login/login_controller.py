@@ -11,8 +11,8 @@ from starlette.status import (
     HTTP_500_INTERNAL_SERVER_ERROR,
 )
 
-import app.services.http_encode_service as http_encode_service
 import app.spotify_electron.security.security_service as security_service
+import app.spotify_electron.utils.json_converter.json_converter_service as json_converter_service
 from app.spotify_electron.login.login_schema import InvalidCredentialsLoginException
 from app.spotify_electron.security.security_schema import (
     CreateJWTException,
@@ -41,7 +41,7 @@ def login_usuario(
     try:
         jwt = security_service.login_user(form_data.username, form_data.password)
 
-        access_token_json = http_encode_service.get_json(jwt)
+        access_token_json = json_converter_service.get_json_from_model(jwt)
         expiration_date = security_service.get_token_expire_date()
 
     except InvalidCredentialsLoginException:

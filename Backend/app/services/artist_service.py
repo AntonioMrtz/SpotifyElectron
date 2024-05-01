@@ -7,8 +7,8 @@ import app.spotify_electron.security.security_service as security_service
 from app.database.Database import Database
 from app.model.Artist import Artist
 from app.services.song_services.song_service_provider import get_song_service
-from app.services.utils import checkValidParameterString
 from app.spotify_electron.security.security_schema import TokenData
+from app.spotify_electron.utils.validation.utils import validate_parameter
 
 if "pytest" in modules:
     artist_collection = Database.get_instance().connection["test.artista"]
@@ -36,7 +36,7 @@ def check_user_exists(user_name: str) -> bool:
         Boolean
 
     """
-    if not checkValidParameterString(user_name):
+    if not validate_parameter(user_name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
     result_artist_exists = artist_collection.find_one({"name": user_name})
@@ -61,7 +61,7 @@ def check_artists_exists(artist_name: str) -> bool:
         Boolean
 
     """
-    if not checkValidParameterString(artist_name):
+    if not validate_parameter(artist_name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
     return bool(artist_collection.find_one({"name": artist_name}))
@@ -110,9 +110,7 @@ def add_song_artist(artist_name: str, song_name: str):
     -------
 
     """
-    if not checkValidParameterString(artist_name) or not checkValidParameterString(
-        song_name
-    ):
+    if not validate_parameter(artist_name) or not validate_parameter(song_name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
     if not check_artists_exists(artist_name=artist_name):
@@ -141,9 +139,7 @@ def delete_song_artist(artist_name: str, song_name: str):
     -------
 
     """
-    if not checkValidParameterString(artist_name) or not checkValidParameterString(
-        song_name
-    ):
+    if not validate_parameter(artist_name) or not validate_parameter(song_name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
     if check_artists_exists(artist_name=artist_name):
@@ -169,7 +165,7 @@ def get_artist(name: str) -> Artist:
         Artist
 
     """
-    if not checkValidParameterString(name):
+    if not validate_parameter(name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
     artist_data = artist_collection.find_one({"name": name})
@@ -213,7 +209,7 @@ def create_artist(name: str, photo: str, password: str):
     current_date = datetime.now()
     date_iso8601 = current_date.strftime("%Y-%m-%dT%H:%M:%S")
 
-    if not checkValidParameterString(name):
+    if not validate_parameter(name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
     if check_user_exists(name):
@@ -275,7 +271,7 @@ def update_artist(
     -------
 
     """
-    if not checkValidParameterString(name):
+    if not validate_parameter(name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
     check_jwt_artist_is_artist(token=token, artist=name)
@@ -315,7 +311,7 @@ def delete_artist(name: str) -> None:
     -------
 
     """
-    if not checkValidParameterString(name):
+    if not validate_parameter(name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
     result = artist_collection.delete_one({"name": name})
@@ -365,7 +361,7 @@ def get_play_count_artist(user_name: str) -> int:
         int
 
     """
-    if not checkValidParameterString(user_name):
+    if not validate_parameter(user_name):
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
     if not check_artists_exists(user_name):

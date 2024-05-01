@@ -6,7 +6,6 @@ from app.exceptions.exceptions_schema import BadParameterException
 from app.logging.logging_constants import LOGGING_PLAYLIST_SERVICE
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.services.song_services.song_service_provider import get_song_service
-from app.services.utils import checkValidParameterString
 from app.spotify_electron.playlist.playlists_schema import (
     PlaylistAlreadyExistsException,
     PlaylistBadNameException,
@@ -19,6 +18,7 @@ from app.spotify_electron.playlist.playlists_schema import (
 )
 from app.spotify_electron.security.security_schema import TokenData
 from app.spotify_electron.user.user_schema import UserNotFoundException
+from app.spotify_electron.utils.validation.utils import validate_parameter
 
 song_service = get_song_service()
 
@@ -397,7 +397,7 @@ def handle_playlist_name_parameter(name: str) -> None:
 
     """
     try:
-        checkValidParameterString(name)
+        validate_parameter(name)
     except BadParameterException:
         raise PlaylistBadNameException from BadParameterException
 

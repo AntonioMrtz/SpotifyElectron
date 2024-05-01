@@ -12,7 +12,7 @@ http_encode_service_logger = SpotifyElectronLogger(
 ).getLogger()
 
 
-def get_json(object: Any) -> str:
+def get_json_from_model(object: Any) -> str:
     """Returns json string from an object
 
     Args:
@@ -29,10 +29,10 @@ def get_json(object: Any) -> str:
         str: the object converted into json string
 
     """
-    return object_to_json(object)
+    return _get_json_from_model(object)
 
 
-def get_json_with_iterable_field(object: Any, field_name: str) -> str:
+def get_json_with_iterable_field_from_model(object: Any, field_name: str) -> str:
     """Returns a json string that contains an object inside a field name
 
     Args:
@@ -46,10 +46,10 @@ def get_json_with_iterable_field(object: Any, field_name: str) -> str:
 
     """
     object_dict = {field_name: object}
-    return object_to_json(object_dict)
+    return _get_json_from_model(object_dict)
 
 
-def object_to_json(object: Any) -> str:
+def _get_json_from_model(object: Any) -> str:
     """Returns json string from an object
 
     Args:

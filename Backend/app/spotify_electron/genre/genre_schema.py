@@ -8,6 +8,10 @@ genre_class_logger = SpotifyElectronLogger(LOGGING_GENRE_CLASS).getLogger()
 
 
 class Genre(Enum):
+    """A class to store the existing genres and their string representation"""
+
+    # TODO, use StrEnum
+
     POP = "Pop"
     ROCK = "Rock"
     HIP_HOP = "Hip-hop"
@@ -45,7 +49,18 @@ class Genre(Enum):
         return genre in {member.value for member in Genre}
 
     @staticmethod
-    def getGenre(genre: Enum) -> str:
+    def get_genre_string_value(genre: Enum) -> str:
+        """Gets genre string representation value from Genre
+
+        Args:
+            genre (Enum): the genre Enum
+
+        Raises:
+            GenreNotValidException: if the genre doesn't match any existing genres
+
+        Returns:
+            str: the string representation of the genre
+        """
         try:
             return str(genre.value)
         except Exception as exception:

@@ -1,4 +1,26 @@
+from dataclasses import dataclass
+from enum import Enum
+
 from app.exceptions.exceptions_schema import SpotifyElectronException
+
+
+@dataclass
+class User:
+    # TODO docstirng
+    name: str
+    photo: str
+    register_date: str
+    password: bytes
+    playback_history: list[str]
+    playlists: list[str]
+    saved_playlists: list[str]
+
+
+class UserTypes(Enum):
+    """Type/roles of users"""
+
+    ARTIST = "artista"
+    USER = "usuario"
 
 
 class UserRepositoryException(SpotifyElectronException):

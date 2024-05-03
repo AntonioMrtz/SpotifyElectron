@@ -17,7 +17,7 @@ from app.spotify_electron.search.search_schema import SearchServiceException
 
 router = APIRouter(
     prefix="/search",
-    tags=["search"],
+    tags=["Search"],
 )
 
 search_controller_logger = SpotifyElectronLogger(LOGGING_SEARCH_CONTROLLER).getLogger()

@@ -5,6 +5,8 @@ from app.exceptions.exceptions_schema import SpotifyElectronException
 
 @dataclass
 class PlaylistDAO:
+    """A class to represent playlist data in the persistence layer"""
+
     name: str
     photo: str
     description: str
@@ -15,6 +17,8 @@ class PlaylistDAO:
 
 @dataclass
 class PlaylistDTO:
+    """A class to represent playlist data in the endpoints transfering layer"""
+
     name: str
     photo: str
     description: str
@@ -65,9 +69,6 @@ def get_playlist_dto_from_dao(playlist_dao: PlaylistDAO) -> PlaylistDTO:
         playlist_dao.owner,
         playlist_dao.song_names,
     )
-
-
-"""===================== EXCEPTIONS ====================="""
 
 
 class PlaylistRepositoryException(SpotifyElectronException):

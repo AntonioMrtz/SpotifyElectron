@@ -1,38 +1,31 @@
 import io
-from sys import modules
 
 import boto3
 import librosa
 from botocore.exceptions import ClientError
 from dotenv import load_dotenv
 from fastapi import HTTPException
-from gridfs import GridFS
 from pymongo.errors import PyMongoError
 
-import app.services.artist_service as artist_service
 import app.services.dto_service as dto_service
+import app.spotify_electron.user.artist.artist_service as artist_service
 from app.common.PropertiesManager import PropertiesManager
 from app.common.set_up_constants import DISTRIBUTION_ID_ENV_NAME
-from app.database.Database import Database
+from app.database.Database import Database, DatabaseCollections
 from app.model.DTO.SongDTO import SongDTO
 from app.model.Song import Song
 from app.spotify_electron.genre.genre_schema import Genre
 from app.spotify_electron.security.security_schema import TokenData
 from app.spotify_electron.utils.validation.utils import validate_parameter
 
-""" Insert songs with format [files,chunks] https://www.mongodb.com/docs/manual/core/gridfs/"""
+song_collection = Database().get_collection_connection(
+    DatabaseCollections.SONG_STREAMING
+)
 
-if "pytest" in modules:
-    gridFsSong = GridFS(Database.get_instance().connection, collection="test.cancion")
-    song_collection = Database.get_instance().connection["test.canciones.streaming"]
-
-
-else:
-    gridFsSong = GridFS(Database.get_instance().connection, collection="cancion")
-    song_collection = Database.get_instance().connection["canciones.streaming"]
+# TODO Dont hardcode
 
 S3_BUCKET_NAME = "canciones-spotify-electron"
-S3_BUCKET_BASE_PATH = "canciones/"
+S3_BUCKET_BASE_PATH = "canciones/"  # TODO, check if have to change cloud S3
 S3_RESOURCE = "s3"
 
 s3 = boto3.resource(S3_RESOURCE)
@@ -490,7 +483,9 @@ def get_artist_playback_count(artist_name: str) -> int:
 def get_songs_by_genre(genre: Genre) -> list[Song]:
     # TODO
     # TODO handle GenreNotValidException
-    result_get_song_by_genre = song_collection.find({"genre": Genre.getGenre(genre)})
+    result_get_song_by_genre = song_collection.find(
+        {"genre": Genre.get_genre_string_value(genre)}
+    )
     songs_by_genre = []
 
     for song_data in result_get_song_by_genre:

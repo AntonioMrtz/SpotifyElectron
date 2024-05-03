@@ -1,19 +1,14 @@
 from datetime import datetime
-from sys import modules
 
 from fastapi import HTTPException
 
 import app.spotify_electron.security.security_service as security_service
-from app.database.Database import Database
-from app.model.User import User
+from app.database.Database import Database, DatabaseCollections
 from app.spotify_electron.security.security_schema import TokenData
+from app.spotify_electron.user.user_schema import User
 from app.spotify_electron.utils.validation.utils import validate_parameter
 
-if "pytest" in modules:
-    user_collection = Database.get_instance().connection["test.usuario"]
-
-else:
-    user_collection = Database.get_instance().connection["usuario"]
+user_collection = Database().get_collection_connection(DatabaseCollections.USER)
 
 
 def check_jwt_is_user(token: TokenData, user: str) -> bool:

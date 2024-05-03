@@ -1,6 +1,6 @@
-import app.services.artist_service as artist_service
-import app.services.user_service as user_service
-import app.spotify_electron.playlist.playlists_service as playlists_service
+import app.spotify_electron.playlist.playlist_service as playlist_service
+import app.spotify_electron.user.artist.artist_service as artist_service
+import app.spotify_electron.user.user_service as user_service
 from app.exceptions.exceptions_schema import BadParameterException
 from app.logging.logging_constants import LOGGING_SEARCH_SERVICE
 from app.logging.logging_schema import SpotifyElectronLogger
@@ -35,7 +35,7 @@ def search_by_name(name: str) -> SearchResult:
 
         # TODO ASYNC
         songs = song_service.search_by_name(name)
-        playlists = playlists_service.search_by_name(name)
+        playlists = playlist_service.search_by_name(name)
         artists = artist_service.search_by_name(name)
         users = user_service.search_by_name(name)
 

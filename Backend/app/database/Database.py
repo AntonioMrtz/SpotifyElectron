@@ -1,5 +1,8 @@
 import sys
+from enum import StrEnum
+from typing import Any
 
+from gridfs import GridFS
 from pymongo.errors import ConnectionFailure
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
@@ -11,6 +14,17 @@ from app.logging.logging_constants import LOGGING_DATABASE
 from app.logging.logging_schema import SpotifyElectronLogger
 
 database_logger = SpotifyElectronLogger(LOGGING_DATABASE).getLogger()
+
+
+class DatabaseCollections(StrEnum):
+    """A class to store the existing name of the collections in the database"""
+
+    USER = "users"
+    ARTIST = "artists"
+    PLAYLIST = "playlists"
+    SONG_STREAMING = "songs.streaming"
+    SONG_BLOB_FILE = "songs.files"
+    SONG_BLOB_DATA = "songs"
 
 
 class DatabaseMeta(type):
@@ -34,10 +48,13 @@ class DatabaseMeta(type):
 class Database(metaclass=DatabaseMeta):
     """Singleton instance of the MongoDb connection"""
 
+    TESTING_COLLECTION_NAME_PREFIX = "test."
+
     def __init__(self):
         if not hasattr(self, "connection"):
             try:
                 uri = getattr(PropertiesManager, MONGO_URI_ENV_NAME)
+                self.collection_name_prefix = self._get_collection_name_prefix()
                 self.connection = MongoClient(uri, server_api=ServerApi("1"))[
                     "SpotifyElectron"
                 ]
@@ -81,10 +98,49 @@ class Database(metaclass=DatabaseMeta):
         )
         sys.exit("Database connection failed, stopping server")
 
+    def _get_collection_name_prefix(self) -> str:
+        """Returns prefix for testing if test enviroment
+
+        Returns:
+            str: the testing prefix for collections
+        """
+        return (
+            self.TESTING_COLLECTION_NAME_PREFIX
+            if PropertiesManager.is_testing_enviroment()
+            else ""
+        )
+
     @staticmethod
     def get_instance():
         """Method to retrieve the singleton instance"""
         return Database()
+
+    def get_collection_connection(self, collection_name: DatabaseCollections) -> Any:
+        """Returns the connection with a collection
+
+        Args:
+            collection_name (str): the collection name
+
+        Returns:
+            Any: the connection to the collection
+        """
+        return Database().connection[self.collection_name_prefix + collection_name]
+
+    def get_gridfs_collection_connection(
+        self, collection_name: DatabaseCollections
+    ) -> Any:
+        """Returns the connection with gridfs collection
+
+        Args:
+            collection_name (DatabaseCollections): the collection name
+
+        Returns:
+            Any: the gridfs collection connection
+        """
+        return GridFS(
+            Database.get_instance().connection,
+            collection=self.collection_name_prefix + collection_name,
+        )
 
 
 class DatabasePingFailed(SpotifyElectronException):

@@ -1,33 +1,25 @@
 import base64
 import io
-from sys import modules
 
 import librosa
 import requests
 from fastapi import HTTPException
 from pymongo.errors import PyMongoError
 
-import app.services.artist_service as artist_service
 import app.services.dto_service as dto_service
+import app.spotify_electron.user.artist.artist_service as artist_service
 from app.common.PropertiesManager import PropertiesManager
 from app.common.set_up_constants import LAMBDA_URL_ENV_NAME
-from app.database.Database import Database
+from app.database.Database import Database, DatabaseCollections
 from app.model.DTO.SongDTO import SongDTO
 from app.model.Song import Song
 from app.spotify_electron.genre.genre_schema import Genre
 from app.spotify_electron.security.security_schema import TokenData
 from app.spotify_electron.utils.validation.utils import validate_parameter
 
-""" Insert songs with format [files,chunks] https://www.mongodb.com/docs/manual/core/gridfs/"""
-
-if "pytest" in modules:
-    file_song_collection = Database.get_instance().connection["test.cancion.files"]
-    song_collection = Database.get_instance().connection["test.canciones.streaming"]
-
-
-else:
-    file_song_collection = Database.get_instance().connection["cancion.files"]
-    song_collection = Database.get_instance().connection["canciones.streaming"]
+song_collection = Database().get_collection_connection(
+    DatabaseCollections.SONG_STREAMING
+)
 
 
 def check_song_exists(name: str) -> bool:
@@ -375,7 +367,7 @@ def update_song(
 
     if validate_parameter(nuevo_nombre):
         new_name = nuevo_nombre
-        file_song_collection.update_one(
+        song_collection.update_one(
             {"name": name},
             {
                 "$set": {
@@ -393,7 +385,7 @@ def update_song(
             },
         )
     else:
-        file_song_collection.update_one(
+        song_collection.update_one(
             {"name": name},
             {
                 "$set": {
@@ -493,7 +485,9 @@ def get_artist_playback_count(artist_name: str) -> int:
 def get_songs_by_genre(genre: Genre) -> list[Song]:
     # TODO
     # TODO handle GenreNotValidException
-    result_get_song_by_genre = song_collection.find({"genre": Genre.getGenre(genre)})
+    result_get_song_by_genre = song_collection.find(
+        {"genre": Genre.get_genre_string_value(genre)}
+    )
     songs_by_genre = []
 
     for song_data in result_get_song_by_genre:

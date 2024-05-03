@@ -6,19 +6,16 @@ from fastapi import Depends
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 
-import app.services.all_users_service as all_users_service
-import app.services.artist_service as artist_service
-import app.services.user_service as user_service
+import app.spotify_electron.user.all_users_service as all_users_service
+import app.spotify_electron.user.artist.artist_service as artist_service
+import app.spotify_electron.user.user_service as user_service
 from app.common.PropertiesManager import PropertiesManager
 from app.common.set_up_constants import DISTRIBUTION_ID_ENV_NAME
 from app.exceptions.exceptions_schema import BadParameterException
 from app.logging.logging_constants import LOGGING_SECURITY_SERVICE
 from app.logging.logging_schema import SpotifyElectronLogger
-from app.model.Artist import Artist
-from app.model.User import User
-from app.model.UserType import User_Type
 from app.spotify_electron.login.login_schema import InvalidCredentialsLoginException
-from app.spotify_electron.playlist.playlists_service import handle_user_should_exists
+from app.spotify_electron.playlist.playlist_service import handle_user_should_exists
 from app.spotify_electron.security.security_schema import (
     BadJWTTokenProvidedException,
     CreateJWTException,
@@ -31,7 +28,8 @@ from app.spotify_electron.security.security_schema import (
     UnexpectedLoginUserException,
     VerifyPasswordException,
 )
-from app.spotify_electron.user.user_schema import UserNotFoundException
+from app.spotify_electron.user.artist.artist_schema import Artist
+from app.spotify_electron.user.user_schema import User, UserNotFoundException, UserTypes
 from app.spotify_electron.utils.validation.utils import validate_parameter
 
 ALGORITHM = "HS256"
@@ -154,9 +152,9 @@ def get_current_user(
     try:
         jwt = get_jwt_token_data(token)
 
-        if jwt.role == User_Type.ARTIST:
+        if jwt.role == UserTypes.ARTIST:
             user = artist_service.get_artist(jwt.username)
-        elif jwt.role == User_Type.USER:
+        elif jwt.role == UserTypes.USER:
             user = user_service.get_user(jwt.username)
     except BadJWTTokenProvidedException as exception:
         security_service_logger.exception("Error getting jwt token data")
@@ -244,15 +242,14 @@ def login_user(name: str, password: str) -> str:
 
         # TODO
         handle_user_should_exists(name)
-
         # TODO unificar y tratar excepciones
-        if all_users_service.isArtistOrUser(user_name=name) == User_Type.ARTIST:
+        if all_users_service.isArtistOrUser(user_name=name) == UserTypes.ARTIST:
             user = artist_service.get_artist(name)
-            user_type = User_Type.ARTIST
+            user_type = UserTypes.ARTIST
 
         else:
             user = user_service.get_user(name)
-            user_type = User_Type.USER
+            user_type = UserTypes.USER
 
         verify_password(password, user.password)
 

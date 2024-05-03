@@ -6,14 +6,14 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.responses import Response
 from starlette.status import HTTP_200_OK, HTTP_401_UNAUTHORIZED
 
-import app.services.artist_service as artist_service
 import app.spotify_electron.security.security_service as security_service
+import app.spotify_electron.user.artist.artist_service as artist_service
 import app.spotify_electron.utils.json_converter.json_converter_service as json_converter_service
 from app.spotify_electron.security.security_schema import BadJWTTokenProvidedException
 
 router = APIRouter(
     prefix="/artistas",
-    tags=["artistas"],
+    tags=["Artists"],
 )
 
 

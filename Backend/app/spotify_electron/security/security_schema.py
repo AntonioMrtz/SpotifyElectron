@@ -2,13 +2,15 @@ import json
 from dataclasses import dataclass
 
 from app.exceptions.exceptions_schema import SpotifyElectronException
-from app.model.UserType import User_Type
+from app.spotify_electron.user.user_schema import UserTypes
 
 
 @dataclass
 class TokenData:
+    """A class that contains Auth token info"""
+
     username: str
-    role: User_Type
+    role: UserTypes
     token_type: str
 
     def get_json(self) -> str:

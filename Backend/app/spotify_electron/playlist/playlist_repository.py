@@ -1,11 +1,9 @@
-from sys import modules
-
 from pymongo.results import DeleteResult, InsertOneResult, UpdateResult
 
-from app.database.Database import Database
+from app.database.Database import Database, DatabaseCollections
 from app.logging.logging_constants import LOGGING_PLAYLIST_REPOSITORY
 from app.logging.logging_schema import SpotifyElectronLogger
-from app.spotify_electron.playlist.playlists_schema import (
+from app.spotify_electron.playlist.playlist_schema import (
     PlaylistDAO,
     PlaylistDeleteException,
     PlaylistInsertException,
@@ -15,11 +13,7 @@ from app.spotify_electron.playlist.playlists_schema import (
     get_playlist_dao_from_document,
 )
 
-if "pytest" in modules:
-    playlist_collection = Database.get_instance().connection["test.playlist"]
-
-else:
-    playlist_collection = Database.get_instance().connection["playlist"]
+playlist_collection = Database().get_collection_connection(DatabaseCollections.PLAYLIST)
 
 
 playlist_repository_logger = SpotifyElectronLogger(

@@ -13,14 +13,14 @@ from starlette.status import (
     HTTP_500_INTERNAL_SERVER_ERROR,
 )
 
-import app.spotify_electron.playlist.playlists_service as playlists_service
+import app.spotify_electron.playlist.playlist_service as playlist_service
 import app.spotify_electron.security.security_service as security_service
 import app.spotify_electron.utils.json_converter.json_converter_service as json_converter_service
 from app.common.PropertiesMessagesManager import PropertiesMessagesManager
 from app.exceptions.http_encode_exceptions import JsonEncodeException
 from app.logging.logging_constants import LOGGING_PLAYLIST_CONTROLLER
 from app.logging.logging_schema import SpotifyElectronLogger
-from app.spotify_electron.playlist.playlists_schema import (
+from app.spotify_electron.playlist.playlist_schema import (
     PlaylistBadNameException,
     PlaylistNotFoundException,
     PlaylistServiceException,
@@ -49,7 +49,7 @@ def get_playlist(name: str) -> Response:
 
     """
     try:
-        playlist = playlists_service.get_playlist(name)
+        playlist = playlist_service.get_playlist(name)
         playlist_json = json_converter_service.get_json_from_model(playlist)
 
         return Response(
@@ -101,7 +101,7 @@ def post_playlist(
     try:
         jwt_token = security_service.get_jwt_token_data(authorization)
 
-        playlists_service.create_playlist(
+        playlist_service.create_playlist(
             name=name,
             photo=photo,
             description=description,
@@ -155,7 +155,7 @@ def update_playlist(
     try:
         jwt_token = security_service.get_jwt_token_data(authorization)
 
-        playlists_service.update_playlist(
+        playlist_service.update_playlist(
             name, new_name, photo, description, song_names, jwt_token
         )
         return Response(None, HTTP_204_NO_CONTENT)
@@ -192,7 +192,7 @@ def delete_playlist(name: str) -> Response:
 
     """
     try:
-        playlists_service.delete_playlist(name)
+        playlist_service.delete_playlist(name)
         return Response(status_code=HTTP_202_ACCEPTED)
     except PlaylistBadNameException:
         return Response(
@@ -215,7 +215,7 @@ def delete_playlist(name: str) -> Response:
 def get_playlists() -> Response:
     """Return all playlists"""
     try:
-        playlists = playlists_service.get_all_playlist()
+        playlists = playlist_service.get_all_playlist()
         playlist_json = json_converter_service.get_json_with_iterable_field_from_model(
             playlists, "playlists"
         )
@@ -257,7 +257,7 @@ def get_selected_playlists(names: str) -> Response:
 
     """
     try:
-        playlists = playlists_service.get_selected_playlists(names.split(","))
+        playlists = playlist_service.get_selected_playlists(names.split(","))
 
         playlist_json = json_converter_service.get_json_with_iterable_field_from_model(
             playlists, "playlists"

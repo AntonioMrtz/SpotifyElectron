@@ -1,12 +1,12 @@
 from datetime import datetime
 
-import app.services.all_users_service as all_users_service
-import app.spotify_electron.playlist.playlists_repository as playlists_repository
+import app.spotify_electron.playlist.playlist_repository as playlist_repository
+import app.spotify_electron.user.all_users_service as all_users_service
 from app.exceptions.exceptions_schema import BadParameterException
 from app.logging.logging_constants import LOGGING_PLAYLIST_SERVICE
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.services.song_services.song_service_provider import get_song_service
-from app.spotify_electron.playlist.playlists_schema import (
+from app.spotify_electron.playlist.playlist_schema import (
     PlaylistAlreadyExistsException,
     PlaylistBadNameException,
     PlaylistDTO,
@@ -59,7 +59,7 @@ def check_playlist_exists(name: str) -> bool:
         bool: if the playlist exists
 
     """
-    return playlists_repository.check_playlist_exists(name)
+    return playlist_repository.check_playlist_exists(name)
 
 
 def get_playlist(name: str) -> PlaylistDTO:
@@ -82,7 +82,7 @@ def get_playlist(name: str) -> PlaylistDTO:
     """
     try:
         handle_playlist_name_parameter(name)
-        playlist = playlists_repository.get_playlist_by_name(name)
+        playlist = playlist_repository.get_playlist_by_name(name)
         playlist_dto = get_playlist_dto_from_dao(playlist)
     except PlaylistBadNameException as exception:
         playlist_service_logger.exception(f"Bad Playlist Name Parameter : {name}")
@@ -136,7 +136,7 @@ def create_playlist(
         handle_playlist_should_not_exists(name)
         handle_user_should_exists(owner)
 
-        playlists_repository.insert_playlist(
+        playlist_repository.insert_playlist(
             name,
             photo if "http" in photo else "",
             date_iso8601,
@@ -200,18 +200,18 @@ def update_playlist(
         handle_playlist_name_parameter(name)
         handle_playlist_should_exists(name)
 
-        playlist = playlists_repository.get_playlist_by_name(name)
+        playlist = playlist_repository.get_playlist_by_name(name)
 
         check_jwt_user_is_playlist_owner(token=token, owner=playlist.owner)
 
         if not new_name:
-            playlists_repository.update_playlist(
+            playlist_repository.update_playlist(
                 name, name, photo if "http" in photo else "", description, song_names
             )
             return
 
         handle_playlist_name_parameter(new_name)
-        playlists_repository.update_playlist(
+        playlist_repository.update_playlist(
             name,
             new_name,
             photo if "http" in photo else "",
@@ -261,7 +261,7 @@ def delete_playlist(name: str) -> None:
         handle_playlist_name_parameter(name)
         handle_playlist_should_exists(name)
         all_users_service.delete_playlist_from_owner(playlist_name=name)
-        playlists_repository.delete_playlist(name)
+        playlist_repository.delete_playlist(name)
         playlist_service_logger.info(f"Playlist {name} deleted successfully")
 
     except PlaylistBadNameException as exception:
@@ -295,7 +295,7 @@ def get_all_playlist() -> list[PlaylistDTO]:
 
     """
     try:
-        playlists = playlists_repository.get_all_playlists()
+        playlists = playlist_repository.get_all_playlists()
         playlists_dto = [get_playlist_dto_from_dao(playlist) for playlist in playlists]
     except PlaylistRepositoryException as exception:
         playlist_service_logger.critical(
@@ -329,7 +329,7 @@ def get_selected_playlists(playlist_names: list[str]) -> list[PlaylistDTO]:
 
     """
     try:
-        playlists = playlists_repository.get_selected_playlists(playlist_names)
+        playlists = playlist_repository.get_selected_playlists(playlist_names)
         playlists_dto = [get_playlist_dto_from_dao(playlist) for playlist in playlists]
     except PlaylistRepositoryException as exception:
         playlist_service_logger.critical(
@@ -365,7 +365,7 @@ def search_by_name(name: str) -> list[PlaylistDTO]:
 
     """
     try:
-        playlists = playlists_repository.get_playlist_search_by_name(name)
+        playlists = playlist_repository.get_playlist_search_by_name(name)
         playlists_dto = [get_playlist_dto_from_dao(playlist) for playlist in playlists]
     except PlaylistRepositoryException as exception:
         playlist_service_logger.critical(

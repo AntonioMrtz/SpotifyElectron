@@ -4,15 +4,15 @@ from fastapi import APIRouter, Body, Header
 from fastapi.responses import Response
 from starlette.status import HTTP_401_UNAUTHORIZED
 
-import app.services.all_users_service as all_users_service
-import app.services.user_service as user_service
 import app.spotify_electron.security.security_service as security_service
+import app.spotify_electron.user.all_users_service as all_users_service
+import app.spotify_electron.user.user_service as user_service
 import app.spotify_electron.utils.json_converter.json_converter_service as json_converter_service
 from app.spotify_electron.security.security_schema import BadJWTTokenProvidedException
 
 router = APIRouter(
     prefix="/usuarios",
-    tags=["usuarios"],
+    tags=["Users"],
 )
 
 

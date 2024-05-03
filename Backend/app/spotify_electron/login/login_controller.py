@@ -23,7 +23,7 @@ from app.spotify_electron.user.user_schema import UserNotFoundException
 
 router = APIRouter(
     prefix="/login",
-    tags=["login"],
+    tags=["Login"],
 )
 
 

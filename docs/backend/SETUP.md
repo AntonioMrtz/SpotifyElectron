@@ -23,7 +23,7 @@ cd Backend;
 * SECRET_KEY_SIGN= 32 byte key for signing tokens in backend
 * LAMBDA_URL= URL of Lambda API for accesing AWS services and managing song ( only needed in STREAMING_LAMBDA architecture )
 * ARCH= song architecture ( STREAMING_LAMBDA | DB_BLOB | STREAMING_SDK )
-* ENV_VALUE= prod or test ( PROD | TEST)
+* ENV_VALUE= prod or development ( PROD | DEV )
 
 ```
 
@@ -54,7 +54,7 @@ python -m app;
 cd docker/
 ```
 
-### Dev Enviroment
+### Development Enviroment
 
 For development it is recommended to deploy the dev enviroment containers that provide:
   * Local MongoDB Database

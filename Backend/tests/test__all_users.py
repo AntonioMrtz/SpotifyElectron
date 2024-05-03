@@ -12,7 +12,7 @@ from test_API.api_test_song import create_song, delete_song
 from test_API.api_test_user import create_user, delete_user, get_user
 from test_API.api_token import get_user_jwt_header
 
-from app.model.UserType import User_Type
+from app.spotify_electron.user.user_schema import UserTypes
 
 
 @fixture(scope="module", autouse=True)
@@ -382,7 +382,7 @@ def test_whoami_artist(clear_test_data_db):
 
     assert res_whoami.json()["username"] == artista
     assert res_whoami.json()["token_type"] == "bearer"
-    assert res_whoami.json()["role"] == User_Type.ARTIST.value
+    assert res_whoami.json()["role"] == UserTypes.ARTIST.value
 
     res_delete_artist = delete_artist(artista)
     assert res_delete_artist.status_code == 202
@@ -406,7 +406,7 @@ def test_whoami_user(clear_test_data_db):
 
     assert res_whoami.json()["username"] == user_name
     assert res_whoami.json()["token_type"] == "bearer"
-    assert res_whoami.json()["role"] == User_Type.USER.value
+    assert res_whoami.json()["role"] == UserTypes.USER.value
 
     res_delete_user = delete_user(user_name)
     assert res_delete_user.status_code == 202

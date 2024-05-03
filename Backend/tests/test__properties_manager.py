@@ -6,6 +6,7 @@ from app.common.set_up_constants import (
     ARCH_STREAMING_SDK,
     ARCHITECTURE_ENV_NAME,
     DEFAULT_ARCHITECTURE,
+    DEV,
     DISTRIBUTION_ID_ENV_NAME,
     ENV_VALUE_ENV_NAME,
     LAMBDA_URL_ENV_NAME,
@@ -35,6 +36,19 @@ def test_load_env_variables(clean_modified_environments):
         assert properties_manager.__getattribute__(env_name) == value
 
 
+def test_check_is_development_enviroment(clean_modified_environments):
+    env_variables_mapping = {
+        ENV_VALUE_ENV_NAME: DEV,
+    }
+
+    for env_name, value in env_variables_mapping.items():
+        os.environ[env_name] = value
+
+    properties_manager = _PropertiesManager()
+
+    assert properties_manager.is_development_enviroment()
+
+
 def test_check_is_testing_enviroment(clean_modified_environments):
     env_variables_mapping = {
         ENV_VALUE_ENV_NAME: TEST,
@@ -58,7 +72,7 @@ def test_check_is_not_testing_enviroment(clean_modified_environments):
 
     properties_manager = _PropertiesManager()
 
-    assert not properties_manager.is_testing_enviroment()
+    assert not properties_manager.is_development_enviroment()
 
 
 def test_check_is_production_enviroment(clean_modified_environments):
@@ -76,7 +90,7 @@ def test_check_is_production_enviroment(clean_modified_environments):
 
 def test_check_is_not_production_enviroment(clean_modified_environments):
     env_variables_mapping = {
-        ENV_VALUE_ENV_NAME: TEST,
+        ENV_VALUE_ENV_NAME: DEV,
     }
 
     for env_name, value in env_variables_mapping.items():

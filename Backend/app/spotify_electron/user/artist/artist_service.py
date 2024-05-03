@@ -1,20 +1,15 @@
 from datetime import datetime
-from sys import modules
 
 from fastapi import HTTPException
 
 import app.spotify_electron.security.security_service as security_service
-from app.database.Database import Database
-from app.model.Artist import Artist
+from app.database.Database import Database, DatabaseCollections
 from app.services.song_services.song_service_provider import get_song_service
 from app.spotify_electron.security.security_schema import TokenData
+from app.spotify_electron.user.artist.artist_schema import Artist
 from app.spotify_electron.utils.validation.utils import validate_parameter
 
-if "pytest" in modules:
-    artist_collection = Database.get_instance().connection["test.artista"]
-
-else:
-    artist_collection = Database.get_instance().connection["artista"]
+artist_collection = Database().get_collection_connection(DatabaseCollections.ARTIST)
 
 song_service = get_song_service()
 

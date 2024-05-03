@@ -1,14 +1,12 @@
 import base64
 import io
-from sys import modules
 
 import librosa
 from fastapi import HTTPException
-from gridfs import GridFS
 
-import app.services.artist_service as artist_service
 import app.services.dto_service as dto_service
-from app.database.Database import Database
+import app.spotify_electron.user.artist.artist_service as artist_service
+from app.database.Database import Database, DatabaseCollections
 from app.model.DTO.SongDTO import SongDTO
 from app.model.Song import Song
 from app.model.SongBlob import SongBlob
@@ -18,13 +16,12 @@ from app.spotify_electron.utils.validation.utils import validate_parameter
 
 """ Insert songs with format [files,chunks] https://www.mongodb.com/docs/manual/core/gridfs/"""
 
-if "pytest" in modules:
-    gridFsSong = GridFS(Database.get_instance().connection, collection="test.cancion")
-    file_song_collection = Database.get_instance().connection["test.cancion.files"]
-
-else:
-    gridFsSong = GridFS(Database.get_instance().connection, collection="cancion")
-    file_song_collection = Database.get_instance().connection["cancion.files"]
+file_song_collection = Database().get_collection_connection(
+    DatabaseCollections.SONG_BLOB_FILE
+)
+gridFsSong = Database().get_gridfs_collection_connection(
+    DatabaseCollections.SONG_BLOB_DATA
+)
 
 
 def check_song_exists(name: str) -> bool:
@@ -424,7 +421,7 @@ def get_songs_by_genre(genre: Genre) -> list[Song]:
     # TODO
     # TODO hanlde GenreNotValidException
     result_get_song_by_genre = file_song_collection.find(
-        {"genre": Genre.getGenre(genre)}
+        {"genre": Genre.get_genre_string_value(genre)}
     )
     songs_by_genre = []
 

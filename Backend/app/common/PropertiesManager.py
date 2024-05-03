@@ -13,6 +13,7 @@ from app.common.config_constants import (
 from app.common.set_up_constants import (
     ARCHITECTURE_ENV_NAME,
     DEFAULT_ARCHITECTURE,
+    DEV,
     DISTRIBUTION_ID_ENV_NAME,
     ENV_VALUE_ENV_NAME,
     LAMBDA_URL_ENV_NAME,
@@ -124,6 +125,16 @@ class _PropertiesManager:
 
         """
         return self.__getattribute__(ENV_VALUE_ENV_NAME) == PROD
+
+    def is_development_enviroment(self) -> bool:
+        """Checks if the enviroment is development
+
+        Returns
+        -------
+            bool: Returns if its development enviroment
+
+        """
+        return self.__getattribute__(ENV_VALUE_ENV_NAME) == DEV
 
     def is_testing_enviroment(self) -> bool:
         """Checks if the enviroment is testing

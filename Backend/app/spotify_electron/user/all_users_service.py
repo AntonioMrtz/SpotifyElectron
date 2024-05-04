@@ -5,20 +5,20 @@ import app.spotify_electron.user.artist.artist_service as artist_service
 import app.spotify_electron.user.user_service as user_service
 from app.services.song_services.song_service_provider import get_song_service
 from app.spotify_electron.security.security_schema import TokenData
-from app.spotify_electron.user.user_schema import UserTypes
+from app.spotify_electron.user.user_schema import UserType
 from app.spotify_electron.utils.validation.utils import validate_parameter
 
 # TODO not hardcoded
 MAX_NUMBER_PLAYBACK_HISTORY_SONGS = 5
 
 services_map = {
-    UserTypes.USER: user_service,
-    UserTypes.ARTIST: artist_service,
+    UserType.USER: user_service,
+    UserType.ARTIST: artist_service,
 }
 song_service = get_song_service()
 
 
-def isArtistOrUser(user_name: str) -> UserTypes | None:
+def isArtistOrUser(user_name: str) -> UserType | None:
     """Checks if the user_name is user or artists
 
     Parameters
@@ -39,10 +39,10 @@ def isArtistOrUser(user_name: str) -> UserTypes | None:
         raise HTTPException(status_code=400, detail="Parámetros no válidos")
 
     if user_service.check_user_exists(user_name):
-        return UserTypes.USER
+        return UserType.USER
 
     if artist_service.check_artists_exists(user_name):
-        return UserTypes.ARTIST
+        return UserType.ARTIST
 
     raise HTTPException(status_code=404, detail="Usuario no existe")
 

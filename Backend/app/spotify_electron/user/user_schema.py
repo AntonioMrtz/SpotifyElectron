@@ -16,7 +16,7 @@ class User:
     saved_playlists: list[str]
 
 
-class UserTypes(Enum):
+class UserType(Enum):
     """Type/roles of users"""
 
     ARTIST = "artista"

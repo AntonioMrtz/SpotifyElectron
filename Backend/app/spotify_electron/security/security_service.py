@@ -29,7 +29,7 @@ from app.spotify_electron.security.security_schema import (
     VerifyPasswordException,
 )
 from app.spotify_electron.user.artist.artist_schema import Artist
-from app.spotify_electron.user.user_schema import User, UserNotFoundException, UserTypes
+from app.spotify_electron.user.user_schema import User, UserNotFoundException, UserType
 from app.spotify_electron.utils.validation.utils import validate_parameter
 
 ALGORITHM = "HS256"
@@ -152,9 +152,9 @@ def get_current_user(
     try:
         jwt = get_jwt_token_data(token)
 
-        if jwt.role == UserTypes.ARTIST:
+        if jwt.role == UserType.ARTIST:
             user = artist_service.get_artist(jwt.username)
-        elif jwt.role == UserTypes.USER:
+        elif jwt.role == UserType.USER:
             user = user_service.get_user(jwt.username)
     except BadJWTTokenProvidedException as exception:
         security_service_logger.exception("Error getting jwt token data")
@@ -243,13 +243,13 @@ def login_user(name: str, password: str) -> str:
         # TODO
         handle_user_should_exists(name)
         # TODO unificar y tratar excepciones
-        if all_users_service.isArtistOrUser(user_name=name) == UserTypes.ARTIST:
+        if all_users_service.isArtistOrUser(user_name=name) == UserType.ARTIST:
             user = artist_service.get_artist(name)
-            user_type = UserTypes.ARTIST
+            user_type = UserType.ARTIST
 
         else:
             user = user_service.get_user(name)
-            user_type = UserTypes.USER
+            user_type = UserType.USER
 
         verify_password(password, user.password)
 

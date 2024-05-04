@@ -28,8 +28,12 @@ song_service_provider_logger = SpotifyElectronLogger(
 ).getLogger()
 
 
-def get_song_service() -> ModuleType:
-    # TODO
+def _get_song_service() -> ModuleType:
+    """Returns the imported song service depending on the architecture selected
+
+    Returns:
+        ModuleType: the imported song service
+    """
     import_module = importlib.import_module(
         MODULE_PREFIX_NAME
         + song_services[getattr(PropertiesManager, ARCHITECTURE_ENV_NAME)]
@@ -38,3 +42,6 @@ def get_song_service() -> ModuleType:
         f"Song service MODULE selected : {song_services[getattr(PropertiesManager, ARCHITECTURE_ENV_NAME)]}"
     )
     return import_module
+
+
+song_service = _get_song_service()

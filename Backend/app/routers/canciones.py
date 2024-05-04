@@ -5,9 +5,9 @@ from fastapi.responses import Response
 from starlette.status import HTTP_401_UNAUTHORIZED
 
 import app.services.dto_service as dto_service
+import app.services.song_services.song_service_provider as song_service_provider
 import app.spotify_electron.security.security_service as security_service
 import app.spotify_electron.utils.json_converter.json_converter_service as json_converter_service
-from app.services.song_services.song_service_provider import get_song_service
 from app.spotify_electron.genre.genre_schema import Genre
 from app.spotify_electron.security.security_schema import BadJWTTokenProvidedException
 
@@ -15,8 +15,6 @@ router = APIRouter(
     prefix="/canciones",
     tags=["canciones"],
 )
-
-song_service = get_song_service()
 
 
 @router.get("/{nombre}")
@@ -37,7 +35,7 @@ def get_cancion(nombre: str) -> Response:
         Not Found 404: No existe una canción con el nombre "nombre"
 
     """
-    song = song_service.get_song(nombre)
+    song = song_service_provider.song_service.get_song(nombre)
     song_json = json_converter_service.get_json_from_model(song)
 
     return Response(song_json, media_type="application/json", status_code=200)
@@ -75,7 +73,9 @@ async def post_cancion(
     try:
         jwt_token = security_service.get_jwt_token_data(authorization)
 
-        await song_service.create_song(nombre, genero, foto, readFile, jwt_token)
+        await song_service_provider.song_service.create_song(
+            nombre, genero, foto, readFile, jwt_token
+        )
         return Response(None, 201)
     except BadJWTTokenProvidedException:
         return Response(
@@ -100,7 +100,7 @@ def get_canciones() -> Response:
     ------
 
     """
-    songs = song_service.get_all_songs()
+    songs = song_service_provider.song_service.get_all_songs()
     songs_json = json_converter_service.get_json_with_iterable_field_from_model(
         songs, "songs"
     )
@@ -126,7 +126,7 @@ def delete_cancion(nombre: str) -> Response:
         Not found 404: La canción con ese nombre no existe
 
     """
-    song_service.delete_song(nombre)
+    song_service_provider.song_service.delete_song(nombre)
 
     return Response(None, 202)
 
@@ -188,7 +188,9 @@ def update_song(
     try:
         jwt_token = security_service.get_jwt_token_data(authorization)
 
-        song_service.update_song(nombre, nuevo_nombre, foto, genre, jwt_token)
+        song_service_provider.song_service.update_song(
+            nombre, nuevo_nombre, foto, genre, jwt_token
+        )
         return Response(None, 204)
     except BadJWTTokenProvidedException:
         return Response(
@@ -216,7 +218,7 @@ def increase_number_plays_song(nombre: str) -> Response:
         Not Found 404: No existe una cancion con el nombre "nombre"
 
     """
-    song_service.increase_number_plays(nombre)
+    song_service_provider.song_service.increase_number_plays(nombre)
     return Response(None, 204)
 
 

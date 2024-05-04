@@ -2,16 +2,14 @@ from datetime import datetime
 
 from fastapi import HTTPException
 
+import app.services.song_services.song_service_provider as song_service_provider
 import app.spotify_electron.security.security_service as security_service
 from app.database.Database import Database, DatabaseCollections
-from app.services.song_services.song_service_provider import get_song_service
 from app.spotify_electron.security.security_schema import TokenData
 from app.spotify_electron.user.artist.artist_schema import Artist
 from app.spotify_electron.utils.validation.utils import validate_parameter
 
 artist_collection = Database().get_collection_connection(DatabaseCollections.ARTIST)
-
-song_service = get_song_service()
 
 
 def check_user_exists(user_name: str) -> bool:
@@ -362,7 +360,7 @@ def get_play_count_artist(user_name: str) -> int:
     if not check_artists_exists(user_name):
         raise HTTPException(status_code=404, detail="El artista no existe")
 
-    return song_service.get_artist_playback_count(user_name)
+    return song_service_provider.song_service.get_artist_playback_count(user_name)
 
 
 def get_artists(names: list) -> list:

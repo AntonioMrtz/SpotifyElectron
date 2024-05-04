@@ -1,11 +1,9 @@
 from fastapi import HTTPException
 
+import app.services.song_services.song_service_provider as song_service_provider
 from app.model.DTO.SongDTO import SongDTO
-from app.services.song_services.song_service_provider import get_song_service
 from app.spotify_electron.genre.genre_schema import Genre
 from app.spotify_electron.utils.validation.utils import validate_parameter
-
-song_service = get_song_service()
 
 
 def get_song(name: str) -> SongDTO:
@@ -28,7 +26,7 @@ def get_song(name: str) -> SongDTO:
     if not validate_parameter(name):
         raise HTTPException(status_code=400, detail="El nombre de la canción es vacío")
 
-    song = song_service.get_song(name)
+    song = song_service_provider.song_service.get_song(name)
     if song is None:
         raise HTTPException(
             status_code=404, detail="La canción con ese nombre no existe"
@@ -71,7 +69,7 @@ def get_songs(song_names: list) -> list:
                 status_code=400, detail="El nombre de la canción es vacío"
             )
 
-        song_data = song_service.get_song(name)
+        song_data = song_service_provider.song_service.get_song(name)
         if song_data is None:
             raise HTTPException(
                 status_code=404, detail="La canción con ese nombre no existe"
@@ -105,7 +103,7 @@ def get_songs_by_genero(genre: Genre) -> list[SongDTO]:
     if not Genre.check_valid_genre(genre.value):
         raise HTTPException(status_code=404, detail="El género no existe")
 
-    songs_by_genre = song_service.get_songs_by_genre(genre)
+    songs_by_genre = song_service_provider.song_service.get_songs_by_genre(genre)
     songs_dto_by_genre = []
 
     for song in songs_by_genre:

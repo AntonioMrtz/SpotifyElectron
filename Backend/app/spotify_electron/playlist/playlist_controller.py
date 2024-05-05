@@ -63,20 +63,17 @@ def get_playlist(name: str) -> Response:
     except PlaylistNotFoundException:
         return Response(
             status_code=HTTP_404_NOT_FOUND,
+            content=PropertiesMessagesManager.playlistNotFound,
         )
     except JsonEncodeException:
-        playlist_controller_logger.exception(
-            f"{PropertiesMessagesManager.commonEncodingError} : {playlist_json}"
-        )
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
+            content=PropertiesMessagesManager.commonEncodingError,
         )
     except (Exception, PlaylistServiceException):
-        playlist_controller_logger.exception(
-            f"{PropertiesMessagesManager.commonInternalServerError}"
-        )
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
+            content=PropertiesMessagesManager.commonInternalServerError,
         )
 
 
@@ -122,13 +119,12 @@ def post_playlist(
     except PlaylistNotFoundException:
         return Response(
             status_code=HTTP_404_NOT_FOUND,
+            content=PropertiesMessagesManager.playlistNotFound,
         )
     except (Exception, PlaylistServiceException):
-        playlist_controller_logger.exception(
-            f"{PropertiesMessagesManager.commonInternalServerError}"
-        )
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
+            content=PropertiesMessagesManager.commonInternalServerError,
         )
 
 
@@ -168,17 +164,17 @@ def update_playlist(
     except PlaylistBadNameException:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
+            content=PropertiesMessagesManager.playlistBadName,
         )
     except PlaylistNotFoundException:
         return Response(
             status_code=HTTP_404_NOT_FOUND,
+            content=PropertiesMessagesManager.playlistNotFound,
         )
     except (Exception, PlaylistServiceException):
-        playlist_controller_logger.exception(
-            f"{PropertiesMessagesManager.commonInternalServerError}"
-        )
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
+            content=PropertiesMessagesManager.commonInternalServerError,
         )
 
 
@@ -197,17 +193,17 @@ def delete_playlist(name: str) -> Response:
     except PlaylistBadNameException:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
+            content=PropertiesMessagesManager.playlistBadName,
         )
     except PlaylistNotFoundException:
         return Response(
             status_code=HTTP_404_NOT_FOUND,
+            content=PropertiesMessagesManager.playlistNotFound,
         )
     except (Exception, PlaylistServiceException):
-        playlist_controller_logger.exception(
-            f"{PropertiesMessagesManager.commonInternalServerError}"
-        )
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
+            content=PropertiesMessagesManager.commonInternalServerError,
         )
 
 
@@ -226,24 +222,22 @@ def get_playlists() -> Response:
     except PlaylistBadNameException:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
+            content=PropertiesMessagesManager.playlistBadName,
         )
     except PlaylistNotFoundException:
         return Response(
             status_code=HTTP_404_NOT_FOUND,
+            content=PropertiesMessagesManager.playlistNotFound,
         )
     except JsonEncodeException:
-        playlist_controller_logger.exception(
-            f"{PropertiesMessagesManager.commonEncodingError} : {playlist_json}"
-        )
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
+            content=PropertiesMessagesManager.commonEncodingError,
         )
     except (Exception, PlaylistServiceException):
-        playlist_controller_logger.exception(
-            f"{PropertiesMessagesManager.commonInternalServerError}"
-        )
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
+            content=PropertiesMessagesManager.commonInternalServerError,
         )
 
 
@@ -269,22 +263,19 @@ def get_selected_playlists(names: str) -> Response:
     except PlaylistBadNameException:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
+            content=PropertiesMessagesManager.playlistBadName,
         )
     except PlaylistNotFoundException:
         return Response(
             status_code=HTTP_404_NOT_FOUND,
         )
     except JsonEncodeException:
-        playlist_controller_logger.exception(
-            f"{PropertiesMessagesManager.commonEncodingError} : {playlist_json}"
-        )
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
+            content=PropertiesMessagesManager.commonEncodingError,
         )
     except (Exception, PlaylistServiceException):
-        playlist_controller_logger.exception(
-            f"{PropertiesMessagesManager.commonInternalServerError}"
-        )
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
+            content=PropertiesMessagesManager.commonInternalServerError,
         )

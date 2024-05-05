@@ -6,6 +6,7 @@ from app.exceptions.exceptions_schema import BadParameterException
 from app.logging.logging_constants import LOGGING_SEARCH_SERVICE
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.search.search_schema import (
+    BadSearchParameterException,
     SearchResult,
     SearchServiceException,
 )
@@ -38,7 +39,7 @@ def search_by_name(name: str) -> SearchResult:
 
     except BadParameterException as exception:
         search_service_logger.exception(f"Bad parameter : {name}")
-        raise BadParameterException(name) from exception
+        raise BadSearchParameterException from exception
     except Exception as exception:
         search_service_logger.exception(
             f"Unexpected error in Search Service searching for items with name : {name}"

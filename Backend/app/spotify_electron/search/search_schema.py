@@ -18,6 +18,15 @@ class SearchResult:
     songs: list[SongDTO]
 
 
+class BadSearchParameterException(SpotifyElectronException):
+    """Exception for bad parameter provided for search"""
+
+    ERROR = "Bad parameter provided for search"
+
+    def __init__(self):
+        super().__init__(self.ERROR)
+
+
 class SearchServiceException(SpotifyElectronException):
     """Exception for unexpected error in search service"""
 

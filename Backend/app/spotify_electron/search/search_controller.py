@@ -9,11 +9,13 @@ from starlette.status import (
 import app.spotify_electron.search.search_service as search_service
 import app.spotify_electron.utils.json_converter.json_converter_service as json_converter_service
 from app.common.PropertiesMessagesManager import PropertiesMessagesManager
-from app.exceptions.exceptions_schema import BadParameterException
 from app.exceptions.http_encode_exceptions import JsonEncodeException
 from app.logging.logging_constants import LOGGING_SEARCH_CONTROLLER
 from app.logging.logging_schema import SpotifyElectronLogger
-from app.spotify_electron.search.search_schema import SearchServiceException
+from app.spotify_electron.search.search_schema import (
+    BadSearchParameterException,
+    SearchServiceException,
+)
 
 router = APIRouter(
     prefix="/search",
@@ -39,16 +41,15 @@ def get_search_name(name: str) -> Response:
             items_json, media_type="application/json", status_code=HTTP_200_OK
         )
 
-    except BadParameterException:
+    except BadSearchParameterException:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
+            content=PropertiesMessagesManager.searchBadName,
         )
     except JsonEncodeException:
-        search_controller_logger.exception(
-            f"{PropertiesMessagesManager.commonEncodingError} : {items}"
-        )
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
+            content=PropertiesMessagesManager.commonEncodingError,
         )
     except (Exception, SearchServiceException):
         search_controller_logger.exception(

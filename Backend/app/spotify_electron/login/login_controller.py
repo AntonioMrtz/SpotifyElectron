@@ -13,6 +13,7 @@ from starlette.status import (
 
 import app.spotify_electron.security.security_service as security_service
 import app.spotify_electron.utils.json_converter.json_converter_service as json_converter_service
+from app.common.PropertiesMessagesManager import PropertiesMessagesManager
 from app.spotify_electron.login.login_schema import InvalidCredentialsLoginException
 from app.spotify_electron.security.security_schema import (
     CreateJWTException,
@@ -46,23 +47,23 @@ def login_usuario(
 
     except InvalidCredentialsLoginException:
         return Response(
-            media_type="application/json",
             status_code=HTTP_400_BAD_REQUEST,
+            content=PropertiesMessagesManager.loginInvalidCredentials,
         )
     except (VerifyPasswordException, CreateJWTException):
         return Response(
-            media_type="application/json",
             status_code=HTTP_401_UNAUTHORIZED,
+            content=PropertiesMessagesManager.loginVerifyPassword,
         )
     except UserNotFoundException:
         return Response(
-            media_type="application/json",
             status_code=HTTP_404_NOT_FOUND,
+            content=PropertiesMessagesManager.userNotFound,
         )
     except (UnexpectedLoginUserException, Exception):
         return Response(
-            media_type="application/json",
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
+            content=PropertiesMessagesManager.commonInternalServerError,
         )
     else:
         response = Response(

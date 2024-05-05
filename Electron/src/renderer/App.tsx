@@ -8,7 +8,7 @@ import ShowAllItems from 'components/ShowAllItems/ShowAllItems';
 import StartMenu from 'pages/StartMenu/StartMenu';
 import { ShowAllItemsTypes } from 'components/ShowAllItems/types/PropsShowAllItems';
 import UserProfile from 'pages/UserProfile/UserProfile';
-import { UserType } from 'utils/role';
+import UserType from 'utils/role';
 import RegisterMenu from 'pages/StartMenu/RegisterMenu';
 import styles from './AppCss.module.css';
 import Sidebar from '../components/Sidebar/Sidebar';

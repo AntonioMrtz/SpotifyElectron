@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from 'react';
 import { PropsPlaylistCard } from 'components/Cards/PlaylistCard/types/propsPlaylistCard';
 import PlaylistCard from 'components/Cards/PlaylistCard/PlaylistCard';
 import Global from 'global/global';
-import { backendPathFromUserType } from 'utils/role';
 import { PropsItemsPlaylistsFromUser } from '../types/PropsItems';
 import defaultThumbnailPlaylist from '../../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 
@@ -17,7 +16,7 @@ export default function ItemsAllPlaylistsFromUser({
     const playlistNames: string[] = [];
 
     try {
-      const fetchUrlPlaylistFromUser = `${Global.backendBaseUrl}${backendPathFromUserType[userType]}/${userName}`;
+      const fetchUrlPlaylistFromUser = `${Global.backendBaseUrl}users/${userName}`;
 
       const resFetchUrlPlaylistFromUser = await fetch(fetchUrlPlaylistFromUser);
       const resFetchUrlPlaylistFromUserJson =

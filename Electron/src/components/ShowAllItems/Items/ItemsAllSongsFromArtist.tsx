@@ -17,7 +17,7 @@ export default function ItemsAllSongsFromArtist({
     try {
       const fetchURLGetArtist = `${
         Global.backendBaseUrl
-      }artistas/${artistName.replace(/[^a-zA-Z0-9_]/g, '')}`;
+      }artists/${artistName.replace(/[^a-zA-Z0-9_]/g, '')}`;
 
       const resFetchGetArtist = await fetch(fetchURLGetArtist);
       resFetchGetArtistJson = await resFetchGetArtist.json();

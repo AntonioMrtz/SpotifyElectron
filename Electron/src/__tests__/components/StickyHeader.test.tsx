@@ -4,7 +4,7 @@ import '@testing-library/jest-dom/extend-expect';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import StickyHeader from 'components/StickyHeader/StickyHeader';
 import Token from 'utils/token';
-import { UserType } from 'utils/role';
+import UserType from 'utils/role';
 import Global from 'global/global';
 
 const userName = 'prueba';
@@ -24,7 +24,7 @@ const userMockFetch = {
 };
 
 global.fetch = jest.fn((url: string) => {
-  if (url === `${Global.backendBaseUrl}usuarios/${userMockFetch.name}`) {
+  if (url === `${Global.backendBaseUrl}users/${userMockFetch.name}`) {
     return Promise.resolve({
       json: () => userMockFetch,
       status: 200,

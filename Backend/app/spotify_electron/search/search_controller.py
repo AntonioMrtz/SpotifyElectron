@@ -24,7 +24,7 @@ search_controller_logger = SpotifyElectronLogger(LOGGING_SEARCH_CONTROLLER).getL
 
 
 @router.get("/", tags=["search"])
-def get_search_nombre(name: str) -> Response:
+def get_search_name(name: str) -> Response:
     """Search for items that partially match name
 
     Args:

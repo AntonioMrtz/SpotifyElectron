@@ -240,16 +240,10 @@ def login_user(name: str, password: str) -> str:
         validate_parameter(name)
         validate_parameter(password)
 
-        # TODO
         handle_user_should_exists(name)
         # TODO unificar y tratar excepciones
-        if all_users_service.isArtistOrUser(user_name=name) == UserType.ARTIST:
-            user = artist_service.get_artist(name)
-            user_type = UserType.ARTIST
-
-        else:
-            user = user_service.get_user(name)
-            user_type = UserType.USER
+        user_type = all_users_service.get_user_type(user_name=name)
+        user = all_users_service.get_user(user_name=name)
 
         verify_password(password, user.password)
 

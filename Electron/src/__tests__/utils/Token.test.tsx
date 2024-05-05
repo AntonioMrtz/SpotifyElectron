@@ -1,9 +1,9 @@
 import '@testing-library/jest-dom/extend-expect';
 import Token from 'utils/token';
-import { UserType } from 'utils/role';
+import UserType from 'utils/role';
 
 const token =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3NfdG9rZW4iOiJwcnVlYmEiLCJyb2xlIjoidXN1YXJpbyIsInRva2VuX3R5cGUiOiJiZWFyZXIiLCJleHAiOjE2OTgwNzQzNzl9.tGdFk2EhCJ3VJKmqmiduVN-d6UUS9tMeCzQ_YfJ35Qs';
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3NfdG9rZW4iOiJwcnVlYmEiLCJyb2xlIjoidXNlciIsInRva2VuX3R5cGUiOiJiZWFyZXIiLCJleHAiOjE2OTgwNzQzNzl9.uohsDyqBKKL8FEiWS7HkjmgKQ33iiGiTZx1ZHXu_MdY';
 const username = 'prueba';
 const userType = UserType.USER;
 

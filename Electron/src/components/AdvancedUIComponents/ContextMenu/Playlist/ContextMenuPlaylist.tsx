@@ -6,7 +6,6 @@ import LoadingCircle from 'components/AdvancedUIComponents/LoadingCircle/Loading
 import InfoPopover from 'components/AdvancedUIComponents/InfoPopOver/InfoPopover';
 import { InfoPopoverType } from 'components/AdvancedUIComponents/InfoPopOver/types/InfoPopover';
 import Token from 'utils/token';
-import { backendPathFromUserType } from 'utils/role';
 import styles from '../contextMenu.module.css';
 import { PropsContextMenuPlaylist } from '../types/PropsContextMenu';
 
@@ -154,9 +153,8 @@ export default function ContextMenuPlaylist({
 
   const handlePlaylists = async () => {
     const username = Token.getTokenUsername();
-    const role = Token.getTokenRole();
 
-    const fetchUrlGetUser = `${Global.backendBaseUrl}${backendPathFromUserType[role]}/${username}`;
+    const fetchUrlGetUser = `${Global.backendBaseUrl}users/${username}`;
 
     fetch(fetchUrlGetUser)
       .then((resFetchUrlGetUser) => resFetchUrlGetUser.json())

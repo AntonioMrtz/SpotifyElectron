@@ -8,8 +8,8 @@ interface PropsContextMenuProfile {
 }
 
 const linkUserTypeMap: Record<string, string> = {
-  artista: 'artist',
-  usuario: 'user',
+  artist: 'artist',
+  user: 'user',
 };
 
 export default function ContextMenuProfile({

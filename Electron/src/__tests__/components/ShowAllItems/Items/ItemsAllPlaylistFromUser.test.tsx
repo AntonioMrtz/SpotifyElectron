@@ -4,7 +4,7 @@ import '@testing-library/jest-dom/extend-expect';
 import { BrowserRouter } from 'react-router-dom';
 import Global from 'global/global';
 import ItemsAllPlaylistsFromUser from 'components/ShowAllItems/Items/ItemsAllPlaylistFromUser';
-import { UserType } from 'utils/role';
+import UserType from 'utils/role';
 
 const playlistName = 'playlisttest';
 const songName = 'songName';
@@ -31,7 +31,7 @@ const playlistDTOMockFetch = {
 
 test('Render itemsAllPlaylistFromUser', async () => {
   global.fetch = jest.fn(async (url: string) => {
-    if (url === `${Global.backendBaseUrl}artistas/${artistMockFetch.name}`) {
+    if (url === `${Global.backendBaseUrl}users/${artistMockFetch.name}`) {
       return Promise.resolve({
         json: () => artistMockFetch,
         status: 200,

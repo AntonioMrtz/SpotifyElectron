@@ -6,11 +6,11 @@ client = TestClient(app)
 
 
 def get_user(name: str, headers: dict):
-    return client.get(f"/usuarios/{name}", headers=headers)
+    return client.get(f"/users/{name}", headers=headers)
 
 
 def create_user(name: str, photo: str, password: str):
-    url = f"/usuarios/?nombre={name}&foto={photo}&password={password}"
+    url = f"/users/?name={name}&photo={photo}&password={password}"
 
     return client.post(url)
 
@@ -23,12 +23,12 @@ def update_user(
     playback_history: list[str],
     headers: dict,
 ):
-    url = f"/usuarios/{name}/?foto={photo}"
+    url = f"/users/{name}/?photo={photo}"
 
     payload = {
-        "historial_canciones": playback_history,
+        "playback_history": playback_history,
         "playlists": playlists,
-        "playlists_guardadas": saved_playlists,
+        "saved_playlists": saved_playlists,
     }
 
     file_type_header = {"Content-Type": "application/json"}
@@ -37,8 +37,8 @@ def update_user(
 
 
 def delete_user(name: str):
-    return client.delete(f"/usuarios/{name}")
+    return client.delete(f"/users/{name}")
 
 
 def patch_history_playback(user_name: str, song_name: str):
-    return client.patch(f"/usuarios/{user_name}/historial/?nombre_cancion={song_name}")
+    return client.patch(f"/users/{user_name}/playback_history/?song_name={song_name}")

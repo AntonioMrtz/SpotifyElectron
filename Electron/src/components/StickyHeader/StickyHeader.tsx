@@ -2,7 +2,6 @@ import { useEffect, useState, MouseEvent } from 'react';
 import { useLocation } from 'react-router-dom';
 import Global from 'global/global';
 import Token from 'utils/token';
-import { backendPathFromUserType } from 'utils/role';
 import Popover, { PopoverPosition } from '@mui/material/Popover';
 import ContextMenuProfile from 'components/AdvancedUIComponents/ContextMenu/Profile/ContextMenuProfile';
 import styles from './stickyHeader.module.css';
@@ -18,10 +17,9 @@ export default function StickyHeader({ handleLogout }: PropsStickyHeader) {
 
   const handleThumbnail = async () => {
     const username = Token.getTokenUsername();
-    const role = Token.getTokenRole();
 
     const resFetchUser = await fetch(
-      `${Global.backendBaseUrl}${backendPathFromUserType[role]}/${username}`,
+      `${Global.backendBaseUrl}users/${username}`,
     );
 
     const resFetchUserJson = await resFetchUser.json();

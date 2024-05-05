@@ -11,12 +11,12 @@ import app.spotify_electron.utils.json_converter.json_converter_service as json_
 from app.spotify_electron.security.security_schema import BadJWTTokenProvidedException
 
 router = APIRouter(
-    prefix="/usuarios",
+    prefix="/users",
     tags=["Users"],
 )
 
 
-@router.get("/whoami", tags=["usuarios"])
+@router.get("/whoami")
 def get_whoAmI(authorization: Annotated[str | None, Header()] = None) -> Response:
     """Devuelve la información del token jwt del usuario
 
@@ -47,8 +47,8 @@ def get_whoAmI(authorization: Annotated[str | None, Header()] = None) -> Respons
         )
 
 
-@router.get("/{nombre}", tags=["usuarios"])
-def get_user(nombre: str) -> Response:
+@router.get("/{name}")
+def get_user(name: str) -> Response:
     """Devuelve el usuario con nombre "nombre"
 
     Parameters
@@ -65,13 +65,13 @@ def get_user(nombre: str) -> Response:
         Not Found 404: No existe un usuario con el nombre "nombre"
 
     """
-    usuario = user_service.get_user(nombre)
+    usuario = all_users_service.get_user(name)
     usuario_json = json_converter_service.get_json_from_model(usuario)
 
     return Response(usuario_json, media_type="application/json", status_code=200)
 
 
-@router.get("/{nombre}/playlists", tags=["usuarios"])
+@router.get("/{nombre}/playlists")
 def get_playlists_by_user(name: str) -> Response:
     # TODO get playlists by user
     # TODO hacer test
@@ -82,8 +82,8 @@ def get_playlists_by_user(name: str) -> Response:
     return Response(user_json, media_type="application/json", status_code=200)
 
 
-@router.post("/", tags=["usuarios"])
-def post_usuario(nombre: str, foto: str, password: str) -> Response:
+@router.post("/")
+def post_user(name: str, photo: str, password: str) -> Response:
     """Registra el usuario
 
     Parameters
@@ -101,17 +101,17 @@ def post_usuario(nombre: str, foto: str, password: str) -> Response:
         Bad Request 400: Parámetros introducidos no són válidos o vacíos
 
     """
-    user_service.create_user(nombre, foto, password)
+    user_service.create_user(name, photo, password)
     return Response(None, 201)
 
 
-@router.put("/{nombre}", tags=["usuarios"])
-def update_usuario(
-    nombre: str,
-    foto: str,
-    historial_canciones: list[str] = Body(...),
+@router.put("/{name}")
+def update_user(
+    name: str,
+    photo: str,
+    playback_history: list[str] = Body(...),
     playlists: list[str] = Body(...),
-    playlists_guardadas: list[str] = Body(...),
+    saved_playlists: list[str] = Body(...),
     authorization: Annotated[str | None, Header()] = None,
 ) -> Response:
     """Actualiza los parámetros del usuario con nombre "nombre"
@@ -140,11 +140,11 @@ def update_usuario(
         jwt_token = security_service.get_jwt_token_data(authorization)
 
         user_service.update_user(
-            name=nombre,
-            photo=foto,
-            playback_history=historial_canciones,
+            name=name,
+            photo=photo,
+            playback_history=playback_history,
             playlists=playlists,
-            saved_playlists=playlists_guardadas,
+            saved_playlists=saved_playlists,
             token=jwt_token,
         )
         return Response(None, 204)
@@ -156,8 +156,8 @@ def update_usuario(
         )
 
 
-@router.delete("/{nombre}", tags=["usuarios"])
-def delete_usuario(nombre: str) -> Response:
+@router.delete("/{name}")
+def delete_user(name: str) -> Response:
     """Elimina un usuario con nombre "nombre"
 
     Parameters
@@ -174,14 +174,14 @@ def delete_usuario(nombre: str) -> Response:
         Not Found 404: No existe un usuario con el nombre "nombre"
 
     """
-    user_service.delete_user(nombre)
+    user_service.delete_user(name)
     return Response(None, 202)
 
 
-@router.patch("/{nombre}/historial", tags=["usuarios"])
-def patch_historial(
-    nombre: str,
-    nombre_cancion: str,
+@router.patch("/{name}/playback_history")
+def patch_playback_history(
+    name: str,
+    song_name: str,
     authorization: Annotated[str | None, Header()] = None,
 ) -> Response:
     """Actualiza el historial de canciones del usuario
@@ -208,7 +208,7 @@ def patch_historial(
         jwt_token = security_service.get_jwt_token_data(authorization)
 
         all_users_service.add_playback_history(
-            user_name=nombre, song=nombre_cancion, token=jwt_token
+            user_name=name, song=song_name, token=jwt_token
         )
 
         return Response(None, 204)
@@ -220,10 +220,10 @@ def patch_historial(
         )
 
 
-@router.patch("/{nombre}/playlists_guardadas", tags=["usuarios"])
-def patch_playlists_guardadas(
-    nombre: str,
-    nombre_playlist: str,
+@router.patch("/{name}/saved_playlists")
+def patch_saved_playlists(
+    name: str,
+    playlist_name: str,
     authorization: Annotated[str | None, Header()] = None,
 ) -> Response:
     """Actualiza las listas guardadas del usuario
@@ -248,7 +248,7 @@ def patch_playlists_guardadas(
     try:
         jwt_token = security_service.get_jwt_token_data(authorization)
 
-        all_users_service.add_saved_playlist(nombre, nombre_playlist, token=jwt_token)
+        all_users_service.add_saved_playlist(name, playlist_name, token=jwt_token)
         return Response(None, 204)
     except BadJWTTokenProvidedException:
         return Response(
@@ -258,10 +258,10 @@ def patch_playlists_guardadas(
         )
 
 
-@router.delete("/{nombre}/playlists_guardadas", tags=["usuarios"])
-def delete_playlists_guardadas(
-    nombre: str,
-    nombre_playlist: str,
+@router.delete("/{name}/saved_playlists")
+def delete_saved_playlists(
+    name: str,
+    playlist_name: str,
     authorization: Annotated[str | None, Header()] = None,
 ) -> Response:
     """Elimina la playlist de las playlist guardadas del usuario
@@ -286,9 +286,7 @@ def delete_playlists_guardadas(
     try:
         jwt_token = security_service.get_jwt_token_data(authorization)
 
-        all_users_service.delete_saved_playlist(
-            nombre, nombre_playlist, token=jwt_token
-        )
+        all_users_service.delete_saved_playlist(name, playlist_name, token=jwt_token)
         return Response(None, 202)
     except BadJWTTokenProvidedException:
         return Response(

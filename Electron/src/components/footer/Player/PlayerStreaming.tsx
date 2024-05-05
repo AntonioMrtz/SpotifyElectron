@@ -98,7 +98,7 @@ export default function PlayerStreaming({
   const handleUpdatePlaybackHistory = () => {
     const username = Token.getTokenUsername();
 
-    const fetchPatchPlayBackHistory: string = `${Global.backendBaseUrl}usuarios/${username}/historial?nombre_cancion=${songName}`;
+    const fetchPatchPlayBackHistory: string = `${Global.backendBaseUrl}users/${username}/playback_history?song_name=${songName}`;
 
     const requestOptionsUpdatePlaybackHistory = {
       method: 'PATCH',

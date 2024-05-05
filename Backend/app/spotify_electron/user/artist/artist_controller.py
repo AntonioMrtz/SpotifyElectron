@@ -12,13 +12,13 @@ import app.spotify_electron.utils.json_converter.json_converter_service as json_
 from app.spotify_electron.security.security_schema import BadJWTTokenProvidedException
 
 router = APIRouter(
-    prefix="/artistas",
+    prefix="/artists",
     tags=["Artists"],
 )
 
 
-@router.get("/{nombre}", tags=["artistas"])
-def get_artista(nombre: str) -> Response:
+@router.get("/{name}")
+def get_artist(name: str) -> Response:
     """Devuelve el artista con nombre "nombre"
 
     Parameters
@@ -35,7 +35,7 @@ def get_artista(nombre: str) -> Response:
         Not Found 404: No existe un artista con el nombre "nombre"
 
     """
-    artista = artist_service.get_artist(nombre)
+    artista = artist_service.get_artist(name)
     artista_json = json_converter_service.get_json_from_model(artista)
 
     return Response(
@@ -43,8 +43,8 @@ def get_artista(nombre: str) -> Response:
     )
 
 
-@router.post("/", tags=["artistas"])
-def post_artista(nombre: str, foto: str, password: str) -> Response:
+@router.post("/")
+def post_artist(name: str, photo: str, password: str) -> Response:
     """Registra el artista
 
     Parameters
@@ -62,18 +62,19 @@ def post_artista(nombre: str, foto: str, password: str) -> Response:
         Bad Request 400: Parámetros introducidos no són válidos o vacíos
 
     """
-    artist_service.create_artist(nombre, foto, password)
+    artist_service.create_artist(name, photo, password)
     return Response(None, 201)
 
 
-@router.put("/{nombre}", tags=["artistas"])
-def update_artista(
-    nombre: str,
-    foto: str,
-    historial_canciones: list[str] = Body(...),
+# TODO
+@router.put("/{name}")
+def update_artist(
+    name: str,
+    photo: str,
+    playback_history: list[str] = Body(...),
     playlists: list[str] = Body(...),
-    playlists_guardadas: list[str] = Body(...),
-    canciones_creadas: list[str] = Body(...),
+    saved_playlists: list[str] = Body(...),
+    uploaded_songs: list[str] = Body(...),
     authorization: Annotated[str | None, Header()] = None,
 ) -> Response:
     """Actualiza los parámetros del artista con nombre "nombre"
@@ -103,12 +104,12 @@ def update_artista(
         jwt_token = security_service.get_jwt_token_data(authorization)
 
         artist_service.update_artist(
-            name=nombre,
-            photo=foto,
-            playback_history=historial_canciones,
+            name=name,
+            photo=photo,
+            playback_history=playback_history,
             playlists=playlists,
-            saved_playlists=playlists_guardadas,
-            uploaded_songs=canciones_creadas,
+            saved_playlists=saved_playlists,
+            uploaded_songs=uploaded_songs,
             token=jwt_token,
         )
         return Response(None, 204)
@@ -120,8 +121,8 @@ def update_artista(
         )
 
 
-@router.delete("/{nombre}", tags=["artistas"])
-def delete_artista(nombre: str) -> Response:
+@router.delete("/{name}")
+def delete_artist(name: str) -> Response:
     """Elimina un artista con nombre "nombre"
 
     Parameters
@@ -138,12 +139,12 @@ def delete_artista(nombre: str) -> Response:
         Not Found 404: No existe un artista con el nombre "nombre"
 
     """
-    artist_service.delete_artist(nombre)
+    artist_service.delete_artist(name)
     return Response(None, 202)
 
 
-@router.get("/", tags=["artistas"])
-def get_artistas() -> Response:
+@router.get("/")
+def get_artists() -> Response:
     """Devuelve todos los artistas
 
     Parameters
@@ -170,8 +171,8 @@ def get_artistas() -> Response:
     )
 
 
-@router.get("/{nombre}/reproducciones", tags=["artistas"])
-def get_reproducciones_artista(nombre: str) -> Response:
+@router.get("/{name}/playbacks")
+def get_playback_count(name: str) -> Response:
     """Devuelve el número de reproducciones totales de las canciones del artista
 
     Parameters
@@ -187,7 +188,7 @@ def get_reproducciones_artista(nombre: str) -> Response:
         Not Found 404: No existe un artista con el nombre "nombre"
 
     """
-    play_count = artist_service.get_play_count_artist(user_name=nombre)
+    play_count = artist_service.get_playback_count_artist(user_name=name)
 
     play_count_json = json_converter_service.get_json_with_iterable_field_from_model(
         play_count, "play_count"

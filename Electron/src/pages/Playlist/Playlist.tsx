@@ -11,7 +11,6 @@ import Box from '@mui/material/Box';
 import ContextMenuPlaylist from 'components/AdvancedUIComponents/ContextMenu/Playlist/ContextMenuPlaylist';
 import Popover, { PopoverPosition } from '@mui/material/Popover/';
 import { secondsToHoursAndMinutesFormatted } from 'utils/date';
-import { UserType, backendPathFromUserType } from 'utils/role';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 import Song from '../../components/Song/Song';
 import styles from './playlist.module.css';
@@ -75,30 +74,15 @@ export default function Playlist({
   };
   const loadPlaylistLikedStatus = async () => {
     const username = Token.getTokenUsername();
-    const role = Token.getTokenRole();
 
     let resFetchGetUserJson;
 
     try {
-      if (role === UserType.USER) {
-        const fetchGetUser = `${Global.backendBaseUrl}${
-          backendPathFromUserType[UserType.USER]
-        }/${username}`;
+      const fetchGetUser = `${Global.backendBaseUrl}users/${username}`;
 
-        const resFetchGetUser = await fetch(fetchGetUser);
-        if (resFetchGetUser.status === 200)
-          resFetchGetUserJson = await resFetchGetUser.json();
-      } else if (role === UserType.ARTIST) {
-        const fetchGetArtist = `${Global.backendBaseUrl}${
-          backendPathFromUserType[UserType.ARTIST]
-        }/${username}`;
-
-        const resFetchGetArtist = await fetch(fetchGetArtist);
-        if (resFetchGetArtist.status === 200)
-          resFetchGetUserJson = await resFetchGetArtist.json();
-      } else {
-        console.log('Unable to get User from Token');
-      }
+      const resFetchGetUser = await fetch(fetchGetUser);
+      if (resFetchGetUser.status === 200)
+        resFetchGetUserJson = await resFetchGetUser.json();
 
       if (
         resFetchGetUserJson &&
@@ -118,7 +102,7 @@ export default function Playlist({
     const username = Token.getTokenUsername();
 
     if (liked === false) {
-      const fetchPatchSavedPlaylistUrl = `${Global.backendBaseUrl}usuarios/${username}/playlists_guardadas?nombre_playlist=${playlistName}`;
+      const fetchPatchSavedPlaylistUrl = `${Global.backendBaseUrl}users/${username}/saved_playlists?playlist_name=${playlistName}`;
 
       const requestOptionsPatchSavedPlaylistUr = {
         method: 'PATCH',
@@ -132,7 +116,7 @@ export default function Playlist({
         })
         .catch(() => console.log('Unable to update saved playlists'));
     } else {
-      const fetchDeleteSavedPlaylistUrl = `${Global.backendBaseUrl}usuarios/${username}/playlists_guardadas?nombre_playlist=${playlistName}`;
+      const fetchDeleteSavedPlaylistUrl = `${Global.backendBaseUrl}users/${username}/saved_playlists?playlist_name=${playlistName}`;
 
       const requestOptionsDeleteSavedPlaylistUr = {
         method: 'DELETE',

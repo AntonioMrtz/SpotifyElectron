@@ -6,11 +6,11 @@ client = TestClient(app)
 
 
 def get_artist(name: str, headers: dict):
-    return client.get(f"/artistas/{name}", headers=headers)
+    return client.get(f"/artists/{name}", headers=headers)
 
 
 def create_artist(name: str, photo: str, password: str):
-    url = f"/artistas/?nombre={name}&foto={photo}&password={password}"
+    url = f"/artists/?name={name}&photo={photo}&password={password}"
 
     return client.post(url)
 
@@ -24,13 +24,13 @@ def update_artist(
     uploaded_songs: list[str],
     headers: dict,
 ):
-    url = f"/artistas/{name}/?foto={photo}"
+    url = f"/artists/{name}/?photo={photo}"
 
     payload = {
-        "historial_canciones": playback_history,
+        "playback_history": playback_history,
         "playlists": playlists,
-        "playlists_guardadas": saved_playlists,
-        "canciones_creadas": uploaded_songs,
+        "saved_playlists": saved_playlists,
+        "uploaded_songs": uploaded_songs,
     }
 
     file_type_header = {"Content-Type": "application/json"}
@@ -39,12 +39,12 @@ def update_artist(
 
 
 def delete_artist(name: str):
-    return client.delete(f"/artistas/{name}")
+    return client.delete(f"/artists/{name}")
 
 
 def get_artists(headers: dict):
-    return client.get("/artistas/", headers=headers)
+    return client.get("/artists/", headers=headers)
 
 
 def get_play_count_artist(name: str, headers: dict):
-    return client.get(f"/artistas/{name}/reproducciones", headers=headers)
+    return client.get(f"/artists/{name}/playbacks", headers=headers)

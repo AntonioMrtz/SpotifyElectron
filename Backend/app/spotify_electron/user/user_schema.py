@@ -19,8 +19,8 @@ class User:
 class UserType(Enum):
     """Type/roles of users"""
 
-    ARTIST = "artista"
-    USER = "usuario"
+    ARTIST = "artist"
+    USER = "user"
 
 
 class UserRepositoryException(SpotifyElectronException):

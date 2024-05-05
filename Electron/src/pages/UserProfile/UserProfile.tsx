@@ -5,7 +5,7 @@ import { PropsPlaylistCard } from 'components/Cards/PlaylistCard/types/propsPlay
 import SongCard, { PropsSongCard } from 'components/Cards/SongCard/SongCard';
 import PlaylistCard from 'components/Cards/PlaylistCard/PlaylistCard';
 import { useParams, useNavigate } from 'react-router-dom';
-import { UserType, backendPathFromUserType } from 'utils/role';
+import UserType from 'utils/role';
 import styles from './userProfile.module.css';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 
@@ -147,7 +147,7 @@ export default function UserProfile({
   };
 
   const loadPlayCount = () => {
-    fetch(`${Global.backendBaseUrl}artistas/${id}/reproducciones`)
+    fetch(`${Global.backendBaseUrl}artists/${id}/playbacks`)
       .then((resFetchPlayCount) => {
         return resFetchPlayCount.json();
       })
@@ -161,7 +161,7 @@ export default function UserProfile({
   };
 
   const handleLoadProfile = async () => {
-    const fetchUrlGetUser = `${Global.backendBaseUrl}${backendPathFromUserType[userType]}/${id}`;
+    const fetchUrlGetUser = `${Global.backendBaseUrl}users/${id}`;
 
     const resGetUser = await fetch(fetchUrlGetUser);
 

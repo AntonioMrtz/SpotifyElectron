@@ -17,19 +17,19 @@ class CheckJwtAuthMiddleware(BaseHTTPMiddleware):
 
     bypass_urls = {
         "GET": [
-            "/usuarios/whoami",
-            "/usuarios/whoami/",
+            "/users/whoami",
+            "/users/whoami/",
             "/docs",
             "/docs/",
             "/openapi.json",
         ],
         "POST": [
-            "/usuarios/",
-            "/usuarios",
+            "/users/",
+            "/users",
             "/login/",
             "/login",
-            "/artistas/",
-            "/artistas",
+            "/artists/",
+            "/artists",
         ],
     }
     """HTTP Urls that wont be checked"""

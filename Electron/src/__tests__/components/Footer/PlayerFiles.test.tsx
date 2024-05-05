@@ -4,7 +4,7 @@ import { render } from '@testing-library/react';
 import PlayerFiles from 'components/footer/Player/PlayerFiles';
 import Global from 'global/global';
 import Token from 'utils/token';
-import { UserType } from 'utils/role';
+import UserType from 'utils/role';
 import { act } from 'react-test-renderer';
 
 const songName = 'songName';
@@ -51,7 +51,7 @@ global.fetch = jest.fn((url: string) => {
   }
   if (
     url ===
-    `${Global.backendBaseUrl}usuarios/${userName}/historial?nombre_cancion=${songName}`
+    `${Global.backendBaseUrl}users/${userName}/playback_history?song_name=${songName}`
   ) {
     return Promise.resolve({
       json: () => {},

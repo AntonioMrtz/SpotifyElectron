@@ -4,7 +4,7 @@ import { act, fireEvent, render } from '@testing-library/react';
 import ContextMenuPlaylist from 'components/AdvancedUIComponents/ContextMenu/Playlist/ContextMenuPlaylist';
 import Global from 'global/global';
 import { BrowserRouter } from 'react-router-dom';
-import { UserType } from 'utils/role';
+import UserType from 'utils/role';
 import Token from 'utils/token';
 import * as router from 'react-router';
 
@@ -72,7 +72,7 @@ global.fetch = jest.fn((url: string, options: any) => {
     });
   }
 
-  if (url === `${Global.backendBaseUrl}artistas/${artistMockFetch.name}`) {
+  if (url === `${Global.backendBaseUrl}users/${artistMockFetch.name}`) {
     return Promise.resolve({
       json: () => artistMockFetch,
       status: 200,

@@ -10,7 +10,7 @@ import Global from 'global/global';
 import Token from 'utils/token';
 import { InfoPopoverType } from 'components/AdvancedUIComponents/InfoPopOver/types/InfoPopover';
 import ConfirmationModal from 'components/AdvancedUIComponents/InfoPopOver/InfoPopover';
-import { UserType } from 'utils/role';
+import UserType from 'utils/role';
 import LoadingCircleSmall from 'components/AdvancedUIComponents/LoadingCircle/LoadingCircleSmallNoPadding';
 import GenreOption from './GenreOption/GenreOption';
 import styles from './addSongPlayListAccordion.module.css';

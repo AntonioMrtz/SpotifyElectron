@@ -46,7 +46,7 @@ test('Home fields', async () => {
 
 test('prueba', async () => {
   global.fetch = jest.fn((url: string) => {
-    if (url === `${Global.backendBaseUrl}artistas/`) {
+    if (url === `${Global.backendBaseUrl}artists/`) {
       return Promise.resolve({
         json: () =>
           Promise.resolve({

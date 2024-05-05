@@ -3,7 +3,7 @@ import { act, render } from '@testing-library/react';
 import * as router from 'react-router';
 import '@testing-library/jest-dom/extend-expect';
 import UserProfile from 'pages/UserProfile/UserProfile';
-import { UserType } from 'utils/role';
+import UserType from 'utils/role';
 import Global from 'global/global';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 
@@ -188,7 +188,7 @@ test('UserProfile User load Playback history and his Playlists', async () => {
         console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}usuarios/${userMockFetch.name}`) {
+    if (url === `${Global.backendBaseUrl}users/${userMockFetch.name}`) {
       return Promise.resolve({
         json: () => userMockFetch,
         status: 200,
@@ -296,7 +296,7 @@ test('UserProfile Artist load Songs and Playcount', async () => {
         console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}artistas/${artistMockFetch.name}`) {
+    if (url === `${Global.backendBaseUrl}users/${artistMockFetch.name}`) {
       return Promise.resolve({
         json: () => artistMockFetch,
         status: 200,
@@ -314,7 +314,7 @@ test('UserProfile Artist load Songs and Playcount', async () => {
     }
     if (
       url ===
-      `${Global.backendBaseUrl}artistas/${artistMockFetch.name}/reproducciones`
+      `${Global.backendBaseUrl}artists/${artistMockFetch.name}/playbacks`
     ) {
       return Promise.resolve({
         json: () => ({

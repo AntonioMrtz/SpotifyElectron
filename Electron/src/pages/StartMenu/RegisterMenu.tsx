@@ -13,10 +13,10 @@ export default function RegisterMenu({ setIsSigningUp }: PropsRegisterMenu) {
   /* Form */
 
   const [formData, setFormData] = useState({
-    nombre: '',
+    name: '',
     password: '',
     confirmpassword: '',
-    foto: '',
+    photo: '',
   });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -43,8 +43,8 @@ export default function RegisterMenu({ setIsSigningUp }: PropsRegisterMenu) {
   const handleRegister = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (
-      !formData.nombre ||
-      !formData.foto ||
+      !formData.name ||
+      !formData.photo ||
       !formData.password ||
       !formData.confirmpassword
     ) {
@@ -76,7 +76,7 @@ export default function RegisterMenu({ setIsSigningUp }: PropsRegisterMenu) {
     }
 
     try {
-      const fetchPostUserURL = `${Global.backendBaseUrl}usuarios/?nombre=${formData.nombre}&foto=${formData.foto}&password=${formData.password}`;
+      const fetchPostUserURL = `${Global.backendBaseUrl}users/?name=${formData.name}&photo=${formData.photo}&password=${formData.password}`;
 
       const requestOptions: RequestInit = {
         method: 'POST',
@@ -142,8 +142,8 @@ export default function RegisterMenu({ setIsSigningUp }: PropsRegisterMenu) {
             Nombre de usuario
             <input
               type="text"
-              name="nombre"
-              id="nombre"
+              name="name"
+              id="name"
               placeholder="Nombre de usuario"
               onChange={handleChange}
               spellCheck={false}
@@ -157,8 +157,8 @@ export default function RegisterMenu({ setIsSigningUp }: PropsRegisterMenu) {
             Foto de perfil
             <input
               type="text"
-              name="foto"
-              id="foto"
+              name="photo"
+              id="photo"
               placeholder="Foto de perfil"
               onChange={handleChange}
               spellCheck={false}

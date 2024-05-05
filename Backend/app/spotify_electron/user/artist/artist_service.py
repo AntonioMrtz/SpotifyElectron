@@ -141,6 +141,11 @@ def delete_song_artist(artist_name: str, song_name: str):
         )
 
 
+def get_user(name: str) -> Artist:
+    # TODO
+    return get_artist(name)
+
+
 def get_artist(name: str) -> Artist:
     """Returns artist with name "name"
 
@@ -337,7 +342,7 @@ def get_all_artists() -> list:
     return artists
 
 
-def get_play_count_artist(user_name: str) -> int:
+def get_playback_count_artist(user_name: str) -> int:
     """Returns the total play count of all the artist songs
 
     Parameters

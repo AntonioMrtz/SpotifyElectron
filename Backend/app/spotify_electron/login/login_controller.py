@@ -27,7 +27,7 @@ router = APIRouter(
 )
 
 
-@router.post("/", tags=["login"])
+@router.post("/")
 def login_usuario(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
 ) -> Response:

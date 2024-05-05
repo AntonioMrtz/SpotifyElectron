@@ -39,7 +39,7 @@ playlist_controller_logger = SpotifyElectronLogger(
 # TODO set in content of Responses messages of error from messages.ini
 
 
-@router.get("/{name}", tags=["playlists"])
+@router.get("/{name}")
 def get_playlist(name: str) -> Response:
     """Gets playlist by name
 
@@ -80,7 +80,7 @@ def get_playlist(name: str) -> Response:
         )
 
 
-@router.post("/", tags=["playlists"])
+@router.post("/")
 def post_playlist(
     name: str,
     photo: str,
@@ -132,7 +132,7 @@ def post_playlist(
         )
 
 
-@router.put("/{name}", tags=["playlists"])
+@router.put("/{name}")
 def update_playlist(
     name: str,
     photo: str,
@@ -182,7 +182,7 @@ def update_playlist(
         )
 
 
-@router.delete("/{name}", tags=["playlists"])
+@router.delete("/{name}")
 def delete_playlist(name: str) -> Response:
     """Delete playlist
 
@@ -211,7 +211,7 @@ def delete_playlist(name: str) -> Response:
         )
 
 
-@router.get("/", tags=["playlists"])
+@router.get("/")
 def get_playlists() -> Response:
     """Return all playlists"""
     try:
@@ -247,7 +247,7 @@ def get_playlists() -> Response:
         )
 
 
-@router.get("/multiple/{names}", tags=["playlists"])
+@router.get("/multiple/{names}")
 def get_selected_playlists(names: str) -> Response:
     """Return playlists by names
 

@@ -23,7 +23,7 @@ router = APIRouter(
 search_controller_logger = SpotifyElectronLogger(LOGGING_SEARCH_CONTROLLER).getLogger()
 
 
-@router.get("/", tags=["search"])
+@router.get("/")
 def get_search_name(name: str) -> Response:
     """Search for items that partially match name
 

@@ -4,7 +4,6 @@ import '@testing-library/jest-dom/extend-expect';
 import { BrowserRouter } from 'react-router-dom';
 import Global from 'global/global';
 import ItemsAllPlaylistsFromUser from 'components/ShowAllItems/Items/ItemsAllPlaylistFromUser';
-import UserType from 'utils/role';
 
 const playlistName = 'playlisttest';
 const songName = 'songName';
@@ -60,7 +59,6 @@ test('Render itemsAllPlaylistFromUser', async () => {
       <BrowserRouter>
         <ItemsAllPlaylistsFromUser
           userName={artistMockFetch.name}
-          userType={UserType.ARTIST}
           refreshSidebarData={jest.fn()}
           id={artistMockFetch.name}
         />

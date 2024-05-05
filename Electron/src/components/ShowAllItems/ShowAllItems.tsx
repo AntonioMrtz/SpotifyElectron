@@ -14,7 +14,6 @@ export default function ShowAllItems({
   const { id } = useParams();
   const { user } = useParams();
   const { artist } = useParams();
-  const { usertype } = useParams();
 
   // Reverse mapping object
   const itemsDisplayed: {
@@ -30,7 +29,6 @@ export default function ShowAllItems({
         userName={user || 'NoUser'}
         refreshSidebarData={refreshSidebarData}
         id={id}
-        userType={usertype || 'noType'}
       />
     ),
     [ShowAllItemsTypes.ALL_SONGS_FROM_ARTIST]: (

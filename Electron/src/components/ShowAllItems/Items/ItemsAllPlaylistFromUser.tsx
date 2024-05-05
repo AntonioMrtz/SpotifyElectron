@@ -8,7 +8,6 @@ import defaultThumbnailPlaylist from '../../../assets/imgs/DefaultThumbnailPlayl
 export default function ItemsAllPlaylistsFromUser({
   refreshSidebarData,
   userName,
-  userType,
 }: PropsItemsPlaylistsFromUser) {
   const [playlists, setPlaylists] = useState<PropsPlaylistCard[]>();
 
@@ -58,7 +57,7 @@ export default function ItemsAllPlaylistsFromUser({
       .catch(() => {
         console.log('No se pudieron obtener las playlists');
       });
-  }, [refreshSidebarData, userName, userType]);
+  }, [refreshSidebarData, userName]);
 
   useEffect(() => {
     handlePlaylists();

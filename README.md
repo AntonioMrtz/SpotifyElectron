@@ -32,22 +32,12 @@ git clone https://github.com/AntonioMrtz/SpotifyElectron.git
 ## 🖐 How to Contribute to the project
 
 Are you interested in contributing to the project? Check our contributing rules and methodologies in
-[CONTRIBUTING readme](https://github.com/AntonioMrtz/SpotifyElectron/blob/master/.github/CONTRIBUTING.md).
+[CONTRIBUTING readme](.github/CONTRIBUTING.md).
 
 ## 🎯 Project's goals
 
-* Build from scratch a streaming service like Spotify using Electron+React and Python+FastAPI.
-* Develop the app with the best software practices and desing the app
-to be escalable and ready for quick iterations of features.
-* Focus on security and code quality for delivering the user a safe experience.
-* Full coverage test suite for both Backend and Frontend.
-* Work with Cloud AWS services such as Lambda, S3 and Cloudfront.
-* Work as a team managing Github branches, pull requests, code reviews and Trello Board to organize tasks in different stages.
-* Reach CI/CD automatization with Github Actions.
-* Add new extra functionality that could improve the original app.
-* Cross platform app with only one codebase.
-* Build a landing page for reaching users and portray all the goals, technologies and software processes.
-* Use docker to ease local development and production deployment
+Check our [project goals and vision](.github/VISION.md)
+
 ---
 
 

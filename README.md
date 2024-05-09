@@ -69,7 +69,7 @@ Check our [project goals and vision](.github/VISION.md)
 
 ![Home](assets/images/walkthrough_screenshots/UploadSong.png)
 
-### Explorar
+### Explore users, artist, songs and playlists
 
 ![Explorar](assets/images/walkthrough_screenshots/Explorar.png)
 

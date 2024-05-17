@@ -6,14 +6,14 @@ indent-width = 4
 
 [lint]
 extend-select = [
-    "UP",  # pyupgrade
+    "UP",
     "TRY",
     "I",
     "SIM",
-    "R",
     "C90",
     "D201",
-    "D202"
+    "D202",
+    "PLR"
 ]
 
 [format]

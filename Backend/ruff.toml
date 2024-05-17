@@ -10,7 +10,7 @@ extend-select = [
     "TRY",
     "I",
     "SIM",
-    "PLR",
+    "PLR"
 ]
 
 [format]

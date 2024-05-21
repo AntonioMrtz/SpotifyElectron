@@ -2,7 +2,7 @@ fastapi==0.109.1
 python-dotenv==0.21.0
 python-jose==3.3.0
 python-multipart==0.0.7
-requests==2.31.0
+requests==2.32.0
 librosa==0.10.0.post2
 pymongo==4.6.3
 bcrypt==4.0.1

@@ -14,6 +14,7 @@ nav:
     - Docker: backend/Docker.md
   - Frontend:
     - Set up: frontend/SETUP.md
+    - Package app: frontend/Package-app.md
   - How to contribute: CONTRIBUTING.md
   - Git convention: Git-Convention.md
   - Contributors: CONTRIBUTORS.md

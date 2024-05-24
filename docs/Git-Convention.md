@@ -2,6 +2,10 @@
 
 In this document we will cover the convention applied to git usage in the project.
 
+## Branches
+
+* The main branch of the project is `master`. All pull request will be created towards `master` branch.
+* `gh-pages` branch whill host the documentation for the project and will only update using CI. This CI will be trigger when a pull request is merged into `master`.
 
 ## Branch convention
 

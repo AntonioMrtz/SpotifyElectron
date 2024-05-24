@@ -1,5 +1,4 @@
-
-# ENVIROMENTS
+# Enviroments
 
 In this document we will cover:
 
@@ -11,7 +10,7 @@ In this document we will cover:
 
 To use environments in the app, you will need to place a file named `.env` under the `Backend` folder. The file should contain key-value pairs, with each pair on a separate line and the key and value separated by an equals sign (`=`). For example:
 
-```.env file format example
+```
 KEY1=value1
 ```
 
@@ -68,7 +67,7 @@ The following file can be used out of the box for development purpouse. It conta
 * **DB_BLOB architecture selected**. This will only make necessary a MongoDB database because no cloud services are used in this architecture.
 * **DEV** mode. It will enable hot reload for FastAPI.
 
-``` .env file ready to use
+```
 MONGO_URI=mongodb://root:root@localhost:27017/
 SECRET_KEY_SIGN=f24e2f3ac557d487b6d879fb2d86f2b2
 ENV_VALUE=DEV

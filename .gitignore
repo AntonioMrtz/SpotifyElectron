@@ -164,3 +164,7 @@ htmlcov
 
 
 *.env
+
+
+# Documentation
+**/site/

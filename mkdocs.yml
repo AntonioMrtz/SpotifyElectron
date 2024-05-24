@@ -1,0 +1,41 @@
+site_name: Spotify Electron Documentation
+site_author: Antonio Martinez Fernandez
+repo_url: https://github.com/AntonioMrtz/SpotifyElectron
+site_description: Documentation for Spotify Electron, an open-source cross-platform music streaming app
+
+nav:
+  - Home: index.md
+  - Backend:
+    - Set up: backend/SETUP.md
+    - Architectures: backend/Architectures.md
+    - Enviroments: backend/Enviroments.md
+  - Frontend:
+    - Set up: frontend/SETUP.md
+  - How to contribute: CONTRIBUTING.md
+  - Git convention: Git-Convention.md
+  - Code of conduct: CODE_OF_CONDUCT.md
+  - Contributors: CONTRIBUTORS.md
+
+
+theme:
+  logo: assets/logo.png
+  name: material
+  features:
+    - navigation.indexes 
+  palette:
+    - scheme: slate
+      primary: black
+      accent: blue
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+
+plugins:
+  - mkdocstrings
+  - search

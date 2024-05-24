@@ -18,7 +18,7 @@ KEY1=value1
 
 ## Enviroments variables
 
-In this section we will explain the meaning and the usage of the enviroment variables. Some of them are only necessary for one architecture ( #TODO see architectures explained ), this means you can not declared them at all at the `.env` file.
+In this section we will explain the meaning and the usage of the enviroment variables. Some of them are only necessary for one [architecture](Architecture.md), this means you can not declared them at all at the `.env` file.
 
 ### Commons
 
@@ -26,7 +26,7 @@ In this section we will explain the meaning and the usage of the enviroment vari
  * **ENV_VALUE**: determines the current enviroment of the app, it can be:
 	* `PROD`: production enviroment.
 	* `DEV`: development enviroment.
-* **ARCH**: the song architecture selected, it can be ( #TODO see architectures explained ):
+* **ARCH**: the song architecture selected, it can be one of the following [architectures](Architecture.md):
 	* `STREAMING_LAMBDA`: song architecture using AWS Lambda with streaming.
 	* `STREAMING_SDK`: song architecture using aws sdk with streaming.
 	* `DB_BLOB`: song architecture with no streaming/cloud.
@@ -62,7 +62,7 @@ In this section we will explain the meaning and the usage of the enviroment vari
 
 The following file can be used out of the box for development purpouse. It contains the following characteristics:
 
-* **Local MongoDB database**. Use local MongoDB database, you can deploy one using our Docker stack as described here. ( #todo link to docker )
+* **Local MongoDB database**. Use local MongoDB database, you can deploy one using our Docker stack as described [here](Docker.md).
 * **Ready to use secret key**
 * **DB_BLOB architecture selected**. This will only make necessary a MongoDB database because no cloud services are used in this architecture.
 * **DEV** mode. It will enable hot reload for FastAPI.

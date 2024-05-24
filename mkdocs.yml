@@ -2,7 +2,7 @@ site_name: Spotify Electron Documentation
 site_author: Antonio Martinez Fernandez
 repo_url: https://github.com/AntonioMrtz/SpotifyElectron
 site_description: Documentation for Spotify Electron, an open-source cross-platform music streaming app
-remote_branch: mkdocs
+remote_branch: gh-pages
 
 nav:
   - Home: index.md

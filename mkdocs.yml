@@ -8,21 +8,24 @@ nav:
   - Home: index.md
   - Backend:
     - Set up: backend/SETUP.md
-    - Architectures: backend/Architectures.md
     - Enviroments: backend/Enviroments.md
+    - Folder Structure: backend/Folder-Structure.md
+    - Architectures: backend/Architectures.md
+    - Docker: backend/Docker.md
   - Frontend:
     - Set up: frontend/SETUP.md
   - How to contribute: CONTRIBUTING.md
   - Git convention: Git-Convention.md
-  - Code of conduct: CODE_OF_CONDUCT.md
   - Contributors: CONTRIBUTORS.md
+  - Vision: VISION.md
+  - Code of conduct: CODE_OF_CONDUCT.md
 
 
 theme:
   logo: assets/logo.png
   name: material
   features:
-    - navigation.indexes 
+    - navigation.indexes
   palette:
     - scheme: slate
       primary: black
@@ -40,3 +43,6 @@ theme:
 plugins:
   - mkdocstrings
   - search
+
+markdown_extensions:
+  - mdx_truly_sane_lists

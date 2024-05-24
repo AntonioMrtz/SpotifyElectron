@@ -1,4 +1,4 @@
-# Enviroments
+# Enviroment
 
 In this document we will cover:
 
@@ -30,7 +30,7 @@ In this section we will explain the meaning and the usage of the enviroment vari
 	* `STREAMING_LAMBDA`: song architecture using AWS Lambda with streaming.
 	* `STREAMING_SDK`: song architecture using aws sdk with streaming.
 	* `DB_BLOB`: song architecture with no streaming/cloud.
-	
+
 ### Streaming using AWS Lambda (STREAMING_LAMBDA)
 
 * **LAMBDA_URL**: the url of the AWS Lambda function that manages songs and comunicates with cloud storage.

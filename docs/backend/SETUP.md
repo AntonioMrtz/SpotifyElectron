@@ -16,7 +16,7 @@ In this section we will cover:
 cd Backend
 ```
 
-2. Rename `.env.local` to `.env` for development or create the enviroment file in root path with the following data. More on enviroments [here](Enviroments.md). A development-ready `.env` file is also provided in the document.
+2. Rename `.env.local` to `.env` for development or create the enviroment file in root path with the following data. More on enviroments [here](Enviroment.md). A development-ready `.env` file is also provided in the document.
 
 ```
 * MONGO_URI= uri for connecting into a MongoDB database ( mongodb://root:root@localhost:27017/ )

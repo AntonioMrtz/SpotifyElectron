@@ -8,9 +8,9 @@ nav:
   - Home: index.md
   - Backend:
     - Set up: backend/SETUP.md
-    - Enviroments: backend/Enviroments.md
-    - Folder Structure: backend/Folder-Structure.md
-    - Architectures: backend/Architectures.md
+    - Enviroment: backend/Enviroment.md
+    - File Structure: backend/File-Structure.md
+    - Architecture: backend/Architecture.md
     - Docker: backend/Docker.md
   - Frontend:
     - Set up: frontend/SETUP.md

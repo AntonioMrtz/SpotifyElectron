@@ -67,21 +67,6 @@ npm start
 ```
 
 
-## 🧪 Run tests
-
-1. Run tests
-
-Normal run
-
-```
-npm run test
-```
-Run test and generate coverage
-
-```
-npm run test:coverage
-```
-
 ## ✔️🎨 Linting and formatting
 
 1. Run lint check and format. This will force fix any error that has no impact and can be solved automatically

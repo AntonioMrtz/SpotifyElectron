@@ -48,7 +48,7 @@ python -m app
 
 ## 🐳 Docker deployment
 
-In this section we will cover how to use Docker for local development or for production deployment. All the necessary tools for development such as a mongoDB database is provided with the dev enviroment script described below.
+In this section we will cover how to use Docker for local development or for production deployment. All the necessary tools for development such as a mongoDB database is provided with the dev enviroment script described below. For morre info check the [extendend docker documentation](Docker.md).
 
 1. Go to docker folder
 ```
@@ -58,35 +58,37 @@ cd docker/
 ### Development Enviroment
 
 For development it is recommended to deploy the dev enviroment containers that provide:
-  * Local MongoDB Database
-  * Mongo Express administration dashboard
-      * Connect http://localhost:8081/
-      * Use user : admin and password : pass
-  * Backend Server ( stop this container if backend server is running locally already )
+
+* Local MongoDB Database
+* Mongo Express administration dashboard
+    * Connect http://localhost:8081/
+    * Use user : admin and password : pass
+* Backend Server ( stop this container if backend server is running locally already )
 
 Run this command to build and up the development containers
 ```
 ./build_and_up_dev.sh
 ```
 
-### Prod Enviroment
+### Production Enviroment
 
 In production it is recommended to connect to a remote database, the prod enviroment provide:
 
-  * Backend Server
+* Backend Server
 ```
 ./build_and_up_prod.sh
 ```
 
-## 📓 Access documentation and swagger interface
+## 📓 Access API Swagger documentation
 
 * Swagger: **http://127.0.0.1:8000/docs**
+
 
 ## ✔️ Run tests
 
 1. Run tests
 
-Standar test run
+Standard test run
 ```
 python -m pytest tests/
 ```
@@ -98,16 +100,15 @@ python -m pytest tests/ --cov=. --cov-report=html:tests/htmlcov
 ```
 ## ⚓ Pre-commit
 
-### Set up
+Pre-commit is used for ensuring code quality before it gets commited. When you install pre-commit hooks a check will be triggered before commiting ensuring the rules specified in `.pre-commit-config.yaml`, if the check fails the commit wont be submitted. By default pre-commit will check the linting and formatting of the code that its going to be commited.
 
-1. Install pre-commits hooks
+#### 1. Install pre-commits hooks
 
 ```
 pre-commit install
 ```
-### Install
 
-1. Force pre-commit run on all files
+#### 2. Force pre-commit run on all files
 
 
 ```
@@ -117,11 +118,12 @@ pre-commit run --all-files
 
 ## 🎨 Run style and linting on code
 
-1. Run style rules and sort imports
+### 1. Run style rules and sort imports
 ```
 python -m ruff format
 ```
-2. Run linting
+
+### 2. Run linting
 
 ```
 python -m ruff check --fix

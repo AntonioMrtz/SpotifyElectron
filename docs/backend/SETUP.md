@@ -1,4 +1,4 @@
-# 1. Set up and run BACKEND
+# Set up and run BACKEND
 
 In this section we will cover:
 
@@ -13,10 +13,10 @@ In this section we will cover:
 1. Enter backend directory
 
 ```
-cd Backend;
+cd Backend
 ```
 
-2. Use .env.local renaming it to .env for development or create the enviroment file in root path with the following data.
+2. Rename `.env.local` to `.env` for development or create the enviroment file in root path with the following data. More on enviroments [here](Enviroments.md). A development-ready `.env` file is also provided in the document.
 
 ```
 * MONGO_URI= uri for connecting into a MongoDB database ( mongodb://root:root@localhost:27017/ )
@@ -37,17 +37,18 @@ pip install -r requirements-dev.txt;
 pip install -r requirements-test.txt;
 
 ```
-4. Run the app in hot reload debug mode
+4. Run the app in hot reload debug mode, launcht the provided vscode script or run:
 
 ```
-python -m app;
+python -m app
 ```
 
-5. The app will be deploy at **http://127.0.0.1:8000/**
+5. The app will be deploy at **http://127.0.0.1:8000/**. API docs will be at **http://127.0.0.1:8000/docs**
 
-6. You can also launch the app and tests with the VSCODE scripts included in the .vscode folder
 
 ## 🐳 Docker deployment
+
+In this section we will cover how to use Docker for local development or for production deployment. All the necessary tools for development such as a mongoDB database is provided with the dev enviroment script described below.
 
 1. Go to docker folder
 ```

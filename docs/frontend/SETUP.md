@@ -1,4 +1,4 @@
-# 1. Setup and run FRONTEND
+# Setup and run FRONTEND
 
 In this section we will cover:
 

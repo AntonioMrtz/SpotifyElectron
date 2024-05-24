@@ -8,6 +8,7 @@ Me gustaría expresar mi más sincero agradecimiento a las siguientes personas p
 
 - [Ercamarero](https://github.com/Ercamarero)
 - [Ferbo12](https://github.com/contributor1)
+- [KarlosM2](https://github.com/KarlosM2)
 - [Javiks-P](https://github.com/Javiks-P)
 - [mariete1223](https://github.com/mariete1223)
 - [raulZC ](https://github.com/raulZC)
@@ -45,5 +46,5 @@ We're currently looking for contributions for the following:
   * Improve the project
 * Docs Writing
 
-For more information, please refer to our [CONTRIBUTING guide](https://github.com/AntonioMrtz/SpotifyElectron/blob/master/.github/CONTRIBUTING.md).
+For more information, please refer to our [CONTRIBUTING guide](CONTRIBUTING.md).
 

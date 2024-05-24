@@ -11,9 +11,15 @@ nav:
     - Enviroment: backend/Enviroment.md
     - File Structure: backend/File-Structure.md
     - Architecture: backend/Architecture.md
+    - Cloud: backend/Cloud.md
     - Docker: backend/Docker.md
+    - CI/CD: backend/CI-CD.md
+    - Testing: backend/Testing.md
+    - Authentication & Login: backend/Auth-Login.md
   - Frontend:
     - Set up: frontend/SETUP.md
+    - File Structure: frontend/File-Structure.md
+    - Testing: frontend/Testing.md
     - Package app: frontend/Package-app.md
   - How to contribute: CONTRIBUTING.md
   - Git convention: Git-Convention.md

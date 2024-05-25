@@ -22,6 +22,7 @@ nav:
     - File Structure: frontend/File-Structure.md
     - Testing: frontend/Testing.md
     - Package app: frontend/Package-app.md
+    - FAQ: frontend/FAQ.md
   - How to contribute: CONTRIBUTING.md
   - Git convention: Git-Convention.md
   - Contributors: CONTRIBUTORS.md

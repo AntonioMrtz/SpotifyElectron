@@ -16,6 +16,7 @@ nav:
     - CI/CD: backend/CI-CD.md
     - Testing: backend/Testing.md
     - Authentication & Login: backend/Auth-Login.md
+    - FAQ: backend/FAQ.md
   - Frontend:
     - Set up: frontend/SETUP.md
     - File Structure: frontend/File-Structure.md

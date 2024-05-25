@@ -10,16 +10,16 @@ In this section we will cover:
 
 ## 🛠 Set up the proyect
 
-1. Enter backend directory
+### 1. Enter backend directory
 
 ```
 cd Backend
 ```
 
-2. Rename `.env.local` to `.env` for development or create the enviroment file in root path with the following data. More on enviroments [here](Enviroment.md). A development-ready `.env` file is also provided in the document.
+### 2. Rename `.env.local` to `.env` for development or create the enviroment file in root path with the following data. More on enviroments [here](Enviroment.md). A development-ready `.env` file is also provided in the document.
 
 
-3. Install the virtual enviroment and dependencies
+### 3. Install the virtual enviroment and dependencies
 
 ```
 python -m venv venv;
@@ -29,18 +29,18 @@ pip install -r requirements-dev.txt;
 pip install -r requirements-test.txt;
 
 ```
-4. Run the app in hot reload debug mode, launcht the provided vscode script or run:
+### 4. Run the app in hot reload debug mode, launcht the provided vscode script or run:
 
 ```
 python -m app
 ```
 
-5. The app will be deploy at **http://127.0.0.1:8000/**. API docs will be at **http://127.0.0.1:8000/docs**
+### 5. The app will be deploy at **[http://127.0.0.1:8000/](http://127.0.0.1:8000/)**. API docs will be at **[http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)**
 
 
 ## 🐳 Docker deployment
 
-In this section we will cover how to use Docker for local development or for production deployment. All the necessary tools for development such as a mongoDB database is provided with the dev enviroment script described below. For morre info check the [extendend docker documentation](Docker.md).
+In this section we will cover how to use Docker for local development or for production deployment. All the necessary tools for development such as a mongoDB database is provided with the dev enviroment script described below. For more info check the [extended docker documentation](Docker.md).
 
 1. Go to docker folder
 ```
@@ -53,8 +53,8 @@ For development it is recommended to deploy the dev enviroment containers that p
 
 * Local MongoDB Database
 * Mongo Express administration dashboard
-    * Connect http://localhost:8081/
-    * Use user : admin and password : pass
+  * Connect [http://localhost:8081/](http://localhost:8081/)
+  * Use user : admin and password : pass
 * Backend Server ( stop this container if backend server is running locally already )
 
 Run this command to build and up the development containers
@@ -73,7 +73,7 @@ In production it is recommended to connect to a remote database, the prod enviro
 
 ## 📓 Access API Swagger documentation
 
-* Swagger: **http://127.0.0.1:8000/docs**
+* Swagger: **[http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)**
 
 
 ## ⚓ Pre-commit

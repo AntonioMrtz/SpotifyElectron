@@ -89,7 +89,7 @@ cd docker/
 
 * Uses local mongoDB database
 * Access it via MongoExpress
-  * Connect http://localhost:8081/
+  * Connect [http://localhost:8081/](http://localhost:8081/)
   * Use user : admin and password : pass
 
 

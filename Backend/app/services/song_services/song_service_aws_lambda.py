@@ -7,8 +7,6 @@ import requests
 from fastapi import HTTPException
 from pymongo.errors import PyMongoError
 
-import app.services.artist_service as artist_service
-import app.services.dto_service as dto_service
 from app.boostrap.PropertiesManager import PropertiesManager
 from app.constants.set_up_constants import LAMBDA_URL_ENV_NAME
 from app.database.Database import Database
@@ -16,6 +14,7 @@ from app.model.DTO.SongDTO import SongDTO
 from app.model.Genre import Genre
 from app.model.Song import Song
 from app.model.TokenData import TokenData
+from app.services import artist_service, dto_service
 from app.services.utils import checkValidParameterString
 
 """ Insert songs with format [files,chunks] https://www.mongodb.com/docs/manual/core/gridfs/"""

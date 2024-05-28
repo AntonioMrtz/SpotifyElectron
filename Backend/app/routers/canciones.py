@@ -5,9 +5,8 @@ from fastapi import APIRouter, Header, HTTPException, UploadFile
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import Response
 
-import app.services.dto_service as dto_service
-import app.services.security_service as security_service
 from app.model.Genre import Genre
+from app.services import dto_service, security_service
 from app.services.song_services.song_service_provider import get_song_service
 
 router = APIRouter(

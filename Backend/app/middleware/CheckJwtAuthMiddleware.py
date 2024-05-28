@@ -2,9 +2,9 @@ from fastapi import Request, Response
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.status import HTTP_401_UNAUTHORIZED
 
-import app.services.security_service as security_service
 from app.logging.logger_constants import LOGGIN_CHECK_AUTH_JWT_MIDDLEWARE
 from app.logging.logging_schema import SpotifyElectronLogger
+from app.services import security_service
 
 check_jwt_auth_middleware_logger = SpotifyElectronLogger(
     LOGGIN_CHECK_AUTH_JWT_MIDDLEWARE
@@ -21,6 +21,7 @@ class CheckJwtAuthMiddleware(BaseHTTPMiddleware):
             "/docs",
             "/docs/",
             "/openapi.json",
+            "/health/",
         ],
         "POST": [
             "/usuarios/",

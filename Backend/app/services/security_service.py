@@ -6,15 +6,13 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 
-import app.services.all_users_service as all_users_service
-import app.services.artist_service as artist_service
-import app.services.user_service as user_service
 from app.boostrap.PropertiesManager import PropertiesManager
 from app.constants.set_up_constants import DISTRIBUTION_ID_ENV_NAME
 from app.model.Artist import Artist
 from app.model.TokenData import TokenData
 from app.model.User import User
 from app.model.UserType import User_Type
+from app.services import all_users_service, artist_service, user_service
 from app.services.utils import checkValidParameterString
 
 ALGORITHM = "HS256"

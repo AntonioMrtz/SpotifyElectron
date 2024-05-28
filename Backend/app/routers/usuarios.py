@@ -3,9 +3,7 @@ from typing import Annotated
 from fastapi import APIRouter, Body, Header, HTTPException
 from fastapi.responses import Response
 
-import app.services.all_users_service as all_users_service
-import app.services.security_service as security_service
-import app.services.user_service as user_service
+from app.services import all_users_service, security_service, user_service
 
 router = APIRouter(
     prefix="/usuarios",

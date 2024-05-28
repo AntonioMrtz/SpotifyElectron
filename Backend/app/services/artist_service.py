@@ -3,10 +3,10 @@ from sys import modules
 
 from fastapi import HTTPException
 
-import app.services.security_service as security_service
 from app.database.Database import Database
 from app.model.Artist import Artist
 from app.model.TokenData import TokenData
+from app.services import security_service
 from app.services.song_services.song_service_provider import get_song_service
 from app.services.utils import checkValidParameterString
 

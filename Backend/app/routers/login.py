@@ -1,12 +1,12 @@
 import json
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from typing import Annotated
 
 from fastapi import APIRouter, Depends
 from fastapi.responses import Response
 from fastapi.security import OAuth2PasswordRequestForm
 
-import app.services.security_service as security_service
+from app.services import security_service
 
 router = APIRouter(
     prefix="/login",
@@ -43,10 +43,8 @@ def login_usuario(
 
     access_token_json = json.dumps(jwt)
 
-    utc_timezone = timezone.utc
-
     # Get the current UTC datetime
-    current_utc_datetime = datetime.utcnow().replace(tzinfo=utc_timezone)
+    current_utc_datetime = datetime.now(UTC)
 
     # Calculate expiration date (current UTC datetime + 10 days)
     expiration_date = current_utc_datetime + timedelta(days=DAYS_TO_EXPIRE_COOKIE)

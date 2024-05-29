@@ -5,7 +5,8 @@ from fastapi import APIRouter, Body, Header, HTTPException
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import Response
 
-from app.services import artist_service, security_service
+import app.services.artist_service as artist_service
+import app.services.security_service as security_service
 
 router = APIRouter(
     prefix="/artistas",

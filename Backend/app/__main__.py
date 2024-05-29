@@ -16,16 +16,7 @@ from app.middleware.cors_middleware_config import (
     allowed_origins,
     max_age,
 )
-from app.routers import (
-    artistas,
-    canciones,
-    generos,
-    health,
-    login,
-    playlists,
-    search,
-    usuarios,
-)
+from app.routers import artistas, canciones, generos, health, login, playlists, search, usuarios
 
 main_logger = SpotifyElectronLogger(LOGGING_MAIN).getLogger()
 
@@ -49,7 +40,6 @@ async def lifespan_handler(app: FastAPI):
     app.include_router(login.router)
     app.include_router(search.router)
     app.include_router(health.router)
-
     yield
     main_logger.info("Spotify Electron Backend Stopped")
 

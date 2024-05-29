@@ -1,5 +1,6 @@
 from fastapi.testclient import TestClient
 from pytest import fixture
+from starlette.status import HTTP_200_OK
 
 from app.__main__ import app
 
@@ -13,5 +14,5 @@ def set_up(trigger_app_start):
 
 def test_health_check():
     response = client.get("/health/")
-    assert response.status_code == 200
+    assert response.status_code == HTTP_200_OK
     assert response.text == "OK"

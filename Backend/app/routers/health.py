@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 from fastapi.responses import Response
+from starlette.status import HTTP_200_OK
 
 router = APIRouter(prefix="/health", tags=["health"])
 
@@ -13,4 +14,4 @@ def get_health():
         Response 200 OK
 
     """
-    return Response(status_code=200, content="OK", media_type="text/plain")
+    return Response(status_code=HTTP_200_OK, content="OK", media_type="text/plain")

@@ -5,7 +5,8 @@ from pytest import fixture
 from test_API.api_test_user import create_user, delete_user, get_user, update_user
 from test_API.api_token import get_user_jwt_header
 
-from app.services import security_service, user_service
+import app.services.security_service as security_service
+import app.services.user_service as user_service
 
 
 @fixture(scope="module", autouse=True)

@@ -16,6 +16,8 @@ extend-select = [
     "PLR"
 ]
 
+ignore = ["PLR0402"]
+
 [format]
 # Like Black, use double quotes for strings.
 quote-style = "double"

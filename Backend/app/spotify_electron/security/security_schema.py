@@ -1,13 +1,13 @@
 import json
 from dataclasses import dataclass
 
-from app.exceptions.exceptions_schema import SpotifyElectronException
-from app.spotify_electron.user.user_schema import UserType
+from app.exceptions.base_exceptions_schema import SpotifyElectronException
+from app.spotify_electron.user.user.user_schema import UserException, UserType
 
 
 @dataclass
 class TokenData:
-    """A class that contains Auth token info"""
+    """Class that contains Auth token info"""
 
     username: str
     role: UserType
@@ -114,3 +114,10 @@ class UnexpectedLoginUserException(SpotifyElectronException):
 
     def __init__(self):
         super().__init__(self.ERROR)
+
+
+class UserUnauthorizedException(UserException):
+    """Exception raised when user is unauthorized to access the resource"""
+
+    def __init__(self):
+        super().__init__("User is unauthorized to access the resource")

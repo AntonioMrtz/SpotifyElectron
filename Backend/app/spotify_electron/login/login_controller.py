@@ -12,7 +12,7 @@ from starlette.status import (
 )
 
 import app.spotify_electron.security.security_service as security_service
-import app.spotify_electron.utils.json_converter.json_converter_service as json_converter_service
+import app.spotify_electron.utils.json_converter.json_converter_utils as json_converter_utils
 from app.common.PropertiesMessagesManager import PropertiesMessagesManager
 from app.spotify_electron.login.login_schema import InvalidCredentialsLoginException
 from app.spotify_electron.security.security_schema import (
@@ -20,7 +20,10 @@ from app.spotify_electron.security.security_schema import (
     UnexpectedLoginUserException,
     VerifyPasswordException,
 )
-from app.spotify_electron.user.user_schema import UserNotFoundException
+from app.spotify_electron.user.user.user_schema import (
+    UserNotFoundException,
+    UserServiceException,
+)
 
 router = APIRouter(
     prefix="/login",
@@ -42,7 +45,7 @@ def login_usuario(
     try:
         jwt = security_service.login_user(form_data.username, form_data.password)
 
-        access_token_json = json_converter_service.get_json_from_model(jwt)
+        access_token_json = json_converter_utils.get_json_from_model(jwt)
         expiration_date = security_service.get_token_expire_date()
 
     except InvalidCredentialsLoginException:
@@ -60,7 +63,7 @@ def login_usuario(
             status_code=HTTP_404_NOT_FOUND,
             content=PropertiesMessagesManager.userNotFound,
         )
-    except (UnexpectedLoginUserException, Exception):
+    except (UnexpectedLoginUserException, UserServiceException, Exception):
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonInternalServerError,

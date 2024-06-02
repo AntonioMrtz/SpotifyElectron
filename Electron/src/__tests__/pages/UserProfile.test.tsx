@@ -196,7 +196,7 @@ test('UserProfile User load Playback history and his Playlists', async () => {
         console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}canciones/dto/${songName}`) {
+    if (url === `${Global.backendBaseUrl}songs/metadata/${songName}`) {
       return Promise.resolve({
         json: () => songMockFetch,
         status: 200,
@@ -304,7 +304,7 @@ test('UserProfile Artist load Songs and Playcount', async () => {
         console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}canciones/dto/${songName}`) {
+    if (url === `${Global.backendBaseUrl}songs/metadata/${songName}`) {
       return Promise.resolve({
         json: () => songMockFetch,
         status: 200,

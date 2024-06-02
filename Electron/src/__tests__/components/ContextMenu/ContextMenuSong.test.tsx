@@ -60,7 +60,7 @@ global.fetch = jest.fn((url: string, options: any) => {
       console.log(error);
     });
   }
-  if (url === `${Global.backendBaseUrl}playlists/multiple/${playlistName}`) {
+  if (url === `${Global.backendBaseUrl}playlists/selected/${playlistName}`) {
     return Promise.resolve({
       json: () =>
         Promise.resolve({

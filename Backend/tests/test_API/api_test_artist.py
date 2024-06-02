@@ -15,7 +15,7 @@ def create_artist(name: str, photo: str, password: str):
     return client.post(url)
 
 
-def update_artist(
+def update_artist(  # noqa: PLR0913
     name: str,
     photo: str,
     playlists: list[str],
@@ -38,13 +38,9 @@ def update_artist(
     return client.put(url, json=payload, headers={**file_type_header, **headers})
 
 
-def delete_artist(name: str):
-    return client.delete(f"/artists/{name}")
-
-
 def get_artists(headers: dict):
     return client.get("/artists/", headers=headers)
 
 
-def get_play_count_artist(name: str, headers: dict):
+def get_playback_count_artist(name: str, headers: dict):
     return client.get(f"/artists/{name}/playbacks", headers=headers)

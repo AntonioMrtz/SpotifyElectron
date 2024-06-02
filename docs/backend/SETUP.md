@@ -21,8 +21,8 @@ cd Backend;
 ```
 * MONGO_URI= uri for connecting into a MongoDB database ( mongodb://root:root@localhost:27017/ )
 * SECRET_KEY_SIGN= 32 byte key for signing tokens in backend
-* LAMBDA_URL= URL of Lambda API for accesing AWS services and managing song ( only needed in STREAMING_LAMBDA architecture )
-* ARCH= song architecture ( STREAMING_LAMBDA | DB_BLOB | STREAMING_SDK )
+* SERVERLESS_FUNCTION_URL= URL of Serverless/Lambda API for accesing AWS services and managing song ( only needed in STREAMING_SERVERLESS_FUNCTION architecture )
+* ARCH= song architecture ( STREAMING_SERVERLESS_FUNCTION | DB_BLOB )
 * ENV_VALUE= prod or development ( PROD | DEV )
 
 ```

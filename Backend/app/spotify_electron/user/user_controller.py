@@ -1,14 +1,40 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Body, Header
+from fastapi import APIRouter, Header
 from fastapi.responses import Response
-from starlette.status import HTTP_401_UNAUTHORIZED
+from starlette.status import (
+    HTTP_200_OK,
+    HTTP_202_ACCEPTED,
+    HTTP_400_BAD_REQUEST,
+    HTTP_401_UNAUTHORIZED,
+    HTTP_404_NOT_FOUND,
+    HTTP_500_INTERNAL_SERVER_ERROR,
+)
 
 import app.spotify_electron.security.security_service as security_service
-import app.spotify_electron.user.all_users_service as all_users_service
-import app.spotify_electron.user.user_service as user_service
-import app.spotify_electron.utils.json_converter.json_converter_service as json_converter_service
-from app.spotify_electron.security.security_schema import BadJWTTokenProvidedException
+import app.spotify_electron.user.base_user_service as base_user_service
+import app.spotify_electron.user.user.user_service as user_service
+import app.spotify_electron.utils.json_converter.json_converter_utils as json_converter_utils
+from app.common.PropertiesMessagesManager import PropertiesMessagesManager
+from app.exceptions.base_exceptions_schema import JsonEncodeException
+from app.spotify_electron.playlist.playlist_schema import (
+    PlaylistBadNameException,
+    PlaylistNotFoundException,
+)
+from app.spotify_electron.security.security_schema import (
+    BadJWTTokenProvidedException,
+    UserUnauthorizedException,
+)
+from app.spotify_electron.song.base_song_schema import (
+    SongBadNameException,
+    SongNotFoundException,
+)
+from app.spotify_electron.user.user.user_schema import (
+    UserAlreadyExistsException,
+    UserBadNameException,
+    UserNotFoundException,
+    UserServiceException,
+)
 
 router = APIRouter(
     prefix="/users",
@@ -18,164 +44,126 @@ router = APIRouter(
 
 @router.get("/whoami")
 def get_whoAmI(authorization: Annotated[str | None, Header()] = None) -> Response:
-    """Devuelve la información del token jwt del usuario
+    """Returns token info from JWT
 
-    Parameters
-    ----------
-
-    Returns
-    -------
-        Response 200 OK | TokenData as Json
-
-    Raises
-    ------
-        Bad Request 400: "nombre" es vacío o nulo
-        Unauthorized 401
-        Not Found 404: No existe un usuario con el nombre "nombre"
-
+    Args:
+        authorization (Annotated[str  |  None, Header, optional): the jwt token. Defaults to None.
     """
     try:
         jwt_token = security_service.get_jwt_token_data(authorization)
-        jwt_token_json = json_converter_service.get_json_from_model(jwt_token)
+        jwt_token_json = json_converter_utils.get_json_from_model(jwt_token)
 
         return Response(jwt_token_json, media_type="application/json", status_code=200)
     except BadJWTTokenProvidedException:
         return Response(
             status_code=HTTP_401_UNAUTHORIZED,
-            content="Could not validate credentials",
+            content=PropertiesMessagesManager.tokenInvalidCredentials,
             headers={"WWW-Authenticate": "Bearer"},
         )
 
 
 @router.get("/{name}")
 def get_user(name: str) -> Response:
-    """Devuelve el usuario con nombre "nombre"
+    """Get user by name
 
-    Parameters
-    ----------
-        nombre (str): Nombre del usuario
-
-    Returns
-    -------
-        Response 200 OK
-
-    Raises
-    ------
-        Bad Request 400: "nombre" es vacío o nulo
-        Not Found 404: No existe un usuario con el nombre "nombre"
-
+    Args:
+        name (str): user name
     """
-    usuario = all_users_service.get_user(name)
-    usuario_json = json_converter_service.get_json_from_model(usuario)
+    try:
+        user = base_user_service.get_user(name)
+        user_json = json_converter_utils.get_json_from_model(user)
 
-    return Response(usuario_json, media_type="application/json", status_code=200)
+        return Response(
+            user_json, media_type="application/json", status_code=HTTP_200_OK
+        )
+
+    except UserBadNameException:
+        return Response(
+            status_code=HTTP_400_BAD_REQUEST,
+            content=PropertiesMessagesManager.userBadName,
+        )
+    except UserNotFoundException:
+        return Response(
+            status_code=HTTP_404_NOT_FOUND,
+            content=PropertiesMessagesManager.userNotFound,
+        )
+    except JsonEncodeException:
+        return Response(
+            status_code=HTTP_500_INTERNAL_SERVER_ERROR,
+            content=PropertiesMessagesManager.commonEncodingError,
+        )
+    except (Exception, UserServiceException):
+        return Response(
+            status_code=HTTP_500_INTERNAL_SERVER_ERROR,
+            content=PropertiesMessagesManager.commonInternalServerError,
+        )
 
 
-@router.get("/{nombre}/playlists")
+@router.get("/{name}/playlists")
 def get_playlists_by_user(name: str) -> Response:
     # TODO get playlists by user
     # TODO hacer test
 
     user = user_service.get_user(name)
-    user_json = json_converter_service.get_json_from_model(user)
+    user_json = json_converter_utils.get_json_from_model(user)
 
     return Response(user_json, media_type="application/json", status_code=200)
 
 
 @router.post("/")
-def post_user(name: str, photo: str, password: str) -> Response:
-    """Registra el usuario
+def create_user(name: str, photo: str, password: str) -> Response:
+    """Create user
 
-    Parameters
-    ----------
-        nombre (str): Nombre del usuario
-        foto (url): Foto de perfil del usuario
-        password (str) : Contraseña del usuario
-
-    Returns
-    -------
-        Response 201 Created
-
-    Raises
-    ------
-        Bad Request 400: Parámetros introducidos no són válidos o vacíos
-
-    """
-    user_service.create_user(name, photo, password)
-    return Response(None, 201)
-
-
-@router.put("/{name}")
-def update_user(
-    name: str,
-    photo: str,
-    playback_history: list[str] = Body(...),
-    playlists: list[str] = Body(...),
-    saved_playlists: list[str] = Body(...),
-    authorization: Annotated[str | None, Header()] = None,
-) -> Response:
-    """Actualiza los parámetros del usuario con nombre "nombre"
-
-    Parameters
-    ----------
-        nombre (str): Nombre del usuario
-        foto (str) : url de la foto miniatura del usuario
-        historial_canciones (list) : 5 últimas canciones reproducidas por el usuario
-        playlists (list) : playlists creadas por el usuario
-        playlists_guardadas (list) : playlists de otros usuarios guardadas por el
-                                     usuario con nombre "nombre"
-
-    Returns
-    -------
-        Response 204 No content
-
-    Raises
-    ------
-        Bad Request 400: Parámetros introducidos no són válidos o vacíos
-        Unauthorized 401
-        Not Found 404: No existe un usuario con el nombre "nombre"
-
+    Args:
+        name (str): user name
+        photo (str): user photo
+        password (str): user password
     """
     try:
-        jwt_token = security_service.get_jwt_token_data(authorization)
-
-        user_service.update_user(
-            name=name,
-            photo=photo,
-            playback_history=playback_history,
-            playlists=playlists,
-            saved_playlists=saved_playlists,
-            token=jwt_token,
-        )
-        return Response(None, 204)
-    except BadJWTTokenProvidedException:
+        user_service.create_user(name, photo, password)
+        return Response(None, 201)
+    except (UserBadNameException, UserAlreadyExistsException):
         return Response(
-            status_code=HTTP_401_UNAUTHORIZED,
-            content="Could not validate credentials",
-            headers={"WWW-Authenticate": "Bearer"},
+            status_code=HTTP_400_BAD_REQUEST,
+            content=PropertiesMessagesManager.userBadName,
+        )
+    except UserNotFoundException:
+        return Response(
+            status_code=HTTP_404_NOT_FOUND,
+            content=PropertiesMessagesManager.userNotFound,
+        )
+    except (Exception, UserServiceException):
+        return Response(
+            status_code=HTTP_500_INTERNAL_SERVER_ERROR,
+            content=PropertiesMessagesManager.commonInternalServerError,
         )
 
 
 @router.delete("/{name}")
 def delete_user(name: str) -> Response:
-    """Elimina un usuario con nombre "nombre"
+    """Delete user
 
-    Parameters
-    ----------
-        nombre (str): Nombre del usuario
-
-    Returns
-    -------
-        Response 202 Accepted
-
-    Raises
-    ------
-        Bad Request 400: Parámetros introducidos no són válidos o vacíos
-        Not Found 404: No existe un usuario con el nombre "nombre"
-
+    Args:
+        name (str): user name
     """
-    user_service.delete_user(name)
-    return Response(None, 202)
+    try:
+        base_user_service.delete_user(name)
+        return Response(status_code=HTTP_202_ACCEPTED)
+    except UserBadNameException:
+        return Response(
+            status_code=HTTP_400_BAD_REQUEST,
+            content=PropertiesMessagesManager.userBadName,
+        )
+    except UserNotFoundException:
+        return Response(
+            status_code=HTTP_404_NOT_FOUND,
+            content=PropertiesMessagesManager.userNotFound,
+        )
+    except (Exception, UserServiceException):
+        return Response(
+            status_code=HTTP_500_INTERNAL_SERVER_ERROR,
+            content=PropertiesMessagesManager.commonInternalServerError,
+        )
 
 
 @router.patch("/{name}/playback_history")
@@ -184,39 +172,58 @@ def patch_playback_history(
     song_name: str,
     authorization: Annotated[str | None, Header()] = None,
 ) -> Response:
-    """Actualiza el historial de canciones del usuario
+    """Add song to playback history
 
-    Parameters
-    ----------
-        nombre (str): Nombre del usuario
-        song_name (str): Nombre de la canción
+    Args:
+        name (str): user name
+        song_name (str): song name
+        authorization (Annotated[str  |  None, Header, optional): jwt token auth. Defaults to None.
 
-
-    Returns
-    -------
-        Response 204
-
-    Raises
-    ------
-        Bad Request 400: Parámetros introducidos no són válidos o vacíos
-        Unauthorized 401
-        Not Found 404: No existe un usuario con el nombre "nombre" |
-                       No existe una canción con el nombre "nombre_cancion"
-
+    Returns:
+        Response: _description_
     """
     try:
         jwt_token = security_service.get_jwt_token_data(authorization)
 
-        all_users_service.add_playback_history(
-            user_name=name, song=song_name, token=jwt_token
+        base_user_service.add_playback_history(
+            user_name=name, song_name=song_name, token=jwt_token
         )
-
         return Response(None, 204)
+    except UserBadNameException:
+        return Response(
+            status_code=HTTP_400_BAD_REQUEST,
+            content=PropertiesMessagesManager.userBadName,
+        )
+    except SongBadNameException:
+        return Response(
+            status_code=HTTP_400_BAD_REQUEST,
+            content=PropertiesMessagesManager.songBadName,
+        )
     except BadJWTTokenProvidedException:
         return Response(
             status_code=HTTP_401_UNAUTHORIZED,
-            content="Could not validate credentials",
+            content=PropertiesMessagesManager.tokenInvalidCredentials,
             headers={"WWW-Authenticate": "Bearer"},
+        )
+    except UserUnauthorizedException:
+        return Response(
+            status_code=HTTP_401_UNAUTHORIZED,
+            content=PropertiesMessagesManager.userUnauthorized,
+        )
+    except UserNotFoundException:
+        return Response(
+            status_code=HTTP_404_NOT_FOUND,
+            content=PropertiesMessagesManager.userNotFound,
+        )
+    except SongNotFoundException:
+        return Response(
+            status_code=HTTP_404_NOT_FOUND,
+            content=PropertiesMessagesManager.songNotFound,
+        )
+    except (Exception, UserServiceException):
+        return Response(
+            status_code=HTTP_500_INTERNAL_SERVER_ERROR,
+            content=PropertiesMessagesManager.commonInternalServerError,
         )
 
 
@@ -226,35 +233,51 @@ def patch_saved_playlists(
     playlist_name: str,
     authorization: Annotated[str | None, Header()] = None,
 ) -> Response:
-    """Actualiza las listas guardadas del usuario
+    """Add playlist to saved list
 
-    Parameters
-    ----------
-        nombre (str): Nombre del usuario
-        nombre_playlist (str): Nombre de la playlist
+    Args:
+        name (str): user name
+        playlist_name (str): saved playlist
+        authorization (Annotated[str  |  None, Header, optional): jwt token auth. Defaults to None.
 
-    Returns
-    -------
-        Response 204
-
-    Raises
-    ------
-        Bad Request 400: Parámetros introducidos no són válidos o vacíos
-        Unauthorized 401
-        Not Found 404: No existe un usuario con el nombre "nombre" |
-                       No existe una playlist con el nombre "nombre_playlist"
-
+    Returns:
+        Response: _description_
     """
     try:
         jwt_token = security_service.get_jwt_token_data(authorization)
 
-        all_users_service.add_saved_playlist(name, playlist_name, token=jwt_token)
+        base_user_service.add_saved_playlist(name, playlist_name, token=jwt_token)
         return Response(None, 204)
+    except UserBadNameException:
+        return Response(
+            status_code=HTTP_400_BAD_REQUEST,
+            content=PropertiesMessagesManager.userBadName,
+        )
+    except UserUnauthorizedException:
+        return Response(
+            status_code=HTTP_401_UNAUTHORIZED,
+            content=PropertiesMessagesManager.userUnauthorized,
+        )
+    except PlaylistNotFoundException:
+        return Response(
+            status_code=HTTP_404_NOT_FOUND,
+            content=PropertiesMessagesManager.playlistNotFound,
+        )
+    except UserNotFoundException:
+        return Response(
+            status_code=HTTP_404_NOT_FOUND,
+            content=PropertiesMessagesManager.userNotFound,
+        )
     except BadJWTTokenProvidedException:
         return Response(
             status_code=HTTP_401_UNAUTHORIZED,
-            content="Could not validate credentials",
+            content=PropertiesMessagesManager.tokenInvalidCredentials,
             headers={"WWW-Authenticate": "Bearer"},
+        )
+    except (Exception, UserServiceException):
+        return Response(
+            status_code=HTTP_500_INTERNAL_SERVER_ERROR,
+            content=PropertiesMessagesManager.commonInternalServerError,
         )
 
 
@@ -264,33 +287,54 @@ def delete_saved_playlists(
     playlist_name: str,
     authorization: Annotated[str | None, Header()] = None,
 ) -> Response:
-    """Elimina la playlist de las playlist guardadas del usuario
+    """Delete playlist from saved list of user
 
-    Parameters
-    ----------
-        nombre (str): Nombre del usuario
-        nombre_playlist (str): Nombre de la playlist
+    Args:
+        name (str): user name
+        playlist_name (str): playlist name
+        authorization (Annotated[str  |  None, Header, optional): jwt token auth. Defaults to None.
 
-    Returns
-    -------
-        Response 202
-
-    Raises
-    ------
-        Bad Request 400: Parámetros introducidos no són válidos o vacíos
-        Unauthorized 401
-        Not Found 404: No existe un usuario con el nombre "nombre" |
-                       No existe una playlist con el nombre "nombre_playlist"
-
+    Returns:
+        Response: _description_
     """
     try:
         jwt_token = security_service.get_jwt_token_data(authorization)
 
-        all_users_service.delete_saved_playlist(name, playlist_name, token=jwt_token)
+        base_user_service.delete_saved_playlist(name, playlist_name, token=jwt_token)
         return Response(None, 202)
+    except UserBadNameException:
+        return Response(
+            status_code=HTTP_400_BAD_REQUEST,
+            content=PropertiesMessagesManager.userBadName,
+        )
+    except PlaylistBadNameException:
+        return Response(
+            status_code=HTTP_400_BAD_REQUEST,
+            content=PropertiesMessagesManager.playlistBadName,
+        )
+    except UserUnauthorizedException:
+        return Response(
+            status_code=HTTP_401_UNAUTHORIZED,
+            content=PropertiesMessagesManager.userUnauthorized,
+        )
+    except PlaylistNotFoundException:
+        return Response(
+            status_code=HTTP_404_NOT_FOUND,
+            content=PropertiesMessagesManager.playlistNotFound,
+        )
+    except UserNotFoundException:
+        return Response(
+            status_code=HTTP_404_NOT_FOUND,
+            content=PropertiesMessagesManager.userNotFound,
+        )
     except BadJWTTokenProvidedException:
         return Response(
             status_code=HTTP_401_UNAUTHORIZED,
-            content="Could not validate credentials",
+            content=PropertiesMessagesManager.tokenInvalidCredentials,
             headers={"WWW-Authenticate": "Bearer"},
+        )
+    except (Exception, UserServiceException):
+        return Response(
+            status_code=HTTP_500_INTERNAL_SERVER_ERROR,
+            content=PropertiesMessagesManager.commonInternalServerError,
         )

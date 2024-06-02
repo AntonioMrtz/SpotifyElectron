@@ -1,4 +1,4 @@
-from app.exceptions.exceptions_schema import SpotifyElectronException
+from app.exceptions.base_exceptions_schema import SpotifyElectronException
 
 
 class InvalidCredentialsLoginException(SpotifyElectronException):

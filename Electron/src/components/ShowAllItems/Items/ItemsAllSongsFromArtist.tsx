@@ -30,7 +30,7 @@ export default function ItemsAllSongsFromArtist({
       resFetchGetArtistJson.uploaded_songs.forEach((songName: string) => {
         songPromises.push(
           new Promise((resolve) => {
-            fetch(`${Global.backendBaseUrl}canciones/dto/${songName}`)
+            fetch(`${Global.backendBaseUrl}songs/metadata/${songName}`)
               .then((resFetchSongDTO) => {
                 return resFetchSongDTO.json();
               })

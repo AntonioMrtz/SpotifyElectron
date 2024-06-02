@@ -74,7 +74,7 @@ export default function UserProfile({
     resGetUserJson.playback_history.forEach((songName: string) => {
       songPromises.push(
         new Promise((resolve) => {
-          fetch(`${Global.backendBaseUrl}canciones/dto/${songName}`)
+          fetch(`${Global.backendBaseUrl}songs/metadata/${songName}`)
             .then((resFetchSongDTO) => {
               return resFetchSongDTO.json();
             })
@@ -113,7 +113,7 @@ export default function UserProfile({
     resGetUserJson.uploaded_songs.forEach((songName: string) => {
       songPromises.push(
         new Promise((resolve) => {
-          fetch(`${Global.backendBaseUrl}canciones/dto/${songName}`)
+          fetch(`${Global.backendBaseUrl}songs/metadata/${songName}`)
             .then((resFetchSongDTO) => {
               return resFetchSongDTO.json();
             })

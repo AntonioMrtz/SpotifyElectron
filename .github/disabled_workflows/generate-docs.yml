@@ -33,7 +33,7 @@ jobs:
           MONGO_URI : ${{ secrets.MONGO_URI }}
           SECRET_KEY_SIGN : ${{ secrets.SECRET_KEY_SIGN }}
           DISTRIBUTION_ID : ${{ secrets.DISTRIBUTION_ID }}
-          LAMBDA_URL : ${{ secrets.LAMBDA_URL }}
+          SERVERLESS_FUNCTION_URL : ${{ secrets.SERVERLESS_FUNCTION_URL }}
           ARCH : ${{ secrets.ARCH }}
           ENV_VALUE : ${{ secrets.ENV_VALUE }}
 

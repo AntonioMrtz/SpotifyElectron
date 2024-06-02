@@ -9,7 +9,7 @@ from starlette.status import (
     HTTP_404_NOT_FOUND,
     HTTP_405_METHOD_NOT_ALLOWED,
 )
-from test_API.api_test_artist import create_artist, delete_artist
+from test_API.api_test_artist import create_artist
 from test_API.api_test_playlist import (
     create_playlist,
     delete_playlist,
@@ -69,7 +69,7 @@ def test_get_playlist_correct():
     res_delete_playlist = delete_playlist(name=name)
     assert res_delete_playlist.status_code == HTTP_202_ACCEPTED
 
-    res_delete_artist = delete_artist(owner)
+    res_delete_artist = delete_user(owner)
     assert res_delete_artist.status_code == HTTP_202_ACCEPTED
 
 
@@ -88,7 +88,7 @@ def test_get_playlist_not_found():
     res_get_playlist = get_playlist(name=name, headers=jwt_headers)
     assert res_get_playlist.status_code == HTTP_404_NOT_FOUND
 
-    res_create_artist = delete_artist(owner)
+    res_create_artist = delete_user(owner)
     assert res_create_artist.status_code == HTTP_202_ACCEPTED
 
 
@@ -112,7 +112,7 @@ def test_post_playlist_correct():
     res_delete_playlist = delete_playlist(name=name)
     assert res_delete_playlist.status_code == HTTP_202_ACCEPTED
 
-    res_delete_artist = delete_artist(owner)
+    res_delete_artist = delete_user(owner)
     assert res_delete_artist.status_code == HTTP_202_ACCEPTED
 
 
@@ -136,7 +136,7 @@ def test_delete_playlist_correct():
     res_delete_playlist = delete_playlist(name=name)
     assert res_delete_playlist.status_code == HTTP_202_ACCEPTED
 
-    res_delete_artist = delete_artist(owner)
+    res_delete_artist = delete_user(owner)
     assert res_delete_artist.status_code == HTTP_202_ACCEPTED
 
 
@@ -185,7 +185,7 @@ def test_update_playlist_correct():
     res_delete_playlist = delete_playlist(name=name)
     assert res_delete_playlist.status_code == HTTP_202_ACCEPTED
 
-    res_delete_artist = delete_artist(owner)
+    res_delete_artist = delete_user(owner)
     assert res_delete_artist.status_code == HTTP_202_ACCEPTED
 
 
@@ -215,7 +215,7 @@ def test_update_playlist_new_name_check_cascade_update_playlists_users_and_artis
     res_patch_playlist_saved = patch_playlist_saved(
         user_name=user_name, playlist_name=name, headers=user_artist_headers
     )
-    assert res_patch_playlist_saved.status_code == 204
+    assert res_patch_playlist_saved.status_code == HTTP_204_NO_CONTENT
 
     # TODO comprobar que playlist esta en usuario y artista , cuando se termine método de
     # obtener playlist por usuario
@@ -240,7 +240,7 @@ def test_update_playlist_new_name_check_cascade_update_playlists_users_and_artis
     res_delete_playlist = delete_playlist(new_name)
     assert res_delete_playlist.status_code == HTTP_202_ACCEPTED
 
-    res_delete_artist = delete_artist(owner)
+    res_delete_artist = delete_user(owner)
     assert res_delete_artist.status_code == HTTP_202_ACCEPTED
 
     res_delete_user = delete_user(user_name)
@@ -282,7 +282,7 @@ def test_update_playlist_correct_new_name():
     res_delete_playlist = delete_playlist(new_name)
     assert res_delete_playlist.status_code == HTTP_202_ACCEPTED
 
-    res_delete_artist = delete_artist(owner)
+    res_delete_artist = delete_user(owner)
     assert res_delete_artist.status_code == HTTP_202_ACCEPTED
 
 
@@ -312,9 +312,13 @@ def test_get_playlists():
     )
     assert res_create_playlist.status_code == HTTP_201_CREATED
 
+    expected_number_created_playlists = 2
+
     res_get_playlists = get_playlists(f"{name},{new_name}", headers=jwt_headers)
     assert res_get_playlists.status_code == HTTP_200_OK
-    assert len(res_get_playlists.json()["playlists"]) == 2
+    assert (
+        len(res_get_playlists.json()["playlists"]) == expected_number_created_playlists
+    )
 
     res_delete_playlist = delete_playlist(name)
     assert res_delete_playlist.status_code == HTTP_202_ACCEPTED
@@ -322,5 +326,5 @@ def test_get_playlists():
     res_delete_playlist = delete_playlist(new_name)
     assert res_delete_playlist.status_code == HTTP_202_ACCEPTED
 
-    res_delete_artist = delete_artist(owner)
+    res_delete_artist = delete_user(owner)
     assert res_delete_artist.status_code == HTTP_202_ACCEPTED

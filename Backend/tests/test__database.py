@@ -7,8 +7,8 @@ from pytest import raises
 from app.common.set_up_constants import MONGO_URI_ENV_NAME
 from app.database.Database import (
     Database,
-    DatabaseMeta,
     DatabasePingFailed,
+    Singleton,
     UnexpectedDatabasePingFailed,
 )
 
@@ -29,11 +29,12 @@ def test_raise_exception_connection_failure(
     MongoClient.return_value = mock_db
 
     os.environ[MONGO_URI_ENV_NAME] = "mongo_uri"
-    DatabaseMeta._instances.clear()
+    Singleton._instances.clear()
     with raises(DatabasePingFailed):
         Database()._ping_database_connection()
 
     assert sys_exit_mock.call_count == 1
+    Singleton._instances.clear()
 
 
 @patch("sys.exit")
@@ -52,8 +53,9 @@ def test_raise_exception_unexpected_connection_failure(
     MongoClient.return_value = mock_db
 
     os.environ[MONGO_URI_ENV_NAME] = "mongo_uri"
-    DatabaseMeta._instances.clear()
+    Singleton._instances.clear()
     with raises(UnexpectedDatabasePingFailed):
         Database()._ping_database_connection()
 
     assert sys_exit_mock.call_count == 1
+    Singleton._instances.clear()

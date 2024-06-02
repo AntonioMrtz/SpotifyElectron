@@ -43,7 +43,7 @@ Check our [project goals and vision](.github/VISION.md)
 
 ## Software Architecture
 
-![Spotify_Electron_Software_Diagram](assets/images/architecture/master-streaming-lambda-arch.png)
+![Spotify_Electron_Software_Diagram](assets/images/architecture/master-streaming-serverless-function-arch.png)
 
 ### Song architecture
 

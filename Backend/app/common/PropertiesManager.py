@@ -16,10 +16,10 @@ from app.common.set_up_constants import (
     DEV,
     DISTRIBUTION_ID_ENV_NAME,
     ENV_VALUE_ENV_NAME,
-    LAMBDA_URL_ENV_NAME,
     MONGO_URI_ENV_NAME,
     PROD,
     SECRET_KEY_SIGN_ENV_NAME,
+    SERVERLESS_FUNCTION_URL_ENV_NAME,
     TEST,
 )
 from app.logging.logging_constants import LOGGING_PROPERTIES_MANAGER
@@ -42,7 +42,7 @@ class _PropertiesManager:
             MONGO_URI_ENV_NAME,
             SECRET_KEY_SIGN_ENV_NAME,
             DISTRIBUTION_ID_ENV_NAME,
-            LAMBDA_URL_ENV_NAME,
+            SERVERLESS_FUNCTION_URL_ENV_NAME,
             ENV_VALUE_ENV_NAME,
         ]
         self._load_env_variables(self.env_variables)

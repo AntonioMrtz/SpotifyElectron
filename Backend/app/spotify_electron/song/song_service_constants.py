@@ -1,4 +1,5 @@
-MODULE_PREFIX_NAME = "app.services.song_services."
-SONG_SERVICE_STREAMING_LAMBDA_SERVICE_MODULE_NAME = "song_service_aws_lambda"
-SONG_SERVICE_STREAMING_SDK_SERVICE_MODULE_NAME = "song_service_aws_sdk"
-SONG_SERVICE_DB_BLOB_SERVICE_MODULE_NAME = "song_service_db_blob"
+MODULE_PREFIX_NAME = "app.spotify_electron.song."
+SONG_SERVICE_STREAMING_AWS_SERVERLESS_FUNCTION_SERVICE_MODULE_NAME = (
+    "aws.serverless_function.song_service"
+)
+SONG_SERVICE_DB_BLOB_SERVICE_MODULE_NAME = "db_blob.song_service"

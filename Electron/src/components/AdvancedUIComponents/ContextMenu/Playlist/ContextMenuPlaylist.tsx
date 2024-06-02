@@ -163,7 +163,7 @@ export default function ContextMenuPlaylist({
       })
       .then((sidebarPlaylistNames) => {
         return fetch(
-          `${Global.backendBaseUrl}playlists/multiple/${sidebarPlaylistNames}`,
+          `${Global.backendBaseUrl}playlists/selected/${sidebarPlaylistNames}`,
         );
       })
       .then((resFetchPlaylists) => {

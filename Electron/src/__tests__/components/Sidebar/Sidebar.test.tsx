@@ -47,7 +47,7 @@ test('render Sidebar', async () => {
     }
     if (
       url ===
-      `${Global.backendBaseUrl}playlists/multiple/${playlistName},${playlistName}`
+      `${Global.backendBaseUrl}playlists/selected/${playlistName},${playlistName}`
     ) {
       return Promise.resolve({
         json: () =>

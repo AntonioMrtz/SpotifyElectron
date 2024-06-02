@@ -172,7 +172,7 @@ test('AddSongPlaylistAccordion submit song correct', async () => {
   const inputPhoto = component.getByPlaceholderText(
     'URL de la miniatura de la playlist',
   );
-  const eligeUnGeneroOption = component.getByText('❗ Elige un género');
+  const selectGenreOption = component.getByText('❗ Elige un género');
 
   // Find the file input element by its name or other suitable selector
   const fileInputElement = component.getByTestId('sidebar-file-input');
@@ -188,7 +188,7 @@ test('AddSongPlaylistAccordion submit song correct', async () => {
   });
 
   // Simulate selecting an option
-  fireEvent.change(eligeUnGeneroOption, {
+  fireEvent.change(selectGenreOption, {
     target: { value: 'Rock' },
   });
 

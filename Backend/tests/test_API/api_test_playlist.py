@@ -20,7 +20,7 @@ def get_playlist(name: str, headers: dict):
 
 
 def get_playlists(song_names: str, headers: dict):
-    return client.get(f"/playlists/multiple/{song_names}", headers=headers)
+    return client.get(f"/playlists/selected/{song_names}", headers=headers)
 
 
 def update_playlist(

@@ -1,11 +1,12 @@
 from fastapi.testclient import TestClient
-from pytest import fixture
+from pytest import fixture, raises
 from starlette.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_202_ACCEPTED
-from test_API.api_test_artist import create_artist, delete_artist
+from test_API.api_test_artist import create_artist
+from test_API.api_test_user import delete_user
 from test_API.api_token import get_user_jwt_header
 
 from app.__main__ import app
-from app.spotify_electron.genre.genre_schema import Genre
+from app.spotify_electron.genre.genre_schema import Genre, GenreNotValidException
 
 client = TestClient(app)
 
@@ -33,7 +34,7 @@ def test_get_genres_correct():
     for genre in Genre:
         assert genre.value in genre_dict.values()
 
-    res_delete_artist = delete_artist(artista)
+    res_delete_artist = delete_user(artista)
     assert res_delete_artist.status_code == HTTP_202_ACCEPTED
 
 
@@ -44,4 +45,5 @@ def test_check_genre_valid():
 
 def test_check_genre_invalid():
     invalid_genre = "invalid_genre"
-    assert not Genre.check_valid_genre(invalid_genre)
+    with raises(GenreNotValidException):
+        Genre.check_valid_genre(invalid_genre)

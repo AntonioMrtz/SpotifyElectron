@@ -16,7 +16,7 @@ extend-select = [
     "PLR"
 ]
 
-ignore = ["PLR0402"]
+ignore = ["PLR0402","PLR0911"]
 
 [format]
 # Like Black, use double quotes for strings.

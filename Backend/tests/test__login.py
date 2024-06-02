@@ -8,7 +8,7 @@ from starlette.status import (
     HTTP_404_NOT_FOUND,
 )
 from test_API.api_login import post_login
-from test_API.api_test_artist import create_artist, delete_artist
+from test_API.api_test_artist import create_artist
 from test_API.api_test_user import create_user, delete_user
 
 
@@ -28,7 +28,7 @@ def test_login_artist(clear_test_data_db):
     res_login_artist = post_login(artista, password)
     assert res_login_artist.status_code == HTTP_200_OK
 
-    res_delete_artist = delete_artist(artista)
+    res_delete_artist = delete_user(artista)
     assert res_delete_artist.status_code == HTTP_202_ACCEPTED
 
 
@@ -78,11 +78,11 @@ def clear_test_data_db():
     artista = "artista"
 
     delete_user(name=user_name)
-    delete_artist(name=artista)
+    delete_user(name=artista)
 
     yield
     user_name = "8232392323623823723"
     artista = "artista"
 
     delete_user(name=user_name)
-    delete_artist(name=artista)
+    delete_user(name=artista)

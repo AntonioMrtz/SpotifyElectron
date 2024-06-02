@@ -16,7 +16,7 @@ def get_genres() -> str:
 
     Returns
     -------
-        str: _description_
+        str: genres json as str
 
     """
     try:

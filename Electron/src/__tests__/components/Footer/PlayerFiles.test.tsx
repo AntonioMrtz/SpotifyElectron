@@ -25,7 +25,7 @@ jest.spyOn(Token, 'getTokenUsername').mockReturnValue(userName);
 jest.spyOn(Token, 'getTokenRole').mockReturnValue(roleUser);
 
 global.fetch = jest.fn((url: string) => {
-  if (url === `${Global.backendBaseUrl}canciones/${songName}`) {
+  if (url === `${Global.backendBaseUrl}songs/${songName}`) {
     return Promise.resolve({
       json: () => songMockFetch,
       status: 200,
@@ -33,7 +33,7 @@ global.fetch = jest.fn((url: string) => {
       console.log(error);
     });
   }
-  if (url === `${Global.backendBaseUrl}canciones/dto/${songName}`) {
+  if (url === `${Global.backendBaseUrl}songs/metadata/${songName}`) {
     return Promise.resolve({
       json: () => songMockFetch,
       status: 200,
@@ -41,7 +41,7 @@ global.fetch = jest.fn((url: string) => {
       console.log(error);
     });
   }
-  if (url === `${Global.backendBaseUrl}canciones/${songName}/numberOfPlays`) {
+  if (url === `${Global.backendBaseUrl}songs/${songName}/playback_count`) {
     return Promise.resolve({
       json: () => {},
       status: 204,

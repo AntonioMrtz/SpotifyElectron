@@ -32,7 +32,7 @@ export default function Genre({
   const [songs, setSongs] = useState<SongProps[]>();
 
   const handleSongsFromGenre = () => {
-    const getSongsByGenreUrl = `${Global.backendBaseUrl}canciones/generos/${genreName}`;
+    const getSongsByGenreUrl = `${Global.backendBaseUrl}songs/genres/${genreName}`;
 
     fetch(getSongsByGenreUrl)
       .then((resGetSongsByGenreUrl) => {

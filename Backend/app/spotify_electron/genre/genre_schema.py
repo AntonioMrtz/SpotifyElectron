@@ -1,16 +1,14 @@
-from enum import Enum
+from enum import StrEnum
 
-from app.exceptions.exceptions_schema import SpotifyElectronException
+from app.exceptions.base_exceptions_schema import SpotifyElectronException
 from app.logging.logging_constants import LOGGING_GENRE_CLASS
 from app.logging.logging_schema import SpotifyElectronLogger
 
 genre_class_logger = SpotifyElectronLogger(LOGGING_GENRE_CLASS).getLogger()
 
 
-class Genre(Enum):
-    """A class to store the existing genres and their string representation"""
-
-    # TODO, use StrEnum
+class Genre(StrEnum):
+    """Class to store the existing genres and their string representation"""
 
     POP = "Pop"
     ROCK = "Rock"
@@ -45,11 +43,14 @@ class Genre(Enum):
 
     @staticmethod
     def check_valid_genre(genre: str) -> bool:
-        """Checks if the genre is valid"""
-        return genre in {member.value for member in Genre}
+        """Checks if the genre is valid and raises an exception if not"""
+        if genre not in {member.value for member in Genre}:
+            genre_class_logger.exception(f"Genre {genre} is not a valid Genre")
+            raise GenreNotValidException
+        return True
 
     @staticmethod
-    def get_genre_string_value(genre: Enum) -> str:
+    def get_genre_string_value(genre: StrEnum) -> str:
         """Gets genre string representation value from Genre
 
         Args:

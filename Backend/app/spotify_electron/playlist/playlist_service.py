@@ -1,8 +1,6 @@
-from datetime import datetime
-
 import app.spotify_electron.playlist.playlist_repository as playlist_repository
-import app.spotify_electron.user.all_users_service as all_users_service
-from app.exceptions.exceptions_schema import BadParameterException
+import app.spotify_electron.security.security_service as security_service
+import app.spotify_electron.user.base_user_service as base_user_service
 from app.logging.logging_constants import LOGGING_PLAYLIST_SERVICE
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.playlist.playlist_schema import (
@@ -12,36 +10,21 @@ from app.spotify_electron.playlist.playlist_schema import (
     PlaylistNotFoundException,
     PlaylistRepositoryException,
     PlaylistServiceException,
-    PlaylistUnAuthorizedException,
     get_playlist_dto_from_dao,
 )
-from app.spotify_electron.security.security_schema import TokenData
-from app.spotify_electron.user.user_schema import UserNotFoundException
-from app.spotify_electron.utils.validation.utils import validate_parameter
+from app.spotify_electron.playlist.validations.playlist_service_validations import (
+    validate_playlist_name_parameter,
+    validate_playlist_should_exists,
+    validate_playlist_should_not_exists,
+)
+from app.spotify_electron.security.security_schema import (
+    TokenData,
+    UserUnauthorizedException,
+)
+from app.spotify_electron.user.user.user_schema import UserNotFoundException
+from app.spotify_electron.utils.date.date_utils import get_current_iso8601_date
 
 playlist_service_logger = SpotifyElectronLogger(LOGGING_PLAYLIST_SERVICE).getLogger()
-
-
-def check_jwt_user_is_playlist_owner(token: TokenData, owner: str) -> bool:
-    """Check if the user is playlists owner
-
-    Args:
-    ----
-        token (TokenData): token with user data
-        owner (str): owner name
-
-    Raises:
-    ------
-        PlaylistUnAuthorizedException: if the user is not the playlists owner
-
-    Returns:
-    -------
-        bool: if the user is the owner of the playlist
-
-    """
-    if token.username == owner:
-        return True
-    raise PlaylistUnAuthorizedException()
 
 
 def check_playlist_exists(name: str) -> bool:
@@ -78,8 +61,8 @@ def get_playlist(name: str) -> PlaylistDTO:
 
     """
     try:
-        handle_playlist_name_parameter(name)
-        playlist = playlist_repository.get_playlist_by_name(name)
+        validate_playlist_name_parameter(name)
+        playlist = playlist_repository.get_playlist(name)
         playlist_dto = get_playlist_dto_from_dao(playlist)
     except PlaylistBadNameException as exception:
         playlist_service_logger.exception(f"Bad Playlist Name Parameter : {name}")
@@ -88,12 +71,12 @@ def get_playlist(name: str) -> PlaylistDTO:
         playlist_service_logger.exception(f"Playlist not found : {name}")
         raise PlaylistNotFoundException from exception
     except PlaylistRepositoryException as exception:
-        playlist_service_logger.critical(
+        playlist_service_logger.exception(
             f"Unexpected error in Playlist Repository getting playlist : {name}"
         )
         raise PlaylistServiceException from exception
     except Exception as exception:
-        playlist_service_logger.critical(
+        playlist_service_logger.exception(
             f"Unexpected error in Playlist Service getting playlist : {name}"
         )
         raise PlaylistServiceException from exception
@@ -126,26 +109,23 @@ def create_playlist(
     try:
         owner = token.username
 
-        current_date = datetime.now()
-        date_iso8601 = current_date.strftime("%Y-%m-%dT%H:%M:%S")
+        date = get_current_iso8601_date()
 
-        handle_playlist_name_parameter(name)
-        handle_playlist_should_not_exists(name)
-        handle_user_should_exists(owner)
+        validate_playlist_name_parameter(name)
+        validate_playlist_should_not_exists(name)
+        base_user_service.validate_user_should_exists(owner)
 
-        playlist_repository.insert_playlist(
+        playlist_repository.create_playlist(
             name,
             photo if "http" in photo else "",
-            date_iso8601,
+            date,
             description,
             owner,
             song_names,
         )
-
-        all_users_service.add_playlist_to_owner(
+        base_user_service.add_playlist_to_owner(
             user_name=owner, playlist_name=name, token=token
         )
-        playlist_service_logger.info(f"Playlist {name} created successfully")
     except PlaylistBadNameException as exception:
         playlist_service_logger.exception(f"Bad Playlist Name Parameter : {name}")
         raise PlaylistBadNameException from exception
@@ -156,18 +136,20 @@ def create_playlist(
         playlist_service_logger.exception(f"User not found : {name}")
         raise UserNotFoundException from exception
     except PlaylistRepositoryException as exception:
-        playlist_service_logger.critical(
-            f"Unexpected error in Playlist Repository creating playlisy : {name}"
+        playlist_service_logger.exception(
+            f"Unexpected error in Playlist Repository creating user : {name}"
         )
         raise PlaylistServiceException from exception
     except Exception as exception:
-        playlist_service_logger.critical(
-            f"Unexpected error in Playlist Service creating playlisy : {name}"
+        playlist_service_logger.exception(
+            f"Unexpected error in Playlist Service creating user : {name}"
         )
         raise PlaylistServiceException from exception
+    else:
+        playlist_service_logger.info(f"Playlist {name} created successfully")
 
 
-def update_playlist(
+def update_playlist(  # noqa: PLR0913
     name: str,
     new_name: str | None,
     photo: str,
@@ -194,12 +176,12 @@ def update_playlist(
 
     """
     try:
-        handle_playlist_name_parameter(name)
-        handle_playlist_should_exists(name)
+        validate_playlist_name_parameter(name)
+        validate_playlist_should_exists(name)
 
-        playlist = playlist_repository.get_playlist_by_name(name)
+        playlist = playlist_repository.get_playlist(name)
 
-        check_jwt_user_is_playlist_owner(token=token, owner=playlist.owner)
+        security_service.validate_jwt_user_matches_user(token, playlist.owner)
 
         if not new_name:
             playlist_repository.update_playlist(
@@ -207,7 +189,7 @@ def update_playlist(
             )
             return
 
-        handle_playlist_name_parameter(new_name)
+        validate_playlist_name_parameter(new_name)
         playlist_repository.update_playlist(
             name,
             new_name,
@@ -216,28 +198,28 @@ def update_playlist(
             song_names,
         )
 
-        all_users_service.update_playlist_name(name, new_name)
-        playlist_service_logger.info(f"Playlist {name} updated successfully")
-
+        base_user_service.update_playlist_name(name, new_name)
     except PlaylistBadNameException as exception:
-        playlist_service_logger.exception(f"Bad Parameter : {name}")
+        playlist_service_logger.exception(f"Bad Playlist Name Parameter : {name}")
         raise PlaylistBadNameException from exception
     except PlaylistNotFoundException as exception:
         playlist_service_logger.exception(f"Playlist not found : {name}")
         raise PlaylistNotFoundException from exception
-    except PlaylistUnAuthorizedException as exception:
+    except UserUnauthorizedException as exception:
         playlist_service_logger.exception(f"User is not the owner of playlist : {name}")
-        raise PlaylistServiceException from exception
+        raise UserUnauthorizedException from exception
     except PlaylistRepositoryException as exception:
-        playlist_service_logger.critical(
+        playlist_service_logger.exception(
             f"Unexpected error in Playlist Repository updating playlist : {name}"
         )
         raise PlaylistServiceException from exception
     except Exception as exception:
-        playlist_service_logger.critical(
+        playlist_service_logger.exception(
             f"Unexpected error in Playlist Service updating playlist : {name}"
         )
         raise PlaylistServiceException from exception
+    else:
+        playlist_service_logger.info(f"Playlist {name} updated successfully")
 
 
 def delete_playlist(name: str) -> None:
@@ -255,28 +237,33 @@ def delete_playlist(name: str) -> None:
 
     """
     try:
-        handle_playlist_name_parameter(name)
-        handle_playlist_should_exists(name)
-        all_users_service.delete_playlist_from_owner(playlist_name=name)
+        validate_playlist_name_parameter(name)
+        validate_playlist_should_exists(name)
+        base_user_service.delete_playlist_from_owner(playlist_name=name)
         playlist_repository.delete_playlist(name)
-        playlist_service_logger.info(f"Playlist {name} deleted successfully")
-
     except PlaylistBadNameException as exception:
-        playlist_service_logger.exception(f"Bad Parameter : {name}")
+        playlist_service_logger.exception(f"Bad Playlist Name Parameter : {name}")
         raise PlaylistBadNameException from exception
     except PlaylistNotFoundException as exception:
         playlist_service_logger.exception(f"Playlist not found : {name}")
         raise PlaylistNotFoundException from exception
+    except UserNotFoundException as exception:
+        playlist_service_logger.exception(
+            f"User owner of the playlist {name} not found"
+        )
+        raise UserNotFoundException from exception
     except PlaylistRepositoryException as exception:
-        playlist_service_logger.critical(
+        playlist_service_logger.exception(
             f"Unexpected error in Playlist Repository deleting playlist :{name}"
         )
         raise PlaylistServiceException from exception
     except Exception as exception:
-        playlist_service_logger.critical(
+        playlist_service_logger.exception(
             f"Unexpected error in Playlist Service deleting playlist :{name}"
         )
         raise PlaylistServiceException from exception
+    else:
+        playlist_service_logger.info(f"Playlist {name} deleted successfully")
 
 
 def get_all_playlist() -> list[PlaylistDTO]:
@@ -295,12 +282,12 @@ def get_all_playlist() -> list[PlaylistDTO]:
         playlists = playlist_repository.get_all_playlists()
         playlists_dto = [get_playlist_dto_from_dao(playlist) for playlist in playlists]
     except PlaylistRepositoryException as exception:
-        playlist_service_logger.critical(
+        playlist_service_logger.exception(
             "Unexpected error in Playlist Repository getting all playlists"
         )
         raise PlaylistServiceException from exception
     except Exception as exception:
-        playlist_service_logger.critical(
+        playlist_service_logger.exception(
             "Unexpected error in Playlist Service getting all playlists"
         )
         raise PlaylistServiceException from exception
@@ -329,12 +316,12 @@ def get_selected_playlists(playlist_names: list[str]) -> list[PlaylistDTO]:
         playlists = playlist_repository.get_selected_playlists(playlist_names)
         playlists_dto = [get_playlist_dto_from_dao(playlist) for playlist in playlists]
     except PlaylistRepositoryException as exception:
-        playlist_service_logger.critical(
+        playlist_service_logger.exception(
             f"Unexpected error in Playlist Repository getting selected playlists : {playlist_names}"
         )
         raise PlaylistServiceException from exception
     except Exception as exception:
-        playlist_service_logger.critical(
+        playlist_service_logger.exception(
             f"Unexpected error in Playlist Service getting selected playlists : {playlist_names}"
         )
         raise PlaylistServiceException from exception
@@ -365,12 +352,12 @@ def search_by_name(name: str) -> list[PlaylistDTO]:
         playlists = playlist_repository.get_playlist_search_by_name(name)
         playlists_dto = [get_playlist_dto_from_dao(playlist) for playlist in playlists]
     except PlaylistRepositoryException as exception:
-        playlist_service_logger.critical(
+        playlist_service_logger.exception(
             f"Unexpected error in Playlist Repository searching playlist by name {name}"
         )
         raise PlaylistServiceException from exception
     except Exception as exception:
-        playlist_service_logger.critical(
+        playlist_service_logger.exception(
             f"Unexpected error in Playlist Service searching playlist by name {name}"
         )
         raise PlaylistServiceException from exception
@@ -379,70 +366,3 @@ def search_by_name(name: str) -> list[PlaylistDTO]:
             f"Playlists searched by name {name} retrieved successfully"
         )
         return playlists_dto
-
-
-def handle_playlist_name_parameter(name: str) -> None:
-    """Raises an exception if name parameter is invalid
-
-    Args:
-    ----
-        name (str): name
-
-    Raises:
-    ------
-        PlaylistBadNameException: if name parameter is invalid
-
-    """
-    try:
-        validate_parameter(name)
-    except BadParameterException:
-        raise PlaylistBadNameException from BadParameterException
-
-
-def handle_playlist_should_exists(name: str) -> None:
-    """Raises an exception if playlist doesnt exists
-
-    Args:
-    ----
-        name (str): playlist name
-
-    Raises:
-    ------
-        PlaylistNotFoundException: if playlist doesnt exists
-
-    """
-    if not check_playlist_exists(name):
-        raise PlaylistNotFoundException
-
-
-def handle_playlist_should_not_exists(name: str) -> None:
-    """Raises an exception if playlist does exists
-
-    Args:
-    ----
-        name (str): playlist name
-
-    Raises:
-    ------
-        PlaylistNotFoundException: if playlist exists
-
-    """
-    if check_playlist_exists(name):
-        raise PlaylistAlreadyExistsException
-
-
-def handle_user_should_exists(name: str) -> None:
-    # TODO mover logica excepcion a dentro de servicio all users
-    """Raises an exception if user does exists
-
-    Args:
-    ----
-        name (str): users name
-
-    Raises:
-    ------
-        UserNotFoundException: if doesnt exists
-
-    """
-    if not all_users_service.check_user_exists(name):
-        raise UserNotFoundException

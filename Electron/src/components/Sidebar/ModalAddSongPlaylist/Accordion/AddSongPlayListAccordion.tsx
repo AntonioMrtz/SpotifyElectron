@@ -83,10 +83,9 @@ export default function AddSongPlayListAccordion({
   const [loadingUploadSong, setLoadingUploadSong] = useState(false);
 
   const [formDataSong, setFormDataSong] = useState({
-    nombre: '',
-    artista: '',
-    genero: '',
-    foto: '',
+    name: '',
+    genre: '',
+    photo: '',
   });
 
   const handleChangeSong = (
@@ -115,7 +114,7 @@ export default function AddSongPlayListAccordion({
     setLoadingUploadSong(true);
     setIsCloseAllowed(false);
 
-    const url = new URL(`${Global.backendBaseUrl}canciones/`);
+    const url = new URL(`${Global.backendBaseUrl}songs/`);
 
     if (formDataSong && songFile) {
       Object.entries(formDataSong).forEach(([key, value]) => {
@@ -388,8 +387,8 @@ export default function AddSongPlayListAccordion({
                 <div className="p-0 mb-3 w-100">
                   <input
                     type="text"
-                    id="nombre"
-                    name="nombre"
+                    id="name"
+                    name="name"
                     placeholder="Nombre de la canción"
                     className={` ${styles.input}`}
                     onChange={handleChangeSong}
@@ -400,11 +399,11 @@ export default function AddSongPlayListAccordion({
               <div className="p-0 mb-3 me-2">
                 <input
                   type="text"
-                  id="foto"
+                  id="photo"
                   placeholder="URL de la miniatura de la canción"
                   className={` form-control ${styles.input}`}
                   onChange={handleChangeSong}
-                  name="foto"
+                  name="photo"
                   required
                 />
               </div>
@@ -417,7 +416,7 @@ export default function AddSongPlayListAccordion({
                     className="form-select-sm mb-3"
                     aria-label="Default select example"
                     onChange={handleChangeSong}
-                    name="genero"
+                    name="genre"
                     required
                     defaultValue="Elige un género"
                   >

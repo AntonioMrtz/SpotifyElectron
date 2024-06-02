@@ -27,7 +27,7 @@ export default function ItemsAllPlaylistsFromUser({
       return;
     }
 
-    fetch(`${Global.backendBaseUrl}playlists/multiple/${playlistNames}`)
+    fetch(`${Global.backendBaseUrl}playlists/selected/${playlistNames}`)
       .then((resFetchPlaylists) => resFetchPlaylists.json())
       .then((resFetchPlaylistsJson) => {
         if (resFetchPlaylistsJson.playlists) {

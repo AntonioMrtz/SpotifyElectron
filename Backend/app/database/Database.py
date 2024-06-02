@@ -3,21 +3,23 @@ from enum import StrEnum
 from typing import Any
 
 from gridfs import GridFS
+from pymongo.collection import Collection
 from pymongo.errors import ConnectionFailure
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 
 from app.common.PropertiesManager import PropertiesManager
 from app.common.set_up_constants import MONGO_URI_ENV_NAME
-from app.exceptions.exceptions_schema import SpotifyElectronException
+from app.exceptions.base_exceptions_schema import SpotifyElectronException
 from app.logging.logging_constants import LOGGING_DATABASE
 from app.logging.logging_schema import SpotifyElectronLogger
+from app.patterns.Singleton import Singleton
 
 database_logger = SpotifyElectronLogger(LOGGING_DATABASE).getLogger()
 
 
-class DatabaseCollections(StrEnum):
-    """A class to store the existing name of the collections in the database"""
+class DatabaseCollection(StrEnum):
+    """Class to store the existing name of the collections in the database"""
 
     USER = "users"
     ARTIST = "artists"
@@ -27,25 +29,7 @@ class DatabaseCollections(StrEnum):
     SONG_BLOB_DATA = "songs"
 
 
-class DatabaseMeta(type):
-    """The Singleton class can be implemented in different ways in Python. Some
-    possible methods include: base class, decorator, metaclass. We will use the
-    metaclass because it is best suited for this purpose.
-    """
-
-    _instances = {}
-
-    def __call__(cls, *args, **kwargs):
-        """Possible changes to the value of the `__init__` argument do not affect
-        the returned instance.
-        """
-        if cls not in cls._instances:
-            instance = super().__call__(*args, **kwargs)
-            cls._instances[cls] = instance
-        return cls._instances[cls]
-
-
-class Database(metaclass=DatabaseMeta):
+class Database(metaclass=Singleton):
     """Singleton instance of the MongoDb connection"""
 
     TESTING_COLLECTION_NAME_PREFIX = "test."
@@ -115,7 +99,9 @@ class Database(metaclass=DatabaseMeta):
         """Method to retrieve the singleton instance"""
         return Database()
 
-    def get_collection_connection(self, collection_name: DatabaseCollections) -> Any:
+    def get_collection_connection(
+        self, collection_name: DatabaseCollection
+    ) -> Collection:
         """Returns the connection with a collection
 
         Args:
@@ -127,7 +113,7 @@ class Database(metaclass=DatabaseMeta):
         return Database().connection[self.collection_name_prefix + collection_name]
 
     def get_gridfs_collection_connection(
-        self, collection_name: DatabaseCollections
+        self, collection_name: DatabaseCollection
     ) -> Any:
         """Returns the connection with gridfs collection
 

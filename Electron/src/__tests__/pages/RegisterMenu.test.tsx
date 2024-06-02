@@ -2,6 +2,7 @@ import '@testing-library/jest-dom';
 import { act, fireEvent, render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import RegisterMenu from 'pages/StartMenu/RegisterMenu';
+import Global from 'global/global';
 
 afterEach(() => {
   jest.clearAllMocks();
@@ -130,12 +131,22 @@ test('Register failed different password inputs', () => {
 test('Register success', async () => {
   const mockSetIsSigningUp = jest.fn();
 
-  global.fetch = jest.fn(() =>
-    Promise.resolve({
-      json: () => Promise.resolve({}),
-      status: 201,
-    }),
-  ) as jest.Mock;
+  global.fetch = jest.fn((url: string) => {
+    if (
+      url ===
+      `${Global.backendBaseUrl}users/?name=testuser&photo=testphoto&password=testpassword`
+    ) {
+      return Promise.resolve({
+        json: () => Promise.resolve({}),
+        status: 201,
+      }).catch((error) => {
+        console.log(error);
+      });
+    }
+
+    // In case the URL doesn't match, return a rejected promise
+    return Promise.reject(new Error('Unhandled URL in fetch mock'));
+  }) as jest.Mock;
 
   const component = render(
     <RegisterMenu setIsSigningUp={mockSetIsSigningUp} />,
@@ -157,7 +168,7 @@ test('Register success', async () => {
     target: { value: 'testpassword' },
   });
   fireEvent.change(inputPhoto, {
-    target: { value: 'testfoto' },
+    target: { value: 'testphoto' },
   });
   fireEvent.change(inputConfirmPassword, {
     target: { value: 'testpassword' },

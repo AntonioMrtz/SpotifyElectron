@@ -2,7 +2,7 @@ import configparser
 import os
 import re
 
-from app.exceptions.exceptions_schema import SpotifyElectronException
+from app.exceptions.base_exceptions_schema import SpotifyElectronException
 from app.logging.logging_constants import LOGGING_PROPERTIES_MESSAGES_MANAGER
 from app.logging.logging_schema import SpotifyElectronLogger
 

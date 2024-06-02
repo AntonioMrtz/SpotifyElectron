@@ -15,17 +15,21 @@ from starlette.status import (
 
 import app.spotify_electron.playlist.playlist_service as playlist_service
 import app.spotify_electron.security.security_service as security_service
-import app.spotify_electron.utils.json_converter.json_converter_service as json_converter_service
+import app.spotify_electron.utils.json_converter.json_converter_utils as json_converter_utils
 from app.common.PropertiesMessagesManager import PropertiesMessagesManager
-from app.exceptions.http_encode_exceptions import JsonEncodeException
+from app.exceptions.base_exceptions_schema import JsonEncodeException
 from app.logging.logging_constants import LOGGING_PLAYLIST_CONTROLLER
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.playlist.playlist_schema import (
+    PlaylistAlreadyExistsException,
     PlaylistBadNameException,
     PlaylistNotFoundException,
     PlaylistServiceException,
 )
-from app.spotify_electron.security.security_schema import BadJWTTokenProvidedException
+from app.spotify_electron.security.security_schema import (
+    BadJWTTokenProvidedException,
+    UserUnauthorizedException,
+)
 
 router = APIRouter(
     prefix="/playlists",
@@ -36,21 +40,17 @@ playlist_controller_logger = SpotifyElectronLogger(
     LOGGING_PLAYLIST_CONTROLLER
 ).getLogger()
 
-# TODO set in content of Responses messages of error from messages.ini
-
 
 @router.get("/{name}")
 def get_playlist(name: str) -> Response:
-    """Gets playlist by name
+    """Get playlsit
 
     Args:
-    ----
-        nombre (str): name
-
+        name (str): playlist name
     """
     try:
         playlist = playlist_service.get_playlist(name)
-        playlist_json = json_converter_service.get_json_from_model(playlist)
+        playlist_json = json_converter_utils.get_json_from_model(playlist)
 
         return Response(
             playlist_json, media_type="application/json", status_code=HTTP_200_OK
@@ -59,6 +59,7 @@ def get_playlist(name: str) -> Response:
     except PlaylistBadNameException:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
+            content=PropertiesMessagesManager.playlistBadName,
         )
     except PlaylistNotFoundException:
         return Response(
@@ -78,22 +79,21 @@ def get_playlist(name: str) -> Response:
 
 
 @router.post("/")
-def post_playlist(
+def create_playlist(
     name: str,
     photo: str,
     description: str,
     song_names: list[str] = Body(...),
     authorization: Annotated[str | None, Header()] = None,
 ) -> Response:
-    """Creates playlist
+    """Create playlist
 
     Args:
-    ----
         name (str): playlist name
-        photo (str): photo
-        description (str): description
-        song_names (list[str], optional): the list of song names. Defaults to Body(...).
-
+        photo (str): playlist photo
+        description (str): playlist description
+        song_names (list[str], optional): list of song names included in playlisy. Defaults to Body(...).
+        authorization (Annotated[str  |  None, Header, optional): jwt token. Defaults to None.
     """
     try:
         jwt_token = security_service.get_jwt_token_data(authorization)
@@ -109,12 +109,13 @@ def post_playlist(
     except BadJWTTokenProvidedException:
         return Response(
             status_code=HTTP_401_UNAUTHORIZED,
-            content="Could not validate credentials",
+            content=PropertiesMessagesManager.tokenInvalidCredentials,
             headers={"WWW-Authenticate": "Bearer"},
         )
-    except PlaylistBadNameException:
+    except (PlaylistBadNameException, PlaylistAlreadyExistsException):
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
+            content=PropertiesMessagesManager.playlistBadName,
         )
     except PlaylistNotFoundException:
         return Response(
@@ -129,7 +130,7 @@ def post_playlist(
 
 
 @router.put("/{name}")
-def update_playlist(
+def update_playlist(  # noqa: PLR0913
     name: str,
     photo: str,
     description: str,
@@ -137,16 +138,14 @@ def update_playlist(
     new_name: str | None = None,
     authorization: Annotated[str | None, Header()] = None,
 ) -> Response:
-    """Updates playlist data
+    """Update playlist
 
     Args:
-    ----
-        name (str): playlist name
-        photo (str): photo
-        description (str): description
-        song_names (list[str], optional): list of song names. Defaults to Body(...).
-        new_name (str | None, optional): new name of the playlist. Defaults to None.
-
+        photo (str): playlist new photo
+        description (str): playlist new description
+        song_names (list[str], optional): playlist new song names. Defaults to Body(...).
+        new_name (str | None, optional): playlist new name. Defaults to None.
+        authorization (Annotated[str  |  None, Header, optional): jwt token. Defaults to None.
     """
     try:
         jwt_token = security_service.get_jwt_token_data(authorization)
@@ -158,8 +157,13 @@ def update_playlist(
     except BadJWTTokenProvidedException:
         return Response(
             status_code=HTTP_401_UNAUTHORIZED,
-            content="Could not validate credentials",
+            content=PropertiesMessagesManager.tokenInvalidCredentials,
             headers={"WWW-Authenticate": "Bearer"},
+        )
+    except UserUnauthorizedException:
+        return Response(
+            status_code=HTTP_401_UNAUTHORIZED,
+            content=PropertiesMessagesManager.userUnauthorized,
         )
     except PlaylistBadNameException:
         return Response(
@@ -180,12 +184,10 @@ def update_playlist(
 
 @router.delete("/{name}")
 def delete_playlist(name: str) -> Response:
-    """Delete playlist
+    """Delete playlsit
 
     Args:
-    ----
         name (str): playlist name
-
     """
     try:
         playlist_service.delete_playlist(name)
@@ -212,7 +214,7 @@ def get_playlists() -> Response:
     """Return all playlists"""
     try:
         playlists = playlist_service.get_all_playlist()
-        playlist_json = json_converter_service.get_json_with_iterable_field_from_model(
+        playlist_json = json_converter_utils.get_json_with_iterable_field_from_model(
             playlists, "playlists"
         )
 
@@ -241,19 +243,17 @@ def get_playlists() -> Response:
         )
 
 
-@router.get("/multiple/{names}")
+@router.get("/selected/{names}")
 def get_selected_playlists(names: str) -> Response:
-    """Return playlists by names
+    """Get selected playlists
 
     Args:
-    ----
-        names (str): names of playlists
-
+        names (str): playlist names
     """
     try:
         playlists = playlist_service.get_selected_playlists(names.split(","))
 
-        playlist_json = json_converter_service.get_json_with_iterable_field_from_model(
+        playlist_json = json_converter_utils.get_json_with_iterable_field_from_model(
             playlists, "playlists"
         )
 

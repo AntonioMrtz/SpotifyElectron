@@ -1,21 +1,20 @@
 from dataclasses import dataclass
 
-from app.exceptions.exceptions_schema import SpotifyElectronException
-from app.model.DTO.SongDTO import SongDTO
+from app.exceptions.base_exceptions_schema import SpotifyElectronException
 from app.spotify_electron.playlist.playlist_schema import PlaylistDTO
-from app.spotify_electron.user.artist.artist_schema import Artist
-from app.spotify_electron.user.user_schema import User
+from app.spotify_electron.song.base_song_schema import SongMetadataDTO
+from app.spotify_electron.user.artist.artist_schema import ArtistDTO
+from app.spotify_electron.user.user.user_schema import UserDTO
 
 
 @dataclass
 class SearchResult:
-    """A class that contains the outcome of search operation"""
+    """Class that contains the outcome of search operation"""
 
-    # TODO cambiar a DTOS cuando se implementen
-    artists: list[Artist]
+    artists: list[ArtistDTO]
     playlists: list[PlaylistDTO]
-    users: list[User]
-    songs: list[SongDTO]
+    users: list[UserDTO]
+    songs: list[SongMetadataDTO]
 
 
 class BadSearchParameterException(SpotifyElectronException):

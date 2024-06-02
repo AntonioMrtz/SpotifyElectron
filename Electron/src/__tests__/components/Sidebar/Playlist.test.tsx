@@ -71,7 +71,7 @@ test('Sidebar Playlist handle open context menu', async () => {
         console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}playlists/multiple/${playlistName}`) {
+    if (url === `${Global.backendBaseUrl}playlists/selected/${playlistName}`) {
       return Promise.resolve({
         json: () =>
           Promise.resolve({
@@ -126,7 +126,7 @@ test('Sidebar Playlist left-click', async () => {
         console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}playlists/multiple/${playlistName}`) {
+    if (url === `${Global.backendBaseUrl}playlists/selected/${playlistName}`) {
       return Promise.resolve({
         json: () =>
           Promise.resolve({

@@ -88,7 +88,7 @@ export default function PlayerStreaming({
     const requestOptions = {
       method: 'PATCH',
     };
-    const fetchUrlUpdateSong: string = `${Global.backendBaseUrl}canciones/${songName}/numberOfPlays`;
+    const fetchUrlUpdateSong: string = `${Global.backendBaseUrl}songs/${songName}/playback_count`;
 
     fetch(fetchUrlUpdateSong, requestOptions).catch(() =>
       console.log('Unable to update number of plays'),
@@ -120,7 +120,7 @@ export default function PlayerStreaming({
       if (songName === Global.noSongPlaying) return;
 
       const resFetchSong = await fetch(
-        `${Global.backendBaseUrl}canciones/${songName}`,
+        `${Global.backendBaseUrl}songs/${songName}`,
       );
 
       const resFetchSongJson = await resFetchSong.json();
@@ -130,7 +130,7 @@ export default function PlayerStreaming({
       handleUpdatePlaybackHistory();
 
       const resFetchSongDTO = await fetch(
-        `${Global.backendBaseUrl}canciones/dto/${songName}`,
+        `${Global.backendBaseUrl}songs/metadata/${songName}`,
       );
 
       const resFetchSongDTOJson = await resFetchSongDTO.json();

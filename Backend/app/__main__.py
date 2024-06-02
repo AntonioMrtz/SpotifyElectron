@@ -16,11 +16,11 @@ from app.middleware.cors_middleware_config import (
     allowed_origins,
     max_age,
 )
-from app.routers import canciones
 from app.spotify_electron.genre import genre_controller
 from app.spotify_electron.login import login_controller
 from app.spotify_electron.playlist import playlist_controller
 from app.spotify_electron.search import search_controller
+from app.spotify_electron.song import song_controller
 from app.spotify_electron.user import user_controller
 from app.spotify_electron.user.artist import artist_controller
 
@@ -40,7 +40,7 @@ async def lifespan_handler(app: FastAPI):
     main_logger.info("Spotify Electron Backend Started")
 
     app.include_router(playlist_controller.router)
-    app.include_router(canciones.router)
+    app.include_router(song_controller.router)
     app.include_router(genre_controller.router)
     app.include_router(user_controller.router)
     app.include_router(artist_controller.router)

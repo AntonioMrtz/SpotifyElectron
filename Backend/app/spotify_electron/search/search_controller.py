@@ -7,9 +7,9 @@ from starlette.status import (
 )
 
 import app.spotify_electron.search.search_service as search_service
-import app.spotify_electron.utils.json_converter.json_converter_service as json_converter_service
+import app.spotify_electron.utils.json_converter.json_converter_utils as json_converter_utils
 from app.common.PropertiesMessagesManager import PropertiesMessagesManager
-from app.exceptions.http_encode_exceptions import JsonEncodeException
+from app.exceptions.base_exceptions_schema import JsonEncodeException
 from app.logging.logging_constants import LOGGING_SEARCH_CONTROLLER
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.search.search_schema import (
@@ -35,7 +35,7 @@ def get_search_name(name: str) -> Response:
     """
     try:
         items = search_service.search_by_name(name=name)
-        items_json = json_converter_service.get_json_from_model(items)
+        items_json = json_converter_utils.get_json_from_model(items)
 
         return Response(
             items_json, media_type="application/json", status_code=HTTP_200_OK

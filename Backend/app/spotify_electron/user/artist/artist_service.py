@@ -1,497 +1,355 @@
-from datetime import datetime
-
-from fastapi import HTTPException
-
-import app.services.song_services.song_service_provider as song_service_provider
 import app.spotify_electron.security.security_service as security_service
-from app.database.Database import Database, DatabaseCollections
-from app.spotify_electron.security.security_schema import TokenData
-from app.spotify_electron.user.artist.artist_schema import Artist
-from app.spotify_electron.utils.validation.utils import validate_parameter
+import app.spotify_electron.song.base_song_service as base_song_service
+import app.spotify_electron.user.artist.artist_repository as artist_repository
+import app.spotify_electron.user.base_user_repository as base_user_repository
+import app.spotify_electron.user.base_user_service as base_user_service
+import app.spotify_electron.user.providers.user_collection_provider as user_collection_provider
+from app.logging.logging_constants import LOGGING_ARTIST_SERVICE
+from app.logging.logging_schema import SpotifyElectronLogger
+from app.spotify_electron.song.base_song_schema import (
+    SongBadNameException,
+    SongServiceException,
+)
+from app.spotify_electron.song.validations.base_song_service_validations import (
+    validate_song_name_parameter,
+)
+from app.spotify_electron.user.artist.artist_schema import (
+    ArtistDTO,
+    get_artist_dto_from_dao,
+)
+from app.spotify_electron.user.user.user_schema import (
+    UserAlreadyExistsException,
+    UserBadNameException,
+    UserNotFoundException,
+    UserRepositoryException,
+    UserServiceException,
+)
+from app.spotify_electron.user.validations.user_service_validations import (
+    validate_user_name_parameter,
+)
+from app.spotify_electron.utils.date.date_utils import get_current_iso8601_date
 
-artist_collection = Database().get_collection_connection(DatabaseCollections.ARTIST)
-
-
-def check_user_exists(user_name: str) -> bool:
-    """Checks if the user or artists exists
-
-    Parameters
-    ----------
-        user_name (str): Users's name
-
-    Raises
-    ------
-        400 : Bad Request
-
-
-    Returns
-    -------
-        Boolean
-
-    """
-    if not validate_parameter(user_name):
-        raise HTTPException(status_code=400, detail="Parámetros no válidos")
-
-    result_artist_exists = artist_collection.find_one({"name": user_name})
-
-    return bool(result_artist_exists)
-
-
-def check_artists_exists(artist_name: str) -> bool:
-    """Checks if the user or artists exists
-
-    Parameters
-    ----------
-        artist_name (str): Artists's name
-
-    Raises
-    ------
-        400 : Bad Request
-
-
-    Returns
-    -------
-        Boolean
-
-    """
-    if not validate_parameter(artist_name):
-        raise HTTPException(status_code=400, detail="Parámetros no válidos")
-
-    return bool(artist_collection.find_one({"name": artist_name}))
-
-
-def check_jwt_artist_is_artist(token: TokenData, artist: str) -> bool:
-    """Check if the user is the song artist
-
-    Parameters
-    ----------
-        token (TokenData): token with the user data
-        artist (str) : artist
-
-    Raises
-    ------
-        401
-
-    Returns
-    -------
-        Boolean
-
-    """
-    if token.username == artist:
-        return True
-
-    raise HTTPException(
-        status_code=401, detail="El usuario no es el creador de la canción"
-    )
+artist_service_logger = SpotifyElectronLogger(LOGGING_ARTIST_SERVICE).getLogger()
 
 
 def add_song_artist(artist_name: str, song_name: str):
-    """Updates the uploaded songs of the artist adding "song_name"
+    """Add song to artist
 
-    Parameters
-    ----------
-        artist_name (str): Artists's name
-        song_name (str) : Song that is going to be added to the uploaded songs of the artist
+    Args:
+        artist_name (str): artist name
+        song_name (str): song name
 
-
-    Raises
-    ------
-        400 : Bad Request
-        404 : Artist Not Found / Song not found
-
-    Returns
-    -------
-
+    Raises:
+        UserBadNameException: user invalid name
+        UserNotFoundException: user doesnt exists
+        SongBadNameException: song invalid name
+        UserServiceException: unexpected error adding song to artist
     """
-    if not validate_parameter(artist_name) or not validate_parameter(song_name):
-        raise HTTPException(status_code=400, detail="Parámetros no válidos")
+    try:
+        validate_user_name_parameter(artist_name)
+        validate_song_name_parameter(song_name)
 
-    if not check_artists_exists(artist_name=artist_name):
-        raise HTTPException(status_code=404, detail="El artista no existe")
+        base_user_service.validate_user_should_exists(artist_name)
 
-    artist_collection.update_one(
-        {"name": artist_name}, {"$push": {"uploaded_songs": song_name}}
-    )
+        artist_repository.add_song_to_artist(artist_name, song_name)
 
-
-def delete_song_artist(artist_name: str, song_name: str):
-    """Updates the uploaded songs of the artist deleting "song_name"
-
-    Parameters
-    ----------
-        artist_name (str): Artists's name
-        song_name (str) : Song that is going to be deleted of the uploaded songs of the artist
-
-
-    Raises
-    ------
-        400 : Bad Request
-        404 : Artist Not Found / Song not found
-
-    Returns
-    -------
-
-    """
-    if not validate_parameter(artist_name) or not validate_parameter(song_name):
-        raise HTTPException(status_code=400, detail="Parámetros no válidos")
-
-    if check_artists_exists(artist_name=artist_name):
-        artist_collection.update_one(
-            {"name": artist_name}, {"$pull": {"uploaded_songs": song_name}}
+    except UserBadNameException as exception:
+        artist_service_logger.exception(f"Bad Artist Name Parameter : {artist_name}")
+        raise UserBadNameException from exception
+    except UserNotFoundException as exception:
+        artist_service_logger.exception(f"Artist not found : {artist_name}")
+        raise UserNotFoundException from exception
+    except SongBadNameException as exception:
+        artist_service_logger.exception(f"Bad Song Name Parameter : {song_name}")
+        raise SongBadNameException from exception
+    except UserRepositoryException as exception:
+        artist_service_logger.exception(
+            f"Unexpected error adding song {song_name} to artist {artist_name}"
         )
+        raise UserServiceException from exception
+    except Exception as exception:
+        artist_service_logger.exception(
+            f"Unexpected error in Artist service adding song {song_name} to artist {artist_name}"
+        )
+        raise UserServiceException from exception
 
 
-def get_user(name: str) -> Artist:
-    # TODO
+def delete_song_from_artist(artist_name: str, song_name: str):
+    """Remove song from artist
+
+    Args:
+        artist_name (str): artist name
+        song_name (str): song name
+
+    Raises:
+        UserBadNameException: user invalid name
+        UserNotFoundException: user doesnt exists
+        SongBadNameException: song invalid name
+        UserServiceException: unexpected error removing song from artist
+    """
+    try:
+        validate_user_name_parameter(artist_name)
+        validate_song_name_parameter(song_name)
+
+        base_user_service.validate_user_should_exists(artist_name)
+
+        artist_repository.delete_song_from_artist(artist_name, song_name)
+    except UserBadNameException as exception:
+        artist_service_logger.exception(f"Bad Artist Name Parameter : {artist_name}")
+        raise UserBadNameException from exception
+    except UserNotFoundException as exception:
+        artist_service_logger.exception(f"Artist not found : {artist_name}")
+        raise UserNotFoundException from exception
+    except SongBadNameException as exception:
+        artist_service_logger.exception(f"Bad Song Name Parameter : {song_name}")
+        raise SongBadNameException from exception
+    except UserRepositoryException as exception:
+        artist_service_logger.exception(
+            f"Unexpected error removing song {song_name} from artist {artist_name}"
+        )
+        raise UserServiceException from exception
+    except Exception as exception:
+        artist_service_logger.exception(
+            f"Unexpected error in Artist service removing song {song_name} from artist {artist_name}"
+        )
+        raise UserServiceException from exception
+
+
+def get_user(name: str) -> ArtistDTO:
+    """Get artist from name
+
+    Args:
+        name (str): artist name
+
+    Returns:
+        ArtistDTO: the artist
+    """
     return get_artist(name)
 
 
-def get_artist(name: str) -> Artist:
-    """Returns artist with name "name"
+def get_artist(artist_name: str) -> ArtistDTO:
+    """Get artist from name
 
-    Parameters
-    ----------
-        name (str): Artist's name
+    Args:
+        artist_name (str): the artist name
 
-    Raises
-    ------
-        400 : Bad Request
-        404 : Artist not found
+    Raises:
+        UserBadNameException: invalid user name
+        UserNotFoundException: artist not found
+        UserServiceException: unexpected error while getting artist
 
-    Returns
-    -------
-        Artist
-
+    Returns:
+        ArtistDTO: the artist
     """
-    if not validate_parameter(name):
-        raise HTTPException(status_code=400, detail="Parámetros no válidos")
-
-    artist_data = artist_collection.find_one({"name": name})
-
-    if artist_data is None:
-        raise HTTPException(
-            status_code=404, detail="El artista con ese nombre no existe"
+    try:
+        validate_user_name_parameter(artist_name)
+        artist = artist_repository.get_user(artist_name)
+        artist_dto = get_artist_dto_from_dao(artist)
+    except UserBadNameException as exception:
+        artist_service_logger.exception(f"Bad Artist Name Parameter : {artist_name}")
+        raise UserBadNameException from exception
+    except UserNotFoundException as exception:
+        artist_service_logger.exception(f"Artist not found : {artist_name}")
+        raise UserNotFoundException from exception
+    except UserRepositoryException as exception:
+        artist_service_logger.exception(
+            f"Unexpected error in Artist Repository getting user : {artist_name}"
         )
-
-    date = artist_data["register_date"][:-1]
-
-    return Artist(
-        name=artist_data["name"],
-        photo=artist_data["photo"],
-        register_date=date,
-        password=artist_data["password"],
-        playback_history=artist_data["playback_history"],
-        playlists=artist_data["playlists"],
-        saved_playlists=artist_data["saved_playlists"],
-        uploaded_songs=artist_data["uploaded_songs"],
-    )
-
-
-def create_artist(name: str, photo: str, password: str):
-    """Creates an artist
-
-    Parameters
-    ----------
-        name (str): Artist's name
-        photo (str): Url of artists thumbnail
-        password (str) : Password of artists account
-
-    Raises
-    ------
-        400 : Bad Request
-
-    Returns
-    -------
-
-    """
-    current_date = datetime.now()
-    date_iso8601 = current_date.strftime("%Y-%m-%dT%H:%M:%S")
-
-    if not validate_parameter(name):
-        raise HTTPException(status_code=400, detail="Parámetros no válidos")
-
-    if check_user_exists(name):
-        raise HTTPException(
-            status_code=400, detail="El nombre de artista ya existe como usuario"
+        raise UserServiceException from exception
+    except Exception as exception:
+        artist_service_logger.exception(
+            f"Unexpected error in Artist Service getting artist : {artist_name}"
         )
+        raise UserServiceException from exception
+    else:
+        artist_service_logger.info(f"Artist {artist_name} retrieved successfully")
+        return artist_dto
 
-    if check_artists_exists(name):
-        raise HTTPException(status_code=400, detail="El artista ya existe")
 
-    hashed_password = security_service.hash_password(password)
+def create_artist(user_name: str, photo: str, password: str) -> None:
+    """Create artist
 
-    result = artist_collection.insert_one(
-        {
-            "name": name,
-            "photo": photo if "http" in photo else "",
-            "register_date": date_iso8601,
-            "password": hashed_password,
-            "saved_playlists": [],
-            "playlists": [],
-            "playback_history": [],
-            "uploaded_songs": [],
-        }
-    )
+    Args:
+        user_name (str): artist name
+        photo (str): artist photo
+        password (str): artist password
 
-    if not result.acknowledged:
-        raise HTTPException(
-            status_code=500, detail="Hubo un error durante la creación del artista"
+    Raises:
+        UserAlreadyExistsException: if the artist already exists
+        UserBadNameException: if the artist name is invalid
+        UserServiceException: unexpected error while creating artist
+    """
+    try:
+        validate_user_name_parameter(user_name)
+        base_user_service.validate_user_should_not_exist(user_name)
+
+        date = get_current_iso8601_date()
+        photo = photo if "http" in photo else ""
+        hashed_password = security_service.hash_password(password)
+
+        artist_repository.create_artist(
+            name=user_name,
+            photo=photo,
+            current_date=date,
+            password=hashed_password,
         )
+        artist_service_logger.info(f"Artist {user_name} created successfully")
+    except UserAlreadyExistsException as exception:
+        artist_service_logger.exception(f"Artist already exists : {user_name}")
+        raise UserAlreadyExistsException from exception
+    except UserBadNameException as exception:
+        artist_service_logger.exception(f"Bad Artist Name Parameter : {user_name}")
+        raise UserBadNameException from exception
+    except UserRepositoryException as exception:
+        artist_service_logger.exception(
+            f"Unexpected error in Artist Repository creating artist : {user_name}"
+        )
+        raise UserServiceException from exception
+    except Exception as exception:
+        artist_service_logger.exception(
+            f"Unexpected error in Artist Service creating artist : {user_name}"
+        )
+        raise UserServiceException from exception
 
 
-def update_artist(
-    name: str,
-    photo: str,
-    playlists: list[str],
-    saved_playlists: list[str],
-    playback_history: list[str],
-    uploaded_songs: list[str],
-    token: TokenData,
-) -> None:
-    """Updates a artist , duplicated playlists and songs wont be added
-
-    Parameters
-    ----------
-        name (str): Artists's name
-        photo (str): Url of artist thumbnail
-        playlists (list) : artists playlists
-        playlists (list) : others artists playlists saved by artist with name "name"
-        playback_history (list) : song names of playback history of the artist
-        token (TokenData) : token with data of the artist
-
-
-    Raises
-    ------
-        400 : Bad Request
-        404 : Artist Not Found
-
-    Returns
-    -------
-
-    """
-    if not validate_parameter(name):
-        raise HTTPException(status_code=400, detail="Parámetros no válidos")
-
-    check_jwt_artist_is_artist(token=token, artist=name)
-
-    result_artist_exists = artist_collection.find_one({"name": name})
-
-    if not result_artist_exists:
-        raise HTTPException(status_code=404, detail="El artista no existe")
-
-    artist_collection.update_one(
-        {"name": name},
-        {
-            "$set": {
-                "photo": photo if "http" in photo else "",
-                "saved_playlists": list(set(saved_playlists)),
-                "playlists": list(set(playlists)),
-                "playback_history": list(set(playback_history)),
-                "uploaded_songs": list(set(uploaded_songs)),
-            }
-        },
-    )
-
-
-def delete_artist(name: str) -> None:
-    """Deletes a artist by name
-
-    Parameters
-    ----------
-        name (str): Artists's name
-
-    Raises
-    ------
-        400 : Bad Request
-        404 : Artist Not Found
-
-    Returns
-    -------
-
-    """
-    if not validate_parameter(name):
-        raise HTTPException(status_code=400, detail="Parámetros no válidos")
-
-    result = artist_collection.delete_one({"name": name})
-    if result.deleted_count == 0:
-        raise HTTPException(status_code=404, detail="El artista no existe")
-
-
-def get_all_artists() -> list:
-    """Returns all artists
-
-    Parameters
-    ----------
-
-    Raises
-    ------
-        400 : Bad Request
-        404 : Artist Not Found
-
-    Returns
-    -------
-        List<Artist>
-
-    """
-    artists: list = []
-    artists_files = artist_collection.find()
-
-    for artist_file in artists_files:
-        artists.append(get_artist(name=artist_file["name"]))
-
-    return artists
+def get_all_artists() -> list[ArtistDTO]:
+    try:
+        artists_dao = artist_repository.get_all_artists()
+        artists_dto = [
+            get_artist_dto_from_dao(artist_dao) for artist_dao in artists_dao
+        ]
+    except UserRepositoryException as exception:
+        artist_service_logger.exception(
+            "Unexpected error in Artist Repository getting all artists"
+        )
+        raise UserServiceException from exception
+    except Exception as exception:
+        artist_service_logger.exception(
+            "Unexpected error in Artist Service getting all artists"
+        )
+        raise UserServiceException from exception
+    else:
+        artist_service_logger.info("All artists retrieved successfully")
+        return artists_dto
 
 
 def get_playback_count_artist(user_name: str) -> int:
-    """Returns the total play count of all the artist songs
+    """Get artist songs playback count
 
-    Parameters
-    ----------
-        user_name (str) : Artist name
+    Args:
+        user_name (str): artist name
 
-    Raises
-    ------
-        400 : Bad Request
-        404 : Artist Not Found
+    Raises:
+        UserNotFoundException: artist doesnt exists
+        UserBadNameException: artist bad name
+        UserServiceException: unexpected error getting artist songs playbackc count
 
-    Returns
-    -------
-        int
-
+    Returns:
+        int: the playback count for all artist songs
     """
-    if not validate_parameter(user_name):
-        raise HTTPException(status_code=400, detail="Parámetros no válidos")
+    try:
+        validate_user_name_parameter(user_name)
+        base_user_service.validate_user_should_exists(user_name)
 
-    if not check_artists_exists(user_name):
-        raise HTTPException(status_code=404, detail="El artista no existe")
+        return base_song_service.get_artist_playback_count(user_name)
+    except UserNotFoundException as exception:
+        artist_service_logger.exception(f"Artist not found : {user_name}")
+        raise UserNotFoundException from exception
+    except UserBadNameException as exception:
+        artist_service_logger.exception(f"Bad Artist Name Parameter : {user_name}")
+        raise UserBadNameException from exception
+    except UserRepositoryException as exception:
+        artist_service_logger.exception(
+            f"Unexpected error in Artist Repository getting artist : {user_name}"
+        )
+        raise UserServiceException from exception
+    except SongServiceException as exception:
+        artist_service_logger.exception(
+            f"Unexpected error in Song Service getting artist : {user_name}"
+        )
+        raise UserServiceException from exception
+    except Exception as exception:
+        artist_service_logger.exception(
+            f"Unexpected error in Artist Service getting artist : {user_name}"
+        )
+        raise UserServiceException from exception
 
-    return song_service_provider.song_service.get_artist_playback_count(user_name)
 
+# TODO obtain all users in same query
+def get_artists(user_names: list[str]) -> list[ArtistDTO]:
+    """Get artists from a list of names
 
-def get_artists(names: list) -> list:
-    """Returns a list of Artists that match "names" list of names
+    Args:
+        user_names (list[str]): the list with the artist names to retrieve
 
-    Parameters
-    ----------
-        names (list): List of artist Names
+    Raises:
+        UserServiceException: if unexpected error getting selected artists
 
-    Raises
-    ------
-            400 : Bad Request
-            404 : Artist not found
-
-    Returns
-    -------
-        List<Artist>
-
+    Returns:
+        list[ArtistDTO]: the selected artists
     """
-    artists: list = []
+    try:
+        artists = []
+        for user_name in user_names:
+            artists.append(get_artist(user_name))
 
-    for artist_name in names:
-        artists.append(get_artist(artist_name))
+    except UserRepositoryException as exception:
+        artist_service_logger.exception(
+            f"Unexpected error in User Repository getting users {user_names}"
+        )
+        raise UserServiceException from exception
+    except Exception as exception:
+        artist_service_logger.exception(
+            f"Unexpected error in User Service getting users {user_names}"
+        )
+        raise UserServiceException from exception
+    else:
+        artist_service_logger.info("All Users retrieved successfully")
+        return artists
 
-    return artists
 
-
-def search_by_name(name: str) -> list[Artist]:
+def search_by_name(name: str) -> list[ArtistDTO]:
     """Retrieve the artists than match the name
 
     Args:
+        name (str): name to match
+
+    Raises:
+        UserServiceException: if unexpected error searching artists that match a name
+
+    Returns:
+        list[ArtistDTO]: artists that match the name
+    """
+    try:
+        matched_items_names = base_user_repository.search_by_name(
+            name, user_collection_provider.get_artist_collection()
+        )
+
+        return get_artists(matched_items_names)
+    except UserRepositoryException as exception:
+        artist_service_logger.exception(
+            f"Unexpected error in Artist Repository getting items by name {name}"
+        )
+        raise UserServiceException from exception
+    except Exception as exception:
+        artist_service_logger.exception(
+            f"Unexpected error in Artist Service getting items by name {name}"
+        )
+        raise UserServiceException from exception
+
+
+def does_artist_exists(user_name: str) -> bool:
+    """Returns if artist exists
+
+    Args:
     ----
-        name (str): the name to match
+        user_name (str): artist name
 
     Returns:
     -------
-        List[Artist]: a list with the artists that match the name
+        bool: if the artist exists
 
     """
-    artists_names_response = artist_collection.find(
-        {"name": {"$regex": name, "$options": "i"}}, {"_id": 0, "name": 1}
-    )
-
-    artists_names = []
-
-    [artists_names.append(artist["name"]) for artist in artists_names_response]
-
-    return get_artists(artists_names)
-
-
-# * AUX METHODs
-
-
-def add_playback_history(
-    user_name: str, song: str, MAX_NUMBER_PLAYBACK_HISTORY_SONGS: int
-):
-    artist_data = artist_collection.find_one({"name": user_name})
-
-    playback_history = artist_data["playback_history"]
-
-    if len(playback_history) == MAX_NUMBER_PLAYBACK_HISTORY_SONGS:
-        playback_history.pop(0)
-
-    playback_history.append(song)
-
-    artist_collection.update_one(
-        {"name": user_name}, {"$set": {"playback_history": playback_history}}
-    )
-
-
-def add_saved_playlist(user_name: str, playlist_name: str):
-    artist_data = artist_collection.find_one({"name": user_name})
-
-    saved_playlists = artist_data["saved_playlists"]
-
-    saved_playlists.append(playlist_name)
-
-    artist_collection.update_one(
-        {"name": user_name}, {"$set": {"saved_playlists": list(set(saved_playlists))}}
-    )
-
-
-def delete_saved_playlist(user_name: str, playlist_name: str):
-    artist_data = artist_collection.find_one({"name": user_name})
-
-    saved_playlists = artist_data["saved_playlists"]
-
-    if playlist_name in saved_playlists:
-        saved_playlists.remove(playlist_name)
-
-        artist_collection.update_one(
-            {"name": user_name}, {"$set": {"saved_playlists": saved_playlists}}
-        )
-
-
-def add_playlist_to_owner(user_name: str, playlist_name: str) -> None:
-    artist_data = artist_collection.find_one({"name": user_name})
-
-    playlists = artist_data["playlists"]
-
-    playlists.append(playlist_name)
-
-    artist_collection.update_one(
-        {"name": user_name}, {"$set": {"playlists": list(set(playlists))}}
-    )
-
-
-def delete_playlist_from_owner(user_name: str, playlist_name: str) -> None:
-    artist_data = artist_collection.find_one({"name": user_name})
-
-    playlists = artist_data["playlists"]
-
-    if playlist_name in playlists:
-        playlists.remove(playlist_name)
-
-        artist_collection.update_one(
-            {"name": user_name}, {"$set": {"playlists": playlists}}
-        )
-
-
-def update_playlist_name(old_playlist_name: str, new_playlist_name: str) -> None:
-    artist_collection.update_many(
-        {"saved_playlists": old_playlist_name},
-        {"$set": {"saved_playlists.$": new_playlist_name}},
-    )
-    artist_collection.update_many(
-        {"playlists": old_playlist_name},
-        {"$set": {"playlists.$": new_playlist_name}},
+    return base_user_repository.check_user_exists(
+        user_name, user_collection_provider.get_artist_collection()
     )

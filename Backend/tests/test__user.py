@@ -2,11 +2,19 @@ from datetime import datetime
 
 import pytest
 from pytest import fixture
-from test_API.api_test_user import create_user, delete_user, get_user, update_user
+from starlette.status import (
+    HTTP_200_OK,
+    HTTP_201_CREATED,
+    HTTP_202_ACCEPTED,
+    HTTP_404_NOT_FOUND,
+    HTTP_405_METHOD_NOT_ALLOWED,
+)
+from test_API.api_test_user import create_user, delete_user, get_user
 from test_API.api_token import get_user_jwt_header
 
 import app.spotify_electron.security.security_service as security_service
-import app.spotify_electron.user.user_service as user_service
+import app.spotify_electron.user.base_user_service as base_user_service
+import app.spotify_electron.user.user.user_service as user_service
 from app.spotify_electron.security.security_schema import VerifyPasswordException
 
 
@@ -26,12 +34,12 @@ def test_get_user_correct(clear_test_data_db):
     )
 
     res_create_user = create_user(name=name, password=password, photo=foto)
-    assert res_create_user.status_code == 201
+    assert res_create_user.status_code == HTTP_201_CREATED
 
     jwt_headers = get_user_jwt_header(username=name, password=password)
 
     res_get_user = get_user(name=name, headers=jwt_headers)
-    assert res_get_user.status_code == 200
+    assert res_get_user.status_code == HTTP_200_OK
     assert res_get_user.json()["name"] == name
     assert res_get_user.json()["photo"] == foto
 
@@ -45,14 +53,14 @@ def test_get_user_correct(clear_test_data_db):
         assert False
 
     res_delete_user = delete_user(name=name)
-    assert res_delete_user.status_code == 202
+    assert res_delete_user.status_code == HTTP_202_ACCEPTED
 
 
 def test_get_user_not_found():
     name = "8232392323623823723"
 
     res_delete_user = delete_user(name=name)
-    assert res_delete_user.status_code == 404
+    assert res_delete_user.status_code == HTTP_404_NOT_FOUND
 
 
 def test_post_user_correct(clear_test_data_db):
@@ -61,10 +69,10 @@ def test_post_user_correct(clear_test_data_db):
     password = "hola"
 
     res_create_user = create_user(name=name, password=password, photo=foto)
-    assert res_create_user.status_code == 201
+    assert res_create_user.status_code == HTTP_201_CREATED
 
     res_delete_user = delete_user(name=name)
-    assert res_delete_user.status_code == 202
+    assert res_delete_user.status_code == HTTP_202_ACCEPTED
 
 
 def test_delete_user_correct(clear_test_data_db):
@@ -73,54 +81,24 @@ def test_delete_user_correct(clear_test_data_db):
     password = "hola"
 
     res_create_user = create_user(name=name, password=password, photo=foto)
-    assert res_create_user.status_code == 201
+    assert res_create_user.status_code == HTTP_201_CREATED
 
     res_delete_user = delete_user(name=name)
-    assert res_delete_user.status_code == 202
+    assert res_delete_user.status_code == HTTP_202_ACCEPTED
 
 
 def test_delete_user_not_found(clear_test_data_db):
     name = "8232392323623823723"
 
     res_delete_user = delete_user(name=name)
-    assert res_delete_user.status_code == 404
+    assert res_delete_user.status_code == HTTP_404_NOT_FOUND
 
 
 def test_delete_user_invalid_name(clear_test_data_db):
     name = ""
 
     res_delete_user = delete_user(name=name)
-    assert res_delete_user.status_code == 405
-
-
-def test_update_playlists_correct(clear_test_data_db):
-    name = "8232392323623823723"
-    foto = "https://foto"
-    password = "hola"
-
-    res_create_user = create_user(name=name, password=password, photo=foto)
-    assert res_create_user.status_code == 201
-
-    jwt_headers = get_user_jwt_header(username=name, password=password)
-
-    res_update_user = update_user(
-        name=name,
-        photo=foto,
-        playlists=["prueba"],
-        saved_playlists=["prueba"],
-        playback_history=["prueba"],
-        headers=jwt_headers,
-    )
-    assert res_update_user.status_code == 204
-
-    res_get_user = get_user(name=name, headers=jwt_headers)
-    assert res_get_user.status_code == 200
-    assert len(res_get_user.json()["playback_history"]) == 1
-    assert len(res_get_user.json()["saved_playlists"]) == 1
-    assert len(res_get_user.json()["playlists"]) == 1
-
-    res_delete_user = delete_user(name=name)
-    assert res_delete_user.status_code == 202
+    assert res_delete_user.status_code == HTTP_405_METHOD_NOT_ALLOWED
 
 
 def test_check_encrypted_password_correct():
@@ -128,11 +106,10 @@ def test_check_encrypted_password_correct():
     foto = "https://foto"
     password = "hola"
     user_service.create_user(name, foto, password)
-    user = user_service.get_user(name)
-    generated_password = user.password
+    generated_password = base_user_service.get_user_password(name)
 
     security_service.verify_password(password, generated_password)
-    user_service.delete_user(name)
+    base_user_service.delete_user(name)
 
 
 def test_check_encrypted_password_different():
@@ -140,12 +117,11 @@ def test_check_encrypted_password_different():
     foto = "https://foto"
     password = "hola"
     user_service.create_user(name, foto, password)
-    user = user_service.get_user(name)
     password = "hola2"
-    generated_password = user.password
+    generated_password = base_user_service.get_user_password(name)
     with pytest.raises(VerifyPasswordException):
         security_service.verify_password(password, generated_password)
-    user_service.delete_user(name)
+    base_user_service.delete_user(name)
 
 
 # executes after all tests

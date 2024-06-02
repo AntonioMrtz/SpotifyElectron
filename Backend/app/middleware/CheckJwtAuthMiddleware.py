@@ -30,6 +30,7 @@ class CheckJwtAuthMiddleware(BaseHTTPMiddleware):
             "/login",
             "/artists/",
             "/artists",
+            "/token",
         ],
     }
     """HTTP Urls that wont be checked"""
@@ -92,7 +93,7 @@ class CheckJwtAuthMiddleware(BaseHTTPMiddleware):
 
         """
         try:
-            security_service.check_jwt_is_valid(jwt)
+            security_service.validate_jwt(jwt)
         except (JWTValidationException, Exception):
             check_jwt_auth_middleware_logger.exception(
                 f"Request with invalid JWT {jwt} {request}"

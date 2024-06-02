@@ -1,11 +1,11 @@
 from dataclasses import dataclass
 
-from app.exceptions.exceptions_schema import SpotifyElectronException
+from app.exceptions.base_exceptions_schema import SpotifyElectronException
 
 
 @dataclass
 class PlaylistDAO:
-    """A class to represent playlist data in the persistence layer"""
+    """Class to represent playlist data in the persistence layer"""
 
     name: str
     photo: str
@@ -17,7 +17,7 @@ class PlaylistDAO:
 
 @dataclass
 class PlaylistDTO:
-    """A class to represent playlist data in the endpoints transfering layer"""
+    """Class to represent playlist data in the endpoints transfer layer"""
 
     name: str
     photo: str
@@ -37,15 +37,14 @@ def get_playlist_dao_from_document(document: dict) -> PlaylistDAO:
     Returns:
     -------
         PlaylistDAO: PlaylistDAO Object
-
     """
     return PlaylistDAO(
-        document["name"],
-        document["photo"],
-        document["description"],
-        document["upload_date"][:-1],
-        document["owner"],
-        document["song_names"],
+        name=document["name"],
+        photo=document["photo"],
+        description=document["description"],
+        upload_date=document["upload_date"][:-1],
+        owner=document["owner"],
+        song_names=document["song_names"],
     )
 
 
@@ -59,15 +58,14 @@ def get_playlist_dto_from_dao(playlist_dao: PlaylistDAO) -> PlaylistDTO:
     Returns:
     -------
         PlaylistDTO: PlaylistDTO object
-
     """
     return PlaylistDTO(
-        playlist_dao.name,
-        playlist_dao.photo,
-        playlist_dao.description,
-        playlist_dao.upload_date,
-        playlist_dao.owner,
-        playlist_dao.song_names,
+        name=playlist_dao.name,
+        photo=playlist_dao.photo,
+        description=playlist_dao.description,
+        upload_date=playlist_dao.upload_date,
+        owner=playlist_dao.owner,
+        song_names=playlist_dao.song_names,
     )
 
 
@@ -77,7 +75,7 @@ class PlaylistRepositoryException(SpotifyElectronException):
     ERROR = "Error accessing Playlist Repository"
 
     def __init__(self):
-        super().__init__(self.ERROR.format(PLAYLIST=""))
+        super().__init__(self.ERROR)
 
 
 class PlaylistNotFoundException(SpotifyElectronException):
@@ -107,10 +105,10 @@ class PlaylistDeleteException(SpotifyElectronException):
         super().__init__(self.ERROR)
 
 
-class PlaylistInsertException(SpotifyElectronException):
-    """Exception for Playlist insert"""
+class PlaylistCreateException(SpotifyElectronException):
+    """Exception for Playlist creation"""
 
-    ERROR = "Error inserting Playlist"
+    ERROR = "Error creating Playlist"
 
     def __init__(self):
         super().__init__(self.ERROR)
@@ -128,10 +126,10 @@ class PlaylistUpdateException(SpotifyElectronException):
 class PlaylistServiceException(SpotifyElectronException):
     """Exception for Playlist Service Unexpected Exceptions"""
 
-    ERROR = "Error accessing {PLAYLIST} SERVICE"
+    ERROR = "Error accessing Playlist SERVICE"
 
     def __init__(self):
-        super().__init__(self.ERROR.format(PLAYLIST=""))
+        super().__init__(self.ERROR)
 
 
 class PlaylistBadNameException(SpotifyElectronException):

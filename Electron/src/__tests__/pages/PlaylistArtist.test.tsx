@@ -65,7 +65,7 @@ test('Playlist artist role get all info', async () => {
         console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}canciones/dto/${songName}`) {
+    if (url === `${Global.backendBaseUrl}songs/metadata/${songName}`) {
       return Promise.resolve({
         json: () => songMockFetch,
         status: 200,

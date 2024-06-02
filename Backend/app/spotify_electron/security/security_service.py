@@ -6,16 +6,13 @@ from fastapi import Depends
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 
-import app.spotify_electron.user.all_users_service as all_users_service
-import app.spotify_electron.user.artist.artist_service as artist_service
-import app.spotify_electron.user.user_service as user_service
+import app.spotify_electron.user.base_user_service as base_user_service
 from app.common.PropertiesManager import PropertiesManager
 from app.common.set_up_constants import DISTRIBUTION_ID_ENV_NAME
-from app.exceptions.exceptions_schema import BadParameterException
+from app.exceptions.base_exceptions_schema import BadParameterException
 from app.logging.logging_constants import LOGGING_SECURITY_SERVICE
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.login.login_schema import InvalidCredentialsLoginException
-from app.spotify_electron.playlist.playlist_service import handle_user_should_exists
 from app.spotify_electron.security.security_schema import (
     BadJWTTokenProvidedException,
     CreateJWTException,
@@ -26,11 +23,16 @@ from app.spotify_electron.security.security_schema import (
     JWTValidationException,
     TokenData,
     UnexpectedLoginUserException,
+    UserUnauthorizedException,
     VerifyPasswordException,
 )
-from app.spotify_electron.user.artist.artist_schema import Artist
-from app.spotify_electron.user.user_schema import User, UserNotFoundException, UserType
-from app.spotify_electron.utils.validation.utils import validate_parameter
+from app.spotify_electron.user.base_user_service import validate_user_should_exists
+from app.spotify_electron.user.user.user_schema import (
+    UserDTO,
+    UserNotFoundException,
+    UserServiceException,
+)
+from app.spotify_electron.utils.validation.validation_utils import validate_parameter
 
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 10080  # 7 days
@@ -96,7 +98,7 @@ def get_jwt_token_data(
         TokenData: the data provided by the JWT Token
 
     """
-    hanle_incoming_jwt_token(token)
+    validate_token_exists(token)
     try:
         payload = jwt.decode(
             token,  # type: ignore
@@ -108,7 +110,7 @@ def get_jwt_token_data(
         token_type = payload.get("token_type")
 
         credentials = [username, role, token_type]
-        check_are_jwt_credentials_missing(credentials)
+        validate_jwt_credentials_missing(credentials)
         token_data = TokenData(username=username, role=role, token_type=token_type)  # type: ignore
 
     except JWTNotProvidedException as exception:
@@ -134,7 +136,7 @@ def get_jwt_token_data(
 
 def get_current_user(
     token: Annotated[str, Depends(oauth2_scheme)],
-) -> Artist | User:
+) -> UserDTO:
     """Get current user from JWT Token
 
     Args:
@@ -151,16 +153,14 @@ def get_current_user(
     """
     try:
         jwt = get_jwt_token_data(token)
+        jwt_username = jwt.username
 
-        if jwt.role == UserType.ARTIST:
-            user = artist_service.get_artist(jwt.username)
-        elif jwt.role == UserType.USER:
-            user = user_service.get_user(jwt.username)
+        user = base_user_service.get_user(jwt_username)
     except BadJWTTokenProvidedException as exception:
         security_service_logger.exception("Error getting jwt token data")
         raise BadJWTTokenProvidedException from exception
     except UserNotFoundException as exception:
-        security_service_logger.exception(f"User {jwt.username} not found")
+        security_service_logger.exception(f"User {jwt_username} not found")
         raise UserNotFoundException from exception
     except Exception as exception:
         security_service_logger.exception(
@@ -168,7 +168,7 @@ def get_current_user(
         )
         raise JWTGetUserException from exception
     else:
-        security_service_logger.info(f"Get Current User successful : {user}")
+        security_service_logger.info(f"Get Current User successful : {jwt_username}")
         return user
 
 
@@ -239,13 +239,12 @@ def login_user(name: str, password: str) -> str:
     try:
         validate_parameter(name)
         validate_parameter(password)
+        validate_user_should_exists(name)
 
-        handle_user_should_exists(name)
-        # TODO unificar y tratar excepciones
-        user_type = all_users_service.get_user_type(user_name=name)
-        user = all_users_service.get_user(user_name=name)
+        user_type = base_user_service.get_user_type(user_name=name)
+        user_password = base_user_service.get_user_password(user_name=name)
 
-        verify_password(password, user.password)
+        verify_password(password, user_password)
 
         jwt_data = {
             "access_token": name,
@@ -270,6 +269,11 @@ def login_user(name: str, password: str) -> str:
     except UserNotFoundException as exception:
         security_service_logger.exception(f"User {name} doesnt exists")
         raise UserNotFoundException from exception
+    except UserServiceException as exception:
+        security_service_logger.exception(
+            f"Unexpected error in User service while login user : {name}"
+        )
+        raise UnexpectedLoginUserException from exception
     except Exception as exception:
         security_service_logger.exception(f"Unexpected error login user : {name}")
         raise UnexpectedLoginUserException from exception
@@ -278,7 +282,7 @@ def login_user(name: str, password: str) -> str:
         return access_token_data
 
 
-def check_jwt_is_valid(token: str) -> None:
+def validate_jwt(token: str) -> None:
     """Check if JWT token is valid
 
     Args:
@@ -294,7 +298,7 @@ def check_jwt_is_valid(token: str) -> None:
         decoded_token = jwt.decode(
             token, getattr(PropertiesManager, DISTRIBUTION_ID_ENV_NAME), ALGORITHM
         )
-        check_token_is_expired(decoded_token)
+        validate_token_is_expired(decoded_token)
 
     except JWTError as exception:
         security_service_logger.exception(f"Error decoding token : {token}")
@@ -311,7 +315,21 @@ def check_jwt_is_valid(token: str) -> None:
         raise JWTValidationException from exception
 
 
-def check_token_is_expired(token: dict) -> None:
+def validate_jwt_user_matches_user(token: TokenData, user_name: str):
+    """Validates if user matches the jwt user
+
+    Args:
+        token (TokenData): jwt token
+        user_name (str): user
+
+    Raises:
+        UserUnauthorizedException: if the user didnt match the jwt user
+    """
+    if not token.username == user_name:
+        raise UserUnauthorizedException
+
+
+def validate_token_is_expired(token: dict) -> None:
     """Checks if token is expired comparing current date with expiration date
 
     Args:
@@ -328,7 +346,7 @@ def check_token_is_expired(token: dict) -> None:
         raise JWTExpiredException
 
 
-def hanle_incoming_jwt_token(token: Any) -> None:
+def validate_token_exists(token: Any) -> None:
     """Check whether jwt token is None or not
 
     Args:
@@ -344,7 +362,7 @@ def hanle_incoming_jwt_token(token: Any) -> None:
         raise JWTNotProvidedException
 
 
-def check_are_jwt_credentials_missing(credentials: list[Any]):
+def validate_jwt_credentials_missing(credentials: list[Any]):
     """Check if any jwt credentials are missing
 
     Args:

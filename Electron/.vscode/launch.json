@@ -7,7 +7,10 @@
       "request": "launch",
       "protocol": "inspector",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "start"],
+      "runtimeArgs": [
+        "run",
+        "start"
+      ],
       "env": {
         "MAIN_ARGS": "--inspect=5858 --remote-debugging-port=9223"
       }
@@ -19,24 +22,15 @@
       "port": 9223,
       "webRoot": "${workspaceFolder}",
       "timeout": 15000
-    },
-    {
-      "name": "Debug Jest Tests",
-      "type": "node",
-      "request": "launch",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "test", "--", "--runInBand"],
-      "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen",
-      "disableOptimisticBPs": true,
-      "skipFiles": ["<node_internals>/**"],
-      "timeout": 15000
     }
   ],
   "compounds": [
     {
       "name": "Electron: All",
-      "configurations": ["Electron: Main", "Electron: Renderer"]
+      "configurations": [
+        "Electron: Main",
+        "Electron: Renderer"
+      ]
     }
   ]
 }

@@ -1,8 +1,4 @@
-<<<<<<<< HEAD:docs/backend/Enviroment.md
 # Enviroment
-========
-# Enviroments
->>>>>>>> 9df54c2 (docs: add mkdocs structure with enviroment and git convention files):docs/backend/Enviroments.md
 
 In this document we will cover:
 

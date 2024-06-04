@@ -6,6 +6,7 @@ import app.services.security_service as security_service
 from app.logging.logger_constants import LOGGIN_CHECK_AUTH_JWT_MIDDLEWARE
 from app.logging.logging_schema import SpotifyElectronLogger
 
+
 check_jwt_auth_middleware_logger = SpotifyElectronLogger(
     LOGGIN_CHECK_AUTH_JWT_MIDDLEWARE
 ).getLogger()
@@ -21,6 +22,7 @@ class CheckJwtAuthMiddleware(BaseHTTPMiddleware):
             "/docs",
             "/docs/",
             "/openapi.json",
+            "/health/",
         ],
         "POST": [
             "/usuarios/",

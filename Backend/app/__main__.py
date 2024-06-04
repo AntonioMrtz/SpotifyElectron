@@ -23,6 +23,7 @@ from app.spotify_electron.search import search_controller
 from app.spotify_electron.song import song_controller
 from app.spotify_electron.user import user_controller
 from app.spotify_electron.user.artist import artist_controller
+from app.routers import health
 
 main_logger = SpotifyElectronLogger(LOGGING_MAIN).getLogger()
 
@@ -46,6 +47,7 @@ async def lifespan_handler(app: FastAPI):
     app.include_router(artist_controller.router)
     app.include_router(login_controller.router)
     app.include_router(search_controller.router)
+    app.include_router(health.router)
     yield
     main_logger.info("Spotify Electron Backend Stopped")
 

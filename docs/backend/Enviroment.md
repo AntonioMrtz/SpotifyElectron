@@ -25,24 +25,19 @@ In this section we will explain the meaning and the usage of the enviroment vari
  * **SECRET_KEY_SIGN**: 32 byte key for signing JWT Tokens that will authenticate the user. You can use `f24e2f3ac557d487b6d879fb2d86f2b2` as an example. This key will make sure the JWT Tokens are provided by our backend and not someone else's.
  * **ENV_VALUE**: determines the current enviroment of the app, it can be:
 	* `PROD`: production enviroment.
-	* `DEV`: development enviroment.
+	* `DEV`: development enviroment. Enables hot reload.
 * **ARCH**: the song architecture selected, it can be one of the following [architectures](Architecture.md):
-	* `STREAMING_LAMBDA`: song architecture using AWS Lambda with streaming.
-	* `STREAMING_SDK`: song architecture using aws sdk with streaming.
-	* `DB_BLOB`: song architecture with no streaming/cloud.
+	* `STREAMING_SERVERLESS_FUNCTION`: song architecture using AWS Serverless Function (LAMBNDA) with streaming.
+	* `DB_BLOB(Recommended for testing)`: song architecture with no streaming/cloud, storing and serving songs directly from the database.
 
-### Streaming using AWS Lambda (STREAMING_LAMBDA)
+### Streaming using AWS Serverless Functions (STREAMING_SERVERLESS_FUNCTION)
 
-* **LAMBDA_URL**: the url of the AWS Lambda function that manages songs and comunicates with cloud storage.
+* **SERVERLESS_FUNCTION_URL**: the url of the AWS serverless function (Lambda) that manages songs and comunicates with cloud storage.
 * **MONGO_URI**: the database connection URI such as ```mongodb://root:root@localhost:27017/```, this will connect backend into the selected database for storing all persistent data but not including song files.
 
 
 #todo see .env.example associated, link file
 
-### Streaming with AWS SDK (STREAMING_SDK)
-
-* **DISTRIBUTION_ID**: the id of the AWS Cloudfront distribution
-* **MONGO_URI**: the database connection URI such as ```mongodb://root:root@localhost:27017/```, this will connect backend into the selected database for storing all persistent data but not including song files.
 
 
 #todo see .env.example associated, link file
@@ -85,8 +80,7 @@ You can also use the following `.env` file for changing between architectures as
 ```
 MONGO_URI=mongodb://root:root@localhost:27017/
 SECRET_KEY_SIGN=f24e2f3ac557d487b6d879fb2d86f2b2
-LAMBDA_URL=https://lambda-url.us-east-1.on.aws/path/
-DISTRIBUTION_ID=A5K9R3X7Y2B8ZP
+STREAMING_SERVERLESS_FUNCTION=https://lambda-url.us-east-1.on.aws/path/
 ENV_VALUE=DEV
 ARCH=DB_BLOB
 ```

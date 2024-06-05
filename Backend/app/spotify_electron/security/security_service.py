@@ -32,7 +32,7 @@ from app.spotify_electron.user.user.user_schema import (
     UserNotFoundException,
     UserServiceException,
 )
-from app.spotify_electron.utils.validation.validation_utils import validate_parameter
+from app.spotify_electron.utils.validations.validation_utils import validate_parameter
 
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 10080  # 7 days

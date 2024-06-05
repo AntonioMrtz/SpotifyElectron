@@ -10,7 +10,7 @@ from app.spotify_electron.search.search_schema import (
     SearchResult,
     SearchServiceException,
 )
-from app.spotify_electron.utils.validation.validation_utils import validate_parameter
+from app.spotify_electron.utils.validations.validation_utils import validate_parameter
 
 search_service_logger = SpotifyElectronLogger(LOGGING_SEARCH_SERVICE).getLogger()
 

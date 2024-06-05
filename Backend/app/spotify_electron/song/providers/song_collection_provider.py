@@ -1,3 +1,4 @@
+from gridfs import GridFS
 from pymongo.collection import Collection
 
 from app.common.PropertiesManager import PropertiesManager
@@ -26,9 +27,11 @@ def get_song_collection() -> Collection:
     return repository_map.get(PropertiesManager.__getattribute__(ARCHITECTURE_ENV_NAME))  # type: ignore
 
 
-def get_gridfs_song_collection() -> Collection:
+def get_gridfs_song_collection() -> GridFS:
     """Get gridfs collection for managing song files
 
-    :return Collection: the gridfs song collection
+    :return GridFS: the gridfs song collection
     """
-    return Database().get_collection_connection(DatabaseCollection.SONG_BLOB_DATA)
+    return Database().get_gridfs_collection_connection(
+        DatabaseCollection.SONG_BLOB_DATA
+    )

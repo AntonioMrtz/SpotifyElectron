@@ -5,7 +5,7 @@ from app.spotify_electron.song.base_song_schema import (
     SongBadNameException,
     SongNotFoundException,
 )
-from app.spotify_electron.utils.validation.validation_utils import validate_parameter
+from app.spotify_electron.utils.validations.validation_utils import validate_parameter
 
 
 def validate_song_name_parameter(name: str) -> None:

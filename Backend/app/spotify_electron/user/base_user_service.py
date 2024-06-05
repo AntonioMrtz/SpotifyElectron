@@ -39,7 +39,7 @@ from app.spotify_electron.user.user.user_schema import (
 from app.spotify_electron.user.validations.user_service_validations import (
     validate_user_name_parameter,
 )
-from app.spotify_electron.utils.validation.validation_utils import validate_parameter
+from app.spotify_electron.utils.validations.validation_utils import validate_parameter
 
 base_users_service_logger = SpotifyElectronLogger(
     LOGGING_BASE_USERS_SERVICE

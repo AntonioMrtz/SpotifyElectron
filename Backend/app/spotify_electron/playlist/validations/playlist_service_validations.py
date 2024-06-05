@@ -5,7 +5,7 @@ from app.spotify_electron.playlist.playlist_schema import (
     PlaylistBadNameException,
     PlaylistNotFoundException,
 )
-from app.spotify_electron.utils.validation.validation_utils import validate_parameter
+from app.spotify_electron.utils.validations.validation_utils import validate_parameter
 
 
 def validate_playlist_name_parameter(name: str) -> None:

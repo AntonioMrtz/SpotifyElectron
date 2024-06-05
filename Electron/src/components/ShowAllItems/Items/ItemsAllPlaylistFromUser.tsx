@@ -2,14 +2,12 @@ import { useCallback, useEffect, useState } from 'react';
 import { PropsPlaylistCard } from 'components/Cards/PlaylistCard/types/propsPlaylistCard';
 import PlaylistCard from 'components/Cards/PlaylistCard/PlaylistCard';
 import Global from 'global/global';
-import { backendPathFromUserType } from 'utils/role';
 import { PropsItemsPlaylistsFromUser } from '../types/PropsItems';
 import defaultThumbnailPlaylist from '../../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 
 export default function ItemsAllPlaylistsFromUser({
   refreshSidebarData,
   userName,
-  userType,
 }: PropsItemsPlaylistsFromUser) {
   const [playlists, setPlaylists] = useState<PropsPlaylistCard[]>();
 
@@ -17,7 +15,7 @@ export default function ItemsAllPlaylistsFromUser({
     const playlistNames: string[] = [];
 
     try {
-      const fetchUrlPlaylistFromUser = `${Global.backendBaseUrl}${backendPathFromUserType[userType]}/${userName}`;
+      const fetchUrlPlaylistFromUser = `${Global.backendBaseUrl}users/${userName}`;
 
       const resFetchUrlPlaylistFromUser = await fetch(fetchUrlPlaylistFromUser);
       const resFetchUrlPlaylistFromUserJson =
@@ -29,7 +27,7 @@ export default function ItemsAllPlaylistsFromUser({
       return;
     }
 
-    fetch(`${Global.backendBaseUrl}playlists/multiple/${playlistNames}`)
+    fetch(`${Global.backendBaseUrl}playlists/selected/${playlistNames}`)
       .then((resFetchPlaylists) => resFetchPlaylists.json())
       .then((resFetchPlaylistsJson) => {
         if (resFetchPlaylistsJson.playlists) {
@@ -59,7 +57,7 @@ export default function ItemsAllPlaylistsFromUser({
       .catch(() => {
         console.log('No se pudieron obtener las playlists');
       });
-  }, [refreshSidebarData, userName, userType]);
+  }, [refreshSidebarData, userName]);
 
   useEffect(() => {
     handlePlaylists();

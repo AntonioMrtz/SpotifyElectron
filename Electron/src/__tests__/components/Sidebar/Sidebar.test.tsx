@@ -5,7 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import Global from 'global/global';
 import Sidebar from 'components/Sidebar/Sidebar';
 import Token from 'utils/token';
-import { UserType } from 'utils/role';
+import UserType from 'utils/role';
 
 const playlistName = 'playlisttest';
 const songName = 'songName';
@@ -37,7 +37,7 @@ jest.spyOn(Token, 'getTokenRole').mockReturnValue(roleUser);
 
 test('render Sidebar', async () => {
   global.fetch = jest.fn(async (url: string) => {
-    if (url === `${Global.backendBaseUrl}artistas/${artistMockFetch.name}`) {
+    if (url === `${Global.backendBaseUrl}artists/${artistMockFetch.name}`) {
       return Promise.resolve({
         json: () => artistMockFetch,
         status: 200,
@@ -47,7 +47,7 @@ test('render Sidebar', async () => {
     }
     if (
       url ===
-      `${Global.backendBaseUrl}playlists/multiple/${playlistName},${playlistName}`
+      `${Global.backendBaseUrl}playlists/selected/${playlistName},${playlistName}`
     ) {
       return Promise.resolve({
         json: () =>

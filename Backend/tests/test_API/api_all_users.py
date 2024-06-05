@@ -6,30 +6,26 @@ client = TestClient(app)
 
 
 def patch_history_playback(user_name: str, song_name: str, headers: dict):
-    response = client.patch(
-        f"/usuarios/{user_name}/historial/?nombre_cancion={song_name}", headers=headers
+    return client.patch(
+        f"/users/{user_name}/playback_history/?song_name={song_name}", headers=headers
     )
-    return response
 
 
 def patch_playlist_saved(user_name: str, playlist_name: str, headers: dict):
-    response = client.patch(
-        f"/usuarios/{user_name}/playlists_guardadas/?nombre_playlist={playlist_name}",
+    return client.patch(
+        f"/users/{user_name}/saved_playlists/?playlist_name={playlist_name}",
         headers=headers,
     )
-    return response
 
 
 def delete_playlist_saved(user_name: str, playlist_name: str, headers: dict):
-    response = client.delete(
-        f"/usuarios/{user_name}/playlists_guardadas/?nombre_playlist={playlist_name}",
+    return client.delete(
+        f"/users/{user_name}/saved_playlists/?playlist_name={playlist_name}",
         headers=headers,
     )
-    return response
 
 
 def whoami(token: str):
     headers = {"Authorization": f"{token}"}
 
-    response = client.get("/usuarios/whoami", headers=headers)
-    return response
+    return client.get("/users/whoami", headers=headers)

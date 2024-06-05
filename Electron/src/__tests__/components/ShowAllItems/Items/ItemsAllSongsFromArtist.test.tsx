@@ -30,7 +30,7 @@ const songMockFetch = {
 
 test('Render items All Songs from Artist', async () => {
   global.fetch = jest.fn((url: string) => {
-    if (url === `${Global.backendBaseUrl}artistas/${artistMockFetch.name}`) {
+    if (url === `${Global.backendBaseUrl}artists/${artistMockFetch.name}`) {
       return Promise.resolve({
         json: () => artistMockFetch,
         status: 200,
@@ -38,7 +38,7 @@ test('Render items All Songs from Artist', async () => {
         console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}canciones/dto/${songName}`) {
+    if (url === `${Global.backendBaseUrl}songs/metadata/${songName}`) {
       return Promise.resolve({
         json: () => songMockFetch,
         status: 200,

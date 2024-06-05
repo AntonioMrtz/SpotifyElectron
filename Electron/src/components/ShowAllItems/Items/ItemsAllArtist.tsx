@@ -8,7 +8,7 @@ export default function ItemsAllArtist() {
   const [artists, setArtists] = useState<PropsArtistCard[]>();
 
   const handleArtist = useCallback(() => {
-    fetch(`${Global.backendBaseUrl}artistas/`)
+    fetch(`${Global.backendBaseUrl}artists/`)
       .then((resFetchArtistas) => resFetchArtistas.json())
       .then((resFetchArtistasJson) => {
         if (resFetchArtistasJson.artists) {

@@ -16,7 +16,7 @@ def trigger_app_start():
 def clean_modified_environments():
     original_env = dict(os.environ)
     yield
-    for key in os.environ.keys():
+    for key in os.environ:
         if key not in original_env:
             del os.environ[key]
         elif os.environ[key] != original_env[key]:

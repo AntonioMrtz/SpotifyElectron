@@ -4,7 +4,7 @@ import { render } from '@testing-library/react';
 import PlayerStreaming from 'components/footer/Player/PlayerStreaming';
 import Global from 'global/global';
 import Token from 'utils/token';
-import { UserType } from 'utils/role';
+import UserType from 'utils/role';
 import { act } from 'react-test-renderer';
 
 const songName = 'songName';
@@ -25,7 +25,7 @@ jest.spyOn(Token, 'getTokenUsername').mockReturnValue(userName);
 jest.spyOn(Token, 'getTokenRole').mockReturnValue(roleUser);
 
 global.fetch = jest.fn((url: string) => {
-  if (url === `${Global.backendBaseUrl}canciones/${songName}`) {
+  if (url === `${Global.backendBaseUrl}songs/${songName}`) {
     return Promise.resolve({
       json: () => songMockFetch,
       status: 200,
@@ -33,7 +33,7 @@ global.fetch = jest.fn((url: string) => {
       console.log(error);
     });
   }
-  if (url === `${Global.backendBaseUrl}canciones/dto/${songName}`) {
+  if (url === `${Global.backendBaseUrl}songs/metadata/${songName}`) {
     return Promise.resolve({
       json: () => songMockFetch,
       status: 200,
@@ -41,7 +41,7 @@ global.fetch = jest.fn((url: string) => {
       console.log(error);
     });
   }
-  if (url === `${Global.backendBaseUrl}canciones/${songName}/numberOfPlays`) {
+  if (url === `${Global.backendBaseUrl}songs/${songName}/playback_count`) {
     return Promise.resolve({
       json: () => {},
       status: 204,
@@ -51,7 +51,7 @@ global.fetch = jest.fn((url: string) => {
   }
   if (
     url ===
-    `${Global.backendBaseUrl}usuarios/${userName}/historial?nombre_cancion=${songName}`
+    `${Global.backendBaseUrl}users/${userName}/playback_history?song_name=${songName}`
   ) {
     return Promise.resolve({
       json: () => {},

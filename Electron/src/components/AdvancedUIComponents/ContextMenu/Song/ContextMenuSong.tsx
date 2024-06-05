@@ -5,7 +5,6 @@ import InfoPopover from 'components/AdvancedUIComponents/InfoPopOver/InfoPopover
 import { InfoPopoverType } from 'components/AdvancedUIComponents/InfoPopOver/types/InfoPopover';
 import Global from 'global/global';
 import Token from 'utils/token';
-import { backendPathFromUserType } from 'utils/role';
 import { useNavigate } from 'react-router-dom';
 import styles from '../contextMenu.module.css';
 import { PropsContextMenuSong } from '../types/PropsContextMenu';
@@ -57,9 +56,8 @@ export default function ContextMenuSong({
 
   const handlePlaylists = async () => {
     const username = Token.getTokenUsername();
-    const role = Token.getTokenRole();
 
-    const fetchUrlGetUser = `${Global.backendBaseUrl}${backendPathFromUserType[role]}/${username}`;
+    const fetchUrlGetUser = `${Global.backendBaseUrl}users/${username}`;
 
     fetch(fetchUrlGetUser)
       .then((resFetchUrlGetUser) => resFetchUrlGetUser.json())
@@ -68,7 +66,7 @@ export default function ContextMenuSong({
       })
       .then((sidebarPlaylistNames) => {
         return fetch(
-          `${Global.backendBaseUrl}playlists/multiple/${sidebarPlaylistNames}`,
+          `${Global.backendBaseUrl}playlists/selected/${sidebarPlaylistNames}`,
         );
       })
       .then((resFetchPlaylists) => {
@@ -122,7 +120,7 @@ export default function ContextMenuSong({
       const url = `${Global.backendBaseUrl}playlists/${selectedPlaylistName}`;
       const { photo } = playlistData;
 
-      const fetchUrlUpdateSong = `${url}?foto=${photo}&descripcion=${playlistData.description}`;
+      const fetchUrlUpdateSong = `${url}?photo=${photo}&description=${playlistData.description}`;
 
       const newSongsPutPlaylist: string[] = [
         songName,
@@ -157,7 +155,7 @@ export default function ContextMenuSong({
       const url = `${Global.backendBaseUrl}playlists/${playlistName}`;
       const { photo, description } = playlistData;
 
-      const fetchUrlUpdateSong = `${url}?foto=${photo}&descripcion=${description}`;
+      const fetchUrlUpdateSong = `${url}?photo=${photo}&description=${description}`;
 
       const newSongsPutPlaylist = playlistData.song_names.filter(
         (songNameFetch: any) => songNameFetch !== songName,
@@ -192,7 +190,7 @@ export default function ContextMenuSong({
         Math.floor(Math.random() * 1000),
       ).toString()}`;
 
-      const fetchPostSongUrl = `${Global.backendBaseUrl}playlists/?nombre=${newPlaylistName}&foto=foto&descripcion=Insertar+descripcion`;
+      const fetchPostPlaylistWithSongUrl = `${Global.backendBaseUrl}playlists/?name=${newPlaylistName}&photo=foto&description=Insertar+descripcion`;
 
       const requestOptions = {
         method: 'POST',
@@ -202,7 +200,10 @@ export default function ContextMenuSong({
         body: JSON.stringify([songName]),
       };
 
-      const postResponse = await fetch(fetchPostSongUrl, requestOptions);
+      const postResponse = await fetch(
+        fetchPostPlaylistWithSongUrl,
+        requestOptions,
+      );
 
       if (postResponse.status === 201) {
         refreshSidebarData();

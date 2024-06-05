@@ -10,7 +10,7 @@ import Global from 'global/global';
 import Token from 'utils/token';
 import { InfoPopoverType } from 'components/AdvancedUIComponents/InfoPopOver/types/InfoPopover';
 import ConfirmationModal from 'components/AdvancedUIComponents/InfoPopOver/InfoPopover';
-import { UserType } from 'utils/role';
+import UserType from 'utils/role';
 import LoadingCircleSmall from 'components/AdvancedUIComponents/LoadingCircle/LoadingCircleSmallNoPadding';
 import GenreOption from './GenreOption/GenreOption';
 import styles from './addSongPlayListAccordion.module.css';
@@ -83,10 +83,9 @@ export default function AddSongPlayListAccordion({
   const [loadingUploadSong, setLoadingUploadSong] = useState(false);
 
   const [formDataSong, setFormDataSong] = useState({
-    nombre: '',
-    artista: '',
-    genero: '',
-    foto: '',
+    name: '',
+    genre: '',
+    photo: '',
   });
 
   const handleChangeSong = (
@@ -115,7 +114,7 @@ export default function AddSongPlayListAccordion({
     setLoadingUploadSong(true);
     setIsCloseAllowed(false);
 
-    const url = new URL(`${Global.backendBaseUrl}canciones/`);
+    const url = new URL(`${Global.backendBaseUrl}songs/`);
 
     if (formDataSong && songFile) {
       Object.entries(formDataSong).forEach(([key, value]) => {
@@ -181,7 +180,7 @@ export default function AddSongPlayListAccordion({
     >,
   ) => {
     if (event.target && event.target.name) {
-      if (event.target.name === 'foto') {
+      if (event.target.name === 'photo') {
         setThumbnailUploadPlaylist(event.target.value);
       }
 
@@ -206,8 +205,8 @@ export default function AddSongPlayListAccordion({
         }
       });
 
-      if (!url.searchParams.get('descripcion')) {
-        url.searchParams.set('descripcion', '');
+      if (!url.searchParams.get('description')) {
+        url.searchParams.set('description', '');
       }
 
       const requestOptions = {
@@ -255,7 +254,7 @@ export default function AddSongPlayListAccordion({
   const [genres, setGenres] = useState<{}>();
 
   const handleGenres = () => {
-    fetch(`${Global.backendBaseUrl}generos/`)
+    fetch(`${Global.backendBaseUrl}genres/`)
       .then((res) => res.json())
       .then((res) => {
         setGenres(res);
@@ -306,8 +305,8 @@ export default function AddSongPlayListAccordion({
                 <div className="p-0 mb-3 me-3 container-fluid">
                   <input
                     type="text"
-                    id="nombre"
-                    name="nombre"
+                    id="name"
+                    name="name"
                     placeholder="Nombre de la playlist"
                     className={` `}
                     onChange={handleChangePlaylist}
@@ -317,8 +316,8 @@ export default function AddSongPlayListAccordion({
                 <div className="mb-3 container-fluid p-0">
                   <input
                     type="text"
-                    id="foto"
-                    name="foto"
+                    id="photo"
+                    name="photo"
                     placeholder="URL de la miniatura de la playlist"
                     className={` `}
                     onChange={handleChangePlaylist}
@@ -328,8 +327,8 @@ export default function AddSongPlayListAccordion({
               </div>
               <div className="container-fluid p-0">
                 <textarea
-                  id="descripcion"
-                  name="descripcion"
+                  id="description"
+                  name="description"
                   placeholder="Descripción de la playlist"
                   className={`${styles.input}`}
                   onChange={handleChangePlaylist}
@@ -388,8 +387,8 @@ export default function AddSongPlayListAccordion({
                 <div className="p-0 mb-3 w-100">
                   <input
                     type="text"
-                    id="nombre"
-                    name="nombre"
+                    id="name"
+                    name="name"
                     placeholder="Nombre de la canción"
                     className={` ${styles.input}`}
                     onChange={handleChangeSong}
@@ -400,11 +399,11 @@ export default function AddSongPlayListAccordion({
               <div className="p-0 mb-3 me-2">
                 <input
                   type="text"
-                  id="foto"
+                  id="photo"
                   placeholder="URL de la miniatura de la canción"
                   className={` form-control ${styles.input}`}
                   onChange={handleChangeSong}
-                  name="foto"
+                  name="photo"
                   required
                 />
               </div>
@@ -417,7 +416,7 @@ export default function AddSongPlayListAccordion({
                     className="form-select-sm mb-3"
                     aria-label="Default select example"
                     onChange={handleChangeSong}
-                    name="genero"
+                    name="genre"
                     required
                     defaultValue="Elige un género"
                   >

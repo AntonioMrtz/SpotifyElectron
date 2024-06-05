@@ -4,7 +4,7 @@ import '@testing-library/jest-dom/extend-expect';
 import { BrowserRouter } from 'react-router-dom';
 import Global from 'global/global';
 import Token from 'utils/token';
-import { UserType } from 'utils/role';
+import UserType from 'utils/role';
 import AddSongPlayListAccordion from 'components/Sidebar/ModalAddSongPlaylist/Accordion/AddSongPlayListAccordion';
 
 const userName = 'prueba';
@@ -19,7 +19,7 @@ test('render AddSongPlaylistAccordion', async () => {
   const setIsCloseAllowed = jest.fn();
 
   global.fetch = jest.fn(async (url: string) => {
-    if (url === `${Global.backendBaseUrl}generos/`) {
+    if (url === `${Global.backendBaseUrl}genres/`) {
       return Promise.resolve({
         json: () => JSON.stringify({ Rock: 'Rock', Pop: 'Pop' }),
         status: 200,
@@ -53,7 +53,7 @@ test('AddSongPlaylistAccordion submit playlist correct', async () => {
   const setIsCloseAllowed = jest.fn();
 
   global.fetch = jest.fn(async (url: string) => {
-    if (url === `${Global.backendBaseUrl}generos/`) {
+    if (url === `${Global.backendBaseUrl}genres/`) {
       return Promise.resolve({
         json: () => JSON.stringify({ Rock: 'Rock', Pop: 'Pop' }),
         status: 200,
@@ -129,7 +129,7 @@ test('AddSongPlaylistAccordion submit song correct', async () => {
   const setIsCloseAllowed = jest.fn();
 
   global.fetch = jest.fn(async (url: string) => {
-    if (url === `${Global.backendBaseUrl}generos/`) {
+    if (url === `${Global.backendBaseUrl}genres/`) {
       return Promise.resolve({
         json: () => JSON.stringify({ Rock: 'Rock', Pop: 'Pop' }),
         status: 200,
@@ -172,7 +172,7 @@ test('AddSongPlaylistAccordion submit song correct', async () => {
   const inputPhoto = component.getByPlaceholderText(
     'URL de la miniatura de la playlist',
   );
-  const eligeUnGeneroOption = component.getByText('❗ Elige un género');
+  const selectGenreOption = component.getByText('❗ Elige un género');
 
   // Find the file input element by its name or other suitable selector
   const fileInputElement = component.getByTestId('sidebar-file-input');
@@ -188,7 +188,7 @@ test('AddSongPlaylistAccordion submit song correct', async () => {
   });
 
   // Simulate selecting an option
-  fireEvent.change(eligeUnGeneroOption, {
+  fireEvent.change(selectGenreOption, {
     target: { value: 'Rock' },
   });
 

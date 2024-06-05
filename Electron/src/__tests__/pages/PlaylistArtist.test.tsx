@@ -5,7 +5,7 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import Playlist from 'pages/Playlist/Playlist';
 import Token from 'utils/token';
 import Global from 'global/global';
-import { UserType } from 'utils/role';
+import UserType from 'utils/role';
 
 const userName = 'prueba';
 const roleArtist = UserType.ARTIST;
@@ -57,7 +57,7 @@ test('Playlist artist role get all info', async () => {
         console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}artistas/${userName}`) {
+    if (url === `${Global.backendBaseUrl}artists/${userName}`) {
       return Promise.resolve({
         json: () => artistMockFetch,
         status: 200,
@@ -65,7 +65,7 @@ test('Playlist artist role get all info', async () => {
         console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}canciones/dto/${songName}`) {
+    if (url === `${Global.backendBaseUrl}songs/metadata/${songName}`) {
       return Promise.resolve({
         json: () => songMockFetch,
         status: 200,

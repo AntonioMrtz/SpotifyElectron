@@ -3,7 +3,7 @@ import '@testing-library/jest-dom/extend-expect';
 import { act, fireEvent, render } from '@testing-library/react';
 import ContextMenuSong from 'components/AdvancedUIComponents/ContextMenu/Song/ContextMenuSong';
 import Global from 'global/global';
-import { UserType } from 'utils/role';
+import UserType from 'utils/role';
 import Token from 'utils/token';
 import * as router from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
@@ -60,7 +60,7 @@ global.fetch = jest.fn((url: string, options: any) => {
       console.log(error);
     });
   }
-  if (url === `${Global.backendBaseUrl}playlists/multiple/${playlistName}`) {
+  if (url === `${Global.backendBaseUrl}playlists/selected/${playlistName}`) {
     return Promise.resolve({
       json: () =>
         Promise.resolve({
@@ -71,7 +71,7 @@ global.fetch = jest.fn((url: string, options: any) => {
       console.log(error);
     });
   }
-  if (url === `${Global.backendBaseUrl}artistas/${artistMockFetch.name}`) {
+  if (url === `${Global.backendBaseUrl}users/${artistMockFetch.name}`) {
     return Promise.resolve({
       json: () => artistMockFetch,
       status: 200,

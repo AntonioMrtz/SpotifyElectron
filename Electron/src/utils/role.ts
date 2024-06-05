@@ -1,9 +1,5 @@
-export enum UserType {
-  USER = 'usuario',
-  ARTIST = 'artista',
+enum UserType {
+  USER = 'user',
+  ARTIST = 'artist',
 }
-
-export const backendPathFromUserType: Record<UserType | string, string> = {
-  [UserType.ARTIST]: 'artistas',
-  [UserType.USER]: 'usuarios',
-};
+export default UserType;

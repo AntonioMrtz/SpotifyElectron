@@ -6,7 +6,6 @@ import LoadingCircle from 'components/AdvancedUIComponents/LoadingCircle/Loading
 import InfoPopover from 'components/AdvancedUIComponents/InfoPopOver/InfoPopover';
 import { InfoPopoverType } from 'components/AdvancedUIComponents/InfoPopOver/types/InfoPopover';
 import Token from 'utils/token';
-import { backendPathFromUserType } from 'utils/role';
 import styles from '../contextMenu.module.css';
 import { PropsContextMenuPlaylist } from '../types/PropsContextMenu';
 
@@ -154,9 +153,8 @@ export default function ContextMenuPlaylist({
 
   const handlePlaylists = async () => {
     const username = Token.getTokenUsername();
-    const role = Token.getTokenRole();
 
-    const fetchUrlGetUser = `${Global.backendBaseUrl}${backendPathFromUserType[role]}/${username}`;
+    const fetchUrlGetUser = `${Global.backendBaseUrl}users/${username}`;
 
     fetch(fetchUrlGetUser)
       .then((resFetchUrlGetUser) => resFetchUrlGetUser.json())
@@ -165,7 +163,7 @@ export default function ContextMenuPlaylist({
       })
       .then((sidebarPlaylistNames) => {
         return fetch(
-          `${Global.backendBaseUrl}playlists/multiple/${sidebarPlaylistNames}`,
+          `${Global.backendBaseUrl}playlists/selected/${sidebarPlaylistNames}`,
         );
       })
       .then((resFetchPlaylists) => {
@@ -227,7 +225,7 @@ export default function ContextMenuPlaylist({
       // eslint-disable-next-line camelcase
       const { photo, description, song_names } = dstPlaylistData;
 
-      const putUrl = `${url}?foto=${photo}&descripcion=${description}`;
+      const putUrl = `${url}?photo=${photo}&description=${description}`;
 
       const srcResponse = await fetch(
         `${Global.backendBaseUrl}playlists/${srcPlaylistName}`,

@@ -21,9 +21,9 @@ cd Backend;
 ```
 * MONGO_URI= uri for connecting into a MongoDB database ( mongodb://root:root@localhost:27017/ )
 * SECRET_KEY_SIGN= 32 byte key for signing tokens in backend
-* LAMBDA_URL= URL of Lambda API for accesing AWS services and managing song ( only needed in STREAMING_LAMBDA architecture )
-* ARCH= song architecture ( STREAMING_LAMBDA | DB_BLOB | STREAMING_SDK )
-* ENV_VALUE= prod or test ( PROD | TEST)
+* SERVERLESS_FUNCTION_URL= URL of Serverless/Lambda API for accesing AWS services and managing song ( only needed in STREAMING_SERVERLESS_FUNCTION architecture )
+* ARCH= song architecture ( STREAMING_SERVERLESS_FUNCTION | BLOB )
+* ENV_VALUE= prod or development ( PROD | DEV )
 
 ```
 
@@ -54,7 +54,7 @@ python -m app;
 cd docker/
 ```
 
-### Dev Enviroment
+### Development Enviroment
 
 For development it is recommended to deploy the dev enviroment containers that provide:
   * Local MongoDB Database
@@ -92,7 +92,7 @@ python -m pytest tests/
 
 Test run and generate code coverage in folder htmlcov/index.html
 ```
-python -m pytest tests/ --cov=. --cov-report=html
+python -m pytest tests/ --cov=. --cov-report=html:tests/htmlcov
 
 ```
 ## ⚓ Pre-commit

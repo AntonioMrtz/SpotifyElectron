@@ -5,38 +5,36 @@ from app.__main__ import app
 client = TestClient(app)
 
 
-def create_song(name: str, file_path: str, genero: str, foto: str, headers: dict):
-    url = f"/canciones/?nombre={name}&genero={genero}&foto={foto}"
+def create_song(name: str, file_path: str, genre: str, photo: str, headers: dict):
+    url = f"/songs/?name={name}&genre={genre}&photo={photo}"
 
     with open(file_path, "rb") as file:
-        response = client.post(url, files={"file": file}, headers=headers)
-        return response
+        return client.post(url, files={"file": file}, headers=headers)
 
 
 def get_song(name: str, headers: dict):
-    response = client.get(f"/canciones/{name}", headers=headers)
-    return response
+    return client.get(f"/songs/{name}", headers=headers)
 
 
 def delete_song(name: str):
-    response = client.delete(f"/canciones/{name}")
-    return response
+    return client.delete(f"/songs/{name}")
 
 
 def get_songs(headers: dict):
-    response = client.get("/canciones/", headers=headers)
-    return response
+    return client.get("/songs/", headers=headers)
 
 
 def patch_song_number_plays(name: str, headers: dict):
-    patch_url = f"/canciones/{name}/numberOfPlays"
+    patch_url = f"/songs/{name}/playback_count"
 
-    response = client.patch(patch_url, headers=headers)
-    return response
+    return client.patch(patch_url, headers=headers)
 
 
 def get_songs_by_genre(genre: str, headers: dict):
-    get_url = f"/canciones/generos/{genre}"
+    get_url = f"/songs/genres/{genre}"
 
-    response = client.get(get_url, headers=headers)
-    return response
+    return client.get(get_url, headers=headers)
+
+
+def get_song_metadata(name: str, headers: dict):
+    return client.get(f"/canciones/metadata/{name}", headers=headers)

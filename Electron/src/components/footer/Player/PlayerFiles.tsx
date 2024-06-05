@@ -88,7 +88,7 @@ export default function Player({
     const requestOptions = {
       method: 'PATCH',
     };
-    const fetchUrlUpdateSong: string = `${Global.backendBaseUrl}canciones/${songName}/numberOfPlays`;
+    const fetchUrlUpdateSong: string = `${Global.backendBaseUrl}songs/${songName}/playback_count`;
 
     fetch(fetchUrlUpdateSong, requestOptions).catch(() =>
       console.log('Unable to update number of plays'),
@@ -98,7 +98,7 @@ export default function Player({
   const handleUpdatePlaybackHistory = () => {
     const username = Token.getTokenUsername();
 
-    const fetchPatchPlayBackHistory: string = `${Global.backendBaseUrl}usuarios/${username}/historial?nombre_cancion=${songName}`;
+    const fetchPatchPlayBackHistory: string = `${Global.backendBaseUrl}users/${username}/playback_history?song_name=${songName}`;
 
     const requestOptionsUpdatePlaybackHistory = {
       method: 'PATCH',
@@ -119,7 +119,7 @@ export default function Player({
       if (songName === Global.noSongPlaying) return;
 
       const resFetchSong = await fetch(
-        `${Global.backendBaseUrl}canciones/${songName}`,
+        `${Global.backendBaseUrl}songs/${songName}`,
       );
 
       const resFetchSongJson = await resFetchSong.json();
@@ -127,12 +127,12 @@ export default function Player({
       handleIncreasePlayCount();
       handleUpdatePlaybackHistory();
       const resFetchSongDTO = await fetch(
-        `${Global.backendBaseUrl}canciones/dto/${songName}`,
+        `${Global.backendBaseUrl}songs/metadata/${songName}`,
       );
 
       const username = Token.getTokenUsername();
 
-      const fetchPatchPlayBackHistory: string = `${Global.backendBaseUrl}usuarios/${username}/historial?nombre_cancion=${songName}`;
+      const fetchPatchPlayBackHistory: string = `${Global.backendBaseUrl}users/${username}/playback_history?song_name=${songName}`;
 
       const requestOptionsUpdatePlaybackHistory = {
         method: 'PATCH',

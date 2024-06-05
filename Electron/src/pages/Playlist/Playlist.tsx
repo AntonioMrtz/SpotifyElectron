@@ -11,7 +11,6 @@ import Box from '@mui/material/Box';
 import ContextMenuPlaylist from 'components/AdvancedUIComponents/ContextMenu/Playlist/ContextMenuPlaylist';
 import Popover, { PopoverPosition } from '@mui/material/Popover/';
 import { secondsToHoursAndMinutesFormatted } from 'utils/date';
-import { UserType, backendPathFromUserType } from 'utils/role';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 import Song from '../../components/Song/Song';
 import styles from './playlist.module.css';
@@ -75,30 +74,15 @@ export default function Playlist({
   };
   const loadPlaylistLikedStatus = async () => {
     const username = Token.getTokenUsername();
-    const role = Token.getTokenRole();
 
     let resFetchGetUserJson;
 
     try {
-      if (role === UserType.USER) {
-        const fetchGetUser = `${Global.backendBaseUrl}${
-          backendPathFromUserType[UserType.USER]
-        }/${username}`;
+      const fetchGetUser = `${Global.backendBaseUrl}users/${username}`;
 
-        const resFetchGetUser = await fetch(fetchGetUser);
-        if (resFetchGetUser.status === 200)
-          resFetchGetUserJson = await resFetchGetUser.json();
-      } else if (role === UserType.ARTIST) {
-        const fetchGetArtist = `${Global.backendBaseUrl}${
-          backendPathFromUserType[UserType.ARTIST]
-        }/${username}`;
-
-        const resFetchGetArtist = await fetch(fetchGetArtist);
-        if (resFetchGetArtist.status === 200)
-          resFetchGetUserJson = await resFetchGetArtist.json();
-      } else {
-        console.log('Unable to get User from Token');
-      }
+      const resFetchGetUser = await fetch(fetchGetUser);
+      if (resFetchGetUser.status === 200)
+        resFetchGetUserJson = await resFetchGetUser.json();
 
       if (
         resFetchGetUserJson &&
@@ -118,7 +102,7 @@ export default function Playlist({
     const username = Token.getTokenUsername();
 
     if (liked === false) {
-      const fetchPatchSavedPlaylistUrl = `${Global.backendBaseUrl}usuarios/${username}/playlists_guardadas?nombre_playlist=${playlistName}`;
+      const fetchPatchSavedPlaylistUrl = `${Global.backendBaseUrl}users/${username}/saved_playlists?playlist_name=${playlistName}`;
 
       const requestOptionsPatchSavedPlaylistUr = {
         method: 'PATCH',
@@ -132,7 +116,7 @@ export default function Playlist({
         })
         .catch(() => console.log('Unable to update saved playlists'));
     } else {
-      const fetchDeleteSavedPlaylistUrl = `${Global.backendBaseUrl}usuarios/${username}/playlists_guardadas?nombre_playlist=${playlistName}`;
+      const fetchDeleteSavedPlaylistUrl = `${Global.backendBaseUrl}users/${username}/saved_playlists?playlist_name=${playlistName}`;
 
       const requestOptionsDeleteSavedPlaylistUr = {
         method: 'DELETE',
@@ -183,15 +167,15 @@ export default function Playlist({
   };
 
   const [formData, setFormData] = useState({
-    nombre: '',
-    foto: '',
-    descripcion: '',
+    name: '',
+    photo: '',
+    description: '',
   });
 
   const handleChangeForm = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
-    if (e.target.name === 'foto') {
+    if (e.target.name === 'photo') {
       setThumbnailUpdatePlaylist(
         e.target.value.includes('http')
           ? e.target.value
@@ -236,7 +220,7 @@ export default function Playlist({
           .forEach((songName: string) => {
             songPromises.push(
               new Promise((resolve) => {
-                fetch(`${Global.backendBaseUrl}canciones/dto/${songName}`)
+                fetch(`${Global.backendBaseUrl}songs/metadata/${songName}`)
                   .then((resFetchSongDTO) => {
                     return resFetchSongDTO.json();
                   })
@@ -293,14 +277,14 @@ export default function Playlist({
 
       const url = `${Global.backendBaseUrl}playlists/${playlistName}`;
       const photo =
-        formData.foto && formData.foto.includes('http') ? formData.foto : '';
+        formData.photo && formData.photo.includes('http') ? formData.photo : '';
 
       let fetchUrlUpdateSong: string;
 
-      if (formData.nombre !== playlistName && formData.nombre !== '') {
-        fetchUrlUpdateSong = `${url}?foto=${photo}&descripcion=${formData.descripcion}&nuevo_nombre=${formData.nombre}`;
+      if (formData.name !== playlistName && formData.name !== '') {
+        fetchUrlUpdateSong = `${url}?photo=${photo}&description=${formData.description}&new_name=${formData.name}`;
       } else {
-        fetchUrlUpdateSong = `${url}?foto=${photo}&descripcion=${formData.descripcion}`;
+        fetchUrlUpdateSong = `${url}?photo=${photo}&description=${formData.description}`;
       }
 
       const requestOptions = {
@@ -320,10 +304,10 @@ export default function Playlist({
         console.log('Unable to update playlist');
       } else {
         setopenModalUpdatePlaylist(false);
-        if (formData.nombre !== playlistName && formData.nombre !== '') {
+        if (formData.name !== playlistName && formData.name !== '') {
           //* Al cargar inmediatamente con el useEffect de location produce que el contenido para la nueva url no esta disponible
           triggerReloadSidebar();
-          navigate(`/playlist/${formData.nombre}`, { replace: true });
+          navigate(`/playlist/${formData.name}`, { replace: true });
         } else {
           loadPlaylistData();
           triggerReloadSidebar();
@@ -624,11 +608,11 @@ export default function Playlist({
                       className={`form-floating mb-3 ${styles.inputPlaylist}`}
                     >
                       <input
-                        name="nombre"
+                        name="name"
                         type="text"
                         defaultValue={playlistName}
                         className="form-control"
-                        id="nombre"
+                        id="name"
                         placeholder="Añade un nombre"
                         onChange={handleChangeForm}
                       />
@@ -640,11 +624,11 @@ export default function Playlist({
                     >
                       <div className="form-floating">
                         <textarea
-                          name="descripcion"
+                          name="description"
                           className="form-control"
                           defaultValue={description}
                           placeholder="Añade una descripción"
-                          id="descripcion"
+                          id="description"
                           style={{ height: ' 100px' }}
                           onChange={handleChangeForm}
                         />
@@ -661,17 +645,17 @@ export default function Playlist({
                   className={`form-floating container-fluid p-0 ${styles.inputPlaylist}`}
                 >
                   <input
-                    name="foto"
+                    name="photo"
                     type="text"
                     className="form-control"
-                    id="foto"
+                    id="photo"
                     defaultValue={
                       thumbnail === defaultThumbnailPlaylist ? '' : thumbnail
                     }
                     placeholder="Url de la nueva foto"
                     onChange={handleChangeForm}
                   />
-                  <label htmlFor="foto">Url de la miniatura</label>
+                  <label htmlFor="photo">Url de la miniatura</label>
                 </div>
               </div>
 

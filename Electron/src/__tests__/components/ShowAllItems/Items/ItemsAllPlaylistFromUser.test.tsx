@@ -4,7 +4,6 @@ import '@testing-library/jest-dom/extend-expect';
 import { BrowserRouter } from 'react-router-dom';
 import Global from 'global/global';
 import ItemsAllPlaylistsFromUser from 'components/ShowAllItems/Items/ItemsAllPlaylistFromUser';
-import { UserType } from 'utils/role';
 
 const playlistName = 'playlisttest';
 const songName = 'songName';
@@ -31,7 +30,7 @@ const playlistDTOMockFetch = {
 
 test('Render itemsAllPlaylistFromUser', async () => {
   global.fetch = jest.fn(async (url: string) => {
-    if (url === `${Global.backendBaseUrl}artistas/${artistMockFetch.name}`) {
+    if (url === `${Global.backendBaseUrl}users/${artistMockFetch.name}`) {
       return Promise.resolve({
         json: () => artistMockFetch,
         status: 200,
@@ -39,7 +38,7 @@ test('Render itemsAllPlaylistFromUser', async () => {
         console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}playlists/multiple/${playlistName}`) {
+    if (url === `${Global.backendBaseUrl}playlists/selected/${playlistName}`) {
       return Promise.resolve({
         json: () =>
           Promise.resolve({
@@ -60,7 +59,6 @@ test('Render itemsAllPlaylistFromUser', async () => {
       <BrowserRouter>
         <ItemsAllPlaylistsFromUser
           userName={artistMockFetch.name}
-          userType={UserType.ARTIST}
           refreshSidebarData={jest.fn()}
           id={artistMockFetch.name}
         />

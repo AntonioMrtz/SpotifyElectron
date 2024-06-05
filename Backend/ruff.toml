@@ -10,8 +10,13 @@ extend-select = [
     "TRY",
     "I",
     "SIM",
+    "C90",
+    "D201",
+    "D202",
     "PLR"
 ]
+
+ignore = ["PLR0402","PLR0911"]
 
 [format]
 # Like Black, use double quotes for strings.

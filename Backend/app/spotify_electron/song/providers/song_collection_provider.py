@@ -2,7 +2,7 @@ from pymongo.collection import Collection
 
 from app.common.PropertiesManager import PropertiesManager
 from app.common.set_up_constants import (
-    ARCH_DB_BLOB,
+    ARCH_BLOB,
     ARCH_STREAMING_SERVERLESS_FUNCTION,
     ARCHITECTURE_ENV_NAME,
 )
@@ -16,7 +16,7 @@ def get_song_collection() -> Collection:
         Collection: the song collection depending on architecture
     """
     repository_map = {
-        ARCH_DB_BLOB: Database().get_collection_connection(
+        ARCH_BLOB: Database().get_collection_connection(
             DatabaseCollection.SONG_BLOB_FILE
         ),
         ARCH_STREAMING_SERVERLESS_FUNCTION: Database().get_collection_connection(
@@ -24,3 +24,11 @@ def get_song_collection() -> Collection:
         ),
     }
     return repository_map.get(PropertiesManager.__getattribute__(ARCHITECTURE_ENV_NAME))  # type: ignore
+
+
+def get_gridfs_song_collection() -> Collection:
+    """Get gridfs collection for managing song files
+
+    :return Collection: the gridfs song collection
+    """
+    return Database().get_collection_connection(DatabaseCollection.SONG_BLOB_DATA)

@@ -14,6 +14,7 @@ class SongDAO(BaseSongDAO):
 class SongDTO(BaseSongDTO):
     """Class to represent song metadata and payload in the endpoints"""
 
+    """The streaming url of the song"""
     url: str
 
 

@@ -1,6 +1,5 @@
-import app.spotify_electron.song.aws.serverless_function.song_repository as song_repository
-import app.spotify_electron.song.aws.serverless_function.song_serverless_function_api as song_serverless_function_api
 import app.spotify_electron.song.base_song_repository as base_song_repository
+import app.spotify_electron.song.blob.song_repository as song_repository
 import app.spotify_electron.user.artist.artist_service as artist_service
 import app.spotify_electron.user.base_user_service as base_user_service
 from app.logging.logging_constants import LOGGING_SONG_AWS_SERVERLESS_FUNCTION_SERVICE
@@ -11,16 +10,7 @@ from app.spotify_electron.security.security_schema import (
     UserUnauthorizedException,
 )
 from app.spotify_electron.song.aws.serverless_function.song_schema import (
-    SongCreateSongStreamingException,
-    SongDeleteSongStreamingException,
-    SongDTO,
     SongGetUrlStreamingException,
-    get_song_dto_from_dao,
-)
-from app.spotify_electron.song.aws.serverless_function.song_service_validations import (
-    validate_get_song_url_streaming_response,
-    validate_song_creating_streaming_response,
-    validate_song_deleting_streaming_response,
 )
 from app.spotify_electron.song.base_song_schema import (
     SongBadNameException,
@@ -28,6 +18,10 @@ from app.spotify_electron.song.base_song_schema import (
     SongRepositoryException,
     SongServiceException,
     SongUnAuthorizedException,
+)
+from app.spotify_electron.song.blob.song_schema import (
+    SongDTO,
+    get_song_dto_from_dao,
 )
 from app.spotify_electron.song.validations.base_song_service_validations import (
     validate_song_name_parameter,
@@ -47,38 +41,12 @@ from app.spotify_electron.user.validations.user_service_validations import (
 )
 from app.spotify_electron.utils.audio_management.audio_management_utils import (
     EncodingFileException,
-    encode_file,
     get_song_duration_seconds,
 )
 
 song_service_logger = SpotifyElectronLogger(
     LOGGING_SONG_AWS_SERVERLESS_FUNCTION_SERVICE
 ).getLogger()
-
-
-def get_song_streaming_url(name: str) -> str:
-    """Get song streaming url
-
-    Args:
-        name (str): song name
-
-    Raises:
-        SongGetUrlStreamingException: unexpected error getting song streaming url
-
-    Returns:
-        str: the streaming url
-    """
-    response_get_url_streaming_request = song_serverless_function_api.get_song(name)
-    validate_get_song_url_streaming_response(
-        name,
-        response_get_url_streaming_request,
-    )
-
-    response_json = response_get_url_streaming_request.json()
-    streaming_url = response_json["url"]
-
-    song_service_logger.debug(f"Obtained Streaming url for song {name}")
-    return streaming_url
 
 
 def get_song(name: str) -> SongDTO:
@@ -99,9 +67,7 @@ def get_song(name: str) -> SongDTO:
         validate_song_name_parameter(name)
 
         song_dao = song_repository.get_song(name)
-        streaming_url = get_song_streaming_url(name)
-
-        song_dto = get_song_dto_from_dao(song_dao, streaming_url)
+        song_dto = get_song_dto_from_dao(song_dao)
 
     except SongBadNameException as exception:
         song_service_logger.exception(f"Bad Song Name Parameter : {name}")
@@ -160,19 +126,13 @@ async def create_song(  # noqa: C901
         validate_user_should_be_artist(artist)
 
         song_duration = get_song_duration_seconds(name, file)
-        encoded_bytes = encode_file(name, file)
-
-        response_create_song_request = song_serverless_function_api.create_song(
-            song_name=name, encoded_bytes=encoded_bytes
-        )
-        validate_song_creating_streaming_response(name, response_create_song_request)
-
         song_repository.create_song(
             name=name,
             artist=artist,
             photo=photo,
             duration=song_duration,
             genre=genre,
+            file=file,
         )
         artist_service.add_song_artist(artist, name)
     except GenreNotValidException as exception:
@@ -195,9 +155,6 @@ async def create_song(  # noqa: C901
             f"User {artist} cannot create song {name} because hes not artist"
         )
         raise SongUnAuthorizedException from exception
-    except SongCreateSongStreamingException as exception:
-        song_service_logger.exception(f"Error creating song streaming : {name}")
-        raise SongServiceException from exception
     except UserServiceException as exception:
         song_service_logger.exception(
             f"Unexpected error in User Service while creating song : {name}"
@@ -230,9 +187,6 @@ def delete_song(name: str) -> None:
     try:
         validate_song_name_parameter(name)
         validate_song_should_exists(name)
-        delete_song_streaming_response = song_serverless_function_api.delete_song(name)
-        validate_song_deleting_streaming_response(name, delete_song_streaming_response)
-
         artist_name = base_song_repository.get_artist_from_song(name=name)
 
         base_user_service.validate_user_should_exists(artist_name)
@@ -256,9 +210,6 @@ def delete_song(name: str) -> None:
         song_service_logger.exception(
             f"Unexpected error in Song Repository deleting song : {name}"
         )
-        raise SongServiceException from exception
-    except SongDeleteSongStreamingException as exception:
-        song_service_logger.exception(f"Error deleting song streaming : {name}")
         raise SongServiceException from exception
     except Exception as exception:
         song_service_logger.exception(

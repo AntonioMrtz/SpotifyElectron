@@ -30,7 +30,7 @@ main_logger = SpotifyElectronLogger(LOGGING_MAIN).getLogger()
 
 @asynccontextmanager
 async def lifespan_handler(app: FastAPI):
-    """Handles the the before and after events of the app start
+    """Handles the the startup and shutdown events of the app
 
     Parameters
     ----------

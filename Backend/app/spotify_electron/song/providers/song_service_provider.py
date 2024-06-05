@@ -3,7 +3,7 @@ from types import ModuleType
 
 from app.common.PropertiesManager import PropertiesManager
 from app.common.set_up_constants import (
-    ARCH_DB_BLOB,
+    ARCH_BLOB,
     ARCH_STREAMING_SERVERLESS_FUNCTION,
     ARCHITECTURE_ENV_NAME,
 )
@@ -12,7 +12,7 @@ from app.logging.logging_schema import SpotifyElectronLogger
 from app.patterns.Factory import BaseSongServiceModuleFactory
 from app.spotify_electron.song.song_service_constants import (
     MODULE_PREFIX_NAME,
-    SONG_SERVICE_DB_BLOB_SERVICE_MODULE_NAME,
+    SONG_SERVICE_BLOB_SERVICE_MODULE_NAME,
     SONG_SERVICE_STREAMING_AWS_SERVERLESS_FUNCTION_SERVICE_MODULE_NAME,
 )
 
@@ -23,7 +23,7 @@ class SongServiceModuleFactory(BaseSongServiceModuleFactory):
     def __init__(self) -> None:
         self.song_services = {
             ARCH_STREAMING_SERVERLESS_FUNCTION: SONG_SERVICE_STREAMING_AWS_SERVERLESS_FUNCTION_SERVICE_MODULE_NAME,
-            ARCH_DB_BLOB: SONG_SERVICE_DB_BLOB_SERVICE_MODULE_NAME,
+            ARCH_BLOB: SONG_SERVICE_BLOB_SERVICE_MODULE_NAME,
         }
         self.logger = SpotifyElectronLogger(LOGGING_SONG_SERVICE_PROVIDER).getLogger()
         super().__init__()

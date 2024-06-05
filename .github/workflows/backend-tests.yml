@@ -44,7 +44,7 @@ jobs:
           SECRET_KEY_SIGN : ${{ secrets.SECRET_KEY_SIGN }}
           DISTRIBUTION_ID : ${{ secrets.DISTRIBUTION_ID }}
           SERVERLESS_FUNCTION_URL : ${{ secrets.SERVERLESS_FUNCTION_URL }}
-          ARCH : "DB_BLOB"
+          ARCH : "BLOB"
           ENV_VALUE : "PROD"
 
       - name: Fail workflow on test failure

@@ -39,12 +39,12 @@ def get_song_duration_seconds(name: str, file) -> int:
     return int(duration)
 
 
-def encode_file(name: str, file) -> str:
+def encode_file(name: str, file: bytes) -> str:
     """Encode file into a string
 
     Args:
         name (str): file name
-        file (_type_): file
+        file (bytes): file bytes
 
     Raises:
         EncodingFileException: unexpected error encoding file

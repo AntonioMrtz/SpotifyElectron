@@ -8,15 +8,15 @@
 
 ## 🌐 Website
 
-Check our [website](https://antoniomrtz.github.io/SpotifyElectron_Web/)
+Check our [website](https://antoniomrtz.github.io/SpotifyElectron_Web/).
 
 ## 📚 Docs
 
-Check the project documentation [here](https://antoniomrtz.github.io/SpotifyElectron/)
+Check the project documentation [here](https://antoniomrtz.github.io/SpotifyElectron/).
 
 ## 🔽 Download Installer
 
-Donwload the installer [here](https://github.com/AntonioMrtz/SpotifyElectron/releases)
+Donwload the installer [here](https://github.com/AntonioMrtz/SpotifyElectron/releases).
 
 ## 🔧 Set up and run
 
@@ -45,43 +45,39 @@ Check our [project goals and vision](docs/VISION.md).
 ---
 
 
-## Software Architecture
+## 🏗️ Software Architecture
 
-![Spotify_Electron_Software_Diagram](assets/images/architecture/master-streaming-lambda-arch.png)
+![Spotify_Electron_Software_Diagram](/docs/backend/assets/architecture/app_architecture_aws_serverless.png)
 
-### Song architecture
+### 🎵 Song Architecture
 
-![Spotify_Electron_Software_Song_Diagram](assets/images/architecture/song_architecture_aws.png)
-
-### Frontend architecture
-
-![Spotify_Electron_Frontend_Diagram](assets/images/architecture/frontend-arch.png)
+![Spotify_Electron_Software_Song_Diagram](/docs/backend/assets/architecture/song_architecture_aws_serverless_function.png)
 
 ---
 
-## Walkthrough
+## 🚶 Walkthrough
 
 ### Home
 
-![Home](assets/images/walkthrough_screenshots/Home.png)
+![Home](docs/frontend/assets/walkthrough/Home.png)
 
 ### Playlist
 
-![Home](assets/images/walkthrough_screenshots/Playlist.png)
+![Home](docs/frontend/assets/walkthrough/Playlist.png)
 
 ### Upload Song
 
-![Home](assets/images/walkthrough_screenshots/UploadSong.png)
+![Home](docs/frontend/assets/walkthrough/UploadSong.png)
 
 ### Explore users, artist, songs and playlists
 
-![Explorar](assets/images/walkthrough_screenshots/Explorar.png)
+![Explorar](docs/frontend/assets/walkthrough/Explorar.png)
 
 ### Login
 
-![Login](assets/images/walkthrough_screenshots/Login.png)
+![Login](docs/frontend/assets/walkthrough/Login.png)
 
 
 ### Update Playlist
 
-![Home](assets/images/walkthrough_screenshots/UpdatePlaylist.png)
+![Home](docs/frontend/assets/walkthrough/UpdatePlaylist.png)

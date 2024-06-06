@@ -96,8 +96,9 @@ python -m pytest tests/
 Test run and generate code coverage in folder htmlcov/index.html
 ```
 python -m pytest tests/ --cov=. --cov-report=html:tests/htmlcov
-
 ```
+
+
 ## ⚓ Pre-commit
 
 Pre-commit is used for ensuring code quality before it gets commited. When you install pre-commit hooks a check will be triggered before commiting ensuring the rules specified in `.pre-commit-config.yaml`, if the check fails the commit wont be submitted. By default pre-commit will check the linting and formatting of the code that its going to be commited.

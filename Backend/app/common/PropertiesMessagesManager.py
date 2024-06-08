@@ -1,3 +1,9 @@
+"""
+Manages APP global messages, storing and making them accesible across the app
+
+Declares _PropertiesMessagesManager global object to be accessed from across the app
+"""
+
 import configparser
 import os
 import re

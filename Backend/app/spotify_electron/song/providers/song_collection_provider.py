@@ -1,3 +1,7 @@
+"""
+Provider class for supplying song collection connection with database depending on the architecture on song selected
+"""
+
 from gridfs import GridFS
 from pymongo.collection import Collection
 

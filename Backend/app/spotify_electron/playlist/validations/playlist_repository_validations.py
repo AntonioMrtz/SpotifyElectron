@@ -1,3 +1,7 @@
+"""
+Validations for Playlist repository
+"""
+
 from pymongo.results import DeleteResult, InsertOneResult, UpdateResult
 
 from app.spotify_electron.playlist.playlist_schema import (

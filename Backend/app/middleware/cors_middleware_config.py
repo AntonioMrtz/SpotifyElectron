@@ -1,3 +1,7 @@
+"""
+CORS Middleware configurations
+"""
+
 allowed_origins = [
     "http://localhost/",
     "http://localhost:1212",

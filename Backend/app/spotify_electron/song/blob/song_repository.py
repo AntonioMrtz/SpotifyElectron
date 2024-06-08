@@ -1,3 +1,10 @@
+"""
+Song repository for managing persisted data. These are stored using GridFS, a MongoDB fylesystem for storing BLOB files and its metadata.S See https://www.mongodb.com/docs/manual/core/gridfs/
+
+Song files are stored as BLOBs in a separated collection from the metadata
+When the song file is not needed, and only the metadata is required use base song services
+"""
+
 import app.spotify_electron.song.providers.song_collection_provider as song_collection_provider
 from app.logging.logging_constants import LOGGING_SONG_BLOB_REPOSITORY
 from app.logging.logging_schema import SpotifyElectronLogger

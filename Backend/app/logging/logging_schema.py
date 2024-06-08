@@ -1,3 +1,7 @@
+"""
+Logging and Format schemas
+"""
+
 import logging
 import logging.handlers
 import sys
@@ -34,7 +38,15 @@ class SpotifyElectronFormatter(logging.Formatter):
         ),
     }
 
-    def format(self, record):
+    def format(self, record: logging.LogRecord) -> str:
+        """Format log output with the custom formatter structure
+
+        Args:
+            record (LogRecord): the output log record
+
+        Returns:
+            str: the result of formating the log record with the custom formatter
+        """
         log_format = self.FORMATS.get(
             record.levelno, "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
         )
@@ -106,5 +118,10 @@ class SpotifyElectronLogger:
         else:
             return mapped_log_level
 
-    def getLogger(self):
+    def getLogger(self) -> logging.Logger:
+        """Returns the global logger
+
+        Returns:
+            logging.Logger: the global logger
+        """
         return self.logger

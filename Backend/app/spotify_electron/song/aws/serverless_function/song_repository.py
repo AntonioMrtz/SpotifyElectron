@@ -1,3 +1,10 @@
+"""
+Song repository for managing persisted data
+
+Song metadata is stored in database and song files are managed by AWS S3 instances
+When the song file is not needed, and only the metadata is required use base song services
+"""
+
 import app.spotify_electron.song.providers.song_collection_provider as song_collection_provider
 from app.logging.logging_constants import (
     LOGGING_SONG_AWS_SERVERLESS_FUNCTION_REPOSITORY,

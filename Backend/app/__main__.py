@@ -1,9 +1,10 @@
-"""App entrypoint that
+"""
+FastAPI App entrypoint
 
-* Handles startup and shutdown app events
-* Load middlewares
-* Creates the app object
-* Configure Uvicorn server
+- Handles startup and shutdown app events
+- Load middlewares
+- Creates the app object
+- Configure Uvicorn server
 
 """
 

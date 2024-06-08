@@ -1,3 +1,7 @@
+"""
+API to comunicate with AWS Serverless Function that handles song files in Cloud
+"""
+
 from requests import Response, delete, get, post
 
 from app.common.PropertiesManager import PropertiesManager

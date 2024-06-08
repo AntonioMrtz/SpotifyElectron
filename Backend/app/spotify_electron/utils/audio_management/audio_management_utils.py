@@ -1,3 +1,7 @@
+"""
+Audio management utils
+"""
+
 import base64
 import io
 

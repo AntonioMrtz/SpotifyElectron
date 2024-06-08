@@ -1,3 +1,7 @@
+"""
+Search schema for domain model
+"""
+
 from dataclasses import dataclass
 
 from app.exceptions.base_exceptions_schema import SpotifyElectronException

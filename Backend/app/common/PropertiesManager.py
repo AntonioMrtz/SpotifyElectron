@@ -1,3 +1,9 @@
+"""
+Manages APP global state variables and manages initialization of enviroment variables and .ini files
+
+Declares PropertiesManager global object to be accessed from across the app
+"""
+
 import configparser
 import os
 
@@ -14,7 +20,6 @@ from app.common.set_up_constants import (
     ARCHITECTURE_ENV_NAME,
     DEFAULT_ARCHITECTURE,
     DEV,
-    DISTRIBUTION_ID_ENV_NAME,
     ENV_VALUE_ENV_NAME,
     MONGO_URI_ENV_NAME,
     PROD,
@@ -41,7 +46,6 @@ class _PropertiesManager:
         self.env_variables = [
             MONGO_URI_ENV_NAME,
             SECRET_KEY_SIGN_ENV_NAME,
-            DISTRIBUTION_ID_ENV_NAME,
             SERVERLESS_FUNCTION_URL_ENV_NAME,
             ENV_VALUE_ENV_NAME,
         ]

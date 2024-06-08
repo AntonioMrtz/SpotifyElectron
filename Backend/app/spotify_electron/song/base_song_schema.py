@@ -1,3 +1,9 @@
+"""
+Base Song schema.
+It contains Base DAO/DTO objects both for Metadata and Song containing
+the song resource.
+"""
+
 from dataclasses import dataclass
 
 from app.exceptions.base_exceptions_schema import SpotifyElectronException
@@ -6,7 +12,7 @@ from app.spotify_electron.genre.genre_schema import Genre
 
 @dataclass
 class BaseSongDAO:
-    """Class to represent song data in the persistence layer"""
+    """Base Class to represent song data in the persistence layer"""
 
     name: str
     photo: str
@@ -18,7 +24,7 @@ class BaseSongDAO:
 
 @dataclass
 class BaseSongDTO:
-    """Class to represent song data in the endpoints transfering layer"""
+    """Base Class to represent song data in the endpoints transfering layer"""
 
     name: str
     photo: str
@@ -29,7 +35,7 @@ class BaseSongDTO:
 
 
 @dataclass
-class SongMetadataDAO(BaseSongDTO):
+class SongMetadataDAO(BaseSongDAO):
     """Class to represent Song metadata in the persistence transfering layer"""
 
 

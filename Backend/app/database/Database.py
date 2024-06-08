@@ -1,3 +1,7 @@
+"""
+Manages the unique database connection across the app and provides the modules with the collections needed for persist data.
+"""
+
 import sys
 from enum import StrEnum
 from typing import Any

@@ -1,3 +1,7 @@
+"""
+Song schema for domain model
+"""
+
 from dataclasses import dataclass
 
 from gridfs.grid_file import GridOut
@@ -16,6 +20,7 @@ class SongDAO(BaseSongDAO):
     """Class to represent song data in the persistence layer"""
 
     file: str
+    """Base 64 encoded bytes of the song file"""
 
 
 @dataclass

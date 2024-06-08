@@ -1,3 +1,7 @@
+"""
+Validations for AWS Serverless Function Song service
+"""
+
 from requests import Response
 from starlette.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_202_ACCEPTED
 

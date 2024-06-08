@@ -1,3 +1,10 @@
+"""
+Base Song service for handling bussiness logic
+
+Handles common methods between all song architectures
+Redirects to the specific architecture service in case the method is not common
+"""
+
 import app.spotify_electron.song.base_song_repository as base_song_repository
 import app.spotify_electron.user.base_user_service as base_user_service
 from app.logging.logging_constants import LOGGING_BASE_SONG_SERVICE

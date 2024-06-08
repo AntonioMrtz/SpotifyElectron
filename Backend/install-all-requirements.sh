@@ -26,5 +26,5 @@ for requirement in $requirements_files; do
     # Install requirements inside virtual environment
     $PYTHON_COMMAND -m pip install -r "$requirement"
     # Deactivate virtual environment
-    deactivate
 done
+deactivate

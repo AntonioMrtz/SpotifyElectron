@@ -1,3 +1,7 @@
+"""
+Artist schema for User domain model
+"""
+
 from dataclasses import dataclass
 
 from app.spotify_electron.user.user.user_schema import UserDAO, UserDTO

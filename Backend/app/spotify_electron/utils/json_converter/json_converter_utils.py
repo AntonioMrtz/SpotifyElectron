@@ -1,3 +1,7 @@
+"""
+Json converter utils for building HTTP Json responses from domain objects
+"""
+
 import json
 from typing import Any
 

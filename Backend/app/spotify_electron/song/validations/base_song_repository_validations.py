@@ -1,3 +1,7 @@
+"""
+Common validations for all Song services, regardless of the current architecture
+"""
+
 from pymongo.results import DeleteResult, InsertOneResult
 
 from app.spotify_electron.song.base_song_schema import (

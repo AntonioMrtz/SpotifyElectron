@@ -1,3 +1,7 @@
+"""
+Genre schema for domain model
+"""
+
 from enum import StrEnum
 
 from app.exceptions.base_exceptions_schema import SpotifyElectronException

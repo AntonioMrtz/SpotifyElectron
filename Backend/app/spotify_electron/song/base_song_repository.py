@@ -1,3 +1,8 @@
+"""
+Song repository for managing common persisted data regardless of the current architecture.
+The repository will only handle Song metadata
+"""
+
 import app.spotify_electron.song.providers.song_collection_provider as song_collection_provider
 from app.logging.logging_constants import (
     LOGGING_BASE_SONG_REPOSITORY,

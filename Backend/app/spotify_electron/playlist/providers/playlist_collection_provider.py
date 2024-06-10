@@ -1,3 +1,7 @@
+"""
+Provider class for supplying playlist collection connection with database
+"""
+
 from pymongo.collection import Collection
 
 from app.database.Database import Database, DatabaseCollection

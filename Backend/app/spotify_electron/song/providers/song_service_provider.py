@@ -1,3 +1,7 @@
+"""
+Provider class for supplying service depending on song architecture selected
+"""
+
 import importlib
 from types import ModuleType
 
@@ -29,6 +33,11 @@ class SongServiceModuleFactory(BaseSongServiceModuleFactory):
         super().__init__()
 
     def create_song_service(self) -> ModuleType:
+        """Creates the song service depending on the song architecture selected
+
+        Returns:
+            ModuleType: the song module based on current architecture
+        """
         return self._get_song_service()
 
     def _get_song_service(self) -> ModuleType:

@@ -1,3 +1,7 @@
+"""
+Genre controller for handling incoming HTTP Requests
+"""
+
 from fastapi import APIRouter
 from fastapi.responses import Response
 from starlette.status import HTTP_200_OK, HTTP_500_INTERNAL_SERVER_ERROR

@@ -1,3 +1,7 @@
+"""
+Loads and manages logging configurations
+"""
+
 import configparser
 import os
 

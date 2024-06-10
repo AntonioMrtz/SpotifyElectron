@@ -1,3 +1,7 @@
+"""
+Song schema for User domain model
+"""
+
 from dataclasses import dataclass
 from enum import Enum
 

@@ -1,3 +1,13 @@
+"""
+FastAPI App entrypoint
+
+- Handles startup and shutdown app events
+- Load middlewares
+- Creates the app object
+- Configure Uvicorn server
+
+"""
+
 from contextlib import asynccontextmanager
 
 import uvicorn

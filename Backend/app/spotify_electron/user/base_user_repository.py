@@ -1,3 +1,8 @@
+"""
+User repository for persisted data.
+It uses the collection for the associated user type
+"""
+
 from pymongo.collection import Collection
 
 from app.logging.logging_constants import LOGGING_BASE_USERS_REPOSITORY

@@ -1,3 +1,7 @@
+"""
+Artist controller for handling incoming HTTP Requests
+"""
+
 import json
 
 from fastapi import APIRouter

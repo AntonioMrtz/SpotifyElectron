@@ -1,3 +1,7 @@
+"""
+User repository for managing persisted data
+"""
+
 import app.spotify_electron.user.providers.user_collection_provider as user_collection_provider
 from app.logging.logging_constants import LOGGING_USER_REPOSITORY
 from app.logging.logging_schema import SpotifyElectronLogger

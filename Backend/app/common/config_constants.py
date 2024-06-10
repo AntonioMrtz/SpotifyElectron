@@ -1,3 +1,7 @@
+"""
+Constants for APP configuration
+"""
+
 RESOURCES_FOLDER = "resources"
 CONFIG_FILENAME = "config.ini"
 APP_CONFIG_SECTION = "app"

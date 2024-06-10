@@ -1,3 +1,7 @@
+"""
+Validations for Blob Song service
+"""
+
 from app.exceptions.base_exceptions_schema import BadParameterException
 from app.spotify_electron.song.base_song_schema import SongCreateException
 from app.spotify_electron.utils.validations.validation_utils import validate_parameter

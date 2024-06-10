@@ -1,3 +1,7 @@
+"""
+Playlist controller for handling incoming HTTP Requests
+"""
+
 from typing import Annotated
 
 from fastapi import APIRouter, Body, Header

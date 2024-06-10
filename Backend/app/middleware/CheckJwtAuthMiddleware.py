@@ -1,3 +1,5 @@
+"""Middleware for authenticate incoming HTTP Requests using JWT Token"""
+
 from fastapi import Request, Response
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.status import HTTP_401_UNAUTHORIZED
@@ -62,6 +64,15 @@ class CheckJwtAuthMiddleware(BaseHTTPMiddleware):
         return False
 
     async def dispatch(self, request: Request, call_next):
+        """Manages the incoming HTTP request and decides wheter or not it has to be blocked
+
+        Args:
+            request (Request): the incoming request
+            call_next (_type_): the method to call next
+
+        Returns:
+            _type_: the call next output if request was not blocked
+        """
         try:
             if self.bypass_request(request):
                 check_jwt_auth_middleware_logger.debug(
@@ -77,14 +88,16 @@ class CheckJwtAuthMiddleware(BaseHTTPMiddleware):
                 status_code=HTTP_401_UNAUTHORIZED,
             )
 
-    async def _handle_jwt_validation(self, jwt, request, call_next) -> Response:
+    async def _handle_jwt_validation(
+        self, jwt: str, request: Request, call_next
+    ) -> Response:
         """Handles JWT validation, sends HTTP_401_UNAUTHORIZED if jwt is not valid or\
             continues the workflow
 
         Args:
         ----
-            jwt (_type_): the jwt token
-            request (_type_): the incoming request
+            jwt (str): the jwt token
+            request (Request): the incoming request
             call_next (_type_): the method for continuing the workflow
 
         Returns:

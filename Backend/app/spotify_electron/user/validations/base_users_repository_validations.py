@@ -1,3 +1,7 @@
+"""
+Validations for Common user repositories
+"""
+
 from pymongo.results import DeleteResult, InsertOneResult, UpdateResult
 
 from app.spotify_electron.user.user.user_schema import (

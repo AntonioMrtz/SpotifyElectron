@@ -1,3 +1,7 @@
+"""
+Search service for handling business logic
+"""
+
 import app.spotify_electron.playlist.playlist_service as playlist_service
 import app.spotify_electron.song.base_song_service as base_song_service
 import app.spotify_electron.user.artist.artist_service as artist_service

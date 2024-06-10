@@ -13,10 +13,26 @@ extend-select = [
     "C90",
     "D201",
     "D202",
-    "PLR"
+    "PLR",
+    "D100",
+    "D102",
+    "D103",
+    "D104",
+    "D300",
+    "D419",
 ]
 
 ignore = ["PLR0402","PLR0911"]
+
+[lint.per-file-ignores]
+"tests/**/*.py" = [
+    "D100", # Ignore missing docstrings for public modules
+    "D103", # Ignore missing docstrings for public functions
+]
+
+[lint.pydocstyle]
+# Use Google-style docstrings
+convention = "google"
 
 [format]
 # Like Black, use double quotes for strings.

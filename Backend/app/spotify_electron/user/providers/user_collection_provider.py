@@ -1,3 +1,7 @@
+"""
+Provider class for supplying user collection connection with database depending on the architecture on the associated user type
+"""
+
 from pymongo.collection import Collection
 
 import app.spotify_electron.user.base_user_service as base_user_service

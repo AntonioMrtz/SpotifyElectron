@@ -1,3 +1,7 @@
+"""
+Genre service for handling business logic
+"""
+
 import json
 
 from app.logging.logging_constants import LOGGING_GENRE_SERVICE

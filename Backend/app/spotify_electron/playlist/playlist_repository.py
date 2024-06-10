@@ -1,3 +1,7 @@
+"""
+Playlist repository for managing persisted data
+"""
+
 from app.logging.logging_constants import LOGGING_PLAYLIST_REPOSITORY
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.playlist.playlist_schema import (

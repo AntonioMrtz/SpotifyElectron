@@ -1,3 +1,8 @@
+"""
+Base User service for handling bussiness logic
+Redirects to the specific user type service for non common logic
+"""
+
 import app.spotify_electron.playlist.playlist_service as playlist_service
 import app.spotify_electron.security.security_service as security_service
 import app.spotify_electron.user.artist.artist_service as artist_service

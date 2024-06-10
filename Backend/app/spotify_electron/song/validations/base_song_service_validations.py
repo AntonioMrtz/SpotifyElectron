@@ -1,3 +1,7 @@
+"""
+Common validations for all Song respositories, regardless of the current architecture
+"""
+
 from app.exceptions.base_exceptions_schema import BadParameterException
 from app.spotify_electron.song.base_song_repository import check_song_exists
 from app.spotify_electron.song.base_song_schema import (

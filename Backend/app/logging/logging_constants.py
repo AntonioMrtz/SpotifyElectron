@@ -1,3 +1,7 @@
+"""
+Logging constants
+"""
+
 # Log Levels
 DEBUG = "DEBUG"
 INFO = "INFO"

@@ -1,3 +1,8 @@
+"""
+User controller for handling incoming HTTP Requests
+It uses the base_user_service for handling logic for different user types
+"""
+
 from typing import Annotated
 
 from fastapi import APIRouter, Header
@@ -97,17 +102,6 @@ def get_user(name: str) -> Response:
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonInternalServerError,
         )
-
-
-@router.get("/{name}/playlists")
-def get_playlists_by_user(name: str) -> Response:
-    # TODO get playlists by user
-    # TODO hacer test
-
-    user = user_service.get_user(name)
-    user_json = json_converter_utils.get_json_from_model(user)
-
-    return Response(user_json, media_type="application/json", status_code=200)
 
 
 @router.post("/")

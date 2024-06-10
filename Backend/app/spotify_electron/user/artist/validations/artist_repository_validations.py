@@ -1,3 +1,7 @@
+"""
+Validations for artist repository
+"""
+
 from app.spotify_electron.security.security_schema import UserUnauthorizedException
 from app.spotify_electron.user.artist.artist_service import does_artist_exists
 

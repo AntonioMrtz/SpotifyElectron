@@ -1,3 +1,7 @@
+"""
+Artist service for handling business logic
+"""
+
 import app.spotify_electron.security.security_service as security_service
 import app.spotify_electron.song.base_song_service as base_song_service
 import app.spotify_electron.user.artist.artist_repository as artist_repository
@@ -213,6 +217,14 @@ def create_artist(user_name: str, photo: str, password: str) -> None:
 
 
 def get_all_artists() -> list[ArtistDTO]:
+    """Get all artists
+
+    Raises:
+        UserServiceException: unexpected error getting all artists
+
+    Returns:
+        list[ArtistDTO]: the list of all artists
+    """
     try:
         artists_dao = artist_repository.get_all_artists()
         artists_dto = [

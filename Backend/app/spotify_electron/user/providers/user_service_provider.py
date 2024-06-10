@@ -1,3 +1,7 @@
+"""
+Provider class for supplying service depending on associated user type
+"""
+
 from typing import Annotated, Any
 
 import app.spotify_electron.user.artist.artist_service as artist_service

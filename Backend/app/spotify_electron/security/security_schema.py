@@ -1,4 +1,7 @@
-import json
+"""
+Security schema for domain model
+"""
+
 from dataclasses import dataclass
 
 from app.exceptions.base_exceptions_schema import SpotifyElectronException
@@ -12,9 +15,6 @@ class TokenData:
     username: str
     role: UserType
     token_type: str
-
-    def get_json(self) -> str:
-        return json.dumps(self.__dict__)
 
 
 class BadJWTTokenProvidedException(SpotifyElectronException):

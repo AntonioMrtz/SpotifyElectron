@@ -1,3 +1,7 @@
+"""
+Login schema for domain model
+"""
+
 from app.exceptions.base_exceptions_schema import SpotifyElectronException
 
 

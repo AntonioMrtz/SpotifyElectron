@@ -1,3 +1,7 @@
+"""
+Health controller for handling incoming HTTP Requests
+"""
+
 from fastapi import APIRouter
 from fastapi.responses import Response
 from starlette.status import HTTP_200_OK
@@ -7,7 +11,7 @@ router = APIRouter(prefix="/health", tags=["health"])
 
 @router.get("/", summary="Health Check Endpoint")
 def get_health():
-    """Health endpoint allows us to determine if the app has launched correctly
+    """Validates if the app has launched correctly
 
     Returns
     -------

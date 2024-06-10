@@ -1,3 +1,7 @@
+"""
+Security service for handling business logic
+"""
+
 from datetime import UTC, datetime, timedelta, timezone
 from typing import Annotated, Any
 
@@ -8,7 +12,7 @@ from jose import JWTError, jwt
 
 import app.spotify_electron.user.base_user_service as base_user_service
 from app.common.PropertiesManager import PropertiesManager
-from app.common.set_up_constants import DISTRIBUTION_ID_ENV_NAME
+from app.common.set_up_constants import SECRET_KEY_SIGN_ENV_NAME
 from app.exceptions.base_exceptions_schema import BadParameterException
 from app.logging.logging_constants import LOGGING_SECURITY_SERVICE
 from app.logging.logging_schema import SpotifyElectronLogger
@@ -70,7 +74,7 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None) -> s
         to_encode.update({"exp": expire})
         encoded_jwt = jwt.encode(
             to_encode,
-            getattr(PropertiesManager, DISTRIBUTION_ID_ENV_NAME),
+            getattr(PropertiesManager, SECRET_KEY_SIGN_ENV_NAME),
             algorithm=ALGORITHM,
         )
     except Exception as exception:
@@ -102,7 +106,7 @@ def get_jwt_token_data(
     try:
         payload = jwt.decode(
             token,  # type: ignore
-            getattr(PropertiesManager, DISTRIBUTION_ID_ENV_NAME),
+            getattr(PropertiesManager, SECRET_KEY_SIGN_ENV_NAME),
             algorithms=[ALGORITHM],
         )
         username = payload.get("access_token")
@@ -296,7 +300,7 @@ def validate_jwt(token: str) -> None:
     """
     try:
         decoded_token = jwt.decode(
-            token, getattr(PropertiesManager, DISTRIBUTION_ID_ENV_NAME), ALGORITHM
+            token, getattr(PropertiesManager, SECRET_KEY_SIGN_ENV_NAME), ALGORITHM
         )
         validate_token_is_expired(decoded_token)
 

@@ -1,3 +1,8 @@
+"""
+Song controller for handling incoming HTTP Requests
+It uses the base_song_service for handling logic for different song architectures
+"""
+
 from typing import Annotated
 
 from fastapi import APIRouter, Header, UploadFile

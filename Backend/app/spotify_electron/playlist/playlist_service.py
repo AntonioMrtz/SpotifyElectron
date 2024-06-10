@@ -1,3 +1,7 @@
+"""
+Playlist service for handling business logic
+"""
+
 import app.spotify_electron.playlist.playlist_repository as playlist_repository
 import app.spotify_electron.security.security_service as security_service
 import app.spotify_electron.user.base_user_service as base_user_service

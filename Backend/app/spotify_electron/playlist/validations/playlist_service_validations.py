@@ -1,3 +1,7 @@
+"""
+Validations for Playlist service
+"""
+
 from app.exceptions.base_exceptions_schema import BadParameterException
 from app.spotify_electron.playlist.playlist_repository import check_playlist_exists
 from app.spotify_electron.playlist.playlist_schema import (

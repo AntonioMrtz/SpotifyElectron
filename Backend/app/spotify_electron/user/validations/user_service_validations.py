@@ -1,3 +1,7 @@
+"""
+Validations for Common user services
+"""
+
 from app.exceptions.base_exceptions_schema import BadParameterException
 from app.spotify_electron.user.user.user_schema import UserBadNameException
 from app.spotify_electron.utils.validations.validation_utils import validate_parameter

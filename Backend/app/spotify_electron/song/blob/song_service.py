@@ -1,3 +1,7 @@
+"""
+Song service for handling business logic
+"""
+
 import app.spotify_electron.song.base_song_repository as base_song_repository
 import app.spotify_electron.song.blob.song_repository as song_repository
 import app.spotify_electron.user.artist.artist_service as artist_service

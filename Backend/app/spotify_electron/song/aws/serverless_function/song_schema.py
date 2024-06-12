@@ -11,12 +11,12 @@ from app.spotify_electron.song.base_song_schema import BaseSongDAO, BaseSongDTO
 
 @dataclass
 class SongDAO(BaseSongDAO):
-    """Class to represent song data in the persistence layer"""
+    """Represents song data in the persistence layer"""
 
 
 @dataclass
 class SongDTO(BaseSongDTO):
-    """Class to represent song metadata and payload in the endpoints"""
+    """Represents song metadata and payload in the endpoints"""
 
     """The streaming url of the song"""
     url: str

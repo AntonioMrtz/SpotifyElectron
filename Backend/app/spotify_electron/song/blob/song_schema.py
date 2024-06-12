@@ -17,7 +17,7 @@ from app.spotify_electron.utils.audio_management.audio_management_utils import (
 
 @dataclass
 class SongDAO(BaseSongDAO):
-    """Class to represent song data in the persistence layer"""
+    """Represents song data in the persistence layer"""
 
     file: str
     """Base 64 encoded bytes of the song file"""
@@ -25,7 +25,7 @@ class SongDAO(BaseSongDAO):
 
 @dataclass
 class SongDTO(BaseSongDTO):
-    """Class to represent song metadata and payload in the endpoints"""
+    """Represents song metadata and payload in the endpoints"""
 
     file: str
     """Base 64 encoded bytes of the song file"""

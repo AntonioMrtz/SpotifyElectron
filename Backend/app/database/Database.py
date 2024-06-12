@@ -23,7 +23,7 @@ database_logger = SpotifyElectronLogger(LOGGING_DATABASE).getLogger()
 
 
 class DatabaseCollection(StrEnum):
-    """Class to store the existing name of the collections in the database"""
+    """Collection names present in database"""
 
     USER = "users"
     ARTIST = "artists"

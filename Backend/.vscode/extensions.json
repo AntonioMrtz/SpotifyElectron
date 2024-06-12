@@ -5,7 +5,6 @@
     "ms-python.vscode-pylance",
     "njpwerner.autodocstring",
     "njqdev.vscode-python-typehint",
-    "editorconfig.editorconfig",
     "charliermarsh.ruff"
   ]
 }

@@ -12,7 +12,7 @@ genre_class_logger = SpotifyElectronLogger(LOGGING_GENRE_CLASS).getLogger()
 
 
 class Genre(StrEnum):
-    """Class to store the existing genres and their string representation"""
+    """Song genres"""
 
     POP = "Pop"
     ROCK = "Rock"

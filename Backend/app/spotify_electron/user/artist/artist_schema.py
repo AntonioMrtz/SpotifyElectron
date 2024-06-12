@@ -9,14 +9,14 @@ from app.spotify_electron.user.user.user_schema import UserDAO, UserDTO
 
 @dataclass
 class ArtistDAO(UserDAO):
-    """Class to represent artist data in the persistence layer"""
+    """Represents artist data in the persistence layer"""
 
     uploaded_songs: list[str]
 
 
 @dataclass
 class ArtistDTO(UserDTO):
-    """Class to represent artist data in the endpoints transfer layer"""
+    """Represents artist data in the endpoints transfer layer"""
 
     uploaded_songs: list[str]
 

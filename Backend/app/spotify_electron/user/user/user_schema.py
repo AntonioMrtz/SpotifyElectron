@@ -10,7 +10,7 @@ from app.exceptions.base_exceptions_schema import SpotifyElectronException
 
 @dataclass
 class UserDAO:
-    """Class to represent user data in the persistence layer"""
+    """Represents  user data in the persistence layer"""
 
     name: str
     photo: str
@@ -23,7 +23,7 @@ class UserDAO:
 
 @dataclass
 class UserDTO:
-    """Class to represent user data in the endpoints transfer layer"""
+    """Represents user data in the endpoints transfer layer"""
 
     name: str
     photo: str

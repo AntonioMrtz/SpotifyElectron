@@ -22,6 +22,10 @@ class SongDAO(BaseSongDAO):
     file: str
     """Base 64 encoded bytes of the song file"""
 
+    def __str__(self):
+        # Ensuring the string representation does not log the file attribute
+        return "SongDAO(file=<Base64 encoded data>)"
+
 
 @dataclass
 class SongDTO(BaseSongDTO):
@@ -29,6 +33,10 @@ class SongDTO(BaseSongDTO):
 
     file: str
     """Base 64 encoded bytes of the song file"""
+
+    def __str__(self):
+        # Ensuring the string representation does not log the file attribute
+        return "SongDAO(file=<Base64 encoded data>)"
 
 
 def get_song_dao_from_document(document: dict, song_data: GridOut) -> SongDAO:

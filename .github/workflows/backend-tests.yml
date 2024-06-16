@@ -29,9 +29,8 @@ jobs:
         working-directory: Backend/
         run: python -m pytest tests/
         env:
-          MONGO_URI : ${{ secrets.MONGO_URI }}
+          MONGO_URI : mongodb://root:root@localhost:27017/
           SECRET_KEY_SIGN : ${{ secrets.SECRET_KEY_SIGN }}
-          DISTRIBUTION_ID : ${{ secrets.DISTRIBUTION_ID }}
           SERVERLESS_FUNCTION_URL : ${{ secrets.SERVERLESS_FUNCTION_URL }}
           ARCH : "STREAMING_SERVERLESS_FUNCTION"
           ENV_VALUE : "PROD"
@@ -40,9 +39,8 @@ jobs:
         working-directory: Backend/
         run: python -m pytest .
         env:
-          MONGO_URI : ${{ secrets.MONGO_URI }}
+          MONGO_URI : mongodb://root:root@localhost:27017/
           SECRET_KEY_SIGN : ${{ secrets.SECRET_KEY_SIGN }}
-          DISTRIBUTION_ID : ${{ secrets.DISTRIBUTION_ID }}
           SERVERLESS_FUNCTION_URL : ${{ secrets.SERVERLESS_FUNCTION_URL }}
           ARCH : "BLOB"
           ENV_VALUE : "PROD"

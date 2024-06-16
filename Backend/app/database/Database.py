@@ -37,22 +37,24 @@ class Database(metaclass=Singleton):
     """Singleton instance of the MongoDb connection"""
 
     TESTING_COLLECTION_NAME_PREFIX = "test."
+    DATABASE_NAME = "SpotifyElectron"
 
     def __init__(self):
         if not hasattr(self, "connection"):
             try:
                 uri = getattr(PropertiesManager, MONGO_URI_ENV_NAME)
                 self.collection_name_prefix = self._get_collection_name_prefix()
-                self.connection = MongoClient(uri, server_api=ServerApi("1"))[
-                    "SpotifyElectron"
+                client = self._get_mongo_client_class()
+                self.connection = client(uri, server_api=ServerApi("1"))[
+                    self.DATABASE_NAME
                 ]
                 self._ping_database_connection()
-            except DatabasePingFailed as error:
-                self._handle_database_connection_error(error)
-            except UnexpectedDatabasePingFailed as error:
-                self._handle_database_connection_error(error)
-            except Exception as error:
-                self._handle_database_connection_error(error)
+            except (
+                DatabasePingFailed,
+                UnexpectedDatabasePingFailed,
+                Exception,
+            ) as exception:
+                self._handle_database_connection_error(exception)
 
     def _ping_database_connection(self):
         """Pings database connection"""
@@ -63,6 +65,21 @@ class Database(metaclass=Singleton):
             raise DatabasePingFailed from exception
         except Exception as exception:
             raise UnexpectedDatabasePingFailed from exception
+
+    def _get_mongo_client_class(self):
+        """Get Mongo client class
+
+        Returns:
+            _type_: the Mongo client class
+        """
+        if PropertiesManager.is_testing_enviroment():
+            from mongomock.gridfs import enable_gridfs_integration
+            from mongomock.mongo_client import MongoClient as MongoClientMock
+
+            enable_gridfs_integration()
+            return MongoClientMock
+
+        return MongoClient
 
     def _check_ping_result(self, ping_result: dict):
         """Checks if ping result is OK
@@ -114,7 +131,7 @@ class Database(metaclass=Singleton):
         Returns:
             Any: the connection to the collection
         """
-        return Database().connection[self.collection_name_prefix + collection_name]
+        return Database().connection[self.collection_name_prefix + collection_name] # type: ignore
 
     def get_gridfs_collection_connection(
         self, collection_name: DatabaseCollection
@@ -128,7 +145,7 @@ class Database(metaclass=Singleton):
             Any: the gridfs collection connection
         """
         return GridFS(
-            Database.get_instance().connection,
+            Database.get_instance().connection, # type: ignore
             collection=self.collection_name_prefix + collection_name,
         )
 

@@ -1,5 +1,5 @@
 import os
-from unittest.mock import MagicMock, Mock, patch
+from unittest.mock import Mock, patch
 
 from pymongo.errors import ConnectionFailure
 from pytest import raises
@@ -14,19 +14,18 @@ from app.database.Database import (
 
 
 @patch("sys.exit")
-@patch("app.database.Database.MongoClient")
+@patch("app.database.Database.Database._get_mongo_client_class")
 def test_raise_exception_connection_failure(
-    MongoClient, sys_exit_mock, clean_modified_environments
+    get_mongo_client_class_mock, sys_exit_mock, clean_modified_environments
 ):
     def raise_exception_connection_failure(*arg):
-        raise ConnectionFailure()
-
-    mock_mongo_client = Mock()
-
-    mock_db = MagicMock()
-    mock_db.__getitem__.return_value = mock_mongo_client
-    mock_mongo_client.command.side_effect = raise_exception_connection_failure
-    MongoClient.return_value = mock_db
+        raise ConnectionFailure
+    
+    client_mock = Mock()
+    database_connection_mock=Mock()
+    database_connection_mock.command.side_effect = raise_exception_connection_failure
+    client_mock.return_value = {Database.DATABASE_NAME: database_connection_mock}
+    get_mongo_client_class_mock.return_value = client_mock
 
     os.environ[MONGO_URI_ENV_NAME] = "mongo_uri"
     Singleton._instances.clear()
@@ -38,19 +37,18 @@ def test_raise_exception_connection_failure(
 
 
 @patch("sys.exit")
-@patch("app.database.Database.MongoClient")
+@patch("app.database.Database.Database._get_mongo_client_class")
 def test_raise_exception_unexpected_connection_failure(
-    MongoClient, sys_exit_mock, clean_modified_environments
+    get_mongo_client_class_mock, sys_exit_mock, clean_modified_environments
 ):
     def raise_exception_connection_failure(*arg):
-        raise UnexpectedDatabasePingFailed()
+        raise UnexpectedDatabasePingFailed
 
-    mock_mongo_client = Mock()
-
-    mock_db = MagicMock()
-    mock_db.__getitem__.return_value = mock_mongo_client
-    mock_mongo_client.command.side_effect = raise_exception_connection_failure
-    MongoClient.return_value = mock_db
+    client_mock = Mock()
+    database_connection_mock=Mock()
+    database_connection_mock.command.side_effect = raise_exception_connection_failure
+    client_mock.return_value = {Database.DATABASE_NAME: database_connection_mock}
+    get_mongo_client_class_mock.return_value = client_mock
 
     os.environ[MONGO_URI_ENV_NAME] = "mongo_uri"
     Singleton._instances.clear()

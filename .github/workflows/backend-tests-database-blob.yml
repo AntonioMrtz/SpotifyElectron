@@ -30,7 +30,7 @@ jobs:
       - name: Run tests Database Blob Architecture
         working-directory: Backend/
         run: |
-          python -m pytest .
+          python -m pytest tests/
         env:
           MONGO_URI: mongodb://root:root@localhost:27017/
           SECRET_KEY_SIGN: ${{ secrets.SECRET_KEY_SIGN }}

@@ -48,9 +48,7 @@ from app.spotify_electron.utils.audio_management.audio_management_utils import (
     get_song_duration_seconds,
 )
 
-song_service_logger = SpotifyElectronLogger(
-    LOGGING_SONG_BLOB_SERVICE
-).getLogger()
+song_service_logger = SpotifyElectronLogger(LOGGING_SONG_BLOB_SERVICE).getLogger()
 
 
 def get_song(name: str) -> SongDTO:

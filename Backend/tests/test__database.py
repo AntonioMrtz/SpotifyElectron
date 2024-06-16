@@ -20,9 +20,9 @@ def test_raise_exception_connection_failure(
 ):
     def raise_exception_connection_failure(*arg):
         raise ConnectionFailure
-    
+
     client_mock = Mock()
-    database_connection_mock=Mock()
+    database_connection_mock = Mock()
     database_connection_mock.command.side_effect = raise_exception_connection_failure
     client_mock.return_value = {Database.DATABASE_NAME: database_connection_mock}
     get_mongo_client_class_mock.return_value = client_mock
@@ -45,7 +45,7 @@ def test_raise_exception_unexpected_connection_failure(
         raise UnexpectedDatabasePingFailed
 
     client_mock = Mock()
-    database_connection_mock=Mock()
+    database_connection_mock = Mock()
     database_connection_mock.command.side_effect = raise_exception_connection_failure
     client_mock.return_value = {Database.DATABASE_NAME: database_connection_mock}
     get_mongo_client_class_mock.return_value = client_mock

@@ -131,7 +131,7 @@ class Database(metaclass=Singleton):
         Returns:
             Any: the connection to the collection
         """
-        return Database().connection[self.collection_name_prefix + collection_name] # type: ignore
+        return Database().connection[self.collection_name_prefix + collection_name]  # type: ignore
 
     def get_gridfs_collection_connection(
         self, collection_name: DatabaseCollection
@@ -145,7 +145,7 @@ class Database(metaclass=Singleton):
             Any: the gridfs collection connection
         """
         return GridFS(
-            Database.get_instance().connection, # type: ignore
+            Database.get_instance().connection,  # type: ignore
             collection=self.collection_name_prefix + collection_name,
         )
 

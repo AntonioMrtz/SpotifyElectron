@@ -2,9 +2,9 @@
 
 In this document we will cover:
 
-* How to use enviroment variables
-* Enviroment variables usage
-* Development enviroment variables
+- How to use enviroment variables
+- Enviroment variables usage
+- Development enviroment variables
 
 ## How to use enviroments
 
@@ -14,7 +14,7 @@ To use environments in the app, you will need to place a file named `.env` under
 KEY1=value1
 ```
 
-*Note that file has to be named `.env` not `.env.local` or similars, having a different name will not make its variables part of the enviroment variables* recognized by the backend.
+_Note that file has to be named `.env` not `.env.local` or similars, having a different name will not make its variables part of the enviroment variables_ recognized by the backend.
 
 ## Enviroments variables
 
@@ -22,53 +22,46 @@ In this section we will explain the meaning and the usage of the enviroment vari
 
 ### Commons
 
- * **SECRET_KEY_SIGN**: 32 byte key for signing JWT Tokens that will authenticate the user. You can use `f24e2f3ac557d487b6d879fb2d86f2b2` as an example. This key will make sure the JWT Tokens are provided by our backend and not someone else's.
- * **ENV_VALUE**: determines the current enviroment of the app, it can be:
-	* `PROD`: production enviroment.
-	* `DEV`: development enviroment. Enables hot reload.
-* **ARCH**: the song architecture selected, it can be one of the following [architectures](Architecture.md):
-	* `STREAMING_SERVERLESS_FUNCTION`: song architecture using AWS Serverless Function (LAMBNDA) with streaming.
-	* `DB_BLOB(Recommended for testing)`: song architecture with no streaming/cloud, storing and serving songs directly from the database.
+- **SECRET_KEY_SIGN**: 32 byte key for signing JWT Tokens that will authenticate the user. You can use `f24e2f3ac557d487b6d879fb2d86f2b2` as an example. This key will make sure the JWT Tokens are provided by our backend and not someone else's.
+- **ENV_VALUE**: determines the current enviroment of the app, it can be:
+  - `PROD`: production enviroment.
+  - `DEV`: development enviroment. Enables hot reload.
+- **ARCH**: the song architecture selected, it can be one of the following [architectures](Architecture.md):
+  - `STREAMING_SERVERLESS_FUNCTION`: song architecture using AWS Serverless Function (LAMBNDA) with streaming.
+  - `BLOB(Recommended for testing)`: song architecture with no streaming/cloud, storing and serving songs directly from the database.
 
 ### Streaming using AWS Serverless Functions (STREAMING_SERVERLESS_FUNCTION)
 
-* **SERVERLESS_FUNCTION_URL**: the url of the AWS serverless function (Lambda) that manages songs and comunicates with cloud storage.
-* **MONGO_URI**: the database connection URI such as ```mongodb://root:root@localhost:27017/```, this will connect backend into the selected database for storing all persistent data but not including song files.
-
-
-#todo see .env.example associated, link file
-
-
+- **SERVERLESS_FUNCTION_URL**: the url of the AWS serverless function (Lambda) that manages songs and comunicates with cloud storage.
+- **MONGO_URI**: the database connection URI such as `mongodb://root:root@localhost:27017/`, this will connect backend into the selected database for storing all persistent data but not including song files.
 
 #todo see .env.example associated, link file
 
-### No streaming with songs stored in database (DB_BLOB)
+#todo see .env.example associated, link file
 
+### No streaming with songs stored in database (BLOB)
 
-* **MONGO_URI**: the database connection URI such as ```mongodb://root:root@localhost:27017/```, this will connect backend into the selected database for storing all persistent including the song files.
-
-
+- **MONGO_URI**: the database connection URI such as `mongodb://root:root@localhost:27017/`, this will connect backend into the selected database for storing all persistent including the song files.
 
 #todo see .env.example associated, link file
 
-----
+---
 
 ## DEVELOPMENT READY ENVIROMENT
 
 The following file can be used out of the box for development purpouse. It contains the following characteristics:
 
-* **Local MongoDB database**. Use local MongoDB database, you can deploy one using our Docker stack as described [here](Docker.md).
-* **Ready to use secret key**
-* **DB_BLOB architecture selected**. This will only make necessary a MongoDB database because no cloud services are used in this architecture.
-* **DEV** mode. It will enable hot reload for FastAPI.
+- **Local MongoDB database**. Use local MongoDB database, you can deploy one using our Docker stack as described [here](Docker.md).
+- **Ready to use secret key**
+- **BLOB architecture selected**. This will only make necessary a MongoDB database because no cloud services are used in this architecture.
+- **DEV** mode. It will enable hot reload for FastAPI.
 
 ```
 MONGO_URI=mongodb://root:root@localhost:27017/
 SECRET_KEY_SIGN=f24e2f3ac557d487b6d879fb2d86f2b2
 ENV_VALUE=DEV
-ARCH=DB_BLOB
+ARCH=BLOB
 ```
-
 
 ---
 
@@ -76,11 +69,10 @@ ARCH=DB_BLOB
 
 You can also use the following `.env` file for changing between architectures as it contains all the variables needed. Just be sure to fill the the needed enviroments for the architecture seleted.
 
-
 ```
 MONGO_URI=mongodb://root:root@localhost:27017/
 SECRET_KEY_SIGN=f24e2f3ac557d487b6d879fb2d86f2b2
 STREAMING_SERVERLESS_FUNCTION=https://lambda-url.us-east-1.on.aws/path/
 ENV_VALUE=DEV
-ARCH=DB_BLOB
+ARCH=BLOB
 ```

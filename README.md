@@ -28,10 +28,11 @@ git clone https://github.com/AntonioMrtz/SpotifyElectron.git
 
 ### 2. Set up and run
 
+[⚙️ COMMONS](docs/commons//SETUP.md)
+
 [🖥 BACKEND](docs/backend//SETUP.md)
 
 [💻 FRONTEND](docs/frontend//SETUP.md)
-
 
 ## 🖐 How to Contribute to the project
 
@@ -43,7 +44,6 @@ Are you interested in contributing to the project? Check our contributing rules 
 Check our [project goals and vision](docs/VISION.md).
 
 ---
-
 
 ## 🏗️ Software Architecture
 
@@ -76,7 +76,6 @@ Check our [project goals and vision](docs/VISION.md).
 ### Login
 
 ![Login](docs/frontend/assets/walkthrough/Login.png)
-
 
 ### Update Playlist
 

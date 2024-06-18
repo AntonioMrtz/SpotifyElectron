@@ -1,26 +1,24 @@
 {
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "name": "DEBUG Backend app",
-            "type": "debugpy",
-            "request": "launch",
-            "module": "app",
-            "cwd": "${workspaceFolder}/",
-            "jinja": true,
-            "justMyCode": false
-        },
-        {
-            "name": "Python: Pytest",
-            "type": "debugpy",
-            "request": "launch",
-            "module": "pytest",
-            "args": [
-                "tests"
-            ],
-            "cwd": "${workspaceFolder}/",
-            "console": "integratedTerminal",
-            "justMyCode": false
-        }
-    ]
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "DEBUG Backend app",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "app",
+      "cwd": "${workspaceFolder}/",
+      "jinja": true,
+      "justMyCode": false
+    },
+    {
+      "name": "Python: Pytest",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "pytest",
+      "args": ["tests"],
+      "cwd": "${workspaceFolder}/",
+      "console": "integratedTerminal",
+      "justMyCode": false
+    }
+  ]
 }

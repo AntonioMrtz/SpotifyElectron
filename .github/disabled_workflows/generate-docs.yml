@@ -11,42 +11,42 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout del repositorio
-      uses: actions/checkout@v2
-      with:
-        persist-credentials: false
-        token: ${{ secrets.PAT }}
+      - name: Checkout del repositorio
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+          token: ${{ secrets.PAT }}
 
-    - name: Configurar Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.11
+      - name: Configurar Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.11
 
-    - name: Install dependencies
-      working-directory: Backend/
-      run: |
-        python -m venv venv
-        source venv/bin/activate
-        pip install -r requirements.txt
-        python generate-docs.py
-      env:
-          MONGO_URI : ${{ secrets.MONGO_URI }}
-          SECRET_KEY_SIGN : ${{ secrets.SECRET_KEY_SIGN }}
-          DISTRIBUTION_ID : ${{ secrets.DISTRIBUTION_ID }}
-          SERVERLESS_FUNCTION_URL : ${{ secrets.SERVERLESS_FUNCTION_URL }}
-          ARCH : ${{ secrets.ARCH }}
-          ENV_VALUE : ${{ secrets.ENV_VALUE }}
+      - name: Install dependencies
+        working-directory: Backend/
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          pip install -r requirements.txt
+          python generate-docs.py
+        env:
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+          SECRET_KEY_SIGN: ${{ secrets.SECRET_KEY_SIGN }}
+          DISTRIBUTION_ID: ${{ secrets.DISTRIBUTION_ID }}
+          SERVERLESS_FUNCTION_URL: ${{ secrets.SERVERLESS_FUNCTION_URL }}
+          ARCH: ${{ secrets.ARCH }}
+          ENV_VALUE: ${{ secrets.ENV_VALUE }}
 
-    - name: Add and commit changes
-      working-directory: Backend/
-      run: |
-        git config --local user.email "actions@github.com"
-        git config --local user.name "GitHub Actions"
-        git add api-docs-spotify-electron.html
-        git commit -m "docs : Update API documentation"
+      - name: Add and commit changes
+        working-directory: Backend/
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git add api-docs-spotify-electron.html
+          git commit -m "docs : Update API documentation"
 
-    - name: Pushing to the protected branch 'protected'
-      uses: CasperWA/push-protected@v2
-      with:
-        token: ${{ secrets.PAT }}
-        branch: ${{ github.base_ref }}
+      - name: Pushing to the protected branch 'protected'
+        uses: CasperWA/push-protected@v2
+        with:
+          token: ${{ secrets.PAT }}
+          branch: ${{ github.base_ref }}

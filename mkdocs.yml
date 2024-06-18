@@ -6,29 +6,29 @@ remote_branch: gh-pages
 
 nav:
   - Home: index.md
-  - Backend:
-    - Set up: backend/SETUP.md
-    - Enviroment: backend/Enviroment.md
-    - File Structure: backend/File-Structure.md
-    - Architecture: backend/Architecture.md
-    - Cloud: backend/Cloud.md
-    - Docker: backend/Docker.md
-    - CI/CD: backend/CI-CD.md
-    - Testing: backend/Testing.md
-    - Authentication & Login: backend/Auth-Login.md
-    - FAQ: backend/FAQ.md
-  - Frontend:
-    - Set up: frontend/SETUP.md
-    - File Structure: frontend/File-Structure.md
-    - Testing: frontend/Testing.md
-    - Package app: frontend/Package-app.md
-    - FAQ: frontend/FAQ.md
+  - Vision: VISION.md
   - How to contribute: CONTRIBUTING.md
   - Git convention: Git-Convention.md
-  - Contributors: CONTRIBUTORS.md
-  - Vision: VISION.md
+  - Common Set up: SETUP.md
+  - Backend:
+      - Set up: backend/SETUP.md
+      - Enviroment: backend/Enviroment.md
+      - File Structure: backend/File-Structure.md
+      - Architecture: backend/Architecture.md
+      - Cloud: backend/Cloud.md
+      - Docker: backend/Docker.md
+      - CI/CD: backend/CI-CD.md
+      - Testing: backend/Testing.md
+      - Authentication & Login: backend/Auth-Login.md
+      - FAQ: backend/FAQ.md
+  - Frontend:
+      - Set up: frontend/SETUP.md
+      - File Structure: frontend/File-Structure.md
+      - Testing: frontend/Testing.md
+      - Package app: frontend/Package-app.md
+      - FAQ: frontend/FAQ.md
   - Code of conduct: CODE_OF_CONDUCT.md
-
+  - Contributors: CONTRIBUTORS.md
 
 theme:
   logo: assets/logo.png

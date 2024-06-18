@@ -1,5 +1,5 @@
 #!/bin/bash
-# Creates a virtual enviroment and install all dependencies stored in the root directory 
+# Creates a virtual enviroment and install all dependencies stored in the root directory
 
 
 # Find all files that contain "requirements" in their name and end with ".txt"

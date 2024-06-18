@@ -3,10 +3,9 @@ name: Backend Tests
 on:
   pull_request:
     branches:
-      - 'master'
-      - 'master-*'
+      - "master"
+      - "master-*"
 jobs:
-
   run_tests:
     runs-on: ubuntu-22.04
     steps:
@@ -29,23 +28,23 @@ jobs:
         working-directory: Backend/
         run: python -m pytest tests/
         env:
-          MONGO_URI : ${{ secrets.MONGO_URI }}
-          SECRET_KEY_SIGN : ${{ secrets.SECRET_KEY_SIGN }}
-          DISTRIBUTION_ID : ${{ secrets.DISTRIBUTION_ID }}
-          SERVERLESS_FUNCTION_URL : ${{ secrets.SERVERLESS_FUNCTION_URL }}
-          ARCH : "STREAMING_SERVERLESS_FUNCTION"
-          ENV_VALUE : "PROD"
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+          SECRET_KEY_SIGN: ${{ secrets.SECRET_KEY_SIGN }}
+          DISTRIBUTION_ID: ${{ secrets.DISTRIBUTION_ID }}
+          SERVERLESS_FUNCTION_URL: ${{ secrets.SERVERLESS_FUNCTION_URL }}
+          ARCH: "STREAMING_SERVERLESS_FUNCTION"
+          ENV_VALUE: "PROD"
 
       - name: Run tests Database Blob Architecture
         working-directory: Backend/
         run: python -m pytest .
         env:
-          MONGO_URI : ${{ secrets.MONGO_URI }}
-          SECRET_KEY_SIGN : ${{ secrets.SECRET_KEY_SIGN }}
-          DISTRIBUTION_ID : ${{ secrets.DISTRIBUTION_ID }}
-          SERVERLESS_FUNCTION_URL : ${{ secrets.SERVERLESS_FUNCTION_URL }}
-          ARCH : "BLOB"
-          ENV_VALUE : "PROD"
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+          SECRET_KEY_SIGN: ${{ secrets.SECRET_KEY_SIGN }}
+          DISTRIBUTION_ID: ${{ secrets.DISTRIBUTION_ID }}
+          SERVERLESS_FUNCTION_URL: ${{ secrets.SERVERLESS_FUNCTION_URL }}
+          ARCH: "BLOB"
+          ENV_VALUE: "PROD"
 
       - name: Fail workflow on test failure
         if: ${{ failure() }}

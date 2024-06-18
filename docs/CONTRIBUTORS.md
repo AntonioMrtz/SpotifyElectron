@@ -17,15 +17,11 @@ Me gustaría expresar mi más sincero agradecimiento a las siguientes personas p
 
 ## Bug Reporters
 
-
 ## Feature Requesters
-
 
 ## Translators
 
-
 ## Documentation Contributors
-
 
 ## Other Contributions
 
@@ -33,17 +29,14 @@ Me gustaría expresar mi más sincero agradecimiento a las siguientes personas p
 
 If you have contributed to this project and your name is not listed here, please accept our apologies and let us know so we can add you!
 
-
 ## I would like to join this list. How can I help the project?
-
 
 We're currently looking for contributions for the following:
 
-* Solve issues
-  * Implementing new features
-  * Fixing bugs
-  * Improve the project
-* Docs Writing
+- Solve issues
+  - Implementing new features
+  - Fixing bugs
+  - Improve the project
+- Docs Writing
 
 For more information, please refer to our [CONTRIBUTING guide](CONTRIBUTING.md).
-

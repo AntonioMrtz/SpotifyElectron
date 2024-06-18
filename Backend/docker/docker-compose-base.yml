@@ -1,5 +1,4 @@
 services:
-
   backend:
     container_name: backend
     build:
@@ -8,4 +7,4 @@ services:
     ports:
       - 8000:8000
     env_file:
-          - ../.env
+      - ../.env

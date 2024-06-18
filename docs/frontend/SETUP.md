@@ -2,9 +2,9 @@
 
 In this section we will cover:
 
-* How to setup the proyect
-* Run the proyect and debug
-* Run tests
+- How to setup the proyect
+- Run the proyect and debug
+- Run tests
 
 ## 🛠 Setup the proyect
 
@@ -13,12 +13,15 @@ In this section we will cover:
 ```
 cd Electron
 ```
+
 ### 2. Install dependencies
 
 ```
 npm install
 ```
+
 ### 3. Select architecture in global.ts
+
 ```
 export const songArchitecture: SongArchitecture = SongArchitecture.STREAMING_ARCHITECTURE;
 ```
@@ -50,10 +53,13 @@ cd Electron/src/global/global.ts
 We have to selected if we want . Backend should also have the same architecture selected in order for songs to be played correctly.
 
 Files (RECOMMENDED for DEVELOPMENT)
+
 ```
 export const songArchitecture: SongArchitecture = SongArchitecture.FILE_ARCHITECTURE
 ```
+
 Streaming
+
 ```
 export const songArchitecture: SongArchitecture = SongArchitecture.STREAMING_ARCHITECTURE
 ```
@@ -66,10 +72,10 @@ export const songArchitecture: SongArchitecture = SongArchitecture.STREAMING_ARC
 npm start
 ```
 
-
 ## ✔️🎨 Linting and formatting
 
 1. Run lint check and format. This will force fix any error that has no impact and can be solved automatically
+
 ```
 npm run lint
 ```
@@ -77,11 +83,13 @@ npm run lint
 ## 🎨 Style
 
 1. Run the style check
+
 ```
 npm run format:check
 ```
 
 2. Run the style formatter
+
 ```
 npm run format:format
 ```
@@ -94,10 +102,10 @@ npm run format:format
 4. Workspace recommended
 5. Install workspace recommended
 
-
 ## ✔️ Package app for production
 
 1. Select wanted architecture by going to global.ts
+
 ```
 export const songArchitecture: SongArchitecture = SongArchitecture.STREAMING_ARCHITECTURE;
 ```
@@ -107,6 +115,7 @@ export const songArchitecture: SongArchitecture = SongArchitecture.STREAMING_ARC
 ```
 npm run build
 ```
+
 3. Package the app for the current system and generate installer
 
 ```

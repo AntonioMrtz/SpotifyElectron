@@ -1,5 +1,7 @@
 ## 📦 Package app
 
+In this section we will cover how to package app for production. After following the steps the generated installer will be placed at `Electron/release/build`.
+
 ### 1. Select wanted architecture in global.ts
 
 ```

@@ -28,7 +28,7 @@ git clone https://github.com/AntonioMrtz/SpotifyElectron.git
 
 ### 2. Set up and run
 
-[⚙️ COMMONS](docs/commons//SETUP.md)
+[⚙️ GLOBAL](docs//SETUP.md)
 
 [🖥 BACKEND](docs/backend//SETUP.md)
 

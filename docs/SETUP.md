@@ -1,9 +1,10 @@
-# Common Set up
+# Global Set up
 
 In this section we will cover how to set up common tools for the whole project.
 
 
 ## 🛠 Set up common project tools
+
 
 ### ⚓ Pre-commit
 
@@ -29,3 +30,11 @@ If you want to test pre-commit before commiting to the repository run the follow
 ```
 pre-commit run --all-files
 ```
+
+### 🧩 Extensions (VSCODE)
+
+1. Go to extensions
+2. Select filter extensions
+3. Recommended
+4. Workspace recommended
+5. Install workspace recommended

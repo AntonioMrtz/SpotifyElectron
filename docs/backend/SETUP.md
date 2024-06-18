@@ -5,8 +5,6 @@ In this section we will cover:
 - How to set up the proyect
 - Run the proyect and debug
 - Deploy docker containers for development and production
-- Run tests
-- Access documentation
 
 ## 🛠 Set up the proyect
 
@@ -81,45 +79,3 @@ In production it is recommended to connect to a remote database, the prod enviro
 ```
 ./build_and_up_prod.sh
 ```
-
-## 📓 Access API Swagger documentation
-
-- Swagger: **[http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)**
-
-## ✔️ Run tests
-
-1. Run tests
-
-Standard test run
-
-```
-python -m pytest tests/
-```
-
-Test run and generate code coverage in folder htmlcov/index.html
-
-```
-python -m pytest tests/ --cov=. --cov-report=html:tests/htmlcov
-```
-
-## 🎨 Run style and linting on code
-
-### 1. Run style rules and sort imports
-
-```
-python -m ruff format
-```
-
-### 2. Run linting
-
-```
-python -m ruff check --fix
-```
-
-## ✏ Install the recommended extensions for VSCODE
-
-1. Go to extensions
-2. Select filter extensions
-3. Recommended
-4. Workspace recommended
-5. Install workspace recommended

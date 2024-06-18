@@ -17,7 +17,6 @@ nav:
       - Architecture: backend/Architecture.md
       - Cloud: backend/Cloud.md
       - Docker: backend/Docker.md
-      - CI/CD: backend/CI-CD.md
       - Linting & Formatting: backend/Linting-&-Formatting.md
       - Testing: backend/Testing.md
       - Authentication & Login: backend/Auth-Login.md

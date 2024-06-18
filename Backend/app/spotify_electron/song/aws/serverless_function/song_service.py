@@ -132,7 +132,7 @@ def get_song(name: str) -> SongDTO:
 
 
 async def create_song(  # noqa: C901
-    name: str, genre: Genre, photo: str, file, token: TokenData
+    name: str, genre: Genre, photo: str, file: bytes, token: TokenData
 ) -> None:
     """Create song
 
@@ -140,7 +140,7 @@ async def create_song(  # noqa: C901
         name (str): song name
         genre (Genre): song genre
         photo (str): song photo
-        file (_type_): song file
+        file (bytes): song file
         token (TokenData): user token
 
     Raises:

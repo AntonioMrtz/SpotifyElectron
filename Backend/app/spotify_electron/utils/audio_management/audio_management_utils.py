@@ -16,7 +16,7 @@ audio_management_utils_logger = SpotifyElectronLogger(
 ).getLogger()
 
 
-def get_song_duration_seconds(name: str, file) -> int:
+def get_song_duration_seconds(name: str, file: bytes) -> int:
     """Get song duration
 
     Args:

@@ -6,7 +6,7 @@ import app.spotify_electron.song.base_song_repository as base_song_repository
 import app.spotify_electron.song.blob.song_repository as song_repository
 import app.spotify_electron.user.artist.artist_service as artist_service
 import app.spotify_electron.user.base_user_service as base_user_service
-from app.logging.logging_constants import LOGGING_SONG_AWS_SERVERLESS_FUNCTION_SERVICE
+from app.logging.logging_constants import LOGGING_SONG_BLOB_SERVICE
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.genre.genre_schema import Genre, GenreNotValidException
 from app.spotify_electron.security.security_schema import (
@@ -48,9 +48,7 @@ from app.spotify_electron.utils.audio_management.audio_management_utils import (
     get_song_duration_seconds,
 )
 
-song_service_logger = SpotifyElectronLogger(
-    LOGGING_SONG_AWS_SERVERLESS_FUNCTION_SERVICE
-).getLogger()
+song_service_logger = SpotifyElectronLogger(LOGGING_SONG_BLOB_SERVICE).getLogger()
 
 
 def get_song(name: str) -> SongDTO:
@@ -98,7 +96,7 @@ def get_song(name: str) -> SongDTO:
 
 
 async def create_song(  # noqa: C901
-    name: str, genre: Genre, photo: str, file, token: TokenData
+    name: str, genre: Genre, photo: str, file: bytes, token: TokenData
 ) -> None:
     """Create song
 
@@ -106,7 +104,7 @@ async def create_song(  # noqa: C901
         name (str): song name
         genre (Genre): song genre
         photo (str): song photo
-        file (_type_): song file
+        file (bytes): song file
         token (TokenData): user token
 
     Raises:

@@ -184,8 +184,8 @@ def add_saved_playlist(
         UserRepositoryException: unexpected error adding saved playlist to user
     """
     try:
+        # TODO make in one query
         user_data = collection.find_one({"name": user_name})
-
         saved_playlists = user_data["saved_playlists"]  # type: ignore
 
         saved_playlists.append(playlist_name)
@@ -310,11 +310,18 @@ def update_playlist_name(
     try:
         collection.update_many(
             {"saved_playlists": old_playlist_name},
-            {"$set": {"saved_playlists.$": new_playlist_name}},
+            {
+                "$pull": {"saved_playlists": old_playlist_name},
+                "$push": {"saved_playlists": new_playlist_name},
+            },
         )
+
         collection.update_many(
             {"playlists": old_playlist_name},
-            {"$set": {"playlists.$": new_playlist_name}},
+            {
+                "$pull": {"playlists": old_playlist_name},
+                "$push": {"playlists": new_playlist_name},
+            },
         )
     except Exception as exception:
         base_user_repository_logger.exception(

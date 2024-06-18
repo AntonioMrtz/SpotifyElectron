@@ -6,7 +6,7 @@ In this document we will cover the file structure of the Backend for Spotify Ele
 
 - 📁 Common. Handles common logic for all app.
   - 🗄 PropertiesManager: loads enviroment variables and its associated logic and stores global app states.
-  - 🗄 PropertiesMessageManaer: loads and store common response messages.
+  - 🗄 PropertiesMessageManager: loads and store common response messages.
 - 📁 Database. Handles database connection.
 - 📁 Exceptions. Custom base exceptions for our app.
 - 📁 Logging. Configure and provide logging formatting and handling for all app modules.

@@ -13,7 +13,7 @@ Pre-commit is used for ensuring code quality before it gets commited. When you i
 #### 1. Install dependencies
 
 ```
-pip install -r requirements-commons.txt
+pip install -r requirements-global.txt
 ```
 
 #### 2. Install pre-commits hooks

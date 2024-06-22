@@ -47,11 +47,11 @@ Check our [project goals and vision](docs/VISION.md).
 
 ## 🏗️ Software Architecture
 
-![Spotify_Electron_Software_Diagram](/docs/backend/assets/architecture/app_architecture_aws_serverless.png)
+![Spotify_Electron_Software_Diagram](docs/assets/architecture/app_architecture_aws_serverless.png)
 
 ### 🎵 Song Architecture
 
-![Spotify_Electron_Software_Song_Diagram](/docs/backend/assets/architecture/song_architecture_aws_serverless_function.png)
+![Spotify_Electron_Software_Song_Diagram](docs/assets/architecture/song_architecture_aws_serverless_function.png)
 
 ---
 

@@ -15,8 +15,8 @@ Frontend has to set the following config in `global.ts` file:
 export const songArchitecture: SongArchitecture = SongArchitecture.STREAMING_ARCHITECTURE;
 ```
 
-
 ![STREAMING SERVERLESS ARCHITECTURE](assets/architecture/app_architecture_aws_serverless.png)
+![STREAMING SONG ARCHITECTURE](assets/architecture/song_architecture_aws_serverless_function.png)
 
 
 ## BLOB

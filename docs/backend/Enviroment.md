@@ -30,20 +30,29 @@ In this section we will explain the meaning and the usage of the enviroment vari
   - `STREAMING_SERVERLESS_FUNCTION`: song architecture using AWS Serverless Function with streaming.
   - `BLOB(Recommended for testing)`: song architecture with no streaming/cloud, storing and serving songs directly from the database.
 
-### Streaming using AWS Serverless Functions (STREAMING_SERVERLESS_FUNCTION)
+### Streaming using AWS Serverless Functions (`STREAMING_SERVERLESS_FUNCTION`)
 
 - **SERVERLESS_FUNCTION_URL**: the url of the AWS serverless function (Lambda) that manages songs and comunicates with cloud storage.
 - **MONGO_URI**: the database connection URI such as `mongodb://root:root@localhost:27017/`, this will connect backend into the selected database for storing all persistent data but not including song files.
 
-#todo see .env.example associated, link file
+```
+MONGO_URI=mongodb://root:root@localhost:27017/
+SECRET_KEY_SIGN=f24e2f3ac557d487b6d879fb2d86f2b2
+SERVERLESS_FUNCTION_URL=https://lambda-url.us-east-1.on.aws/path/
+ENV_VALUE=DEV
+ARCH=STREAMING_SERVERLESS_FUNCTION
+```
 
-#todo see .env.example associated, link file
-
-### No streaming with songs stored in database (BLOB)
+### No streaming with songs stored in database (`BLOB`)
 
 - **MONGO_URI**: the database connection URI such as `mongodb://root:root@localhost:27017/`, this will connect backend into the selected database for storing all persistent including the song files.
 
-#todo see .env.example associated, link file
+```
+MONGO_URI=mongodb://root:root@localhost:27017/
+SECRET_KEY_SIGN=f24e2f3ac557d487b6d879fb2d86f2b2
+ENV_VALUE=DEV
+ARCH=BLOB
+```
 
 ---
 

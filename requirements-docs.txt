@@ -1,0 +1,4 @@
+mkdocstrings-python==1.10.3
+mkdocs-material==9.5.24
+mkdocs==1.6.0
+mdx-truly-sane-lists==1.3

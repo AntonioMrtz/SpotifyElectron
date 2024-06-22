@@ -3,24 +3,24 @@ name: Frontend Style Prettier
 on:
   pull_request:
     branches:
-      - 'master'
-      - 'master-*'
+      - "master"
+      - "master-*"
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Check out code
-      uses: actions/checkout@v2
+      - name: Check out code
+        uses: actions/checkout@v2
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '20'
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "20"
 
-    - name: Change directory and run commands
-      working-directory: Electron
-      run: |
-        npm install
-        npm run format:check
+      - name: Change directory and run commands
+        working-directory: Electron
+        run: |
+          npm install
+          npm run format:check

@@ -8,11 +8,15 @@
 
 ## 🌐 Website
 
-Check our [website](https://antoniomrtz.github.io/SpotifyElectron_Web/)
+Check our [website](https://antoniomrtz.github.io/SpotifyElectron_Web/).
+
+## 📚 Docs
+
+Check the project documentation [here](https://antoniomrtz.github.io/SpotifyElectron/).
 
 ## 🔽 Download Installer
 
-Donwload the installer [here](https://github.com/AntonioMrtz/SpotifyElectron/releases)
+Donwload the installer [here](https://github.com/AntonioMrtz/SpotifyElectron/releases).
 
 ## 🔧 Set up and run
 
@@ -24,60 +28,55 @@ git clone https://github.com/AntonioMrtz/SpotifyElectron.git
 
 ### 2. Set up and run
 
+[⚙️ GLOBAL](docs//SETUP.md)
+
 [🖥 BACKEND](docs/backend//SETUP.md)
 
 [💻 FRONTEND](docs/frontend//SETUP.md)
 
-
 ## 🖐 How to Contribute to the project
 
 Are you interested in contributing to the project? Check our contributing rules and methodologies in
-[CONTRIBUTING readme](.github/CONTRIBUTING.md).
+[CONTRIBUTING readme](docs/CONTRIBUTING.md). Also you can check all the contributors of the project [here](docs/CONTRIBUTORS.md).
 
 ## 🎯 Project's goals
 
-Check our [project goals and vision](.github/VISION.md)
+Check our [project goals and vision](docs/VISION.md).
 
 ---
 
+## 🏗️ Software Architecture
 
-## Software Architecture
+![Spotify_Electron_Software_Diagram](docs/assets/architecture/app_architecture_aws_serverless.png)
 
-![Spotify_Electron_Software_Diagram](assets/images/architecture/master-streaming-serverless-function-arch.png)
+### 🎵 Song Architecture
 
-### Song architecture
-
-![Spotify_Electron_Software_Song_Diagram](assets/images/architecture/song_architecture_aws.png)
-
-### Frontend architecture
-
-![Spotify_Electron_Frontend_Diagram](assets/images/architecture/frontend-arch.png)
+![Spotify_Electron_Software_Song_Diagram](docs/assets/architecture/song_architecture_aws_serverless_function.png)
 
 ---
 
-## Walkthrough
+## 🚶 Walkthrough
 
 ### Home
 
-![Home](assets/images/walkthrough_screenshots/Home.png)
+![Home](docs/frontend/assets/walkthrough/Home.png)
 
 ### Playlist
 
-![Home](assets/images/walkthrough_screenshots/Playlist.png)
+![Home](docs/frontend/assets/walkthrough/Playlist.png)
 
 ### Upload Song
 
-![Home](assets/images/walkthrough_screenshots/UploadSong.png)
+![Home](docs/frontend/assets/walkthrough/UploadSong.png)
 
 ### Explore users, artist, songs and playlists
 
-![Explorar](assets/images/walkthrough_screenshots/Explorar.png)
+![Explorar](docs/frontend/assets/walkthrough/Explorar.png)
 
 ### Login
 
-![Login](assets/images/walkthrough_screenshots/Login.png)
-
+![Login](docs/frontend/assets/walkthrough/Login.png)
 
 ### Update Playlist
 
-![Home](assets/images/walkthrough_screenshots/UpdatePlaylist.png)
+![Home](docs/frontend/assets/walkthrough/UpdatePlaylist.png)

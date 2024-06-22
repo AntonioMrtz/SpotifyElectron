@@ -13,7 +13,7 @@ module.exports = {
     '@typescript-eslint/no-shadow': 'error',
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': 'error',
-    "jsx-a11y/control-has-associated-label": "off",
+    'jsx-a11y/control-has-associated-label': 'off',
     'no-console': 'off',
     'prettier/prettier': [
       'error',

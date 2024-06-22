@@ -1,9 +1,10 @@
 # Project Vision: Spotify Electron
 
-## Overview
+## 👀 Overview
+
 Spotify Electron is envisioned as a dynamic cross-platform music streaming desktop application, combining Electron-React frontend with Python-FastAPI-AWS backend. The primary objective is to emulate the functionalities of the original Spotify platform while incorporating novel features such as song uploading.
 
-## Goals
+## 🎯 Goals
 
 1. **Replicate Spotify Experience:** Develop a music streaming service akin to Spotify, leveraging Electron+React and Python+FastAPI technologies.
 2. **Software Excellence:** Implement best software practices to ensure scalability and facilitate rapid feature iterations.

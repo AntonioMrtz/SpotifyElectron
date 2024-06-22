@@ -8,24 +8,20 @@ Me gustaría expresar mi más sincero agradecimiento a las siguientes personas p
 
 - [Ercamarero](https://github.com/Ercamarero)
 - [Ferbo12](https://github.com/contributor1)
+- [KarlosM2](https://github.com/KarlosM2)
 - [Javiks-P](https://github.com/Javiks-P)
 - [mariete1223](https://github.com/mariete1223)
 - [raulZC ](https://github.com/raulZC)
 - [TalhaBinNasir](https://github.com/TalhaBinNasir)
 - [xiomaraR](https://github.com/xiomaraR)
 
-
 ## Bug Reporters
-
 
 ## Feature Requesters
 
-
 ## Translators
 
-
 ## Documentation Contributors
-
 
 ## Other Contributions
 
@@ -33,17 +29,14 @@ Me gustaría expresar mi más sincero agradecimiento a las siguientes personas p
 
 If you have contributed to this project and your name is not listed here, please accept our apologies and let us know so we can add you!
 
-
 ## I would like to join this list. How can I help the project?
-
 
 We're currently looking for contributions for the following:
 
-* Solve issues
-  * Implementing new features
-  * Fixing bugs
-  * Improve the project
-* Docs Writing
+- Solve issues
+  - Implementing new features
+  - Fixing bugs
+  - Improve the project
+- Docs Writing
 
-For more information, please refer to our [CONTRIBUTING guide](https://github.com/AntonioMrtz/SpotifyElectron/blob/master/.github/CONTRIBUTING.md).
-
+For more information, please refer to our [CONTRIBUTING guide](CONTRIBUTING.md).

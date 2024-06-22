@@ -3,8 +3,8 @@ name: Backend Run Black style
 on:
   pull_request:
     branches:
-      - 'master'
-      - 'master-*'
+      - "master"
+      - "master-*"
 
 jobs:
   run_tests:

@@ -8,7 +8,7 @@ In this document we will cover the file structure of the Backend for Spotify Ele
 - 📁 Assets. Store frontend assets.
 - 📁 Release/build. Folder where the installer will be generated.
 - 📁 Src. Where main app is stored.
-  - 📁 __tests__. Store tests.
+  - 📁 \__tests__. Store tests.
   - 📁 Components. Reusable components used across the app.
   - 📁 Global. Global files that stores configuration and common data across the app.
     - 📄 global. Stores backend URL, current song architecture and other globals.

@@ -27,7 +27,7 @@ In this section we will explain the meaning and the usage of the enviroment vari
   - `PROD`: production enviroment.
   - `DEV`: development enviroment. Enables hot reload.
 - **ARCH**: the song architecture selected, it can be one of the following [architectures](Architecture.md):
-  - `STREAMING_SERVERLESS_FUNCTION`: song architecture using AWS Serverless Function (LAMBNDA) with streaming.
+  - `STREAMING_SERVERLESS_FUNCTION`: song architecture using AWS Serverless Function with streaming.
   - `BLOB(Recommended for testing)`: song architecture with no streaming/cloud, storing and serving songs directly from the database.
 
 ### Streaming using AWS Serverless Functions (STREAMING_SERVERLESS_FUNCTION)

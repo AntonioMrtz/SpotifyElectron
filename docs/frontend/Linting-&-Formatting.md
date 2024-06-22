@@ -1,6 +1,6 @@
 # Linting and formatting
 
-## ✔️ Linting
+## ✅ Linting
 
 ```
 npm run lint

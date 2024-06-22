@@ -18,8 +18,8 @@ For naming branch we will use the next convention:
 
 Examples:
 
-- feat/Home-Page
-- fix/User-Login
+- `feat/Home-Page`
+- `fix/User-Login`
 
 ## Commit convention
 

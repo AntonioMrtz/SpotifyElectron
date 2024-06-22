@@ -1,6 +1,6 @@
 ## Linting and Formatting
 
-### ✔️ Run linting
+### ✅ Run linting
 
 ```
 python -m ruff check --fix

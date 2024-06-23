@@ -61,7 +61,7 @@ def get_song_dao_from_document(document: dict, song_data: GridOut) -> SongDAO:
         artist=document["artist"],
         seconds_duration=document["duration"],
         genre=Genre(document["genre"]),
-        number_of_playbacks=document["number_of_playbacks"],
+        streams=document["streams"],
         file=encoded_song_bytes,
     )
 
@@ -84,7 +84,7 @@ def get_song_dto_from_dao(song_dao: SongDAO) -> SongDTO:
         artist=song_dao.artist,
         seconds_duration=song_dao.seconds_duration,
         genre=song_dao.genre,
-        number_of_playbacks=song_dao.number_of_playbacks,
+        streams=song_dao.streams,
         file=song_dao.file,
     )
 

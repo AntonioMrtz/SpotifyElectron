@@ -28,7 +28,7 @@ const artistMock = {
   playlists: [],
   playback_history: [],
   uploaded_songs: [],
-  play_count: [],
+  streams: [],
 };
 
 const userMock = {
@@ -159,7 +159,7 @@ test('UserProfile User load Playback history and his Playlists', async () => {
     photo: 'photo',
     seconds_duration: '3',
     genre: 'Rock',
-    number_of_plays: 2,
+    streams: 2,
   };
 
   jest.mock('react-router-dom', () => ({
@@ -236,10 +236,10 @@ test('UserProfile User load Playback history and his Playlists', async () => {
   expect(component.queryByText(playlistName)).toBeInTheDocument();
 });
 
-test('UserProfile Artist load Songs and Playcount', async () => {
+test('UserProfile Artist load Songs and total streams', async () => {
   const playlistName = 'playlisttest';
   const songName = 'songName';
-  const numPlayCount = 2;
+  const songStreams = 2;
 
   const artistMockFetch = {
     name: 'name',
@@ -267,7 +267,7 @@ test('UserProfile Artist load Songs and Playcount', async () => {
     photo: 'photo',
     seconds_duration: '3',
     genre: 'Rock',
-    number_of_plays: 2,
+    streams: 2,
   };
 
   jest.mock('react-router-dom', () => ({
@@ -313,12 +313,11 @@ test('UserProfile Artist load Songs and Playcount', async () => {
       });
     }
     if (
-      url ===
-      `${Global.backendBaseUrl}artists/${artistMockFetch.name}/playbacks`
+      url === `${Global.backendBaseUrl}artists/${artistMockFetch.name}/streams`
     ) {
       return Promise.resolve({
         json: () => ({
-          play_count: numPlayCount,
+          streams: songStreams,
         }),
         status: 200,
       }).catch((error) => {
@@ -356,6 +355,6 @@ test('UserProfile Artist load Songs and Playcount', async () => {
   expect(component.queryByText(songName)).toBeInTheDocument();
   expect(component.queryByText(playlistName)).toBeInTheDocument();
   expect(
-    component.queryByText(`${numPlayCount} reproducciones totales`),
+    component.queryByText(`${songStreams} reproducciones totales`),
   ).toBeInTheDocument();
 });

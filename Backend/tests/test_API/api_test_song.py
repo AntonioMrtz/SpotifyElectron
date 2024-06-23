@@ -24,8 +24,8 @@ def get_songs(headers: dict):
     return client.get("/songs/", headers=headers)
 
 
-def patch_song_number_plays(name: str, headers: dict):
-    patch_url = f"/songs/{name}/playback_count"
+def increase_song_streams(name: str, headers: dict):
+    patch_url = f"/songs/{name}/streams"
 
     return client.patch(patch_url, headers=headers)
 

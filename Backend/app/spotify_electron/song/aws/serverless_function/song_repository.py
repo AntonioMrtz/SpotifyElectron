@@ -86,7 +86,7 @@ def create_song(
             "duration": duration,
             "genre": str(genre.value),
             "photo": photo,
-            "number_of_playbacks": 0,
+            "streams": 0,
         }
 
         result = collection.insert_one(song)

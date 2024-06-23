@@ -39,7 +39,7 @@ const playlistDTOMockFetch = {
   photo: 'photo',
   seconds_duration: '180',
   genre: 'Rock',
-  number_of_plays: 2,
+  streams: 2,
 }; */
 
 const navigate = jest.fn();

@@ -39,7 +39,7 @@ const songMockFetch = {
   photo: 'photo',
   seconds_duration: '180',
   genre: 'Rock',
-  number_of_plays: 2,
+  streams: 2,
 };
 
 jest.spyOn(Token, 'getTokenUsername').mockReturnValue(userName);

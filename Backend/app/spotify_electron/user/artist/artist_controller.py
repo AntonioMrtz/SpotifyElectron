@@ -132,18 +132,20 @@ def get_artists() -> Response:
         )
 
 
-@router.get("/{name}/playbacks")
-def get_playback_count(name: str) -> Response:
-    """Get artist total playback count of his songs"""
+@router.get("/{name}/streams")
+def get_artist_streams(name: str) -> Response:
+    """Get artist total streams of his songs"""
     try:
-        play_count = artist_service.get_playback_count_artist(user_name=name)
+        total_streams = artist_service.get_streams_artist(user_name=name)
 
-        play_count_json = json_converter_utils.get_json_with_iterable_field_from_model(
-            play_count, "play_count"
+        total_streams_json = (
+            json_converter_utils.get_json_with_iterable_field_from_model(
+                total_streams, "streams"
+            )
         )
 
         return Response(
-            play_count_json, media_type="application/json", status_code=HTTP_200_OK
+            total_streams_json, media_type="application/json", status_code=HTTP_200_OK
         )
     except JsonEncodeException:
         return Response(

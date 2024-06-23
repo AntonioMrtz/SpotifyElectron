@@ -245,8 +245,8 @@ def get_all_artists() -> list[ArtistDTO]:
         return artists_dto
 
 
-def get_playback_count_artist(user_name: str) -> int:
-    """Get artist songs playback count
+def get_streams_artist(user_name: str) -> int:
+    """Get artist songs total streams
 
     Args:
         user_name (str): artist name
@@ -254,16 +254,16 @@ def get_playback_count_artist(user_name: str) -> int:
     Raises:
         UserNotFoundException: artist doesnt exists
         UserBadNameException: artist bad name
-        UserServiceException: unexpected error getting artist songs playbackc count
+        UserServiceException: unexpected error getting artist total streams
 
     Returns:
-        int: the playback count for all artist songs
+        int: the total for all artist songs
     """
     try:
         validate_user_name_parameter(user_name)
         base_user_service.validate_user_should_exists(user_name)
 
-        return base_song_service.get_artist_playback_count(user_name)
+        return base_song_service.get_artist_streams(user_name)
     except UserNotFoundException as exception:
         artist_service_logger.exception(f"Artist not found : {user_name}")
         raise UserNotFoundException from exception

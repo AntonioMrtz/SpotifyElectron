@@ -13,10 +13,10 @@ from starlette.status import (
 from test_API.api_test_artist import (
     create_artist,
     get_artist,
+    get_artist_streams,
     get_artists,
-    get_playback_count_artist,
 )
-from test_API.api_test_song import create_song, delete_song, patch_song_number_plays
+from test_API.api_test_song import create_song, delete_song, increase_song_streams
 from test_API.api_test_user import delete_user
 from test_API.api_token import get_user_jwt_header
 
@@ -121,7 +121,7 @@ def test_get_artists_correct():
     assert res_delete_artist.status_code == HTTP_202_ACCEPTED
 
 
-def test_get_play_count_artist_correct(clear_test_data_db):
+def test_get_total_streams_artist_correct(clear_test_data_db):
     song_name = "8232392323623823723989"
     song_name_2 = "82323923236238237239892"
     file_path = "tests/assets/song.mp3"
@@ -153,18 +153,22 @@ def test_get_play_count_artist_correct(clear_test_data_db):
     )
     assert res_create_song.status_code == HTTP_201_CREATED
 
-    expected_artist_playback_count = 2
+    expected_artist_total_streams = 2
 
-    res_patch_song = patch_song_number_plays(name=song_name, headers=jwt_headers)
-    assert res_patch_song.status_code == HTTP_204_NO_CONTENT
+    res_increase_streams_song = increase_song_streams(
+        name=song_name, headers=jwt_headers
+    )
+    assert res_increase_streams_song.status_code == HTTP_204_NO_CONTENT
 
-    res_patch_song = patch_song_number_plays(name=song_name_2, headers=jwt_headers)
-    assert res_patch_song.status_code == HTTP_204_NO_CONTENT
+    res_increase_streams_song = increase_song_streams(
+        name=song_name_2, headers=jwt_headers
+    )
+    assert res_increase_streams_song.status_code == HTTP_204_NO_CONTENT
 
-    res_get_play_count_artist = get_playback_count_artist(artista, headers=jwt_headers)
-    assert res_get_play_count_artist.status_code == HTTP_200_OK
+    res_get_total_streams_artist = get_artist_streams(artista, headers=jwt_headers)
+    assert res_get_total_streams_artist.status_code == HTTP_200_OK
     assert (
-        res_get_play_count_artist.json()["play_count"] == expected_artist_playback_count
+        res_get_total_streams_artist.json()["streams"] == expected_artist_total_streams
     )
 
     res_delete_song = delete_song(song_name)

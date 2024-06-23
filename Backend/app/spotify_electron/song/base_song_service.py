@@ -116,30 +116,30 @@ def get_songs_metadata(song_names: list[str]) -> list[SongMetadataDTO]:
         raise SongServiceException from exception
 
 
-def increase_number_playbacks(name: str) -> None:
-    """Increase by one the number of playbacks of a song
+def increase_song_streams(name: str) -> None:
+    """Increase by one the streams of a song
 
     Args:
         name (str): song name
 
     Raises:
         SongNotFoundException: song doesnt exists
-        SongServiceException: unexpected error increasing number of song playbacks
+        SongServiceException: unexpected error increasing song streams
     """
     try:
         validate_song_should_exists(name)
-        base_song_repository.increase_playback_count(name)
+        base_song_repository.increase_song_streams(name)
     except SongNotFoundException as exception:
         base_song_service_logger.exception(f"Song not found : {name}")
         raise SongNotFoundException from exception
     except SongRepositoryException as exception:
         base_song_service_logger.exception(
-            f"Unexpected error in Song Repository increasing number playbacks of song : {name}"
+            f"Unexpected error in Song Repository increasing song : {name} streams"
         )
         raise SongServiceException from exception
     except Exception as exception:
         base_song_service_logger.exception(
-            f"Unexpected error in Song Service increasing number playbacks of song : {name}"
+            f"Unexpected error in Song Service increasing song : {name} streams"
         )
         raise SongServiceException from exception
 
@@ -159,33 +159,33 @@ def search_by_name(name: str) -> list[SongMetadataDTO]:
     return get_songs_metadata(song_names)
 
 
-def get_artist_playback_count(artist_name: str) -> int:
-    """Get artist songs playback count
+def get_artist_streams(artist_name: str) -> int:
+    """Get artist songs total streams
 
     Args:
         artist_name (str): artist name
 
     Raises:
         UserNotFoundException: artist doesnt exists
-        SongServiceException: unexpected error getting artist songs playback count
+        SongServiceException: unexpected error getting artist songs total streams
 
     Returns:
-        int: the number of playback counts for the artists songs
+        int: the number of streams for the artists songs
     """
     try:
         base_user_service.validate_user_should_exists(artist_name)
-        return base_song_repository.get_artist_playback_count(artist_name)
+        return base_song_repository.get_artist_total_streams(artist_name)
     except UserNotFoundException as exception:
         base_song_service_logger.exception(f"User not found : {artist_name}")
         raise UserNotFoundException from exception
     except SongRepositoryException as exception:
         base_song_service_logger.exception(
-            f"Unexpected error in Song Repository while getting total artist {artist_name} playbacks"
+            f"Unexpected error in Song Repository while getting total artist {artist_name} streams"
         )
         raise SongServiceException from exception
     except Exception as exception:
         base_song_service_logger.exception(
-            f"Unexpected error in Song Service while getting total artist {artist_name} playbacks"
+            f"Unexpected error in Song Service while getting total artist {artist_name} streams"
         )
         raise SongServiceException from exception
 

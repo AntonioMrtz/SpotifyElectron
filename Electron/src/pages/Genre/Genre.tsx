@@ -26,7 +26,7 @@ export default function Genre({
     photo: string;
     duration: string;
     genre: string;
-    number_of_plays: string;
+    streams: string;
   };
 
   const [songs, setSongs] = useState<SongProps[]>();
@@ -47,7 +47,7 @@ export default function Genre({
             photo: song.photo,
             duration: song.seconds_duration,
             genre: song.genre,
-            number_of_plays: song.number_of_plays,
+            streams: song.streams,
           };
 
           songsFromFetch.push(songProp);

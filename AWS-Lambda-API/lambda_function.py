@@ -44,6 +44,23 @@ def get_cloudfront_url(resource_path: str) -> str:
     return cloudfront_url
 
 
+def get_http_method_from_event(event) -> str:
+    """Get HTTP method ( GET, POST...) from incoming event.
+
+    Args:
+        event : incoming event
+
+    Returns:
+        str: incoming HTTP method
+    """
+    try:
+        http_method = event["requestContext"]["http"]["method"]
+    except Exception:
+        http_method = event["httpMethod"]
+
+    return http_method
+
+
 def lambda_handler(event, context) -> dict:
     """Handles the incoming requests
 
@@ -55,7 +72,7 @@ def lambda_handler(event, context) -> dict:
         dict: the response data
     """
     try:
-        http_method = event["requestContext"]["http"]["method"]
+        http_method = get_http_method_from_event(event)
         song_name = event["queryStringParameters"]["nombre"]
 
         if http_method == "GET":

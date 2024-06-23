@@ -29,7 +29,7 @@ export default function UserProfile({
   const [playlists, setPlaylists] = useState<PropsPlaylistCard[]>([]);
   const [playbackHistory, setPlaybackHistory] = useState<PropsSongCard[]>([]);
   const [uploadedSongs, setUploadedSongs] = useState<PropsSongCard[]>([]);
-  const [artistPlayCount, setArtistPlayCount] = useState(0);
+  const [artistStreams, setArtistStreams] = useState(0);
 
   const loadPlaylists = async (resGetUserJson: any) => {
     const playlistPromises: Promise<any>[] = [];
@@ -146,13 +146,13 @@ export default function UserProfile({
       });
   };
 
-  const loadPlayCount = () => {
-    fetch(`${Global.backendBaseUrl}artists/${id}/playbacks`)
-      .then((resFetchPlayCount) => {
-        return resFetchPlayCount.json();
+  const loadArtistsStreams = () => {
+    fetch(`${Global.backendBaseUrl}artists/${id}/streams`)
+      .then((resFetchArtistStreams) => {
+        return resFetchArtistStreams.json();
       })
-      .then((resFetchPlayCountJson) => {
-        setArtistPlayCount(resFetchPlayCountJson.play_count);
+      .then((resFetchArtistStreamsJson) => {
+        setArtistStreams(resFetchArtistStreamsJson.streams);
         return null;
       })
       .catch(() => {
@@ -175,7 +175,7 @@ export default function UserProfile({
       loadPlaybackHistory(resGetUserJson);
     } else if (userType === UserType.ARTIST) {
       loadSongsFromArtist(resGetUserJson);
-      loadPlayCount();
+      loadArtistsStreams();
     }
   };
 
@@ -266,7 +266,7 @@ export default function UserProfile({
               }}
             >
               {userType === UserType.ARTIST &&
-                `${artistPlayCount} reproducciones totales`}
+                `${artistStreams} reproducciones totales`}
             </p>
           </div>
         </div>

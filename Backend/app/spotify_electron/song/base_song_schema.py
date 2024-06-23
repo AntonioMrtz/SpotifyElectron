@@ -20,7 +20,7 @@ class BaseSongDAO(ABC):
     artist: str
     seconds_duration: int
     genre: Genre
-    number_of_playbacks: list[str]
+    streams: list[str]
 
 
 @dataclass
@@ -32,7 +32,7 @@ class BaseSongDTO(ABC):
     artist: str
     seconds_duration: int
     genre: Genre
-    number_of_playbacks: list[str]
+    streams: list[str]
 
 
 @dataclass
@@ -63,7 +63,7 @@ def get_song_metadata_dao_from_document(document: dict) -> SongMetadataDAO:
         artist=document["artist"],
         seconds_duration=document["duration"],
         genre=Genre(document["genre"]),
-        number_of_playbacks=document["number_of_playbacks"],
+        streams=document["streams"],
     )
 
 
@@ -82,7 +82,7 @@ def get_song_metadata_dto_from_dao(song_dao: SongMetadataDAO) -> SongMetadataDTO
         artist=song_dao.artist,
         seconds_duration=song_dao.seconds_duration,
         genre=song_dao.genre,
-        number_of_playbacks=song_dao.number_of_playbacks,
+        streams=song_dao.streams,
     )
 
 

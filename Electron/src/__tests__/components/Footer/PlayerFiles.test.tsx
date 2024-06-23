@@ -41,7 +41,7 @@ global.fetch = jest.fn((url: string) => {
       console.log(error);
     });
   }
-  if (url === `${Global.backendBaseUrl}songs/${songName}/playback_count`) {
+  if (url === `${Global.backendBaseUrl}songs/${songName}/streams`) {
     return Promise.resolve({
       json: () => {},
       status: 204,

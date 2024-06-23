@@ -206,15 +206,15 @@ def get_song_metadata(name: str) -> Response:
     return Response(song_json, media_type="application/json", status_code=HTTP_200_OK)
 
 
-@router.patch("/{name}/playback_count")
-def increase_number_playbacks_song(name: str) -> Response:
-    """Increase number of playbacks of a song
+@router.patch("/{name}/streams")
+def increase_song_streams(name: str) -> Response:
+    """Increase total streams of a song
 
     Args:
         name (str): song name
     """
     try:
-        base_song_service.increase_number_playbacks(name)
+        base_song_service.increase_song_streams(name)
         return Response(None, HTTP_204_NO_CONTENT)
     except SongNotFoundException:
         return Response(

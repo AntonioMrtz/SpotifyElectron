@@ -133,49 +133,47 @@ def get_artist_from_song(name: str) -> str:
         raise SongRepositoryException from exception
 
 
-def increase_playback_count(name: str) -> None:
-    """Increase number of song playbacks
+def increase_song_streams(name: str) -> None:
+    """Increase number of song streams
 
     Args:
         name (str): song name
     """
     try:
         collection = song_collection_provider.get_song_collection()
-        collection.update_one({"name": name}, {"$inc": {"number_of_playbacks": 1}})
+        collection.update_one({"name": name}, {"$inc": {"streams": 1}})
     except SongRepositoryException as exception:
         song_repository_logger.exception(
-            f"Unexpected error increasing playback count for artist {name} in database"
+            f"Unexpected error increasing stream count for artist {name} in database"
         )
         raise SongRepositoryException from exception
 
 
-def get_artist_playback_count(artist_name: str) -> int:
-    """Get artist total playback count
+def get_artist_total_streams(artist_name: str) -> int:
+    """Get artist total streams
 
     Args:
         artist_name (str): artist name
 
     Returns:
-        int: the number of total playback counts of artist songs
+        int: the number of total streams of artist songs
     """
     try:
         collection = get_song_collection()
-        result_number_playback_count_query = collection.aggregate(
+        result_total_streams_query = collection.aggregate(
             [
                 {"$match": {"artist": artist_name}},
-                {"$group": {"_id": None, "total": {"$sum": "$number_of_playbacks"}}},
+                {"$group": {"_id": None, "total": {"$sum": "$streams"}}},
             ]
         )
-        result_number_playback_count_query = next(
-            result_number_playback_count_query, None
-        )
+        result_total_streams_query = next(result_total_streams_query, None)
 
-        if result_number_playback_count_query is None:
+        if result_total_streams_query is None:
             return 0
-        return result_number_playback_count_query["total"]
+        return result_total_streams_query["total"]
     except SongRepositoryException as exception:
         song_repository_logger.exception(
-            f"Unexpected error gettig artist {artist_name} playback count in database"
+            f"Unexpected error gettig artist {artist_name} total streams in database"
         )
         raise SongRepositoryException from exception
 
@@ -224,7 +222,7 @@ def get_songs_metadata_by_genre(genre: str) -> list[SongMetadataDAO]:
                 photo=song_data["photo"],
                 seconds_duration=song_data["duration"],
                 genre=Genre(song_data["genre"]),
-                number_of_playbacks=song_data["number_of_playbacks"],
+                streams=song_data["streams"],
             )
             for song_data in result_get_song_by_genre
         ]

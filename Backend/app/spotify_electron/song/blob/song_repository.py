@@ -89,7 +89,7 @@ def create_song(  # noqa: PLR0913
             "duration": duration,
             "genre": str(genre.value),
             "photo": photo,
-            "number_of_playbacks": 0,
+            "streams": 0,
         }
         result = gridfs_collection.put(
             file,

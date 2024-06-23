@@ -42,5 +42,5 @@ def get_artists(headers: dict):
     return client.get("/artists/", headers=headers)
 
 
-def get_playback_count_artist(name: str, headers: dict):
-    return client.get(f"/artists/{name}/playbacks", headers=headers)
+def get_artist_streams(name: str, headers: dict):
+    return client.get(f"/artists/{name}/streams", headers=headers)

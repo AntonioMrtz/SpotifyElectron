@@ -84,11 +84,11 @@ export default function PlayerStreaming({
 
   /* Handles updates of DB when song is played */
 
-  const handleIncreasePlayCount = () => {
+  const handleIncreaseSongStreams = () => {
     const requestOptions = {
       method: 'PATCH',
     };
-    const fetchUrlUpdateSong: string = `${Global.backendBaseUrl}songs/${songName}/playback_count`;
+    const fetchUrlUpdateSong: string = `${Global.backendBaseUrl}songs/${songName}/streams`;
 
     fetch(fetchUrlUpdateSong, requestOptions).catch(() =>
       console.log('Unable to update number of plays'),
@@ -125,7 +125,7 @@ export default function PlayerStreaming({
 
       const resFetchSongJson = await resFetchSong.json();
 
-      handleIncreasePlayCount();
+      handleIncreaseSongStreams();
 
       handleUpdatePlaybackHistory();
 
@@ -180,7 +180,7 @@ export default function PlayerStreaming({
             setSongDuration(audio.current.duration); // not updating every 0.5s as playback time
 
             if (audio.current.currentTime === 0) {
-              handleIncreasePlayCount();
+              handleIncreaseSongStreams();
             }
           }
         };

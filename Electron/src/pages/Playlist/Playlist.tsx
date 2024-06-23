@@ -229,7 +229,7 @@ export default function Playlist({
                       name: songName,
                       playlistName,
                       artistName: '',
-                      playCount: 0,
+                      streams: 0,
                       duration: 0,
                       index: 0,
                       handleSongCliked: changeSongName,
@@ -238,7 +238,7 @@ export default function Playlist({
                     };
                     propsSong.artistName = resFetchSongDTOJson.artist;
                     propsSong.duration = resFetchSongDTOJson.seconds_duration;
-                    propsSong.playCount = resFetchSongDTOJson.number_of_plays;
+                    propsSong.streams = resFetchSongDTOJson.number_of_plays;
 
                     resolve(propsSong);
                     return propsSong;
@@ -525,7 +525,7 @@ export default function Playlist({
                   name={song.name}
                   playlistName={playlistName}
                   artistName={song.artistName}
-                  playCount={song.playCount}
+                  streams={song.streams}
                   index={index + 1}
                   duration={song.duration}
                   handleSongCliked={changeSongName}

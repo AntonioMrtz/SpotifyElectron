@@ -15,7 +15,7 @@ from test_API.api_test_song import (
     delete_song,
     get_song,
     get_songs_by_genre,
-    patch_song_number_plays,
+    increase_song_streams,
 )
 from test_API.api_test_user import create_user, delete_user
 from test_API.api_token import get_user_jwt_header
@@ -267,8 +267,10 @@ def test_patch_number_plays_cancion_correct(clear_test_data_db):
     )
     assert res_create_song.status_code == HTTP_201_CREATED
 
-    res_patch_song = patch_song_number_plays(name=song_name, headers=jwt_headers)
-    assert res_patch_song.status_code == HTTP_204_NO_CONTENT
+    res_increase_streams_song = increase_song_streams(
+        name=song_name, headers=jwt_headers
+    )
+    assert res_increase_streams_song.status_code == HTTP_204_NO_CONTENT
 
     res_get_song = get_song(name=song_name, headers=jwt_headers)
     assert res_get_song.status_code == HTTP_200_OK
@@ -276,7 +278,7 @@ def test_patch_number_plays_cancion_correct(clear_test_data_db):
     assert res_get_song.json()["artist"] == artista
     assert res_get_song.json()["genre"] == Genre(genero)
     assert res_get_song.json()["photo"] == foto
-    assert res_get_song.json()["number_of_playbacks"] == 1
+    assert res_get_song.json()["streams"] == 1
 
     res_delete_song = delete_song(song_name)
     assert res_delete_song.status_code == HTTP_202_ACCEPTED
@@ -298,8 +300,10 @@ def test_patch_number_of_plays_song_not_found(clear_test_data_db):
 
     song_name = "8232392323623823723989"
 
-    res_patch_song = patch_song_number_plays(name=song_name, headers=jwt_headers)
-    assert res_patch_song.status_code == HTTP_404_NOT_FOUND
+    res_increase_streams_song = increase_song_streams(
+        name=song_name, headers=jwt_headers
+    )
+    assert res_increase_streams_song.status_code == HTTP_404_NOT_FOUND
 
 
 def test_patch_song_invalid_name(clear_test_data_db):
@@ -317,8 +321,10 @@ def test_patch_song_invalid_name(clear_test_data_db):
 
     song_name = ""
 
-    res_patch_song = patch_song_number_plays(name=song_name, headers=jwt_headers)
-    assert res_patch_song.status_code == HTTP_404_NOT_FOUND
+    res_increase_streams_song = increase_song_streams(
+        name=song_name, headers=jwt_headers
+    )
+    assert res_increase_streams_song.status_code == HTTP_404_NOT_FOUND
 
 
 def test_post_song_uploaded_songs_updated(clear_test_data_db):

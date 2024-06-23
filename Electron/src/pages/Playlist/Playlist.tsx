@@ -238,7 +238,7 @@ export default function Playlist({
                     };
                     propsSong.artistName = resFetchSongDTOJson.artist;
                     propsSong.duration = resFetchSongDTOJson.seconds_duration;
-                    propsSong.streams = resFetchSongDTOJson.number_of_plays;
+                    propsSong.streams = resFetchSongDTOJson.streams;
 
                     resolve(propsSong);
                     return propsSong;

@@ -17,7 +17,7 @@ const songMockFetch = {
   photo: 'photo',
   seconds_duration: '180',
   genre: 'Rock',
-  number_of_plays: 2,
+  streams: 2,
   url: 'https://5b44cf20b0388.streamlock.net:8443/vod/smil:bbb.smil/playlist.m3u8',
 };
 

@@ -25,7 +25,7 @@ const songMockFetch = {
   photo: 'photo',
   seconds_duration: '3',
   genre: 'Rock',
-  number_of_plays: 2,
+  streams: 2,
 };
 
 test('Render items All Songs from Artist', async () => {

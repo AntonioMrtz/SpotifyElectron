@@ -159,7 +159,7 @@ test('UserProfile User load Playback history and his Playlists', async () => {
     photo: 'photo',
     seconds_duration: '3',
     genre: 'Rock',
-    number_of_plays: 2,
+    streams: 2,
   };
 
   jest.mock('react-router-dom', () => ({
@@ -267,7 +267,7 @@ test('UserProfile Artist load Songs and total streams', async () => {
     photo: 'photo',
     seconds_duration: '3',
     genre: 'Rock',
-    number_of_plays: 2,
+    streams: 2,
   };
 
   jest.mock('react-router-dom', () => ({

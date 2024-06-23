@@ -34,7 +34,6 @@ jobs:
         env:
           MONGO_URI: mongodb://root:root@localhost:27017/
           SECRET_KEY_SIGN: ${{ secrets.SECRET_KEY_SIGN }}
-          DISTRIBUTION_ID: ${{ secrets.DISTRIBUTION_ID }}
           SERVERLESS_FUNCTION_URL: ${{ secrets.SERVERLESS_FUNCTION_URL }}
           ARCH: "STREAMING_SERVERLESS_FUNCTION"
           ENV_VALUE: "PROD"

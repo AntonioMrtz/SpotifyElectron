@@ -1,4 +1,4 @@
-# Contributors to Spotify Electron
+# Contributors of Spotify Electron
 
 I would like to express my heartfelt gratitude to the following individuals for their invaluable contributions to Spotify Electron. Your efforts are immensely appreciated and hold significant importance for me and the project.
 

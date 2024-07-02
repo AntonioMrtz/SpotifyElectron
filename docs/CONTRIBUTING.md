@@ -12,7 +12,7 @@ improve your coding skills, and enhance your communication abilities.
 2. Create a new branch with the feature youre implementing using the [branch naming convention](Git-Convention.md).
 3. Push your changes to the new branch using the [commit naming convention](Git-Convention.md).
 4. Add tests for every functionality changed or added.
-5. Go to your branch in Github, then select Pull Request and fill the fields indicated in the template.
+5. Go to your branch in Github, then select Pull Request and fill the fields indicated in the template. Remember to rename the Pull Request using our [convention](Git-Convention.md).
 
 ## 🙍‍♂️ Contributors list
 

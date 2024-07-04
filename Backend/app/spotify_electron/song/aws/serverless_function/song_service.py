@@ -3,7 +3,7 @@ Song service for handling business logic
 """
 
 import app.spotify_electron.song.aws.serverless_function.song_repository as song_repository
-import app.spotify_electron.song.aws.serverless_function.song_serverless_function_api as song_serverless_function_api
+import app.spotify_electron.song.aws.serverless_function.song_serverless_function_api as song_serverless_function_api  # noqa: E501
 import app.spotify_electron.song.base_song_repository as base_song_repository
 import app.spotify_electron.user.artist.artist_service as artist_service
 import app.spotify_electron.user.base_user_service as base_user_service

@@ -1,5 +1,6 @@
 """
-Manages the unique database connection across the app and provides the modules with the collections needed for persist data.
+Manages the unique database connection across the app and provides the modules with the collections\
+    needed for persist data.
 """
 
 import sys

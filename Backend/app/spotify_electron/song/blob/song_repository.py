@@ -1,5 +1,7 @@
 """
-Song repository for managing persisted data. These are stored using GridFS, a MongoDB fylesystem for storing BLOB files and its metadata.S See https://www.mongodb.com/docs/manual/core/gridfs/
+Song repository for managing persisted data. These are stored using GridFS, \
+    a MongoDB fylesystem for storing BLOB files and its metadata.\
+    See https://www.mongodb.com/docs/manual/core/gridfs/
 
 Song files are stored as BLOBs in a separated collection from the metadata
 When the song file is not needed, and only the metadata is required use base song services

@@ -201,12 +201,14 @@ def add_playback_history(user_name: str, song_name: str, token: TokenData) -> No
         raise SongNotFoundException from exception
     except UserRepositoryException as exception:
         base_users_service_logger.exception(
-            f"Unexpected error in User Repository adding song {song_name} to user {user_name} playback history"
+            f"Unexpected error in User Repository adding song {song_name} "
+            f"to user {user_name} playback history"
         )
         raise UserServiceException from exception
     except Exception as exception:
         base_users_service_logger.exception(
-            f"Unexpected error in User Service adding song {song_name} to user {user_name} playback history"
+            f"Unexpected error in User Service adding song {song_name} "
+            f"to user {user_name} playback history"
         )
         raise UserServiceException from exception
     else:
@@ -260,12 +262,14 @@ def add_saved_playlist(user_name: str, playlist_name: str, token: TokenData) -> 
         raise PlaylistNotFoundException from exception
     except UserRepositoryException as exception:
         base_users_service_logger.exception(
-            f"Unexpected error in User Repository adding playlist {playlist_name} to user {user_name} saved playlist"
+            f"Unexpected error in User Repository adding playlist {playlist_name} "
+            f"to user {user_name} saved playlist"
         )
         raise UserServiceException from exception
     except Exception as exception:
         base_users_service_logger.exception(
-            f"Unexpected error in User Service adding playlist {playlist_name} to user {user_name} saved playlist"
+            f"Unexpected error in User Service adding playlist {playlist_name} "
+            f"to user {user_name} saved playlist"
         )
         raise UserServiceException from exception
     else:
@@ -319,12 +323,14 @@ def delete_saved_playlist(user_name: str, playlist_name: str, token: TokenData) 
         raise PlaylistNotFoundException from exception
     except UserRepositoryException as exception:
         base_users_service_logger.exception(
-            f"Unexpected error in User Repository deleting playlist {playlist_name} from user {user_name} saved playlist"
+            f"Unexpected error in User Repository deleting playlist {playlist_name} "
+            f"from user {user_name} saved playlist"
         )
         raise UserServiceException from exception
     except Exception as exception:
         base_users_service_logger.exception(
-            f"Unexpected error in User Service deleting playlist {playlist_name} from user {user_name} saved playlist"
+            f"Unexpected error in User Service deleting playlist {playlist_name} "
+            f"from user {user_name} saved playlist"
         )
         raise UserServiceException from exception
     else:
@@ -364,7 +370,8 @@ def add_playlist_to_owner(user_name: str, playlist_name: str, token: TokenData) 
         )
     except (UserRepositoryException, Exception) as exception:
         base_users_service_logger.exception(
-            f"Unexpected error in User Repository adding playlist {playlist_name} to owner {user_name}"
+            f"Unexpected error in User Repository adding playlist {playlist_name} "
+            f"to owner {user_name}"
         )
         raise UserServiceException from exception
 
@@ -399,7 +406,8 @@ def delete_playlist_from_owner(playlist_name: str) -> None:
         )
     except (UserRepositoryException, Exception) as exception:
         base_users_service_logger.exception(
-            f"Unexpected error in User Repository deleting playlist {playlist_name} from owner {user_name}"
+            f"Unexpected error in User Repository deleting playlist {playlist_name} "
+            f"from owner {user_name}"
         )
         raise UserServiceException from exception
 

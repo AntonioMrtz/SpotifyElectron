@@ -96,7 +96,8 @@ def create_playlist(
         name (str): playlist name
         photo (str): playlist photo
         description (str): playlist description
-        song_names (list[str], optional): list of song names included in playlisy. Defaults to Body(...).
+        song_names (list[str], optional): list of song names included in playlisy.\
+              Defaults to Body(...).
         authorization (Annotated[str  |  None, Header, optional): jwt token. Defaults to None.
     """
     try:

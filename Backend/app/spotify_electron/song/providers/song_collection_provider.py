@@ -1,5 +1,6 @@
 """
-Provider class for supplying song collection connection with database depending on the architecture on song selected
+Provider class for supplying song collection connection with database depending on the\
+      architecture on song selected
 """
 
 from gridfs import GridFS

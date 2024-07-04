@@ -99,7 +99,8 @@ def _get_song_base64_encoded_bytes_from_gridfs(
         song_data (GridOut): song data given by GridFs
 
     Raises:
-        GetEncodedBytesFromGridFSException: unexpected error getting base 64 encoded song bytes from GridFS
+        GetEncodedBytesFromGridFSException: unexpected error getting base 64 encoded\
+              song bytes from GridFS
 
     Returns:
         str: the base64 encoded song bytes

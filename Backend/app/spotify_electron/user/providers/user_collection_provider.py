@@ -1,5 +1,6 @@
 """
-Provider class for supplying user collection connection with database depending on the architecture on the associated user type
+Provider class for supplying user collection connection with database depending on the \
+    architecture on the associated user type
 """
 
 from pymongo.collection import Collection

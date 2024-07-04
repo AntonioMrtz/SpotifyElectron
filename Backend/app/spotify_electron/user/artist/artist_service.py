@@ -114,7 +114,8 @@ def delete_song_from_artist(artist_name: str, song_name: str):
         raise UserServiceException from exception
     except Exception as exception:
         artist_service_logger.exception(
-            f"Unexpected error in Artist service removing song {song_name} from artist {artist_name}"
+            f"Unexpected error in Artist service removing song {song_name} "
+            f"from artist {artist_name}"
         )
         raise UserServiceException from exception
 

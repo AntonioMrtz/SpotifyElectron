@@ -52,9 +52,7 @@ def get_song_dao_from_document(document: dict, song_data: GridOut) -> SongDAO:
         SongDAO: SongDAO Object
     """
     song_name = document["name"]
-    encoded_song_bytes = _get_song_base64_encoded_bytes_from_gridfs(
-        song_name, song_data
-    )
+    encoded_song_bytes = _get_song_base64_encoded_bytes_from_gridfs(song_name, song_data)
     return SongDAO(
         name=song_name,
         photo=document["photo"],
@@ -89,9 +87,7 @@ def get_song_dto_from_dao(song_dao: SongDAO) -> SongDTO:
     )
 
 
-def _get_song_base64_encoded_bytes_from_gridfs(
-    song_name: str, song_data: GridOut
-) -> str:
+def _get_song_base64_encoded_bytes_from_gridfs(song_name: str, song_data: GridOut) -> str:
     """Get song bytes encoded in base64 ready for HTTP transfer from GridFs
 
     Args:

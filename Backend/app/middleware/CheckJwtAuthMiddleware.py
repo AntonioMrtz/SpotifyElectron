@@ -88,9 +88,7 @@ class CheckJwtAuthMiddleware(BaseHTTPMiddleware):
                 status_code=HTTP_401_UNAUTHORIZED,
             )
 
-    async def _handle_jwt_validation(
-        self, jwt: str, request: Request, call_next
-    ) -> Response:
+    async def _handle_jwt_validation(self, jwt: str, request: Request, call_next) -> Response:
         """Handles JWT validation, sends HTTP_401_UNAUTHORIZED if jwt is not valid or\
             continues the workflow
 
@@ -112,8 +110,6 @@ class CheckJwtAuthMiddleware(BaseHTTPMiddleware):
             check_jwt_auth_middleware_logger.exception(
                 f"Request with invalid JWT {jwt} {request}"
             )
-            return Response(
-                content="Invalid Credentials", status_code=HTTP_401_UNAUTHORIZED
-            )
+            return Response(content="Invalid Credentials", status_code=HTTP_401_UNAUTHORIZED)
         else:
             return await call_next(request)

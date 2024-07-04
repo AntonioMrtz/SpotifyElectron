@@ -129,9 +129,7 @@ def get_jwt_token_data(
         security_service_logger.exception("Error decoding JWT Token")
         raise BadJWTTokenProvidedException from exception
     except Exception as exception:
-        security_service_logger.exception(
-            "Unexpected error getting data from JWT Token"
-        )
+        security_service_logger.exception("Unexpected error getting data from JWT Token")
         raise BadJWTTokenProvidedException from exception
     else:
         security_service_logger.info(f"Token data : {token_data}")
@@ -261,14 +259,10 @@ def login_user(name: str, password: str) -> str:
         security_service_logger.exception("Invalid login credentials")
         raise InvalidCredentialsLoginException from exception
     except VerifyPasswordException as exception:
-        security_service_logger.exception(
-            "Passwords Validation failed : passwords dont match"
-        )
+        security_service_logger.exception("Passwords Validation failed : passwords dont match")
         raise VerifyPasswordException from exception
     except CreateJWTException as exception:
-        security_service_logger.exception(
-            f"Error creating JWT Token from data : {jwt_data}"
-        )
+        security_service_logger.exception(f"Error creating JWT Token from data : {jwt_data}")
         raise VerifyPasswordException from exception
     except UserNotFoundException as exception:
         security_service_logger.exception(f"User {name} doesnt exists")
@@ -313,9 +307,7 @@ def validate_jwt(token: str) -> None:
         raise JWTValidationException from exception
 
     except Exception as exception:
-        security_service_logger.exception(
-            f"Unexpected error validating token : {token}"
-        )
+        security_service_logger.exception(f"Unexpected error validating token : {token}")
         raise JWTValidationException from exception
 
 

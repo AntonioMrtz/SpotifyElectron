@@ -37,9 +37,7 @@ def get_user(name: str) -> ArtistDAO:
         UserDAO: the user
     """
     try:
-        artist = user_collection_provider.get_artist_collection().find_one(
-            {"name": name}
-        )
+        artist = user_collection_provider.get_artist_collection().find_one({"name": name})
         validate_user_exists(artist)
         artist_dao = get_artist_dao_from_document(artist)  # type: ignore
 
@@ -81,9 +79,7 @@ def create_artist(name: str, photo: str, password: bytes, current_date: str) -> 
 
         validate_user_create(result)
     except UserCreateException as exception:
-        artist_repository_logger.exception(
-            f"Error inserting Artist {artist} in database"
-        )
+        artist_repository_logger.exception(f"Error inserting Artist {artist} in database")
         raise UserRepositoryException from exception
     except (UserRepositoryException, Exception) as exception:
         artist_repository_logger.exception(
@@ -109,9 +105,7 @@ def get_all_artists() -> list[ArtistDAO]:
             for artist in user_collection_provider.get_artist_collection().find()
         ]
     except Exception as exception:
-        artist_repository_logger.exception(
-            "Error getting all artists names from database"
-        )
+        artist_repository_logger.exception("Error getting all artists names from database")
         raise UserRepositoryException from exception
     else:
         artist_repository_logger.info("All artists names retrieved successfully")
@@ -162,7 +156,8 @@ def delete_song_from_artist(artist_name: str, song_name: str) -> None:
         validate_user_update(result)
     except UserCreateException as exception:
         artist_repository_logger.exception(
-            f"Error updating artist {artist_name} with deletion of song {song_name} in database"
+            f"Error updating artist {artist_name} with deletion of "
+            f"song {song_name} in database"
         )
         raise UserRepositoryException from exception
     except (UserRepositoryException, Exception) as exception:

@@ -267,9 +267,7 @@ def test_patch_number_plays_cancion_correct(clear_test_data_db):
     )
     assert res_create_song.status_code == HTTP_201_CREATED
 
-    res_increase_streams_song = increase_song_streams(
-        name=song_name, headers=jwt_headers
-    )
+    res_increase_streams_song = increase_song_streams(name=song_name, headers=jwt_headers)
     assert res_increase_streams_song.status_code == HTTP_204_NO_CONTENT
 
     res_get_song = get_song(name=song_name, headers=jwt_headers)
@@ -300,9 +298,7 @@ def test_patch_number_of_plays_song_not_found(clear_test_data_db):
 
     song_name = "8232392323623823723989"
 
-    res_increase_streams_song = increase_song_streams(
-        name=song_name, headers=jwt_headers
-    )
+    res_increase_streams_song = increase_song_streams(name=song_name, headers=jwt_headers)
     assert res_increase_streams_song.status_code == HTTP_404_NOT_FOUND
 
 
@@ -321,9 +317,7 @@ def test_patch_song_invalid_name(clear_test_data_db):
 
     song_name = ""
 
-    res_increase_streams_song = increase_song_streams(
-        name=song_name, headers=jwt_headers
-    )
+    res_increase_streams_song = increase_song_streams(name=song_name, headers=jwt_headers)
     assert res_increase_streams_song.status_code == HTTP_404_NOT_FOUND
 
 

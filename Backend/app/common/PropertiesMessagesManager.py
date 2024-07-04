@@ -34,9 +34,7 @@ class _PropertiesMessagesManager:
                 value = str(config[section][option])
 
                 # Convert option to camelCase with dots
-                option = re.sub(
-                    r"\.([a-z])", lambda match: match.group(1).upper(), option
-                )
+                option = re.sub(r"\.([a-z])", lambda match: match.group(1).upper(), option)
                 setattr(self, option, value)
 
     def __iter__(self):

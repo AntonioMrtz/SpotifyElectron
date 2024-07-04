@@ -252,9 +252,7 @@ def delete_playlist(name: str) -> None:
         playlist_service_logger.exception(f"Playlist not found : {name}")
         raise PlaylistNotFoundException from exception
     except UserNotFoundException as exception:
-        playlist_service_logger.exception(
-            f"User owner of the playlist {name} not found"
-        )
+        playlist_service_logger.exception(f"User owner of the playlist {name} not found")
         raise UserNotFoundException from exception
     except PlaylistRepositoryException as exception:
         playlist_service_logger.exception(
@@ -321,12 +319,14 @@ def get_selected_playlists(playlist_names: list[str]) -> list[PlaylistDTO]:
         playlists_dto = [get_playlist_dto_from_dao(playlist) for playlist in playlists]
     except PlaylistRepositoryException as exception:
         playlist_service_logger.exception(
-            f"Unexpected error in Playlist Repository getting selected playlists : {playlist_names}"
+            f"Unexpected error in Playlist Repository getting selected playlists : "
+            f"{playlist_names}"
         )
         raise PlaylistServiceException from exception
     except Exception as exception:
         playlist_service_logger.exception(
-            f"Unexpected error in Playlist Service getting selected playlists : {playlist_names}"
+            f"Unexpected error in Playlist Service getting selected playlists : "
+            f"{playlist_names}"
         )
         raise PlaylistServiceException from exception
     else:

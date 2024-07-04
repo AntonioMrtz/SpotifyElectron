@@ -30,7 +30,7 @@ def update_playlist(
         url = f"/playlists/{name}/?photo={foto}&description={descripcion}"
 
     else:
-        url = f"/playlists/{name}/?photo={foto}&description={descripcion}&new_name={nuevo_nombre}"
+        url = f"/playlists/{name}/?photo={foto}&description={descripcion}&new_name={nuevo_nombre}"  # noqa: E501
 
     payload = []
 

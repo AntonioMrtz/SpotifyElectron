@@ -42,9 +42,7 @@ def get_artist(name: str) -> Response:
         artist = artist_service.get_artist(name)
         artist_json = json_converter_utils.get_json_from_model(artist)
 
-        return Response(
-            artist_json, media_type="application/json", status_code=HTTP_200_OK
-        )
+        return Response(artist_json, media_type="application/json", status_code=HTTP_200_OK)
 
     except UserBadNameException:
         return Response(
@@ -107,9 +105,7 @@ def get_artists() -> Response:
 
         artists_json = json.dumps(artists_dict)
 
-        return Response(
-            artists_json, media_type="application/json", status_code=HTTP_200_OK
-        )
+        return Response(artists_json, media_type="application/json", status_code=HTTP_200_OK)
     except UserBadNameException:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
@@ -138,10 +134,8 @@ def get_artist_streams(name: str) -> Response:
     try:
         total_streams = artist_service.get_streams_artist(user_name=name)
 
-        total_streams_json = (
-            json_converter_utils.get_json_with_iterable_field_from_model(
-                total_streams, "streams"
-            )
+        total_streams_json = json_converter_utils.get_json_with_iterable_field_from_model(
+            total_streams, "streams"
         )
 
         return Response(

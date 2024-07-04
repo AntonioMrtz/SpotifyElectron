@@ -21,7 +21,7 @@ from app.spotify_electron.song.aws.serverless_function.song_schema import (
     SongGetUrlStreamingException,
     get_song_dto_from_dao,
 )
-from app.spotify_electron.song.aws.serverless_function.validations.song_service_validations import (
+from app.spotify_electron.song.aws.serverless_function.validations.song_service_validations import (  # noqa: E501
     validate_get_song_url_streaming_response,
     validate_song_creating_streaming_response,
     validate_song_deleting_streaming_response,

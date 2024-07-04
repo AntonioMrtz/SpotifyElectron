@@ -11,9 +11,7 @@ from app.exceptions.base_exceptions_schema import JsonEncodeException
 from app.logging.logging_constants import LOGGING_HTTP_ENCODE_SERVICE
 from app.logging.logging_schema import SpotifyElectronLogger
 
-http_encode_service_logger = SpotifyElectronLogger(
-    LOGGING_HTTP_ENCODE_SERVICE
-).getLogger()
+http_encode_service_logger = SpotifyElectronLogger(LOGGING_HTTP_ENCODE_SERVICE).getLogger()
 
 
 def get_json_from_model(object: Any) -> str:
@@ -73,13 +71,9 @@ def _get_json_from_model(object: Any) -> str:
     try:
         jsonable_object = jsonable_encoder(object)
         json_object = json.dumps(jsonable_object)
-        http_encode_service_logger.debug(
-            f"Success encoding object into json : {json_object}"
-        )
+        http_encode_service_logger.debug(f"Success encoding object into json : {json_object}")
     except Exception:
-        http_encode_service_logger.exception(
-            f"Error encoding object {object} into json"
-        )
+        http_encode_service_logger.exception(f"Error encoding object {object} into json")
         raise JsonEncodeException()
     else:
         return json_object

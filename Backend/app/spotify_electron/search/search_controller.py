@@ -41,9 +41,7 @@ def get_search_name(name: str) -> Response:
         items = search_service.search_by_name(name=name)
         items_json = json_converter_utils.get_json_from_model(items)
 
-        return Response(
-            items_json, media_type="application/json", status_code=HTTP_200_OK
-        )
+        return Response(items_json, media_type="application/json", status_code=HTTP_200_OK)
 
     except BadSearchParameterException:
         return Response(
@@ -56,9 +54,7 @@ def get_search_name(name: str) -> Response:
             content=PropertiesMessagesManager.commonEncodingError,
         )
     except (Exception, SearchServiceException):
-        search_controller_logger.exception(
-            PropertiesMessagesManager.commonInternalServerError
-        )
+        search_controller_logger.exception(PropertiesMessagesManager.commonInternalServerError)
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
         )

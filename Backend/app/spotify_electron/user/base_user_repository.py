@@ -17,9 +17,7 @@ from app.spotify_electron.user.validations.base_users_repository_validations imp
     validate_user_delete_count,
 )
 
-base_user_repository_logger = SpotifyElectronLogger(
-    LOGGING_BASE_USERS_REPOSITORY
-).getLogger()
+base_user_repository_logger = SpotifyElectronLogger(LOGGING_BASE_USERS_REPOSITORY).getLogger()
 
 
 def check_user_exists(name: str, collection: Collection) -> bool:
@@ -65,9 +63,7 @@ def delete_user(name: str, collection: Collection) -> None:
         validate_user_delete_count(result)
         base_user_repository_logger.info(f"User {name} Deleted")
     except UserDeleteException as exception:
-        base_user_repository_logger.exception(
-            f"Error deleting User {name} from database"
-        )
+        base_user_repository_logger.exception(f"Error deleting User {name} from database")
         raise UserRepositoryException from exception
     except (UserRepositoryException, Exception) as exception:
         base_user_repository_logger.exception(
@@ -170,9 +166,7 @@ def add_playback_history(
         raise UserRepositoryException from exception
 
 
-def add_saved_playlist(
-    user_name: str, playlist_name: str, collection: Collection
-) -> None:
+def add_saved_playlist(user_name: str, playlist_name: str, collection: Collection) -> None:
     """Add saved playlist to user
 
     Args:
@@ -196,14 +190,13 @@ def add_saved_playlist(
         )
     except Exception as exception:
         base_user_repository_logger.exception(
-            f"Error adding playlist {playlist_name} to user {user_name} saved playlists in database"
+            f"Error adding playlist {playlist_name} "
+            f"to user {user_name} saved playlists in database"
         )
         raise UserRepositoryException from exception
 
 
-def delete_saved_playlist(
-    user_name: str, playlist_name: str, collection: Collection
-) -> None:
+def delete_saved_playlist(user_name: str, playlist_name: str, collection: Collection) -> None:
     """Deletes a saved playlist from a user
 
     Args:
@@ -232,9 +225,7 @@ def delete_saved_playlist(
         raise UserRepositoryException from exception
 
 
-def add_playlist_to_owner(
-    user_name: str, playlist_name: str, collection: Collection
-) -> None:
+def add_playlist_to_owner(user_name: str, playlist_name: str, collection: Collection) -> None:
     """Adds a playlist to his ownwer
 
     Args:
@@ -284,9 +275,7 @@ def delete_playlist_from_owner(
         if playlist_name in playlists:
             playlists.remove(playlist_name)
 
-            collection.update_one(
-                {"name": user_name}, {"$set": {"playlists": playlists}}
-            )
+            collection.update_one({"name": user_name}, {"$set": {"playlists": playlists}})
     except Exception as exception:
         base_user_repository_logger.exception(
             f"Error deleting playlist {playlist_name} from owner {user_name} in database"
@@ -325,6 +314,7 @@ def update_playlist_name(
         )
     except Exception as exception:
         base_user_repository_logger.exception(
-            f"Error updating playlist name {old_playlist_name} to {new_playlist_name} in database"
+            f"Error updating playlist name {old_playlist_name} "
+            f"to {new_playlist_name} in database"
         )
         raise UserRepositoryException from exception

@@ -56,9 +56,7 @@ def get_song(name: str) -> SongDAO:
     except SongNotFoundException as exception:
         raise SongNotFoundException from exception
     except GetEncodedBytesFromGridFSException as exception:
-        song_repository_logger.exception(
-            f"Error getting encoded song file of song {name}"
-        )
+        song_repository_logger.exception(f"Error getting encoded song file of song {name}")
         raise SongRepositoryException from exception
     except Exception as exception:
         song_repository_logger.exception(f"Error getting Song {name} from database")
@@ -102,9 +100,7 @@ def create_song(  # noqa: PLR0913
         song_repository_logger.exception(f"Error inserting Song {name} in database")
         raise SongRepositoryException from exception
     except SongRepositoryException as exception:
-        song_repository_logger.exception(
-            f"Unexpected error inserting song {song} in database"
-        )
+        song_repository_logger.exception(f"Unexpected error inserting song {song} in database")
         raise SongRepositoryException from exception
     else:
         song_repository_logger.info(f"Song added to repository : {song}")

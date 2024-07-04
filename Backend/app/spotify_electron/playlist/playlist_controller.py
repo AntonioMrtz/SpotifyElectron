@@ -40,9 +40,7 @@ router = APIRouter(
     tags=["Playlists"],
 )
 
-playlist_controller_logger = SpotifyElectronLogger(
-    LOGGING_PLAYLIST_CONTROLLER
-).getLogger()
+playlist_controller_logger = SpotifyElectronLogger(LOGGING_PLAYLIST_CONTROLLER).getLogger()
 
 
 @router.get("/{name}")
@@ -56,9 +54,7 @@ def get_playlist(name: str) -> Response:
         playlist = playlist_service.get_playlist(name)
         playlist_json = json_converter_utils.get_json_from_model(playlist)
 
-        return Response(
-            playlist_json, media_type="application/json", status_code=HTTP_200_OK
-        )
+        return Response(playlist_json, media_type="application/json", status_code=HTTP_200_OK)
 
     except PlaylistBadNameException:
         return Response(
@@ -223,9 +219,7 @@ def get_playlists() -> Response:
             playlists, "playlists"
         )
 
-        return Response(
-            playlist_json, media_type="application/json", status_code=HTTP_200_OK
-        )
+        return Response(playlist_json, media_type="application/json", status_code=HTTP_200_OK)
     except PlaylistBadNameException:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
@@ -262,9 +256,7 @@ def get_selected_playlists(names: str) -> Response:
             playlists, "playlists"
         )
 
-        return Response(
-            playlist_json, media_type="application/json", status_code=HTTP_200_OK
-        )
+        return Response(playlist_json, media_type="application/json", status_code=HTTP_200_OK)
     except PlaylistBadNameException:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,

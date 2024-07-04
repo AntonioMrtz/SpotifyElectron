@@ -132,7 +132,9 @@ def create_playlist(  # noqa: PLR0913
         result = collection.insert_one(playlist)
         handle_playlist_create(result)
     except PlaylistCreateException as exception:
-        playlist_repository_logger.exception(f"Error inserting Playlist {playlist} in database")
+        playlist_repository_logger.exception(
+            f"Error inserting Playlist {playlist} in database"
+        )
         raise PlaylistRepositoryException from exception
     except PlaylistRepositoryException as exception:
         playlist_repository_logger.exception(
@@ -179,7 +181,8 @@ def get_all_playlists() -> list[PlaylistDAO]:
 
     Raises
     ------
-        PlaylistRepositoryException: an error occurred while getting all playlists from database
+        PlaylistRepositoryException: an error occurred while\
+              getting all playlists from database
 
     Returns
     -------
@@ -228,7 +231,9 @@ def get_selected_playlists(
         playlist_repository_logger.exception(f"Error getting {names} Playlists from database")
         raise PlaylistRepositoryException from exception
     else:
-        playlist_repository_logger.info(f"Selected playlists obtained for {names} : {playlists}")
+        playlist_repository_logger.info(
+            f"Selected playlists obtained for {names} : {playlists}"
+        )
         return playlists
 
 

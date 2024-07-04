@@ -106,9 +106,7 @@ def test_patch_playback_history_artist_correct(clear_test_data_db):
     )
     assert res_create_song.status_code == HTTP_201_CREATED
 
-    res_patch_user = patch_history_playback(
-        artista, song_name, headers=jwt_headers_artist
-    )
+    res_patch_user = patch_history_playback(artista, song_name, headers=jwt_headers_artist)
     assert res_patch_user.status_code == HTTP_204_NO_CONTENT
 
     res_get_artist = get_artist(name=artista, headers=jwt_headers_artist)
@@ -187,22 +185,15 @@ def test_patch_playback_history_user_correct_insert_6_songs(clear_test_data_db):
     assert res_create_song.status_code == HTTP_201_CREATED
 
     for i in range(0, 5):
-        res_patch_user = patch_history_playback(
-            name, song_name, headers=jwt_headers_user
-        )
+        res_patch_user = patch_history_playback(name, song_name, headers=jwt_headers_user)
         assert res_patch_user.status_code == HTTP_204_NO_CONTENT
 
-    res_patch_user = patch_history_playback(
-        name, new_song_name, headers=jwt_headers_user
-    )
+    res_patch_user = patch_history_playback(name, new_song_name, headers=jwt_headers_user)
     assert res_patch_user.status_code == HTTP_204_NO_CONTENT
 
     res_get_user = get_user(name=name, headers=jwt_headers_user)
     assert res_get_user.status_code == HTTP_200_OK
-    assert (
-        len(res_get_user.json()["playback_history"])
-        == MAX_NUMBER_PLAYBACK_HISTORY_SONGS
-    )
+    assert len(res_get_user.json()["playback_history"]) == MAX_NUMBER_PLAYBACK_HISTORY_SONGS
     assert res_get_user.json()["playback_history"][4] == new_song_name
 
     res_delete_user = delete_user(name=name)
@@ -269,9 +260,7 @@ def test_patch_saved_playlist_artist_correct(clear_test_data_db):
 
     jwt_headers_user = get_user_jwt_header(username=artista, password=password)
 
-    res_create_playlist = create_playlist(
-        playlist_name, description, foto, jwt_headers_user
-    )
+    res_create_playlist = create_playlist(playlist_name, description, foto, jwt_headers_user)
     assert res_create_playlist.status_code == HTTP_201_CREATED
 
     res_patch_user = patch_playlist_saved(artista, playlist_name, jwt_headers_user)
@@ -354,9 +343,7 @@ def test_delete_saved_playlist_user_correct(clear_test_data_db):
 
     jwt_headers_user = get_user_jwt_header(username=user_name, password=password)
 
-    res_create_playlist = create_playlist(
-        playlist_name, description, foto, jwt_headers_user
-    )
+    res_create_playlist = create_playlist(playlist_name, description, foto, jwt_headers_user)
     assert res_create_playlist.status_code == HTTP_201_CREATED
 
     res_patch_user = patch_playlist_saved(user_name, playlist_name, jwt_headers_user)
@@ -443,9 +430,7 @@ def test_add_playlist_to_owner_user_correct(clear_test_data_db):
 
     jwt_headers_user = get_user_jwt_header(username=user_name, password=password)
 
-    res_create_playlist = create_playlist(
-        playlist_name, description, foto, jwt_headers_user
-    )
+    res_create_playlist = create_playlist(playlist_name, description, foto, jwt_headers_user)
     assert res_create_playlist.status_code == HTTP_201_CREATED
 
     res_get_user = get_user(name=user_name, headers=jwt_headers_user)
@@ -481,9 +466,7 @@ def test_add_playlist_to_owner_artist_correct(clear_test_data_db):
 
     jwt_headers_user = get_user_jwt_header(username=user_name, password=password)
 
-    res_create_playlist = create_playlist(
-        playlist_name, description, foto, jwt_headers_user
-    )
+    res_create_playlist = create_playlist(playlist_name, description, foto, jwt_headers_user)
     assert res_create_playlist.status_code == HTTP_201_CREATED
 
     res_get_artist = get_artist(name=user_name, headers=jwt_headers_user)
@@ -510,9 +493,7 @@ def test_delete_playlist_from_owner_user_correct(clear_test_data_db):
 
     jwt_headers_user = get_user_jwt_header(username=user_name, password=password)
 
-    res_create_playlist = create_playlist(
-        playlist_name, description, foto, jwt_headers_user
-    )
+    res_create_playlist = create_playlist(playlist_name, description, foto, jwt_headers_user)
     assert res_create_playlist.status_code == HTTP_201_CREATED
 
     res_get_user = get_user(name=user_name, headers=jwt_headers_user)
@@ -539,9 +520,7 @@ def test_delete_playlist_from_owner_artist_correct(clear_test_data_db):
 
     jwt_headers_user = get_user_jwt_header(username=user_name, password=password)
 
-    res_create_playlist = create_playlist(
-        playlist_name, description, foto, jwt_headers_user
-    )
+    res_create_playlist = create_playlist(playlist_name, description, foto, jwt_headers_user)
     assert res_create_playlist.status_code == HTTP_201_CREATED
 
     res_get_artist = get_artist(name=user_name, headers=jwt_headers_user)

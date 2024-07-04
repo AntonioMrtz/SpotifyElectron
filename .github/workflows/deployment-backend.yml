@@ -1,4 +1,4 @@
-name: Docker Deployment Test a
+name: Docker Deployment Test
 
 on:
   pull_request:
@@ -14,10 +14,35 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Install Docker prerequisites
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            apt-transport-https \
+            ca-certificates \
+            curl \
+            gnupg \
+            lsb-release
+
+      - name: Install Docker dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            software-properties-common
+
+      - name: Add Docker GPG key
+        run: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+
+      - name: Set up Docker repository
+        run: |
+          echo \
+            "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
+            $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
       - name: Install Docker
         run: |
           sudo apt-get update
-          sudo apt-get install -y docker.io
+          sudo apt-get install -y docker-ce docker-ce-cli containerd.io
           sudo systemctl start docker
           sudo systemctl enable docker
 
@@ -25,7 +50,7 @@ jobs:
         working-directory: Backend/docker
         run: |
           docker build -t spotify_electron_backend_image .
-          docker run -d --name spotify_electron_backend -e MONGO_URI=mongodb://root:root@localhost:27017/ SECRET_KEY_SIGN=f24e2f3ac557d487b6d879fb2d86f2b2 SERVERLESS_FUNCTION_URL=url ARCH=BLOB ENV_VALUE=c -p 8000:8000 spotify_electron_backend_image
+          docker run -d --name spotify_electron_backend -e MONGO_URI=mongodb://root:root@localhost:27017/ -e SECRET_KEY_SIGN=f24e2f3ac557d487b6d879fb2d86f2b2 -e SERVERLESS_FUNCTION_URL=url -e ARCH=BLOB -e ENV_VALUE=c -p 8000:8000 spotify_electron_backend_image
 
       - name: Wait for container to start
         run: sleep 20s  # Adjust the time as necessary based on your application's startup time

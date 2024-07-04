@@ -9,6 +9,7 @@ COPY ./app /code/app
 
 WORKDIR /code/
 CMD ["python", "-m", "app"]
+EXPOSE 8000
 #CMD ["tail", "-f", "/dev/null"]
 
 #docker build -t spotify_electron_backend_image .

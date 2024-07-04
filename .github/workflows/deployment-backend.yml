@@ -57,7 +57,7 @@ jobs:
 
       - name: Check container health
         run: |
-          status=$(curl -o /dev/null -s -w '%{http_code}' localhost:8000/health)
+          status=$(curl -o /dev/null -s -w '%{http_code}' spotify_electron_backend:8000/health)
           if [[ $status -eq 200 ]]; then
             echo "Health check successful"
           else

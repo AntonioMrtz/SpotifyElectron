@@ -8,7 +8,7 @@ on:
 
 jobs:
   run_tests_streaming_serverless:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -28,7 +28,7 @@ jobs:
           pip install -r requirements-test.txt
 
       - name: Run tests Streaming Serverless/Lambda function Architecture
-        working-directory: Backend/
+        working-directory: Backend
         run: |
           python -m pytest tests/
         env:

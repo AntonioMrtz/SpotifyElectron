@@ -1,14 +1,21 @@
-
-FROM python:3.11-slim
+FROM python:3.11-slim AS builder
 
 WORKDIR /code
 COPY ./requirements.txt /code/requirements.txt
-RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
+RUN python -m pip wheel -r requirements.txt --no-cache-dir --no-deps --wheel-dir /wheels
+
+FROM python:3.11-slim AS runner
+
+WORKDIR /code
+COPY --from=builder /wheels /wheels
+
+RUN python -m pip install --no-cache-dir /wheels/* && rm -r /wheels
 COPY ./app /code/app
 
-WORKDIR /code/
-CMD ["python", "-m", "app"]
+ENTRYPOINT [ "python", "-m", "app" ]
+EXPOSE 8000
+
 #CMD ["tail", "-f", "/dev/null"]
 
 #docker build -t spotify_electron_backend_image .

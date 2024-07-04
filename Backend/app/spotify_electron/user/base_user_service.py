@@ -46,9 +46,7 @@ from app.spotify_electron.user.validations.user_service_validations import (
 )
 from app.spotify_electron.utils.validations.validation_utils import validate_parameter
 
-base_users_service_logger = SpotifyElectronLogger(
-    LOGGING_BASE_USERS_SERVICE
-).getLogger()
+base_users_service_logger = SpotifyElectronLogger(LOGGING_BASE_USERS_SERVICE).getLogger()
 
 
 # TODO not hardcoded
@@ -162,7 +160,8 @@ def add_playback_history(user_name: str, song_name: str, token: TokenData) -> No
         UserBadNameException: invalid user name
         UserNotFoundException: user doesnt exists
         SongBadNameException: invalid song name
-        UserUnauthorizedException: user cannot modify playback history that is not created by him
+        UserUnauthorizedException: user cannot modify playback history that \
+            is not created by him
         SongNotFoundException: song doesnt exists
         UserServiceException: unexpected error adding playback history to user
     """
@@ -178,9 +177,7 @@ def add_playback_history(user_name: str, song_name: str, token: TokenData) -> No
             user_name=user_name,
             song=song_name,
             max_number_playback_history_songs=MAX_NUMBER_PLAYBACK_HISTORY_SONGS,
-            collection=user_collection_provider.get_user_associated_collection(
-                user_name
-            ),
+            collection=user_collection_provider.get_user_associated_collection(user_name),
         )
     except UserBadNameException as exception:
         base_users_service_logger.exception(f"Bad User Parameter : {user_name}")
@@ -201,12 +198,14 @@ def add_playback_history(user_name: str, song_name: str, token: TokenData) -> No
         raise SongNotFoundException from exception
     except UserRepositoryException as exception:
         base_users_service_logger.exception(
-            f"Unexpected error in User Repository adding song {song_name} to user {user_name} playback history"
+            f"Unexpected error in User Repository adding song {song_name} "
+            f"to user {user_name} playback history"
         )
         raise UserServiceException from exception
     except Exception as exception:
         base_users_service_logger.exception(
-            f"Unexpected error in User Service adding song {song_name} to user {user_name} playback history"
+            f"Unexpected error in User Service adding song {song_name} "
+            f"to user {user_name} playback history"
         )
         raise UserServiceException from exception
     else:
@@ -240,9 +239,7 @@ def add_saved_playlist(user_name: str, playlist_name: str, token: TokenData) -> 
         base_user_repository.add_saved_playlist(
             user_name=user_name,
             playlist_name=playlist_name,
-            collection=user_collection_provider.get_user_associated_collection(
-                user_name
-            ),
+            collection=user_collection_provider.get_user_associated_collection(user_name),
         )
     except UserBadNameException as exception:
         base_users_service_logger.exception(f"Bad User Parameter : {user_name}")
@@ -260,12 +257,14 @@ def add_saved_playlist(user_name: str, playlist_name: str, token: TokenData) -> 
         raise PlaylistNotFoundException from exception
     except UserRepositoryException as exception:
         base_users_service_logger.exception(
-            f"Unexpected error in User Repository adding playlist {playlist_name} to user {user_name} saved playlist"
+            f"Unexpected error in User Repository adding playlist {playlist_name} "
+            f"to user {user_name} saved playlist"
         )
         raise UserServiceException from exception
     except Exception as exception:
         base_users_service_logger.exception(
-            f"Unexpected error in User Service adding playlist {playlist_name} to user {user_name} saved playlist"
+            f"Unexpected error in User Service adding playlist {playlist_name} "
+            f"to user {user_name} saved playlist"
         )
         raise UserServiceException from exception
     else:
@@ -299,9 +298,7 @@ def delete_saved_playlist(user_name: str, playlist_name: str, token: TokenData) 
         base_user_repository.delete_saved_playlist(
             user_name=user_name,
             playlist_name=playlist_name,
-            collection=user_collection_provider.get_user_associated_collection(
-                user_name
-            ),
+            collection=user_collection_provider.get_user_associated_collection(user_name),
         )
     except UserBadNameException as exception:
         base_users_service_logger.exception(f"Bad User Parameter : {user_name}")
@@ -319,12 +316,14 @@ def delete_saved_playlist(user_name: str, playlist_name: str, token: TokenData) 
         raise PlaylistNotFoundException from exception
     except UserRepositoryException as exception:
         base_users_service_logger.exception(
-            f"Unexpected error in User Repository deleting playlist {playlist_name} from user {user_name} saved playlist"
+            f"Unexpected error in User Repository deleting playlist {playlist_name} "
+            f"from user {user_name} saved playlist"
         )
         raise UserServiceException from exception
     except Exception as exception:
         base_users_service_logger.exception(
-            f"Unexpected error in User Service deleting playlist {playlist_name} from user {user_name} saved playlist"
+            f"Unexpected error in User Service deleting playlist {playlist_name} "
+            f"from user {user_name} saved playlist"
         )
         raise UserServiceException from exception
     else:
@@ -354,9 +353,7 @@ def add_playlist_to_owner(user_name: str, playlist_name: str, token: TokenData) 
         base_user_repository.add_playlist_to_owner(
             user_name=user_name,
             playlist_name=playlist_name,
-            collection=user_collection_provider.get_user_associated_collection(
-                user_name
-            ),
+            collection=user_collection_provider.get_user_associated_collection(user_name),
         )
 
         base_users_service_logger.info(
@@ -364,7 +361,8 @@ def add_playlist_to_owner(user_name: str, playlist_name: str, token: TokenData) 
         )
     except (UserRepositoryException, Exception) as exception:
         base_users_service_logger.exception(
-            f"Unexpected error in User Repository adding playlist {playlist_name} to owner {user_name}"
+            f"Unexpected error in User Repository adding playlist {playlist_name} "
+            f"to owner {user_name}"
         )
         raise UserServiceException from exception
 
@@ -389,9 +387,7 @@ def delete_playlist_from_owner(playlist_name: str) -> None:
         base_user_repository.delete_playlist_from_owner(
             user_name=user_name,
             playlist_name=playlist_name,
-            collection=user_collection_provider.get_user_associated_collection(
-                user_name
-            ),
+            collection=user_collection_provider.get_user_associated_collection(user_name),
         )
 
         base_users_service_logger.info(
@@ -399,7 +395,8 @@ def delete_playlist_from_owner(playlist_name: str) -> None:
         )
     except (UserRepositoryException, Exception) as exception:
         base_users_service_logger.exception(
-            f"Unexpected error in User Repository deleting playlist {playlist_name} from owner {user_name}"
+            f"Unexpected error in User Repository deleting playlist {playlist_name} "
+            f"from owner {user_name}"
         )
         raise UserServiceException from exception
 

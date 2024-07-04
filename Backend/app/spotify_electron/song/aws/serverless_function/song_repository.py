@@ -95,9 +95,7 @@ def create_song(
         song_repository_logger.exception(f"Error inserting Song {song} in database")
         raise SongRepositoryException from exception
     except SongRepositoryException as exception:
-        song_repository_logger.exception(
-            f"Unexpected error inserting song {song} in database"
-        )
+        song_repository_logger.exception(f"Unexpected error inserting song {song} in database")
         raise SongRepositoryException from exception
     else:
         song_repository_logger.info(f"Song added to repository : {song}")

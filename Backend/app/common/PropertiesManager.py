@@ -1,5 +1,6 @@
 """
-Manages APP global state variables and manages initialization of enviroment variables and .ini files
+Manages APP global state variables and manages initialization of\
+      enviroment variables and .ini files
 
 Declares PropertiesManager global object to be accessed from across the app
 """
@@ -30,9 +31,7 @@ from app.common.set_up_constants import (
 from app.logging.logging_constants import LOGGING_PROPERTIES_MANAGER
 from app.logging.logging_schema import SpotifyElectronLogger
 
-properties_manager_logger = SpotifyElectronLogger(
-    LOGGING_PROPERTIES_MANAGER
-).getLogger()
+properties_manager_logger = SpotifyElectronLogger(LOGGING_PROPERTIES_MANAGER).getLogger()
 
 
 class _PropertiesManager:

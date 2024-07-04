@@ -22,19 +22,19 @@ class SpotifyElectronFormatter(logging.Formatter):
 
     FORMATS = {
         logging.DEBUG: (
-            f"%(asctime)s -  {MODULE_COLOR}%(name)s{RESET_COLOR} - {LEVEL_DEBUG_COLOR}%(levelname)s{RESET_COLOR} - %(message)s"
+            f"%(asctime)s -  {MODULE_COLOR}%(name)s{RESET_COLOR} - {LEVEL_DEBUG_COLOR}%(levelname)s{RESET_COLOR} - %(message)s"  # noqa: E501
         ),
         logging.INFO: (
-            f"%(asctime)s -  {MODULE_COLOR}%(name)s{RESET_COLOR} - {LEVEL_INFO_COLOR}%(levelname)s{RESET_COLOR} - %(message)s"
+            f"%(asctime)s -  {MODULE_COLOR}%(name)s{RESET_COLOR} - {LEVEL_INFO_COLOR}%(levelname)s{RESET_COLOR} - %(message)s"  # noqa: E501
         ),
         logging.WARNING: (
-            f"%(asctime)s -  {MODULE_COLOR}%(name)s{RESET_COLOR} - {LEVEL_WARNING_COLOR}%(levelname)s{RESET_COLOR} - %(message)s"
+            f"%(asctime)s -  {MODULE_COLOR}%(name)s{RESET_COLOR} - {LEVEL_WARNING_COLOR}%(levelname)s{RESET_COLOR} - %(message)s"  # noqa: E501
         ),
         logging.ERROR: (
-            f"%(asctime)s -  {MODULE_COLOR}%(name)s{RESET_COLOR} - {LEVEL_ERROR_COLOR}%(levelname)s{RESET_COLOR} - %(message)s"
+            f"%(asctime)s -  {MODULE_COLOR}%(name)s{RESET_COLOR} - {LEVEL_ERROR_COLOR}%(levelname)s{RESET_COLOR} - %(message)s"  # noqa: E501
         ),
         logging.CRITICAL: (
-            f"%(asctime)s -  {MODULE_COLOR}%(name)s{RESET_COLOR} - {LEVEL_CRITICAL_COLOR}%(levelname)s{RESET_COLOR} - %(message)s"
+            f"%(asctime)s -  {MODULE_COLOR}%(name)s{RESET_COLOR} - {LEVEL_CRITICAL_COLOR}%(levelname)s{RESET_COLOR} - %(message)s"  # noqa: E501
         ),
     }
 

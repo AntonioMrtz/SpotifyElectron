@@ -1,5 +1,6 @@
 """
-Provider class for supplying user collection connection with database depending on the architecture on the associated user type
+Provider class for supplying user collection connection with database depending on the \
+    architecture on the associated user type
 """
 
 from pymongo.collection import Collection
@@ -23,15 +24,14 @@ def get_user_associated_collection(user_name: str) -> Collection:
     """
     collection_map = {
         UserType.USER: Database().get_collection_connection(DatabaseCollection.USER),
-        UserType.ARTIST: Database().get_collection_connection(
-            DatabaseCollection.ARTIST
-        ),
+        UserType.ARTIST: Database().get_collection_connection(DatabaseCollection.ARTIST),
     }
 
     user_type = base_user_service.get_user_type(user_name)
     if user_type not in collection_map:
         users_collection_provider_logger.warning(
-            f"User {user_name} doesn't have a valid user type, using {UserType.USER} type instead"
+            f"User {user_name} doesn't have a valid user type "
+            f"using {UserType.USER} type instead"
         )
         return collection_map[UserType.USER]
     return collection_map[user_type]
@@ -63,8 +63,6 @@ def get_all_collections() -> list[Collection]:
     """
     collection_map = {
         UserType.USER: Database().get_collection_connection(DatabaseCollection.USER),
-        UserType.ARTIST: Database().get_collection_connection(
-            DatabaseCollection.ARTIST
-        ),
+        UserType.ARTIST: Database().get_collection_connection(DatabaseCollection.ARTIST),
     }
     return list(collection_map.values())

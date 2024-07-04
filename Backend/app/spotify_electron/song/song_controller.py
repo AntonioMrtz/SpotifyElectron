@@ -57,9 +57,7 @@ def get_song(name: str) -> Response:
         song = get_song_service().get_song(name)
         song_json = json_converter_utils.get_json_from_model(song)
 
-        return Response(
-            song_json, media_type="application/json", status_code=HTTP_200_OK
-        )
+        return Response(song_json, media_type="application/json", status_code=HTTP_200_OK)
     except SongBadNameException:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
@@ -97,7 +95,8 @@ async def create_song(
         genre (Genre): genre
         photo (str): photo
         file (UploadFile): song file
-        authorization (Annotated[str  |  None, Header, optional): jwt token auth. Defaults to None.
+        authorization (Annotated[str  |  None, Header, optional): jwt token auth. \
+            Defaults to None.
     """
     readFile = await file.read()
 
@@ -240,9 +239,7 @@ def get_songs_by_genre(genre: Genre) -> Response:
         songs_json = json_converter_utils.get_json_with_iterable_field_from_model(
             songs, "songs"
         )
-        return Response(
-            songs_json, media_type="application/json", status_code=HTTP_200_OK
-        )
+        return Response(songs_json, media_type="application/json", status_code=HTTP_200_OK)
     except GenreNotValidException:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,

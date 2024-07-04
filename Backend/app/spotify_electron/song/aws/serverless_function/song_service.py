@@ -3,7 +3,7 @@ Song service for handling business logic
 """
 
 import app.spotify_electron.song.aws.serverless_function.song_repository as song_repository
-import app.spotify_electron.song.aws.serverless_function.song_serverless_function_api as song_serverless_function_api
+import app.spotify_electron.song.aws.serverless_function.song_serverless_function_api as song_serverless_function_api  # noqa: E501
 import app.spotify_electron.song.base_song_repository as base_song_repository
 import app.spotify_electron.user.artist.artist_service as artist_service
 import app.spotify_electron.user.base_user_service as base_user_service
@@ -21,7 +21,7 @@ from app.spotify_electron.song.aws.serverless_function.song_schema import (
     SongGetUrlStreamingException,
     get_song_dto_from_dao,
 )
-from app.spotify_electron.song.aws.serverless_function.validations.song_service_validations import (
+from app.spotify_electron.song.aws.serverless_function.validations.song_service_validations import (  # noqa: E501
     validate_get_song_url_streaming_response,
     validate_song_creating_streaming_response,
     validate_song_deleting_streaming_response,

@@ -1,5 +1,6 @@
 """
-Manages the unique database connection across the app and provides the modules with the collections needed for persist data.
+Manages the unique database connection across the app and provides\
+      the modules with the collections needed for persist data.
 """
 
 import sys
@@ -45,9 +46,7 @@ class Database(metaclass=Singleton):
                 uri = getattr(PropertiesManager, MONGO_URI_ENV_NAME)
                 self.collection_name_prefix = self._get_collection_name_prefix()
                 client = self._get_mongo_client_class()
-                self.connection = client(uri, server_api=ServerApi("1"))[
-                    self.DATABASE_NAME
-                ]
+                self.connection = client(uri, server_api=ServerApi("1"))[self.DATABASE_NAME]
                 self._ping_database_connection()
             except (
                 DatabasePingFailed,
@@ -98,9 +97,7 @@ class Database(metaclass=Singleton):
 
     def _handle_database_connection_error(self, error: Exception) -> None:
         """Handles database connection errors"""
-        database_logger.critical(
-            f"Error establishing connection with database: {error}"
-        )
+        database_logger.critical(f"Error establishing connection with database: {error}")
         sys.exit("Database connection failed, stopping server")
 
     def _get_collection_name_prefix(self) -> str:
@@ -120,9 +117,7 @@ class Database(metaclass=Singleton):
         """Method to retrieve the singleton instance"""
         return Database()
 
-    def get_collection_connection(
-        self, collection_name: DatabaseCollection
-    ) -> Collection:
+    def get_collection_connection(self, collection_name: DatabaseCollection) -> Collection:
         """Returns the connection with a collection
 
         Args:
@@ -133,9 +128,7 @@ class Database(metaclass=Singleton):
         """
         return Database().connection[self.collection_name_prefix + collection_name]  # type: ignore
 
-    def get_gridfs_collection_connection(
-        self, collection_name: DatabaseCollection
-    ) -> Any:
+    def get_gridfs_collection_connection(self, collection_name: DatabaseCollection) -> Any:
         """Returns the connection with gridfs collection
 
         Args:

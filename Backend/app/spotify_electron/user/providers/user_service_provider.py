@@ -32,7 +32,8 @@ def get_user_service(user_name: str) -> Annotated[Any, "ModuleType"]:
     user_type = base_user_service.get_user_type(user_name)
     if user_type not in services_map:
         users_service_provider_logger.warning(
-            f"User {user_name} doesn't have a valid user type, using {UserType.USER} type instead"
+            f"User {user_name} doesn't have a valid user type "
+            f"using {UserType.USER} type instead"
         )
         return services_map[UserType.USER]
     return services_map[user_type]

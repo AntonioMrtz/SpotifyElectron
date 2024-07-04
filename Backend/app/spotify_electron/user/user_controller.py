@@ -52,7 +52,8 @@ def get_whoAmI(authorization: Annotated[str | None, Header()] = None) -> Respons
     """Returns token info from JWT
 
     Args:
-        authorization (Annotated[str  |  None, Header, optional): the jwt token. Defaults to None.
+        authorization (Annotated[str  |  None, Header, optional): the jwt token. \
+            Defaults to None.
     """
     try:
         jwt_token = security_service.get_jwt_token_data(authorization)
@@ -78,9 +79,7 @@ def get_user(name: str) -> Response:
         user = base_user_service.get_user(name)
         user_json = json_converter_utils.get_json_from_model(user)
 
-        return Response(
-            user_json, media_type="application/json", status_code=HTTP_200_OK
-        )
+        return Response(user_json, media_type="application/json", status_code=HTTP_200_OK)
 
     except UserBadNameException:
         return Response(
@@ -171,7 +170,8 @@ def patch_playback_history(
     Args:
         name (str): user name
         song_name (str): song name
-        authorization (Annotated[str  |  None, Header, optional): jwt token auth. Defaults to None.
+        authorization (Annotated[str  |  None, Header, optional): jwt token auth. \
+            Defaults to None.
 
     Returns:
         Response: _description_
@@ -232,7 +232,8 @@ def patch_saved_playlists(
     Args:
         name (str): user name
         playlist_name (str): saved playlist
-        authorization (Annotated[str  |  None, Header, optional): jwt token auth. Defaults to None.
+        authorization (Annotated[str  |  None, Header, optional): jwt token auth. \
+            Defaults to None.
 
     Returns:
         Response: _description_
@@ -286,7 +287,8 @@ def delete_saved_playlists(
     Args:
         name (str): user name
         playlist_name (str): playlist name
-        authorization (Annotated[str  |  None, Header, optional): jwt token auth. Defaults to None.
+        authorization (Annotated[str  |  None, Header, optional): jwt token auth. \
+            Defaults to None.
 
     Returns:
         Response: _description_

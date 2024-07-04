@@ -316,9 +316,7 @@ def test_get_playlists():
 
     res_get_playlists = get_playlists(f"{name},{new_name}", headers=jwt_headers)
     assert res_get_playlists.status_code == HTTP_200_OK
-    assert (
-        len(res_get_playlists.json()["playlists"]) == expected_number_created_playlists
-    )
+    assert len(res_get_playlists.json()["playlists"]) == expected_number_created_playlists
 
     res_delete_playlist = delete_playlist(name)
     assert res_delete_playlist.status_code == HTTP_202_ACCEPTED

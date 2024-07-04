@@ -155,21 +155,15 @@ def test_get_total_streams_artist_correct(clear_test_data_db):
 
     expected_artist_total_streams = 2
 
-    res_increase_streams_song = increase_song_streams(
-        name=song_name, headers=jwt_headers
-    )
+    res_increase_streams_song = increase_song_streams(name=song_name, headers=jwt_headers)
     assert res_increase_streams_song.status_code == HTTP_204_NO_CONTENT
 
-    res_increase_streams_song = increase_song_streams(
-        name=song_name_2, headers=jwt_headers
-    )
+    res_increase_streams_song = increase_song_streams(name=song_name_2, headers=jwt_headers)
     assert res_increase_streams_song.status_code == HTTP_204_NO_CONTENT
 
     res_get_total_streams_artist = get_artist_streams(artista, headers=jwt_headers)
     assert res_get_total_streams_artist.status_code == HTTP_200_OK
-    assert (
-        res_get_total_streams_artist.json()["streams"] == expected_artist_total_streams
-    )
+    assert res_get_total_streams_artist.json()["streams"] == expected_artist_total_streams
 
     res_delete_song = delete_song(song_name)
     assert res_delete_song.status_code == HTTP_202_ACCEPTED

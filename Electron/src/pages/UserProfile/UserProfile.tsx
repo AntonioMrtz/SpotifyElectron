@@ -20,7 +20,6 @@ export default function UserProfile({
   changeSongName,
   refreshSidebarData,
 }: PropsUserProfile) {
-  // Use the useParams hook to get the id parameter from the URL
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -307,11 +306,10 @@ export default function UserProfile({
           </div>
           <div className="d-flex flex-row flex-wrap" style={{ gap: '14px' }}>
             {uploadedSongs &&
-              uploadedSongs.map((songItem, index) => {
+              uploadedSongs.map((songItem) => {
                 return (
                   <SongCard
-                    // eslint-disable-next-line react/no-array-index-key
-                    key={`${songItem.name}${index}`}
+                    key={`${songItem.name}`}
                     name={songItem.name}
                     photo={songItem.photo}
                     artist={songItem.artist}
@@ -391,11 +389,10 @@ export default function UserProfile({
           </h2>
           <div className="d-flex flex-row flex-wrap " style={{ gap: '14px' }}>
             {playbackHistory &&
-              playbackHistory.map((songItem, index) => {
+              playbackHistory.map((songItem) => {
                 return (
                   <SongCard
-                    // eslint-disable-next-line react/no-array-index-key
-                    key={`${songItem.name}${index}`}
+                    key={`${songItem.name}`}
                     name={songItem.name}
                     photo={songItem.photo}
                     artist={songItem.artist}

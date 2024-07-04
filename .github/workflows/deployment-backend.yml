@@ -53,11 +53,11 @@ jobs:
           docker run -d --name spotify_electron_backend -e MONGO_URI=mongodb://root:root@localhost:27017/ -e SECRET_KEY_SIGN=f24e2f3ac557d487b6d879fb2d86f2b2 -e SERVERLESS_FUNCTION_URL=url -e ARCH=BLOB -e ENV_VALUE=c -p 8000:8000 spotify_electron_backend_image
 
       - name: Wait for container to start
-        run: sleep 20s  # Adjust the time as necessary based on your application's startup time
+        run: sleep 20s
 
       - name: Check container health
         run: |
-          status=$(curl -o /dev/null -s -w '%{http_code}' spotify_electron_backend:8000/health)
+          status=$(curl -o /dev/null -s -w '%{http_code}' http://127.0.0.1:8000/health)
           if [[ $status -eq 200 ]]; then
             echo "Health check successful"
           else

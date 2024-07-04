@@ -56,12 +56,10 @@ class CheckJwtAuthMiddleware(BaseHTTPMiddleware):
             f"Request method {request.method}\n Request URL {request.url}\n"
         )
 
-        if request.method in self.bypass_methods or (
+        return request.method in self.bypass_methods or (
             request.method in self.bypass_urls
             and request.url.path in self.bypass_urls[request.method]
-        ):
-            return True
-        return False
+        )
 
     async def dispatch(self, request: Request, call_next):
         """Manages the incoming HTTP request and decides wheter or not it has to be blocked

@@ -63,7 +63,9 @@ export default function Home({ refreshSidebarData }: PropsHome) {
   const [loadingArtists, setLoadingArtists] = useState(true);
 
   const handleArtists = useCallback(() => {
-    fetch(`${Global.backendBaseUrl}artists/`)
+    fetch(`${Global.backendBaseUrl}artists/`, {
+      credentials: 'include',
+    })
       .then((resFetchArtistas) => resFetchArtistas.json())
       .then((resFetchArtistasJson) => {
         if (resFetchArtistasJson.artists) {

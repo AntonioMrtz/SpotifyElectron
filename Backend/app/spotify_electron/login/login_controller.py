@@ -78,7 +78,7 @@ def login_usuario(
         )
         response.set_cookie(
             key="jwt",
-            value=jwt,
+            value=f"Bearer {jwt}",
             httponly=True,
             path="/",
             samesite="none",

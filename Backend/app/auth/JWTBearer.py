@@ -15,8 +15,16 @@ from app.logging.logging_schema import SpotifyElectronLogger
 
 jwt_bearer_logger = SpotifyElectronLogger(LOGGING_JWT_BEARER).getLogger()
 
-TOKEN_HEADER_NAME = "authorization"
+TOKEN_HEADER_FIELD_NAME = "Authorization"
 BEARER_SCHEME_NAME = "Bearer"
+JWT_COOKIE_HEADER_FIELD_NAME = "jwt"
+
+
+class FakeRequest:
+    headers: dict = {}
+
+    def __init__(self, auth_value: str) -> None:
+        self.headers[TOKEN_HEADER_FIELD_NAME] = auth_value
 
 
 class JWTBearer(HTTPBearer):
@@ -35,7 +43,19 @@ class JWTBearer(HTTPBearer):
         Returns:
             TokenData: the token data
         """
-        credentials: HTTPAuthorizationCredentials = await super().__call__(request)  # type: ignore
+        # TODO Recieving b'"bearer eyJhbGciOiJIUzI"' from frontend
+        # instead of b'bearer eyJhbGciOiJIUzI'
+        # replacing " with white space for all headers can be deleted if its solved
+        if len(request.cookies) == 0 or not request.cookies.get(JWT_COOKIE_HEADER_FIELD_NAME):
+            jwt_bearer_logger.exception(f"Request with no cookies {request}")
+            raise BadJWTTokenProvidedException
+
+        jwt_raw = request.cookies.get(JWT_COOKIE_HEADER_FIELD_NAME)
+        fake_request = FakeRequest(jwt_raw)  # type: ignore
+
+        credentials: HTTPAuthorizationCredentials = await super(JWTBearer, self).__call__(  # noqa: UP008
+            fake_request  # type: ignore
+        )
         if not credentials or credentials.scheme != BEARER_SCHEME_NAME:
             raise BadJWTTokenProvidedException
         try:

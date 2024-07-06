@@ -80,6 +80,7 @@ export default function RegisterMenu({ setIsSigningUp }: PropsRegisterMenu) {
 
       const requestOptions: RequestInit = {
         method: 'POST',
+        credentials: 'include',
       };
 
       const resfetchPostUser = await fetch(fetchPostUserURL, requestOptions);

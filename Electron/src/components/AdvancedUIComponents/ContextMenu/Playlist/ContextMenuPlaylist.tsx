@@ -156,7 +156,9 @@ export default function ContextMenuPlaylist({
 
     const fetchUrlGetUser = `${Global.backendBaseUrl}users/${username}`;
 
-    fetch(fetchUrlGetUser)
+    fetch(fetchUrlGetUser, {
+      credentials: 'include',
+    })
       .then((resFetchUrlGetUser) => resFetchUrlGetUser.json())
       .then((resFetchUrlGetUserJson) => {
         return resFetchUrlGetUserJson.playlists.join(',');
@@ -164,6 +166,9 @@ export default function ContextMenuPlaylist({
       .then((sidebarPlaylistNames) => {
         return fetch(
           `${Global.backendBaseUrl}playlists/selected/${sidebarPlaylistNames}`,
+          {
+            credentials: 'include',
+          },
         );
       })
       .then((resFetchPlaylists) => {
@@ -219,6 +224,9 @@ export default function ContextMenuPlaylist({
 
       const dstResponse = await fetch(
         `${Global.backendBaseUrl}playlists/${dstPlaylistName}`,
+        {
+          credentials: 'include',
+        },
       );
 
       const dstPlaylistData = await dstResponse.json();
@@ -229,6 +237,9 @@ export default function ContextMenuPlaylist({
 
       const srcResponse = await fetch(
         `${Global.backendBaseUrl}playlists/${srcPlaylistName}`,
+        {
+          credentials: 'include',
+        },
       );
 
       const srcPlaylistData = await srcResponse.json();
@@ -238,11 +249,12 @@ export default function ContextMenuPlaylist({
         ...srcPlaylistData.song_names,
       ];
 
-      const requestOptions = {
+      const requestOptions: RequestInit = {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify(newSongsPutPlaylist),
       };
 
@@ -268,6 +280,7 @@ export default function ContextMenuPlaylist({
     /* Delete playlist */
     fetch(`${Global.backendBaseUrl}playlists/${playlistNameToDelete}`, {
       method: 'DELETE',
+      credentials: 'include',
     })
       .then((response) => {
         if (response.status !== 202) {

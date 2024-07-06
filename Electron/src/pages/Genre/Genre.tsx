@@ -34,7 +34,9 @@ export default function Genre({
   const handleSongsFromGenre = () => {
     const getSongsByGenreUrl = `${Global.backendBaseUrl}songs/genres/${genreName}`;
 
-    fetch(getSongsByGenreUrl)
+    fetch(getSongsByGenreUrl, {
+      credentials: 'include',
+    })
       .then((resGetSongsByGenreUrl) => {
         return resGetSongsByGenreUrl.json();
       })

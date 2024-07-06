@@ -209,11 +209,12 @@ export default function AddSongPlayListAccordion({
         url.searchParams.set('description', '');
       }
 
-      const requestOptions = {
+      const requestOptions: RequestInit = {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify([]),
       };
 
@@ -254,7 +255,9 @@ export default function AddSongPlayListAccordion({
   const [genres, setGenres] = useState<{}>();
 
   const handleGenres = () => {
-    fetch(`${Global.backendBaseUrl}genres/`)
+    fetch(`${Global.backendBaseUrl}genres/`, {
+      credentials: 'include',
+    })
       .then((res) => res.json())
       .then((res) => {
         setGenres(res);

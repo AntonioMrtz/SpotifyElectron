@@ -39,5 +39,5 @@ test('Get jwt token role', () => {
 test('Get jwt header', () => {
   const headerJwtToken = Token.getTokenHeader();
 
-  expect({ Authorization: token }).toMatchObject(headerJwtToken);
+  expect({ Authorization: `Bearer ${token}` }).toMatchObject(headerJwtToken);
 });

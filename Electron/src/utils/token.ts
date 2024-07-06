@@ -20,10 +20,10 @@ namespace Token {
     const jwt = localStorage.getItem('jwt');
 
     if (jwt) {
-      return { Authorization: jwt };
+      return { Authorization: `Bearer ${jwt}` };
     }
 
-    return { Authorization: '' };
+    return { Authorization: 'Bearer ' };
   };
 
   export const getTokenUsername = () => {

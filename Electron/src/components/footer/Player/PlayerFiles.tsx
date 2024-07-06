@@ -85,8 +85,9 @@ export default function Player({
   /* Handles updates of DB when song is played */
 
   const handleIncreaseSongStreams = () => {
-    const requestOptions = {
+    const requestOptions: RequestInit = {
       method: 'PATCH',
+      credentials: 'include',
     };
     const fetchUrlUpdateSong: string = `${Global.backendBaseUrl}songs/${songName}/streams`;
 
@@ -100,8 +101,9 @@ export default function Player({
 
     const fetchPatchPlayBackHistory: string = `${Global.backendBaseUrl}users/${username}/playback_history?song_name=${songName}`;
 
-    const requestOptionsUpdatePlaybackHistory = {
+    const requestOptionsUpdatePlaybackHistory: RequestInit = {
       method: 'PATCH',
+      credentials: 'include',
     };
 
     fetch(fetchPatchPlayBackHistory, requestOptionsUpdatePlaybackHistory).catch(
@@ -120,6 +122,9 @@ export default function Player({
 
       const resFetchSong = await fetch(
         `${Global.backendBaseUrl}songs/${songName}`,
+        {
+          credentials: 'include',
+        },
       );
 
       const resFetchSongJson = await resFetchSong.json();
@@ -128,14 +133,18 @@ export default function Player({
       handleUpdatePlaybackHistory();
       const resFetchSongDTO = await fetch(
         `${Global.backendBaseUrl}songs/metadata/${songName}`,
+        {
+          credentials: 'include',
+        },
       );
 
       const username = Token.getTokenUsername();
 
       const fetchPatchPlayBackHistory: string = `${Global.backendBaseUrl}users/${username}/playback_history?song_name=${songName}`;
 
-      const requestOptionsUpdatePlaybackHistory = {
+      const requestOptionsUpdatePlaybackHistory: RequestInit = {
         method: 'PATCH',
+        credentials: 'include',
       };
 
       fetch(

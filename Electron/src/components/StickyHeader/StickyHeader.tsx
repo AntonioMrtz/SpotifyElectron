@@ -20,6 +20,9 @@ export default function StickyHeader({ handleLogout }: PropsStickyHeader) {
 
     const resFetchUser = await fetch(
       `${Global.backendBaseUrl}users/${username}`,
+      {
+        credentials: 'include',
+      },
     );
 
     const resFetchUserJson = await resFetchUser.json();

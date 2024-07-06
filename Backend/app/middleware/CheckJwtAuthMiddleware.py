@@ -2,12 +2,13 @@
 
 from fastapi import Request, Response
 from starlette.middleware.base import BaseHTTPMiddleware
-from starlette.status import HTTP_401_UNAUTHORIZED
+from starlette.status import HTTP_403_FORBIDDEN
 
-import app.spotify_electron.security.security_service as security_service
+import app.auth.auth_service as auth_service
+from app.auth.auth_schema import JWTValidationException
+from app.common.PropertiesMessagesManager import PropertiesMessagesManager
 from app.logging.logging_constants import LOGGIN_CHECK_AUTH_JWT_MIDDLEWARE
 from app.logging.logging_schema import SpotifyElectronLogger
-from app.spotify_electron.security.security_schema import JWTValidationException
 
 check_jwt_auth_middleware_logger = SpotifyElectronLogger(
     LOGGIN_CHECK_AUTH_JWT_MIDDLEWARE
@@ -19,8 +20,6 @@ class CheckJwtAuthMiddleware(BaseHTTPMiddleware):
 
     bypass_urls = {
         "GET": [
-            "/users/whoami",
-            "/users/whoami/",
             "/docs",
             "/docs/",
             "/openapi.json",
@@ -82,12 +81,12 @@ class CheckJwtAuthMiddleware(BaseHTTPMiddleware):
             return await self._handle_jwt_validation(jwt, request, call_next)
         except Exception:
             return Response(
-                content="Invalid Credentials",
-                status_code=HTTP_401_UNAUTHORIZED,
+                content=PropertiesMessagesManager.tokenInvalidCredentials,
+                status_code=HTTP_403_FORBIDDEN,
             )
 
     async def _handle_jwt_validation(self, jwt: str, request: Request, call_next) -> Response:
-        """Handles JWT validation, sends HTTP_401_UNAUTHORIZED if jwt is not valid or\
+        """Handles JWT validation, sends HTTP_403_FORBIDDEN if jwt is not valid or\
             continues the workflow
 
         Args:
@@ -99,15 +98,18 @@ class CheckJwtAuthMiddleware(BaseHTTPMiddleware):
         Returns:
         -------
             Response: the Response thats gonna be sended to the client,\
-                HTTP_401_UNAUTHORIZED if jwt is not valid
+                HTTP_403_FORBIDDEN if jwt is not valid
 
         """
         try:
-            security_service.validate_jwt(jwt)
+            auth_service.validate_jwt(jwt)
         except (JWTValidationException, Exception):
             check_jwt_auth_middleware_logger.exception(
                 f"Request with invalid JWT {jwt} {request}"
             )
-            return Response(content="Invalid Credentials", status_code=HTTP_401_UNAUTHORIZED)
+            return Response(
+                content=PropertiesMessagesManager.tokenInvalidCredentials,
+                status_code=HTTP_403_FORBIDDEN,
+            )
         else:
             return await call_next(request)

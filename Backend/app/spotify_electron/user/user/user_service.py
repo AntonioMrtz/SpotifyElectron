@@ -2,7 +2,7 @@
 User service for handling business logic
 """
 
-import app.spotify_electron.security.security_service as security_service
+import app.auth.auth_service as auth_service
 import app.spotify_electron.user.base_user_repository as base_user_repository
 import app.spotify_electron.user.base_user_service as base_user_service
 import app.spotify_electron.user.providers.user_collection_provider as user_collection_provider
@@ -101,7 +101,7 @@ def create_user(user_name: str, photo: str, password: str) -> None:
 
         date = get_current_iso8601_date()
         photo = photo if "http" in photo else ""
-        hashed_password = security_service.hash_password(password)
+        hashed_password = auth_service.hash_password(password)
 
         user_repository.create_user(
             name=user_name,

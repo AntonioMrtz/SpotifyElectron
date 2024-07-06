@@ -11,7 +11,9 @@ export default function ItemsAllPlaylists({
   const [playlists, setPlaylists] = useState<PropsPlaylistCard[]>();
 
   const handlePlaylists = useCallback(() => {
-    fetch(`${Global.backendBaseUrl}playlists/`)
+    fetch(`${Global.backendBaseUrl}playlists/`, {
+      credentials: 'include',
+    })
       .then((resFetchPlaylists) => resFetchPlaylists.json())
       .then((resFetchPlaylistsJson) => {
         if (resFetchPlaylistsJson.playlists) {

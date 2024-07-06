@@ -1,10 +1,11 @@
+import pytest
 from pytest import fixture
 from starlette.status import (
     HTTP_200_OK,
     HTTP_201_CREATED,
     HTTP_202_ACCEPTED,
     HTTP_204_NO_CONTENT,
-    HTTP_401_UNAUTHORIZED,
+    HTTP_403_FORBIDDEN,
     HTTP_404_NOT_FOUND,
 )
 from test_API.api_all_users import (
@@ -20,6 +21,7 @@ from test_API.api_test_song import create_song, delete_song
 from test_API.api_test_user import create_user, delete_user, get_user
 from test_API.api_token import get_user_jwt_header
 
+from app.auth.auth_schema import BadJWTTokenProvidedException
 from app.spotify_electron.user.base_user_service import (
     MAX_NUMBER_PLAYBACK_HISTORY_SONGS,
 )
@@ -142,7 +144,7 @@ def test_patch_playback_history_invalid_bad_user():
 
 def test_patch_playback_history_non_existing_user():
     res_patch_user = patch_history_playback("usuario1", "cancion1", {})
-    assert res_patch_user.status_code == HTTP_401_UNAUTHORIZED
+    assert res_patch_user.status_code == HTTP_403_FORBIDDEN
 
 
 def test_patch_playback_history_user_correct_insert_6_songs(clear_test_data_db):
@@ -245,7 +247,7 @@ def test_patch_saved_playlist_user_correct(clear_test_data_db):
 
 def test_patch_saved_playlist_user_not_found():
     res_patch_user = patch_playlist_saved("", "", {})
-    assert res_patch_user.status_code in (HTTP_404_NOT_FOUND, HTTP_401_UNAUTHORIZED)
+    assert res_patch_user.status_code in (HTTP_404_NOT_FOUND, HTTP_403_FORBIDDEN)
 
 
 def test_patch_saved_playlist_artist_correct(clear_test_data_db):
@@ -414,8 +416,8 @@ def test_whoami_user(clear_test_data_db):
 
 
 def test_whoami_jwt_invalid():
-    res_whoami = whoami("jwt invalid")
-    assert res_whoami.status_code == HTTP_401_UNAUTHORIZED
+    with pytest.raises(BadJWTTokenProvidedException):
+        whoami("jwt invalid")
 
 
 def test_add_playlist_to_owner_user_correct(clear_test_data_db):
@@ -451,7 +453,7 @@ def test_add_playlist_to_owner_user_invalid(clear_test_data_db):
     foto = "https://foto"
 
     res_create_playlist = create_playlist(playlist_name, description, foto, {})
-    assert res_create_playlist.status_code == HTTP_401_UNAUTHORIZED
+    assert res_create_playlist.status_code == HTTP_403_FORBIDDEN
 
 
 def test_add_playlist_to_owner_artist_correct(clear_test_data_db):

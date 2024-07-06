@@ -1,11 +1,15 @@
 """
-Security schema for domain model
+Authentication schema for domain model
 """
 
 from dataclasses import dataclass
 
 from app.exceptions.base_exceptions_schema import SpotifyElectronException
 from app.spotify_electron.user.user.user_schema import UserException, UserType
+
+TOKEN_HEADER_FIELD_NAME = "Authorization"
+BEARER_SCHEME_NAME = "Bearer"
+JWT_COOKIE_HEADER_FIELD_NAME = "jwt"
 
 
 @dataclass
@@ -15,6 +19,15 @@ class TokenData:
     username: str
     role: UserType
     token_type: str
+
+
+class FakeRequest:
+    """Fake Request Object for bypassing authentication token HTTP incoming format"""
+
+    headers: dict = {}
+
+    def __init__(self, auth_value: str) -> None:
+        self.headers[TOKEN_HEADER_FIELD_NAME] = auth_value
 
 
 class BadJWTTokenProvidedException(SpotifyElectronException):

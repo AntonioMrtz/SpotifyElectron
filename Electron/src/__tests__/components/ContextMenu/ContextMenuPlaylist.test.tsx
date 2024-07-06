@@ -51,7 +51,7 @@ jest.spyOn(Token, 'getTokenRole').mockReturnValue(roleUser);
 global.fetch = jest.fn((url: string, options: any) => {
   if (
     url === `${Global.backendBaseUrl}playlists/${playlistDTOMockFetch.name}` &&
-    !options
+    !options.method
   ) {
     return Promise.resolve({
       json: () => playlistDTOMockFetch,

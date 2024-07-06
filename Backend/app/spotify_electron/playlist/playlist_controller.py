@@ -4,7 +4,7 @@ Playlist controller for handling incoming HTTP Requests
 
 from typing import Annotated
 
-from fastapi import APIRouter, Body, Header
+from fastapi import APIRouter, Body, Depends
 from fastapi.responses import Response
 from starlette.status import (
     HTTP_200_OK,
@@ -12,14 +12,19 @@ from starlette.status import (
     HTTP_202_ACCEPTED,
     HTTP_204_NO_CONTENT,
     HTTP_400_BAD_REQUEST,
-    HTTP_401_UNAUTHORIZED,
+    HTTP_403_FORBIDDEN,
     HTTP_404_NOT_FOUND,
     HTTP_500_INTERNAL_SERVER_ERROR,
 )
 
 import app.spotify_electron.playlist.playlist_service as playlist_service
-import app.spotify_electron.security.security_service as security_service
 import app.spotify_electron.utils.json_converter.json_converter_utils as json_converter_utils
+from app.auth.auth_schema import (
+    BadJWTTokenProvidedException,
+    TokenData,
+    UserUnauthorizedException,
+)
+from app.auth.JWTBearer import JWTBearer
 from app.common.PropertiesMessagesManager import PropertiesMessagesManager
 from app.exceptions.base_exceptions_schema import JsonEncodeException
 from app.logging.logging_constants import LOGGING_PLAYLIST_CONTROLLER
@@ -29,10 +34,6 @@ from app.spotify_electron.playlist.playlist_schema import (
     PlaylistBadNameException,
     PlaylistNotFoundException,
     PlaylistServiceException,
-)
-from app.spotify_electron.security.security_schema import (
-    BadJWTTokenProvidedException,
-    UserUnauthorizedException,
 )
 
 router = APIRouter(
@@ -44,7 +45,10 @@ playlist_controller_logger = SpotifyElectronLogger(LOGGING_PLAYLIST_CONTROLLER).
 
 
 @router.get("/{name}")
-def get_playlist(name: str) -> Response:
+def get_playlist(
+    name: str,
+    token: Annotated[TokenData, Depends(JWTBearer())],
+) -> Response:
     """Get playlsit
 
     Args:
@@ -83,8 +87,8 @@ def create_playlist(
     name: str,
     photo: str,
     description: str,
+    token: Annotated[TokenData, Depends(JWTBearer())],
     song_names: list[str] = Body(...),
-    authorization: Annotated[str | None, Header()] = None,
 ) -> Response:
     """Create playlist
 
@@ -92,24 +96,20 @@ def create_playlist(
         name (str): playlist name
         photo (str): playlist photo
         description (str): playlist description
-        song_names (list[str], optional): list of song names included in playlisy.\
-              Defaults to Body(...).
-        authorization (Annotated[str  |  None, Header, optional): jwt token. Defaults to None.
+        song_names (list[str]): list of song names included in playlist.
     """
     try:
-        jwt_token = security_service.get_jwt_token_data(authorization)
-
         playlist_service.create_playlist(
             name=name,
             photo=photo,
             description=description,
             song_names=song_names,
-            token=jwt_token,
+            token=token,
         )
         return Response(None, HTTP_201_CREATED)
     except BadJWTTokenProvidedException:
         return Response(
-            status_code=HTTP_401_UNAUTHORIZED,
+            status_code=HTTP_403_FORBIDDEN,
             content=PropertiesMessagesManager.tokenInvalidCredentials,
             headers={"WWW-Authenticate": "Bearer"},
         )
@@ -135,9 +135,9 @@ def update_playlist(  # noqa: PLR0913
     name: str,
     photo: str,
     description: str,
+    token: Annotated[TokenData, Depends(JWTBearer())],
     song_names: list[str] = Body(...),
     new_name: str | None = None,
-    authorization: Annotated[str | None, Header()] = None,
 ) -> Response:
     """Update playlist
 
@@ -146,24 +146,19 @@ def update_playlist(  # noqa: PLR0913
         description (str): playlist new description
         song_names (list[str], optional): playlist new song names. Defaults to Body(...).
         new_name (str | None, optional): playlist new name. Defaults to None.
-        authorization (Annotated[str  |  None, Header, optional): jwt token. Defaults to None.
     """
     try:
-        jwt_token = security_service.get_jwt_token_data(authorization)
-
-        playlist_service.update_playlist(
-            name, new_name, photo, description, song_names, jwt_token
-        )
+        playlist_service.update_playlist(name, new_name, photo, description, song_names, token)
         return Response(None, HTTP_204_NO_CONTENT)
     except BadJWTTokenProvidedException:
         return Response(
-            status_code=HTTP_401_UNAUTHORIZED,
+            status_code=HTTP_403_FORBIDDEN,
             content=PropertiesMessagesManager.tokenInvalidCredentials,
             headers={"WWW-Authenticate": "Bearer"},
         )
     except UserUnauthorizedException:
         return Response(
-            status_code=HTTP_401_UNAUTHORIZED,
+            status_code=HTTP_403_FORBIDDEN,
             content=PropertiesMessagesManager.userUnauthorized,
         )
     except PlaylistBadNameException:
@@ -211,7 +206,7 @@ def delete_playlist(name: str) -> Response:
 
 
 @router.get("/")
-def get_playlists() -> Response:
+def get_playlists(token: Annotated[TokenData, Depends(JWTBearer())]) -> Response:
     """Return all playlists"""
     try:
         playlists = playlist_service.get_all_playlist()
@@ -243,7 +238,9 @@ def get_playlists() -> Response:
 
 
 @router.get("/selected/{names}")
-def get_selected_playlists(names: str) -> Response:
+def get_selected_playlists(
+    names: str, token: Annotated[TokenData, Depends(JWTBearer())]
+) -> Response:
     """Get selected playlists
 
     Args:

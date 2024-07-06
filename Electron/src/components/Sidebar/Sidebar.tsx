@@ -85,7 +85,9 @@ export default function Sidebar({ triggerReloadSidebar }: PropsSidebar) {
     const username = Token.getTokenUsername();
 
     const fetchUrlGetUser = `${Global.backendBaseUrl}users/${username}`;
-    fetch(fetchUrlGetUser)
+    fetch(fetchUrlGetUser, {
+      credentials: 'include',
+    })
       .then((resFetchUrlGetUser) => resFetchUrlGetUser.json())
       .then((resFetchUrlGetUserJson) => {
         return resFetchUrlGetUserJson.saved_playlists
@@ -96,6 +98,9 @@ export default function Sidebar({ triggerReloadSidebar }: PropsSidebar) {
         if (sidebarPlaylistNames) {
           return fetch(
             `${Global.backendBaseUrl}playlists/selected/${sidebarPlaylistNames}`,
+            {
+              credentials: 'include',
+            },
           );
         }
         return null;

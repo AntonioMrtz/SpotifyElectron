@@ -47,12 +47,14 @@ class JWTBearer(HTTPBearer):
         # instead of b'bearer eyJhbGciOiJIUzI'
         # replacing " with white space for all headers can be deleted if its solved
         if len(request.cookies) == 0 or not request.cookies.get(JWT_COOKIE_HEADER_FIELD_NAME):
-            jwt_bearer_logger.exception(f"Request with no cookies {request}")
-            raise BadJWTTokenProvidedException
+            jwt_bearer_logger.warning(
+                f"Request with no cookies {request}, getting JWT from Authentication Header"
+            )
+            jwt_raw = get_authorization_bearer(request.headers.raw)
+        else:
+            jwt_raw = request.cookies.get(JWT_COOKIE_HEADER_FIELD_NAME)
 
-        jwt_raw = request.cookies.get(JWT_COOKIE_HEADER_FIELD_NAME)
         fake_request = FakeRequest(jwt_raw)  # type: ignore
-
         credentials: HTTPAuthorizationCredentials = await super(JWTBearer, self).__call__(  # noqa: UP008
             fake_request  # type: ignore
         )
@@ -67,3 +69,18 @@ class JWTBearer(HTTPBearer):
             raise BadJWTTokenProvidedException
         else:
             return jwt_token_data
+
+
+def get_authorization_bearer(headers: list[tuple]) -> str | None:
+    """Get authorization bearer value from HTTP header 'authorization'
+
+    Args:
+        headers (list[tuple]): headers
+
+    Returns:
+        str | None: the authorization value
+    """
+    for key, value in headers:
+        if key == b"authorization":
+            return value.decode("utf-8")
+    return None

@@ -18,7 +18,7 @@ _Note that file has to be named `.env` not `.env.local` or similars, having a di
 
 ## Enviroments variables
 
-In this section we will explain the meaning and the usage of the enviroment variables. Some of them are only necessary for one [architecture](Architecture.md), this means you can not declared them at all at the `.env` file.
+In this section we will explain the meaning and the usage of the enviroment variables. Some of them are only necessary for one [architecture](../Architecture.md), this means you can not declared them at all at the `.env` file.
 
 ### Commons
 
@@ -26,7 +26,7 @@ In this section we will explain the meaning and the usage of the enviroment vari
 - **ENV_VALUE**: determines the current enviroment of the app, it can be:
   - `PROD`: production enviroment.
   - `DEV`: development enviroment. Enables hot reload.
-- **ARCH**: the song architecture selected, it can be one of the following [architectures](Architecture.md):
+- **ARCH**: the song architecture selected, it can be one of the following [architectures](../Architecture.md):
   - `STREAMING_SERVERLESS_FUNCTION`: song architecture using AWS Serverless Function with streaming.
   - `BLOB(Recommended for testing)`: song architecture with no streaming/cloud, storing and serving songs directly from the database.
 

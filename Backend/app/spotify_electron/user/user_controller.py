@@ -5,30 +5,31 @@ It uses the base_user_service for handling logic for different user types
 
 from typing import Annotated
 
-from fastapi import APIRouter, Header
+from fastapi import APIRouter, Depends
 from fastapi.responses import Response
 from starlette.status import (
     HTTP_200_OK,
     HTTP_202_ACCEPTED,
     HTTP_400_BAD_REQUEST,
-    HTTP_401_UNAUTHORIZED,
+    HTTP_403_FORBIDDEN,
     HTTP_404_NOT_FOUND,
     HTTP_500_INTERNAL_SERVER_ERROR,
 )
 
-import app.spotify_electron.security.security_service as security_service
 import app.spotify_electron.user.base_user_service as base_user_service
 import app.spotify_electron.user.user.user_service as user_service
 import app.spotify_electron.utils.json_converter.json_converter_utils as json_converter_utils
+from app.auth.JWTBearer import JWTBearer
+from app.auth.security_schema import (
+    BadJWTTokenProvidedException,
+    TokenData,
+    UserUnauthorizedException,
+)
 from app.common.PropertiesMessagesManager import PropertiesMessagesManager
 from app.exceptions.base_exceptions_schema import JsonEncodeException
 from app.spotify_electron.playlist.playlist_schema import (
     PlaylistBadNameException,
     PlaylistNotFoundException,
-)
-from app.spotify_electron.security.security_schema import (
-    BadJWTTokenProvidedException,
-    UserUnauthorizedException,
 )
 from app.spotify_electron.song.base_song_schema import (
     SongBadNameException,
@@ -48,28 +49,31 @@ router = APIRouter(
 
 
 @router.get("/whoami")
-def get_whoAmI(authorization: Annotated[str | None, Header()] = None) -> Response:
+def get_whoAmI(token: Annotated[TokenData, Depends(JWTBearer())]) -> Response:
     """Returns token info from JWT
 
     Args:
-        authorization (Annotated[str  |  None, Header, optional): the jwt token. \
-            Defaults to None.
+        token (TokenData): the jwt token. Defaults to None.
     """
     try:
-        jwt_token = security_service.get_jwt_token_data(authorization)
-        jwt_token_json = json_converter_utils.get_json_from_model(jwt_token)
+        jwt_token_json = json_converter_utils.get_json_from_model(token)
 
         return Response(jwt_token_json, media_type="application/json", status_code=200)
     except BadJWTTokenProvidedException:
         return Response(
-            status_code=HTTP_401_UNAUTHORIZED,
+            status_code=HTTP_403_FORBIDDEN,
             content=PropertiesMessagesManager.tokenInvalidCredentials,
             headers={"WWW-Authenticate": "Bearer"},
+        )
+    except Exception:
+        return Response(
+            status_code=HTTP_500_INTERNAL_SERVER_ERROR,
+            content=PropertiesMessagesManager.commonInternalServerError,
         )
 
 
 @router.get("/{name}")
-def get_user(name: str) -> Response:
+def get_user(name: str, token: Annotated[TokenData, Depends(JWTBearer())]) -> Response:
     """Get user by name
 
     Args:
@@ -161,9 +165,7 @@ def delete_user(name: str) -> Response:
 
 @router.patch("/{name}/playback_history")
 def patch_playback_history(
-    name: str,
-    song_name: str,
-    authorization: Annotated[str | None, Header()] = None,
+    name: str, song_name: str, token: Annotated[TokenData, Depends(JWTBearer())]
 ) -> Response:
     """Add song to playback history
 
@@ -177,10 +179,8 @@ def patch_playback_history(
         Response: _description_
     """
     try:
-        jwt_token = security_service.get_jwt_token_data(authorization)
-
         base_user_service.add_playback_history(
-            user_name=name, song_name=song_name, token=jwt_token
+            user_name=name, song_name=song_name, token=token
         )
         return Response(None, 204)
     except UserBadNameException:
@@ -195,13 +195,13 @@ def patch_playback_history(
         )
     except BadJWTTokenProvidedException:
         return Response(
-            status_code=HTTP_401_UNAUTHORIZED,
+            status_code=HTTP_403_FORBIDDEN,
             content=PropertiesMessagesManager.tokenInvalidCredentials,
             headers={"WWW-Authenticate": "Bearer"},
         )
     except UserUnauthorizedException:
         return Response(
-            status_code=HTTP_401_UNAUTHORIZED,
+            status_code=HTTP_403_FORBIDDEN,
             content=PropertiesMessagesManager.userUnauthorized,
         )
     except UserNotFoundException:
@@ -223,9 +223,7 @@ def patch_playback_history(
 
 @router.patch("/{name}/saved_playlists")
 def patch_saved_playlists(
-    name: str,
-    playlist_name: str,
-    authorization: Annotated[str | None, Header()] = None,
+    name: str, playlist_name: str, token: Annotated[TokenData, Depends(JWTBearer())]
 ) -> Response:
     """Add playlist to saved list
 
@@ -239,9 +237,7 @@ def patch_saved_playlists(
         Response: _description_
     """
     try:
-        jwt_token = security_service.get_jwt_token_data(authorization)
-
-        base_user_service.add_saved_playlist(name, playlist_name, token=jwt_token)
+        base_user_service.add_saved_playlist(name, playlist_name, token=token)
         return Response(None, 204)
     except UserBadNameException:
         return Response(
@@ -250,7 +246,7 @@ def patch_saved_playlists(
         )
     except UserUnauthorizedException:
         return Response(
-            status_code=HTTP_401_UNAUTHORIZED,
+            status_code=HTTP_403_FORBIDDEN,
             content=PropertiesMessagesManager.userUnauthorized,
         )
     except PlaylistNotFoundException:
@@ -265,7 +261,7 @@ def patch_saved_playlists(
         )
     except BadJWTTokenProvidedException:
         return Response(
-            status_code=HTTP_401_UNAUTHORIZED,
+            status_code=HTTP_403_FORBIDDEN,
             content=PropertiesMessagesManager.tokenInvalidCredentials,
             headers={"WWW-Authenticate": "Bearer"},
         )
@@ -278,9 +274,7 @@ def patch_saved_playlists(
 
 @router.delete("/{name}/saved_playlists")
 def delete_saved_playlists(
-    name: str,
-    playlist_name: str,
-    authorization: Annotated[str | None, Header()] = None,
+    name: str, playlist_name: str, token: Annotated[TokenData, Depends(JWTBearer())]
 ) -> Response:
     """Delete playlist from saved list of user
 
@@ -294,9 +288,7 @@ def delete_saved_playlists(
         Response: _description_
     """
     try:
-        jwt_token = security_service.get_jwt_token_data(authorization)
-
-        base_user_service.delete_saved_playlist(name, playlist_name, token=jwt_token)
+        base_user_service.delete_saved_playlist(name, playlist_name, token=token)
         return Response(None, 202)
     except UserBadNameException:
         return Response(
@@ -310,7 +302,7 @@ def delete_saved_playlists(
         )
     except UserUnauthorizedException:
         return Response(
-            status_code=HTTP_401_UNAUTHORIZED,
+            status_code=HTTP_403_FORBIDDEN,
             content=PropertiesMessagesManager.userUnauthorized,
         )
     except PlaylistNotFoundException:
@@ -325,7 +317,7 @@ def delete_saved_playlists(
         )
     except BadJWTTokenProvidedException:
         return Response(
-            status_code=HTTP_401_UNAUTHORIZED,
+            status_code=HTTP_403_FORBIDDEN,
             content=PropertiesMessagesManager.tokenInvalidCredentials,
             headers={"WWW-Authenticate": "Bearer"},
         )

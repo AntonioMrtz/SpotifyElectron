@@ -12,10 +12,10 @@ from starlette.status import (
 from test_API.api_test_user import create_user, delete_user, get_user
 from test_API.api_token import get_user_jwt_header
 
-import app.spotify_electron.security.security_service as security_service
+import app.auth.security_service as security_service
 import app.spotify_electron.user.base_user_service as base_user_service
 import app.spotify_electron.user.user.user_service as user_service
-from app.spotify_electron.security.security_schema import VerifyPasswordException
+from app.auth.security_schema import VerifyPasswordException
 
 
 @fixture(scope="module", autouse=True)

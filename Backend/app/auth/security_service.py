@@ -3,21 +3,14 @@ Security service for handling business logic
 """
 
 from datetime import UTC, datetime, timedelta, timezone
-from typing import Annotated, Any
+from typing import Any
 
 import bcrypt
-from fastapi import Depends
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 
 import app.spotify_electron.user.base_user_service as base_user_service
-from app.common.PropertiesManager import PropertiesManager
-from app.common.set_up_constants import SECRET_KEY_SIGN_ENV_NAME
-from app.exceptions.base_exceptions_schema import BadParameterException
-from app.logging.logging_constants import LOGGING_SECURITY_SERVICE
-from app.logging.logging_schema import SpotifyElectronLogger
-from app.spotify_electron.login.login_schema import InvalidCredentialsLoginException
-from app.spotify_electron.security.security_schema import (
+from app.auth.security_schema import (
     BadJWTTokenProvidedException,
     CreateJWTException,
     JWTExpiredException,
@@ -30,6 +23,12 @@ from app.spotify_electron.security.security_schema import (
     UserUnauthorizedException,
     VerifyPasswordException,
 )
+from app.common.PropertiesManager import PropertiesManager
+from app.common.set_up_constants import SECRET_KEY_SIGN_ENV_NAME
+from app.exceptions.base_exceptions_schema import BadParameterException
+from app.logging.logging_constants import LOGGING_SECURITY_SERVICE
+from app.logging.logging_schema import SpotifyElectronLogger
+from app.spotify_electron.login.login_schema import InvalidCredentialsLoginException
 from app.spotify_electron.user.base_user_service import validate_user_should_exists
 from app.spotify_electron.user.user.user_schema import (
     UserDTO,
@@ -43,7 +42,7 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 10080  # 7 days
 DAYS_TO_EXPIRE_COOKIE = 7
 
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="usuarios/whoami/")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="users/whoami/")
 
 security_service_logger = SpotifyElectronLogger(LOGGING_SECURITY_SERVICE).getLogger()
 
@@ -85,13 +84,13 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None) -> s
 
 
 def get_jwt_token_data(
-    token: Annotated[str | None, Depends(oauth2_scheme)],
+    token_raw_data: str,
 ) -> TokenData:
     """Decrypt jwt data and returns data from it
 
     Args:
     ----
-        token (Annotated[str  |  None, Depends): JWT Token
+        token_raw_data (TokenData): JWT Token
 
     Raises:
     ------
@@ -102,10 +101,10 @@ def get_jwt_token_data(
         TokenData: the data provided by the JWT Token
 
     """
-    validate_token_exists(token)
+    validate_token_exists(token_raw_data)
     try:
         payload = jwt.decode(
-            token,  # type: ignore
+            token_raw_data,  # type: ignore
             getattr(PropertiesManager, SECRET_KEY_SIGN_ENV_NAME),
             algorithms=[ALGORITHM],
         )
@@ -137,13 +136,13 @@ def get_jwt_token_data(
 
 
 def get_current_user(
-    token: Annotated[str, Depends(oauth2_scheme)],
+    token: TokenData,
 ) -> UserDTO:
     """Get current user from JWT Token
 
     Args:
     ----
-        token (Annotated[str, Depends): the token
+        token (TokenData): the token
 
     Raises:
     ------
@@ -154,8 +153,7 @@ def get_current_user(
 
     """
     try:
-        jwt = get_jwt_token_data(token)
-        jwt_username = jwt.username
+        jwt_username = token.username
 
         user = base_user_service.get_user(jwt_username)
     except BadJWTTokenProvidedException as exception:

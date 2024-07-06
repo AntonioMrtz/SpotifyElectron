@@ -6,13 +6,13 @@ import app.spotify_electron.song.base_song_repository as base_song_repository
 import app.spotify_electron.song.blob.song_repository as song_repository
 import app.spotify_electron.user.artist.artist_service as artist_service
 import app.spotify_electron.user.base_user_service as base_user_service
-from app.logging.logging_constants import LOGGING_SONG_BLOB_SERVICE
-from app.logging.logging_schema import SpotifyElectronLogger
-from app.spotify_electron.genre.genre_schema import Genre, GenreNotValidException
-from app.spotify_electron.security.security_schema import (
+from app.auth.security_schema import (
     TokenData,
     UserUnauthorizedException,
 )
+from app.logging.logging_constants import LOGGING_SONG_BLOB_SERVICE
+from app.logging.logging_schema import SpotifyElectronLogger
+from app.spotify_electron.genre.genre_schema import Genre, GenreNotValidException
 from app.spotify_electron.song.aws.serverless_function.song_schema import (
     SongGetUrlStreamingException,
 )

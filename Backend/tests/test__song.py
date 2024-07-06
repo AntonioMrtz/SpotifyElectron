@@ -5,7 +5,7 @@ from starlette.status import (
     HTTP_201_CREATED,
     HTTP_202_ACCEPTED,
     HTTP_204_NO_CONTENT,
-    HTTP_401_UNAUTHORIZED,
+    HTTP_403_FORBIDDEN,
     HTTP_404_NOT_FOUND,
     HTTP_422_UNPROCESSABLE_ENTITY,
 )
@@ -77,7 +77,7 @@ def test_post_cancion_user_as_artist(clear_test_data_db):
         photo=foto,
         headers=jwt_headers,
     )
-    assert res_create_song.status_code == HTTP_401_UNAUTHORIZED
+    assert res_create_song.status_code == HTTP_403_FORBIDDEN
 
 
 def test_post_cancion_correct_check_valid_duration(clear_test_data_db):

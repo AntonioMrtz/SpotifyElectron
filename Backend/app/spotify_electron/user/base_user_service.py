@@ -3,13 +3,17 @@ Base User service for handling bussiness logic
 Redirects to the specific user type service for non common logic
 """
 
+import app.auth.security_service as security_service
 import app.spotify_electron.playlist.playlist_service as playlist_service
-import app.spotify_electron.security.security_service as security_service
 import app.spotify_electron.user.artist.artist_service as artist_service
 import app.spotify_electron.user.base_user_repository as base_user_repository
 import app.spotify_electron.user.providers.user_collection_provider as user_collection_provider
 import app.spotify_electron.user.providers.user_service_provider as user_service_provider
 import app.spotify_electron.user.user.user_service as user_service
+from app.auth.security_schema import (
+    TokenData,
+    UserUnauthorizedException,
+)
 from app.logging.logging_constants import LOGGING_BASE_USERS_SERVICE
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.playlist.playlist_schema import (
@@ -19,10 +23,6 @@ from app.spotify_electron.playlist.playlist_schema import (
 from app.spotify_electron.playlist.validations.playlist_service_validations import (
     validate_playlist_name_parameter,
     validate_playlist_should_exists,
-)
-from app.spotify_electron.security.security_schema import (
-    TokenData,
-    UserUnauthorizedException,
 )
 from app.spotify_electron.song.base_song_schema import (
     SongBadNameException,

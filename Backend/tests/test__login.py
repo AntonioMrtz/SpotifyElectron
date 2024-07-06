@@ -4,7 +4,7 @@ from starlette.status import (
     HTTP_200_OK,
     HTTP_201_CREATED,
     HTTP_202_ACCEPTED,
-    HTTP_401_UNAUTHORIZED,
+    HTTP_403_FORBIDDEN,
     HTTP_404_NOT_FOUND,
 )
 from test_API.api_login import post_login
@@ -65,7 +65,7 @@ def test_login_user_bad_password(clear_test_data_db):
     assert res_create_user.status_code == HTTP_201_CREATED
 
     res_login_user = post_login(user_name, bad_password)
-    assert res_login_user.status_code == HTTP_401_UNAUTHORIZED
+    assert res_login_user.status_code == HTTP_403_FORBIDDEN
 
     res_delete_user = delete_user(user_name)
     assert res_delete_user.status_code == HTTP_202_ACCEPTED

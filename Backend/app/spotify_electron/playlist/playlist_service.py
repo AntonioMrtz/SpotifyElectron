@@ -2,9 +2,13 @@
 Playlist service for handling business logic
 """
 
+import app.auth.security_service as security_service
 import app.spotify_electron.playlist.playlist_repository as playlist_repository
-import app.spotify_electron.security.security_service as security_service
 import app.spotify_electron.user.base_user_service as base_user_service
+from app.auth.security_schema import (
+    TokenData,
+    UserUnauthorizedException,
+)
 from app.logging.logging_constants import LOGGING_PLAYLIST_SERVICE
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.playlist.playlist_schema import (
@@ -20,10 +24,6 @@ from app.spotify_electron.playlist.validations.playlist_service_validations impo
     validate_playlist_name_parameter,
     validate_playlist_should_exists,
     validate_playlist_should_not_exists,
-)
-from app.spotify_electron.security.security_schema import (
-    TokenData,
-    UserUnauthorizedException,
 )
 from app.spotify_electron.user.user.user_schema import UserNotFoundException
 from app.spotify_electron.utils.date.date_utils import get_current_iso8601_date

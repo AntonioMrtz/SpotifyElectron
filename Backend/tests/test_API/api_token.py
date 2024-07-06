@@ -9,5 +9,5 @@ def get_user_jwt_header(username: str, password: str):
     jwt = response.json()
 
     return {
-        "authorization": f"{jwt}",
+        "authorization": f"Bearer {jwt}",
     }

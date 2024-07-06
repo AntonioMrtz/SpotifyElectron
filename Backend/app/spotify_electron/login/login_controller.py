@@ -10,20 +10,20 @@ from fastapi.security import OAuth2PasswordRequestForm
 from starlette.status import (
     HTTP_200_OK,
     HTTP_400_BAD_REQUEST,
-    HTTP_401_UNAUTHORIZED,
+    HTTP_403_FORBIDDEN,
     HTTP_404_NOT_FOUND,
     HTTP_500_INTERNAL_SERVER_ERROR,
 )
 
-import app.spotify_electron.security.security_service as security_service
+import app.auth.security_service as security_service
 import app.spotify_electron.utils.json_converter.json_converter_utils as json_converter_utils
-from app.common.PropertiesMessagesManager import PropertiesMessagesManager
-from app.spotify_electron.login.login_schema import InvalidCredentialsLoginException
-from app.spotify_electron.security.security_schema import (
+from app.auth.security_schema import (
     CreateJWTException,
     UnexpectedLoginUserException,
     VerifyPasswordException,
 )
+from app.common.PropertiesMessagesManager import PropertiesMessagesManager
+from app.spotify_electron.login.login_schema import InvalidCredentialsLoginException
 from app.spotify_electron.user.user.user_schema import (
     UserNotFoundException,
     UserServiceException,
@@ -59,7 +59,7 @@ def login_usuario(
         )
     except (VerifyPasswordException, CreateJWTException):
         return Response(
-            status_code=HTTP_401_UNAUTHORIZED,
+            status_code=HTTP_403_FORBIDDEN,
             content=PropertiesMessagesManager.loginVerifyPassword,
         )
     except UserNotFoundException:

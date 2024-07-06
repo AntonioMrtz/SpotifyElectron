@@ -19,7 +19,6 @@ from app.common.PropertiesManager import PropertiesManager
 from app.database.Database import Database
 from app.logging.logging_constants import LOGGING_MAIN
 from app.logging.logging_schema import SpotifyElectronLogger
-from app.middleware.CheckJwtAuthMiddleware import CheckJwtAuthMiddleware
 from app.middleware.cors_middleware_config import (
     allow_credentials,
     allowed_headers,
@@ -81,8 +80,6 @@ app.add_middleware(
     max_age=max_age,
     allow_headers=allowed_headers,
 )
-app.add_middleware(CheckJwtAuthMiddleware)
-
 
 if __name__ == "__main__":
     uvicorn.run(

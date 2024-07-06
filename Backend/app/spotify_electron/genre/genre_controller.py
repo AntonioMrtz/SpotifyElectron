@@ -9,8 +9,8 @@ from fastapi.responses import Response
 from starlette.status import HTTP_200_OK, HTTP_500_INTERNAL_SERVER_ERROR
 
 import app.spotify_electron.genre.genre_service as genre_service
+from app.auth.auth_schema import TokenData
 from app.auth.JWTBearer import JWTBearer
-from app.auth.security_schema import TokenData
 from app.common.PropertiesMessagesManager import PropertiesMessagesManager
 from app.logging.logging_constants import LOGGING_GENRE_CONTROLLER
 from app.logging.logging_schema import SpotifyElectronLogger

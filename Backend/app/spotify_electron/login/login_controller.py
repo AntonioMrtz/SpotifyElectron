@@ -15,9 +15,9 @@ from starlette.status import (
     HTTP_500_INTERNAL_SERVER_ERROR,
 )
 
-import app.auth.security_service as security_service
+import app.auth.auth_service as auth_service
 import app.spotify_electron.utils.json_converter.json_converter_utils as json_converter_utils
-from app.auth.security_schema import (
+from app.auth.auth_schema import (
     CreateJWTException,
     UnexpectedLoginUserException,
     VerifyPasswordException,
@@ -47,10 +47,10 @@ def login_usuario(
 
     """
     try:
-        jwt = security_service.login_user(form_data.username, form_data.password)
+        jwt = auth_service.login_user(form_data.username, form_data.password)
 
         access_token_json = json_converter_utils.get_json_from_model(jwt)
-        expiration_date = security_service.get_token_expire_date()
+        expiration_date = auth_service.get_token_expire_date()
 
     except InvalidCredentialsLoginException:
         return Response(

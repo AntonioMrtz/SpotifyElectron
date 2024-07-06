@@ -1,5 +1,5 @@
 """
-Security service for handling business logic
+Authentication service for handling business logic
 """
 
 from datetime import UTC, datetime, timedelta, timezone
@@ -10,7 +10,7 @@ from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 
 import app.spotify_electron.user.base_user_service as base_user_service
-from app.auth.security_schema import (
+from app.auth.auth_schema import (
     BadJWTTokenProvidedException,
     CreateJWTException,
     JWTExpiredException,
@@ -26,7 +26,7 @@ from app.auth.security_schema import (
 from app.common.PropertiesManager import PropertiesManager
 from app.common.set_up_constants import SECRET_KEY_SIGN_ENV_NAME
 from app.exceptions.base_exceptions_schema import BadParameterException
-from app.logging.logging_constants import LOGGING_SECURITY_SERVICE
+from app.logging.logging_constants import LOGGING_AUTH_SERVICE
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.login.login_schema import InvalidCredentialsLoginException
 from app.spotify_electron.user.base_user_service import validate_user_should_exists
@@ -44,7 +44,7 @@ DAYS_TO_EXPIRE_COOKIE = 7
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="users/whoami/")
 
-security_service_logger = SpotifyElectronLogger(LOGGING_SECURITY_SERVICE).getLogger()
+auth_service_logger = SpotifyElectronLogger(LOGGING_AUTH_SERVICE).getLogger()
 
 
 def create_access_token(data: dict, expires_delta: timedelta | None = None) -> str:
@@ -79,7 +79,7 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None) -> s
     except Exception as exception:
         raise CreateJWTException from exception
     else:
-        security_service_logger.info(f"JWT created from data : {data}")
+        auth_service_logger.info(f"JWT created from data : {data}")
         return encoded_jwt
 
 
@@ -117,21 +117,21 @@ def get_jwt_token_data(
         token_data = TokenData(username=username, role=role, token_type=token_type)  # type: ignore
 
     except JWTNotProvidedException as exception:
-        security_service_logger.exception("No JWT Token was provided")
+        auth_service_logger.exception("No JWT Token was provided")
         raise BadJWTTokenProvidedException from exception
     except JWTMissingCredentialsException as exception:
-        security_service_logger.exception(
+        auth_service_logger.exception(
             f"One or more credentials obtained from JWT are missing : {credentials}"
         )
         raise BadJWTTokenProvidedException from exception
     except JWTError as exception:
-        security_service_logger.exception("Error decoding JWT Token")
+        auth_service_logger.exception("Error decoding JWT Token")
         raise BadJWTTokenProvidedException from exception
     except Exception as exception:
-        security_service_logger.exception("Unexpected error getting data from JWT Token")
+        auth_service_logger.exception("Unexpected error getting data from JWT Token")
         raise BadJWTTokenProvidedException from exception
     else:
-        security_service_logger.info(f"Token data : {token_data}")
+        auth_service_logger.info(f"Token data : {token_data}")
         return token_data
 
 
@@ -157,18 +157,16 @@ def get_current_user(
 
         user = base_user_service.get_user(jwt_username)
     except BadJWTTokenProvidedException as exception:
-        security_service_logger.exception("Error getting jwt token data")
+        auth_service_logger.exception("Error getting jwt token data")
         raise BadJWTTokenProvidedException from exception
     except UserNotFoundException as exception:
-        security_service_logger.exception(f"User {jwt_username} not found")
+        auth_service_logger.exception(f"User {jwt_username} not found")
         raise UserNotFoundException from exception
     except Exception as exception:
-        security_service_logger.exception(
-            f"Unexpected exception getting user from token {token}"
-        )
+        auth_service_logger.exception(f"Unexpected exception getting user from token {token}")
         raise JWTGetUserException from exception
     else:
-        security_service_logger.info(f"Get Current User successful : {jwt_username}")
+        auth_service_logger.info(f"Get Current User successful : {jwt_username}")
         return user
 
 
@@ -254,27 +252,27 @@ def login_user(name: str, password: str) -> str:
         access_token_data = create_access_token(jwt_data)
 
     except BadParameterException as exception:
-        security_service_logger.exception("Invalid login credentials")
+        auth_service_logger.exception("Invalid login credentials")
         raise InvalidCredentialsLoginException from exception
     except VerifyPasswordException as exception:
-        security_service_logger.exception("Passwords Validation failed : passwords dont match")
+        auth_service_logger.exception("Passwords Validation failed : passwords dont match")
         raise VerifyPasswordException from exception
     except CreateJWTException as exception:
-        security_service_logger.exception(f"Error creating JWT Token from data : {jwt_data}")
+        auth_service_logger.exception(f"Error creating JWT Token from data : {jwt_data}")
         raise VerifyPasswordException from exception
     except UserNotFoundException as exception:
-        security_service_logger.exception(f"User {name} doesnt exists")
+        auth_service_logger.exception(f"User {name} doesnt exists")
         raise UserNotFoundException from exception
     except UserServiceException as exception:
-        security_service_logger.exception(
+        auth_service_logger.exception(
             f"Unexpected error in User service while login user : {name}"
         )
         raise UnexpectedLoginUserException from exception
     except Exception as exception:
-        security_service_logger.exception(f"Unexpected error login user : {name}")
+        auth_service_logger.exception(f"Unexpected error login user : {name}")
         raise UnexpectedLoginUserException from exception
     else:
-        security_service_logger.info(f"User {name} logged successfully")
+        auth_service_logger.info(f"User {name} logged successfully")
         return access_token_data
 
 
@@ -297,15 +295,15 @@ def validate_jwt(token: str) -> None:
         validate_token_is_expired(decoded_token)
 
     except JWTError as exception:
-        security_service_logger.exception(f"Error decoding token : {token}")
+        auth_service_logger.exception(f"Error decoding token : {token}")
         raise JWTValidationException from exception
 
     except JWTExpiredException as exception:
-        security_service_logger.exception(f"Token is expired : {token}")
+        auth_service_logger.exception(f"Token is expired : {token}")
         raise JWTValidationException from exception
 
     except Exception as exception:
-        security_service_logger.exception(f"Unexpected error validating token : {token}")
+        auth_service_logger.exception(f"Unexpected error validating token : {token}")
         raise JWTValidationException from exception
 
 

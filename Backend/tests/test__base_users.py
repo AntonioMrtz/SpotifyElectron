@@ -21,7 +21,7 @@ from test_API.api_test_song import create_song, delete_song
 from test_API.api_test_user import create_user, delete_user, get_user
 from test_API.api_token import get_user_jwt_header
 
-from app.auth.security_schema import BadJWTTokenProvidedException
+from app.auth.auth_schema import BadJWTTokenProvidedException
 from app.spotify_electron.user.base_user_service import (
     MAX_NUMBER_PLAYBACK_HISTORY_SONGS,
 )

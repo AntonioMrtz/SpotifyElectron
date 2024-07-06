@@ -19,12 +19,12 @@ from starlette.status import (
 
 import app.spotify_electron.playlist.playlist_service as playlist_service
 import app.spotify_electron.utils.json_converter.json_converter_utils as json_converter_utils
-from app.auth.JWTBearer import JWTBearer
-from app.auth.security_schema import (
+from app.auth.auth_schema import (
     BadJWTTokenProvidedException,
     TokenData,
     UserUnauthorizedException,
 )
+from app.auth.JWTBearer import JWTBearer
 from app.common.PropertiesMessagesManager import PropertiesMessagesManager
 from app.exceptions.base_exceptions_schema import JsonEncodeException
 from app.logging.logging_constants import LOGGING_PLAYLIST_CONTROLLER
@@ -146,7 +146,6 @@ def update_playlist(  # noqa: PLR0913
         description (str): playlist new description
         song_names (list[str], optional): playlist new song names. Defaults to Body(...).
         new_name (str | None, optional): playlist new name. Defaults to None.
-        authorization (Annotated[str  |  None, Header, optional): jwt token. Defaults to None.
     """
     try:
         playlist_service.update_playlist(name, new_name, photo, description, song_names, token)

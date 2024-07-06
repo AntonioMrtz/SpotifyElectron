@@ -7,7 +7,7 @@ import app.spotify_electron.song.aws.serverless_function.song_serverless_functio
 import app.spotify_electron.song.base_song_repository as base_song_repository
 import app.spotify_electron.user.artist.artist_service as artist_service
 import app.spotify_electron.user.base_user_service as base_user_service
-from app.auth.security_schema import (
+from app.auth.auth_schema import (
     TokenData,
     UserUnauthorizedException,
 )

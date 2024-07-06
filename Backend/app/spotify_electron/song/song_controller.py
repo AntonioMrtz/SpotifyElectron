@@ -20,8 +20,8 @@ from starlette.status import (
 
 import app.spotify_electron.song.base_song_service as base_song_service
 import app.spotify_electron.utils.json_converter.json_converter_utils as json_converter_utils
+from app.auth.auth_schema import BadJWTTokenProvidedException, TokenData
 from app.auth.JWTBearer import JWTBearer
-from app.auth.security_schema import BadJWTTokenProvidedException, TokenData
 from app.common.PropertiesMessagesManager import PropertiesMessagesManager
 from app.exceptions.base_exceptions_schema import JsonEncodeException
 from app.spotify_electron.genre.genre_schema import Genre, GenreNotValidException
@@ -98,8 +98,6 @@ async def create_song(
         genre (Genre): genre
         photo (str): photo
         file (UploadFile): song file
-        authorization (Annotated[str  |  None, Header, optional): jwt token auth. \
-            Defaults to None.
     """
     readFile = await file.read()
 

@@ -4,8 +4,8 @@ from fastapi import Request, Response
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.status import HTTP_403_FORBIDDEN
 
-import app.auth.security_service as security_service
-from app.auth.security_schema import JWTValidationException
+import app.auth.auth_service as auth_service
+from app.auth.auth_schema import JWTValidationException
 from app.common.PropertiesMessagesManager import PropertiesMessagesManager
 from app.logging.logging_constants import LOGGIN_CHECK_AUTH_JWT_MIDDLEWARE
 from app.logging.logging_schema import SpotifyElectronLogger
@@ -102,7 +102,7 @@ class CheckJwtAuthMiddleware(BaseHTTPMiddleware):
 
         """
         try:
-            security_service.validate_jwt(jwt)
+            auth_service.validate_jwt(jwt)
         except (JWTValidationException, Exception):
             check_jwt_auth_middleware_logger.exception(
                 f"Request with invalid JWT {jwt} {request}"

@@ -19,12 +19,12 @@ from starlette.status import (
 import app.spotify_electron.user.base_user_service as base_user_service
 import app.spotify_electron.user.user.user_service as user_service
 import app.spotify_electron.utils.json_converter.json_converter_utils as json_converter_utils
-from app.auth.JWTBearer import JWTBearer
-from app.auth.security_schema import (
+from app.auth.auth_schema import (
     BadJWTTokenProvidedException,
     TokenData,
     UserUnauthorizedException,
 )
+from app.auth.JWTBearer import JWTBearer
 from app.common.PropertiesMessagesManager import PropertiesMessagesManager
 from app.exceptions.base_exceptions_schema import JsonEncodeException
 from app.spotify_electron.playlist.playlist_schema import (
@@ -172,11 +172,6 @@ def patch_playback_history(
     Args:
         name (str): user name
         song_name (str): song name
-        authorization (Annotated[str  |  None, Header, optional): jwt token auth. \
-            Defaults to None.
-
-    Returns:
-        Response: _description_
     """
     try:
         base_user_service.add_playback_history(
@@ -230,11 +225,6 @@ def patch_saved_playlists(
     Args:
         name (str): user name
         playlist_name (str): saved playlist
-        authorization (Annotated[str  |  None, Header, optional): jwt token auth. \
-            Defaults to None.
-
-    Returns:
-        Response: _description_
     """
     try:
         base_user_service.add_saved_playlist(name, playlist_name, token=token)
@@ -281,11 +271,6 @@ def delete_saved_playlists(
     Args:
         name (str): user name
         playlist_name (str): playlist name
-        authorization (Annotated[str  |  None, Header, optional): jwt token auth. \
-            Defaults to None.
-
-    Returns:
-        Response: _description_
     """
     try:
         base_user_service.delete_saved_playlist(name, playlist_name, token=token)

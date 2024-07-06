@@ -12,10 +12,10 @@ from starlette.status import (
 from test_API.api_test_user import create_user, delete_user, get_user
 from test_API.api_token import get_user_jwt_header
 
-import app.auth.security_service as security_service
+import app.auth.auth_service as auth_service
 import app.spotify_electron.user.base_user_service as base_user_service
 import app.spotify_electron.user.user.user_service as user_service
-from app.auth.security_schema import VerifyPasswordException
+from app.auth.auth_schema import VerifyPasswordException
 
 
 @fixture(scope="module", autouse=True)
@@ -108,7 +108,7 @@ def test_check_encrypted_password_correct():
     user_service.create_user(name, foto, password)
     generated_password = base_user_service.get_user_password(name)
 
-    security_service.verify_password(password, generated_password)
+    auth_service.verify_password(password, generated_password)
     base_user_service.delete_user(name)
 
 
@@ -120,7 +120,7 @@ def test_check_encrypted_password_different():
     password = "hola2"
     generated_password = base_user_service.get_user_password(name)
     with pytest.raises(VerifyPasswordException):
-        security_service.verify_password(password, generated_password)
+        auth_service.verify_password(password, generated_password)
     base_user_service.delete_user(name)
 
 

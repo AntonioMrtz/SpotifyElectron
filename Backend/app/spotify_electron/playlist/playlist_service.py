@@ -2,10 +2,10 @@
 Playlist service for handling business logic
 """
 
-import app.auth.security_service as security_service
+import app.auth.auth_service as auth_service
 import app.spotify_electron.playlist.playlist_repository as playlist_repository
 import app.spotify_electron.user.base_user_service as base_user_service
-from app.auth.security_schema import (
+from app.auth.auth_schema import (
     TokenData,
     UserUnauthorizedException,
 )
@@ -185,7 +185,7 @@ def update_playlist(  # noqa: PLR0913
 
         playlist = playlist_repository.get_playlist(name)
 
-        security_service.validate_jwt_user_matches_user(token, playlist.owner)
+        auth_service.validate_jwt_user_matches_user(token, playlist.owner)
 
         if not new_name:
             playlist_repository.update_playlist(

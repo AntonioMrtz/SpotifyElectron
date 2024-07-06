@@ -2,7 +2,7 @@
 Artist service for handling business logic
 """
 
-import app.auth.security_service as security_service
+import app.auth.auth_service as auth_service
 import app.spotify_electron.song.base_song_service as base_song_service
 import app.spotify_electron.user.artist.artist_repository as artist_repository
 import app.spotify_electron.user.base_user_repository as base_user_repository
@@ -191,7 +191,7 @@ def create_artist(user_name: str, photo: str, password: str) -> None:
 
         date = get_current_iso8601_date()
         photo = photo if "http" in photo else ""
-        hashed_password = security_service.hash_password(password)
+        hashed_password = auth_service.hash_password(password)
 
         artist_repository.create_artist(
             name=user_name,

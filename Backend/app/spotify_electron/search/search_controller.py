@@ -14,8 +14,8 @@ from starlette.status import (
 
 import app.spotify_electron.search.search_service as search_service
 import app.spotify_electron.utils.json_converter.json_converter_utils as json_converter_utils
+from app.auth.auth_schema import TokenData
 from app.auth.JWTBearer import JWTBearer
-from app.auth.security_schema import TokenData
 from app.common.PropertiesMessagesManager import PropertiesMessagesManager
 from app.exceptions.base_exceptions_schema import JsonEncodeException
 from app.logging.logging_constants import LOGGING_SEARCH_CONTROLLER

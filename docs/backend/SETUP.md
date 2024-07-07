@@ -27,6 +27,7 @@ cd Backend
 
 ### 3. Install the virtual enviroment and dependencies
 
+**Windows**
 ```
 python -m venv venv;
 venv/Scripts/activate;
@@ -35,6 +36,18 @@ pip install -r requirements-dev.txt;
 pip install -r requirements-test.txt;
 
 ```
+
+**Linux**
+```
+python3.11 -m venv venv &&
+source venv/bin/activate &&
+pip install -r requirements.txt &&
+pip install -r requirements-dev.txt &&
+pip install -r requirements-test.txt
+```
+There's also a script `install-all-requirements.sh` that creates a virtual enviroment and install all dependencies included.
+Just make sure to activate the virtual enviroment after running the script.
+
 
 ### 4. Run the app in hot reload debug mode, launcht the provided vscode script or run:
 

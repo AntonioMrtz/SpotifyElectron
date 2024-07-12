@@ -1,8 +1,9 @@
-name: Generate and save documentation of API
+name: Generate OpenAPI Schema
 
 on:
   pull_request:
-    types: [closed]
+    types:
+      - closed
 
 jobs:
   generar-y-guardar-documentacion:
@@ -10,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout del repositorio
         uses: actions/checkout@v2
         with:
           persist-credentials: false
@@ -27,7 +28,7 @@ jobs:
           python -m venv venv
           source venv/bin/activate
           pip install -r requirements.txt
-          python generate-docs.py
+          python -m app.tools.generate_openapi
         env:
             MONGO_URI : none
             SECRET_KEY_SIGN : none
@@ -36,12 +37,12 @@ jobs:
             ENV_VALUE : PROD
 
       - name: Add and commit changes
-        working-directory: Backend/
+        working-directory: Electron/src/swagger/
         run: |
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
-          git add api-docs-spotify-electron.html
-          git commit -m "docs : Update API documentation"
+          git add openapi.json
+          git commit -m "docs: Update OpenAPI Schema"
 
       - name: Pushing to the protected branch 'protected'
         uses: CasperWA/push-protected@v2

@@ -22,7 +22,7 @@ jobs:
         with:
           python-version: 3.11
 
-      - name: Install dependencies
+      - name: Install dependencies and run OpenAPI Schema Generator
         working-directory: Backend/
         run: |
           python -m venv venv
@@ -30,7 +30,7 @@ jobs:
           pip install -r requirements.txt
           python -m app.tools.generate_openapi
         env:
-            MONGO_URI : none
+            MONGO_URI : ${{ secrets.MONGO_URI }}
             SECRET_KEY_SIGN : none
             SERVERLESS_FUNCTION_URL : none
             ARCH : BLOB

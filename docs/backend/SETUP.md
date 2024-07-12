@@ -14,7 +14,12 @@ In this section we will cover:
 cd Backend
 ```
 
-### 2. Rename `.env.local` to `.env` for development or create the enviroment file in root path with the following data. More on enviroments [here](Enviroment.md). A development-ready `.env` file is also provided in the document.
+### 2. Rename `.env.local` to `.env` for development or create an enviroment file in root path
+
+* More on enviroments [here](Enviroment.md). 
+* A development-ready `.env` file is also provided in the document.
+
+The enviroment variables are the following:
 
 ```
 * MONGO_URI= uri for connecting into a MongoDB database ( mongodb://root:root@localhost:27017/ )
@@ -27,7 +32,7 @@ cd Backend
 
 ### 3. Install the virtual enviroment and dependencies
 
-**Windows**
+🪟 **Windows**
 ```
 python -m venv venv;
 venv/Scripts/activate;
@@ -37,7 +42,7 @@ pip install -r requirements-test.txt;
 
 ```
 
-**Linux**
+🐧 **Linux**
 ```
 python3.11 -m venv venv &&
 source venv/bin/activate &&

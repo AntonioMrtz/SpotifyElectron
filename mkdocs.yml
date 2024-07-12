@@ -20,6 +20,7 @@ nav:
       - Linting & Formatting: backend/Linting-&-Formatting.md
       - Testing: backend/Testing.md
       - Authentication & Login: backend/Auth-Login.md
+      - Generate OpenAPI Schema: backend/OpenAPI.md
       - FAQ: backend/FAQ.md
   - Frontend:
       - Set up: frontend/SETUP.md

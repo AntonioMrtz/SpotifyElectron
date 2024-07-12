@@ -34,7 +34,7 @@ search_controller_logger = SpotifyElectronLogger(LOGGING_SEARCH_CONTROLLER).getL
 
 
 @router.get("/")
-def get_search_name(
+async def get_search_name(
     name: str,
     token: Annotated[TokenData | None, Depends(JWTBearer())],
 ) -> Response:
@@ -45,7 +45,7 @@ def get_search_name(
         name (str): name to match
     """
     try:
-        items = search_service.search_by_name(name=name)
+        items = await search_service.search_by_name(name=name)
         items_json = json_converter_utils.get_json_from_model(items)
 
         return Response(items_json, media_type="application/json", status_code=HTTP_200_OK)

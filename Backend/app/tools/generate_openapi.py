@@ -10,7 +10,7 @@ import asyncio
 import json
 import os
 
-from ..__main__ import app, lifespan_handler
+from app.__main__ import app, lifespan_handler
 
 OPENAPI_SCHEMA_OUTPUT_FOLDER = "../Electron/src/swagger/"
 OPENAPI_SCHEMA_OUTPUT_FILE = f"{OPENAPI_SCHEMA_OUTPUT_FOLDER}openapi.json"

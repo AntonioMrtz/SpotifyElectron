@@ -37,7 +37,11 @@ amout_items_per_data_size: dict[DataSize | str, int] = {
 
 
 async def generate_mock_data(size: str) -> None:
-    """TODO"""
+    """Generates mock data
+
+    Args:
+        size (str): the size of the data to generate. Check `DataSize`
+    """
     amout_items = amout_items_per_data_size.get(
         size, amout_items_per_data_size[DataSize.SMALL_MOCK_DATA_COMMAND]
     )

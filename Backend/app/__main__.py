@@ -66,8 +66,8 @@ async def lifespan_handler(app: FastAPI):
 
 app = FastAPI(
     title="SpotifyElectronAPI",
-    description="API created with FastAPI Python to serve \
-        as backend for Spotify Electron music streaming Desktop App",
+    description="API created with FastAPI Python to serve\
+          as backend for Spotify Electron music streaming Desktop App",
     version="1.0.0",
     lifespan=lifespan_handler,
 )

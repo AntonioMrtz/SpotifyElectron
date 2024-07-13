@@ -21,7 +21,7 @@ jobs:
         env:
           AGENT_TOOLSDIRECTORY: /opt/hostedtoolcache
 
-      - name: Install dependencies and run style check
+      - name: Install dependencies and run Black style check
         working-directory: Backend/
         run: |
           python -m venv venv

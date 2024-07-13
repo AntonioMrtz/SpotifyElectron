@@ -5,8 +5,8 @@ from app.__main__ import app
 client = TestClient(app)
 
 
-def create_playlist(name: str, descripcion: str, foto: str, headers: dict):
-    url = f"/playlists/?name={name}&photo={foto}&description={descripcion}"
+def create_playlist(name: str, descripcion: str, photo: str, headers: dict):
+    url = f"/playlists/?name={name}&photo={photo}&description={descripcion}"
 
     payload = []
 
@@ -24,13 +24,13 @@ def get_playlists(song_names: str, headers: dict):
 
 
 def update_playlist(
-    name: str, descripcion: str, foto: str, headers: dict, nuevo_nombre: str = ""
+    name: str, descripcion: str, photo: str, headers: dict, nuevo_nombre: str = ""
 ):
     if nuevo_nombre == "":
-        url = f"/playlists/{name}/?photo={foto}&description={descripcion}"
+        url = f"/playlists/{name}/?photo={photo}&description={descripcion}"
 
     else:
-        url = f"/playlists/{name}/?photo={foto}&description={descripcion}&new_name={nuevo_nombre}"  # noqa: E501
+        url = f"/playlists/{name}/?photo={photo}&description={descripcion}&new_name={nuevo_nombre}"  # noqa: E501
 
     payload = []
 

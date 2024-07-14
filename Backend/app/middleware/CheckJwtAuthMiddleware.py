@@ -1,5 +1,8 @@
 """Middleware for authenticate incoming HTTP Requests using JWT Token"""
 
+from collections.abc import Callable
+from typing import Any
+
 from fastapi import Request, Response
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.status import HTTP_403_FORBIDDEN
@@ -60,7 +63,7 @@ class CheckJwtAuthMiddleware(BaseHTTPMiddleware):
             and request.url.path in self.bypass_urls[request.method]
         )
 
-    async def dispatch(self, request: Request, call_next):
+    async def dispatch(self, request: Request, call_next: Callable[[Any], Any]):
         """Manages the incoming HTTP request and decides wheter or not it has to be blocked
 
         Args:
@@ -85,7 +88,9 @@ class CheckJwtAuthMiddleware(BaseHTTPMiddleware):
                 status_code=HTTP_403_FORBIDDEN,
             )
 
-    async def _handle_jwt_validation(self, jwt: str, request: Request, call_next) -> Response:
+    async def _handle_jwt_validation(
+        self, jwt: str, request: Request, call_next: Callable[[Any], Any]
+    ) -> Response:
         """Handles JWT validation, sends HTTP_403_FORBIDDEN if jwt is not valid or\
             continues the workflow
 

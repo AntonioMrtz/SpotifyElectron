@@ -3,6 +3,7 @@ Song schema for domain model
 """
 
 from dataclasses import dataclass
+from typing import Any
 
 from gridfs.grid_file import GridOut
 
@@ -39,7 +40,7 @@ class SongDTO(BaseSongDTO):
         return "SongDAO(file=<Base64 encoded data>)"
 
 
-def get_song_dao_from_document(document: dict, song_data: GridOut) -> SongDAO:
+def get_song_dao_from_document(document: dict[str, Any], song_data: GridOut) -> SongDAO:
     """Get SongDAO from document
 
     Args:

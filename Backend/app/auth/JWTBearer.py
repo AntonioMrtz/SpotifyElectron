@@ -1,5 +1,7 @@
 """JWT Token authentication and injection for endpoints"""
 
+from typing import Any
+
 from fastapi import Request
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
@@ -62,7 +64,9 @@ class JWTBearer(HTTPBearer):
         else:
             return jwt_token_data
 
-    def _get_authorization_bearer_from_headers(self, headers: list[tuple]) -> str | None:
+    def _get_authorization_bearer_from_headers(
+        self, headers: list[tuple[bytes, Any]]
+    ) -> str | None:
         """Get authorization bearer value from HTTP header 'authorization'
 
         Args:

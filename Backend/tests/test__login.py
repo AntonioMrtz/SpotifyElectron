@@ -14,7 +14,7 @@ from tests.test_API.api_test_user import create_user, delete_user
 
 
 @fixture(scope="module", autouse=True)
-def set_up(trigger_app_start):
+def set_up(trigger_app_startup):
     pass
 
 

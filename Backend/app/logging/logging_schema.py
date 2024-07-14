@@ -61,7 +61,7 @@ class SpotifyElectronLogger:
 
     _log_properties_manager = LogPropertiesManager()
 
-    def __init__(self, logger_name, log_file=None):
+    def __init__(self, logger_name):
         # borg pattern shared stated
         self.log_properties_manager = SpotifyElectronLogger._log_properties_manager
 

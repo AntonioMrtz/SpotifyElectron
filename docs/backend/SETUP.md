@@ -16,7 +16,7 @@ cd Backend
 
 ### 2. Rename `.env.local` to `.env` for development or create an enviroment file in root path
 
-* More on enviroments [here](Enviroment.md). 
+* More on enviroments [here](Enviroment.md).
 * A development-ready `.env` file is also provided in the document.
 
 The enviroment variables are the following:
@@ -50,8 +50,7 @@ pip install -r requirements.txt &&
 pip install -r requirements-dev.txt &&
 pip install -r requirements-test.txt
 ```
-There's also a script `install-all-requirements.sh` that creates a virtual enviroment and install all dependencies included.
-Just make sure to activate the virtual enviroment after running the script.
+There's included a script `install-all-requirements.sh` that install all dependencies from a given directory in an already create virtual enviroment (Folder has to be named `venv`). Works both for Windows and Linux.
 
 
 ### 4. Run the app in hot reload debug mode, launcht the provided vscode script or run:

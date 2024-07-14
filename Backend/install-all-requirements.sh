@@ -32,7 +32,7 @@ if [ -f "source venv/bin/activate" ]; then
 elif [ -f "venv/Scripts/activate" ]; then  # For Windows
     source venv/Scripts/activate
 else
-    echo "Failed to activate virtual environment."
+    echo "Failed to activate virtual environment. Create an empty virtual enviroment named venv."
     exit 1
 fi
 

@@ -74,20 +74,33 @@ async def generate_mock_data(size: str) -> None:
 
 def print_help():
     """Prints script usage"""
-    print("help")  # TODO
+    print(
+        "----------------------------\n"
+        "Commands\n\n"
+        "help: print script usage\n"
+        "small|medium|large: the size of the mock data\n"
+        "----------------------------\n"
+    )
 
 
-if __name__ == "__main__":
-    if sys.argv == 0:
-        print("Invalid options. Use --help")
+def main() -> None:
+    """Handles the script's command-line interface."""
+    if len(sys.argv) <= 1:
+        print("Invalid options. Use help command")
+        return
 
     command = sys.argv[1]
 
     if command == HELP_COMMAND:
         print_help()
+        return
 
-    elif command in DataSize.__members__.values():
+    if command in DataSize.__members__.values():
         asyncio.run(generate_mock_data(command))
+        return
 
-    else:
-        print("Invalid command. Use --help")
+    print("Invalid command. Use --help")
+
+
+if __name__ == "__main__":
+    main()

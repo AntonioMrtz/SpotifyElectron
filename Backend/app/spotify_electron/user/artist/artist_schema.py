@@ -3,6 +3,7 @@ Artist schema for User domain model
 """
 
 from dataclasses import dataclass
+from typing import Any
 
 from app.spotify_electron.user.user.user_schema import UserDAO, UserDTO
 
@@ -21,7 +22,7 @@ class ArtistDTO(UserDTO):
     uploaded_songs: list[str]
 
 
-def get_artist_dao_from_document(document: dict) -> ArtistDAO:
+def get_artist_dao_from_document(document: dict[str, Any]) -> ArtistDAO:
     """Get ArtistDAO from document
 
     Args:

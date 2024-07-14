@@ -12,8 +12,6 @@ from app.exceptions.base_exceptions_schema import SpotifyElectronException
 from app.logging.logging_constants import LOGGING_PROPERTIES_MESSAGES_MANAGER
 from app.logging.logging_schema import SpotifyElectronLogger
 
-PROPERTIES_INI_FILE_PATH = "../resources/messages.ini"
-
 properties_messages_manager_logger = SpotifyElectronLogger(
     LOGGING_PROPERTIES_MESSAGES_MANAGER
 ).getLogger()
@@ -40,7 +38,7 @@ class _PropertiesMessagesManager:
     def __iter__(self):
         pass
 
-    def __getattr__(self, name) -> None:
+    def __getattr__(self, name: str) -> None:
         # Check if attribute exists with original name
         try:
             return object.__getattribute__(self, name)

@@ -3,6 +3,7 @@ Song schema for domain model
 """
 
 from dataclasses import dataclass
+from typing import Any
 
 from app.exceptions.base_exceptions_schema import SpotifyElectronException
 from app.spotify_electron.genre.genre_schema import Genre
@@ -22,7 +23,7 @@ class SongDTO(BaseSongDTO):
     url: str
 
 
-def get_song_dao_from_document(document: dict) -> SongDAO:
+def get_song_dao_from_document(document: dict[str, Any]) -> SongDAO:
     """Get SongDAO from document
 
     Args:

@@ -8,12 +8,15 @@ improve your coding skills, and enhance your communication abilities.
 
 ## 🖐️ Steps to Contribute
 
-1. Select an [issue](https://github.com/AntonioMrtz/SpotifyElectron/issues) and ask to work on it on the comment section.
+1. Select an [issue](https://github.com/AntonioMrtz/SpotifyElectron/issues) and **ask to work on it by leaving a comment in the same link (Not Trello)**.
 2. Create a new branch with the feature youre implementing using the [branch naming convention](Git-Convention.md).
 3. Push your changes to the new branch using the [commit naming convention](Git-Convention.md).
 4. Add tests for every functionality changed or added.
 5. Go to your branch in Github, then select Pull Request and fill the fields indicated in the template. Remember to rename the Pull Request using our [convention](Git-Convention.md).
 
+_It's important to leave a comment about working on an issue so the maintainer can add you as assignee and avoid two people working on the same issue_.
+
+_Trello links are used to sync Github issues with board tasks, we're not accepting new members due to free tier limitation until you have contributed at least twice_.
 ## 🙍‍♂️ Contributors list
 
 Once you contribute to the project, your name and GitHub profile will be added into the [CONTRIBUTORS list](CONTRIBUTORS.md) as recognition for your work and for thanking you.

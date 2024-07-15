@@ -12,7 +12,7 @@ from app.spotify_electron.song.base_song_schema import (
 )
 
 
-def validate_song_exists(song: BaseSongDAO | None) -> None:  
+def validate_song_exists(song: BaseSongDAO | None) -> None:
     """Raises an exception if song doesnt exists
 
     Args:

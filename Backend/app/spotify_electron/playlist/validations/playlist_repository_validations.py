@@ -29,7 +29,7 @@ def validate_playlist_exists(playlist: PlaylistDAO | None) -> None:
         raise PlaylistNotFoundException
 
 
-def validate_playlist_delete_count(result: DeleteResult) -> None: 
+def validate_playlist_delete_count(result: DeleteResult) -> None:
     """Raises an exception if playlist deletion count was 0
 
     Args:
@@ -45,7 +45,7 @@ def validate_playlist_delete_count(result: DeleteResult) -> None:
         raise PlaylistDeleteException
 
 
-def validate_playlist_update(result: UpdateResult) -> None: 
+def validate_playlist_update(result: UpdateResult) -> None:
     """Raises an exception if playlist update was not done
 
     Args:

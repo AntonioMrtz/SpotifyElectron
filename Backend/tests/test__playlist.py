@@ -9,28 +9,28 @@ from starlette.status import (
     HTTP_404_NOT_FOUND,
     HTTP_405_METHOD_NOT_ALLOWED,
 )
-from test_API.api_test_artist import create_artist
-from test_API.api_test_playlist import (
+
+from tests.test_API.api_all_users import patch_playlist_saved
+from tests.test_API.api_test_artist import create_artist
+from tests.test_API.api_test_playlist import (
     create_playlist,
     delete_playlist,
     get_playlist,
     get_playlists,
     update_playlist,
 )
-from test_API.api_test_user import create_user, delete_user
-from test_API.api_token import get_user_jwt_header
-
-from tests.test_API.api_all_users import patch_playlist_saved
+from tests.test_API.api_test_user import create_user, delete_user
+from tests.test_API.api_token import get_user_jwt_header
 
 
 @fixture(scope="module", autouse=True)
-def set_up(trigger_app_start):
+def set_up(trigger_app_startup):
     pass
 
 
 def test_get_playlist_correct():
     name = "8232392323623823723"
-    foto = "https://foto"
+    photo = "https://photo"
     descripcion = "hola"
     owner = "usuarioprueba834783478923489734298"
     password = "password"
@@ -40,20 +40,20 @@ def test_get_playlist_correct():
         datetime.now().strftime("%Y-%m-%dT%H:%M:%S"), formatting
     )
 
-    res_create_artist = create_artist(owner, foto, password)
+    res_create_artist = create_artist(owner, photo, password)
     assert res_create_artist.status_code == HTTP_201_CREATED
 
     jwt_headers = get_user_jwt_header(username=owner, password=password)
 
     res_create_playlist = create_playlist(
-        name=name, descripcion=descripcion, foto=foto, headers=jwt_headers
+        name=name, descripcion=descripcion, photo=photo, headers=jwt_headers
     )
     assert res_create_playlist.status_code == HTTP_201_CREATED
 
     res_get_playlist = get_playlist(name=name, headers=jwt_headers)
     assert res_get_playlist.status_code == HTTP_200_OK
     assert res_get_playlist.json()["name"] == name
-    assert res_get_playlist.json()["photo"] == foto
+    assert res_get_playlist.json()["photo"] == photo
     assert res_get_playlist.json()["description"] == descripcion
     assert res_get_playlist.json()["owner"] == owner
 
@@ -76,11 +76,11 @@ def test_get_playlist_correct():
 def test_get_playlist_not_found():
     name = "8232392323623823723"
 
-    foto = "https://foto"
+    photo = "https://photo"
     owner = "usuarioprueba834783478923489734298"
     password = "password"
 
-    res_create_artist = create_artist(owner, foto, password)
+    res_create_artist = create_artist(owner, photo, password)
     assert res_create_artist.status_code == HTTP_201_CREATED
 
     jwt_headers = get_user_jwt_header(username=owner, password=password)
@@ -94,18 +94,18 @@ def test_get_playlist_not_found():
 
 def test_post_playlist_correct():
     name = "8232392323623823723"
-    foto = "https://foto"
+    photo = "https://photo"
     descripcion = "hola"
     owner = "usuarioprueba834783478923489734298"
     password = "password"
 
-    res_create_artist = create_artist(owner, foto, password)
+    res_create_artist = create_artist(owner, photo, password)
     assert res_create_artist.status_code == HTTP_201_CREATED
 
     jwt_headers = get_user_jwt_header(username=owner, password=password)
 
     res_create_playlist = create_playlist(
-        name=name, descripcion=descripcion, foto=foto, headers=jwt_headers
+        name=name, descripcion=descripcion, photo=photo, headers=jwt_headers
     )
     assert res_create_playlist.status_code == HTTP_201_CREATED
 
@@ -118,18 +118,18 @@ def test_post_playlist_correct():
 
 def test_delete_playlist_correct():
     name = "8232392323623823723"
-    foto = "https://foto"
+    photo = "https://photo"
     descripcion = "hola"
     owner = "usuarioprueba834783478923489734298"
     password = "password"
 
-    res_create_artist = create_artist(owner, foto, password)
+    res_create_artist = create_artist(owner, photo, password)
     assert res_create_artist.status_code == HTTP_201_CREATED
 
     jwt_headers = get_user_jwt_header(username=owner, password=password)
 
     res_create_playlist = create_playlist(
-        name=name, descripcion=descripcion, foto=foto, headers=jwt_headers
+        name=name, descripcion=descripcion, photo=photo, headers=jwt_headers
     )
     assert res_create_playlist.status_code == HTTP_201_CREATED
 
@@ -156,25 +156,25 @@ def test_delete_playlist_invalid_name():
 
 def test_update_playlist_correct():
     name = "8232392323623823723"
-    foto = "foto"
+    photo = "photo"
     descripcion = "descripcion"
     owner = "usuarioprueba834783478923489734298"
     password = "password"
 
-    res_create_artist = create_artist(owner, foto, password)
+    res_create_artist = create_artist(owner, photo, password)
     assert res_create_artist.status_code == HTTP_201_CREATED
 
     jwt_headers = get_user_jwt_header(username=owner, password=password)
 
     res_create_playlist = create_playlist(
-        name=name, descripcion=descripcion, foto=foto, headers=jwt_headers
+        name=name, descripcion=descripcion, photo=photo, headers=jwt_headers
     )
     assert res_create_playlist.status_code == HTTP_201_CREATED
 
     new_description = "nuevadescripcion"
 
     res_update_playlist = update_playlist(
-        name=name, foto=foto, descripcion=new_description, headers=jwt_headers
+        name=name, photo=photo, descripcion=new_description, headers=jwt_headers
     )
     assert res_update_playlist.status_code == HTTP_204_NO_CONTENT
 
@@ -191,24 +191,24 @@ def test_update_playlist_correct():
 
 def test_update_playlist_new_name_check_cascade_update_playlists_users_and_artists():
     name = "8232392323623823723"
-    foto = "foto"
+    photo = "photo"
     descripcion = "descripcion"
     owner = "usuarioprueba834783478923489734298"
     password = "password"
 
     user_name = "user_name"
 
-    res_create_artist = create_artist(owner, foto, password)
+    res_create_artist = create_artist(owner, photo, password)
     assert res_create_artist.status_code == HTTP_201_CREATED
 
-    res_create_user = create_user(user_name, foto, password)
+    res_create_user = create_user(user_name, photo, password)
     assert res_create_user.status_code == HTTP_201_CREATED
 
     jwt_artist_headers = get_user_jwt_header(username=owner, password=password)
     user_artist_headers = get_user_jwt_header(username=user_name, password=password)
 
     res_create_playlist = create_playlist(
-        name=name, descripcion=descripcion, foto=foto, headers=jwt_artist_headers
+        name=name, descripcion=descripcion, photo=photo, headers=jwt_artist_headers
     )
     assert res_create_playlist.status_code == HTTP_201_CREATED
 
@@ -225,7 +225,7 @@ def test_update_playlist_new_name_check_cascade_update_playlists_users_and_artis
 
     res_update_playlist = update_playlist(
         name=name,
-        foto=foto,
+        photo=photo,
         descripcion=new_description,
         nuevo_nombre=new_name,
         headers=jwt_artist_headers,
@@ -249,18 +249,18 @@ def test_update_playlist_new_name_check_cascade_update_playlists_users_and_artis
 
 def test_update_playlist_correct_new_name():
     name = "8232392323623823723"
-    foto = "foto"
+    photo = "photo"
     descripcion = "descripcion"
     owner = "usuarioprueba834783478923489734298"
     password = "password"
 
-    res_create_artist = create_artist(owner, foto, password)
+    res_create_artist = create_artist(owner, photo, password)
     assert res_create_artist.status_code == HTTP_201_CREATED
 
     jwt_headers = get_user_jwt_header(username=owner, password=password)
 
     res_create_playlist = create_playlist(
-        name=name, descripcion=descripcion, foto=foto, headers=jwt_headers
+        name=name, descripcion=descripcion, photo=photo, headers=jwt_headers
     )
     assert res_create_playlist.status_code == HTTP_201_CREATED
 
@@ -269,7 +269,7 @@ def test_update_playlist_correct_new_name():
 
     res_update_playlist = update_playlist(
         name=name,
-        foto=foto,
+        photo=photo,
         descripcion=new_description,
         nuevo_nombre=new_name,
         headers=jwt_headers,
@@ -288,27 +288,27 @@ def test_update_playlist_correct_new_name():
 
 def test_get_playlists():
     name = "8232392323623823723"
-    foto = "foto"
+    photo = "photo"
     descripcion = "descripcion"
     owner = "usuarioprueba834783478923489734298"
     password = "password"
 
-    res_create_artist = create_artist(owner, foto, password)
+    res_create_artist = create_artist(owner, photo, password)
     assert res_create_artist.status_code == HTTP_201_CREATED
 
     jwt_headers = get_user_jwt_header(username=owner, password=password)
 
     res_create_playlist = create_playlist(
-        name=name, descripcion=descripcion, foto=foto, headers=jwt_headers
+        name=name, descripcion=descripcion, photo=photo, headers=jwt_headers
     )
     assert res_create_playlist.status_code == HTTP_201_CREATED
 
     new_name = "82323923236238237237"
-    foto = "foto"
+    photo = "photo"
     descripcion = "descripcion"
 
     res_create_playlist = create_playlist(
-        name=new_name, descripcion=descripcion, foto=foto, headers=jwt_headers
+        name=new_name, descripcion=descripcion, photo=photo, headers=jwt_headers
     )
     assert res_create_playlist.status_code == HTTP_201_CREATED
 

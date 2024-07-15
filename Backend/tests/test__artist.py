@@ -16,19 +16,20 @@ from test_API.api_test_artist import (
     get_artist_streams,
     get_artists,
 )
-from test_API.api_test_song import create_song, delete_song, increase_song_streams
-from test_API.api_test_user import delete_user
-from test_API.api_token import get_user_jwt_header
+
+from tests.test_API.api_test_song import create_song, delete_song, increase_song_streams
+from tests.test_API.api_test_user import delete_user
+from tests.test_API.api_token import get_user_jwt_header
 
 
 @fixture(scope="module", autouse=True)
-def set_up(trigger_app_start):
+def set_up(trigger_app_startup):
     pass
 
 
 def test_get_artist_correct(clear_test_data_db):
     name = "8232392323623823723"
-    foto = "https://foto"
+    photo = "https://photo"
     password = "hola"
 
     formatting = "%Y-%m-%dT%H:%M:%S"
@@ -36,7 +37,7 @@ def test_get_artist_correct(clear_test_data_db):
         datetime.now().strftime("%Y-%m-%dT%H:%M:%S"), formatting
     )
 
-    res_create_artist = create_artist(name=name, password=password, photo=foto)
+    res_create_artist = create_artist(name=name, password=password, photo=photo)
     assert res_create_artist.status_code == HTTP_201_CREATED
 
     jwt_headers = get_user_jwt_header(username=name, password=password)
@@ -44,7 +45,7 @@ def test_get_artist_correct(clear_test_data_db):
     res_get_artist = get_artist(name=name, headers=jwt_headers)
     assert res_get_artist.status_code == HTTP_200_OK
     assert res_get_artist.json()["name"] == name
-    assert res_get_artist.json()["photo"] == foto
+    assert res_get_artist.json()["photo"] == photo
 
     try:
         fecha = res_get_artist.json()["register_date"]
@@ -68,10 +69,10 @@ def test_get_artist_not_found():
 
 def test_post_artist_correct(clear_test_data_db):
     name = "8232392323623823723"
-    foto = "https://foto"
+    photo = "https://photo"
     password = "hola"
 
-    res_create_artist = create_artist(name=name, password=password, photo=foto)
+    res_create_artist = create_artist(name=name, password=password, photo=photo)
     assert res_create_artist.status_code == HTTP_201_CREATED
 
     res_delete_artist = delete_user(name=name)
@@ -80,10 +81,10 @@ def test_post_artist_correct(clear_test_data_db):
 
 def test_delete_artist_correct(clear_test_data_db):
     name = "8232392323623823723"
-    foto = "https://foto"
+    photo = "https://photo"
     password = "hola"
 
-    res_create_artist = create_artist(name=name, password=password, photo=foto)
+    res_create_artist = create_artist(name=name, password=password, photo=photo)
     assert res_create_artist.status_code == HTTP_201_CREATED
 
     res_delete_artist = delete_user(name=name)
@@ -106,10 +107,10 @@ def test_delete_artist_invalid_name(clear_test_data_db):
 
 def test_get_artists_correct():
     name = "8232392323623823723"
-    foto = "https://foto"
+    photo = "https://photo"
     password = "hola"
 
-    res_create_artist = create_artist(name=name, password=password, photo=foto)
+    res_create_artist = create_artist(name=name, password=password, photo=photo)
     assert res_create_artist.status_code == HTTP_201_CREATED
 
     jwt_headers = get_user_jwt_header(username=name, password=password)
@@ -126,11 +127,11 @@ def test_get_total_streams_artist_correct(clear_test_data_db):
     song_name_2 = "82323923236238237239892"
     file_path = "tests/assets/song.mp3"
     artista = "8232392323623823723"
-    genero = "Pop"
-    foto = "https://foto"
+    genre = "Pop"
+    photo = "https://photo"
     password = "hola"
 
-    res_create_artist = create_artist(name=artista, password=password, photo=foto)
+    res_create_artist = create_artist(name=artista, password=password, photo=photo)
     assert res_create_artist.status_code == HTTP_201_CREATED
 
     jwt_headers = get_user_jwt_header(username=artista, password=password)
@@ -138,8 +139,8 @@ def test_get_total_streams_artist_correct(clear_test_data_db):
     res_create_song = create_song(
         name=song_name,
         file_path=file_path,
-        genre=genero,
-        photo=foto,
+        genre=genre,
+        photo=photo,
         headers=jwt_headers,
     )
     assert res_create_song.status_code == HTTP_201_CREATED
@@ -147,8 +148,8 @@ def test_get_total_streams_artist_correct(clear_test_data_db):
     res_create_song = create_song(
         name=song_name_2,
         file_path=file_path,
-        genre=genero,
-        photo=foto,
+        genre=genre,
+        photo=photo,
         headers=jwt_headers,
     )
     assert res_create_song.status_code == HTTP_201_CREATED

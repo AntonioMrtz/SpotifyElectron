@@ -301,7 +301,7 @@ def get_artists(user_names: list[str]) -> list[ArtistDTO]:
         list[ArtistDTO]: the selected artists
     """
     try:
-        artists = []
+        artists: list[ArtistDTO] = []
         for user_name in user_names:
             artists.append(get_artist(user_name))
 

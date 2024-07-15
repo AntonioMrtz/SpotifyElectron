@@ -142,7 +142,7 @@ def get_users(user_names: list[str]) -> list[UserDTO]:
         list[User]: the selected users
     """
     try:
-        users: list = []
+        users: list[UserDTO] = []
 
         for user_name in user_names:
             users.append(get_user(user_name))

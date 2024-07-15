@@ -5,7 +5,6 @@ FastAPI App entrypoint
 - Load middlewares
 - Creates the app object
 - Configure Uvicorn server
-
 """
 
 from contextlib import asynccontextmanager
@@ -65,8 +64,8 @@ async def lifespan_handler(app: FastAPI):
 
 
 app = FastAPI(
-    title="SpotifyElectronAPI",
-    description="API created with FastAPI Python to serve\
+    title="Spotify Electron API",
+    description="API created with Python FastAPI to serve\
           as backend for Spotify Electron music streaming Desktop App",
     version="1.0.0",
     lifespan=lifespan_handler,

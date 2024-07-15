@@ -8,7 +8,7 @@ client = TestClient(app)
 
 
 @fixture(scope="module", autouse=True)
-def set_up(trigger_app_start):
+def set_up(trigger_app_startup):
     pass
 
 

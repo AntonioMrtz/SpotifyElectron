@@ -1,15 +1,16 @@
 from fastapi.testclient import TestClient
+from httpx import Response
 
 from app.__main__ import app
 
 client = TestClient(app)
 
 
-def get_artist(name: str, headers: dict):
+def get_artist(name: str, headers: dict[str, str]) -> Response:
     return client.get(f"/artists/{name}", headers=headers)
 
 
-def create_artist(name: str, photo: str, password: str):
+def create_artist(name: str, photo: str, password: str) -> Response:
     url = f"/artists/?name={name}&photo={photo}&password={password}"
 
     return client.post(url)
@@ -22,8 +23,8 @@ def update_artist(  # noqa: PLR0913
     saved_playlists: list[str],
     playback_history: list[str],
     uploaded_songs: list[str],
-    headers: dict,
-):
+    headers: dict[str, str],
+) -> Response:
     url = f"/artists/{name}/?photo={photo}"
 
     payload = {
@@ -38,9 +39,9 @@ def update_artist(  # noqa: PLR0913
     return client.put(url, json=payload, headers={**file_type_header, **headers})
 
 
-def get_artists(headers: dict):
+def get_artists(headers: dict[str, str]) -> Response:
     return client.get("/artists/", headers=headers)
 
 
-def get_artist_streams(name: str, headers: dict):
+def get_artist_streams(name: str, headers: dict[str, str]) -> Response:
     return client.get(f"/artists/{name}/streams", headers=headers)

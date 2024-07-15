@@ -20,7 +20,6 @@ nav:
       - Linting & Formatting: backend/Linting-&-Formatting.md
       - Testing: backend/Testing.md
       - Authentication & Login: backend/Auth-Login.md
-      - Generate OpenAPI Schema: backend/OpenAPI.md
       - FAQ: backend/FAQ.md
   - Frontend:
       - Set up: frontend/SETUP.md
@@ -29,6 +28,9 @@ nav:
       - Testing: frontend/Testing.md
       - Package app: frontend/Package-app.md
       - FAQ: frontend/FAQ.md
+  - Utils:
+    - Generate OpenAPI Schema: utils/Generate-OpenAPI.md
+    - Generate Mock data: utils/Generate-Mock-Data.md
   - Code of conduct: CODE_OF_CONDUCT.md
   - Contributors: CONTRIBUTORS.md
 

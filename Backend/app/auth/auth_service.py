@@ -47,7 +47,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="users/whoami/")
 auth_service_logger = SpotifyElectronLogger(LOGGING_AUTH_SERVICE).getLogger()
 
 
-def create_access_token(data: dict, expires_delta: timedelta | None = None) -> str:
+def create_access_token(data: dict[str, str], expires_delta: timedelta | None = None) -> str:
     """Create a jwt token from data with a expire date
 
     Args:
@@ -321,7 +321,7 @@ def validate_jwt_user_matches_user(token: TokenData, user_name: str):
         raise UserUnauthorizedException
 
 
-def validate_token_is_expired(token: dict) -> None:
+def validate_token_is_expired(token: dict[str, Any]) -> None:
     """Checks if token is expired comparing current date with expiration date
 
     Args:

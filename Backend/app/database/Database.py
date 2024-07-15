@@ -80,7 +80,7 @@ class Database(metaclass=Singleton):
 
         return MongoClient
 
-    def _check_ping_result(self, ping_result: dict):
+    def _check_ping_result(self, ping_result: dict[str, Any]):
         """Checks if ping result is OK
 
         Args:

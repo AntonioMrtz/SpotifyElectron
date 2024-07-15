@@ -9,23 +9,23 @@ from starlette.status import (
     HTTP_404_NOT_FOUND,
     HTTP_405_METHOD_NOT_ALLOWED,
 )
-from test_API.api_test_user import create_user, delete_user, get_user
-from test_API.api_token import get_user_jwt_header
 
 import app.auth.auth_service as auth_service
 import app.spotify_electron.user.base_user_service as base_user_service
 import app.spotify_electron.user.user.user_service as user_service
 from app.auth.auth_schema import VerifyPasswordException
+from tests.test_API.api_test_user import create_user, delete_user, get_user
+from tests.test_API.api_token import get_user_jwt_header
 
 
 @fixture(scope="module", autouse=True)
-def set_up(trigger_app_start):
+def set_up(trigger_app_startup):
     pass
 
 
 def test_get_user_correct(clear_test_data_db):
     name = "8232392323623823723"
-    foto = "https://foto"
+    photo = "https://photo"
     password = "hola"
 
     formatting = "%Y-%m-%dT%H:%M:%S"
@@ -33,7 +33,7 @@ def test_get_user_correct(clear_test_data_db):
         datetime.now().strftime("%Y-%m-%dT%H:%M:%S"), formatting
     )
 
-    res_create_user = create_user(name=name, password=password, photo=foto)
+    res_create_user = create_user(name=name, password=password, photo=photo)
     assert res_create_user.status_code == HTTP_201_CREATED
 
     jwt_headers = get_user_jwt_header(username=name, password=password)
@@ -41,7 +41,7 @@ def test_get_user_correct(clear_test_data_db):
     res_get_user = get_user(name=name, headers=jwt_headers)
     assert res_get_user.status_code == HTTP_200_OK
     assert res_get_user.json()["name"] == name
-    assert res_get_user.json()["photo"] == foto
+    assert res_get_user.json()["photo"] == photo
 
     try:
         fecha = res_get_user.json()["register_date"]
@@ -65,10 +65,10 @@ def test_get_user_not_found():
 
 def test_post_user_correct(clear_test_data_db):
     name = "8232392323623823723"
-    foto = "https://foto"
+    photo = "https://photo"
     password = "hola"
 
-    res_create_user = create_user(name=name, password=password, photo=foto)
+    res_create_user = create_user(name=name, password=password, photo=photo)
     assert res_create_user.status_code == HTTP_201_CREATED
 
     res_delete_user = delete_user(name=name)
@@ -77,10 +77,10 @@ def test_post_user_correct(clear_test_data_db):
 
 def test_delete_user_correct(clear_test_data_db):
     name = "8232392323623823723"
-    foto = "https://foto"
+    photo = "https://photo"
     password = "hola"
 
-    res_create_user = create_user(name=name, password=password, photo=foto)
+    res_create_user = create_user(name=name, password=password, photo=photo)
     assert res_create_user.status_code == HTTP_201_CREATED
 
     res_delete_user = delete_user(name=name)
@@ -103,9 +103,9 @@ def test_delete_user_invalid_name(clear_test_data_db):
 
 def test_check_encrypted_password_correct():
     name = "8232392323623823723"
-    foto = "https://foto"
+    photo = "https://photo"
     password = "hola"
-    user_service.create_user(name, foto, password)
+    user_service.create_user(name, photo, password)
     generated_password = base_user_service.get_user_password(name)
 
     auth_service.verify_password(password, generated_password)
@@ -114,9 +114,9 @@ def test_check_encrypted_password_correct():
 
 def test_check_encrypted_password_different():
     name = "8232392323623823723"
-    foto = "https://foto"
+    photo = "https://photo"
     password = "hola"
-    user_service.create_user(name, foto, password)
+    user_service.create_user(name, photo, password)
     password = "hola2"
     generated_password = base_user_service.get_user_password(name)
     with pytest.raises(VerifyPasswordException):

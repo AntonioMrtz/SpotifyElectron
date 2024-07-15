@@ -6,6 +6,7 @@ the song resource.
 
 from abc import ABC
 from dataclasses import dataclass
+from typing import Any
 
 from app.exceptions.base_exceptions_schema import SpotifyElectronException
 from app.spotify_electron.genre.genre_schema import Genre
@@ -45,7 +46,7 @@ class SongMetadataDTO(BaseSongDTO):
     """Represents Song metadata in the endpoints transfering layer"""
 
 
-def get_song_metadata_dao_from_document(document: dict) -> SongMetadataDAO:
+def get_song_metadata_dao_from_document(document: dict[str, Any]) -> SongMetadataDAO:
     """Get SongMetadataDAO from document
 
     Args:

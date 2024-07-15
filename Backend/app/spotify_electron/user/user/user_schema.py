@@ -4,6 +4,7 @@ Song schema for User domain model
 
 from dataclasses import dataclass
 from enum import Enum
+from typing import Any
 
 from app.exceptions.base_exceptions_schema import SpotifyElectronException
 
@@ -40,7 +41,7 @@ class UserType(Enum):
     USER = "user"
 
 
-def get_user_dao_from_document(document: dict) -> UserDAO:
+def get_user_dao_from_document(document: dict[str, Any]) -> UserDAO:
     """Get UserDAO from document
 
     Args:
@@ -92,14 +93,7 @@ class UserRepositoryException(SpotifyElectronException):
         super().__init__("Error accessing User REPOSITORY")
 
 
-class UserException(Exception):
-    """Base exception for User-related errors"""
-
-    def __init__(self, message):
-        super().__init__(message)
-
-
-class UserNotFoundException(UserException):
+class UserNotFoundException(SpotifyElectronException):
     """Exception raised when a User is not found"""
 
     def __init__(self):
@@ -115,49 +109,49 @@ class UserBadNameException(SpotifyElectronException):
         super().__init__(self.ERROR)
 
 
-class UserAlreadyExistsException(UserException):
+class UserAlreadyExistsException(SpotifyElectronException):
     """Exception raised when a User already exists"""
 
     def __init__(self):
         super().__init__("User already exists")
 
 
-class UserDeleteException(UserException):
+class UserDeleteException(SpotifyElectronException):
     """Exception raised when there is an error deleting a User"""
 
     def __init__(self):
         super().__init__("Error deleting User")
 
 
-class UserCreateException(UserException):
+class UserCreateException(SpotifyElectronException):
     """Exception raised when there is an error inserting a User"""
 
     def __init__(self):
         super().__init__("Error inserting User")
 
 
-class UserUpdateException(UserException):
+class UserUpdateException(SpotifyElectronException):
     """Exception raised when there is an error updating a User"""
 
     def __init__(self):
         super().__init__("Error updating User")
 
 
-class UserGetPasswordException(UserException):
+class UserGetPasswordException(SpotifyElectronException):
     """Exception raised when there is an error getting user password"""
 
     def __init__(self):
         super().__init__("Error getting User password")
 
 
-class UserServiceException(UserException):
+class UserServiceException(SpotifyElectronException):
     """Exception raised when there is an unexpected error in UserService"""
 
     def __init__(self):
         super().__init__("Error accessing User Service")
 
 
-class UserBadParametersException(UserException):
+class UserBadParametersException(SpotifyElectronException):
     """Exception raised when bad parameters are provided for a User"""
 
     def __init__(self):

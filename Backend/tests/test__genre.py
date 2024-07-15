@@ -1,27 +1,27 @@
 from fastapi.testclient import TestClient
 from pytest import fixture, raises
 from starlette.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_202_ACCEPTED
-from test_API.api_test_artist import create_artist
-from test_API.api_test_user import delete_user
-from test_API.api_token import get_user_jwt_header
 
 from app.__main__ import app
 from app.spotify_electron.genre.genre_schema import Genre, GenreNotValidException
+from tests.test_API.api_test_artist import create_artist
+from tests.test_API.api_test_user import delete_user
+from tests.test_API.api_token import get_user_jwt_header
 
 client = TestClient(app)
 
 
 @fixture(scope="module", autouse=True)
-def set_up(trigger_app_start):
+def set_up(trigger_app_startup):
     pass
 
 
 def test_get_genres_correct():
     artista = "artista"
-    foto = "https://foto"
+    photo = "https://photo"
     password = "hola"
 
-    res_create_artist = create_artist(name=artista, password=password, photo=foto)
+    res_create_artist = create_artist(name=artista, password=password, photo=photo)
     assert res_create_artist.status_code == HTTP_201_CREATED
 
     jwt_headers = get_user_jwt_header(username=artista, password=password)

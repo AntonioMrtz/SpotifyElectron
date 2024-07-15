@@ -13,7 +13,7 @@ from app.spotify_electron.playlist.playlist_schema import (
 )
 
 
-def handle_playlist_exists(playlist: PlaylistDAO | None) -> None:
+def validate_playlist_exists(playlist: PlaylistDAO | None) -> None:
     """Raises an exception if playlist doesnt exists
 
     Args:
@@ -29,7 +29,7 @@ def handle_playlist_exists(playlist: PlaylistDAO | None) -> None:
         raise PlaylistNotFoundException
 
 
-def handle_playlist_delete_count(result: DeleteResult) -> None:
+def validate_playlist_delete_count(result: DeleteResult) -> None:
     """Raises an exception if playlist deletion count was 0
 
     Args:
@@ -45,7 +45,7 @@ def handle_playlist_delete_count(result: DeleteResult) -> None:
         raise PlaylistDeleteException
 
 
-def handle_playlist_update(result: UpdateResult) -> None:
+def validate_playlist_update(result: UpdateResult) -> None:
     """Raises an exception if playlist update was not done
 
     Args:
@@ -58,7 +58,7 @@ def handle_playlist_update(result: UpdateResult) -> None:
         raise PlaylistUpdateException
 
 
-def handle_playlist_create(result: InsertOneResult) -> None:
+def validate_playlist_create(result: InsertOneResult) -> None:
     """Raises an exception if playlist insertion was not done
 
     Args:

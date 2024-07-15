@@ -21,8 +21,8 @@ from app.spotify_electron.song.base_song_schema import (
     SongRepositoryException,
 )
 from app.spotify_electron.song.validations.base_song_repository_validations import (
-    handle_song_create,
-    handle_song_exists,
+    validate_base_song_create,
+    validate_song_exists,
 )
 
 song_repository_logger = SpotifyElectronLogger(
@@ -46,7 +46,7 @@ def get_song(name: str) -> SongDAO:
     try:
         collection = song_collection_provider.get_song_collection()
         song = collection.find_one({"name": name})
-        handle_song_exists(song)
+        validate_song_exists(song)
         song_dao = get_song_dao_from_document(song)  # type: ignore
 
     except SongNotFoundException as exception:
@@ -90,7 +90,7 @@ def create_song(
         }
 
         result = collection.insert_one(song)
-        handle_song_create(result)
+        validate_base_song_create(result)
     except SongCreateException as exception:
         song_repository_logger.exception(f"Error inserting Song {song} in database")
         raise SongRepositoryException from exception

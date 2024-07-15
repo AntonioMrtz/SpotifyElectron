@@ -16,10 +16,10 @@ from app.spotify_electron.playlist.providers.playlist_collection_provider import
     get_playlist_collection,
 )
 from app.spotify_electron.playlist.validations.playlist_repository_validations import (
-    handle_playlist_create,
-    handle_playlist_delete_count,
-    handle_playlist_exists,
-    handle_playlist_update,
+    validate_playlist_create,
+    validate_playlist_delete_count,
+    validate_playlist_exists,
+    validate_playlist_update,
 )
 
 playlist_repository_logger = SpotifyElectronLogger(LOGGING_PLAYLIST_REPOSITORY).getLogger()
@@ -80,7 +80,7 @@ def get_playlist(
     try:
         collection = get_playlist_collection()
         playlist = collection.find_one({"name": name})
-        handle_playlist_exists(playlist)
+        validate_playlist_exists(playlist)
         playlist_dao = get_playlist_dao_from_document(playlist)  # type: ignore
 
     except PlaylistNotFoundException as exception:
@@ -130,7 +130,7 @@ def create_playlist(  # noqa: PLR0913
             "song_names": song_names,
         }
         result = collection.insert_one(playlist)
-        handle_playlist_create(result)
+        validate_playlist_create(result)
     except PlaylistCreateException as exception:
         playlist_repository_logger.exception(
             f"Error inserting Playlist {playlist} in database"
@@ -163,7 +163,7 @@ def delete_playlist(
     try:
         collection = get_playlist_collection()
         result = collection.delete_one({"name": name})
-        handle_playlist_delete_count(result)
+        validate_playlist_delete_count(result)
         playlist_repository_logger.info(f"Playlist {name} Deleted")
     except PlaylistDeleteException as exception:
         playlist_repository_logger.exception(f"Error deleting Playlist {name} from database")
@@ -303,7 +303,7 @@ def update_playlist(
                 }
             },
         )
-        handle_playlist_update(result_update)
+        validate_playlist_update(result_update)
 
     except PlaylistCreateException as exception:
         playlist_repository_logger.exception(

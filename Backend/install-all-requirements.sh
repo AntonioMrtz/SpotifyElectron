@@ -27,14 +27,17 @@ fi
 echo "Using $PYTHON_COMMAND"
 
 # Activate virtual environment
-if [ -f "source venv/bin/activate" ]; then
+if [ -f "venv/bin/activate" ]; then
+    # Unix-like systems
     source venv/bin/activate
-elif [ -f "venv/Scripts/activate" ]; then  # For Windows
-    source venv/Scripts/activate
+elif [ -f "venv/Scripts/activate" ]; then
+    # Windows
+    venv\Scripts\activate
 else
-    echo "Failed to activate virtual environment. Create an empty virtual enviroment named venv."
+    echo "Failed to activate virtual environment. Please create a virtual environment named 'venv'."
     exit 1
 fi
+
 
 pip install --upgrade pip
 

@@ -81,6 +81,8 @@ class _PropertiesManager:
         for key, value in self.config.items(config_section):
             if value == "":
                 value = None
+            if value is None:
+                properties_manager_logger.warning(f"Using None for {key} in {config_section}")
             setattr(self, key, value)
 
     def _load_architecture(self):
@@ -91,7 +93,7 @@ class _PropertiesManager:
         if not architecture_type:
             architecture_type = DEFAULT_ARCHITECTURE
             self.__setattr__(ARCHITECTURE_ENV_NAME, DEFAULT_ARCHITECTURE)
-            properties_manager_logger.info(
+            properties_manager_logger.warning(
                 f"No architecture type selected, using {DEFAULT_ARCHITECTURE}"
             )
         self.__setattr__(ARCHITECTURE_ENV_NAME, architecture_type)

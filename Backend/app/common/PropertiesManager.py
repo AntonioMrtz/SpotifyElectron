@@ -81,8 +81,6 @@ class _PropertiesManager:
         for key, value in self.config.items(config_section):
             if value == "":
                 value = None
-            if value is None:
-                properties_manager_logger.warning(f"Using None for {key} in {config_section}")
             setattr(self, key, value)
 
     def _load_architecture(self):

@@ -96,9 +96,6 @@ class _PropertiesManager:
             )
         self.__setattr__(ARCHITECTURE_ENV_NAME, architecture_type)
         properties_manager_logger.info(f"Architecture selected : {architecture_type}")
-        properties_manager_logger.info(
-            f"Running init method for architecture : {architecture_type}"
-        )
 
     def _load_env_variables(self, env_names: list[str]):
         """Load enviroment variables into class attributes

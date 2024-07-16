@@ -79,7 +79,7 @@ class _PropertiesManager:
 
         """
         for key, value in self.config.items(config_section):
-            if value == "" or value is None:
+            if value == "":
                 value = None
                 properties_manager_logger.warning(f"Using None for {key} in {config_section}")
             setattr(self, key, value)
@@ -88,7 +88,7 @@ class _PropertiesManager:
         """Loads the current architecture from enviroment and stores it as an\
         attribute, if none is provided DEFAULT_ARCHITECTURE will be selected
         """
-        architecture_type = os.getenv(ARCHITECTURE_ENV_NAME, DEFAULT_ARCHITECTURE)
+        architecture_type = os.getenv(ARCHITECTURE_ENV_NAME)
         if not architecture_type:
             architecture_type = DEFAULT_ARCHITECTURE
             properties_manager_logger.warning(

@@ -6,7 +6,7 @@ Provider class for supplying user collection connection with database depending 
 from pymongo.collection import Collection
 
 import app.spotify_electron.user.base_user_service as base_user_service
-from app.database.Database import Database, DatabaseCollection
+from app.database.DatabaseConnection import DatabaseCollection, DatabaseConnection
 from app.logging.logging_constants import LOGGING_USER_COLLECTION_PROVIDER
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.user.user.user_schema import UserType
@@ -23,8 +23,10 @@ def get_user_associated_collection(user_name: str) -> Collection:
         Collection: the user collection
     """
     collection_map = {
-        UserType.USER: Database().get_collection_connection(DatabaseCollection.USER),
-        UserType.ARTIST: Database().get_collection_connection(DatabaseCollection.ARTIST),
+        UserType.USER: DatabaseConnection.get_collection_connection(DatabaseCollection.USER),
+        UserType.ARTIST: DatabaseConnection.get_collection_connection(
+            DatabaseCollection.ARTIST
+        ),
     }
 
     user_type = base_user_service.get_user_type(user_name)
@@ -43,7 +45,7 @@ def get_artist_collection() -> Collection:
     Returns:
         Collection: the artist collection
     """
-    return Database().get_collection_connection(DatabaseCollection.ARTIST)
+    return DatabaseConnection.get_collection_connection(DatabaseCollection.ARTIST)
 
 
 def get_user_collection() -> Collection:
@@ -52,7 +54,7 @@ def get_user_collection() -> Collection:
     Returns:
         Collection: the artist collection
     """
-    return Database().get_collection_connection(DatabaseCollection.USER)
+    return DatabaseConnection.get_collection_connection(DatabaseCollection.USER)
 
 
 def get_all_collections() -> list[Collection]:
@@ -62,7 +64,9 @@ def get_all_collections() -> list[Collection]:
         list[Collection]: all the users collections
     """
     collection_map = {
-        UserType.USER: Database().get_collection_connection(DatabaseCollection.USER),
-        UserType.ARTIST: Database().get_collection_connection(DatabaseCollection.ARTIST),
+        UserType.USER: DatabaseConnection.get_collection_connection(DatabaseCollection.USER),
+        UserType.ARTIST: DatabaseConnection.get_collection_connection(
+            DatabaseCollection.ARTIST
+        ),
     }
     return list(collection_map.values())

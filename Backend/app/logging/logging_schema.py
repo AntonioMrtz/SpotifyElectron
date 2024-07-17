@@ -94,7 +94,7 @@ class SpotifyElectronLogger:
         self._add_handler(stream_handler)
 
     def _add_handler(
-        self, handler: logging.StreamHandler[Any] | logging.handlers.RotatingFileHandler
+        self, handler: logging.StreamHandler | logging.handlers.RotatingFileHandler
     ):
         """Add handler to logger
 

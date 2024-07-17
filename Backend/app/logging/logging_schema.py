@@ -5,7 +5,6 @@ Logging and Format schemas
 import logging
 import logging.handlers
 import sys
-from typing import Any
 
 from app.common.config_constants import LOG_FILE, LOG_LEVEL
 from app.logging.logging_constants import DEBUG, INFO

@@ -1,5 +1,6 @@
 """
-Manages APP global state variables and manages initialization of enviroment variables and .ini files
+Manages APP global state variables and manages initialization of\
+      enviroment variables and .ini files
 
 Declares PropertiesManager global object to be accessed from across the app
 """
@@ -30,9 +31,7 @@ from app.common.set_up_constants import (
 from app.logging.logging_constants import LOGGING_PROPERTIES_MANAGER
 from app.logging.logging_schema import SpotifyElectronLogger
 
-properties_manager_logger = SpotifyElectronLogger(
-    LOGGING_PROPERTIES_MANAGER
-).getLogger()
+properties_manager_logger = SpotifyElectronLogger(LOGGING_PROPERTIES_MANAGER).getLogger()
 
 
 class _PropertiesManager:
@@ -82,24 +81,21 @@ class _PropertiesManager:
         for key, value in self.config.items(config_section):
             if value == "":
                 value = None
+                properties_manager_logger.warning(f"Using None for {key} in {config_section}")
             setattr(self, key, value)
 
     def _load_architecture(self):
         """Loads the current architecture from enviroment and stores it as an\
         attribute, if none is provided DEFAULT_ARCHITECTURE will be selected
         """
-        architecture_type = os.getenv(ARCHITECTURE_ENV_NAME, DEFAULT_ARCHITECTURE)
+        architecture_type = os.getenv(ARCHITECTURE_ENV_NAME)
         if not architecture_type:
             architecture_type = DEFAULT_ARCHITECTURE
-            self.__setattr__(ARCHITECTURE_ENV_NAME, DEFAULT_ARCHITECTURE)
-            properties_manager_logger.info(
+            properties_manager_logger.warning(
                 f"No architecture type selected, using {DEFAULT_ARCHITECTURE}"
             )
         self.__setattr__(ARCHITECTURE_ENV_NAME, architecture_type)
         properties_manager_logger.info(f"Architecture selected : {architecture_type}")
-        properties_manager_logger.info(
-            f"Running init method for architecture : {architecture_type}"
-        )
 
     def _load_env_variables(self, env_names: list[str]):
         """Load enviroment variables into class attributes

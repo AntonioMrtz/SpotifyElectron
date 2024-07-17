@@ -37,9 +37,7 @@ def get_song_duration_seconds(name: str, file: bytes) -> int:
         )
         duration = 0
 
-    audio_management_utils_logger.debug(
-        f"Song file {name} has a {duration} seconds duration"
-    )
+    audio_management_utils_logger.debug(f"Song file {name} has a {duration} seconds duration")
     return int(duration)
 
 

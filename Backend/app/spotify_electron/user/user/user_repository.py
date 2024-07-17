@@ -78,9 +78,7 @@ def create_user(name: str, photo: str, password: bytes, current_date: str) -> No
         user_repository_logger.exception(f"Error inserting User {user} in database")
         raise UserRepositoryException from exception
     except (UserRepositoryException, Exception) as exception:
-        user_repository_logger.exception(
-            f"Unexpected error inserting user {user} in database"
-        )
+        user_repository_logger.exception(f"Unexpected error inserting user {user} in database")
         raise UserRepositoryException from exception
     else:
         user_repository_logger.info(f"User added to repository : {user}")

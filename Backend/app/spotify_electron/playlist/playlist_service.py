@@ -2,9 +2,13 @@
 Playlist service for handling business logic
 """
 
+import app.auth.auth_service as auth_service
 import app.spotify_electron.playlist.playlist_repository as playlist_repository
-import app.spotify_electron.security.security_service as security_service
 import app.spotify_electron.user.base_user_service as base_user_service
+from app.auth.auth_schema import (
+    TokenData,
+    UserUnauthorizedException,
+)
 from app.logging.logging_constants import LOGGING_PLAYLIST_SERVICE
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.playlist.playlist_schema import (
@@ -20,10 +24,6 @@ from app.spotify_electron.playlist.validations.playlist_service_validations impo
     validate_playlist_name_parameter,
     validate_playlist_should_exists,
     validate_playlist_should_not_exists,
-)
-from app.spotify_electron.security.security_schema import (
-    TokenData,
-    UserUnauthorizedException,
 )
 from app.spotify_electron.user.user.user_schema import UserNotFoundException
 from app.spotify_electron.utils.date.date_utils import get_current_iso8601_date
@@ -185,7 +185,7 @@ def update_playlist(  # noqa: PLR0913
 
         playlist = playlist_repository.get_playlist(name)
 
-        security_service.validate_jwt_user_matches_user(token, playlist.owner)
+        auth_service.validate_jwt_user_matches_user(token, playlist.owner)
 
         if not new_name:
             playlist_repository.update_playlist(
@@ -252,9 +252,7 @@ def delete_playlist(name: str) -> None:
         playlist_service_logger.exception(f"Playlist not found : {name}")
         raise PlaylistNotFoundException from exception
     except UserNotFoundException as exception:
-        playlist_service_logger.exception(
-            f"User owner of the playlist {name} not found"
-        )
+        playlist_service_logger.exception(f"User owner of the playlist {name} not found")
         raise UserNotFoundException from exception
     except PlaylistRepositoryException as exception:
         playlist_service_logger.exception(
@@ -321,12 +319,14 @@ def get_selected_playlists(playlist_names: list[str]) -> list[PlaylistDTO]:
         playlists_dto = [get_playlist_dto_from_dao(playlist) for playlist in playlists]
     except PlaylistRepositoryException as exception:
         playlist_service_logger.exception(
-            f"Unexpected error in Playlist Repository getting selected playlists : {playlist_names}"
+            f"Unexpected error in Playlist Repository getting selected playlists : "
+            f"{playlist_names}"
         )
         raise PlaylistServiceException from exception
     except Exception as exception:
         playlist_service_logger.exception(
-            f"Unexpected error in Playlist Service getting selected playlists : {playlist_names}"
+            f"Unexpected error in Playlist Service getting selected playlists : "
+            f"{playlist_names}"
         )
         raise PlaylistServiceException from exception
     else:

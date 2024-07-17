@@ -21,7 +21,7 @@ The stack contains the following:
   - User: admin & password: pass
 - Backend Server (Stop the container if you're deploying the backend server locally)
 
-This stack contains all you need to develop locally on your device. It's recommended to be used paired with the `BLOB ARCHITECTURE` architecture so you only need a mongoDB database to make the app work. See [architectures](Architecture.md) for more info on what services has to be deployed depending on the architecture selected.
+This stack contains all you need to develop locally on your device. It's recommended to be used paired with the `BLOB ARCHITECTURE` architecture so you only need a mongoDB database to make the app work. See [architectures](../Architecture.md) for more info on what services has to be deployed depending on the architecture selected.
 
 Mongo Express administration dashboard is also shipped using this stack. This service wil let you administrate the items in the Database graphically. More info on the [official image](https://hub.docker.com/_/mongo-express).
 

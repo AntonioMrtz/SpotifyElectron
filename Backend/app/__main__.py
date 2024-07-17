@@ -5,7 +5,6 @@ FastAPI App entrypoint
 - Load middlewares
 - Creates the app object
 - Configure Uvicorn server
-
 """
 
 from contextlib import asynccontextmanager
@@ -16,10 +15,9 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.common.config_constants import APP, HOST, PORT
 from app.common.PropertiesManager import PropertiesManager
-from app.database.Database import Database
+from app.database.DatabaseConnection import DatabaseConnection
 from app.logging.logging_constants import LOGGING_MAIN
 from app.logging.logging_schema import SpotifyElectronLogger
-from app.middleware.CheckJwtAuthMiddleware import CheckJwtAuthMiddleware
 from app.middleware.cors_middleware_config import (
     allow_credentials,
     allowed_headers,
@@ -51,7 +49,7 @@ async def lifespan_handler(app: FastAPI):
     """
     main_logger.info("Spotify Electron Backend Started")
 
-    Database()
+    DatabaseConnection()
 
     app.include_router(playlist_controller.router)
     app.include_router(song_controller.router)
@@ -66,9 +64,9 @@ async def lifespan_handler(app: FastAPI):
 
 
 app = FastAPI(
-    title="SpotifyElectronAPI",
-    description="API created with FastAPI Python to serve \
-        as backend for Spotify Electron music streaming Desktop App",
+    title="Spotify Electron API",
+    description="API created with Python FastAPI to serve\
+          as backend for Spotify Electron music streaming Desktop App",
     version="1.0.0",
     lifespan=lifespan_handler,
 )
@@ -81,8 +79,6 @@ app.add_middleware(
     max_age=max_age,
     allow_headers=allowed_headers,
 )
-app.add_middleware(CheckJwtAuthMiddleware)
-
 
 if __name__ == "__main__":
     uvicorn.run(

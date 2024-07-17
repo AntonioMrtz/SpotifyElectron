@@ -2,7 +2,7 @@
 Artist service for handling business logic
 """
 
-import app.spotify_electron.security.security_service as security_service
+import app.auth.auth_service as auth_service
 import app.spotify_electron.song.base_song_service as base_song_service
 import app.spotify_electron.user.artist.artist_repository as artist_repository
 import app.spotify_electron.user.base_user_repository as base_user_repository
@@ -73,7 +73,8 @@ def add_song_artist(artist_name: str, song_name: str):
         raise UserServiceException from exception
     except Exception as exception:
         artist_service_logger.exception(
-            f"Unexpected error in Artist service adding song {song_name} to artist {artist_name}"
+            f"Unexpected error in Artist service adding song {song_name} "
+            f"to artist {artist_name}"
         )
         raise UserServiceException from exception
 
@@ -114,7 +115,8 @@ def delete_song_from_artist(artist_name: str, song_name: str):
         raise UserServiceException from exception
     except Exception as exception:
         artist_service_logger.exception(
-            f"Unexpected error in Artist service removing song {song_name} from artist {artist_name}"
+            f"Unexpected error in Artist service removing song {song_name} "
+            f"from artist {artist_name}"
         )
         raise UserServiceException from exception
 
@@ -189,7 +191,7 @@ def create_artist(user_name: str, photo: str, password: str) -> None:
 
         date = get_current_iso8601_date()
         photo = photo if "http" in photo else ""
-        hashed_password = security_service.hash_password(password)
+        hashed_password = auth_service.hash_password(password)
 
         artist_repository.create_artist(
             name=user_name,
@@ -227,9 +229,7 @@ def get_all_artists() -> list[ArtistDTO]:
     """
     try:
         artists_dao = artist_repository.get_all_artists()
-        artists_dto = [
-            get_artist_dto_from_dao(artist_dao) for artist_dao in artists_dao
-        ]
+        artists_dto = [get_artist_dto_from_dao(artist_dao) for artist_dao in artists_dao]
     except UserRepositoryException as exception:
         artist_service_logger.exception(
             "Unexpected error in Artist Repository getting all artists"
@@ -301,7 +301,7 @@ def get_artists(user_names: list[str]) -> list[ArtistDTO]:
         list[ArtistDTO]: the selected artists
     """
     try:
-        artists = []
+        artists: list[ArtistDTO] = []
         for user_name in user_names:
             artists.append(get_artist(user_name))
 

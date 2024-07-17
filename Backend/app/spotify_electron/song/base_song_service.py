@@ -180,12 +180,14 @@ def get_artist_streams(artist_name: str) -> int:
         raise UserNotFoundException from exception
     except SongRepositoryException as exception:
         base_song_service_logger.exception(
-            f"Unexpected error in Song Repository while getting total artist {artist_name} streams"
+            f"Unexpected error in Song Repository while getting "
+            f"total artist {artist_name} streams"
         )
         raise SongServiceException from exception
     except Exception as exception:
         base_song_service_logger.exception(
-            f"Unexpected error in Song Service while getting total artist {artist_name} streams"
+            f"Unexpected error in Song Service while getting "
+            f"total artist {artist_name} streams"
         )
         raise SongServiceException from exception
 

@@ -5,6 +5,7 @@ Logging and Format schemas
 import logging
 import logging.handlers
 import sys
+from typing import Any
 
 from app.common.config_constants import LOG_FILE, LOG_LEVEL
 from app.logging.logging_constants import DEBUG, INFO
@@ -22,19 +23,19 @@ class SpotifyElectronFormatter(logging.Formatter):
 
     FORMATS = {
         logging.DEBUG: (
-            f"%(asctime)s -  {MODULE_COLOR}%(name)s{RESET_COLOR} - {LEVEL_DEBUG_COLOR}%(levelname)s{RESET_COLOR} - %(message)s"
+            f"%(asctime)s -  {MODULE_COLOR}%(name)s{RESET_COLOR} - {LEVEL_DEBUG_COLOR}%(levelname)s{RESET_COLOR} - %(message)s"  # noqa: E501
         ),
         logging.INFO: (
-            f"%(asctime)s -  {MODULE_COLOR}%(name)s{RESET_COLOR} - {LEVEL_INFO_COLOR}%(levelname)s{RESET_COLOR} - %(message)s"
+            f"%(asctime)s -  {MODULE_COLOR}%(name)s{RESET_COLOR} - {LEVEL_INFO_COLOR}%(levelname)s{RESET_COLOR} - %(message)s"  # noqa: E501
         ),
         logging.WARNING: (
-            f"%(asctime)s -  {MODULE_COLOR}%(name)s{RESET_COLOR} - {LEVEL_WARNING_COLOR}%(levelname)s{RESET_COLOR} - %(message)s"
+            f"%(asctime)s -  {MODULE_COLOR}%(name)s{RESET_COLOR} - {LEVEL_WARNING_COLOR}%(levelname)s{RESET_COLOR} - %(message)s"  # noqa: E501
         ),
         logging.ERROR: (
-            f"%(asctime)s -  {MODULE_COLOR}%(name)s{RESET_COLOR} - {LEVEL_ERROR_COLOR}%(levelname)s{RESET_COLOR} - %(message)s"
+            f"%(asctime)s -  {MODULE_COLOR}%(name)s{RESET_COLOR} - {LEVEL_ERROR_COLOR}%(levelname)s{RESET_COLOR} - %(message)s"  # noqa: E501
         ),
         logging.CRITICAL: (
-            f"%(asctime)s -  {MODULE_COLOR}%(name)s{RESET_COLOR} - {LEVEL_CRITICAL_COLOR}%(levelname)s{RESET_COLOR} - %(message)s"
+            f"%(asctime)s -  {MODULE_COLOR}%(name)s{RESET_COLOR} - {LEVEL_CRITICAL_COLOR}%(levelname)s{RESET_COLOR} - %(message)s"  # noqa: E501
         ),
     }
 
@@ -61,7 +62,7 @@ class SpotifyElectronLogger:
 
     _log_properties_manager = LogPropertiesManager()
 
-    def __init__(self, logger_name, log_file=None):
+    def __init__(self, logger_name: str):
         # borg pattern shared stated
         self.log_properties_manager = SpotifyElectronLogger._log_properties_manager
 
@@ -93,7 +94,7 @@ class SpotifyElectronLogger:
         self._add_handler(stream_handler)
 
     def _add_handler(
-        self, handler: logging.StreamHandler | logging.handlers.RotatingFileHandler
+        self, handler: logging.StreamHandler[Any] | logging.handlers.RotatingFileHandler
     ):
         """Add handler to logger
 

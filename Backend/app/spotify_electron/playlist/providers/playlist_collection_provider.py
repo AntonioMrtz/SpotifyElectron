@@ -4,7 +4,7 @@ Provider class for supplying playlist collection connection with database
 
 from pymongo.collection import Collection
 
-from app.database.Database import Database, DatabaseCollection
+from app.database.DatabaseConnection import DatabaseCollection, DatabaseConnection
 
 
 def get_playlist_collection() -> Collection:
@@ -13,4 +13,4 @@ def get_playlist_collection() -> Collection:
     Returns:
         Collection: the playlist collection
     """
-    return Database().get_collection_connection(DatabaseCollection.PLAYLIST)
+    return DatabaseConnection.get_collection_connection(DatabaseCollection.PLAYLIST)

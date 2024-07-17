@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Global from 'global/global';
 import defaultThumbnailPlaylist from '../assets/imgs/DefaultThumbnailPlaylist.jpg';
 
 interface PropsPlaylistCard {
@@ -9,10 +10,7 @@ interface PropsPlaylistCard {
   owner: string;
 }
 
-const useFetchPlaylists = (
-  backendBaseUrl: string,
-  refreshSidebarData: () => void,
-) => {
+const useFetchPlaylists = (refreshSidebarData: () => void) => {
   const [playlists, setPlaylists] = useState<PropsPlaylistCard[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -20,7 +18,7 @@ const useFetchPlaylists = (
   useEffect(() => {
     const fetchPlaylists = async () => {
       try {
-        const response = await fetch(`${backendBaseUrl}playlists/`, {
+        const response = await fetch(`${Global.backendBaseUrl}playlists/`, {
           credentials: 'include',
         });
 
@@ -52,7 +50,7 @@ const useFetchPlaylists = (
     };
 
     fetchPlaylists();
-  }, [backendBaseUrl, refreshSidebarData]);
+  }, [refreshSidebarData]);
 
   return { playlists, loading, error };
 };

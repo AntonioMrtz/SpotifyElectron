@@ -59,7 +59,9 @@ export default function ContextMenuSong({
 
     const fetchUrlGetUser = `${Global.backendBaseUrl}users/${username}`;
 
-    fetch(fetchUrlGetUser)
+    fetch(fetchUrlGetUser, {
+      credentials: 'include',
+    })
       .then((resFetchUrlGetUser) => resFetchUrlGetUser.json())
       .then((resFetchUrlGetUserJson) => {
         return resFetchUrlGetUserJson.playlists.join(',');
@@ -67,6 +69,9 @@ export default function ContextMenuSong({
       .then((sidebarPlaylistNames) => {
         return fetch(
           `${Global.backendBaseUrl}playlists/selected/${sidebarPlaylistNames}`,
+          {
+            credentials: 'include',
+          },
         );
       })
       .then((resFetchPlaylists) => {
@@ -114,6 +119,9 @@ export default function ContextMenuSong({
     try {
       const playlistResponse = await fetch(
         `${Global.backendBaseUrl}playlists/${selectedPlaylistName}`,
+        {
+          credentials: 'include',
+        },
       );
       const playlistData = await playlistResponse.json();
 
@@ -126,11 +134,12 @@ export default function ContextMenuSong({
         songName,
         ...playlistData.song_names,
       ];
-      const requestOptions = {
+      const requestOptions: RequestInit = {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify(newSongsPutPlaylist),
       };
 
@@ -149,6 +158,9 @@ export default function ContextMenuSong({
     try {
       const playlistResponse = await fetch(
         `${Global.backendBaseUrl}playlists/${playlistName}`,
+        {
+          credentials: 'include',
+        },
       );
       const playlistData = await playlistResponse.json();
 
@@ -161,11 +173,12 @@ export default function ContextMenuSong({
         (songNameFetch: any) => songNameFetch !== songName,
       );
 
-      const requestOptions = {
+      const requestOptions: RequestInit = {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify(newSongsPutPlaylist),
       };
 
@@ -192,11 +205,12 @@ export default function ContextMenuSong({
 
       const fetchPostPlaylistWithSongUrl = `${Global.backendBaseUrl}playlists/?name=${newPlaylistName}&photo=foto&description=Insertar+descripcion`;
 
-      const requestOptions = {
+      const requestOptions: RequestInit = {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify([songName]),
       };
 

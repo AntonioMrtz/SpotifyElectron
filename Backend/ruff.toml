@@ -1,7 +1,7 @@
 target-version = "py311"
 
 # Same as Black.
-line-length = 88
+line-length = 95
 indent-width = 4
 
 [lint]
@@ -20,6 +20,7 @@ extend-select = [
     "D104",
     "D300",
     "D419",
+    "E"
 ]
 
 ignore = ["PLR0402","PLR0911"]

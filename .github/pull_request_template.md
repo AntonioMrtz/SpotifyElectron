@@ -6,7 +6,7 @@
 
 <!--
 
-!!CHECK ONE!!
+!!CHECK ONLY ONE!!
 
   - `feat`: indicates the addition of a new feature or functionality to the project.
   - `fix`: used when fixing a bug or error in the code.
@@ -41,10 +41,6 @@
 ## Potential Impact
 
 <!-- Describe the impact these changes may have on the project. Include any risks or side effects to consider. -->
-
-## Tests Performed
-
-- [] Test performed <!-- Check if performed  - [✅ | ❎] Test performed -->
 
 ## Screenshots
 

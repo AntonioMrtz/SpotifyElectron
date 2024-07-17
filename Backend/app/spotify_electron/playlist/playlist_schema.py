@@ -3,6 +3,7 @@ Playlist schema for domain model
 """
 
 from dataclasses import dataclass
+from typing import Any
 
 from app.exceptions.base_exceptions_schema import SpotifyElectronException
 
@@ -31,7 +32,7 @@ class PlaylistDTO:
     song_names: list[str]
 
 
-def get_playlist_dao_from_document(document: dict) -> PlaylistDAO:
+def get_playlist_dao_from_document(document: dict[str, Any]) -> PlaylistDAO:
     """Get PlaylistDAO from document
 
     Args:

@@ -35,7 +35,9 @@ export default function UserProfile({
     resGetUserJson.playlists.slice(0, 5).forEach((playlistName: string) => {
       playlistPromises.push(
         new Promise((resolve) => {
-          fetch(`${Global.backendBaseUrl}playlists/${playlistName}`)
+          fetch(`${Global.backendBaseUrl}playlists/${playlistName}`, {
+            credentials: 'include',
+          })
             .then((resFetchPlaylistDTO) => {
               return resFetchPlaylistDTO.json();
             })
@@ -73,7 +75,9 @@ export default function UserProfile({
     resGetUserJson.playback_history.forEach((songName: string) => {
       songPromises.push(
         new Promise((resolve) => {
-          fetch(`${Global.backendBaseUrl}songs/metadata/${songName}`)
+          fetch(`${Global.backendBaseUrl}songs/metadata/${songName}`, {
+            credentials: 'include',
+          })
             .then((resFetchSongDTO) => {
               return resFetchSongDTO.json();
             })
@@ -112,7 +116,9 @@ export default function UserProfile({
     resGetUserJson.uploaded_songs.forEach((songName: string) => {
       songPromises.push(
         new Promise((resolve) => {
-          fetch(`${Global.backendBaseUrl}songs/metadata/${songName}`)
+          fetch(`${Global.backendBaseUrl}songs/metadata/${songName}`, {
+            credentials: 'include',
+          })
             .then((resFetchSongDTO) => {
               return resFetchSongDTO.json();
             })
@@ -146,7 +152,9 @@ export default function UserProfile({
   };
 
   const loadArtistsStreams = () => {
-    fetch(`${Global.backendBaseUrl}artists/${id}/streams`)
+    fetch(`${Global.backendBaseUrl}artists/${id}/streams`, {
+      credentials: 'include',
+    })
       .then((resFetchArtistStreams) => {
         return resFetchArtistStreams.json();
       })
@@ -162,7 +170,9 @@ export default function UserProfile({
   const handleLoadProfile = async () => {
     const fetchUrlGetUser = `${Global.backendBaseUrl}users/${id}`;
 
-    const resGetUser = await fetch(fetchUrlGetUser);
+    const resGetUser = await fetch(fetchUrlGetUser, {
+      credentials: 'include',
+    });
 
     if (resGetUser.status === 404) return;
     const resGetUserJson = await resGetUser.json();

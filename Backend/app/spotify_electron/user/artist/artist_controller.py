@@ -3,8 +3,9 @@ Artist controller for handling incoming HTTP Requests
 """
 
 import json
+from typing import Annotated
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import Response
 from starlette.status import (
@@ -16,6 +17,8 @@ from starlette.status import (
 
 import app.spotify_electron.user.artist.artist_service as artist_service
 import app.spotify_electron.utils.json_converter.json_converter_utils as json_converter_utils
+from app.auth.auth_schema import TokenData
+from app.auth.JWTBearer import JWTBearer
 from app.common.PropertiesMessagesManager import PropertiesMessagesManager
 from app.exceptions.base_exceptions_schema import JsonEncodeException
 from app.spotify_electron.user.user.user_schema import (
@@ -32,7 +35,10 @@ router = APIRouter(
 
 
 @router.get("/{name}")
-def get_artist(name: str) -> Response:
+def get_artist(
+    name: str,
+    token: Annotated[TokenData | None, Depends(JWTBearer())],
+) -> Response:
     """Get artist by name
 
     Args:
@@ -42,9 +48,7 @@ def get_artist(name: str) -> Response:
         artist = artist_service.get_artist(name)
         artist_json = json_converter_utils.get_json_from_model(artist)
 
-        return Response(
-            artist_json, media_type="application/json", status_code=HTTP_200_OK
-        )
+        return Response(artist_json, media_type="application/json", status_code=HTTP_200_OK)
 
     except UserBadNameException:
         return Response(
@@ -69,7 +73,11 @@ def get_artist(name: str) -> Response:
 
 
 @router.post("/")
-def create_artist(name: str, photo: str, password: str) -> Response:
+def create_artist(
+    name: str,
+    photo: str,
+    password: str,
+) -> Response:
     """Create artist
 
     Args:
@@ -98,7 +106,9 @@ def create_artist(name: str, photo: str, password: str) -> Response:
 
 
 @router.get("/")
-def get_artists() -> Response:
+def get_artists(
+    token: Annotated[TokenData | None, Depends(JWTBearer())],
+) -> Response:
     """Get all artists"""
     try:
         artists = artist_service.get_all_artists()
@@ -107,9 +117,7 @@ def get_artists() -> Response:
 
         artists_json = json.dumps(artists_dict)
 
-        return Response(
-            artists_json, media_type="application/json", status_code=HTTP_200_OK
-        )
+        return Response(artists_json, media_type="application/json", status_code=HTTP_200_OK)
     except UserBadNameException:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
@@ -133,15 +141,16 @@ def get_artists() -> Response:
 
 
 @router.get("/{name}/streams")
-def get_artist_streams(name: str) -> Response:
+def get_artist_streams(
+    name: str,
+    token: Annotated[TokenData | None, Depends(JWTBearer())],
+) -> Response:
     """Get artist total streams of his songs"""
     try:
         total_streams = artist_service.get_streams_artist(user_name=name)
 
-        total_streams_json = (
-            json_converter_utils.get_json_with_iterable_field_from_model(
-                total_streams, "streams"
-            )
+        total_streams_json = json_converter_utils.get_json_with_iterable_field_from_model(
+            total_streams, "streams"
         )
 
         return Response(

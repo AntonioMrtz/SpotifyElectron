@@ -11,7 +11,7 @@ exceptions_logger = SpotifyElectronLogger(LOGGING_EXCEPTION).getLogger()
 class SpotifyElectronException(Exception):
     """Base app exception, all exceptions must inherit from it"""
 
-    def __init__(self, message):
+    def __init__(self, message: str):
         super().__init__(message)
 
 

@@ -27,14 +27,13 @@ class LogPropertiesManager:
         for config_section in self.config_sections:
             self._load_config_variables(CONFIG_FILENAME, config_section)
 
-    def _load_config_variables(self, config_filename: str, config_section: str):
+    def _load_config_variables(self, config_filename: str, config_section: str) -> None:
         """Loads attributes from .ini file and stores them as class attributes
 
         Args:
         ----
             config_filename (str): the name of the config file
             config_section (str): the section inside of the config file
-
         """
         self.config_file = os.path.join(
             self.current_directory, APP_FOLDER, RESOURCES_FOLDER, config_filename
@@ -43,7 +42,7 @@ class LogPropertiesManager:
         self.config.read(self.config_file)
         self._set_attributes(config_section)
 
-    def _set_attributes(self, config_section: str):
+    def _set_attributes(self, config_section: str) -> None:
         """Sets app atributes from .ini file into class attributes, if value its empty\
             string it will load None
 

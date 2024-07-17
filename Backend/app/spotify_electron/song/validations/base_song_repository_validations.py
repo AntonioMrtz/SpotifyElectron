@@ -12,7 +12,7 @@ from app.spotify_electron.song.base_song_schema import (
 )
 
 
-def handle_song_exists(song: BaseSongDAO | None) -> None:
+def validate_song_exists(song: BaseSongDAO | None) -> None:
     """Raises an exception if song doesnt exists
 
     Args:
@@ -28,7 +28,7 @@ def handle_song_exists(song: BaseSongDAO | None) -> None:
         raise SongNotFoundException
 
 
-def handle_song_create(result: InsertOneResult) -> None:
+def validate_base_song_create(result: InsertOneResult) -> None:
     """Raises an exception if song insertion was not done
 
     Args:
@@ -44,7 +44,7 @@ def handle_song_create(result: InsertOneResult) -> None:
         raise SongCreateException
 
 
-def handle_song_delete_count(result: DeleteResult) -> None:
+def validate_song_delete_count(result: DeleteResult) -> None:
     """Raises an exception if song deletion count was 0
 
     Args:

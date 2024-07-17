@@ -2,11 +2,15 @@
 Genre controller for handling incoming HTTP Requests
 """
 
-from fastapi import APIRouter
+from typing import Annotated
+
+from fastapi import APIRouter, Depends
 from fastapi.responses import Response
 from starlette.status import HTTP_200_OK, HTTP_500_INTERNAL_SERVER_ERROR
 
 import app.spotify_electron.genre.genre_service as genre_service
+from app.auth.auth_schema import TokenData
+from app.auth.JWTBearer import JWTBearer
 from app.common.PropertiesMessagesManager import PropertiesMessagesManager
 from app.logging.logging_constants import LOGGING_GENRE_CONTROLLER
 from app.logging.logging_schema import SpotifyElectronLogger
@@ -21,7 +25,7 @@ genre_controller_logger = SpotifyElectronLogger(LOGGING_GENRE_CONTROLLER).getLog
 
 
 @router.get("/")
-def get_genres() -> Response:
+def get_genres(token: Annotated[TokenData, Depends(JWTBearer())]) -> Response:
     """Get all genres and their string representation"""
     try:
         genres = genre_service.get_genres()

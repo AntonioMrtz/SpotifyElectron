@@ -10,20 +10,20 @@ from fastapi.security import OAuth2PasswordRequestForm
 from starlette.status import (
     HTTP_200_OK,
     HTTP_400_BAD_REQUEST,
-    HTTP_401_UNAUTHORIZED,
+    HTTP_403_FORBIDDEN,
     HTTP_404_NOT_FOUND,
     HTTP_500_INTERNAL_SERVER_ERROR,
 )
 
-import app.spotify_electron.security.security_service as security_service
+import app.auth.auth_service as auth_service
 import app.spotify_electron.utils.json_converter.json_converter_utils as json_converter_utils
-from app.common.PropertiesMessagesManager import PropertiesMessagesManager
-from app.spotify_electron.login.login_schema import InvalidCredentialsLoginException
-from app.spotify_electron.security.security_schema import (
+from app.auth.auth_schema import (
     CreateJWTException,
     UnexpectedLoginUserException,
     VerifyPasswordException,
 )
+from app.common.PropertiesMessagesManager import PropertiesMessagesManager
+from app.spotify_electron.login.login_schema import InvalidCredentialsLoginException
 from app.spotify_electron.user.user.user_schema import (
     UserNotFoundException,
     UserServiceException,
@@ -47,10 +47,10 @@ def login_usuario(
 
     """
     try:
-        jwt = security_service.login_user(form_data.username, form_data.password)
+        jwt = auth_service.login_user(form_data.username, form_data.password)
 
         access_token_json = json_converter_utils.get_json_from_model(jwt)
-        expiration_date = security_service.get_token_expire_date()
+        expiration_date = auth_service.get_token_expire_date()
 
     except InvalidCredentialsLoginException:
         return Response(
@@ -59,7 +59,7 @@ def login_usuario(
         )
     except (VerifyPasswordException, CreateJWTException):
         return Response(
-            status_code=HTTP_401_UNAUTHORIZED,
+            status_code=HTTP_403_FORBIDDEN,
             content=PropertiesMessagesManager.loginVerifyPassword,
         )
     except UserNotFoundException:
@@ -78,7 +78,7 @@ def login_usuario(
         )
         response.set_cookie(
             key="jwt",
-            value=jwt,
+            value=f"Bearer {jwt}",
             httponly=True,
             path="/",
             samesite="none",

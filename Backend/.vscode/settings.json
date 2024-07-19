@@ -2,5 +2,6 @@
   "python.analysis.typeCheckingMode": "basic",
   "python.testing.pytestArgs": ["."],
   "python.testing.unittestEnabled": false,
-  "python.testing.pytestEnabled": true
+  "python.testing.pytestEnabled": true,
+  "editor.defaultFormatter": "charliermarsh.ruff",
 }

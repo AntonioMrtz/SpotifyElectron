@@ -1,0 +1,23 @@
+{
+    "image": "mcr.microsoft.com/devcontainers/universal:2",
+    "features": {
+        "ghcr.io/devcontainers/features/python:1": {
+            "version": "3.11"
+        }
+    },
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "python.defaultInterpreterPath": "/opt/app-root/bin/python"
+            },
+            "extensions": [
+                "ms-python.python",
+                "ms-python.debugpy",
+                "ms-python.vscode-pylance",
+                "njpwerner.autodocstring",
+                "njqdev.vscode-python-typehint",
+                "charliermarsh.ruff"
+            ]
+        }
+    }
+}

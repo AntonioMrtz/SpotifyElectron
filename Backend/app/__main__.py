@@ -68,6 +68,15 @@ app = FastAPI(
     description="API created with Python FastAPI to serve\
           as backend for Spotify Electron music streaming Desktop App",
     version="1.0.0",
+    contact={
+        "name": "Antonio Martinez Fernandez",
+        "url": "https://github.com/AntonioMrtz",
+        "email": "antoniomartinezfernandez17@gmail.com",
+    },
+    license_info={
+        "name": "Attribution-NonCommercial-ShareAlike 4.0 International",
+        "url": "https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es",
+    },
     lifespan=lifespan_handler,
 )
 

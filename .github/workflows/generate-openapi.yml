@@ -6,7 +6,7 @@ on:
       - closed
 
 jobs:
-  generar-y-guardar-documentacion:
+  generate-and-save-docs:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 

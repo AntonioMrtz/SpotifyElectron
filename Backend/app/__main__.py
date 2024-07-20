@@ -15,7 +15,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.common.config_constants import APP, HOST, PORT
 from app.common.PropertiesManager import PropertiesManager
-from app.database.Database import Database
+from app.database.DatabaseConnection import DatabaseConnection
 from app.logging.logging_constants import LOGGING_MAIN
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.middleware.cors_middleware_config import (
@@ -49,7 +49,7 @@ async def lifespan_handler(app: FastAPI):
     """
     main_logger.info("Spotify Electron Backend Started")
 
-    Database()
+    DatabaseConnection()
 
     app.include_router(playlist_controller.router)
     app.include_router(song_controller.router)

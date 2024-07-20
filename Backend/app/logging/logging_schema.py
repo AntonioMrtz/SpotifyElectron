@@ -5,7 +5,6 @@ Logging and Format schemas
 import logging
 import logging.handlers
 import sys
-from typing import Any
 
 from app.common.config_constants import LOG_FILE, LOG_LEVEL
 from app.logging.logging_constants import DEBUG, INFO
@@ -94,7 +93,7 @@ class SpotifyElectronLogger:
         self._add_handler(stream_handler)
 
     def _add_handler(
-        self, handler: logging.StreamHandler[Any] | logging.handlers.RotatingFileHandler
+        self, handler: logging.StreamHandler | logging.handlers.RotatingFileHandler
     ):
         """Add handler to logger
 

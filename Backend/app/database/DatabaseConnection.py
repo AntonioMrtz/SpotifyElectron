@@ -5,6 +5,7 @@ Manages the unique database connection across the app and provides\
 
 import sys
 from enum import StrEnum
+from functools import wraps
 from typing import Any
 
 from gridfs import GridFS
@@ -18,7 +19,6 @@ from app.common.set_up_constants import MONGO_URI_ENV_NAME
 from app.exceptions.base_exceptions_schema import SpotifyElectronException
 from app.logging.logging_constants import LOGGING_DATABASE
 from app.logging.logging_schema import SpotifyElectronLogger
-from app.patterns.Singleton import Singleton
 
 database_logger = SpotifyElectronLogger(LOGGING_DATABASE).getLogger()
 
@@ -34,31 +34,44 @@ class DatabaseCollection(StrEnum):
     SONG_BLOB_DATA = "songs"
 
 
-class Database(metaclass=Singleton):
-    """Singleton instance of the MongoDb connection"""
+def __is_connection__init__(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        if DatabaseConnection.connection is not None:
+            return func(*args, **kwargs)
+
+    return wrapper
+
+
+class DatabaseConnection:
+    """MongoDB connection Instance"""
 
     TESTING_COLLECTION_NAME_PREFIX = "test."
     DATABASE_NAME = "SpotifyElectron"
+    connection = None
+    collection_name_prefix = None
 
     def __init__(self):
-        if not hasattr(self, "connection"):
-            try:
-                uri = getattr(PropertiesManager, MONGO_URI_ENV_NAME)
-                self.collection_name_prefix = self._get_collection_name_prefix()
-                client = self._get_mongo_client_class()
-                self.connection = client(uri, server_api=ServerApi("1"))[self.DATABASE_NAME]
-                self._ping_database_connection()
-            except (
-                DatabasePingFailed,
-                UnexpectedDatabasePingFailed,
-                Exception,
-            ) as exception:
-                self._handle_database_connection_error(exception)
+        try:
+            uri = getattr(PropertiesManager, MONGO_URI_ENV_NAME)
+            DatabaseConnection.collection_name_prefix = self._get_collection_name_prefix()
+            client = self._get_mongo_client_class()
+            DatabaseConnection.connection = client(uri, server_api=ServerApi("1"))[
+                self.DATABASE_NAME
+            ]
+            self._ping_database_connection()
+        except (
+            DatabasePingFailed,
+            UnexpectedDatabasePingFailed,
+            Exception,
+        ) as exception:
+            self._handle_database_connection_error(exception)
 
+    @__is_connection__init__
     def _ping_database_connection(self):
         """Pings database connection"""
         try:
-            ping_result = self.connection.command("ping")
+            ping_result = DatabaseConnection.connection.command("ping")  # type: ignore
             self._check_ping_result(ping_result)
         except ConnectionFailure as exception:
             raise DatabasePingFailed from exception
@@ -112,12 +125,9 @@ class Database(metaclass=Singleton):
             else ""
         )
 
+    @__is_connection__init__
     @staticmethod
-    def get_instance():
-        """Method to retrieve the singleton instance"""
-        return Database()
-
-    def get_collection_connection(self, collection_name: DatabaseCollection) -> Collection:
+    def get_collection_connection(collection_name: DatabaseCollection) -> Collection:
         """Returns the connection with a collection
 
         Args:
@@ -126,9 +136,13 @@ class Database(metaclass=Singleton):
         Returns:
             Any: the connection to the collection
         """
-        return Database().connection[self.collection_name_prefix + collection_name]  # type: ignore
+        return DatabaseConnection.connection[  # type: ignore
+            DatabaseConnection.collection_name_prefix + collection_name  # type: ignore
+        ]
 
-    def get_gridfs_collection_connection(self, collection_name: DatabaseCollection) -> Any:
+    @__is_connection__init__
+    @staticmethod
+    def get_gridfs_collection_connection(collection_name: DatabaseCollection) -> Any:
         """Returns the connection with gridfs collection
 
         Args:
@@ -138,8 +152,8 @@ class Database(metaclass=Singleton):
             Any: the gridfs collection connection
         """
         return GridFS(
-            Database.get_instance().connection,  # type: ignore
-            collection=self.collection_name_prefix + collection_name,
+            DatabaseConnection.connection,  # type: ignore
+            collection=DatabaseConnection.collection_name_prefix + collection_name,  # type: ignore
         )
 
 

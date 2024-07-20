@@ -1,8 +1,17 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "SpotifyElectronAPI",
-    "description": "API created with FastAPI Python to serve          as backend for Spotify Electron music streaming Desktop App",
+    "title": "Spotify Electron API",
+    "description": "API created with Python FastAPI to serve          as backend for Spotify Electron music streaming Desktop App",
+    "contact": {
+      "name": "Antonio Martinez Fernandez",
+      "url": "https://github.com/AntonioMrtz",
+      "email": "antoniomartinezfernandez17@gmail.com"
+    },
+    "license": {
+      "name": "Attribution-NonCommercial-ShareAlike 4.0 International",
+      "url": "https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es"
+    },
     "version": "1.0.0"
   },
   "paths": {

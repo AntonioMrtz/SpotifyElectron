@@ -11,7 +11,7 @@
       "justMyCode": false
     },
     {
-      "name": "Python: Pytest",
+      "name": "Run tests - Pytest",
       "type": "debugpy",
       "request": "launch",
       "module": "pytest",

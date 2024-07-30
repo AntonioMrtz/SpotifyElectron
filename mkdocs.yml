@@ -11,6 +11,7 @@ nav:
   - Git convention: Git-Convention.md
   - Global Set up: SETUP.md
   - Architecture: Architecture.md
+  - Authentication & Login: Auth-Login.md
   - Backend:
       - Set up: backend/SETUP.md
       - Enviroment: backend/Enviroment.md
@@ -19,7 +20,6 @@ nav:
       - Docker: backend/Docker.md
       - Linting & Formatting: backend/Linting-&-Formatting.md
       - Testing: backend/Testing.md
-      - Authentication & Login: backend/Auth-Login.md
       - FAQ: backend/FAQ.md
   - Frontend:
       - Set up: frontend/SETUP.md

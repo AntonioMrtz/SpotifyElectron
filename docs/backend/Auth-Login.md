@@ -1,3 +1,0 @@
-# Authentication and Login
-
-#WIP

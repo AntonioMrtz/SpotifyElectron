@@ -16,6 +16,7 @@ In this document we will cover the file structure of the Backend for Spotify Ele
   - 📁 Main. Electron related files.
   - 📁 Pages. Main app pages.
   - 📁 Renderer. React app entrypoint.
+  - 📁 Swagger. OpenAPI swagger schema.
   - 📁 Utils. Common utils.
 
 ## React Components

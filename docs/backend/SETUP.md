@@ -53,13 +53,13 @@ pip install -r requirements-test.txt
 There's included a script `install-all-requirements.sh` that install all dependencies from a given directory in an already create virtual enviroment (Folder has to be named `venv`). Works both for Windows and Linux.
 
 
-### 4. Run the app in hot reload debug mode, launcht the provided vscode script or run:
+### 4. Run the app in hot reload debug mode, launch the provided vscode script [**DEBUG Backend app**] or run:
 
 ```
 python -m app
 ```
 
-### 5. The app will be deploy at **[http://127.0.0.1:8000/](http://127.0.0.1:8000/)**. API docs will be at **[http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)**
+### 5. The app will be deploy at **[http://127.0.0.1:8000/](http://127.0.0.1:8000/)**. API docs will be placed at **[http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)**
 
 ## 🐳 Docker deployment
 

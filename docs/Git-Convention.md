@@ -40,8 +40,7 @@ _pre-commit will insert the issue number if the branch name follows the conventi
 
 ## Pull Request convention
 
-After creating your Pull Request rename the title with a descriptive summary of the changes and the issue number using the following format:
-
+After creating your Pull Request rename the title with the issue title and its number.
 Example:
 
 - #7777: Add Home Page

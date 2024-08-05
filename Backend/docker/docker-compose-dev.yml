@@ -3,6 +3,9 @@ services:
     extends:
       file: docker-compose-base.yml
       service: backend
+    depends_on:
+      mongo:
+        condition: service_healthy
     environment:
       MONGO_URI: mongodb://root:root@mongo:27017/
 
@@ -15,6 +18,12 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: root
+    healthcheck:
+      test: ["CMD","mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
 
   mongo-express:
     image: mongo-express
@@ -26,3 +35,12 @@ services:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: root
       ME_CONFIG_MONGODB_URL: mongodb://root:root@mongo:27017/
+    depends_on:
+      mongo:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s

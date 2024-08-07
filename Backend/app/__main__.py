@@ -69,7 +69,7 @@ app = FastAPI(
     contact={
         "name": AppInfo.CONTACT_NAME,
         "url": AppInfo.CONTACT_URL,
-        "email": AppInfo.CONTACT_URL,
+        "email": AppInfo.CONTACT_EMAIL,
     },
     license_info={
         "name": AppInfo.LICENSE_INFO_NAME,

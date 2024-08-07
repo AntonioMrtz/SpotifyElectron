@@ -30,6 +30,6 @@ class AppInfo:
     VERSION = "1.0.0"
     CONTACT_NAME = "Antonio Martínez Fernández"
     CONTACT_URL = "https://github.com/AntonioMrtz"
-    CONTACT_URL = "antoniomartinezfernandez17@gmail.com"
+    CONTACT_EMAIL = "antoniomartinezfernandez17@gmail.com"
     LICENSE_INFO_NAME = "Attribution-NonCommercial-ShareAlike 4.0 International"
     LICENSE_INFO_URL = "https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es"

@@ -10,12 +10,8 @@ import os
 
 from dotenv import load_dotenv
 
-from app.common.config_constants import (
-    APP_CONFIG_SECTION,
-    APP_FOLDER,
-    CONFIG_FILENAME,
-    LOG_FILE,
-    RESOURCES_FOLDER,
+from app.common.app_schema import (
+    AppConfig,
 )
 from app.common.set_up_constants import (
     ARCHITECTURE_ENV_NAME,
@@ -41,7 +37,7 @@ class _PropertiesManager:
         properties_manager_logger.info("Initializing PropertiesManager")
         load_dotenv()
         self.current_directory = os.getcwd()
-        self.config_sections = [APP_CONFIG_SECTION]
+        self.config_sections = [AppConfig.APP_INI_SECTION]
         self.env_variables = [
             MONGO_URI_ENV_NAME,
             SECRET_KEY_SIGN_ENV_NAME,
@@ -51,7 +47,7 @@ class _PropertiesManager:
         self._load_env_variables(self.env_variables)
         self._load_architecture()
         for config_section in self.config_sections:
-            self._load_config_variables(CONFIG_FILENAME, config_section)
+            self._load_config_variables(AppConfig.CONFIG_FILENAME, config_section)
 
     def _load_config_variables(self, config_filename: str, config_section: str):
         """Loads attributes from .ini file and stores them as class attributes
@@ -63,7 +59,10 @@ class _PropertiesManager:
 
         """
         self.config_file = os.path.join(
-            self.current_directory, APP_FOLDER, RESOURCES_FOLDER, config_filename
+            self.current_directory,
+            AppConfig.APP_FOLDER,
+            AppConfig.RESOURCE_FOLDER,
+            config_filename,
         )
         self.config = configparser.ConfigParser()
         self.config.read(self.config_file)
@@ -154,7 +153,7 @@ class _PropertiesManager:
             bool: Returns if theres a valid log provided
 
         """
-        return self.__getattribute__(LOG_FILE) is not None
+        return self.__getattribute__(AppConfig.LOG_INI_FILE) is not None
 
 
 PropertiesManager = _PropertiesManager()

@@ -11,18 +11,18 @@ In this document we will cover the convention applied to git usage in the projec
 
 For naming branch we will use the next convention:
 
-`prefix/IssueNumber-BranchName`
+`prefix/IssueNumber-IssueTitle`
 
 - Prefix: select one of the prefixes listed below.
 - IssueNumber: the issue number associated to the branch.
-- BranchName: the title of the issue.
+- IssueTitle: the title of the issue.
 
 Examples:
 
 ```
 Issue:
 
-title: Add Home Page
+issue-title: Add Home Page
 issue-number: #7777
 ```
 
@@ -46,14 +46,16 @@ _pre-commit will insert the issue number if the branch name follows the conventi
 
 ## Pull Request convention
 
-After creating your Pull Request rename the title with the issue title and its number.
+After creating your Pull Request rename the title with the issue title and its number:
+
+`#issue-number: IssueTitle`
 
 Examples:
 
 ```
 Issue:
 
-title: Add Home Page
+issue-title: Add Home Page
 issue-number: #7777
 ```
 

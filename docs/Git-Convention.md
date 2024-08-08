@@ -43,10 +43,10 @@ _pre-commit will insert the issue number if the branch name follows the conventi
 After creating your Pull Request rename the title with the issue title and its number.
 Example:
 
-- #7777: Add Home Page
-- #7778: Remove User failing login Authentication
-- #7779: Refactor backend song service
-- #7780: Update git contributing documentation
+- \#7777: Add Home Page
+- \#7778: Remove User failing login Authentication
+- \#7779: Refactor backend song service
+- \#7780: Update git contributing documentation
 
 ## Naming convention prefixes
 

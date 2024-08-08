@@ -22,7 +22,7 @@ If nothing appears, check that the steps provided in [Docker deployment](Docker.
 
 If you cannot run Docker scripts or they fail while executing:
 
-1. Ensure you have a valid `.env` file by following the guidelines provided in the [Environment guide](../Environment.md).
+1. Ensure you have a valid `.env` file by following the guidelines provided in the [Environment guide](Enviroment.md).
 2. `/bin/bash^M: bad interpreter: No such file or directory`. This indicates a problem with return carriages; Linux represents them differently. Try running `sed -i -e 's/\r$//' script-name.sh` to convert Windows format to Linux.
 
 ## ◾ '_PropertiesManager' object has no attribute 'ENV_VALUE'
@@ -31,7 +31,7 @@ If you encounter an error similar to:
 
 `AttributeError: '_PropertiesManager' object has no attribute 'ENV_VALUE'`
 
-The environments are not being passed correctly to the app. Ensure you follow the [Environment guide](../Environment.md) correctly and provide the required environments in a `.env` file under the Backend directory. If the error persists, restarting VS Code sometimes helps when environment variables are not loaded.
+The environments are not being passed correctly to the app. Ensure you follow the [Environment guide](Enviroment.md) correctly and provide the required environments in a `.env` file under the Backend directory. If the error persists, restarting VS Code sometimes helps when environment variables are not loaded.
 
 ## ◾ I can't authenticate in backend Swagger docs
 

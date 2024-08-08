@@ -15,12 +15,18 @@ For naming branch we will use the next convention:
 
 - Prefix: select one of the prefixes listed below.
 - IssueNumber: the issue number associated to the branch.
-- BranchName: the feature that is going to be implemented.
+- BranchName: the title of the issue.
 
 Examples:
 
-- `feat/182-Home-Page`
-- `fix/199-User-Login`
+```
+Issue:
+
+title: Add Home Page
+issue-number: #7777
+```
+
+- feat/7777-Add-Home-Page
 
 ## Commit convention
 
@@ -28,7 +34,7 @@ For commiting into the repository the next convention has to be applied:
 
 `prefix: changeMade`
 
-- Prefix: select one of the prefixes listed below.
+- Prefix: select one of the prefixes listed in `Naming convention prefixes` section at the end of this document.
 - ChangeMade: the change that has been implemented. In present tense.
 
 Examples:
@@ -41,12 +47,17 @@ _pre-commit will insert the issue number if the branch name follows the conventi
 ## Pull Request convention
 
 After creating your Pull Request rename the title with the issue title and its number.
-Example:
+
+Examples:
+
+```
+Issue:
+
+title: Add Home Page
+issue-number: #7777
+```
 
 - \#7777: Add Home Page
-- \#7778: Remove User failing login Authentication
-- \#7779: Refactor backend song service
-- \#7780: Update git contributing documentation
 
 ## Naming convention prefixes
 

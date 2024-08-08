@@ -4,18 +4,15 @@
     ".prettierrc": "jsonc",
     ".eslintignore": "ignore"
   },
-
   "eslint.validate": [
     "javascript",
     "javascriptreact",
     "html",
     "typescriptreact"
   ],
-
   "javascript.validate.enable": false,
   "javascript.format.enable": false,
   "typescript.format.enable": false,
-
   "search.exclude": {
     ".git": true,
     ".eslintcache": true,
@@ -27,5 +24,8 @@
     "package-lock.json": true,
     "*.{css,sass,scss}.d.ts": true,
     "coverage/**": true
-  }
+  },
+  "editor.defaultFormatter": "rvest.vs-code-prettier-eslint",
+  "editor.formatOnType": false,
+  "vs-code-prettier-eslint.prettierLast": false
 }

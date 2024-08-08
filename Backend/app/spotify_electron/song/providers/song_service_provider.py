@@ -5,12 +5,8 @@ Provider class for supplying service depending on song architecture selected
 import importlib
 from types import ModuleType
 
+from app.common.app_schema import AppArchitecture, AppEnviroment
 from app.common.PropertiesManager import PropertiesManager
-from app.common.set_up_constants import (
-    ARCH_BLOB,
-    ARCH_STREAMING_SERVERLESS_FUNCTION,
-    ARCHITECTURE_ENV_NAME,
-)
 from app.logging.logging_constants import LOGGING_SONG_SERVICE_PROVIDER
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.patterns.Factory import BaseSongServiceModuleFactory
@@ -26,8 +22,8 @@ class SongServiceModuleFactory(BaseSongServiceModuleFactory):
 
     def __init__(self) -> None:
         self.song_services = {
-            ARCH_STREAMING_SERVERLESS_FUNCTION: SONG_SERVICE_STREAMING_AWS_SERVERLESS_FUNCTION_MODULE_NAME,  # noqa: E501
-            ARCH_BLOB: SONG_SERVICE_BLOB_MODULE_NAME,
+            AppArchitecture.ARCH_STREAMING_SERVERLESS_FUNCTION: SONG_SERVICE_STREAMING_AWS_SERVERLESS_FUNCTION_MODULE_NAME,  # noqa: E501
+            AppArchitecture.ARCH_BLOB: SONG_SERVICE_BLOB_MODULE_NAME,
         }
         self.logger = SpotifyElectronLogger(LOGGING_SONG_SERVICE_PROVIDER).getLogger()
         super().__init__()
@@ -46,7 +42,7 @@ class SongServiceModuleFactory(BaseSongServiceModuleFactory):
         Returns:
             ModuleType: the imported song service
         """
-        architecture_type = getattr(PropertiesManager, ARCHITECTURE_ENV_NAME)
+        architecture_type = getattr(PropertiesManager, AppEnviroment.ARCHITECTURE_ENV_NAME)
         import_module = importlib.import_module(
             MODULE_PREFIX_NAME + self.song_services[architecture_type]
         )

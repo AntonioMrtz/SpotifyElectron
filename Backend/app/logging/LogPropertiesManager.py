@@ -10,7 +10,6 @@ from dotenv import load_dotenv
 from app.common.app_schema import (
     AppConfig,
 )
-from app.common.set_up_constants import ENV_VALUE_ENV_NAME, PROD
 
 
 class LogPropertiesManager:
@@ -64,14 +63,3 @@ class LogPropertiesManager:
 
         """
         return self.__getattribute__(AppConfig.LOG_INI_FILE) is not None
-
-    def is_production_enviroment(self) -> bool:
-        """Checks if the enviroment is production
-
-        Returns
-        -------
-            bool: Returns if its production enviroment
-
-        """
-        env_value = os.getenv(ENV_VALUE_ENV_NAME, PROD)
-        return env_value == PROD

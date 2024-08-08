@@ -2,7 +2,7 @@
 
 from typing import Any
 
-from mongomock import MongoClient
+from pymongo import MongoClient
 
 from app.database.database_schema import BaseDatabaseConnection
 

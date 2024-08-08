@@ -2,6 +2,22 @@
 App config schema
 """
 
+from enum import StrEnum
+
+
+class AppInfo:
+    """App info constants"""
+
+    TITLE = "Spotify Electron Backend API"
+    DESCRIPTION = "API created with Python FastAPI to serve\
+          as backend for Spotify Electron music streaming Desktop App"
+    VERSION = "1.0.0"
+    CONTACT_NAME = "Antonio Martínez Fernández"
+    CONTACT_URL = "https://github.com/AntonioMrtz"
+    CONTACT_EMAIL = "antoniomartinezfernandez17@gmail.com"
+    LICENSE_INFO_NAME = "Attribution-NonCommercial-ShareAlike 4.0 International"
+    LICENSE_INFO_URL = "https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es"
+
 
 class AppConfig:
     """App config constants"""
@@ -21,15 +37,28 @@ class AppConfig:
     PORT_INI_KEY = "port"
 
 
-class AppInfo:
-    """App info constants"""
+class AppEnvironmentMode(StrEnum):
+    """App enviroment mode constants"""
 
-    TITLE = "Spotify Electron Backend API"
-    DESCRIPTION = "API created with Python FastAPI to serve\
-          as backend for Spotify Electron music streaming Desktop App"
-    VERSION = "1.0.0"
-    CONTACT_NAME = "Antonio Martínez Fernández"
-    CONTACT_URL = "https://github.com/AntonioMrtz"
-    CONTACT_EMAIL = "antoniomartinezfernandez17@gmail.com"
-    LICENSE_INFO_NAME = "Attribution-NonCommercial-ShareAlike 4.0 International"
-    LICENSE_INFO_URL = "https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es"
+    PROD = "PROD"
+    DEV = "DEV"
+    TEST = "TEST"
+
+
+class AppArchitecture:
+    """App architecture constants"""
+
+    ARCH_STREAMING_SERVERLESS_FUNCTION = "STREAMING_SERVERLESS_FUNCTION"
+    ARCH_BLOB = "BLOB"
+
+
+class AppEnviroment:
+    """App enviroment constants"""
+
+    ARCHITECTURE_ENV_NAME = "ARCH"
+    DEFAULT_ARCHITECTURE = AppArchitecture.ARCH_BLOB
+
+    SECRET_KEY_SIGN_ENV_NAME = "SECRET_KEY_SIGN"
+    MONGO_URI_ENV_NAME = "MONGO_URI"
+    SERVERLESS_FUNCTION_URL_ENV_NAME = "SERVERLESS_FUNCTION_URL"
+    ENV_VALUE_ENV_NAME = "ENV_VALUE"

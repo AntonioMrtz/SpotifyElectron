@@ -12,17 +12,8 @@ from dotenv import load_dotenv
 
 from app.common.app_schema import (
     AppConfig,
-)
-from app.common.set_up_constants import (
-    ARCHITECTURE_ENV_NAME,
-    DEFAULT_ARCHITECTURE,
-    DEV,
-    ENV_VALUE_ENV_NAME,
-    MONGO_URI_ENV_NAME,
-    PROD,
-    SECRET_KEY_SIGN_ENV_NAME,
-    SERVERLESS_FUNCTION_URL_ENV_NAME,
-    TEST,
+    AppEnviroment,
+    AppEnvironmentMode,
 )
 from app.logging.logging_constants import LOGGING_PROPERTIES_MANAGER
 from app.logging.logging_schema import SpotifyElectronLogger
@@ -39,10 +30,10 @@ class _PropertiesManager:
         self.current_directory = os.getcwd()
         self.config_sections = [AppConfig.APP_INI_SECTION]
         self.env_variables = [
-            MONGO_URI_ENV_NAME,
-            SECRET_KEY_SIGN_ENV_NAME,
-            SERVERLESS_FUNCTION_URL_ENV_NAME,
-            ENV_VALUE_ENV_NAME,
+            AppEnviroment.MONGO_URI_ENV_NAME,
+            AppEnviroment.SECRET_KEY_SIGN_ENV_NAME,
+            AppEnviroment.SERVERLESS_FUNCTION_URL_ENV_NAME,
+            AppEnviroment.ENV_VALUE_ENV_NAME,
         ]
         self._load_env_variables(self.env_variables)
         self._load_architecture()
@@ -87,13 +78,13 @@ class _PropertiesManager:
         """Loads the current architecture from enviroment and stores it as an\
         attribute, if none is provided DEFAULT_ARCHITECTURE will be selected
         """
-        architecture_type = os.getenv(ARCHITECTURE_ENV_NAME)
+        architecture_type = os.getenv(AppEnviroment.ARCHITECTURE_ENV_NAME)
         if not architecture_type:
-            architecture_type = DEFAULT_ARCHITECTURE
+            architecture_type = AppEnviroment.DEFAULT_ARCHITECTURE
             properties_manager_logger.warning(
-                f"No architecture type selected, using {DEFAULT_ARCHITECTURE}"
+                f"No architecture type selected, using {AppEnviroment.DEFAULT_ARCHITECTURE}"
             )
-        self.__setattr__(ARCHITECTURE_ENV_NAME, architecture_type)
+        self.__setattr__(AppEnviroment.ARCHITECTURE_ENV_NAME, architecture_type)
         properties_manager_logger.info(f"Architecture selected : {architecture_type}")
 
     def _load_env_variables(self, env_names: list[str]):
@@ -115,6 +106,14 @@ class _PropertiesManager:
             self.__setattr__(env_name, env_variable_value)
         properties_manager_logger.info(f"Enviroment variables loaded : {env_names}")
 
+    def get_enviroment(self) -> AppEnvironmentMode:
+        """Get current enviroment
+
+        Returns:
+            Enviroment: the current selected enviroment
+        """
+        return self.__getattribute__(AppEnviroment.ENV_VALUE_ENV_NAME)
+
     def is_production_enviroment(self) -> bool:
         """Checks if the enviroment is production
 
@@ -123,7 +122,9 @@ class _PropertiesManager:
             bool: Returns if its production enviroment
 
         """
-        return self.__getattribute__(ENV_VALUE_ENV_NAME) == PROD
+        return (
+            self.__getattribute__(AppEnviroment.ENV_VALUE_ENV_NAME) == AppEnvironmentMode.PROD
+        )
 
     def is_development_enviroment(self) -> bool:
         """Checks if the enviroment is development
@@ -133,7 +134,9 @@ class _PropertiesManager:
             bool: Returns if its development enviroment
 
         """
-        return self.__getattribute__(ENV_VALUE_ENV_NAME) == DEV
+        return (
+            self.__getattribute__(AppEnviroment.ENV_VALUE_ENV_NAME) == AppEnvironmentMode.DEV
+        )
 
     def is_testing_enviroment(self) -> bool:
         """Checks if the enviroment is testing
@@ -143,7 +146,9 @@ class _PropertiesManager:
             bool: Returns if its testing enviroment
 
         """
-        return self.__getattribute__(ENV_VALUE_ENV_NAME) == TEST
+        return (
+            self.__getattribute__(AppEnviroment.ENV_VALUE_ENV_NAME) == AppEnvironmentMode.TEST
+        )
 
     def is_log_file_provided(self) -> bool:
         """Checks if theres a valid log file provided

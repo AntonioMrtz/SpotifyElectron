@@ -7,14 +7,9 @@ import os
 
 from dotenv import load_dotenv
 
-from app.common.config_constants import (
-    APP_FOLDER,
-    CONFIG_FILENAME,
-    LOG_CONFIG_SECTION,
-    LOG_FILE,
-    RESOURCES_FOLDER,
+from app.common.app_schema import (
+    AppConfig,
 )
-from app.common.set_up_constants import ENV_VALUE_ENV_NAME, PROD
 
 
 class LogPropertiesManager:
@@ -23,9 +18,9 @@ class LogPropertiesManager:
     def __init__(self) -> None:
         load_dotenv()
         self.current_directory = os.getcwd()
-        self.config_sections = [LOG_CONFIG_SECTION]
+        self.config_sections = [AppConfig.LOG_INI_SECTION]
         for config_section in self.config_sections:
-            self._load_config_variables(CONFIG_FILENAME, config_section)
+            self._load_config_variables(AppConfig.CONFIG_FILENAME, config_section)
 
     def _load_config_variables(self, config_filename: str, config_section: str) -> None:
         """Loads attributes from .ini file and stores them as class attributes
@@ -36,7 +31,10 @@ class LogPropertiesManager:
             config_section (str): the section inside of the config file
         """
         self.config_file = os.path.join(
-            self.current_directory, APP_FOLDER, RESOURCES_FOLDER, config_filename
+            self.current_directory,
+            AppConfig.APP_FOLDER,
+            AppConfig.RESOURCE_FOLDER,
+            config_filename,
         )
         self.config = configparser.ConfigParser()
         self.config.read(self.config_file)
@@ -64,15 +62,4 @@ class LogPropertiesManager:
             bool: Returns if theres a valid log provided
 
         """
-        return self.__getattribute__(LOG_FILE) is not None
-
-    def is_production_enviroment(self) -> bool:
-        """Checks if the enviroment is production
-
-        Returns
-        -------
-            bool: Returns if its production enviroment
-
-        """
-        env_value = os.getenv(ENV_VALUE_ENV_NAME, PROD)
-        return env_value == PROD
+        return self.__getattribute__(AppConfig.LOG_INI_FILE) is not None

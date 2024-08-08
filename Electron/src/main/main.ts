@@ -107,16 +107,11 @@ const createWindow = async () => {
     if (!mainWindow) {
       throw new Error('"mainWindow" is not defined');
     }
-
-    // Obtenemos la sesión actual de Electron
     const ses = mainWindow.webContents.session;
 
     // Interceptamos las solicitudes web
     ses.webRequest.onBeforeSendHeaders(async (details, callback) => {
-      // Agregamos la opción 'credentials' a todas las solicitudes
-      // details.requestHeaders.credentials = 'include';
-      // console.log(details.requestHeaders);
-
+      // Add credentials to all requests
       try {
         const cookies = await ses.cookies.get({});
 

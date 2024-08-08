@@ -11,15 +11,16 @@ In this document we will cover the convention applied to git usage in the projec
 
 For naming branch we will use the next convention:
 
-`prefix/BranchName`
+`prefix/IssueNumber-BranchName`
 
 - Prefix: select one of the prefixes listed below.
+- IssueNumber: the issue number associated to the branch.
 - BranchName: the feature that is going to be implemented.
 
 Examples:
 
-- `feat/Home-Page`
-- `fix/User-Login`
+- `feat/182-Home-Page`
+- `fix/199-User-Login`
 
 ## Commit convention
 
@@ -35,16 +36,17 @@ Examples:
 - feat: add Home Page
 - fix: remove failing user login authentication
 
+_pre-commit will insert the issue number if the branch name follows the convention_
+
 ## Pull Request convention
 
-After creating your Pull Request rename the title with a descriptive summary of the changes.
-
+After creating your Pull Request rename the title with the issue title and its number.
 Example:
 
-- Add Home Page
-- Remove User failing login Authentication
-- Refactor backend song service
-- Update git contributing documentation
+- \#7777: Add Home Page
+- \#7778: Remove User failing login Authentication
+- \#7779: Refactor backend song service
+- \#7780: Update git contributing documentation
 
 ## Naming convention prefixes
 
@@ -59,4 +61,3 @@ Example:
 - `build`: update building scripts or Docker Images.
 - `perf`: update code for performance improvement.
 - `revert`: revert changes.
-- `docs`: Used when making changes or improvements to the project's documentation.

@@ -30,9 +30,6 @@ echo "Using $PYTHON_COMMAND"
 if [ -f "venv/bin/activate" ]; then
     # Unix-like systems
     source venv/bin/activate
-elif [ -f "venv/Scripts/activate" ]; then
-    # Windows
-    venv\Scripts\activate
 else
     echo "Failed to activate virtual environment. Please create a virtual environment named 'venv'."
     exit 1

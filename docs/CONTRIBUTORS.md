@@ -14,6 +14,7 @@ Me gustaría expresar mi más sincero agradecimiento a las siguientes personas p
 - [raulZC ](https://github.com/raulZC)
 - [TalhaBinNasir](https://github.com/TalhaBinNasir)
 - [xiomaraR](https://github.com/xiomaraR)
+- [aarshgupta24](https://github.com/aarshgupta24)
 
 ## Bug Reporters
 

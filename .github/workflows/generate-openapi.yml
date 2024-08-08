@@ -6,7 +6,7 @@ on:
       - closed
 
 jobs:
-  generar-y-guardar-documentacion:
+  generate-and-save-docs:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
@@ -42,19 +42,14 @@ jobs:
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
           git add openapi.json
-          git commit -m "docs: Update OpenAPI Schema" || echo "No changes to commit"
-
-      - name: Check if there are changes to push
-        id: check_changes
-        working-directory: Electron/src/swagger/
-        run: |
-          if [ -z "$(git status --porcelain)" ]; then
-            echo "CHANGES=false" >> $GITHUB_ENV
-          else
+          if git commit -m "docs: Update OpenAPI Schema"; then
             echo "CHANGES=true" >> $GITHUB_ENV
+          else
+            echo "No changes to commit"
+            echo "CHANGES=false" >> $GITHUB_ENV
           fi
 
-      - name: Pushing to the protected branch 'protected'
+      - name: Pushing to the protected branch 'master'
         if: env.CHANGES == 'true'
         uses: CasperWA/push-protected@v2
         with:

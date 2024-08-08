@@ -1,7 +1,6 @@
 {
   "recommendations": [
     "dbaeumer.vscode-eslint",
-    "EditorConfig.EditorConfig",
     "dsznajder.es7-react-js-snippets",
     "ecmel.vscode-html-css",
     "rvest.vs-code-prettier-eslint",

@@ -1,10 +1,10 @@
 """
-FastAPI App entrypoint
+FastAPI APP entrypoint
 
 - Handles startup and shutdown app events
-- Load middlewares
+- Loads middlewares
 - Creates the app object
-- Configure Uvicorn server
+- Configures server
 """
 
 from contextlib import asynccontextmanager
@@ -13,9 +13,9 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.common.config_constants import APP, HOST, PORT
+from app.common.app_schema import AppConfig, AppInfo
 from app.common.PropertiesManager import PropertiesManager
-from app.database.DatabaseConnection import DatabaseConnection
+from app.database.database_connection_provider import init_database_connection
 from app.logging.logging_constants import LOGGING_MAIN
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.middleware.cors_middleware_config import (
@@ -49,7 +49,7 @@ async def lifespan_handler(app: FastAPI):
     """
     main_logger.info("Spotify Electron Backend Started")
 
-    DatabaseConnection()
+    init_database_connection(PropertiesManager.get_enviroment())
 
     app.include_router(playlist_controller.router)
     app.include_router(song_controller.router)
@@ -64,10 +64,17 @@ async def lifespan_handler(app: FastAPI):
 
 
 app = FastAPI(
-    title="Spotify Electron API",
-    description="API created with Python FastAPI to serve\
-          as backend for Spotify Electron music streaming Desktop App",
-    version="1.0.0",
+    title=AppInfo.TITLE,
+    description=AppInfo.DESCRIPTION,
+    contact={
+        "name": AppInfo.CONTACT_NAME,
+        "url": AppInfo.CONTACT_URL,
+        "email": AppInfo.CONTACT_EMAIL,
+    },
+    license_info={
+        "name": AppInfo.LICENSE_INFO_NAME,
+        "url": AppInfo.LICENSE_INFO_URL,
+    },
     lifespan=lifespan_handler,
 )
 
@@ -82,8 +89,8 @@ app.add_middleware(
 
 if __name__ == "__main__":
     uvicorn.run(
-        app=PropertiesManager.__getattribute__(APP),
-        host=PropertiesManager.__getattribute__(HOST),
-        port=int(PropertiesManager.__getattribute__(PORT)),
+        app=PropertiesManager.__getattribute__(AppConfig.APP_INI_KEY),
+        host=PropertiesManager.__getattribute__(AppConfig.HOST_INI_KEY),
+        port=int(PropertiesManager.__getattribute__(AppConfig.PORT_INI_KEY)),
         reload=PropertiesManager.is_development_enviroment(),
     )

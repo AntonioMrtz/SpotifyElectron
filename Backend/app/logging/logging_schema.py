@@ -5,9 +5,8 @@ Logging and Format schemas
 import logging
 import logging.handlers
 import sys
-from typing import Any
 
-from app.common.config_constants import LOG_FILE, LOG_LEVEL
+from app.common.app_schema import AppConfig
 from app.logging.logging_constants import DEBUG, INFO
 from app.logging.LogPropertiesManager import LogPropertiesManager
 
@@ -82,7 +81,7 @@ class SpotifyElectronLogger:
         if not self.log_properties_manager.is_log_file_provided():
             return
         file_log_handler = logging.handlers.RotatingFileHandler(
-            self.log_properties_manager.__getattribute__(LOG_FILE),
+            self.log_properties_manager.__getattribute__(AppConfig.LOG_INI_FILE),
             maxBytes=50000,
             backupCount=5,
         )
@@ -94,7 +93,7 @@ class SpotifyElectronLogger:
         self._add_handler(stream_handler)
 
     def _add_handler(
-        self, handler: logging.StreamHandler[Any] | logging.handlers.RotatingFileHandler
+        self, handler: logging.StreamHandler | logging.handlers.RotatingFileHandler
     ):
         """Add handler to logger
 
@@ -110,7 +109,7 @@ class SpotifyElectronLogger:
 
     def _get_log_level(self) -> int:
         try:
-            log_level = self.log_properties_manager.__getattribute__(LOG_LEVEL)
+            log_level = self.log_properties_manager.__getattribute__(AppConfig.LOG_INI_LEVEL)
             if log_level is None:
                 return logging.INFO
             mapped_log_level = self._log_level_mapping[log_level]

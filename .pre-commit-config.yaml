@@ -4,6 +4,7 @@ repos:
     hooks:
       - id: check-yaml
       - id: check-json
+        exclude: ^.devcontainer/
       - id: end-of-file-fixer
       - id: trailing-whitespace
       - id: check-merge-conflict
@@ -20,3 +21,10 @@ repos:
     hooks:
       - id: prettier
         files: ^Electron/src/
+        exclude: ^Electron/src/swagger/
+
+  - repo:  https://github.com/milin/giticket
+    rev: v1.3
+    hooks:
+    - id:  giticket
+      args: ['--regex=(\d+)',"--mode=regex_match", '--format={commit_msg} | [#{ticket}]']

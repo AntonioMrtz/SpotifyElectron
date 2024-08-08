@@ -23,8 +23,8 @@ from app.auth.auth_schema import (
     UserUnauthorizedException,
     VerifyPasswordException,
 )
+from app.common.app_schema import AppEnviroment
 from app.common.PropertiesManager import PropertiesManager
-from app.common.set_up_constants import SECRET_KEY_SIGN_ENV_NAME
 from app.exceptions.base_exceptions_schema import BadParameterException
 from app.logging.logging_constants import LOGGING_AUTH_SERVICE
 from app.logging.logging_schema import SpotifyElectronLogger
@@ -73,7 +73,7 @@ def create_access_token(data: dict[str, str], expires_delta: timedelta | None = 
         to_encode.update({"exp": expire})
         encoded_jwt = jwt.encode(
             to_encode,
-            getattr(PropertiesManager, SECRET_KEY_SIGN_ENV_NAME),
+            getattr(PropertiesManager, AppEnviroment.SECRET_KEY_SIGN_ENV_NAME),
             algorithm=ALGORITHM,
         )
     except Exception as exception:
@@ -105,7 +105,7 @@ def get_jwt_token_data(
     try:
         payload = jwt.decode(
             token_raw_data,  # type: ignore
-            getattr(PropertiesManager, SECRET_KEY_SIGN_ENV_NAME),
+            getattr(PropertiesManager, AppEnviroment.SECRET_KEY_SIGN_ENV_NAME),
             algorithms=[ALGORITHM],
         )
         username = payload.get("access_token")
@@ -290,7 +290,9 @@ def validate_jwt(token: str) -> None:
     """
     try:
         decoded_token = jwt.decode(
-            token, getattr(PropertiesManager, SECRET_KEY_SIGN_ENV_NAME), ALGORITHM
+            token,
+            getattr(PropertiesManager, AppEnviroment.SECRET_KEY_SIGN_ENV_NAME),
+            ALGORITHM,
         )
         validate_token_is_expired(decoded_token)
 

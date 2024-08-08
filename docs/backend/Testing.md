@@ -30,7 +30,9 @@ Test run and generate code coverage in folder htmlcov/index.html.
 ```
 python -m pytest tests/ --cov=app/ --cov-report=html
 ```
-_If your browser is in a sandbox enviroment use `python -m http.server` inside `htmlcov/` folder to serve an HTTP Server._
+_If your browser is in a sandbox enviroment use `python -m http.server [port]` inside `htmlcov/` folder to serve an HTTP Server._
+
+_Its also possible to run tests using the vscode launch script **[Run tests - Pytest]**._
 
 ## 👷‍♂️ Develop tests
 

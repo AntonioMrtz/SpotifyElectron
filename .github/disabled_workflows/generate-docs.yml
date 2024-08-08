@@ -5,7 +5,7 @@ on:
     types: [closed]
 
 jobs:
-  generar-y-guardar-documentacion:
+  generate-and-save-docs:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
@@ -41,9 +41,23 @@ jobs:
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
           git add api-docs-spotify-electron.html
-          git commit -m "docs : Update API documentation"
+          if git commit -m "docs : Update API documentation"; then
+            echo "CHANGES=true" >> $GITHUB_ENV
+          else
+            echo "No changes to commit"
+            echo "CHANGES=false" >> $GITHUB_ENV
+          fi
 
-      - name: Pushing to the protected branch 'protected'
+      - name: Check if there are changes to push
+        id: check_changes
+        run: |
+          if [ "$CHANGES" == "true" ]; then
+            echo "Changes detected"
+          else
+            echo "No changes detected"
+          fi
+
+      - name: Pushing to the protected branch 'master'
         uses: CasperWA/push-protected@v2
         with:
           token: ${{ secrets.PAT }}

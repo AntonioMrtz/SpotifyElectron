@@ -15,6 +15,12 @@ Frontend has to set the following config in `global.ts` file:
 export const songArchitecture: SongArchitecture = SongArchitecture.STREAMING_ARCHITECTURE;
 ```
 
+Backend has to use the following config in `.env`:
+
+```
+ARCH=STREAMING_SERVERLESS_FUNCTION
+```
+
 ![STREAMING SERVERLESS ARCHITECTURE](assets/architecture/app_architecture_aws_serverless.png)
 ![STREAMING SONG ARCHITECTURE](assets/architecture/song_architecture_aws_serverless_function.png)
 
@@ -32,6 +38,12 @@ Frontend has to set the following config in `global.ts` file:
 
 ```
 export const songArchitecture: SongArchitecture = SongArchitecture.FILE_ARCHITECTURE;
+```
+
+Backend has to use the following config in `.env`:
+
+```
+ARCH=BLOB
 ```
 
 Using this config Frontend will load the `BLOB` architecture music player that manages the incoming

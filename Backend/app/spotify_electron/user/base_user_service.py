@@ -9,7 +9,7 @@ import app.spotify_electron.user.artist.artist_service as artist_service
 import app.spotify_electron.user.base_user_repository as base_user_repository
 import app.spotify_electron.user.providers.user_collection_provider as user_collection_provider
 import app.spotify_electron.user.providers.user_service_provider as user_service_provider
-import app.spotify_electron.user.user.user_service as user_service
+import app.spotify_electron.user.validations.base_user_service_validations as base_user_service_validations  # noqa: E501
 from app.auth.auth_schema import (
     TokenData,
     UserUnauthorizedException,
@@ -35,16 +35,12 @@ from app.spotify_electron.song.validations.base_song_service_validations import 
     validate_song_should_exists,
 )
 from app.spotify_electron.user.user.user_schema import (
-    UserAlreadyExistsException,
     UserBadNameException,
     UserDTO,
     UserNotFoundException,
     UserRepositoryException,
     UserServiceException,
     UserType,
-)
-from app.spotify_electron.user.validations.user_service_validations import (
-    validate_user_name_parameter,
 )
 from app.spotify_electron.utils.validations.validation_utils import validate_parameter
 
@@ -65,7 +61,7 @@ def get_user_type(user_name: str) -> UserType:
         UserType: the user type/role
     """
     validate_parameter(user_name)
-    validate_user_should_exists(user_name)
+    base_user_service_validations.validate_user_should_exists(user_name)
 
     if artist_service.does_artist_exists(user_name):
         return UserType.ARTIST
@@ -97,8 +93,8 @@ def delete_user(user_name: str) -> None:
     """
     try:
         collection = user_collection_provider.get_user_associated_collection(user_name)
-        validate_user_name_parameter(user_name)
-        validate_user_should_exists(user_name)
+        base_user_service_validations.validate_user_name_parameter(user_name)
+        base_user_service_validations.validate_user_should_exists(user_name)
         base_user_repository.delete_user(user_name, collection)
     except UserBadNameException as exception:
         base_users_service_logger.exception(f"Bad user Parameter: {user_name}")
@@ -168,11 +164,11 @@ def add_playback_history(user_name: str, song_name: str, token: TokenData) -> No
         UserServiceException: unexpected error adding playback history to user
     """
     try:
-        validate_user_name_parameter(user_name)
+        base_user_service_validations.validate_user_name_parameter(user_name)
         validate_song_name_parameter(song_name)
         auth_service.validate_jwt_user_matches_user(token, user_name)
 
-        validate_user_should_exists(user_name)
+        base_user_service_validations.validate_user_should_exists(user_name)
         validate_song_should_exists(song_name)
 
         base_user_repository.add_playback_history(
@@ -232,10 +228,10 @@ def add_saved_playlist(user_name: str, playlist_name: str, token: TokenData) -> 
         UserServiceException: unexpected error adding saved playlist to user
     """
     try:
-        validate_user_name_parameter(user_name)
+        base_user_service_validations.validate_user_name_parameter(user_name)
         validate_playlist_name_parameter(playlist_name)
         auth_service.validate_jwt_user_matches_user(token, user_name)
-        validate_user_should_exists(user_name)
+        base_user_service_validations.validate_user_should_exists(user_name)
         validate_playlist_should_exists(playlist_name)
 
         base_user_repository.add_saved_playlist(
@@ -291,10 +287,10 @@ def delete_saved_playlist(user_name: str, playlist_name: str, token: TokenData) 
         UserServiceException: unexpected error deleting saved playlist from user
     """
     try:
-        validate_user_name_parameter(user_name)
+        base_user_service_validations.validate_user_name_parameter(user_name)
         playlist_service.validate_playlist_name_parameter(playlist_name)
         auth_service.validate_jwt_user_matches_user(token, user_name)
-        validate_user_should_exists(user_name)
+        base_user_service_validations.validate_user_should_exists(user_name)
         playlist_service.validate_playlist_should_exists(playlist_name)
 
         base_user_repository.delete_saved_playlist(
@@ -346,10 +342,10 @@ def add_playlist_to_owner(user_name: str, playlist_name: str, token: TokenData) 
         UserServiceException: unexpected error adding playlist to owner
     """
     try:
-        validate_user_name_parameter(user_name)
+        base_user_service_validations.validate_user_name_parameter(user_name)
         validate_playlist_name_parameter(playlist_name)
         auth_service.validate_jwt_user_matches_user(token, user_name)
-        validate_user_should_exists(user_name)
+        base_user_service_validations.validate_user_should_exists(user_name)
         validate_playlist_should_exists(playlist_name)
 
         base_user_repository.add_playlist_to_owner(
@@ -390,7 +386,7 @@ def delete_playlist_from_owner(playlist_name: str) -> None:
 
         user_name = playlist_service.get_playlist(playlist_name).owner
 
-        validate_user_should_exists(user_name)
+        base_user_service_validations.validate_user_should_exists(user_name)
 
         base_user_repository.delete_playlist_from_owner(
             user_name=user_name,
@@ -448,7 +444,7 @@ def get_user_relevant_playlists(user_name: str) -> list[PlaylistDTO]:
         list[PlaylistDTO]: the relevant playlists
     """
     try:
-        validate_user_should_exists(user_name)
+        base_user_service_validations.validate_user_should_exists(user_name)
         collection = user_collection_provider.get_user_associated_collection(user_name)
         relevant_playlist_names = base_user_repository.get_user_relevant_playlists(
             user_name, collection
@@ -480,36 +476,3 @@ def get_user_relevant_playlists(user_name: str) -> list[PlaylistDTO]:
         raise UserServiceException from exception
     else:
         return relevant_playlists
-
-
-# TODO move to validations folder
-def validate_user_should_exists(user_name: str) -> None:
-    """Raises an exception if user doesnt exists
-
-    Args:
-        user_name (str): the user name
-
-    Raises:
-        UserNotFoundException: if the user doesnt exists
-    """
-    result_artist_exists = artist_service.does_artist_exists(user_name)
-    result_user_exists = user_service.does_user_exists(user_name)
-
-    if not result_user_exists and not result_artist_exists:
-        raise UserNotFoundException
-
-
-def validate_user_should_not_exist(user_name: str) -> None:
-    """Raises an exception if the user exists
-
-    Args:
-        user_name (str): the user name
-
-    Raises:
-        UserAlreadyExistsException: if the user exists
-    """
-    result_artist_exists = artist_service.does_artist_exists(user_name)
-    result_user_exists = user_service.does_user_exists(user_name)
-
-    if result_user_exists or result_artist_exists:
-        raise UserAlreadyExistsException

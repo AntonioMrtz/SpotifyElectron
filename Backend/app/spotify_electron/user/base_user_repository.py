@@ -12,7 +12,7 @@ from app.spotify_electron.user.user.user_schema import (
     UserGetPasswordException,
     UserRepositoryException,
 )
-from app.spotify_electron.user.validations.base_users_repository_validations import (
+from app.spotify_electron.user.validations.base_user_repository_validations import (
     validate_password_exists,
     validate_user_delete_count,
 )

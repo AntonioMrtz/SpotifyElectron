@@ -14,7 +14,7 @@ from app.spotify_electron.user.user.user_schema import (
     UserNotFoundException,
     UserRepositoryException,
 )
-from app.spotify_electron.user.validations.base_users_repository_validations import (
+from app.spotify_electron.user.validations.base_user_repository_validations import (
     validate_user_create,
     validate_user_exists,
     validate_user_update,

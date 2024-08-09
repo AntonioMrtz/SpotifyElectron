@@ -12,7 +12,7 @@ from app.spotify_electron.user.user.user_schema import (
     UserRepositoryException,
     get_user_dao_from_document,
 )
-from app.spotify_electron.user.validations.base_users_repository_validations import (
+from app.spotify_electron.user.validations.base_user_repository_validations import (
     validate_user_create,
     validate_user_exists,
 )

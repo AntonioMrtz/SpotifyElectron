@@ -10,6 +10,7 @@ from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 
 import app.spotify_electron.user.base_user_service as base_user_service
+import app.spotify_electron.user.validations.base_user_service_validations as base_user_service_validations  # noqa: E501
 from app.auth.auth_schema import (
     BadJWTTokenProvidedException,
     CreateJWTException,
@@ -236,7 +237,7 @@ def login_user(name: str, password: str) -> str:
     try:
         validate_parameter(name)
         validate_parameter(password)
-        base_user_service.validate_user_should_exists(name)
+        base_user_service_validations.validate_user_should_exists(name)
 
         user_type = base_user_service.get_user_type(user_name=name)
         user_password = base_user_service.get_user_password(user_name=name)

@@ -4,9 +4,9 @@ User service for handling business logic
 
 import app.auth.auth_service as auth_service
 import app.spotify_electron.user.base_user_repository as base_user_repository
-import app.spotify_electron.user.base_user_service as base_user_service
 import app.spotify_electron.user.providers.user_collection_provider as user_collection_provider
 import app.spotify_electron.user.user.user_repository as user_repository
+import app.spotify_electron.user.validations.base_user_service_validations as base_user_service
 from app.logging.logging_constants import LOGGING_USER_SERVICE
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.user.user.user_schema import (
@@ -17,9 +17,6 @@ from app.spotify_electron.user.user.user_schema import (
     UserRepositoryException,
     UserServiceException,
     get_user_dto_from_dao,
-)
-from app.spotify_electron.user.validations.user_service_validations import (
-    validate_user_name_parameter,
 )
 from app.spotify_electron.utils.date.date_utils import get_current_iso8601_date
 
@@ -58,7 +55,7 @@ def get_user(user_name: str) -> UserDTO:
         UserDTO: the user
     """
     try:
-        validate_user_name_parameter(user_name)
+        base_user_service.validate_user_name_parameter(user_name)
         user = user_repository.get_user(user_name)
         user_dto = get_user_dto_from_dao(user)
     except UserBadNameException as exception:
@@ -96,7 +93,7 @@ def create_user(user_name: str, photo: str, password: str) -> None:
         UserServiceException: unexpected error while creating user
     """
     try:
-        validate_user_name_parameter(user_name)
+        base_user_service.validate_user_name_parameter(user_name)
         base_user_service.validate_user_should_not_exist(user_name)
 
         date = get_current_iso8601_date()

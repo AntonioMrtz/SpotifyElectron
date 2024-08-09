@@ -6,8 +6,8 @@ import app.auth.auth_service as auth_service
 import app.spotify_electron.song.base_song_service as base_song_service
 import app.spotify_electron.user.artist.artist_repository as artist_repository
 import app.spotify_electron.user.base_user_repository as base_user_repository
-import app.spotify_electron.user.base_user_service as base_user_service
 import app.spotify_electron.user.providers.user_collection_provider as user_collection_provider
+import app.spotify_electron.user.validations.base_user_service_validations as base_user_service
 from app.logging.logging_constants import LOGGING_ARTIST_SERVICE
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.song.base_song_schema import (
@@ -28,9 +28,6 @@ from app.spotify_electron.user.user.user_schema import (
     UserRepositoryException,
     UserServiceException,
 )
-from app.spotify_electron.user.validations.user_service_validations import (
-    validate_user_name_parameter,
-)
 from app.spotify_electron.utils.date.date_utils import get_current_iso8601_date
 
 artist_service_logger = SpotifyElectronLogger(LOGGING_ARTIST_SERVICE).getLogger()
@@ -50,7 +47,7 @@ def add_song_artist(artist_name: str, song_name: str):
         UserServiceException: unexpected error adding song to artist
     """
     try:
-        validate_user_name_parameter(artist_name)
+        base_user_service.validate_user_name_parameter(artist_name)
         validate_song_name_parameter(song_name)
 
         base_user_service.validate_user_should_exists(artist_name)
@@ -93,7 +90,7 @@ def delete_song_from_artist(artist_name: str, song_name: str):
         UserServiceException: unexpected error removing song from artist
     """
     try:
-        validate_user_name_parameter(artist_name)
+        base_user_service.validate_user_name_parameter(artist_name)
         validate_song_name_parameter(song_name)
 
         base_user_service.validate_user_should_exists(artist_name)
@@ -148,7 +145,7 @@ def get_artist(artist_name: str) -> ArtistDTO:
         ArtistDTO: the artist
     """
     try:
-        validate_user_name_parameter(artist_name)
+        base_user_service.validate_user_name_parameter(artist_name)
         artist = artist_repository.get_user(artist_name)
         artist_dto = get_artist_dto_from_dao(artist)
     except UserBadNameException as exception:
@@ -186,7 +183,7 @@ def create_artist(user_name: str, photo: str, password: str) -> None:
         UserServiceException: unexpected error while creating artist
     """
     try:
-        validate_user_name_parameter(user_name)
+        base_user_service.validate_user_name_parameter(user_name)
         base_user_service.validate_user_should_not_exist(user_name)
 
         date = get_current_iso8601_date()
@@ -260,7 +257,7 @@ def get_streams_artist(user_name: str) -> int:
         int: the total for all artist songs
     """
     try:
-        validate_user_name_parameter(user_name)
+        base_user_service.validate_user_name_parameter(user_name)
         base_user_service.validate_user_should_exists(user_name)
 
         return base_song_service.get_artist_streams(user_name)

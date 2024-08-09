@@ -6,7 +6,7 @@ import app.spotify_electron.song.aws.serverless_function.song_repository as song
 import app.spotify_electron.song.aws.serverless_function.song_serverless_function_api as song_serverless_function_api  # noqa: E501
 import app.spotify_electron.song.base_song_repository as base_song_repository
 import app.spotify_electron.user.artist.artist_service as artist_service
-import app.spotify_electron.user.base_user_service as base_user_service
+import app.spotify_electron.user.validations.base_user_service_validations as base_user_service
 from app.auth.auth_schema import (
     TokenData,
     UserUnauthorizedException,
@@ -45,9 +45,6 @@ from app.spotify_electron.user.user.user_schema import (
     UserBadNameException,
     UserNotFoundException,
     UserServiceException,
-)
-from app.spotify_electron.user.validations.user_service_validations import (
-    validate_user_name_parameter,
 )
 from app.spotify_electron.utils.audio_management.audio_management_utils import (
     EncodingFileException,
@@ -153,7 +150,7 @@ async def create_song(  # noqa: C901
 
     try:
         validate_song_name_parameter(name)
-        validate_user_name_parameter(artist)
+        base_user_service.validate_user_name_parameter(artist)
         Genre.check_valid_genre(genre.value)
 
         validate_song_should_not_exists(name)

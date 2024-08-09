@@ -6,7 +6,7 @@ Redirects to the specific architecture service in case the method is not common
 """
 
 import app.spotify_electron.song.base_song_repository as base_song_repository
-import app.spotify_electron.user.base_user_service as base_user_service
+import app.spotify_electron.user.validations.base_user_service_validations as base_user_service
 from app.logging.logging_constants import LOGGING_BASE_SONG_SERVICE
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.genre.genre_schema import Genre, GenreNotValidException

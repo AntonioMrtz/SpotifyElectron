@@ -5,6 +5,7 @@ Playlist service for handling business logic
 import app.auth.auth_service as auth_service
 import app.spotify_electron.playlist.playlist_repository as playlist_repository
 import app.spotify_electron.user.base_user_service as base_user_service
+import app.spotify_electron.user.validations.base_user_service_validations as base_user_service_validations  # noqa: E501
 from app.auth.auth_schema import (
     TokenData,
     UserUnauthorizedException,
@@ -117,7 +118,7 @@ def create_playlist(
 
         validate_playlist_name_parameter(name)
         validate_playlist_should_not_exists(name)
-        base_user_service.validate_user_should_exists(owner)
+        base_user_service_validations.validate_user_should_exists(owner)
 
         playlist_repository.create_playlist(
             name,

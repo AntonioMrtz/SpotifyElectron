@@ -61,14 +61,14 @@ def get_song_metadata(name: str) -> SongMetadataDTO:
         song_dto = get_song_metadata_dto_from_dao(song_metadata_dao)
 
     except SongBadNameException as exception:
-        base_song_service_logger.exception(f"Bad Song Name Parameter : {name}")
+        base_song_service_logger.exception(f"Bad Song Name Parameter: {name}")
         raise SongBadNameException from exception
     except SongNotFoundException as exception:
-        base_song_service_logger.exception(f"Song not found : {name}")
+        base_song_service_logger.exception(f"Song not found: {name}")
         raise SongNotFoundException from exception
     except SongRepositoryException as exception:
         base_song_service_logger.exception(
-            f"Unexpected error in Song Repository getting song metadata : {name}"
+            f"Unexpected error in Song Repository getting song metadata: {name}"
         )
         raise SongServiceException from exception
     except Exception as exception:
@@ -130,16 +130,16 @@ def increase_song_streams(name: str) -> None:
         validate_song_should_exists(name)
         base_song_repository.increase_song_streams(name)
     except SongNotFoundException as exception:
-        base_song_service_logger.exception(f"Song not found : {name}")
+        base_song_service_logger.exception(f"Song not found: {name}")
         raise SongNotFoundException from exception
     except SongRepositoryException as exception:
         base_song_service_logger.exception(
-            f"Unexpected error in Song Repository increasing song : {name} streams"
+            f"Unexpected error in Song Repository increasing song: {name} streams"
         )
         raise SongServiceException from exception
     except Exception as exception:
         base_song_service_logger.exception(
-            f"Unexpected error in Song Service increasing song : {name} streams"
+            f"Unexpected error in Song Service increasing song: {name} streams"
         )
         raise SongServiceException from exception
 
@@ -176,7 +176,7 @@ def get_artist_streams(artist_name: str) -> int:
         base_user_service.validate_user_should_exists(artist_name)
         return base_song_repository.get_artist_total_streams(artist_name)
     except UserNotFoundException as exception:
-        base_song_service_logger.exception(f"User not found : {artist_name}")
+        base_song_service_logger.exception(f"User not found: {artist_name}")
         raise UserNotFoundException from exception
     except SongRepositoryException as exception:
         base_song_service_logger.exception(
@@ -214,11 +214,11 @@ def get_songs_by_genre(genre: Genre) -> list[SongMetadataDTO]:
         raise GenreNotValidException from exception
     except SongRepositoryException as exception:
         base_song_service_logger.exception(
-            f"Unexpected error in Song Repository getting songs by genre : {genre}"
+            f"Unexpected error in Song Repository getting songs by genre: {genre}"
         )
         raise SongServiceException from exception
     except Exception as exception:
         base_song_service_logger.exception(
-            f"Unexpected error in Song Service getting songs by genre : {genre}"
+            f"Unexpected error in Song Service getting songs by genre: {genre}"
         )
         raise SongServiceException from exception

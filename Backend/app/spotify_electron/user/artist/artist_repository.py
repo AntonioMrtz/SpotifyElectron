@@ -87,7 +87,7 @@ def create_artist(name: str, photo: str, password: bytes, current_date: str) -> 
         )
         raise UserRepositoryException from exception
     else:
-        artist_repository_logger.info(f"Artist added to repository : {artist}")
+        artist_repository_logger.info(f"Artist added to repository: {artist}")
 
 
 def get_all_artists() -> list[ArtistDAO]:

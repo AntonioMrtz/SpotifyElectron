@@ -62,19 +62,19 @@ def get_user(user_name: str) -> UserDTO:
         user = user_repository.get_user(user_name)
         user_dto = get_user_dto_from_dao(user)
     except UserBadNameException as exception:
-        user_service_logger.exception(f"Bad User Name Parameter : {user_name}")
+        user_service_logger.exception(f"Bad User Name Parameter: {user_name}")
         raise UserBadNameException from exception
     except UserNotFoundException as exception:
-        user_service_logger.exception(f"User not found : {user_name}")
+        user_service_logger.exception(f"User not found: {user_name}")
         raise UserNotFoundException from exception
     except UserRepositoryException as exception:
         user_service_logger.exception(
-            f"Unexpected error in User Repository getting user : {user_name}"
+            f"Unexpected error in User Repository getting user: {user_name}"
         )
         raise UserServiceException from exception
     except Exception as exception:
         user_service_logger.exception(
-            f"Unexpected error in User Service getting user : {user_name}"
+            f"Unexpected error in User Service getting user: {user_name}"
         )
         raise UserServiceException from exception
     else:
@@ -111,19 +111,19 @@ def create_user(user_name: str, photo: str, password: str) -> None:
         )
         user_service_logger.info(f"User {user_name} created successfully")
     except UserAlreadyExistsException as exception:
-        user_service_logger.exception(f"User already exists : {user_name}")
+        user_service_logger.exception(f"User already exists: {user_name}")
         raise UserAlreadyExistsException from exception
     except UserBadNameException as exception:
-        user_service_logger.exception(f"Bad User Name Parameter : {user_name}")
+        user_service_logger.exception(f"Bad User Name Parameter: {user_name}")
         raise UserBadNameException from exception
     except UserRepositoryException as exception:
         user_service_logger.exception(
-            f"Unexpected error in User Repository creating user : {user_name}"
+            f"Unexpected error in User Repository creating user: {user_name}"
         )
         raise UserServiceException from exception
     except Exception as exception:
         user_service_logger.exception(
-            f"Unexpected error in User Service creating user : {user_name}"
+            f"Unexpected error in User Service creating user: {user_name}"
         )
         raise UserServiceException from exception
 

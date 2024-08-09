@@ -9,7 +9,9 @@ from fastapi import APIRouter, Depends
 from fastapi.responses import Response
 from starlette.status import (
     HTTP_200_OK,
+    HTTP_201_CREATED,
     HTTP_202_ACCEPTED,
+    HTTP_204_NO_CONTENT,
     HTTP_400_BAD_REQUEST,
     HTTP_403_FORBIDDEN,
     HTTP_404_NOT_FOUND,
@@ -49,7 +51,7 @@ router = APIRouter(
 
 
 @router.get("/whoami")
-def get_whoAmI(token: Annotated[TokenData, Depends(JWTBearer())]) -> Response:
+def get_who_am_i(token: Annotated[TokenData, Depends(JWTBearer())]) -> Response:
     """Returns token info from JWT
 
     Args:
@@ -118,7 +120,7 @@ def create_user(name: str, photo: str, password: str) -> Response:
     """
     try:
         user_service.create_user(name, photo, password)
-        return Response(None, 201)
+        return Response(None, HTTP_201_CREATED)
     except (UserBadNameException, UserAlreadyExistsException):
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
@@ -177,7 +179,7 @@ def patch_playback_history(
         base_user_service.add_playback_history(
             user_name=name, song_name=song_name, token=token
         )
-        return Response(None, 204)
+        return Response(None, HTTP_204_NO_CONTENT)
     except UserBadNameException:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
@@ -228,7 +230,7 @@ def patch_saved_playlists(
     """
     try:
         base_user_service.add_saved_playlist(name, playlist_name, token=token)
-        return Response(None, 204)
+        return Response(None, HTTP_204_NO_CONTENT)
     except UserBadNameException:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
@@ -274,7 +276,7 @@ def delete_saved_playlists(
     """
     try:
         base_user_service.delete_saved_playlist(name, playlist_name, token=token)
-        return Response(None, 202)
+        return Response(None, HTTP_202_ACCEPTED)
     except UserBadNameException:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
@@ -305,6 +307,39 @@ def delete_saved_playlists(
             status_code=HTTP_403_FORBIDDEN,
             content=PropertiesMessagesManager.tokenInvalidCredentials,
             headers={"WWW-Authenticate": "Bearer"},
+        )
+    except (Exception, UserServiceException):
+        return Response(
+            status_code=HTTP_500_INTERNAL_SERVER_ERROR,
+            content=PropertiesMessagesManager.commonInternalServerError,
+        )
+
+
+@router.get("/{name}/relevant_playlists")
+def get_user_relevant_playlists(name: str) -> Response:
+    """Get relevant playlists for user
+
+    Args:
+        name (str): user name
+    """
+    try:
+        playlists = base_user_service.get_user_relevant_playlists(name)
+        playlists_json = json_converter_utils.get_json_from_model(playlists)
+        return Response(playlists_json, media_type="application/json", status_code=HTTP_200_OK)
+    except UserBadNameException:
+        return Response(
+            status_code=HTTP_400_BAD_REQUEST,
+            content=PropertiesMessagesManager.userBadName,
+        )
+    except UserNotFoundException:
+        return Response(
+            status_code=HTTP_404_NOT_FOUND,
+            content=PropertiesMessagesManager.userNotFound,
+        )
+    except JsonEncodeException:
+        return Response(
+            status_code=HTTP_500_INTERNAL_SERVER_ERROR,
+            content=PropertiesMessagesManager.commonEncodingError,
         )
     except (Exception, UserServiceException):
         return Response(

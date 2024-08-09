@@ -84,49 +84,28 @@ export default function Sidebar({ triggerReloadSidebar }: PropsSidebar) {
   const handlePlaylists = useCallback(async () => {
     const username = Token.getTokenUsername();
 
-    const fetchUrlGetUser = `${Global.backendBaseUrl}users/${username}`;
-    fetch(fetchUrlGetUser, {
+    const fetchURLGetRelevantPlaylistsUser = `${Global.backendBaseUrl}users/${username}/relevant_playlists`;
+    fetch(fetchURLGetRelevantPlaylistsUser, {
       credentials: 'include',
     })
-      .then((resFetchUrlGetUser) => resFetchUrlGetUser.json())
-      .then((resFetchUrlGetUserJson) => {
-        return resFetchUrlGetUserJson.saved_playlists
-          .concat(resFetchUrlGetUserJson.playlists)
-          .join(',');
-      })
-      .then((sidebarPlaylistNames) => {
-        if (sidebarPlaylistNames) {
-          return fetch(
-            `${Global.backendBaseUrl}playlists/selected/${sidebarPlaylistNames}`,
-            {
-              credentials: 'include',
-            },
-          );
-        }
-        return null;
-      })
       .then((res) => res?.json())
       .then((res) => {
-        if (res.playlists) {
-          const propsPlaylists: PropsPlaylist[] = [];
+        const propsPlaylists: PropsPlaylist[] = [];
 
-          res.playlists.forEach((playlist: any) => {
-            const propsPlaylist: PropsPlaylist = {
-              name: playlist.name,
-              photo:
-                playlist.photo === ''
-                  ? defaultThumbnailPlaylist
-                  : playlist.photo,
-              owner: playlist.owner,
-              handleUrlPlaylistClicked,
-              reloadSidebar: handlePlaylists,
-              playlistStyle: '',
-            };
+        res.forEach((playlist: any) => {
+          const propsPlaylist: PropsPlaylist = {
+            name: playlist.name,
+            photo:
+              playlist.photo === '' ? defaultThumbnailPlaylist : playlist.photo,
+            owner: playlist.owner,
+            handleUrlPlaylistClicked,
+            reloadSidebar: handlePlaylists,
+            playlistStyle: '',
+          };
 
-            propsPlaylists.push(propsPlaylist);
-          });
-          setPlaylists(propsPlaylists);
-        }
+          propsPlaylists.push(propsPlaylist);
+        });
+        setPlaylists(propsPlaylists);
 
         setLoading(false);
         return null;

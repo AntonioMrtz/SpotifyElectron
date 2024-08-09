@@ -10,6 +10,7 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.responses import Response
 from starlette.status import (
     HTTP_200_OK,
+    HTTP_201_CREATED,
     HTTP_400_BAD_REQUEST,
     HTTP_404_NOT_FOUND,
     HTTP_500_INTERNAL_SERVER_ERROR,
@@ -87,7 +88,7 @@ def create_artist(
     """
     try:
         artist_service.create_artist(name, photo, password)
-        return Response(None, 201)
+        return Response(None, HTTP_201_CREATED)
     except (UserBadNameException, UserAlreadyExistsException):
         return Response(
             status_code=HTTP_400_BAD_REQUEST,

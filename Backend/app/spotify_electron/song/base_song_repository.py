@@ -47,7 +47,7 @@ def check_song_exists(name: str) -> bool:
         raise SongRepositoryException from exception
     else:
         result = song is not None
-        song_repository_logger.debug(f"Song with name {name} exists : {result}")
+        song_repository_logger.debug(f"Song with name {name} exists: {result}")
         return result
 
 

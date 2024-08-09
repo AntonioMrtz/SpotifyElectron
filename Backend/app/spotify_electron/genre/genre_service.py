@@ -32,5 +32,5 @@ def get_genres() -> str:
         genre_service_logger.exception("Unexpected error getting genres")
         raise GenreServiceException from exception
     else:
-        genre_service_logger.info(f"Obtained genres : {genres_json}")
+        genre_service_logger.info(f"Obtained genres: {genres_json}")
         return genres_json

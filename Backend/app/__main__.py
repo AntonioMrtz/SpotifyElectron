@@ -43,7 +43,7 @@ async def lifespan_handler(app: FastAPI):
 
     Parameters
     ----------
-    app : FastAPI
+    app: FastAPI
         the app object that is going to be created
 
     """

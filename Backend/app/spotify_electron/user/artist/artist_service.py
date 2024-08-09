@@ -58,13 +58,13 @@ def add_song_artist(artist_name: str, song_name: str):
         artist_repository.add_song_to_artist(artist_name, song_name)
 
     except UserBadNameException as exception:
-        artist_service_logger.exception(f"Bad Artist Name Parameter : {artist_name}")
+        artist_service_logger.exception(f"Bad Artist Name Parameter: {artist_name}")
         raise UserBadNameException from exception
     except UserNotFoundException as exception:
-        artist_service_logger.exception(f"Artist not found : {artist_name}")
+        artist_service_logger.exception(f"Artist not found: {artist_name}")
         raise UserNotFoundException from exception
     except SongBadNameException as exception:
-        artist_service_logger.exception(f"Bad Song Name Parameter : {song_name}")
+        artist_service_logger.exception(f"Bad Song Name Parameter: {song_name}")
         raise SongBadNameException from exception
     except UserRepositoryException as exception:
         artist_service_logger.exception(
@@ -100,13 +100,13 @@ def delete_song_from_artist(artist_name: str, song_name: str):
 
         artist_repository.delete_song_from_artist(artist_name, song_name)
     except UserBadNameException as exception:
-        artist_service_logger.exception(f"Bad Artist Name Parameter : {artist_name}")
+        artist_service_logger.exception(f"Bad Artist Name Parameter: {artist_name}")
         raise UserBadNameException from exception
     except UserNotFoundException as exception:
-        artist_service_logger.exception(f"Artist not found : {artist_name}")
+        artist_service_logger.exception(f"Artist not found: {artist_name}")
         raise UserNotFoundException from exception
     except SongBadNameException as exception:
-        artist_service_logger.exception(f"Bad Song Name Parameter : {song_name}")
+        artist_service_logger.exception(f"Bad Song Name Parameter: {song_name}")
         raise SongBadNameException from exception
     except UserRepositoryException as exception:
         artist_service_logger.exception(
@@ -152,19 +152,19 @@ def get_artist(artist_name: str) -> ArtistDTO:
         artist = artist_repository.get_user(artist_name)
         artist_dto = get_artist_dto_from_dao(artist)
     except UserBadNameException as exception:
-        artist_service_logger.exception(f"Bad Artist Name Parameter : {artist_name}")
+        artist_service_logger.exception(f"Bad Artist Name Parameter: {artist_name}")
         raise UserBadNameException from exception
     except UserNotFoundException as exception:
-        artist_service_logger.exception(f"Artist not found : {artist_name}")
+        artist_service_logger.exception(f"Artist not found: {artist_name}")
         raise UserNotFoundException from exception
     except UserRepositoryException as exception:
         artist_service_logger.exception(
-            f"Unexpected error in Artist Repository getting user : {artist_name}"
+            f"Unexpected error in Artist Repository getting user: {artist_name}"
         )
         raise UserServiceException from exception
     except Exception as exception:
         artist_service_logger.exception(
-            f"Unexpected error in Artist Service getting artist : {artist_name}"
+            f"Unexpected error in Artist Service getting artist: {artist_name}"
         )
         raise UserServiceException from exception
     else:
@@ -201,19 +201,19 @@ def create_artist(user_name: str, photo: str, password: str) -> None:
         )
         artist_service_logger.info(f"Artist {user_name} created successfully")
     except UserAlreadyExistsException as exception:
-        artist_service_logger.exception(f"Artist already exists : {user_name}")
+        artist_service_logger.exception(f"Artist already exists: {user_name}")
         raise UserAlreadyExistsException from exception
     except UserBadNameException as exception:
-        artist_service_logger.exception(f"Bad Artist Name Parameter : {user_name}")
+        artist_service_logger.exception(f"Bad Artist Name Parameter: {user_name}")
         raise UserBadNameException from exception
     except UserRepositoryException as exception:
         artist_service_logger.exception(
-            f"Unexpected error in Artist Repository creating artist : {user_name}"
+            f"Unexpected error in Artist Repository creating artist: {user_name}"
         )
         raise UserServiceException from exception
     except Exception as exception:
         artist_service_logger.exception(
-            f"Unexpected error in Artist Service creating artist : {user_name}"
+            f"Unexpected error in Artist Service creating artist: {user_name}"
         )
         raise UserServiceException from exception
 
@@ -265,24 +265,24 @@ def get_streams_artist(user_name: str) -> int:
 
         return base_song_service.get_artist_streams(user_name)
     except UserNotFoundException as exception:
-        artist_service_logger.exception(f"Artist not found : {user_name}")
+        artist_service_logger.exception(f"Artist not found: {user_name}")
         raise UserNotFoundException from exception
     except UserBadNameException as exception:
-        artist_service_logger.exception(f"Bad Artist Name Parameter : {user_name}")
+        artist_service_logger.exception(f"Bad Artist Name Parameter: {user_name}")
         raise UserBadNameException from exception
     except UserRepositoryException as exception:
         artist_service_logger.exception(
-            f"Unexpected error in Artist Repository getting artist : {user_name}"
+            f"Unexpected error in Artist Repository getting artist: {user_name}"
         )
         raise UserServiceException from exception
     except SongServiceException as exception:
         artist_service_logger.exception(
-            f"Unexpected error in Song Service getting artist : {user_name}"
+            f"Unexpected error in Song Service getting artist: {user_name}"
         )
         raise UserServiceException from exception
     except Exception as exception:
         artist_service_logger.exception(
-            f"Unexpected error in Artist Service getting artist : {user_name}"
+            f"Unexpected error in Artist Service getting artist: {user_name}"
         )
         raise UserServiceException from exception
 

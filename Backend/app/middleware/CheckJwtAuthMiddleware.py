@@ -76,7 +76,7 @@ class CheckJwtAuthMiddleware(BaseHTTPMiddleware):
         try:
             if self.bypass_request(request):
                 check_jwt_auth_middleware_logger.debug(
-                    f"Bypassed request : {request.method} {request.url}"
+                    f"Bypassed request: {request.method} {request.url}"
                 )
                 return await call_next(request)
 

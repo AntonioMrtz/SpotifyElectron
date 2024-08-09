@@ -85,7 +85,7 @@ class _PropertiesManager:
                 f"No architecture type selected, using {AppEnviroment.DEFAULT_ARCHITECTURE}"
             )
         self.__setattr__(AppEnviroment.ARCHITECTURE_ENV_NAME, architecture_type)
-        properties_manager_logger.info(f"Architecture selected : {architecture_type}")
+        properties_manager_logger.info(f"Architecture selected: {architecture_type}")
 
     def _load_env_variables(self, env_names: list[str]):
         """Load enviroment variables into class attributes
@@ -104,7 +104,7 @@ class _PropertiesManager:
                 env_names.remove(env_name)
                 continue
             self.__setattr__(env_name, env_variable_value)
-        properties_manager_logger.info(f"Enviroment variables loaded : {env_names}")
+        properties_manager_logger.info(f"Enviroment variables loaded: {env_names}")
 
     def get_enviroment(self) -> AppEnvironmentMode:
         """Get current enviroment

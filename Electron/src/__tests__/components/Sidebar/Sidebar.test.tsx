@@ -9,11 +9,11 @@ import UserType from 'utils/role';
 
 const playlistName = 'playlisttest';
 const songName = 'songName';
-const userName = 'prueba';
+const username = 'prueba';
 const roleUser = UserType.ARTIST;
 
 const artistMockFetch = {
-  name: userName,
+  name: username,
   photo: 'photo',
   register_date: 'date',
   password: 'hashpassword',
@@ -32,7 +32,7 @@ const playlistDTOMockFetch = {
   song_names: [],
 };
 
-jest.spyOn(Token, 'getTokenUsername').mockReturnValue(userName);
+jest.spyOn(Token, 'getTokenUsername').mockReturnValue(username);
 jest.spyOn(Token, 'getTokenRole').mockReturnValue(roleUser);
 
 test('render Sidebar', async () => {
@@ -46,14 +46,10 @@ test('render Sidebar', async () => {
       });
     }
     if (
-      url ===
-      `${Global.backendBaseUrl}playlists/selected/${playlistName},${playlistName}`
+      url === `${Global.backendBaseUrl}users/${username}/relevant_playlists`
     ) {
       return Promise.resolve({
-        json: () =>
-          Promise.resolve({
-            playlists: [playlistDTOMockFetch],
-          }),
+        json: () => Promise.resolve([playlistDTOMockFetch]),
         status: 200,
       }).catch((error) => {
         console.log(error);

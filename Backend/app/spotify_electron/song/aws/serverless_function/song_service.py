@@ -108,23 +108,21 @@ def get_song(name: str) -> SongDTO:
         song_dto = get_song_dto_from_dao(song_dao, streaming_url)
 
     except SongBadNameException as exception:
-        song_service_logger.exception(f"Bad Song Name Parameter : {name}")
+        song_service_logger.exception(f"Bad Song Name Parameter: {name}")
         raise SongBadNameException from exception
     except SongNotFoundException as exception:
-        song_service_logger.exception(f"Song not found : {name}")
+        song_service_logger.exception(f"Song not found: {name}")
         raise SongNotFoundException from exception
     except SongGetUrlStreamingException as exception:
         song_service_logger.exception(f"Error getting song streaming url for: {name}")
         raise SongServiceException from exception
     except SongRepositoryException as exception:
         song_service_logger.exception(
-            f"Unexpected error in Song Repository getting song : {name}"
+            f"Unexpected error in Song Repository getting song: {name}"
         )
         raise SongServiceException from exception
     except Exception as exception:
-        song_service_logger.exception(
-            f"Unexpected error in Song Service getting song : {name}"
-        )
+        song_service_logger.exception(f"Unexpected error in Song Service getting song: {name}")
         raise SongServiceException from exception
     else:
         song_service_logger.info(f"Song {name} retrieved successfully")
@@ -183,7 +181,7 @@ async def create_song(  # noqa: C901
         song_service_logger.exception(f"Bad genre provided {genre}")
         raise GenreNotValidException from exception
     except UserBadNameException as exception:
-        song_service_logger.exception(f"Bad Artist Name Parameter : {artist}")
+        song_service_logger.exception(f"Bad Artist Name Parameter: {artist}")
         raise UserBadNameException from exception
     except UserNotFoundException as exception:
         song_service_logger.exception(f"Artist {artist} not found")
@@ -192,7 +190,7 @@ async def create_song(  # noqa: C901
         song_service_logger.exception(f"Error encoding file with name {name}")
         raise EncodingFileException from exception
     except SongBadNameException as exception:
-        song_service_logger.exception(f"Bad Song Name Parameter : {name}")
+        song_service_logger.exception(f"Bad Song Name Parameter: {name}")
         raise SongBadNameException from exception
     except UserUnauthorizedException as exception:
         song_service_logger.exception(
@@ -200,21 +198,21 @@ async def create_song(  # noqa: C901
         )
         raise SongUnAuthorizedException from exception
     except SongCreateSongStreamingException as exception:
-        song_service_logger.exception(f"Error creating song streaming : {name}")
+        song_service_logger.exception(f"Error creating song streaming: {name}")
         raise SongServiceException from exception
     except UserServiceException as exception:
         song_service_logger.exception(
-            f"Unexpected error in User Service while creating song : {name}"
+            f"Unexpected error in User Service while creating song: {name}"
         )
         raise SongServiceException from exception
     except SongRepositoryException as exception:
         song_service_logger.exception(
-            f"Unexpected error in Song Repository creating song : {name}"
+            f"Unexpected error in Song Repository creating song: {name}"
         )
         raise SongServiceException from exception
     except Exception as exception:
         song_service_logger.exception(
-            f"Unexpected error in Song Service creating song : {name}"
+            f"Unexpected error in Song Service creating song: {name}"
         )
         raise SongServiceException from exception
 
@@ -248,24 +246,24 @@ def delete_song(name: str) -> None:
         base_song_repository.delete_song(name)
 
     except SongNotFoundException as exception:
-        song_service_logger.exception(f"Song not found : {name}")
+        song_service_logger.exception(f"Song not found: {name}")
         raise SongNotFoundException from exception
     except SongBadNameException as exception:
-        song_service_logger.exception(f"Bad Song Name Parameter : {name}")
+        song_service_logger.exception(f"Bad Song Name Parameter: {name}")
         raise SongBadNameException from exception
     except UserNotFoundException as exception:
         song_service_logger.exception(f"User {artist_name} not found")
         raise UserNotFoundException from exception
     except SongRepositoryException as exception:
         song_service_logger.exception(
-            f"Unexpected error in Song Repository deleting song : {name}"
+            f"Unexpected error in Song Repository deleting song: {name}"
         )
         raise SongServiceException from exception
     except SongDeleteSongStreamingException as exception:
-        song_service_logger.exception(f"Error deleting song streaming : {name}")
+        song_service_logger.exception(f"Error deleting song streaming: {name}")
         raise SongServiceException from exception
     except Exception as exception:
         song_service_logger.exception(
-            f"Unexpected error in Song Service deleting song : {name}"
+            f"Unexpected error in Song Service deleting song: {name}"
         )
         raise SongServiceException from exception

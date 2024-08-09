@@ -164,6 +164,10 @@ export default function ContextMenuPlaylist({
         return resFetchUrlGetUserJson.playlists.join(',');
       })
       .then((sidebarPlaylistNames) => {
+        if (!sidebarPlaylistNames) {
+          setPlaylistNames([]);
+          throw new Error('There arent playlists to show');
+        }
         return fetch(
           `${Global.backendBaseUrl}playlists/selected/${sidebarPlaylistNames}`,
           {
@@ -190,7 +194,7 @@ export default function ContextMenuPlaylist({
       })
       .catch((error) => {
         console.log(error);
-        console.log('No se pudieron obtener las playlists');
+        setLoading(false);
       });
   };
 

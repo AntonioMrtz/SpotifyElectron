@@ -36,3 +36,7 @@ def whoami(token: str):
     headers = {"Authorization": f"Bearer {token}"}
 
     return client.get("/users/whoami", headers=headers)
+
+
+def get_user_relevant_playlists(name: str, headers: dict[str, str]) -> Response:
+    return client.get(f"/users/{name}/relevant_playlists", headers=headers)

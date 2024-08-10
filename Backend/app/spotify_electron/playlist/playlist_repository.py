@@ -53,7 +53,7 @@ def check_playlist_exists(
         raise PlaylistRepositoryException from exception
     else:
         result = playlist is not None
-        playlist_repository_logger.debug(f"Playlist with name {name} exists : {result}")
+        playlist_repository_logger.debug(f"Playlist with name {name} exists: {result}")
         return result
 
 
@@ -142,7 +142,7 @@ def create_playlist(  # noqa: PLR0913
         )
         raise PlaylistRepositoryException from exception
     else:
-        playlist_repository_logger.info(f"Playlist added to repository : {playlist}")
+        playlist_repository_logger.info(f"Playlist added to repository: {playlist}")
 
 
 def delete_playlist(
@@ -199,7 +199,7 @@ def get_all_playlists() -> list[PlaylistDAO]:
         playlist_repository_logger.exception("Error getting all Playlists from database")
         raise PlaylistRepositoryException from exception
     else:
-        playlist_repository_logger.info(f"All playlists obtained : {playlists}")
+        playlist_repository_logger.info(f"All playlists obtained: {playlists}")
         return playlists
 
 
@@ -232,7 +232,7 @@ def get_selected_playlists(
         raise PlaylistRepositoryException from exception
     else:
         playlist_repository_logger.info(
-            f"Selected playlists obtained for {names} : {playlists}"
+            f"Selected playlists obtained for {names}: {playlists}"
         )
         return playlists
 
@@ -267,7 +267,7 @@ def get_playlist_search_by_name(
         )
         raise PlaylistRepositoryException from exception
     else:
-        playlist_repository_logger.info(f"Playlist searched by name {name} : {playlists}")
+        playlist_repository_logger.info(f"Playlist searched by name {name}: {playlists}")
         return playlists
 
 

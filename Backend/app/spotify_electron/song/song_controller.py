@@ -94,7 +94,7 @@ async def create_song(
     """Create song
 
     Args:
-        name (str) : song name
+        name (str): song name
         genre (Genre): genre
         photo (str): photo
         file (UploadFile): song file

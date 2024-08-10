@@ -14,7 +14,7 @@ from app.spotify_electron.user.user.user_schema import (
     UserNotFoundException,
     UserRepositoryException,
 )
-from app.spotify_electron.user.validations.base_users_repository_validations import (
+from app.spotify_electron.user.validations.base_user_repository_validations import (
     validate_user_create,
     validate_user_exists,
     validate_user_update,
@@ -87,7 +87,7 @@ def create_artist(name: str, photo: str, password: bytes, current_date: str) -> 
         )
         raise UserRepositoryException from exception
     else:
-        artist_repository_logger.info(f"Artist added to repository : {artist}")
+        artist_repository_logger.info(f"Artist added to repository: {artist}")
 
 
 def get_all_artists() -> list[ArtistDAO]:

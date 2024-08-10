@@ -46,7 +46,7 @@ class SongServiceModuleFactory(BaseSongServiceModuleFactory):
         import_module = importlib.import_module(
             MODULE_PREFIX_NAME + self.song_services[architecture_type]
         )
-        self.logger.info(f"Song service MODULE selected : {architecture_type}")
+        self.logger.info(f"Song service MODULE selected: {architecture_type}")
         return import_module
 
 

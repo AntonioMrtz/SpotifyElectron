@@ -5,7 +5,7 @@ Song service for handling business logic
 import app.spotify_electron.song.base_song_repository as base_song_repository
 import app.spotify_electron.song.blob.song_repository as song_repository
 import app.spotify_electron.user.artist.artist_service as artist_service
-import app.spotify_electron.user.base_user_service as base_user_service
+import app.spotify_electron.user.validations.base_user_service_validations as base_user_service
 from app.auth.auth_schema import (
     TokenData,
     UserUnauthorizedException,
@@ -40,9 +40,6 @@ from app.spotify_electron.user.user.user_schema import (
     UserNotFoundException,
     UserServiceException,
 )
-from app.spotify_electron.user.validations.user_service_validations import (
-    validate_user_name_parameter,
-)
 from app.spotify_electron.utils.audio_management.audio_management_utils import (
     EncodingFileException,
     get_song_duration_seconds,
@@ -72,23 +69,21 @@ def get_song(name: str) -> SongDTO:
         song_dto = get_song_dto_from_dao(song_dao)
 
     except SongBadNameException as exception:
-        song_service_logger.exception(f"Bad Song Name Parameter : {name}")
+        song_service_logger.exception(f"Bad Song Name Parameter: {name}")
         raise SongBadNameException from exception
     except SongNotFoundException as exception:
-        song_service_logger.exception(f"Song not found : {name}")
+        song_service_logger.exception(f"Song not found: {name}")
         raise SongNotFoundException from exception
     except SongGetUrlStreamingException as exception:
         song_service_logger.exception(f"Error getting song streaming url for: {name}")
         raise SongServiceException from exception
     except SongRepositoryException as exception:
         song_service_logger.exception(
-            f"Unexpected error in Song Repository getting song : {name}"
+            f"Unexpected error in Song Repository getting song: {name}"
         )
         raise SongServiceException from exception
     except Exception as exception:
-        song_service_logger.exception(
-            f"Unexpected error in Song Service getting song : {name}"
-        )
+        song_service_logger.exception(f"Unexpected error in Song Service getting song: {name}")
         raise SongServiceException from exception
     else:
         song_service_logger.info(f"Song {name} retrieved successfully")
@@ -119,7 +114,7 @@ async def create_song(  # noqa: C901
 
     try:
         validate_song_name_parameter(name)
-        validate_user_name_parameter(artist)
+        base_user_service.validate_user_name_parameter(artist)
         Genre.check_valid_genre(genre.value)
 
         validate_song_should_not_exists(name)
@@ -141,7 +136,7 @@ async def create_song(  # noqa: C901
         song_service_logger.exception(f"Bad genre provided {genre}")
         raise GenreNotValidException from exception
     except UserBadNameException as exception:
-        song_service_logger.exception(f"Bad Artist Name Parameter : {artist}")
+        song_service_logger.exception(f"Bad Artist Name Parameter: {artist}")
         raise UserBadNameException from exception
     except UserNotFoundException as exception:
         song_service_logger.exception(f"Artist {artist} not found")
@@ -150,7 +145,7 @@ async def create_song(  # noqa: C901
         song_service_logger.exception(f"Error encoding file with name {name}")
         raise EncodingFileException from exception
     except SongBadNameException as exception:
-        song_service_logger.exception(f"Bad Song Name Parameter : {name}")
+        song_service_logger.exception(f"Bad Song Name Parameter: {name}")
         raise SongBadNameException from exception
     except UserUnauthorizedException as exception:
         song_service_logger.exception(
@@ -159,17 +154,17 @@ async def create_song(  # noqa: C901
         raise SongUnAuthorizedException from exception
     except UserServiceException as exception:
         song_service_logger.exception(
-            f"Unexpected error in User Service while creating song : {name}"
+            f"Unexpected error in User Service while creating song: {name}"
         )
         raise SongServiceException from exception
     except SongRepositoryException as exception:
         song_service_logger.exception(
-            f"Unexpected error in Song Repository creating song : {name}"
+            f"Unexpected error in Song Repository creating song: {name}"
         )
         raise SongServiceException from exception
     except Exception as exception:
         song_service_logger.exception(
-            f"Unexpected error in Song Service creating song : {name}"
+            f"Unexpected error in Song Service creating song: {name}"
         )
         raise SongServiceException from exception
 
@@ -200,21 +195,21 @@ def delete_song(name: str) -> None:
         base_song_repository.delete_song(name)
 
     except SongNotFoundException as exception:
-        song_service_logger.exception(f"Song not found : {name}")
+        song_service_logger.exception(f"Song not found: {name}")
         raise SongNotFoundException from exception
     except SongBadNameException as exception:
-        song_service_logger.exception(f"Bad Song Name Parameter : {name}")
+        song_service_logger.exception(f"Bad Song Name Parameter: {name}")
         raise SongBadNameException from exception
     except UserNotFoundException as exception:
         song_service_logger.exception(f"User {artist_name} not found")
         raise UserNotFoundException from exception
     except SongRepositoryException as exception:
         song_service_logger.exception(
-            f"Unexpected error in Song Repository deleting song : {name}"
+            f"Unexpected error in Song Repository deleting song: {name}"
         )
         raise SongServiceException from exception
     except Exception as exception:
         song_service_logger.exception(
-            f"Unexpected error in Song Service deleting song : {name}"
+            f"Unexpected error in Song Service deleting song: {name}"
         )
         raise SongServiceException from exception

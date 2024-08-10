@@ -12,7 +12,7 @@ from app.spotify_electron.user.user.user_schema import (
     UserRepositoryException,
     get_user_dao_from_document,
 )
-from app.spotify_electron.user.validations.base_users_repository_validations import (
+from app.spotify_electron.user.validations.base_user_repository_validations import (
     validate_user_create,
     validate_user_exists,
 )
@@ -81,4 +81,4 @@ def create_user(name: str, photo: str, password: bytes, current_date: str) -> No
         user_repository_logger.exception(f"Unexpected error inserting user {user} in database")
         raise UserRepositoryException from exception
     else:
-        user_repository_logger.info(f"User added to repository : {user}")
+        user_repository_logger.info(f"User added to repository: {user}")

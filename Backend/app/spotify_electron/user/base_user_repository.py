@@ -12,7 +12,7 @@ from app.spotify_electron.user.user.user_schema import (
     UserGetPasswordException,
     UserRepositoryException,
 )
-from app.spotify_electron.user.validations.base_users_repository_validations import (
+from app.spotify_electron.user.validations.base_user_repository_validations import (
     validate_password_exists,
     validate_user_delete_count,
 )
@@ -45,7 +45,7 @@ def check_user_exists(name: str, collection: Collection) -> bool:
         raise UserRepositoryException from exception
     else:
         result = user is not None
-        base_user_repository_logger.debug(f"User with name {name} exists : {result}")
+        base_user_repository_logger.debug(f"User with name {name} exists: {result}")
         return result
 
 
@@ -318,3 +318,23 @@ def update_playlist_name(
             f"to {new_playlist_name} in database"
         )
         raise UserRepositoryException from exception
+
+
+def get_user_relevant_playlists(user_name: str, collection: Collection) -> list[str]:
+    """Get user relevant playlist names
+
+    Args:
+        user_name (str): user name
+        collection (Collection): user collection
+
+    Returns:
+        list[str]: the playlist names of the playlists relevant to the user
+    """
+    user_data = collection.find_one(
+        {"name": user_name}, {"playlists": 1, "saved_playlists": 1, "_id": 0}
+    )
+    playlist_names = []
+    playlist_names.extend(user_data["playlists"])  # type: ignore
+    playlist_names.extend(user_data["saved_playlists"])  # type: ignore
+
+    return playlist_names

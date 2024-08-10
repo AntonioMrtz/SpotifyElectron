@@ -48,16 +48,16 @@ async def search_by_name(name: str) -> SearchResult:
         users = await users_future
 
     except BadParameterException as exception:
-        search_service_logger.exception(f"Bad Search parameter : {name}")
+        search_service_logger.exception(f"Bad Search parameter: {name}")
         raise BadSearchParameterException from exception
     except Exception as exception:
         search_service_logger.exception(
-            f"Unexpected error in Search Service searching for items with name : {name}"
+            f"Unexpected error in Search Service searching for items with name: {name}"
         )
         raise SearchServiceException from exception
     else:
         search_results = SearchResult(artists, playlists, users, songs)
         search_service_logger.info(
-            f"Items searched by name {name} retrieved successfully : {search_results}"
+            f"Items searched by name {name} retrieved successfully: {search_results}"
         )
         return search_results

@@ -103,4 +103,4 @@ def create_song(  # noqa: PLR0913
         song_repository_logger.exception(f"Unexpected error inserting song {song} in database")
         raise SongRepositoryException from exception
     else:
-        song_repository_logger.info(f"Song added to repository : {song}")
+        song_repository_logger.info(f"Song added to repository: {song}")

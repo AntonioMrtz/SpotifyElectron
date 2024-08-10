@@ -46,7 +46,7 @@ def get_song_dao_from_document(document: dict[str, Any], song_data: GridOut) -> 
     Args:
     ----
         document (dict): song document
-        song_data (GridOut) : song data given by GridFs
+        song_data (GridOut): song data given by GridFs
 
     Returns:
     -------

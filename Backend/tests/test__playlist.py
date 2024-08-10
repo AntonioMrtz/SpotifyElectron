@@ -10,7 +10,7 @@ from starlette.status import (
     HTTP_405_METHOD_NOT_ALLOWED,
 )
 
-from tests.test_API.api_all_users import patch_playlist_saved
+from tests.test_API.api_base_users import patch_playlist_saved
 from tests.test_API.api_test_artist import create_artist
 from tests.test_API.api_test_playlist import (
     create_playlist,

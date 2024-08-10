@@ -4,9 +4,9 @@ User service for handling business logic
 
 import app.auth.auth_service as auth_service
 import app.spotify_electron.user.base_user_repository as base_user_repository
-import app.spotify_electron.user.base_user_service as base_user_service
 import app.spotify_electron.user.providers.user_collection_provider as user_collection_provider
 import app.spotify_electron.user.user.user_repository as user_repository
+import app.spotify_electron.user.validations.base_user_service_validations as base_user_service
 from app.logging.logging_constants import LOGGING_USER_SERVICE
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.user.user.user_schema import (
@@ -17,9 +17,6 @@ from app.spotify_electron.user.user.user_schema import (
     UserRepositoryException,
     UserServiceException,
     get_user_dto_from_dao,
-)
-from app.spotify_electron.user.validations.user_service_validations import (
-    validate_user_name_parameter,
 )
 from app.spotify_electron.utils.date.date_utils import get_current_iso8601_date
 
@@ -58,23 +55,23 @@ def get_user(user_name: str) -> UserDTO:
         UserDTO: the user
     """
     try:
-        validate_user_name_parameter(user_name)
+        base_user_service.validate_user_name_parameter(user_name)
         user = user_repository.get_user(user_name)
         user_dto = get_user_dto_from_dao(user)
     except UserBadNameException as exception:
-        user_service_logger.exception(f"Bad User Name Parameter : {user_name}")
+        user_service_logger.exception(f"Bad User Name Parameter: {user_name}")
         raise UserBadNameException from exception
     except UserNotFoundException as exception:
-        user_service_logger.exception(f"User not found : {user_name}")
+        user_service_logger.exception(f"User not found: {user_name}")
         raise UserNotFoundException from exception
     except UserRepositoryException as exception:
         user_service_logger.exception(
-            f"Unexpected error in User Repository getting user : {user_name}"
+            f"Unexpected error in User Repository getting user: {user_name}"
         )
         raise UserServiceException from exception
     except Exception as exception:
         user_service_logger.exception(
-            f"Unexpected error in User Service getting user : {user_name}"
+            f"Unexpected error in User Service getting user: {user_name}"
         )
         raise UserServiceException from exception
     else:
@@ -96,7 +93,7 @@ def create_user(user_name: str, photo: str, password: str) -> None:
         UserServiceException: unexpected error while creating user
     """
     try:
-        validate_user_name_parameter(user_name)
+        base_user_service.validate_user_name_parameter(user_name)
         base_user_service.validate_user_should_not_exist(user_name)
 
         date = get_current_iso8601_date()
@@ -111,19 +108,19 @@ def create_user(user_name: str, photo: str, password: str) -> None:
         )
         user_service_logger.info(f"User {user_name} created successfully")
     except UserAlreadyExistsException as exception:
-        user_service_logger.exception(f"User already exists : {user_name}")
+        user_service_logger.exception(f"User already exists: {user_name}")
         raise UserAlreadyExistsException from exception
     except UserBadNameException as exception:
-        user_service_logger.exception(f"Bad User Name Parameter : {user_name}")
+        user_service_logger.exception(f"Bad User Name Parameter: {user_name}")
         raise UserBadNameException from exception
     except UserRepositoryException as exception:
         user_service_logger.exception(
-            f"Unexpected error in User Repository creating user : {user_name}"
+            f"Unexpected error in User Repository creating user: {user_name}"
         )
         raise UserServiceException from exception
     except Exception as exception:
         user_service_logger.exception(
-            f"Unexpected error in User Service creating user : {user_name}"
+            f"Unexpected error in User Service creating user: {user_name}"
         )
         raise UserServiceException from exception
 

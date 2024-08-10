@@ -71,7 +71,7 @@ def _get_json_from_model(object: Any) -> str:
     try:
         jsonable_object = jsonable_encoder(object)
         json_object = json.dumps(jsonable_object)
-        http_encode_service_logger.debug(f"Success encoding object into json : {json_object}")
+        http_encode_service_logger.debug(f"Success encoding object into json: {json_object}")
     except Exception:
         http_encode_service_logger.exception(f"Error encoding object {object} into json")
         raise JsonEncodeException()

@@ -10,6 +10,7 @@ from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 
 import app.spotify_electron.user.base_user_service as base_user_service
+import app.spotify_electron.user.validations.base_user_service_validations as base_user_service_validations  # noqa: E501
 from app.auth.auth_schema import (
     BadJWTTokenProvidedException,
     CreateJWTException,
@@ -29,7 +30,6 @@ from app.exceptions.base_exceptions_schema import BadParameterException
 from app.logging.logging_constants import LOGGING_AUTH_SERVICE
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.login.login_schema import InvalidCredentialsLoginException
-from app.spotify_electron.user.base_user_service import validate_user_should_exists
 from app.spotify_electron.user.user.user_schema import (
     UserDTO,
     UserNotFoundException,
@@ -79,7 +79,7 @@ def create_access_token(data: dict[str, str], expires_delta: timedelta | None = 
     except Exception as exception:
         raise CreateJWTException from exception
     else:
-        auth_service_logger.info(f"JWT created from data : {data}")
+        auth_service_logger.info(f"JWT created from data: {data}")
         return encoded_jwt
 
 
@@ -121,7 +121,7 @@ def get_jwt_token_data(
         raise BadJWTTokenProvidedException from exception
     except JWTMissingCredentialsException as exception:
         auth_service_logger.exception(
-            f"One or more credentials obtained from JWT are missing : {credentials}"
+            f"One or more credentials obtained from JWT are missing: {credentials}"
         )
         raise BadJWTTokenProvidedException from exception
     except JWTError as exception:
@@ -131,7 +131,7 @@ def get_jwt_token_data(
         auth_service_logger.exception("Unexpected error getting data from JWT Token")
         raise BadJWTTokenProvidedException from exception
     else:
-        auth_service_logger.info(f"Token data : {token_data}")
+        auth_service_logger.info(f"Token data: {token_data}")
         return token_data
 
 
@@ -166,7 +166,7 @@ def get_current_user(
         auth_service_logger.exception(f"Unexpected exception getting user from token {token}")
         raise JWTGetUserException from exception
     else:
-        auth_service_logger.info(f"Get Current User successful : {jwt_username}")
+        auth_service_logger.info(f"Get Current User successful: {jwt_username}")
         return user
 
 
@@ -237,7 +237,7 @@ def login_user(name: str, password: str) -> str:
     try:
         validate_parameter(name)
         validate_parameter(password)
-        validate_user_should_exists(name)
+        base_user_service_validations.validate_user_should_exists(name)
 
         user_type = base_user_service.get_user_type(user_name=name)
         user_password = base_user_service.get_user_password(user_name=name)
@@ -255,21 +255,21 @@ def login_user(name: str, password: str) -> str:
         auth_service_logger.exception("Invalid login credentials")
         raise InvalidCredentialsLoginException from exception
     except VerifyPasswordException as exception:
-        auth_service_logger.exception("Passwords Validation failed : passwords dont match")
+        auth_service_logger.exception("Passwords Validation failed: passwords dont match")
         raise VerifyPasswordException from exception
     except CreateJWTException as exception:
-        auth_service_logger.exception(f"Error creating JWT Token from data : {jwt_data}")
+        auth_service_logger.exception(f"Error creating JWT Token from data: {jwt_data}")
         raise VerifyPasswordException from exception
     except UserNotFoundException as exception:
         auth_service_logger.exception(f"User {name} doesnt exists")
         raise UserNotFoundException from exception
     except UserServiceException as exception:
         auth_service_logger.exception(
-            f"Unexpected error in User service while login user : {name}"
+            f"Unexpected error in User service while login user: {name}"
         )
         raise UnexpectedLoginUserException from exception
     except Exception as exception:
-        auth_service_logger.exception(f"Unexpected error login user : {name}")
+        auth_service_logger.exception(f"Unexpected error login user: {name}")
         raise UnexpectedLoginUserException from exception
     else:
         auth_service_logger.info(f"User {name} logged successfully")
@@ -297,15 +297,15 @@ def validate_jwt(token: str) -> None:
         validate_token_is_expired(decoded_token)
 
     except JWTError as exception:
-        auth_service_logger.exception(f"Error decoding token : {token}")
+        auth_service_logger.exception(f"Error decoding token: {token}")
         raise JWTValidationException from exception
 
     except JWTExpiredException as exception:
-        auth_service_logger.exception(f"Token is expired : {token}")
+        auth_service_logger.exception(f"Token is expired: {token}")
         raise JWTValidationException from exception
 
     except Exception as exception:
-        auth_service_logger.exception(f"Unexpected error validating token : {token}")
+        auth_service_logger.exception(f"Unexpected error validating token: {token}")
         raise JWTValidationException from exception
 
 

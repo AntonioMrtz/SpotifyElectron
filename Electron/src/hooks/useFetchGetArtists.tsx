@@ -7,14 +7,17 @@ interface PropsArtistCard {
   photo: string;
 }
 
-const useFetchArtists = () => {
+const useFetchGetArtists = () => {
   const [artists, setArtists] = useState<PropsArtistCard[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${Global.backendBaseUrl}artists/`);
+        const getArtistsURL = `${Global.backendBaseUrl}artists/`;
+        const response = await fetch(getArtistsURL, {
+          credentials: 'include',
+        });
         if (!response.ok) {
           throw new Error(`Failed to fetch Artists`);
         }
@@ -43,4 +46,4 @@ const useFetchArtists = () => {
   return { artists, loading };
 };
 
-export default useFetchArtists;
+export default useFetchGetArtists;

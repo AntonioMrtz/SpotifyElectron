@@ -7,34 +7,36 @@ import defaultThumbnailPlaylist from '../../../assets/imgs/DefaultThumbnailPlayl
 export default function ItemsAllArtist() {
   const [artists, setArtists] = useState<PropsArtistCard[]>();
 
-  const handleArtist = useCallback(() => {
-    fetch(`${Global.backendBaseUrl}artists/`, {
-      credentials: 'include',
-    })
-      .then((resFetchArtistas) => resFetchArtistas.json())
-      .then((resFetchArtistasJson) => {
-        if (resFetchArtistasJson.artists) {
-          const propsArtists: PropsArtistCard[] = [];
+  const handleArtist = useCallback(async () => {
+    try {
+      const fetchGetArtistsResponse = await fetch(
+        `${Global.backendBaseUrl}artists/`,
+        {
+          credentials: 'include',
+        },
+      );
+      const fetchGetArtistsJson = await fetchGetArtistsResponse.json();
+      if (fetchGetArtistsJson.artists) {
+        const propsArtists: PropsArtistCard[] = [];
 
-          resFetchArtistasJson.artists.forEach((resArtistFetchJson: any) => {
-            const propsArtist: PropsArtistCard = {
-              name: resArtistFetchJson.name,
-              photo:
-                resArtistFetchJson.photo === ''
-                  ? defaultThumbnailPlaylist
-                  : resArtistFetchJson.photo,
-            };
+        fetchGetArtistsJson.artists.forEach((resArtistFetchJson: any) => {
+          const propsArtist: PropsArtistCard = {
+            name: resArtistFetchJson.name,
+            photo:
+              resArtistFetchJson.photo === ''
+                ? defaultThumbnailPlaylist
+                : resArtistFetchJson.photo,
+          };
 
-            propsArtists.push(propsArtist);
+          propsArtists.push(propsArtist);
 
-            setArtists(propsArtists);
-          });
-        }
-        return null;
-      })
-      .catch(() => {
-        console.log('Unable to get artists');
-      });
+          setArtists(propsArtists);
+        });
+      }
+    } catch (error) {
+      console.log('Unable to get all artists');
+      setArtists([]);
+    }
   }, []);
 
   useEffect(() => {

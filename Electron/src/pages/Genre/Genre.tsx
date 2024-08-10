@@ -1,6 +1,6 @@
 import { useLocation } from 'react-router-dom';
 import genreColorsMap from 'utils/genre';
-import useFetchSongsByGenre from 'hooks/useFetchSongsbyGenre';
+import useFetchSongsByGenre from 'hooks/useFetchGetSongsbyGenre';
 import styles from './genre.module.css';
 import SongCard from '../../components/Cards/SongCard/SongCard';
 

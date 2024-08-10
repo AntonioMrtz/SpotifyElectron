@@ -1,11 +1,12 @@
 import Popover from '@mui/material/Popover';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import LoadingCircle from 'components/AdvancedUIComponents/LoadingCircle/LoadingCircle';
 import InfoPopover from 'components/AdvancedUIComponents/InfoPopOver/InfoPopover';
 import { InfoPopoverType } from 'components/AdvancedUIComponents/InfoPopOver/types/InfoPopover';
 import Global from 'global/global';
 import Token from 'utils/token';
 import { useNavigate } from 'react-router-dom';
+import useFetchGetUserPlaylistNames from 'hooks/useFetchGetUserPlaylistNames';
 import styles from '../contextMenu.module.css';
 import { PropsContextMenuSong } from '../types/PropsContextMenu';
 
@@ -50,58 +51,9 @@ export default function ContextMenuSong({
   const open = Boolean(anchorEl);
   const id = open ? 'child-popover' : undefined;
 
-  const [playlistNames, setPlaylistNames] = useState<String[]>();
+  const username = Token.getTokenUsername();
 
-  const [loading, setLoading] = useState(true);
-
-  const handlePlaylists = async () => {
-    const username = Token.getTokenUsername();
-
-    const fetchUrlGetUser = `${Global.backendBaseUrl}users/${username}`;
-
-    fetch(fetchUrlGetUser, {
-      credentials: 'include',
-    })
-      .then((resFetchUrlGetUser) => resFetchUrlGetUser.json())
-      .then((resFetchUrlGetUserJson) => {
-        return resFetchUrlGetUserJson.playlists.join(',');
-      })
-      .then((sidebarPlaylistNames) => {
-        return fetch(
-          `${Global.backendBaseUrl}playlists/selected/${sidebarPlaylistNames}`,
-          {
-            credentials: 'include',
-          },
-        );
-      })
-      .then((resFetchPlaylists) => {
-        return resFetchPlaylists.json();
-      })
-      .then((res) => {
-        const playlistNamesFromFetch: string[] = [];
-
-        if (res.playlists) {
-          res.playlists.forEach((playlistObject: any) => {
-            playlistNamesFromFetch.push(playlistObject.name);
-          });
-        }
-
-        setPlaylistNames(playlistNamesFromFetch);
-        setLoading(false);
-
-        return null;
-      })
-      .catch((error) => {
-        console.log(error);
-        console.log('No se pudieron obtener las playlists');
-      });
-  };
-
-  useEffect(() => {
-    handlePlaylists();
-  }, []);
-
-  /* Handle copy to clipboard on share button */
+  const { playlistNames, loading } = useFetchGetUserPlaylistNames(username);
 
   // triggers Confirmation Modal
   const [triggerOpenConfirmationModal, setTriggerOpenConfirmationModal] =

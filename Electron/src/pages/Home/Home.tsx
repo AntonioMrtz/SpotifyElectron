@@ -3,8 +3,8 @@ import LoadingCircle from 'components/AdvancedUIComponents/LoadingCircle/Loading
 import ArtistCard from 'components/Cards/ArtistCard/ArtistCard';
 import styles from './homeCss.module.css';
 import PlaylistCard from '../../components/Cards/PlaylistCard/PlaylistCard';
-import useFetchPlaylists from '../../hooks/useFetchPlaylists';
-import useFetchArtists from '../../hooks/useFetchArtists';
+import useFetchGetPlaylists from '../../hooks/useFetchGetPlaylists';
+import useFetchGetArtists from '../../hooks/useFetchGetArtists';
 
 interface PropsHome {
   refreshSidebarData: () => void;
@@ -14,8 +14,8 @@ export default function Home({ refreshSidebarData }: PropsHome) {
   const navigate = useNavigate();
 
   const { playlists, loading: loadingPlaylists } =
-    useFetchPlaylists(refreshSidebarData);
-  const { artists, loading: loadingArtists } = useFetchArtists();
+    useFetchGetPlaylists(refreshSidebarData);
+  const { artists, loading: loadingArtists } = useFetchGetArtists();
 
   return (
     <div

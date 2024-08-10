@@ -12,13 +12,15 @@ interface SongProps {
 
 const useFetchGetUser = (username: string) => {
   const [user, setUser] = useState<SongProps | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch(
-          `${Global.backendBaseUrl}users/${username}`,
-        );
+        const getUserURL = `${Global.backendBaseUrl}users/${username}`;
+        const response = await fetch(getUserURL, {
+          credentials: 'include',
+        });
         if (!response.ok) {
           throw new Error(`Failed to fetch User ${username}`);
         }
@@ -35,14 +37,15 @@ const useFetchGetUser = (username: string) => {
 
         setUser(mappedUser);
       } catch (err) {
-        console.log(`Failed to get User ${username}: ${err}`);
+        console.log(err);
+        setError(`Failed to get User ${username}`);
       }
     };
 
     fetchUser();
   }, [username]);
 
-  return { user };
+  return { user, error };
 };
 
 export default useFetchGetUser;

@@ -141,15 +141,19 @@ export default function Explorar({
   const [genres, setGenres] = useState<{}>();
 
   const getGenres = async () => {
-    fetch(encodeURI(`${Global.backendBaseUrl}genres/`), {
-      credentials: 'include',
-    })
-      .then((res) => res.json())
-      .then(async (res) => {
-        setGenres(res);
-        return null;
-      })
-      .catch(() => console.log('Cannot get genres'));
+    try {
+      const fetchGetGenresResponse = await fetch(
+        encodeURI(`${Global.backendBaseUrl}genres/`),
+        {
+          credentials: 'include',
+        },
+      );
+      const GenresJson = await fetchGetGenresResponse.json();
+      setGenres(GenresJson);
+    } catch (error) {
+      console.log('Cannot get genres');
+      setGenres([]);
+    }
   };
   useEffect(() => {
     getGenres();

@@ -63,6 +63,7 @@ test('Playlist user role get all info', async () => {
       return Promise.resolve({
         json: () => playlistDTOMockFetch,
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
@@ -71,6 +72,7 @@ test('Playlist user role get all info', async () => {
       return Promise.resolve({
         json: () => artistMockFetch,
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
@@ -79,6 +81,7 @@ test('Playlist user role get all info', async () => {
       return Promise.resolve({
         json: () => songMockFetch,
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
@@ -87,6 +90,7 @@ test('Playlist user role get all info', async () => {
       return Promise.resolve({
         json: () => userMockFetch,
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
@@ -128,6 +132,7 @@ test('Playlist user role hit like button', async () => {
       return Promise.resolve({
         json: () => playlistDTOMockFetch,
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
@@ -136,6 +141,7 @@ test('Playlist user role hit like button', async () => {
       return Promise.resolve({
         json: () => artistMockFetch,
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
@@ -144,6 +150,7 @@ test('Playlist user role hit like button', async () => {
       return Promise.resolve({
         json: () => songMockFetch,
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
@@ -152,6 +159,7 @@ test('Playlist user role hit like button', async () => {
       return Promise.resolve({
         json: () => userMockFetch,
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
@@ -160,6 +168,7 @@ test('Playlist user role hit like button', async () => {
       return Promise.resolve({
         json: () => {},
         status: 204,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
@@ -173,6 +182,7 @@ test('Playlist user role hit like button', async () => {
       return Promise.resolve({
         json: () => {},
         status: 204,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
@@ -186,6 +196,7 @@ test('Playlist user role hit like button', async () => {
       return Promise.resolve({
         json: () => {},
         status: 202,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
@@ -236,6 +247,7 @@ test('Playlist user role get unlike button', async () => {
       return Promise.resolve({
         json: () => playlistDTOMockFetch,
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
@@ -244,6 +256,7 @@ test('Playlist user role get unlike button', async () => {
       return Promise.resolve({
         json: () => artistMockFetch,
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
@@ -252,6 +265,7 @@ test('Playlist user role get unlike button', async () => {
       return Promise.resolve({
         json: () => songMockFetch,
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
@@ -260,6 +274,7 @@ test('Playlist user role get unlike button', async () => {
       return Promise.resolve({
         json: () => userMockFetch,
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
@@ -268,6 +283,7 @@ test('Playlist user role get unlike button', async () => {
       return Promise.resolve({
         json: () => {},
         status: 204,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
@@ -281,6 +297,7 @@ test('Playlist user role get unlike button', async () => {
       return Promise.resolve({
         json: () => {},
         status: 204,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
@@ -294,6 +311,7 @@ test('Playlist user role get unlike button', async () => {
       return Promise.resolve({
         json: () => {},
         status: 202,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
@@ -342,6 +360,7 @@ test('Playlist user role update playlist', async () => {
       return Promise.resolve({
         json: () => playlistDTOMockFetch,
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
@@ -350,6 +369,7 @@ test('Playlist user role update playlist', async () => {
       return Promise.resolve({
         json: () => artistMockFetch,
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
@@ -358,6 +378,7 @@ test('Playlist user role update playlist', async () => {
       return Promise.resolve({
         json: () => songMockFetch,
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
@@ -366,6 +387,7 @@ test('Playlist user role update playlist', async () => {
       return Promise.resolve({
         json: () => userMockFetch,
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
@@ -374,6 +396,7 @@ test('Playlist user role update playlist', async () => {
       return Promise.resolve({
         json: () => {},
         status: 204,
+        ok: true,
       }).catch((error) => {
         console.log(`${error}`);
       });
@@ -387,6 +410,7 @@ test('Playlist user role update playlist', async () => {
       return Promise.resolve({
         json: () => {},
         status: 204,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
@@ -400,6 +424,7 @@ test('Playlist user role update playlist', async () => {
       return Promise.resolve({
         json: () => {},
         status: 202,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
@@ -412,6 +437,7 @@ test('Playlist user role update playlist', async () => {
       return Promise.resolve({
         json: () => {},
         status: 204,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });

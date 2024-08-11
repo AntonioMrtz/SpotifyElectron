@@ -23,6 +23,7 @@ test('render AddSongPlaylistAccordion', async () => {
       return Promise.resolve({
         json: () => JSON.stringify({ Rock: 'Rock', Pop: 'Pop' }),
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
@@ -57,6 +58,7 @@ test('AddSongPlaylistAccordion submit playlist correct', async () => {
       return Promise.resolve({
         json: () => JSON.stringify({ Rock: 'Rock', Pop: 'Pop' }),
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
@@ -65,6 +67,7 @@ test('AddSongPlaylistAccordion submit playlist correct', async () => {
     return Promise.resolve({
       json: () => {},
       status: 201,
+      ok: true,
     }).catch((error) => {
       console.log(error);
     });
@@ -133,6 +136,7 @@ test('AddSongPlaylistAccordion submit song correct', async () => {
       return Promise.resolve({
         json: () => JSON.stringify({ Rock: 'Rock', Pop: 'Pop' }),
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
@@ -141,6 +145,7 @@ test('AddSongPlaylistAccordion submit song correct', async () => {
     return Promise.resolve({
       json: () => {},
       status: 201,
+      ok: true,
     }).catch((error) => {
       console.log(error);
     });

@@ -34,6 +34,7 @@ test('Render itemsAllPlaylistFromUser', async () => {
       return Promise.resolve({
         json: () => artistMockFetch,
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
@@ -45,6 +46,7 @@ test('Render itemsAllPlaylistFromUser', async () => {
             playlists: [playlistDTOMockFetch],
           }),
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });

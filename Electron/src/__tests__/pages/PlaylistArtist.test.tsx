@@ -53,6 +53,7 @@ test('Playlist artist role get all info', async () => {
       return Promise.resolve({
         json: () => playlistDTOMockFetch,
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
@@ -61,6 +62,7 @@ test('Playlist artist role get all info', async () => {
       return Promise.resolve({
         json: () => artistMockFetch,
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
@@ -69,6 +71,7 @@ test('Playlist artist role get all info', async () => {
       return Promise.resolve({
         json: () => songMockFetch,
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });

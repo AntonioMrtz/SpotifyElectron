@@ -29,6 +29,7 @@ test('Render ItemsAllArtist', async () => {
             ],
           }),
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });

@@ -22,6 +22,7 @@ global.fetch = jest.fn(() =>
         songs: [JSON.stringify(songMockFetch)],
       }),
     status: 200,
+    ok: true,
   }),
 ) as jest.Mock;
 

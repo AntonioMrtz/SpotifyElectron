@@ -67,6 +67,7 @@ test('Sidebar Playlist handle open context menu', async () => {
       return Promise.resolve({
         json: () => artistMockFetch,
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
@@ -78,6 +79,7 @@ test('Sidebar Playlist handle open context menu', async () => {
             playlists: [playlistDTOMockFetch],
           }),
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
@@ -122,6 +124,7 @@ test('Sidebar Playlist left-click', async () => {
       return Promise.resolve({
         json: () => artistMockFetch,
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
@@ -133,6 +136,7 @@ test('Sidebar Playlist left-click', async () => {
             playlists: [playlistDTOMockFetch],
           }),
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });

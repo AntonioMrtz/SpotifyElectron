@@ -34,6 +34,7 @@ test('Render items All Songs from Artist', async () => {
       return Promise.resolve({
         json: () => artistMockFetch,
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
@@ -42,6 +43,7 @@ test('Render items All Songs from Artist', async () => {
       return Promise.resolve({
         json: () => songMockFetch,
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });

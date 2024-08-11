@@ -43,6 +43,7 @@ test('render UserProfile with User', async () => {
     Promise.resolve({
       json: () => Promise.resolve(userMock),
       status: 200,
+      ok: true,
     }),
   ) as jest.Mock;
 
@@ -64,6 +65,7 @@ test('render UserProfile with Artist', async () => {
     Promise.resolve({
       json: () => Promise.resolve(artistMock),
       status: 200,
+      ok: true,
     }),
   ) as jest.Mock;
 
@@ -85,6 +87,7 @@ test('UserProfile User Fields', async () => {
     Promise.resolve({
       json: () => Promise.resolve(userMock),
       status: 200,
+      ok: true,
     }),
   ) as jest.Mock;
 
@@ -110,6 +113,7 @@ test('UserProfile Artist Fields', async () => {
     Promise.resolve({
       json: () => Promise.resolve(artistMock),
       status: 200,
+      ok: true,
     }),
   ) as jest.Mock;
 
@@ -176,6 +180,7 @@ test('UserProfile User load Playback history and his Playlists', async () => {
       return Promise.resolve({
         json: () => playlistDTOMockFetch,
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
@@ -184,6 +189,7 @@ test('UserProfile User load Playback history and his Playlists', async () => {
       return Promise.resolve({
         json: () => playlistDTOMockFetch,
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
@@ -192,6 +198,7 @@ test('UserProfile User load Playback history and his Playlists', async () => {
       return Promise.resolve({
         json: () => userMockFetch,
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
@@ -200,6 +207,7 @@ test('UserProfile User load Playback history and his Playlists', async () => {
       return Promise.resolve({
         json: () => songMockFetch,
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
@@ -284,6 +292,7 @@ test('UserProfile Artist load Songs and total streams', async () => {
       return Promise.resolve({
         json: () => playlistDTOMockFetch,
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
@@ -292,6 +301,7 @@ test('UserProfile Artist load Songs and total streams', async () => {
       return Promise.resolve({
         json: () => playlistDTOMockFetch,
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
@@ -300,6 +310,7 @@ test('UserProfile Artist load Songs and total streams', async () => {
       return Promise.resolve({
         json: () => artistMockFetch,
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
@@ -308,6 +319,7 @@ test('UserProfile Artist load Songs and total streams', async () => {
       return Promise.resolve({
         json: () => songMockFetch,
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
@@ -320,6 +332,7 @@ test('UserProfile Artist load Songs and total streams', async () => {
           streams: songStreams,
         }),
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });

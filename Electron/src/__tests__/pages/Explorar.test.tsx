@@ -54,6 +54,7 @@ global.fetch = jest.fn((url: string) => {
     return Promise.resolve({
       json: () => Promise.resolve({ ROCK: 'Rock', POP: 'Pop' }),
       status: 200,
+      ok: true,
     });
   }
   if (url === `${Global.backendBaseUrl}search/?name=${'prueba'}`) {
@@ -66,6 +67,7 @@ global.fetch = jest.fn((url: string) => {
           artists: [artistMockFetch],
         }),
       status: 200,
+      ok: true,
     }).catch((error) => {
       console.log(error);
     });

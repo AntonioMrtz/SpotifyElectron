@@ -41,6 +41,7 @@ test('render Sidebar', async () => {
       return Promise.resolve({
         json: () => artistMockFetch,
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
@@ -51,6 +52,7 @@ test('render Sidebar', async () => {
       return Promise.resolve({
         json: () => Promise.resolve([playlistDTOMockFetch]),
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });

@@ -33,15 +33,6 @@ const playlistDTOMockFetch = {
   song_names: [],
 };
 
-/* const songMockFetch = {
-  name: songName,
-  artist: userName,
-  photo: 'photo',
-  seconds_duration: '180',
-  genre: 'Rock',
-  streams: 2,
-}; */
-
 const navigate = jest.fn();
 
 jest.spyOn(router, 'useNavigate').mockImplementation(() => navigate);
@@ -56,26 +47,19 @@ global.fetch = jest.fn((url: string, options: any) => {
     return Promise.resolve({
       json: () => playlistDTOMockFetch,
       status: 200,
+      ok: true,
     }).catch((error) => {
       console.log(error);
     });
   }
-  if (url === `${Global.backendBaseUrl}playlists/selected/${playlistName}`) {
+  if (
+    url ===
+    `${Global.backendBaseUrl}users/${artistMockFetch.name}/playlist_names`
+  ) {
     return Promise.resolve({
-      json: () =>
-        Promise.resolve({
-          playlists: [playlistDTOMockFetch],
-        }),
+      json: () => [playlistName],
       status: 200,
-    }).catch((error) => {
-      console.log(error);
-    });
-  }
-
-  if (url === `${Global.backendBaseUrl}users/${artistMockFetch.name}`) {
-    return Promise.resolve({
-      json: () => artistMockFetch,
-      status: 200,
+      ok: true,
     }).catch((error) => {
       console.log(error);
     });
@@ -86,6 +70,7 @@ global.fetch = jest.fn((url: string, options: any) => {
       return Promise.resolve({
         json: () => {},
         status: 202,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
@@ -94,6 +79,7 @@ global.fetch = jest.fn((url: string, options: any) => {
       return Promise.resolve({
         json: () => {},
         status: 204,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
@@ -103,6 +89,7 @@ global.fetch = jest.fn((url: string, options: any) => {
       return Promise.resolve({
         json: () => artistMockFetch,
         status: 201,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });

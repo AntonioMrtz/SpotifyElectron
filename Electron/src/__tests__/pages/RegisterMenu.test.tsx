@@ -91,6 +91,7 @@ test('Register failed different password inputs', () => {
     Promise.resolve({
       json: () => Promise.resolve({}),
       status: 200,
+      ok: true,
     }),
   ) as jest.Mock;
 
@@ -139,6 +140,7 @@ test('Register success', async () => {
       return Promise.resolve({
         json: () => Promise.resolve({}),
         status: 201,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });

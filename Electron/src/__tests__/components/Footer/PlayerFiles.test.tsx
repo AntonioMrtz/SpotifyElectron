@@ -29,6 +29,7 @@ global.fetch = jest.fn((url: string) => {
     return Promise.resolve({
       json: () => songMockFetch,
       status: 200,
+      ok: true,
     }).catch((error) => {
       console.log(error);
     });
@@ -37,6 +38,7 @@ global.fetch = jest.fn((url: string) => {
     return Promise.resolve({
       json: () => songMockFetch,
       status: 200,
+      ok: true,
     }).catch((error) => {
       console.log(error);
     });
@@ -45,6 +47,7 @@ global.fetch = jest.fn((url: string) => {
     return Promise.resolve({
       json: () => {},
       status: 204,
+      ok: true,
     }).catch((error) => {
       console.log(error);
     });
@@ -56,6 +59,7 @@ global.fetch = jest.fn((url: string) => {
     return Promise.resolve({
       json: () => {},
       status: 204,
+      ok: true,
     }).catch((error) => {
       console.log(error);
     });

@@ -28,6 +28,7 @@ global.fetch = jest.fn((url: string) => {
     return Promise.resolve({
       json: () => userMockFetch,
       status: 200,
+      ok: true,
     }).catch((error) => {
       console.log(error);
     });

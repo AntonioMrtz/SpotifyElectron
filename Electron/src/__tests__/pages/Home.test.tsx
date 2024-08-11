@@ -17,6 +17,7 @@ test('render Home', async () => {
     Promise.resolve({
       json: () => Promise.resolve({}),
       status: 200,
+      ok: true,
     }),
   ) as jest.Mock;
 
@@ -32,6 +33,7 @@ test('Home fields', async () => {
     Promise.resolve({
       json: () => Promise.resolve({}),
       status: 200,
+      ok: true,
     }),
   ) as jest.Mock;
 
@@ -63,6 +65,7 @@ test('prueba', async () => {
             ],
           }),
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
@@ -83,6 +86,7 @@ test('prueba', async () => {
             ],
           }),
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });

@@ -7,41 +7,26 @@ const useFetchGetUserPlaylistNames = (username: string) => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // TODO only get user created playlists names in one query
     const fetchUserPlaylistNames = async () => {
       try {
-        // TODO only one fetch URL
-        // if (!response.ok) {
-        //  throw new Error(`Failed to fetch user playlistn names`);
-        // }
-        const fetchGetUserResponse = await fetch(
-          `${Global.backendBaseUrl}users/${username}`,
-          {
-            credentials: 'include',
-          },
-        );
-        const fetchGetUserJson = await fetchGetUserResponse.json();
-        const sidebarPlaylistNames = fetchGetUserJson.playlists.join(',');
-
         const response = await fetch(
-          `${Global.backendBaseUrl}playlists/selected/${sidebarPlaylistNames}`,
+          `${Global.backendBaseUrl}users/${username}/playlist_names`,
           {
             credentials: 'include',
           },
         );
-        const data = await response.json();
-        const playlistNamesFromFetch: string[] = [];
+        console.log(`DATA fetch ANTES ${response}`); // ! QUITAR
 
-        if (data.playlists) {
-          data.playlists.forEach((playlistObject: any) => {
-            playlistNamesFromFetch.push(playlistObject.name);
-          });
+        if (!response.ok) {
+          throw new Error(`Failed to fetch user playlist names`);
         }
-        setPlaylistNames(playlistNamesFromFetch);
+        const data = await response.json();
+        console.log(`DATA fetch ${data}`); // ! QUITAR
+        setPlaylistNames(data);
         setLoading(false);
       } catch (err) {
         console.log(err);
-        setError('Unable to get user playlists names');
+        setError('Unable to get user playlist names');
         setPlaylistNames([]);
       } finally {
         setLoading(false);

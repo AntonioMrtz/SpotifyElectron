@@ -1,10 +1,10 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "Spotify Electron API",
+    "title": "Spotify Electron Backend API",
     "description": "API created with Python FastAPI to serve          as backend for Spotify Electron music streaming Desktop App",
     "contact": {
-      "name": "Antonio Martinez Fernandez",
+      "name": "Antonio Mart\u00ednez Fern\u00e1ndez",
       "url": "https://github.com/AntonioMrtz",
       "email": "antoniomartinezfernandez17@gmail.com"
     },
@@ -12,7 +12,7 @@
       "name": "Attribution-NonCommercial-ShareAlike 4.0 International",
       "url": "https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es"
     },
-    "version": "1.0.0"
+    "version": "0.1.0"
   },
   "paths": {
     "/playlists/{name}": {
@@ -430,7 +430,7 @@
           "Songs"
         ],
         "summary": "Create Song",
-        "description": "Create song\n\nArgs:\n    name (str) : song name\n    genre (Genre): genre\n    photo (str): photo\n    file (UploadFile): song file",
+        "description": "Create song\n\nArgs:\n    name (str): song name\n    genre (Genre): genre\n    photo (str): photo\n    file (UploadFile): song file",
         "operationId": "create_song_songs__post",
         "security": [
           {
@@ -664,9 +664,9 @@
         "tags": [
           "Users"
         ],
-        "summary": "Get Whoami",
+        "summary": "Get Who Am I",
         "description": "Returns token info from JWT\n\nArgs:\n    token (TokenData): the jwt token. Defaults to None.",
-        "operationId": "get_whoAmI_users_whoami_get",
+        "operationId": "get_who_am_i_users_whoami_get",
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -966,6 +966,88 @@
             "schema": {
               "type": "string",
               "title": "Playlist Name"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{name}/relevant_playlists": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get User Relevant Playlists",
+        "description": "Get relevant playlists for user\n\nArgs:\n    name (str): user name",
+        "operationId": "get_user_relevant_playlists_users__name__relevant_playlists_get",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Name"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{name}/playlist_names": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get User Relevant Playlists Names",
+        "description": "Get playlist names created by user\n\nArgs:\n    name (str): user name",
+        "operationId": "get_user_relevant_playlists_names_users__name__playlist_names_get",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Name"
             }
           }
         ],

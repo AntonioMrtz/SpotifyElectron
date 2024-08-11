@@ -10,7 +10,7 @@ export interface PropsSongCard {
   artist: string;
   photo: string;
   refreshSidebarData: () => void;
-  changeSongName: Function;
+  changeSongName: (songName: string) => void;
 }
 
 export default function SongCard({

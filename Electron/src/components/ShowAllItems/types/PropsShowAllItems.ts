@@ -9,5 +9,5 @@ export enum ShowAllItemsTypes {
 export interface PropsAllItems {
   refreshSidebarData: () => void;
   type: ShowAllItemsTypes;
-  changeSongName: Function;
+  changeSongName: (songName: string) => void;
 }

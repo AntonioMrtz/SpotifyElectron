@@ -13,5 +13,5 @@ export interface PropsItemsPlaylistsFromUser extends PropsItemsPlaylist {
 export interface PropsItemsSongsFromArtist extends PropsItems {
   artistName: string;
   refreshSidebarData: () => void;
-  changeSongName: Function;
+  changeSongName: (songName: string) => void;
 }

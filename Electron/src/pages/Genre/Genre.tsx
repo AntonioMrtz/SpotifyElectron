@@ -6,7 +6,7 @@ import SongCard from '../../components/Cards/SongCard/SongCard';
 
 interface PropsGenre {
   refreshSidebarData: () => void;
-  changeSongName: Function;
+  changeSongName: (songName: string) => void;
 }
 
 export default function Genre({

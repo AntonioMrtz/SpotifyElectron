@@ -12,7 +12,7 @@ import styles from './explorar.module.css';
 import GenreCard from '../../components/Cards/GenreCard/GenreCard';
 
 interface PropsExplorar {
-  changeSongName: Function;
+  changeSongName: (songName: string) => void;
   refreshSidebarData: () => void;
 }
 

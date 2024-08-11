@@ -12,7 +12,7 @@ import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist
 interface PropsUserProfile {
   userType: UserType;
   refreshSidebarData: () => void;
-  changeSongName: Function;
+  changeSongName: (songName: string) => void;
 }
 
 export default function UserProfile({

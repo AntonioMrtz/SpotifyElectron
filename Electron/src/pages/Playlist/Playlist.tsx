@@ -16,7 +16,7 @@ import Song from '../../components/Song/Song';
 import styles from './playlist.module.css';
 
 interface PropsPlaylist {
-  changeSongName: Function;
+  changeSongName: (songName: string) => void;
   refreshSidebarData: () => void;
 }
 

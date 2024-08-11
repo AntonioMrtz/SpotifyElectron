@@ -15,13 +15,11 @@ const useFetchGetUserPlaylistNames = (username: string) => {
             credentials: 'include',
           },
         );
-        console.log(`DATA fetch ANTES ${response}`); // ! QUITAR
-
         if (!response.ok) {
           throw new Error(`Failed to fetch user playlist names`);
         }
+
         const data = await response.json();
-        console.log(`DATA fetch ${data}`); // ! QUITAR
         setPlaylistNames(data);
         setLoading(false);
       } catch (err) {

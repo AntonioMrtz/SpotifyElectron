@@ -232,28 +232,26 @@ export default function ContextMenuPlaylist({
     }
   };
 
-  const handleDeletePlaylist = (playlistNameToDelete: string) => {
-    /* Delete playlist */
-    fetch(`${Global.backendBaseUrl}playlists/${playlistNameToDelete}`, {
-      method: 'DELETE',
-      credentials: 'include',
-    })
-      .then((response) => {
-        if (response.status !== 202) {
-          displayConfirmationModal(ConfirmationMenuActionKind.DELETE_ERROR);
+  const handleDeletePlaylist = async (playlistNameToDelete: string) => {
+    const deletePlaylistURL = `${Global.backendBaseUrl}playlists/${playlistNameToDelete}`;
 
-          throw new Error('Unable to delete playlist');
-        } else if (response.status === 202) {
-          refreshSidebarData();
-          navigate(`/home`);
-        }
-        handleClose();
-        return null;
-      })
-      .catch((error) => {
-        console.error('Unable to delete playlist: ', error);
-        displayConfirmationModal(ConfirmationMenuActionKind.DELETE_ERROR);
+    try {
+      const deletePlaylistResponse = await fetch(deletePlaylistURL, {
+        method: 'DELETE',
+        credentials: 'include',
       });
+      if (!deletePlaylistResponse.ok) {
+        displayConfirmationModal(ConfirmationMenuActionKind.DELETE_ERROR);
+        throw new Error('Unable to delete playlist');
+      }
+      refreshSidebarData();
+      navigate(`/home`);
+    } catch (err) {
+      console.error('Unable to delete playlist: ', err);
+      displayConfirmationModal(ConfirmationMenuActionKind.DELETE_ERROR);
+    } finally {
+      handleClose();
+    }
   };
 
   const handleEditPlaylistData = () => {

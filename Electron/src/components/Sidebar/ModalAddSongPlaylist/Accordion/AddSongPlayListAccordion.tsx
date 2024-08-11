@@ -126,9 +126,10 @@ export default function AddSongPlayListAccordion({
       const formDataFile = new FormData();
       formDataFile.append('file', songFile);
 
-      const requestOptions = {
+      const requestOptions: RequestInit = {
         method: 'POST',
         body: formDataFile,
+        credentials: 'include',
       };
 
       fetch(url, requestOptions)

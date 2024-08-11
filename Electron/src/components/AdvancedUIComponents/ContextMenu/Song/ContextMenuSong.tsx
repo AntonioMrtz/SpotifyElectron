@@ -151,6 +151,7 @@ export default function ContextMenuSong({
 
   const handleCrearLista = async () => {
     try {
+      // TODO may cause problems in the future if playlist already exists -> answer backend for valid name
       const newPlaylistName = `Playlist${Math.trunc(
         Math.floor(Math.random() * 1000),
       ).toString()}`;

@@ -152,6 +152,8 @@ yarn-error.log*
 Electron/.erb/dll/preload.js
 Electron/.erb/dll/renderer.dev.dll.js
 Electron/.erb/dll/renderer.json
+Electron/.erb/dll/vendors-node_modules_prettier_standalone_mjs.dev.dll.js
+Electron/.erb/dll/**
 
 # release
 release/

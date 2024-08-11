@@ -15,7 +15,7 @@ jest.spyOn(Token, 'getTokenRole').mockReturnValue(roleUser);
 
 test('render AddSongPlaylistAccordion', async () => {
   const handleCloseMock = jest.fn();
-  const reloadSidebarMock = jest.fn();
+  const refreshSidebarDataMock = jest.fn();
   const setIsCloseAllowed = jest.fn();
 
   global.fetch = jest.fn(async (url: string) => {
@@ -38,7 +38,7 @@ test('render AddSongPlaylistAccordion', async () => {
       <BrowserRouter>
         <AddSongPlayListAccordion
           handleClose={handleCloseMock}
-          reloadSidebar={reloadSidebarMock}
+          refreshSidebarData={refreshSidebarDataMock}
           setIsCloseAllowed={setIsCloseAllowed}
         />
       </BrowserRouter>,
@@ -50,7 +50,7 @@ test('render AddSongPlaylistAccordion', async () => {
 
 test('AddSongPlaylistAccordion submit playlist correct', async () => {
   const handleCloseMock = jest.fn();
-  const reloadSidebarMock = jest.fn();
+  const refreshSidebarDataMock = jest.fn();
   const setIsCloseAllowed = jest.fn();
 
   global.fetch = jest.fn(async (url: string) => {
@@ -78,7 +78,7 @@ test('AddSongPlaylistAccordion submit playlist correct', async () => {
       <BrowserRouter>
         <AddSongPlayListAccordion
           handleClose={handleCloseMock}
-          reloadSidebar={reloadSidebarMock}
+          refreshSidebarData={refreshSidebarDataMock}
           setIsCloseAllowed={setIsCloseAllowed}
         />
       </BrowserRouter>,
@@ -128,7 +128,7 @@ test('AddSongPlaylistAccordion submit playlist correct', async () => {
 
 test('AddSongPlaylistAccordion submit song correct', async () => {
   const handleCloseMock = jest.fn();
-  const reloadSidebarMock = jest.fn();
+  const refreshSidebarDataMock = jest.fn();
   const setIsCloseAllowed = jest.fn();
 
   global.fetch = jest.fn(async (url: string) => {
@@ -156,7 +156,7 @@ test('AddSongPlaylistAccordion submit song correct', async () => {
       <BrowserRouter>
         <AddSongPlayListAccordion
           handleClose={handleCloseMock}
-          reloadSidebar={reloadSidebarMock}
+          refreshSidebarData={refreshSidebarDataMock}
           setIsCloseAllowed={setIsCloseAllowed}
         />
       </BrowserRouter>,

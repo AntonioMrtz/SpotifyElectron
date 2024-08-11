@@ -37,7 +37,7 @@ jest.spyOn(Token, 'getTokenRole').mockReturnValue(roleUser);
 
 test('render Sidebar Playlist', async () => {
   const handleUrlPlaylistClicked = () => jest.fn();
-  const reloadSidebar = () => jest.fn();
+  const refreshSidebarData = () => jest.fn();
 
   const component = await act(() => {
     return render(
@@ -48,7 +48,7 @@ test('render Sidebar Playlist', async () => {
           owner={artistMockFetch.name}
           playlistStyle=""
           handleUrlPlaylistClicked={handleUrlPlaylistClicked}
-          reloadSidebar={reloadSidebar}
+          refreshSidebarData={refreshSidebarData}
         />
       </BrowserRouter>,
     );
@@ -60,7 +60,7 @@ test('render Sidebar Playlist', async () => {
 
 test('Sidebar Playlist handle open context menu', async () => {
   const handleUrlPlaylistClickedMock = jest.fn();
-  const reloadSidebarMock = jest.fn();
+  const refreshSidebarDataMock = jest.fn();
 
   global.fetch = jest.fn(async (url: string) => {
     if (url === `${Global.backendBaseUrl}artists/${artistMockFetch.name}`) {
@@ -98,7 +98,7 @@ test('Sidebar Playlist handle open context menu', async () => {
           owner={artistMockFetch.name}
           playlistStyle=""
           handleUrlPlaylistClicked={handleUrlPlaylistClickedMock}
-          reloadSidebar={reloadSidebarMock}
+          refreshSidebarData={refreshSidebarDataMock}
         />
       </BrowserRouter>,
     );
@@ -117,7 +117,7 @@ test('Sidebar Playlist handle open context menu', async () => {
 
 test('Sidebar Playlist left-click', async () => {
   const handleUrlPlaylistClickedMock = jest.fn();
-  const reloadSidebarMock = jest.fn();
+  const refreshSidebarDataMock = jest.fn();
 
   global.fetch = jest.fn(async (url: string) => {
     if (url === `${Global.backendBaseUrl}artists/${artistMockFetch.name}`) {
@@ -155,7 +155,7 @@ test('Sidebar Playlist left-click', async () => {
           owner={artistMockFetch.name}
           playlistStyle=""
           handleUrlPlaylistClicked={handleUrlPlaylistClickedMock}
-          reloadSidebar={reloadSidebarMock}
+          refreshSidebarData={refreshSidebarDataMock}
         />
       </BrowserRouter>,
     );

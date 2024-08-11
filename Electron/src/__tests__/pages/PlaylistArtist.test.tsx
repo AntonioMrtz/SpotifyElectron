@@ -90,7 +90,7 @@ test('Playlist artist role get all info', async () => {
             element={
               <Playlist
                 changeSongName={jest.fn()}
-                triggerReloadSidebar={jest.fn()}
+                refreshSidebarData={jest.fn()}
               />
             }
           />

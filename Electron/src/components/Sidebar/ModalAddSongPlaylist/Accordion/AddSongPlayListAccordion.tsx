@@ -17,7 +17,7 @@ import styles from './addSongPlayListAccordion.module.css';
 
 interface PropsAddSongPlayListAccordion {
   handleClose: Function;
-  reloadSidebar: Function;
+  refreshSidebarData: () => void;
   setIsCloseAllowed: Function;
 }
 
@@ -35,7 +35,7 @@ const MessagesInfoPopOver = {
 
 export default function AddSongPlayListAccordion({
   handleClose,
-  reloadSidebar,
+  refreshSidebarData,
   setIsCloseAllowed,
 }: PropsAddSongPlayListAccordion) {
   /* Check user type */
@@ -226,7 +226,7 @@ export default function AddSongPlayListAccordion({
               MessagesInfoPopOver.PLAYLIST_ADDED_TITLE,
               MessagesInfoPopOver.PLAYLIST_ADDED_DESCRIPTION,
             );
-            reloadSidebar();
+            refreshSidebarData();
           } else {
             console.log('No se a creado la playlist');
 

@@ -17,12 +17,12 @@ import styles from './playlist.module.css';
 
 interface PropsPlaylist {
   changeSongName: Function;
-  triggerReloadSidebar: Function;
+  refreshSidebarData: () => void;
 }
 
 export default function Playlist({
   changeSongName,
-  triggerReloadSidebar,
+  refreshSidebarData,
 }: PropsPlaylist) {
   const [mainColorThumbnail, setMainColorThumbnail] = useState('');
 
@@ -114,7 +114,7 @@ export default function Playlist({
       fetch(fetchPatchSavedPlaylistUrl, requestOptionsPatchSavedPlaylistUr)
         .then(() => {
           setHearthLikedInterface();
-          triggerReloadSidebar();
+          refreshSidebarData();
           return null;
         })
         .catch(() => console.log('Unable to update saved playlists'));
@@ -129,7 +129,7 @@ export default function Playlist({
       fetch(fetchDeleteSavedPlaylistUrl, requestOptionsDeleteSavedPlaylistUr)
         .then(() => {
           setHearthUnLikedInterface();
-          triggerReloadSidebar();
+          refreshSidebarData();
           return null;
         })
         .catch(() => console.log('Unable to update saved playlists'));
@@ -243,7 +243,7 @@ export default function Playlist({
                       index: 0,
                       handleSongCliked: changeSongName,
                       refreshPlaylistData: loadPlaylistData,
-                      refreshSidebarData: triggerReloadSidebar,
+                      refreshSidebarData,
                     };
                     propsSong.artistName = resFetchSongDTOJson.artist;
                     propsSong.duration = resFetchSongDTOJson.seconds_duration;
@@ -319,11 +319,11 @@ export default function Playlist({
         setopenModalUpdatePlaylist(false);
         if (formData.name !== playlistName && formData.name !== '') {
           //* Al cargar inmediatamente con el useEffect de location produce que el contenido para la nueva url no esta disponible
-          triggerReloadSidebar();
+          refreshSidebarData();
           navigate(`/playlist/${formData.name}`, { replace: true });
         } else {
           loadPlaylistData();
-          triggerReloadSidebar();
+          refreshSidebarData();
         }
       }
     } catch {
@@ -543,7 +543,7 @@ export default function Playlist({
                   duration={song.duration}
                   handleSongCliked={changeSongName}
                   refreshPlaylistData={loadPlaylistData}
-                  refreshSidebarData={triggerReloadSidebar}
+                  refreshSidebarData={refreshSidebarData}
                 />
               );
             })}
@@ -579,7 +579,7 @@ export default function Playlist({
             owner={owner}
             handleCloseParent={handleCloseContextMenu}
             refreshPlaylistData={() => {}}
-            refreshSidebarData={triggerReloadSidebar}
+            refreshSidebarData={refreshSidebarData}
           />
         </Popover>
       </div>

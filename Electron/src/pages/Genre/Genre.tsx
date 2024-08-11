@@ -5,7 +5,7 @@ import styles from './genre.module.css';
 import SongCard from '../../components/Cards/SongCard/SongCard';
 
 interface PropsGenre {
-  refreshSidebarData: Function;
+  refreshSidebarData: () => void;
   changeSongName: Function;
 }
 

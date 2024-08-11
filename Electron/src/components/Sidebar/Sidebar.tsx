@@ -10,10 +10,10 @@ import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist
 import { PropsPlaylist } from './types/propsPlaylist.module';
 
 interface PropsSidebar {
-  triggerReloadSidebar: boolean;
+  refreshSidebarData: boolean;
 }
 
-export default function Sidebar({ triggerReloadSidebar }: PropsSidebar) {
+export default function Sidebar({ refreshSidebarData }: PropsSidebar) {
   //* HIGHLIGHT CURRENT SECTION LI
 
   const [selectedID, setSelectedID] = useState<string>();
@@ -104,7 +104,7 @@ export default function Sidebar({ triggerReloadSidebar }: PropsSidebar) {
             playlist.photo === '' ? defaultThumbnailPlaylist : playlist.photo,
           owner: playlist.owner,
           handleUrlPlaylistClicked,
-          reloadSidebar: handlePlaylists,
+          refreshSidebarData: handlePlaylists,
           playlistStyle: '',
         };
 
@@ -123,7 +123,7 @@ export default function Sidebar({ triggerReloadSidebar }: PropsSidebar) {
 
   useEffect(() => {
     handlePlaylists();
-  }, [handlePlaylists, triggerReloadSidebar]);
+  }, [handlePlaylists, refreshSidebarData]);
 
   return (
     <div className={`container-fluid ${styles.wrapperNavbar}`}>
@@ -192,7 +192,7 @@ export default function Sidebar({ triggerReloadSidebar }: PropsSidebar) {
               className="container-fluid d-flex justify-content-end p-0"
               style={{ width: '25%' }}
             >
-              <ModalAddSongPlaylist reloadSidebar={handlePlaylists} />
+              <ModalAddSongPlaylist refreshSidebarData={handlePlaylists} />
             </div>
           </header>
           <ul
@@ -218,7 +218,7 @@ export default function Sidebar({ triggerReloadSidebar }: PropsSidebar) {
                       photo={playlist.photo}
                       owner={playlist.owner}
                       playlistStyle={playlistStyle}
-                      reloadSidebar={handlePlaylists}
+                      refreshSidebarData={handlePlaylists}
                     />
                   </Link>
                 );

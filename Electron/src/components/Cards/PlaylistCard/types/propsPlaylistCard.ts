@@ -3,5 +3,5 @@ export interface PropsPlaylistCard {
   photo: string;
   description: string;
   owner: string;
-  refreshSidebarData: Function;
+  refreshSidebarData: () => void;
 }

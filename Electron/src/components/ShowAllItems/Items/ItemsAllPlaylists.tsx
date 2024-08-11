@@ -1,52 +1,12 @@
-import { useCallback, useEffect, useState } from 'react';
-import { PropsPlaylistCard } from 'components/Cards/PlaylistCard/types/propsPlaylistCard';
 import PlaylistCard from 'components/Cards/PlaylistCard/PlaylistCard';
-import Global from 'global/global';
+import useFetchGetPlaylists from 'hooks/useFetchGetPlaylists';
 import { PropsItemsPlaylist } from '../types/PropsItems';
 import defaultThumbnailPlaylist from '../../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 
 export default function ItemsAllPlaylists({
   refreshSidebarData,
 }: PropsItemsPlaylist) {
-  const [playlists, setPlaylists] = useState<PropsPlaylistCard[]>();
-
-  const handlePlaylists = useCallback(() => {
-    fetch(`${Global.backendBaseUrl}playlists/`, {
-      credentials: 'include',
-    })
-      .then((resFetchPlaylists) => resFetchPlaylists.json())
-      .then((resFetchPlaylistsJson) => {
-        if (resFetchPlaylistsJson.playlists) {
-          const propsPlaylists: PropsPlaylistCard[] = [];
-
-          resFetchPlaylistsJson.playlists.forEach(
-            (resPlaylistFetchJson: any) => {
-              const propsPlaylist: PropsPlaylistCard = {
-                name: resPlaylistFetchJson.name,
-                photo:
-                  resPlaylistFetchJson.photo === ''
-                    ? defaultThumbnailPlaylist
-                    : resPlaylistFetchJson.photo,
-                description: resPlaylistFetchJson.description,
-                refreshSidebarData,
-                owner: resPlaylistFetchJson.owner,
-              };
-
-              propsPlaylists.push(propsPlaylist);
-            },
-          );
-          setPlaylists(propsPlaylists);
-        }
-        return null;
-      })
-      .catch(() => {
-        console.log('No se pudieron obtener las playlists');
-      });
-  }, [refreshSidebarData]);
-
-  useEffect(() => {
-    handlePlaylists();
-  }, [handlePlaylists]);
+  const { playlists } = useFetchGetPlaylists(refreshSidebarData);
 
   return (
     // eslint-disable-next-line react/jsx-no-useless-fragment

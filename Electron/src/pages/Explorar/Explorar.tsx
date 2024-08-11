@@ -13,12 +13,12 @@ import GenreCard from '../../components/Cards/GenreCard/GenreCard';
 
 interface PropsExplorar {
   changeSongName: Function;
-  refreshSidebar: Function;
+  refreshSidebarData: () => void;
 }
 
 export default function Explorar({
   changeSongName,
-  refreshSidebar,
+  refreshSidebarData,
 }: PropsExplorar) {
   const [filterName, setFilterName] = useState('');
 
@@ -55,7 +55,7 @@ export default function Explorar({
                 name: song.name,
                 artist: song.artist,
                 photo: song.photo,
-                refreshSidebarData: refreshSidebar,
+                refreshSidebarData,
                 changeSongName,
               });
             });
@@ -74,7 +74,7 @@ export default function Explorar({
                 photo: playlist.photo,
                 description: playlist.description,
                 owner: playlist.owner,
-                refreshSidebarData: refreshSidebar,
+                refreshSidebarData,
               });
             });
 
@@ -114,7 +114,7 @@ export default function Explorar({
         console.log(`Unable to get filtered items | ${error}`);
       }
     },
-    [changeSongName, refreshSidebar],
+    [changeSongName, refreshSidebarData],
   );
 
   useEffect(() => {

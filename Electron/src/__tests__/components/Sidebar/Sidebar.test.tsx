@@ -65,7 +65,7 @@ test('render Sidebar', async () => {
   const component = await act(() => {
     return render(
       <BrowserRouter>
-        <Sidebar triggerReloadSidebar />
+        <Sidebar refreshSidebarData />
       </BrowserRouter>,
     );
   });

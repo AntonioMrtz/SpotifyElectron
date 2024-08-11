@@ -3,7 +3,7 @@ export interface PropsItems {
 }
 
 export interface PropsItemsPlaylist extends PropsItems {
-  refreshSidebarData: Function;
+  refreshSidebarData: () => void;
 }
 
 export interface PropsItemsPlaylistsFromUser extends PropsItemsPlaylist {
@@ -12,6 +12,6 @@ export interface PropsItemsPlaylistsFromUser extends PropsItemsPlaylist {
 
 export interface PropsItemsSongsFromArtist extends PropsItems {
   artistName: string;
-  refreshSidebarData: Function;
+  refreshSidebarData: () => void;
   changeSongName: Function;
 }

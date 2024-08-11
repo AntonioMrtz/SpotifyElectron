@@ -109,7 +109,7 @@ test('Playlist user role get all info', async () => {
             element={
               <Playlist
                 changeSongName={jest.fn()}
-                triggerReloadSidebar={jest.fn()}
+                refreshSidebarData={jest.fn()}
               />
             }
           />
@@ -215,7 +215,7 @@ test('Playlist user role hit like button', async () => {
             element={
               <Playlist
                 changeSongName={jest.fn()}
-                triggerReloadSidebar={jest.fn()}
+                refreshSidebarData={jest.fn()}
               />
             }
           />
@@ -330,7 +330,7 @@ test('Playlist user role get unlike button', async () => {
             element={
               <Playlist
                 changeSongName={jest.fn()}
-                triggerReloadSidebar={jest.fn()}
+                refreshSidebarData={jest.fn()}
               />
             }
           />
@@ -447,7 +447,7 @@ test('Playlist user role update playlist', async () => {
     return Promise.reject(new Error('Unhandled URL in fetch mock'));
   }) as jest.Mock;
 
-  const triggerReloadSidebarMock = jest.fn();
+  const refreshSidebarData = jest.fn();
 
   const component = await act(() => {
     return render(
@@ -458,7 +458,7 @@ test('Playlist user role update playlist', async () => {
             element={
               <Playlist
                 changeSongName={jest.fn()}
-                triggerReloadSidebar={triggerReloadSidebarMock}
+                refreshSidebarData={refreshSidebarData}
               />
             }
           />
@@ -489,5 +489,5 @@ test('Playlist user role update playlist', async () => {
     }
   });
 
-  expect(triggerReloadSidebarMock).toHaveBeenCalledTimes(1);
+  expect(refreshSidebarData).toHaveBeenCalledTimes(1);
 });

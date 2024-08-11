@@ -11,7 +11,7 @@ import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist
 
 interface PropsUserProfile {
   userType: UserType;
-  refreshSidebarData: Function;
+  refreshSidebarData: () => void;
   changeSongName: Function;
 }
 

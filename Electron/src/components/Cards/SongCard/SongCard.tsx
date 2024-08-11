@@ -9,7 +9,7 @@ export interface PropsSongCard {
   name: string;
   artist: string;
   photo: string;
-  refreshSidebarData: Function;
+  refreshSidebarData: () => void;
   changeSongName: Function;
 }
 

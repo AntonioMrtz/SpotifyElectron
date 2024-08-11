@@ -20,8 +20,6 @@ export default function Explorar({
   changeSongName,
   refreshSidebar,
 }: PropsExplorar) {
-  /* Searchbar */
-
   const [filterName, setFilterName] = useState('');
 
   const [filteredSongs, setFilteredSongs] = useState<PropsSongCard[]>([]);

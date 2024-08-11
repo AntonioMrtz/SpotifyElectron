@@ -11,6 +11,9 @@ const useFetchGetUserPlaylistNames = (username: string) => {
     const fetchUserPlaylistNames = async () => {
       try {
         // TODO only one fetch URL
+        // if (!response.ok) {
+        //  throw new Error(`Failed to fetch user playlistn names`);
+        // }
         const fetchGetUserResponse = await fetch(
           `${Global.backendBaseUrl}users/${username}`,
           {

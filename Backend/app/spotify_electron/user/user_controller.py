@@ -349,7 +349,7 @@ def get_user_relevant_playlists(name: str) -> Response:
 
 
 @router.get("/{name}/playlist_names")
-def get_user_relevant_playlists_names(name: str) -> Response:
+def get_user_playlists_names(name: str) -> Response:
     """Get playlist names created by user
 
     Args:

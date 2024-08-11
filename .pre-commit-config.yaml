@@ -6,6 +6,7 @@ repos:
       - id: check-json
         exclude: ^.devcontainer/
       - id: end-of-file-fixer
+        exclude: ^Electron/src/swagger/
       - id: trailing-whitespace
       - id: check-merge-conflict
 

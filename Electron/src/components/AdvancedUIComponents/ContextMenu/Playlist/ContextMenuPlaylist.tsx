@@ -304,6 +304,11 @@ export default function ContextMenuPlaylist({
       });
   };
 
+  const handleCreatePlaylist = () => {
+    // TODO implement, check for handleAddPlaylistToPlaylist
+    // TODO may cause problems in the future if playlist already exists -> answer backend for valid name
+  };
+
   const handleEditPlaylistData = () => {
     navigate(`/playlists/${playlistName}?edit=true`, { replace: true });
 
@@ -368,7 +373,9 @@ export default function ContextMenuPlaylist({
                     <button type="button">Buscar una lista</button>
                   </li>
                   <li>
-                    <button type="button">Crear lista</button>
+                    <button type="button" onClick={handleCreatePlaylist}>
+                      Crear lista
+                    </button>
                   </li>
 
                   {loading && <LoadingCircle />}

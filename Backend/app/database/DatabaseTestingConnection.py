@@ -1,8 +1,5 @@
 """In-memory Database connection for testing"""
 
-from mongomock.gridfs import enable_gridfs_integration
-from mongomock.mongo_client import MongoClient as MongoClientMock
-
 from app.database.database_schema import BaseDatabaseConnection
 
 
@@ -12,6 +9,9 @@ class DatabaseTestingConnection(BaseDatabaseConnection):
     TESTING_COLLECTION_NAME_PREFIX = "test."
 
     def _get_mongo_client(self):
+        from mongomock.gridfs import enable_gridfs_integration
+        from mongomock.mongo_client import MongoClient as MongoClientMock
+
         """Get mock Mongo client class
 
         Returns:

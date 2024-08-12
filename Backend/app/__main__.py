@@ -65,6 +65,7 @@ async def lifespan_handler(app: FastAPI):
 
 app = FastAPI(
     title=AppInfo.TITLE,
+    version=AppInfo.VERSION,
     description=AppInfo.DESCRIPTION,
     contact={
         "name": AppInfo.CONTACT_NAME,
@@ -75,6 +76,7 @@ app = FastAPI(
         "name": AppInfo.LICENSE_INFO_NAME,
         "url": AppInfo.LICENSE_INFO_URL,
     },
+    servers=AppInfo.SERVER,
     lifespan=lifespan_handler,
 )
 

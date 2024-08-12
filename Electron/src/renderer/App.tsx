@@ -24,6 +24,8 @@ function App() {
     window.scrollTo(0, 0);
   }, [location]);
 
+  // TODO set url backend and with credentials
+
   /* Handle reload of sidebar */
 
   const [triggerrefreshSidebarData, setTriggerrefreshSidebarData] =

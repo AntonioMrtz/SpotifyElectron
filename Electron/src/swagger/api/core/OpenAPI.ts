@@ -2,7 +2,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import Global from 'global/global';
 import type { ApiRequestOptions } from './ApiRequestOptions';
 
 type Resolver<T> = (options: ApiRequestOptions) => Promise<T>;
@@ -21,9 +20,9 @@ export type OpenAPIConfig = {
 };
 
 export const OpenAPI: OpenAPIConfig = {
-    BASE: Global.backendBaseUrl,
-    VERSION: Global.appVersion,
-    WITH_CREDENTIALS: true,
+    BASE: 'http://127.0.0.1:8000',
+    VERSION: '1.0.0',
+    WITH_CREDENTIALS: false,
     CREDENTIALS: 'include',
     TOKEN: undefined,
     USERNAME: undefined,

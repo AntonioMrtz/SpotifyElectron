@@ -216,7 +216,7 @@ export class UsersService {
         });
     }
     /**
-     * Get User Relevant Playlists Names
+     * Get User Playlists Names
      * Get playlist names created by user
      *
      * Args:
@@ -225,7 +225,7 @@ export class UsersService {
      * @returns any Successful Response
      * @throws ApiError
      */
-    public static getUserRelevantPlaylistsNamesUsersNamePlaylistNamesGet(
+    public static getUserPlaylistsNamesUsersNamePlaylistNamesGet(
         name: string,
     ): CancelablePromise<any> {
         return __request(OpenAPI, {

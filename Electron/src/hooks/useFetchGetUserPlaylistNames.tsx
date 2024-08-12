@@ -10,7 +10,7 @@ const useFetchGetUserPlaylistNames = (username: string) => {
     const fetchUserPlaylistNames = async () => {
       try {
         const data =
-          await UsersService.getUserRelevantPlaylistsNamesUsersNamePlaylistNamesGet(
+          await UsersService.getUserPlaylistsNamesUsersNamePlaylistNamesGet(
             username,
           );
         setPlaylistNames(data);

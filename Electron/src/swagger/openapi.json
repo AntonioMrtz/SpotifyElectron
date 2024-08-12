@@ -12,8 +12,13 @@
       "name": "Attribution-NonCommercial-ShareAlike 4.0 International",
       "url": "https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es"
     },
-    "version": "0.1.0"
+    "version": "1.0.0"
   },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:8000"
+    }
+  ],
   "paths": {
     "/playlists/{name}": {
       "get": {
@@ -21,7 +26,7 @@
           "Playlists"
         ],
         "summary": "Get Playlist",
-        "description": "Get playlsit\n\nArgs:\n    name (str): playlist name",
+        "description": "Get playlist\n\nArgs:\n    name (str): playlist name",
         "operationId": "get_playlist_playlists__name__get",
         "security": [
           {
@@ -274,7 +279,7 @@
           "Playlists"
         ],
         "summary": "Get Playlists",
-        "description": "Return all playlists",
+        "description": "Get all playlists",
         "operationId": "get_playlists_playlists__get",
         "security": [
           {
@@ -1037,9 +1042,9 @@
         "tags": [
           "Users"
         ],
-        "summary": "Get User Relevant Playlists Names",
+        "summary": "Get User Playlists Names",
         "description": "Get playlist names created by user\n\nArgs:\n    name (str): user name",
-        "operationId": "get_user_relevant_playlists_names_users__name__playlist_names_get",
+        "operationId": "get_user_playlists_names_users__name__playlist_names_get",
         "parameters": [
           {
             "name": "name",

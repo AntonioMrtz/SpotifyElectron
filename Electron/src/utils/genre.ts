@@ -1,4 +1,4 @@
-import { Genre } from 'swagger/api';
+import { Genre } from '../swagger/api';
 
 export const genreColorsMapping: Record<string, string> = {
   Pop: '#FF3300', // Rojo oscuro
@@ -32,6 +32,8 @@ export const genreColorsMapping: Record<string, string> = {
   Trap: '#00AA00', // Verde oscuro
   Reggaeton: '#00AAAA', // Cian oscuro
 };
+
+// TODO #190 REPLACE WITH Generate genre
 
 export function getGenreFromString(genreName: string): Genre {
   const genre = Genre[genreName as keyof typeof Genre];

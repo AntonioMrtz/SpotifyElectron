@@ -8,7 +8,7 @@ import { request as __request } from '../core/request';
 export class PlaylistsService {
     /**
      * Get Playlist
-     * Get playlsit
+     * Get playlist
      *
      * Args:
      * name (str): playlist name
@@ -135,7 +135,7 @@ export class PlaylistsService {
     }
     /**
      * Get Playlists
-     * Return all playlists
+     * Get all playlists
      * @returns any Successful Response
      * @throws ApiError
      */

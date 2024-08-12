@@ -1,1 +1,4 @@
 **/src/swagger/**
+node_modules
+dist
+src/swagger

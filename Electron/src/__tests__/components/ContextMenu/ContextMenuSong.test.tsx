@@ -48,6 +48,14 @@ global.fetch = jest.fn((url: string, options: any) => {
       json: () => playlistDTOMockFetch,
       status: 200,
       ok: true,
+      headers: {
+        get: (header: any) => {
+          if (header.toLowerCase() === 'content-type') {
+            return 'application/json';
+          }
+          return null;
+        },
+      },
     }).catch((error) => {
       console.log(error);
     });
@@ -60,6 +68,14 @@ global.fetch = jest.fn((url: string, options: any) => {
       json: () => [playlistName],
       status: 200,
       ok: true,
+      headers: {
+        get: (header: any) => {
+          if (header.toLowerCase() === 'content-type') {
+            return 'application/json';
+          }
+          return null;
+        },
+      },
     }).catch((error) => {
       console.log(error);
     });

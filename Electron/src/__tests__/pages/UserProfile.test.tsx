@@ -175,7 +175,7 @@ test('UserProfile User load Playback history and his Playlists', async () => {
 
   global.fetch = jest.fn((url: string) => {
     if (
-      url === `${Global.backendBaseUrl}playlists/${playlistDTOMockFetch.name}`
+      url === `${Global.backendBaseUrl}/playlists/${playlistDTOMockFetch.name}`
     ) {
       return Promise.resolve({
         json: () => playlistDTOMockFetch,
@@ -185,7 +185,7 @@ test('UserProfile User load Playback history and his Playlists', async () => {
         console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}playlists/`) {
+    if (url === `${Global.backendBaseUrl}/playlists/`) {
       return Promise.resolve({
         json: () => playlistDTOMockFetch,
         status: 200,
@@ -194,7 +194,7 @@ test('UserProfile User load Playback history and his Playlists', async () => {
         console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}users/${userMockFetch.name}`) {
+    if (url === `${Global.backendBaseUrl}/users/${userMockFetch.name}`) {
       return Promise.resolve({
         json: () => userMockFetch,
         status: 200,
@@ -203,7 +203,7 @@ test('UserProfile User load Playback history and his Playlists', async () => {
         console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}songs/metadata/${songName}`) {
+    if (url === `${Global.backendBaseUrl}/songs/metadata/${songName}`) {
       return Promise.resolve({
         json: () => songMockFetch,
         status: 200,
@@ -287,7 +287,7 @@ test('UserProfile Artist load Songs and total streams', async () => {
 
   global.fetch = jest.fn((url: string) => {
     if (
-      url === `${Global.backendBaseUrl}playlists/${playlistDTOMockFetch.name}`
+      url === `${Global.backendBaseUrl}/playlists/${playlistDTOMockFetch.name}`
     ) {
       return Promise.resolve({
         json: () => playlistDTOMockFetch,
@@ -297,7 +297,7 @@ test('UserProfile Artist load Songs and total streams', async () => {
         console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}playlists/`) {
+    if (url === `${Global.backendBaseUrl}/playlists/`) {
       return Promise.resolve({
         json: () => playlistDTOMockFetch,
         status: 200,
@@ -306,7 +306,7 @@ test('UserProfile Artist load Songs and total streams', async () => {
         console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}users/${artistMockFetch.name}`) {
+    if (url === `${Global.backendBaseUrl}/users/${artistMockFetch.name}`) {
       return Promise.resolve({
         json: () => artistMockFetch,
         status: 200,
@@ -315,7 +315,7 @@ test('UserProfile Artist load Songs and total streams', async () => {
         console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}songs/metadata/${songName}`) {
+    if (url === `${Global.backendBaseUrl}/songs/metadata/${songName}`) {
       return Promise.resolve({
         json: () => songMockFetch,
         status: 200,
@@ -325,7 +325,7 @@ test('UserProfile Artist load Songs and total streams', async () => {
       });
     }
     if (
-      url === `${Global.backendBaseUrl}artists/${artistMockFetch.name}/streams`
+      url === `${Global.backendBaseUrl}/artists/${artistMockFetch.name}/streams`
     ) {
       return Promise.resolve({
         json: () => ({

@@ -48,7 +48,7 @@ jest.spyOn(Token, 'getTokenRole').mockReturnValue(roleArtist);
 test('Playlist artist role get all info', async () => {
   global.fetch = jest.fn((url: string) => {
     if (
-      url === `${Global.backendBaseUrl}playlists/${playlistDTOMockFetch.name}`
+      url === `${Global.backendBaseUrl}/playlists/${playlistDTOMockFetch.name}`
     ) {
       return Promise.resolve({
         json: () => playlistDTOMockFetch,
@@ -58,7 +58,7 @@ test('Playlist artist role get all info', async () => {
         console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}artists/${userName}`) {
+    if (url === `${Global.backendBaseUrl}/artists/${userName}`) {
       return Promise.resolve({
         json: () => artistMockFetch,
         status: 200,
@@ -67,7 +67,7 @@ test('Playlist artist role get all info', async () => {
         console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}songs/metadata/${songName}`) {
+    if (url === `${Global.backendBaseUrl}/songs/metadata/${songName}`) {
       return Promise.resolve({
         json: () => songMockFetch,
         status: 200,

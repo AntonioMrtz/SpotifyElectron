@@ -58,7 +58,7 @@ jest.spyOn(Token, 'getTokenRole').mockReturnValue(roleUser);
 test('Playlist user role get all info', async () => {
   global.fetch = jest.fn((url: string) => {
     if (
-      url === `${Global.backendBaseUrl}playlists/${playlistDTOMockFetch.name}`
+      url === `${Global.backendBaseUrl}/playlists/${playlistDTOMockFetch.name}`
     ) {
       return Promise.resolve({
         json: () => playlistDTOMockFetch,
@@ -68,7 +68,7 @@ test('Playlist user role get all info', async () => {
         console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}artists/${artistMockFetch.name}`) {
+    if (url === `${Global.backendBaseUrl}/artists/${artistMockFetch.name}`) {
       return Promise.resolve({
         json: () => artistMockFetch,
         status: 200,
@@ -77,7 +77,7 @@ test('Playlist user role get all info', async () => {
         console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}songs/metadata/${songName}`) {
+    if (url === `${Global.backendBaseUrl}/songs/metadata/${songName}`) {
       return Promise.resolve({
         json: () => songMockFetch,
         status: 200,
@@ -86,7 +86,7 @@ test('Playlist user role get all info', async () => {
         console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}users/${userMockFetch.name}`) {
+    if (url === `${Global.backendBaseUrl}/users/${userMockFetch.name}`) {
       return Promise.resolve({
         json: () => userMockFetch,
         status: 200,
@@ -127,7 +127,7 @@ test('Playlist user role get all info', async () => {
 test('Playlist user role hit like button', async () => {
   global.fetch = jest.fn((url: string, options: any) => {
     if (
-      url === `${Global.backendBaseUrl}playlists/${playlistDTOMockFetch.name}`
+      url === `${Global.backendBaseUrl}/playlists/${playlistDTOMockFetch.name}`
     ) {
       return Promise.resolve({
         json: () => playlistDTOMockFetch,
@@ -137,7 +137,7 @@ test('Playlist user role hit like button', async () => {
         console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}artists/${artistMockFetch.name}`) {
+    if (url === `${Global.backendBaseUrl}/artists/${artistMockFetch.name}`) {
       return Promise.resolve({
         json: () => artistMockFetch,
         status: 200,
@@ -146,7 +146,7 @@ test('Playlist user role hit like button', async () => {
         console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}songs/metadata/${songName}`) {
+    if (url === `${Global.backendBaseUrl}/songs/metadata/${songName}`) {
       return Promise.resolve({
         json: () => songMockFetch,
         status: 200,
@@ -155,7 +155,7 @@ test('Playlist user role hit like button', async () => {
         console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}users/${userMockFetch.name}`) {
+    if (url === `${Global.backendBaseUrl}/users/${userMockFetch.name}`) {
       return Promise.resolve({
         json: () => userMockFetch,
         status: 200,
@@ -164,7 +164,7 @@ test('Playlist user role hit like button', async () => {
         console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}playlists/${playlistName}`) {
+    if (url === `${Global.backendBaseUrl}/playlists/${playlistName}`) {
       return Promise.resolve({
         json: () => {},
         status: 204,
@@ -176,7 +176,7 @@ test('Playlist user role hit like button', async () => {
 
     if (
       url ===
-        `${Global.backendBaseUrl}users/${userMockFetch.name}/saved_playlists?playlist_name=${playlistName}` &&
+        `${Global.backendBaseUrl}/users/${userMockFetch.name}/saved_playlists?playlist_name=${playlistName}` &&
       options.method === 'PATCH'
     ) {
       return Promise.resolve({
@@ -190,7 +190,7 @@ test('Playlist user role hit like button', async () => {
 
     if (
       url ===
-        `${Global.backendBaseUrl}users/${userMockFetch.name}/saved_playlists?playlist_name=${playlistName}` &&
+        `${Global.backendBaseUrl}/users/${userMockFetch.name}/saved_playlists?playlist_name=${playlistName}` &&
       options.method === 'DELETE'
     ) {
       return Promise.resolve({
@@ -242,7 +242,7 @@ test('Playlist user role hit like button', async () => {
 test('Playlist user role get unlike button', async () => {
   global.fetch = jest.fn((url: string, options: any) => {
     if (
-      url === `${Global.backendBaseUrl}playlists/${playlistDTOMockFetch.name}`
+      url === `${Global.backendBaseUrl}/playlists/${playlistDTOMockFetch.name}`
     ) {
       return Promise.resolve({
         json: () => playlistDTOMockFetch,
@@ -252,7 +252,7 @@ test('Playlist user role get unlike button', async () => {
         console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}artists/${artistMockFetch.name}`) {
+    if (url === `${Global.backendBaseUrl}/artists/${artistMockFetch.name}`) {
       return Promise.resolve({
         json: () => artistMockFetch,
         status: 200,
@@ -261,7 +261,7 @@ test('Playlist user role get unlike button', async () => {
         console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}songs/metadata/${songName}`) {
+    if (url === `${Global.backendBaseUrl}/songs/metadata/${songName}`) {
       return Promise.resolve({
         json: () => songMockFetch,
         status: 200,
@@ -270,7 +270,7 @@ test('Playlist user role get unlike button', async () => {
         console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}users/${userMockFetch.name}`) {
+    if (url === `${Global.backendBaseUrl}/users/${userMockFetch.name}`) {
       return Promise.resolve({
         json: () => userMockFetch,
         status: 200,
@@ -279,7 +279,7 @@ test('Playlist user role get unlike button', async () => {
         console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}playlists/${playlistName}`) {
+    if (url === `${Global.backendBaseUrl}/playlists/${playlistName}`) {
       return Promise.resolve({
         json: () => {},
         status: 204,
@@ -291,7 +291,7 @@ test('Playlist user role get unlike button', async () => {
 
     if (
       url ===
-        `${Global.backendBaseUrl}users/${userMockFetch.name}/saved_playlists?playlist_name=${playlistName}` &&
+        `${Global.backendBaseUrl}/users/${userMockFetch.name}/saved_playlists?playlist_name=${playlistName}` &&
       options.method === 'PATCH'
     ) {
       return Promise.resolve({
@@ -305,7 +305,7 @@ test('Playlist user role get unlike button', async () => {
 
     if (
       url ===
-        `${Global.backendBaseUrl}users/${userMockFetch.name}/saved_playlists?playlist_name=${playlistName}` &&
+        `${Global.backendBaseUrl}/users/${userMockFetch.name}/saved_playlists?playlist_name=${playlistName}` &&
       options.method === 'DELETE'
     ) {
       return Promise.resolve({
@@ -355,7 +355,7 @@ test('Playlist user role get unlike button', async () => {
 test('Playlist user role update playlist', async () => {
   global.fetch = jest.fn((url: string, options: any) => {
     if (
-      url === `${Global.backendBaseUrl}playlists/${playlistDTOMockFetch.name}`
+      url === `${Global.backendBaseUrl}/playlists/${playlistDTOMockFetch.name}`
     ) {
       return Promise.resolve({
         json: () => playlistDTOMockFetch,
@@ -365,7 +365,7 @@ test('Playlist user role update playlist', async () => {
         console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}artists/${artistMockFetch.name}`) {
+    if (url === `${Global.backendBaseUrl}/artists/${artistMockFetch.name}`) {
       return Promise.resolve({
         json: () => artistMockFetch,
         status: 200,
@@ -374,7 +374,7 @@ test('Playlist user role update playlist', async () => {
         console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}songs/metadata/${songName}`) {
+    if (url === `${Global.backendBaseUrl}/songs/metadata/${songName}`) {
       return Promise.resolve({
         json: () => songMockFetch,
         status: 200,
@@ -383,7 +383,7 @@ test('Playlist user role update playlist', async () => {
         console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}users/${userMockFetch.name}`) {
+    if (url === `${Global.backendBaseUrl}/users/${userMockFetch.name}`) {
       return Promise.resolve({
         json: () => userMockFetch,
         status: 200,
@@ -392,7 +392,7 @@ test('Playlist user role update playlist', async () => {
         console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}playlists/${playlistName}`) {
+    if (url === `${Global.backendBaseUrl}/playlists/${playlistName}`) {
       return Promise.resolve({
         json: () => {},
         status: 204,
@@ -404,7 +404,7 @@ test('Playlist user role update playlist', async () => {
 
     if (
       url ===
-        `${Global.backendBaseUrl}users/${userMockFetch.name}/saved_playlists?playlist_name=${playlistName}` &&
+        `${Global.backendBaseUrl}/users/${userMockFetch.name}/saved_playlists?playlist_name=${playlistName}` &&
       options.method === 'PATCH'
     ) {
       return Promise.resolve({
@@ -418,7 +418,7 @@ test('Playlist user role update playlist', async () => {
 
     if (
       url ===
-        `${Global.backendBaseUrl}users/${userMockFetch.name}/saved_playlists?playlist_name=${playlistName}` &&
+        `${Global.backendBaseUrl}/users/${userMockFetch.name}/saved_playlists?playlist_name=${playlistName}` &&
       options.method === 'DELETE'
     ) {
       return Promise.resolve({
@@ -432,7 +432,7 @@ test('Playlist user role update playlist', async () => {
 
     if (
       url ===
-      `${Global.backendBaseUrl}playlists/${playlistName}?photo=&description=description`
+      `${Global.backendBaseUrl}/playlists/${playlistName}?photo=&description=description`
     ) {
       return Promise.resolve({
         json: () => {},

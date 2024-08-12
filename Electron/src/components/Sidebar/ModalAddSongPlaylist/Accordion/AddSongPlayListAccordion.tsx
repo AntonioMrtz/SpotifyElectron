@@ -114,7 +114,7 @@ export default function AddSongPlayListAccordion({
     setLoadingUploadSong(true);
     setIsCloseAllowed(false);
 
-    const url = new URL(`${Global.backendBaseUrl}songs/`);
+    const url = new URL(`${Global.backendBaseUrl}/songs/`);
 
     if (formDataSong && songFile) {
       Object.entries(formDataSong).forEach(([key, value]) => {
@@ -195,7 +195,7 @@ export default function AddSongPlayListAccordion({
   const handleSubmitPlaylist = (event: FormEvent<HTMLButtonElement>) => {
     setIsCloseAllowed(false);
 
-    const url = new URL(`${Global.backendBaseUrl}playlists/`);
+    const url = new URL(`${Global.backendBaseUrl}/playlists/`);
 
     event.preventDefault();
 
@@ -256,7 +256,7 @@ export default function AddSongPlayListAccordion({
   const [genres, setGenres] = useState<{}>();
 
   const handleGenres = () => {
-    fetch(`${Global.backendBaseUrl}genres/`, {
+    fetch(`${Global.backendBaseUrl}/genres/`, {
       credentials: 'include',
     })
       .then((res) => res.json())

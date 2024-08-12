@@ -176,10 +176,10 @@ export default function ContextMenuPlaylist({
     srcPlaylistName: string,
   ) => {
     try {
-      const url = `${Global.backendBaseUrl}playlists/${dstPlaylistName}`;
+      const url = `${Global.backendBaseUrl}/playlists/${dstPlaylistName}`;
 
       const dstResponse = await fetch(
-        `${Global.backendBaseUrl}playlists/${dstPlaylistName}`,
+        `${Global.backendBaseUrl}/playlists/${dstPlaylistName}`,
         {
           credentials: 'include',
         },
@@ -192,7 +192,7 @@ export default function ContextMenuPlaylist({
       const putUrl = `${url}?photo=${photo}&description=${description}`;
 
       const srcResponse = await fetch(
-        `${Global.backendBaseUrl}playlists/${srcPlaylistName}`,
+        `${Global.backendBaseUrl}/playlists/${srcPlaylistName}`,
         {
           credentials: 'include',
         },
@@ -233,7 +233,7 @@ export default function ContextMenuPlaylist({
   };
 
   const handleDeletePlaylist = async (playlistNameToDelete: string) => {
-    const deletePlaylistURL = `${Global.backendBaseUrl}playlists/${playlistNameToDelete}`;
+    const deletePlaylistURL = `${Global.backendBaseUrl}/playlists/${playlistNameToDelete}`;
 
     try {
       const deletePlaylistResponse = await fetch(deletePlaylistURL, {

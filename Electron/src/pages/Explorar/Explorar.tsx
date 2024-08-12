@@ -1,6 +1,6 @@
 import { useEffect, useState, ChangeEvent, useCallback } from 'react';
 import Global from 'global/global';
-import genreColorsMap from 'utils/genre';
+import { genreColorsMapping } from 'utils/genre';
 import SongCard, { PropsSongCard } from 'components/Cards/SongCard/SongCard';
 import { PropsPlaylistCard } from 'components/Cards/PlaylistCard/types/propsPlaylistCard';
 import { PropsUserCard } from 'components/Cards/UserCard/types/propsUserCard';
@@ -35,7 +35,7 @@ export default function Explorar({
         return;
       }
       try {
-        const fetchUrlFilterItemsByName = `${Global.backendBaseUrl}search/?name=${filterNameInput}`;
+        const fetchUrlFilterItemsByName = `${Global.backendBaseUrl}/search/?name=${filterNameInput}`;
         const resFetchUrlFilterItemsByName = await fetch(
           fetchUrlFilterItemsByName,
           {
@@ -141,7 +141,7 @@ export default function Explorar({
   const getGenres = async () => {
     try {
       const fetchGetGenresResponse = await fetch(
-        encodeURI(`${Global.backendBaseUrl}genres/`),
+        encodeURI(`${Global.backendBaseUrl}/genres/`),
         {
           credentials: 'include',
         },
@@ -292,7 +292,7 @@ export default function Explorar({
                     <GenreCard
                       key={genre as string}
                       name={genre as string}
-                      color={genreColorsMap[genre as string]}
+                      color={genreColorsMapping[genre as string]}
                     />
                   );
                 })}

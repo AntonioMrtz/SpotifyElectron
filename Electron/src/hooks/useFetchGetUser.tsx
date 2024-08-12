@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import Global from 'global/global';
+import { UsersService } from '../swagger/api/services/UsersService';
 
 interface SongProps {
   name: string;
@@ -17,15 +17,7 @@ const useFetchGetUser = (username: string) => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const getUserURL = `${Global.backendBaseUrl}users/${username}`;
-        const response = await fetch(getUserURL, {
-          credentials: 'include',
-        });
-        if (!response.ok) {
-          throw new Error(`Failed to fetch User ${username}`);
-        }
-
-        const data = await response.json();
+        const data = await UsersService.getUserUsersNameGet(username);
         const mappedUser: SongProps = {
           name: data.name || '',
           artist: data.artist || '',

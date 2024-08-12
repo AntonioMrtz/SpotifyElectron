@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import Global from 'global/global';
+import { UsersService } from '../swagger/api/services/UsersService';
 
 const useFetchGetUserPlaylistNames = (username: string) => {
   const [playlistNames, setPlaylistNames] = useState<string[]>();
@@ -9,17 +9,10 @@ const useFetchGetUserPlaylistNames = (username: string) => {
   useEffect(() => {
     const fetchUserPlaylistNames = async () => {
       try {
-        const response = await fetch(
-          `${Global.backendBaseUrl}users/${username}/playlist_names`,
-          {
-            credentials: 'include',
-          },
-        );
-        if (!response.ok) {
-          throw new Error(`Failed to fetch user playlist names`);
-        }
-
-        const data = await response.json();
+        const data =
+          await UsersService.getUserRelevantPlaylistsNamesUsersNamePlaylistNamesGet(
+            username,
+          );
         setPlaylistNames(data);
         setLoading(false);
       } catch (err) {

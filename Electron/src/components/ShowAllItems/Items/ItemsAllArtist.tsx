@@ -10,7 +10,7 @@ export default function ItemsAllArtist() {
   const handleArtist = useCallback(async () => {
     try {
       const fetchGetArtistsResponse = await fetch(
-        `${Global.backendBaseUrl}artists/`,
+        `${Global.backendBaseUrl}/artists/`,
         {
           credentials: 'include',
         },

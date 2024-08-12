@@ -24,7 +24,7 @@ const userMockFetch = {
 };
 
 global.fetch = jest.fn((url: string) => {
-  if (url === `${Global.backendBaseUrl}users/${userMockFetch.name}`) {
+  if (url === `${Global.backendBaseUrl}/users/${userMockFetch.name}`) {
     return Promise.resolve({
       json: () => userMockFetch,
       status: 200,

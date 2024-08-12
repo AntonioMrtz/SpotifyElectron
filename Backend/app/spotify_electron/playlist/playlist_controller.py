@@ -49,7 +49,7 @@ def get_playlist(
     name: str,
     token: Annotated[TokenData, Depends(JWTBearer())],
 ) -> Response:
-    """Get playlsit
+    """Get playlist
 
     Args:
         name (str): playlist name

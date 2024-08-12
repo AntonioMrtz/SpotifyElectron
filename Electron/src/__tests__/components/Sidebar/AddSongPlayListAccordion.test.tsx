@@ -19,7 +19,7 @@ test('render AddSongPlaylistAccordion', async () => {
   const setIsCloseAllowed = jest.fn();
 
   global.fetch = jest.fn(async (url: string) => {
-    if (url === `${Global.backendBaseUrl}genres/`) {
+    if (url === `${Global.backendBaseUrl}/genres/`) {
       return Promise.resolve({
         json: () => JSON.stringify({ Rock: 'Rock', Pop: 'Pop' }),
         status: 200,
@@ -54,7 +54,7 @@ test('AddSongPlaylistAccordion submit playlist correct', async () => {
   const setIsCloseAllowed = jest.fn();
 
   global.fetch = jest.fn(async (url: string) => {
-    if (url === `${Global.backendBaseUrl}genres/`) {
+    if (url === `${Global.backendBaseUrl}/genres/`) {
       return Promise.resolve({
         json: () => JSON.stringify({ Rock: 'Rock', Pop: 'Pop' }),
         status: 200,
@@ -132,7 +132,7 @@ test('AddSongPlaylistAccordion submit song correct', async () => {
   const setIsCloseAllowed = jest.fn();
 
   global.fetch = jest.fn(async (url: string) => {
-    if (url === `${Global.backendBaseUrl}genres/`) {
+    if (url === `${Global.backendBaseUrl}/genres/`) {
       return Promise.resolve({
         json: () => JSON.stringify({ Rock: 'Rock', Pop: 'Pop' }),
         status: 200,

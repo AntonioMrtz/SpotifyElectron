@@ -85,7 +85,7 @@ export default function Sidebar({ refreshSidebarData }: PropsSidebar) {
     const username = Token.getTokenUsername();
 
     try {
-      const fetchURLGetRelevantPlaylistsUser = `${Global.backendBaseUrl}users/${username}/relevant_playlists`;
+      const fetchURLGetRelevantPlaylistsUser = `${Global.backendBaseUrl}/users/${username}/relevant_playlists`;
       const fetchGetRelevantPlaylistsUserResponse = await fetch(
         fetchURLGetRelevantPlaylistsUser,
         {

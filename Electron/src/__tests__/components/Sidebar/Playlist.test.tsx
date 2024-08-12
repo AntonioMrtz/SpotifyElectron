@@ -63,7 +63,7 @@ test('Sidebar Playlist handle open context menu', async () => {
   const refreshSidebarDataMock = jest.fn();
 
   global.fetch = jest.fn(async (url: string) => {
-    if (url === `${Global.backendBaseUrl}artists/${artistMockFetch.name}`) {
+    if (url === `${Global.backendBaseUrl}/artists/${artistMockFetch.name}`) {
       return Promise.resolve({
         json: () => artistMockFetch,
         status: 200,
@@ -72,7 +72,7 @@ test('Sidebar Playlist handle open context menu', async () => {
         console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}playlists/selected/${playlistName}`) {
+    if (url === `${Global.backendBaseUrl}/playlists/selected/${playlistName}`) {
       return Promise.resolve({
         json: () =>
           Promise.resolve({
@@ -120,7 +120,7 @@ test('Sidebar Playlist left-click', async () => {
   const refreshSidebarDataMock = jest.fn();
 
   global.fetch = jest.fn(async (url: string) => {
-    if (url === `${Global.backendBaseUrl}artists/${artistMockFetch.name}`) {
+    if (url === `${Global.backendBaseUrl}/artists/${artistMockFetch.name}`) {
       return Promise.resolve({
         json: () => artistMockFetch,
         status: 200,
@@ -129,7 +129,7 @@ test('Sidebar Playlist left-click', async () => {
         console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}playlists/selected/${playlistName}`) {
+    if (url === `${Global.backendBaseUrl}/playlists/selected/${playlistName}`) {
       return Promise.resolve({
         json: () =>
           Promise.resolve({

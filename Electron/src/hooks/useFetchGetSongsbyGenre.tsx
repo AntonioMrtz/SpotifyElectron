@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import Global from 'global/global';
+import { getGenreFromString } from 'utils/genre';
+import { SongsService } from '../swagger/api/services/SongsService';
 
 interface SongProps {
   name: string;
@@ -17,15 +18,9 @@ const useFetchSongsByGenre = (genreName: string) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const getSongsByGenreURL = `${Global.backendBaseUrl}songs/genres/${genreName}`;
-        const response = await fetch(getSongsByGenreURL, {
-          credentials: 'include',
-        });
-        if (!response.ok) {
-          throw new Error(`Failed to fetch Songs by Genre ${genreName}`);
-        }
-
-        const data = await response.json();
+        const data = await SongsService.getSongsByGenreSongsGenresGenreGet(
+          getGenreFromString(genreName),
+        );
         const songsFromFetch: SongProps[] = data.songs.map((song: any) => ({
           name: song.name,
           artist: song.artist,

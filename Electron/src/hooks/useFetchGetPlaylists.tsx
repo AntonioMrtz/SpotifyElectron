@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import Global from 'global/global';
 import defaultThumbnailPlaylist from '../assets/imgs/DefaultThumbnailPlaylist.jpg';
+import { PlaylistsService } from '../swagger/api/services/PlaylistsService';
 
 interface PropsPlaylistCard {
   name: string;
@@ -18,14 +18,7 @@ const useFetchGetPlaylists = (refreshSidebarData: () => void) => {
   useEffect(() => {
     const fetchPlaylists = async () => {
       try {
-        const getPlaylistsURL = `${Global.backendBaseUrl}playlists/`;
-        const response = await fetch(getPlaylistsURL, {
-          credentials: 'include',
-        });
-        if (!response.ok) {
-          throw new Error(`Failed to fetch all playlists`);
-        }
-        const data = await response.json();
+        const data = await PlaylistsService.getPlaylistsPlaylistsGet();
 
         if (data.playlists) {
           const propsPlaylists: PropsPlaylistCard[] = [];

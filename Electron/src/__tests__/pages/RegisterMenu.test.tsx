@@ -135,7 +135,7 @@ test('Register success', async () => {
   global.fetch = jest.fn((url: string) => {
     if (
       url ===
-      `${Global.backendBaseUrl}users/?name=testuser&photo=testphoto&password=testpassword`
+      `${Global.backendBaseUrl}/users/?name=testuser&photo=testphoto&password=testpassword`
     ) {
       return Promise.resolve({
         json: () => Promise.resolve({}),

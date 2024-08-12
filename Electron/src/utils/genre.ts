@@ -1,4 +1,6 @@
-export const genreColors: Record<string, string> = {
+import { Genre } from 'swagger/api';
+
+export const genreColorsMapping: Record<string, string> = {
   Pop: '#FF3300', // Rojo oscuro
   Rock: '#0055AA', // Azul oscuro
   'Hip-hop': '#FFA200', // Naranja oscuro
@@ -31,4 +33,12 @@ export const genreColors: Record<string, string> = {
   Reggaeton: '#00AAAA', // Cian oscuro
 };
 
-export default genreColors;
+export function getGenreFromString(genreName: string): Genre {
+  const genre = Genre[genreName as keyof typeof Genre];
+
+  if (!genre) {
+    throw new Error(`Cannot get Genre from ${genreName}`);
+  }
+
+  return genre;
+}

@@ -70,14 +70,14 @@ export default function ContextMenuSong({
   const handleAddToPlaylist = async (selectedPlaylistName: string) => {
     try {
       const playlistResponse = await fetch(
-        `${Global.backendBaseUrl}playlists/${selectedPlaylistName}`,
+        `${Global.backendBaseUrl}/playlists/${selectedPlaylistName}`,
         {
           credentials: 'include',
         },
       );
       const playlistData = await playlistResponse.json();
 
-      const url = `${Global.backendBaseUrl}playlists/${selectedPlaylistName}`;
+      const url = `${Global.backendBaseUrl}/playlists/${selectedPlaylistName}`;
       const { photo } = playlistData;
 
       const fetchUrlUpdateSong = `${url}?photo=${photo}&description=${playlistData.description}`;
@@ -109,14 +109,14 @@ export default function ContextMenuSong({
   const handleDeleteFromPlaylist = async () => {
     try {
       const playlistResponse = await fetch(
-        `${Global.backendBaseUrl}playlists/${playlistName}`,
+        `${Global.backendBaseUrl}/playlists/${playlistName}`,
         {
           credentials: 'include',
         },
       );
       const playlistData = await playlistResponse.json();
 
-      const url = `${Global.backendBaseUrl}playlists/${playlistName}`;
+      const url = `${Global.backendBaseUrl}/playlists/${playlistName}`;
       const { photo, description } = playlistData;
 
       const fetchUrlUpdateSong = `${url}?photo=${photo}&description=${description}`;
@@ -156,7 +156,7 @@ export default function ContextMenuSong({
         Math.floor(Math.random() * 1000),
       ).toString()}`;
 
-      const fetchPostPlaylistWithSongUrl = `${Global.backendBaseUrl}playlists/?name=${newPlaylistName}&photo=foto&description=Insertar+descripcion`;
+      const fetchPostPlaylistWithSongUrl = `${Global.backendBaseUrl}/playlists/?name=${newPlaylistName}&photo=foto&description=Insertar+descripcion`;
 
       const requestOptions: RequestInit = {
         method: 'POST',

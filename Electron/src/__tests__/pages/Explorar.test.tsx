@@ -50,14 +50,14 @@ const songMockFetch = {
 };
 
 global.fetch = jest.fn((url: string) => {
-  if (url === `${Global.backendBaseUrl}genres/`) {
+  if (url === `${Global.backendBaseUrl}/genres/`) {
     return Promise.resolve({
       json: () => Promise.resolve({ ROCK: 'Rock', POP: 'Pop' }),
       status: 200,
       ok: true,
     });
   }
-  if (url === `${Global.backendBaseUrl}search/?name=${'prueba'}`) {
+  if (url === `${Global.backendBaseUrl}/search/?name=${'prueba'}`) {
     return Promise.resolve({
       json: () =>
         Promise.resolve({

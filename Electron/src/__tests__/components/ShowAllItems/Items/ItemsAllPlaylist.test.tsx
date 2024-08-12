@@ -22,7 +22,7 @@ const playlistDTOMockFetch = {
 
 test('Render itemsAllPlaylist', async () => {
   global.fetch = jest.fn((url: string) => {
-    if (url === `${Global.backendBaseUrl}playlists/`) {
+    if (url === `${Global.backendBaseUrl}/playlists/`) {
       return Promise.resolve({
         json: () =>
           Promise.resolve({

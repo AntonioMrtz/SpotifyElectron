@@ -1037,9 +1037,9 @@
         "tags": [
           "Users"
         ],
-        "summary": "Get User Relevant Playlists Names",
+        "summary": "Get User Playlists Names",
         "description": "Get playlist names created by user\n\nArgs:\n    name (str): user name",
-        "operationId": "get_user_relevant_playlists_names_users__name__playlist_names_get",
+        "operationId": "get_user_playlists_names_users__name__playlist_names_get",
         "parameters": [
           {
             "name": "name",

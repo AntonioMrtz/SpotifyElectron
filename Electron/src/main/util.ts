@@ -13,7 +13,7 @@ export function resolveHtmlPath(htmlFileName: string) {
   return `file://${path.resolve(__dirname, '../renderer/', htmlFileName)}`;
 }
 
-/* Intercept request headers and insert cookies */
+/* Intercept request headers and insert cookies. It has to be called after `ready-to-show` event */
 export const interceptRequestHeaders = (mainWindow: BrowserWindow) => {
   if (!mainWindow) return;
   const ses = mainWindow.webContents.session;

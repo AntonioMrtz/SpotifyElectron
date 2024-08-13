@@ -7,7 +7,6 @@ import Token from 'utils/token';
 import UserType from 'utils/role';
 import AddSongPlayListAccordion from 'components/Sidebar/ModalAddSongPlaylist/Accordion/AddSongPlayListAccordion';
 import getMockHeaders from 'utils/mockHeaders';
-import userEvent from '@testing-library/user-event';
 
 const userName = 'prueba';
 const roleUser = UserType.ARTIST;

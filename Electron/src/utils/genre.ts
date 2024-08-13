@@ -35,9 +35,8 @@ export const genreColorsMapping: Record<string, string> = {
 
 // TODO #190 REPLACE WITH Generate genre
 
-export function getGenreFromString(genreName: string): Genre {
-  const genre = Genre[genreName as keyof typeof Genre];
-
+export function getGenreFromString(genreName: string) {
+  const genre = Object.values(Genre).find((x) => x === genreName);
   if (!genre) {
     throw new Error(`Cannot get Genre from ${genreName}`);
   }

@@ -6,6 +6,7 @@ import Global from 'global/global';
 import Sidebar from 'components/Sidebar/Sidebar';
 import Token from 'utils/token';
 import UserType from 'utils/role';
+import getMockHeaders from 'utils/mockHeaders';
 
 const playlistName = 'playlisttest';
 const songName = 'songName';
@@ -42,6 +43,7 @@ test('render Sidebar', async () => {
         json: () => artistMockFetch,
         status: 200,
         ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });
@@ -53,6 +55,7 @@ test('render Sidebar', async () => {
         json: () => Promise.resolve([playlistDTOMockFetch]),
         status: 200,
         ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });
@@ -65,7 +68,7 @@ test('render Sidebar', async () => {
   const component = await act(() => {
     return render(
       <BrowserRouter>
-        <Sidebar refreshSidebarData />
+        <Sidebar refreshSidebarData={jest.fn()} refreshSidebarTriggerValue />
       </BrowserRouter>,
     );
   });

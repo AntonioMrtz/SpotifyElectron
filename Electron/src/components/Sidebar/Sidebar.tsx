@@ -1,21 +1,22 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import Global from 'global/global';
 import Token from 'utils/token';
 import LoadingCircle from 'components/AdvancedUIComponents/LoadingCircle/LoadingCircle';
 import styles from './sideBarCss.module.css';
 import Playlist from './Playlist/Playlist';
 import ModalAddSongPlaylist from './ModalAddSongPlaylist/ModalAddSongPlaylist';
-import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
-import { PropsPlaylist } from './types/propsPlaylist.module';
+import useFetchGetUserRelevantPlaylists from '../../hooks/useFetchUserRelevantPlaylists';
 
 interface PropsSidebar {
-  refreshSidebarData: boolean;
+  refreshSidebarTriggerValue: boolean;
+  refreshSidebarData: () => void;
 }
 
-export default function Sidebar({ refreshSidebarData }: PropsSidebar) {
-  //* HIGHLIGHT CURRENT SECTION LI
-
+//* HIGHLIGHT CURRENT SECTION LI
+export default function Sidebar({
+  refreshSidebarTriggerValue,
+  refreshSidebarData,
+}: PropsSidebar) {
   const [selectedID, setSelectedID] = useState<string>();
   const [selectedPlaylist, setSelectedPlaylist] = useState<string>('');
 
@@ -75,52 +76,12 @@ export default function Sidebar({ refreshSidebarData }: PropsSidebar) {
     setSelectedPlaylist(name); // Actualizar el estado cuando se hace clic en una playlist
   };
 
-  //* PLAYLISTS
+  const userName = Token.getTokenUsername();
 
-  const [playlists, setPlaylists] = useState<PropsPlaylist[]>();
-
-  const [loading, setLoading] = useState(true);
-
-  const handlePlaylists = useCallback(async () => {
-    const username = Token.getTokenUsername();
-
-    try {
-      const fetchURLGetRelevantPlaylistsUser = `${Global.backendBaseUrl}/users/${username}/relevant_playlists`;
-      const fetchGetRelevantPlaylistsUserResponse = await fetch(
-        fetchURLGetRelevantPlaylistsUser,
-      );
-      const getRelevantPlaylistsUserJson =
-        await fetchGetRelevantPlaylistsUserResponse.json();
-
-      const propsPlaylists: PropsPlaylist[] = [];
-
-      getRelevantPlaylistsUserJson.forEach((playlist: any) => {
-        const propsPlaylist: PropsPlaylist = {
-          name: playlist.name,
-          photo:
-            playlist.photo === '' ? defaultThumbnailPlaylist : playlist.photo,
-          owner: playlist.owner,
-          handleUrlPlaylistClicked,
-          refreshSidebarData: handlePlaylists,
-          playlistStyle: '',
-        };
-
-        propsPlaylists.push(propsPlaylist);
-      });
-      setPlaylists(propsPlaylists);
-
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
-      console.log('Unable to get user relevant playlists');
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    handlePlaylists();
-  }, [handlePlaylists, refreshSidebarData]);
+  const { playlists, loading } = useFetchGetUserRelevantPlaylists(
+    userName,
+    refreshSidebarTriggerValue,
+  );
 
   return (
     <div className={`container-fluid ${styles.wrapperNavbar}`}>
@@ -189,7 +150,7 @@ export default function Sidebar({ refreshSidebarData }: PropsSidebar) {
               className="container-fluid d-flex justify-content-end p-0"
               style={{ width: '25%' }}
             >
-              <ModalAddSongPlaylist refreshSidebarData={handlePlaylists} />
+              <ModalAddSongPlaylist refreshSidebarData={refreshSidebarData} />
             </div>
           </header>
           <ul
@@ -215,7 +176,7 @@ export default function Sidebar({ refreshSidebarData }: PropsSidebar) {
                       photo={playlist.photo}
                       owner={playlist.owner}
                       playlistStyle={playlistStyle}
-                      refreshSidebarData={handlePlaylists}
+                      refreshSidebarData={refreshSidebarData}
                     />
                   </Link>
                 );

@@ -24,15 +24,12 @@ function App() {
     window.scrollTo(0, 0);
   }, [location]);
 
-  // TODO set url backend and with credentials
-
-  /* Handle reload of sidebar */
-
-  const [triggerrefreshSidebarData, setTriggerrefreshSidebarData] =
+  // flag value for trigger sidebar reload from across the app
+  const [refreshSidebarTriggerValue, setRefreshSidebarTriggerValue] =
     useState(false);
-
+  // changes the flag value to its opposite so the component triggers a reload
   const refreshSidebarData = () => {
-    setTriggerrefreshSidebarData((state) => !state);
+    setRefreshSidebarTriggerValue((state) => !state);
   };
 
   /* Handle change song name */
@@ -66,7 +63,10 @@ function App() {
           <StickyHeader handleLogout={handleLogout} />
 
           <div className="d-flex">
-            <Sidebar refreshSidebarData={triggerrefreshSidebarData} />
+            <Sidebar
+              refreshSidebarTriggerValue={refreshSidebarTriggerValue}
+              refreshSidebarData={refreshSidebarData}
+            />
             <div
               className={`App d-flex container-fluid ${styles.mainContentWrapper}`}
             >

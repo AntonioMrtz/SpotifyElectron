@@ -5,5 +5,5 @@ export interface PropsPlaylist {
   /* default || selected css class  */
   playlistStyle: string;
   handleUrlPlaylistClicked: Function;
-  refreshSidebarData: () => void;
+  reloadSidebar: Function;
 }

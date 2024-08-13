@@ -320,7 +320,7 @@ def update_playlist_name(
         raise UserRepositoryException from exception
 
 
-def get_user_relevant_playlist_names(user_name: str, collection: Collection) -> list[str]:
+def get_user_relevant_playlists(user_name: str, collection: Collection) -> list[str]:
     """Get user relevant playlist names
 
     Args:
@@ -338,18 +338,3 @@ def get_user_relevant_playlist_names(user_name: str, collection: Collection) -> 
     playlist_names.extend(user_data["saved_playlists"])  # type: ignore
 
     return playlist_names
-
-
-def get_user_playlist_names(user_name: str, collection: Collection) -> list[str]:
-    """Get user created playlist names
-
-    Args:
-        user_name (str): user name
-        collection (Collection): user collection
-
-    Returns:
-        list[str]: the playlist names of the user created playlists
-    """
-    user_data = collection.find_one({"name": user_name}, {"playlists": 1, "_id": 0})
-
-    return user_data["playlists"]  # type: ignore

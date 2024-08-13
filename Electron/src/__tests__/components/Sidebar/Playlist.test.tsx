@@ -37,7 +37,7 @@ jest.spyOn(Token, 'getTokenRole').mockReturnValue(roleUser);
 
 test('render Sidebar Playlist', async () => {
   const handleUrlPlaylistClicked = () => jest.fn();
-  const refreshSidebarData = () => jest.fn();
+  const reloadSidebar = () => jest.fn();
 
   const component = await act(() => {
     return render(
@@ -48,7 +48,7 @@ test('render Sidebar Playlist', async () => {
           owner={artistMockFetch.name}
           playlistStyle=""
           handleUrlPlaylistClicked={handleUrlPlaylistClicked}
-          refreshSidebarData={refreshSidebarData}
+          reloadSidebar={reloadSidebar}
         />
       </BrowserRouter>,
     );
@@ -60,26 +60,24 @@ test('render Sidebar Playlist', async () => {
 
 test('Sidebar Playlist handle open context menu', async () => {
   const handleUrlPlaylistClickedMock = jest.fn();
-  const refreshSidebarDataMock = jest.fn();
+  const reloadSidebarMock = jest.fn();
 
   global.fetch = jest.fn(async (url: string) => {
-    if (url === `${Global.backendBaseUrl}/artists/${artistMockFetch.name}`) {
+    if (url === `${Global.backendBaseUrl}artists/${artistMockFetch.name}`) {
       return Promise.resolve({
         json: () => artistMockFetch,
         status: 200,
-        ok: true,
       }).catch((error) => {
         console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}/playlists/selected/${playlistName}`) {
+    if (url === `${Global.backendBaseUrl}playlists/selected/${playlistName}`) {
       return Promise.resolve({
         json: () =>
           Promise.resolve({
             playlists: [playlistDTOMockFetch],
           }),
         status: 200,
-        ok: true,
       }).catch((error) => {
         console.log(error);
       });
@@ -98,7 +96,7 @@ test('Sidebar Playlist handle open context menu', async () => {
           owner={artistMockFetch.name}
           playlistStyle=""
           handleUrlPlaylistClicked={handleUrlPlaylistClickedMock}
-          refreshSidebarData={refreshSidebarDataMock}
+          reloadSidebar={reloadSidebarMock}
         />
       </BrowserRouter>,
     );
@@ -117,26 +115,24 @@ test('Sidebar Playlist handle open context menu', async () => {
 
 test('Sidebar Playlist left-click', async () => {
   const handleUrlPlaylistClickedMock = jest.fn();
-  const refreshSidebarDataMock = jest.fn();
+  const reloadSidebarMock = jest.fn();
 
   global.fetch = jest.fn(async (url: string) => {
-    if (url === `${Global.backendBaseUrl}/artists/${artistMockFetch.name}`) {
+    if (url === `${Global.backendBaseUrl}artists/${artistMockFetch.name}`) {
       return Promise.resolve({
         json: () => artistMockFetch,
         status: 200,
-        ok: true,
       }).catch((error) => {
         console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}/playlists/selected/${playlistName}`) {
+    if (url === `${Global.backendBaseUrl}playlists/selected/${playlistName}`) {
       return Promise.resolve({
         json: () =>
           Promise.resolve({
             playlists: [playlistDTOMockFetch],
           }),
         status: 200,
-        ok: true,
       }).catch((error) => {
         console.log(error);
       });
@@ -155,7 +151,7 @@ test('Sidebar Playlist left-click', async () => {
           owner={artistMockFetch.name}
           playlistStyle=""
           handleUrlPlaylistClicked={handleUrlPlaylistClickedMock}
-          refreshSidebarData={refreshSidebarDataMock}
+          reloadSidebar={reloadSidebarMock}
         />
       </BrowserRouter>,
     );

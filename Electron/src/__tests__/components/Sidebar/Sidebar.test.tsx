@@ -37,22 +37,20 @@ jest.spyOn(Token, 'getTokenRole').mockReturnValue(roleUser);
 
 test('render Sidebar', async () => {
   global.fetch = jest.fn(async (url: string) => {
-    if (url === `${Global.backendBaseUrl}/artists/${artistMockFetch.name}`) {
+    if (url === `${Global.backendBaseUrl}artists/${artistMockFetch.name}`) {
       return Promise.resolve({
         json: () => artistMockFetch,
         status: 200,
-        ok: true,
       }).catch((error) => {
         console.log(error);
       });
     }
     if (
-      url === `${Global.backendBaseUrl}/users/${username}/relevant_playlists`
+      url === `${Global.backendBaseUrl}users/${username}/relevant_playlists`
     ) {
       return Promise.resolve({
         json: () => Promise.resolve([playlistDTOMockFetch]),
         status: 200,
-        ok: true,
       }).catch((error) => {
         console.log(error);
       });
@@ -65,7 +63,7 @@ test('render Sidebar', async () => {
   const component = await act(() => {
     return render(
       <BrowserRouter>
-        <Sidebar refreshSidebarData />
+        <Sidebar triggerReloadSidebar />
       </BrowserRouter>,
     );
   });

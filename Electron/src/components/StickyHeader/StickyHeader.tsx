@@ -4,7 +4,6 @@ import Global from 'global/global';
 import Token from 'utils/token';
 import Popover, { PopoverPosition } from '@mui/material/Popover';
 import ContextMenuProfile from 'components/AdvancedUIComponents/ContextMenu/Profile/ContextMenuProfile';
-import useFetchGetUser from 'hooks/useFetchGetUser';
 import styles from './stickyHeader.module.css';
 import groupIcon from '../../assets/imgs/groupIcon.png';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
@@ -14,9 +13,28 @@ interface PropsStickyHeader {
 }
 
 export default function StickyHeader({ handleLogout }: PropsStickyHeader) {
-  const username = Token.getTokenUsername();
-  const { user } = useFetchGetUser(username);
   const [profileIcon, setProfileIcon] = useState(defaultThumbnailPlaylist);
+
+  const handleThumbnail = async () => {
+    const username = Token.getTokenUsername();
+
+    const resFetchUser = await fetch(
+      `${Global.backendBaseUrl}users/${username}`,
+      {
+        credentials: 'include',
+      },
+    );
+
+    const resFetchUserJson = await resFetchUser.json();
+
+    if (resFetchUserJson && resFetchUserJson.photo) {
+      setProfileIcon(
+        resFetchUserJson.photo === ''
+          ? defaultThumbnailPlaylist
+          : resFetchUserJson.photo,
+      );
+    }
+  };
 
   const [visibleBackground, setVisibleBackground] = useState({});
 
@@ -44,14 +62,12 @@ export default function StickyHeader({ handleLogout }: PropsStickyHeader) {
   };
 
   useEffect(() => {
-    if (user?.photo) {
-      setProfileIcon(user.photo === '' ? defaultThumbnailPlaylist : user.photo);
-    }
+    handleThumbnail();
     window.addEventListener('scroll', handleScroll);
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [user]);
+  }, []);
 
   const handleGoingBackArrows = () => {
     window.electron.loadPreviousUrl.sendMessage('load-previous-url');

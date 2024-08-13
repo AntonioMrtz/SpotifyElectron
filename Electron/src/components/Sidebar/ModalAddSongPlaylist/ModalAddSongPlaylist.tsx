@@ -17,11 +17,11 @@ const style = {
 };
 
 interface PropsModalAddSongPlaylist {
-  refreshSidebarData: () => void;
+  reloadSidebar: Function;
 }
 
 export default function ModalAddSongPlaylist({
-  refreshSidebarData,
+  reloadSidebar,
 }: PropsModalAddSongPlaylist) {
   /* ADDSONGPLAYLIST MODAL */
 
@@ -46,7 +46,7 @@ export default function ModalAddSongPlaylist({
       >
         <Box sx={style} className={` ${styles.wrapperAccordion}`}>
           <AddSongPlayListAccordion
-            refreshSidebarData={refreshSidebarData}
+            reloadSidebar={reloadSidebar}
             handleClose={handleClose}
             setIsCloseAllowed={setIsCloseAllowed}
           />

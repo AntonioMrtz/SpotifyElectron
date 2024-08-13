@@ -346,38 +346,3 @@ def get_user_relevant_playlists(name: str) -> Response:
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonInternalServerError,
         )
-
-
-@router.get("/{name}/playlist_names")
-def get_user_playlists_names(name: str) -> Response:
-    """Get playlist names created by user
-
-    Args:
-        name (str): user name
-    """
-    try:
-        playlist_names = base_user_service.get_user_playlist_names(name)
-        playlist_names_json = json_converter_utils.get_json_from_model(playlist_names)
-        return Response(
-            playlist_names_json, media_type="application/json", status_code=HTTP_200_OK
-        )
-    except UserBadNameException:
-        return Response(
-            status_code=HTTP_400_BAD_REQUEST,
-            content=PropertiesMessagesManager.userBadName,
-        )
-    except UserNotFoundException:
-        return Response(
-            status_code=HTTP_404_NOT_FOUND,
-            content=PropertiesMessagesManager.userNotFound,
-        )
-    except JsonEncodeException:
-        return Response(
-            status_code=HTTP_500_INTERNAL_SERVER_ERROR,
-            content=PropertiesMessagesManager.commonEncodingError,
-        )
-    except (Exception, UserServiceException):
-        return Response(
-            status_code=HTTP_500_INTERNAL_SERVER_ERROR,
-            content=PropertiesMessagesManager.commonInternalServerError,
-        )

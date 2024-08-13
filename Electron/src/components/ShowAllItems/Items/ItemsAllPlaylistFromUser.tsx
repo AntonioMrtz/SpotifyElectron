@@ -15,7 +15,7 @@ export default function ItemsAllPlaylistsFromUser({
     const playlistNames: string[] = [];
 
     try {
-      const fetchUrlPlaylistFromUser = `${Global.backendBaseUrl}/users/${userName}`;
+      const fetchUrlPlaylistFromUser = `${Global.backendBaseUrl}users/${userName}`;
 
       const resFetchUrlPlaylistFromUser = await fetch(
         fetchUrlPlaylistFromUser,
@@ -32,7 +32,7 @@ export default function ItemsAllPlaylistsFromUser({
       return;
     }
 
-    fetch(`${Global.backendBaseUrl}/playlists/selected/${playlistNames}`, {
+    fetch(`${Global.backendBaseUrl}playlists/selected/${playlistNames}`, {
       credentials: 'include',
     })
       .then((resFetchPlaylists) => resFetchPlaylists.json())

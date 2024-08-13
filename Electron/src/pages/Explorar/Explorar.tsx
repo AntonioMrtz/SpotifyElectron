@@ -1,6 +1,6 @@
 import { useEffect, useState, ChangeEvent, useCallback } from 'react';
 import Global from 'global/global';
-import { genreColorsMapping } from 'utils/genre';
+import genreColorsMap from 'utils/genre';
 import SongCard, { PropsSongCard } from 'components/Cards/SongCard/SongCard';
 import { PropsPlaylistCard } from 'components/Cards/PlaylistCard/types/propsPlaylistCard';
 import { PropsUserCard } from 'components/Cards/UserCard/types/propsUserCard';
@@ -12,14 +12,16 @@ import styles from './explorar.module.css';
 import GenreCard from '../../components/Cards/GenreCard/GenreCard';
 
 interface PropsExplorar {
-  changeSongName: (songName: string) => void;
-  refreshSidebarData: () => void;
+  changeSongName: Function;
+  refreshSidebar: Function;
 }
 
 export default function Explorar({
   changeSongName,
-  refreshSidebarData,
+  refreshSidebar,
 }: PropsExplorar) {
+  /* Searchbar */
+
   const [filterName, setFilterName] = useState('');
 
   const [filteredSongs, setFilteredSongs] = useState<PropsSongCard[]>([]);
@@ -35,7 +37,7 @@ export default function Explorar({
         return;
       }
       try {
-        const fetchUrlFilterItemsByName = `${Global.backendBaseUrl}/search/?name=${filterNameInput}`;
+        const fetchUrlFilterItemsByName = `${Global.backendBaseUrl}search/?name=${filterNameInput}`;
         const resFetchUrlFilterItemsByName = await fetch(
           fetchUrlFilterItemsByName,
           {
@@ -55,7 +57,7 @@ export default function Explorar({
                 name: song.name,
                 artist: song.artist,
                 photo: song.photo,
-                refreshSidebarData,
+                refreshSidebarData: refreshSidebar,
                 changeSongName,
               });
             });
@@ -74,7 +76,7 @@ export default function Explorar({
                 photo: playlist.photo,
                 description: playlist.description,
                 owner: playlist.owner,
-                refreshSidebarData,
+                refreshSidebarData: refreshSidebar,
               });
             });
 
@@ -114,7 +116,7 @@ export default function Explorar({
         console.log(`Unable to get filtered items | ${error}`);
       }
     },
-    [changeSongName, refreshSidebarData],
+    [changeSongName, refreshSidebar],
   );
 
   useEffect(() => {
@@ -139,19 +141,15 @@ export default function Explorar({
   const [genres, setGenres] = useState<{}>();
 
   const getGenres = async () => {
-    try {
-      const fetchGetGenresResponse = await fetch(
-        encodeURI(`${Global.backendBaseUrl}/genres/`),
-        {
-          credentials: 'include',
-        },
-      );
-      const GenresJson = await fetchGetGenresResponse.json();
-      setGenres(GenresJson);
-    } catch (error) {
-      console.log('Cannot get genres');
-      setGenres([]);
-    }
+    fetch(encodeURI(`${Global.backendBaseUrl}genres/`), {
+      credentials: 'include',
+    })
+      .then((res) => res.json())
+      .then(async (res) => {
+        setGenres(res);
+        return null;
+      })
+      .catch(() => console.log('Cannot get genres'));
   };
   useEffect(() => {
     getGenres();
@@ -292,7 +290,7 @@ export default function Explorar({
                     <GenreCard
                       key={genre as string}
                       name={genre as string}
-                      color={genreColorsMapping[genre as string]}
+                      color={genreColorsMap[genre as string]}
                     />
                   );
                 })}

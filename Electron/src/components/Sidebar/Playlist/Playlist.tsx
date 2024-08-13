@@ -11,7 +11,7 @@ export default function Playlist({
   owner,
   playlistStyle,
   handleUrlPlaylistClicked,
-  refreshSidebarData,
+  reloadSidebar,
 }: PropsPlaylist) {
   const handleClickPlaylist = () => {
     handleUrlPlaylistClicked(name);
@@ -97,7 +97,7 @@ export default function Playlist({
             handleCloseParent={handleClose}
             owner={owner}
             refreshPlaylistData={() => {}}
-            refreshSidebarData={refreshSidebarData}
+            refreshSidebarData={reloadSidebar}
           />
         </Popover>
       </div>

@@ -10,14 +10,14 @@ import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist
 import { PropsPlaylist } from './types/propsPlaylist.module';
 
 interface PropsSidebar {
-  refreshSidebarData: boolean;
+  triggerReloadSidebar: boolean;
 }
 
-export default function Sidebar({ refreshSidebarData }: PropsSidebar) {
+export default function Sidebar({ triggerReloadSidebar }: PropsSidebar) {
   //* HIGHLIGHT CURRENT SECTION LI
 
-  const [selectedID, setSelectedID] = useState<string>();
-  const [selectedPlaylist, setSelectedPlaylist] = useState<string>('');
+  const [selectedID, setSelectedID] = useState<string>(); // you could set a default id as well
+  const [selectedPlaylist, setSelectedPlaylist] = useState<string>(''); // Estado para almacenar el nombre de la playlist seleccionada
 
   const getSelectedClass = (id: string) =>
     selectedID === id ? styles.linksubtleClicked : '';
@@ -84,46 +84,42 @@ export default function Sidebar({ refreshSidebarData }: PropsSidebar) {
   const handlePlaylists = useCallback(async () => {
     const username = Token.getTokenUsername();
 
-    try {
-      const fetchURLGetRelevantPlaylistsUser = `${Global.backendBaseUrl}/users/${username}/relevant_playlists`;
-      const fetchGetRelevantPlaylistsUserResponse = await fetch(
-        fetchURLGetRelevantPlaylistsUser,
-        {
-          credentials: 'include',
-        },
-      );
-      const getRelevantPlaylistsUserJson =
-        await fetchGetRelevantPlaylistsUserResponse.json();
+    const fetchURLGetRelevantPlaylistsUser = `${Global.backendBaseUrl}users/${username}/relevant_playlists`;
+    fetch(fetchURLGetRelevantPlaylistsUser, {
+      credentials: 'include',
+    })
+      .then((res) => res?.json())
+      .then((res) => {
+        const propsPlaylists: PropsPlaylist[] = [];
 
-      const propsPlaylists: PropsPlaylist[] = [];
+        res.forEach((playlist: any) => {
+          const propsPlaylist: PropsPlaylist = {
+            name: playlist.name,
+            photo:
+              playlist.photo === '' ? defaultThumbnailPlaylist : playlist.photo,
+            owner: playlist.owner,
+            handleUrlPlaylistClicked,
+            reloadSidebar: handlePlaylists,
+            playlistStyle: '',
+          };
 
-      getRelevantPlaylistsUserJson.forEach((playlist: any) => {
-        const propsPlaylist: PropsPlaylist = {
-          name: playlist.name,
-          photo:
-            playlist.photo === '' ? defaultThumbnailPlaylist : playlist.photo,
-          owner: playlist.owner,
-          handleUrlPlaylistClicked,
-          refreshSidebarData: handlePlaylists,
-          playlistStyle: '',
-        };
+          propsPlaylists.push(propsPlaylist);
+        });
+        setPlaylists(propsPlaylists);
 
-        propsPlaylists.push(propsPlaylist);
+        setLoading(false);
+        return null;
+      })
+      .catch((error) => {
+        console.log(error);
+        console.log('No se pudieron obtener las playlists');
+        setLoading(false);
       });
-      setPlaylists(propsPlaylists);
-
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
-      console.log('Unable to get user relevant playlists');
-    } finally {
-      setLoading(false);
-    }
   }, []);
-
+  /* triggered when other component wants to reload the sidebar */
   useEffect(() => {
     handlePlaylists();
-  }, [handlePlaylists, refreshSidebarData]);
+  }, [handlePlaylists, triggerReloadSidebar]);
 
   return (
     <div className={`container-fluid ${styles.wrapperNavbar}`}>
@@ -192,7 +188,7 @@ export default function Sidebar({ refreshSidebarData }: PropsSidebar) {
               className="container-fluid d-flex justify-content-end p-0"
               style={{ width: '25%' }}
             >
-              <ModalAddSongPlaylist refreshSidebarData={handlePlaylists} />
+              <ModalAddSongPlaylist reloadSidebar={handlePlaylists} />
             </div>
           </header>
           <ul
@@ -205,6 +201,7 @@ export default function Sidebar({ refreshSidebarData }: PropsSidebar) {
               playlists.map((playlist) => {
                 const urlPlaylist = `/playlist/${playlist.name}`;
 
+                // Agregar una condición para aplicar un estilo diferente si la playlist es la seleccionada
                 const playlistStyle =
                   playlist.name === selectedPlaylist
                     ? styles.selectedPlaylist
@@ -217,8 +214,8 @@ export default function Sidebar({ refreshSidebarData }: PropsSidebar) {
                       name={playlist.name}
                       photo={playlist.photo}
                       owner={playlist.owner}
-                      playlistStyle={playlistStyle}
-                      refreshSidebarData={handlePlaylists}
+                      playlistStyle={playlistStyle} // Pasar el estilo como prop
+                      reloadSidebar={handlePlaylists}
                     />
                   </Link>
                 );

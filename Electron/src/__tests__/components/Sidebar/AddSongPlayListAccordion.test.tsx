@@ -15,15 +15,14 @@ jest.spyOn(Token, 'getTokenRole').mockReturnValue(roleUser);
 
 test('render AddSongPlaylistAccordion', async () => {
   const handleCloseMock = jest.fn();
-  const refreshSidebarDataMock = jest.fn();
+  const reloadSidebarMock = jest.fn();
   const setIsCloseAllowed = jest.fn();
 
   global.fetch = jest.fn(async (url: string) => {
-    if (url === `${Global.backendBaseUrl}/genres/`) {
+    if (url === `${Global.backendBaseUrl}genres/`) {
       return Promise.resolve({
         json: () => JSON.stringify({ Rock: 'Rock', Pop: 'Pop' }),
         status: 200,
-        ok: true,
       }).catch((error) => {
         console.log(error);
       });
@@ -38,7 +37,7 @@ test('render AddSongPlaylistAccordion', async () => {
       <BrowserRouter>
         <AddSongPlayListAccordion
           handleClose={handleCloseMock}
-          refreshSidebarData={refreshSidebarDataMock}
+          reloadSidebar={reloadSidebarMock}
           setIsCloseAllowed={setIsCloseAllowed}
         />
       </BrowserRouter>,
@@ -50,15 +49,14 @@ test('render AddSongPlaylistAccordion', async () => {
 
 test('AddSongPlaylistAccordion submit playlist correct', async () => {
   const handleCloseMock = jest.fn();
-  const refreshSidebarDataMock = jest.fn();
+  const reloadSidebarMock = jest.fn();
   const setIsCloseAllowed = jest.fn();
 
   global.fetch = jest.fn(async (url: string) => {
-    if (url === `${Global.backendBaseUrl}/genres/`) {
+    if (url === `${Global.backendBaseUrl}genres/`) {
       return Promise.resolve({
         json: () => JSON.stringify({ Rock: 'Rock', Pop: 'Pop' }),
         status: 200,
-        ok: true,
       }).catch((error) => {
         console.log(error);
       });
@@ -67,7 +65,6 @@ test('AddSongPlaylistAccordion submit playlist correct', async () => {
     return Promise.resolve({
       json: () => {},
       status: 201,
-      ok: true,
     }).catch((error) => {
       console.log(error);
     });
@@ -78,7 +75,7 @@ test('AddSongPlaylistAccordion submit playlist correct', async () => {
       <BrowserRouter>
         <AddSongPlayListAccordion
           handleClose={handleCloseMock}
-          refreshSidebarData={refreshSidebarDataMock}
+          reloadSidebar={reloadSidebarMock}
           setIsCloseAllowed={setIsCloseAllowed}
         />
       </BrowserRouter>,
@@ -128,15 +125,14 @@ test('AddSongPlaylistAccordion submit playlist correct', async () => {
 
 test('AddSongPlaylistAccordion submit song correct', async () => {
   const handleCloseMock = jest.fn();
-  const refreshSidebarDataMock = jest.fn();
+  const reloadSidebarMock = jest.fn();
   const setIsCloseAllowed = jest.fn();
 
   global.fetch = jest.fn(async (url: string) => {
-    if (url === `${Global.backendBaseUrl}/genres/`) {
+    if (url === `${Global.backendBaseUrl}genres/`) {
       return Promise.resolve({
         json: () => JSON.stringify({ Rock: 'Rock', Pop: 'Pop' }),
         status: 200,
-        ok: true,
       }).catch((error) => {
         console.log(error);
       });
@@ -145,7 +141,6 @@ test('AddSongPlaylistAccordion submit song correct', async () => {
     return Promise.resolve({
       json: () => {},
       status: 201,
-      ok: true,
     }).catch((error) => {
       console.log(error);
     });
@@ -156,7 +151,7 @@ test('AddSongPlaylistAccordion submit song correct', async () => {
       <BrowserRouter>
         <AddSongPlayListAccordion
           handleClose={handleCloseMock}
-          refreshSidebarData={refreshSidebarDataMock}
+          reloadSidebar={reloadSidebarMock}
           setIsCloseAllowed={setIsCloseAllowed}
         />
       </BrowserRouter>,

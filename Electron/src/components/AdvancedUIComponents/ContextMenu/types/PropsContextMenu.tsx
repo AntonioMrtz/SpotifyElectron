@@ -3,7 +3,7 @@ export interface PropsContextMenu {
   handleCloseParent: Function;
   /* Refresh data on playlist menu after a modification */
   refreshPlaylistData: Function;
-  refreshSidebarData: () => void;
+  refreshSidebarData: Function;
 }
 
 export interface PropsContextMenuPlaylist extends PropsContextMenu {

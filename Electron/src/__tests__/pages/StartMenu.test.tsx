@@ -57,7 +57,6 @@ test('Login success', async () => {
     Promise.resolve({
       json: () => Promise.resolve({}),
       status: 200,
-      ok: true,
     }),
   ) as jest.Mock;
 

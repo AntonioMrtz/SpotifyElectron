@@ -1,12 +1,13 @@
-name: Generate OpenAPI Schema and Frontend Client
+name: Generate OpenAPI Schema
 
 on:
   pull_request:
-    branches:
-      - master
+    types:
+      - closed
 
 jobs:
-  generate-openapi-schema-generate-frontend-client:
+  generate-and-save-docs:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     steps:
@@ -35,20 +36,13 @@ jobs:
           ARCH: BLOB
           ENV_VALUE: PROD
 
-      - name: Generate OpenAPI client Frontend
-        working-directory: Electron/
-        run: |
-          npm install
-          npm run build
-          npm run generate-openapi-client
-
       - name: Add and commit changes
-        working-directory: Electron/src/
+        working-directory: Electron/src/swagger/
         run: |
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
-          git add swagger/
-          if git commit -m "ci: Update OpenAPI schema and generate Frontend client"; then
+          git add openapi.json
+          if git commit -m "docs: Update OpenAPI Schema"; then
             echo "CHANGES=true" >> $GITHUB_ENV
           else
             echo "No changes to commit"
@@ -61,22 +55,3 @@ jobs:
         with:
           token: ${{ secrets.PAT }}
           branch: ${{ github.base_ref }}
-
-  frontend-test:
-    runs-on: ubuntu-latest
-    needs: generate-openapi-schema-generate-frontend-client
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-
-      - name: Change directory and run test
-        working-directory: Electron
-        run: |
-          npm install
-          npm run build
-          npm test

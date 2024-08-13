@@ -446,7 +446,7 @@ def get_user_relevant_playlists(user_name: str) -> list[PlaylistDTO]:
     try:
         base_user_service_validations.validate_user_should_exists(user_name)
         collection = user_collection_provider.get_user_associated_collection(user_name)
-        relevant_playlist_names = base_user_repository.get_user_relevant_playlist_names(
+        relevant_playlist_names = base_user_repository.get_user_relevant_playlists(
             user_name, collection
         )
         relevant_playlists = playlist_service.get_selected_playlists(relevant_playlist_names)
@@ -459,62 +459,20 @@ def get_user_relevant_playlists(user_name: str) -> list[PlaylistDTO]:
     except UserRepositoryException as exception:
         base_users_service_logger.exception(
             f"Unexpected error in User Repository getting user relevant playlists"
-            f"from user {user_name}"
+            f"from owner {user_name}"
         )
         raise UserServiceException from exception
     except PlaylistServiceException as exception:
         base_users_service_logger.exception(
             f"Unexpected error in Playlist Service getting user relevant playlists"
-            f"from user {user_name}"
+            f"from owner {user_name}"
         )
         raise UserServiceException from exception
     except Exception as exception:
         base_users_service_logger.exception(
             f"Unexpected error in User Service getting user relevant playlists"
-            f"from user {user_name}"
+            f"from owner {user_name}"
         )
         raise UserServiceException from exception
     else:
         return relevant_playlists
-
-
-def get_user_playlist_names(user_name: str) -> list[str]:
-    """Get user created playlist names
-
-    Args:
-        user_name (str): user name
-
-    Raises:
-        UserBadNameException: invalid user name
-        UserNotFoundException: user not found
-        UserServiceException: unexpected error getting playlist names from user
-
-    Returns:
-        list[str]: the playlist names created by the user
-    """
-    try:
-        base_user_service_validations.validate_user_should_exists(user_name)
-        collection = user_collection_provider.get_user_associated_collection(user_name)
-        user_playlist_names = base_user_repository.get_user_playlist_names(
-            user_name, collection
-        )
-    except UserBadNameException as exception:
-        base_users_service_logger.exception(f"Bad user Parameter: {user_name}")
-        raise UserBadNameException from exception
-    except UserNotFoundException as exception:
-        base_users_service_logger.exception(f"User not found: {user_name}")
-        raise UserNotFoundException from exception
-    except UserRepositoryException as exception:
-        base_users_service_logger.exception(
-            f"Unexpected error in User Repository getting user playlist names"
-            f"from owner {user_name}"
-        )
-        raise UserServiceException from exception
-    except Exception as exception:
-        base_users_service_logger.exception(
-            f"Unexpected error in User Service getting user playlist names"
-            f"from owner {user_name}"
-        )
-        raise UserServiceException from exception
-    else:
-        return user_playlist_names

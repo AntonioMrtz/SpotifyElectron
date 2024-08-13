@@ -24,15 +24,12 @@ function App() {
     window.scrollTo(0, 0);
   }, [location]);
 
-  // TODO set url backend and with credentials
-
   /* Handle reload of sidebar */
 
-  const [triggerrefreshSidebarData, setTriggerrefreshSidebarData] =
-    useState(false);
+  const [triggerReloadSidebar, setTriggerReloadSidebar] = useState(false);
 
-  const refreshSidebarData = () => {
-    setTriggerrefreshSidebarData((state) => !state);
+  const reloadSidebar = () => {
+    setTriggerReloadSidebar((state) => !state);
   };
 
   /* Handle change song name */
@@ -66,7 +63,7 @@ function App() {
           <StickyHeader handleLogout={handleLogout} />
 
           <div className="d-flex">
-            <Sidebar refreshSidebarData={triggerrefreshSidebarData} />
+            <Sidebar triggerReloadSidebar={triggerReloadSidebar} />
             <div
               className={`App d-flex container-fluid ${styles.mainContentWrapper}`}
             >
@@ -75,28 +72,28 @@ function App() {
                   path="/playlist/:id"
                   element=<Playlist
                     changeSongName={changeSongName}
-                    refreshSidebarData={refreshSidebarData}
+                    triggerReloadSidebar={reloadSidebar}
                   />
                 />
                 <Route
                   path="/explorar"
                   element=<Explorar
                     changeSongName={changeSongName}
-                    refreshSidebarData={refreshSidebarData}
+                    refreshSidebar={reloadSidebar}
                   />
                 />
                 <Route
                   path="/explorar/genre/:id"
                   element=<Genre
                     changeSongName={changeSongName}
-                    refreshSidebarData={refreshSidebarData}
+                    refreshSidebarData={reloadSidebar}
                   />
                 />
 
                 <Route
                   path="/user/:id"
                   element=<UserProfile
-                    refreshSidebarData={refreshSidebarData}
+                    refreshSidebarData={reloadSidebar}
                     changeSongName={changeSongName}
                     userType={UserType.USER}
                   />
@@ -105,7 +102,7 @@ function App() {
                 <Route
                   path="/artist/:id"
                   element=<UserProfile
-                    refreshSidebarData={refreshSidebarData}
+                    refreshSidebarData={reloadSidebar}
                     changeSongName={changeSongName}
                     userType={UserType.ARTIST}
                   />
@@ -114,7 +111,7 @@ function App() {
                 <Route
                   path="/showAllItemsPlaylist/:id"
                   element=<ShowAllItems
-                    refreshSidebarData={refreshSidebarData}
+                    refreshSidebarData={reloadSidebar}
                     type={ShowAllItemsTypes.ALL_PLAYLISTS}
                     changeSongName={changeSongName}
                   />
@@ -122,7 +119,7 @@ function App() {
                 <Route
                   path="/showAllItemsArtist/:id"
                   element=<ShowAllItems
-                    refreshSidebarData={refreshSidebarData}
+                    refreshSidebarData={reloadSidebar}
                     type={ShowAllItemsTypes.ALL_ARTISTS}
                     changeSongName={changeSongName}
                   />
@@ -130,7 +127,7 @@ function App() {
                 <Route
                   path="/showAllPlaylistFromUser/:id/:user/:usertype"
                   element=<ShowAllItems
-                    refreshSidebarData={refreshSidebarData}
+                    refreshSidebarData={reloadSidebar}
                     type={ShowAllItemsTypes.ALL_PLAYLIST_FROM_USER}
                     changeSongName={changeSongName}
                   />
@@ -138,19 +135,19 @@ function App() {
                 <Route
                   path="/showAllSongsFromArtist/:id/:artist"
                   element=<ShowAllItems
-                    refreshSidebarData={refreshSidebarData}
+                    refreshSidebarData={reloadSidebar}
                     type={ShowAllItemsTypes.ALL_SONGS_FROM_ARTIST}
                     changeSongName={changeSongName}
                   />
                 />
                 <Route
                   path="/"
-                  element=<Home refreshSidebarData={refreshSidebarData} />
+                  element=<Home refreshSidebarData={reloadSidebar} />
                 />
 
                 <Route
                   path="*"
-                  element=<Home refreshSidebarData={refreshSidebarData} />
+                  element=<Home refreshSidebarData={reloadSidebar} />
                 />
               </Routes>
             </div>

@@ -53,7 +53,7 @@ export default function StartMenu({
         body: fetchParameters.toString(),
       };
 
-      const fetchUrlLogin = `${Global.backendBaseUrl}/login/`;
+      const fetchUrlLogin = `${Global.backendBaseUrl}login/`;
       const resFetchUrlLogin = await fetch(fetchUrlLogin, requestOptions);
       const resFetchUrlLoginJson = await resFetchUrlLogin.json();
 

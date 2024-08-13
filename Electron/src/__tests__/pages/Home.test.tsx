@@ -17,7 +17,6 @@ test('render Home', async () => {
     Promise.resolve({
       json: () => Promise.resolve({}),
       status: 200,
-      ok: true,
     }),
   ) as jest.Mock;
 
@@ -33,7 +32,6 @@ test('Home fields', async () => {
     Promise.resolve({
       json: () => Promise.resolve({}),
       status: 200,
-      ok: true,
     }),
   ) as jest.Mock;
 
@@ -48,7 +46,7 @@ test('Home fields', async () => {
 
 test('prueba', async () => {
   global.fetch = jest.fn((url: string) => {
-    if (url === `${Global.backendBaseUrl}/artists/`) {
+    if (url === `${Global.backendBaseUrl}artists/`) {
       return Promise.resolve({
         json: () =>
           Promise.resolve({
@@ -65,12 +63,11 @@ test('prueba', async () => {
             ],
           }),
         status: 200,
-        ok: true,
       }).catch((error) => {
         console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}/playlists/`) {
+    if (url === `${Global.backendBaseUrl}playlists/`) {
       return Promise.resolve({
         json: () =>
           Promise.resolve({
@@ -86,7 +83,6 @@ test('prueba', async () => {
             ],
           }),
         status: 200,
-        ok: true,
       }).catch((error) => {
         console.log(error);
       });

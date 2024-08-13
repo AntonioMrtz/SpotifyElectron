@@ -6,7 +6,6 @@ import LoadingCircle from 'components/AdvancedUIComponents/LoadingCircle/Loading
 import InfoPopover from 'components/AdvancedUIComponents/InfoPopOver/InfoPopover';
 import { InfoPopoverType } from 'components/AdvancedUIComponents/InfoPopOver/types/InfoPopover';
 import Token from 'utils/token';
-import useFetchGetUserPlaylistNames from 'hooks/useFetchGetUserPlaylistNames';
 import styles from '../contextMenu.module.css';
 import { PropsContextMenuPlaylist } from '../types/PropsContextMenu';
 
@@ -149,9 +148,55 @@ export default function ContextMenuPlaylist({
   const open = Boolean(anchorEl);
   const id = open ? 'child-popover' : undefined;
 
-  const username = Token.getTokenUsername();
+  const [playlistNames, setPlaylistNames] = useState<string[]>();
+  const [loading, setLoading] = useState(true);
 
-  const { playlistNames, loading } = useFetchGetUserPlaylistNames(username);
+  const handlePlaylists = async () => {
+    const username = Token.getTokenUsername();
+
+    const fetchUrlGetUser = `${Global.backendBaseUrl}users/${username}`;
+
+    fetch(fetchUrlGetUser, {
+      credentials: 'include',
+    })
+      .then((resFetchUrlGetUser) => resFetchUrlGetUser.json())
+      .then((resFetchUrlGetUserJson) => {
+        return resFetchUrlGetUserJson.playlists.join(',');
+      })
+      .then((sidebarPlaylistNames) => {
+        if (!sidebarPlaylistNames) {
+          setPlaylistNames([]);
+          throw new Error('There arent playlists to show');
+        }
+        return fetch(
+          `${Global.backendBaseUrl}playlists/selected/${sidebarPlaylistNames}`,
+          {
+            credentials: 'include',
+          },
+        );
+      })
+      .then((resFetchPlaylists) => {
+        return resFetchPlaylists.json();
+      })
+      .then((res) => {
+        const playlistNamesFromFetch: string[] = [];
+
+        if (res.playlists) {
+          res.playlists.forEach((playlistObject: any) => {
+            playlistNamesFromFetch.push(playlistObject.name);
+          });
+        }
+
+        setPlaylistNames(playlistNamesFromFetch);
+        setLoading(false);
+
+        return null;
+      })
+      .catch((error) => {
+        console.log(error);
+        setLoading(false);
+      });
+  };
 
   const [isOwnerPlaylist, setIsOwnerPlaylist] = useState<boolean>();
 
@@ -160,14 +205,17 @@ export default function ContextMenuPlaylist({
   };
 
   const handleOwner = useCallback(async () => {
+    const username = Token.getTokenUsername();
+
     if (owner === username) {
       setIsOwnerPlaylist(true);
     } else {
       setIsOwnerPlaylist(false);
     }
-  }, [owner, username]);
+  }, [owner]);
 
   useEffect(() => {
+    handlePlaylists();
     handleOwner();
   }, [handleOwner]);
 
@@ -176,10 +224,10 @@ export default function ContextMenuPlaylist({
     srcPlaylistName: string,
   ) => {
     try {
-      const url = `${Global.backendBaseUrl}/playlists/${dstPlaylistName}`;
+      const url = `${Global.backendBaseUrl}playlists/${dstPlaylistName}`; // Reemplaza con la URL de tu API y el nombre de la playlist
 
       const dstResponse = await fetch(
-        `${Global.backendBaseUrl}/playlists/${dstPlaylistName}`,
+        `${Global.backendBaseUrl}playlists/${dstPlaylistName}`,
         {
           credentials: 'include',
         },
@@ -192,7 +240,7 @@ export default function ContextMenuPlaylist({
       const putUrl = `${url}?photo=${photo}&description=${description}`;
 
       const srcResponse = await fetch(
-        `${Global.backendBaseUrl}/playlists/${srcPlaylistName}`,
+        `${Global.backendBaseUrl}playlists/${srcPlaylistName}`,
         {
           credentials: 'include',
         },
@@ -232,26 +280,28 @@ export default function ContextMenuPlaylist({
     }
   };
 
-  const handleDeletePlaylist = async (playlistNameToDelete: string) => {
-    const deletePlaylistURL = `${Global.backendBaseUrl}/playlists/${playlistNameToDelete}`;
+  const handleDeletePlaylist = (playlistNameToDelete: string) => {
+    /* Delete playlist */
+    fetch(`${Global.backendBaseUrl}playlists/${playlistNameToDelete}`, {
+      method: 'DELETE',
+      credentials: 'include',
+    })
+      .then((response) => {
+        if (response.status !== 202) {
+          displayConfirmationModal(ConfirmationMenuActionKind.DELETE_ERROR);
 
-    try {
-      const deletePlaylistResponse = await fetch(deletePlaylistURL, {
-        method: 'DELETE',
-        credentials: 'include',
-      });
-      if (!deletePlaylistResponse.ok) {
+          throw new Error('Unable to delete playlist');
+        } else if (response.status === 202) {
+          refreshSidebarData();
+          navigate(`/home`);
+        }
+        handleClose();
+        return null;
+      })
+      .catch((error) => {
+        console.error('Unable to delete playlist: ', error);
         displayConfirmationModal(ConfirmationMenuActionKind.DELETE_ERROR);
-        throw new Error('Unable to delete playlist');
-      }
-      refreshSidebarData();
-      navigate(`/home`);
-    } catch (err) {
-      console.error('Unable to delete playlist: ', err);
-      displayConfirmationModal(ConfirmationMenuActionKind.DELETE_ERROR);
-    } finally {
-      handleClose();
-    }
+      });
   };
 
   const handleCreatePlaylist = () => {

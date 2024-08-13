@@ -76,7 +76,7 @@ export default function RegisterMenu({ setIsSigningUp }: PropsRegisterMenu) {
     }
 
     try {
-      const fetchPostUserURL = `${Global.backendBaseUrl}/users/?name=${formData.name}&photo=${formData.photo}&password=${formData.password}`;
+      const fetchPostUserURL = `${Global.backendBaseUrl}users/?name=${formData.name}&photo=${formData.photo}&password=${formData.password}`;
 
       const requestOptions: RequestInit = {
         method: 'POST',

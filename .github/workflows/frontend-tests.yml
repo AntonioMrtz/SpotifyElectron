@@ -1,4 +1,4 @@
-name: Frontend Style Prettier
+name: Frontend Tests
 
 on:
   pull_request:
@@ -12,10 +12,10 @@ jobs:
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: "20"
 
@@ -23,4 +23,5 @@ jobs:
         working-directory: Electron
         run: |
           npm install
-          npm run format:check
+          npm run build
+          npm test

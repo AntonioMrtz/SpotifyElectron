@@ -88,9 +88,7 @@ export default function Sidebar({ refreshSidebarData }: PropsSidebar) {
       const fetchURLGetRelevantPlaylistsUser = `${Global.backendBaseUrl}/users/${username}/relevant_playlists`;
       const fetchGetRelevantPlaylistsUserResponse = await fetch(
         fetchURLGetRelevantPlaylistsUser,
-        {
-          credentials: 'include',
-        },
+        {},
       );
       const getRelevantPlaylistsUserJson =
         await fetchGetRelevantPlaylistsUserResponse.json();

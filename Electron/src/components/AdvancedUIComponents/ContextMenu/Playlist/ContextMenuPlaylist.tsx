@@ -180,9 +180,7 @@ export default function ContextMenuPlaylist({
 
       const dstResponse = await fetch(
         `${Global.backendBaseUrl}/playlists/${dstPlaylistName}`,
-        {
-          credentials: 'include',
-        },
+        {},
       );
 
       const dstPlaylistData = await dstResponse.json();
@@ -193,9 +191,7 @@ export default function ContextMenuPlaylist({
 
       const srcResponse = await fetch(
         `${Global.backendBaseUrl}/playlists/${srcPlaylistName}`,
-        {
-          credentials: 'include',
-        },
+        {},
       );
 
       const srcPlaylistData = await srcResponse.json();
@@ -210,7 +206,7 @@ export default function ContextMenuPlaylist({
         headers: {
           'Content-Type': 'application/json',
         },
-        credentials: 'include',
+
         body: JSON.stringify(newSongsPutPlaylist),
       };
 
@@ -238,7 +234,6 @@ export default function ContextMenuPlaylist({
     try {
       const deletePlaylistResponse = await fetch(deletePlaylistURL, {
         method: 'DELETE',
-        credentials: 'include',
       });
       if (!deletePlaylistResponse.ok) {
         displayConfirmationModal(ConfirmationMenuActionKind.DELETE_ERROR);

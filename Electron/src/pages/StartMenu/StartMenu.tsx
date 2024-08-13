@@ -49,7 +49,7 @@ export default function StartMenu({
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
-        credentials: 'include',
+
         body: fetchParameters.toString(),
       };
 

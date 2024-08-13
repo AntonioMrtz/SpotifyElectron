@@ -11,9 +11,7 @@ export default function ItemsAllArtist() {
     try {
       const fetchGetArtistsResponse = await fetch(
         `${Global.backendBaseUrl}/artists/`,
-        {
-          credentials: 'include',
-        },
+        {},
       );
       const fetchGetArtistsJson = await fetchGetArtistsResponse.json();
       if (fetchGetArtistsJson.artists) {

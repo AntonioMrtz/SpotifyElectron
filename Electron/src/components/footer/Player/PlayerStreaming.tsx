@@ -87,7 +87,6 @@ export default function PlayerStreaming({
   const handleIncreaseSongStreams = () => {
     const requestOptions: RequestInit = {
       method: 'PATCH',
-      credentials: 'include',
     };
     const fetchUrlUpdateSong: string = `${Global.backendBaseUrl}/songs/${songName}/streams`;
 
@@ -122,9 +121,7 @@ export default function PlayerStreaming({
 
       const resFetchSong = await fetch(
         `${Global.backendBaseUrl}/songs/${songName}`,
-        {
-          credentials: 'include',
-        },
+        {},
       );
 
       const resFetchSongJson = await resFetchSong.json();

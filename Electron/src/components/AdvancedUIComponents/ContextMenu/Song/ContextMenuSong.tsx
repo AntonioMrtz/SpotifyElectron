@@ -71,9 +71,7 @@ export default function ContextMenuSong({
     try {
       const playlistResponse = await fetch(
         `${Global.backendBaseUrl}/playlists/${selectedPlaylistName}`,
-        {
-          credentials: 'include',
-        },
+        {},
       );
       const playlistData = await playlistResponse.json();
 
@@ -91,7 +89,7 @@ export default function ContextMenuSong({
         headers: {
           'Content-Type': 'application/json',
         },
-        credentials: 'include',
+
         body: JSON.stringify(newSongsPutPlaylist),
       };
 
@@ -110,9 +108,7 @@ export default function ContextMenuSong({
     try {
       const playlistResponse = await fetch(
         `${Global.backendBaseUrl}/playlists/${playlistName}`,
-        {
-          credentials: 'include',
-        },
+        {},
       );
       const playlistData = await playlistResponse.json();
 
@@ -130,7 +126,7 @@ export default function ContextMenuSong({
         headers: {
           'Content-Type': 'application/json',
         },
-        credentials: 'include',
+
         body: JSON.stringify(newSongsPutPlaylist),
       };
 
@@ -163,7 +159,7 @@ export default function ContextMenuSong({
         headers: {
           'Content-Type': 'application/json',
         },
-        credentials: 'include',
+
         body: JSON.stringify([songName]),
       };
 

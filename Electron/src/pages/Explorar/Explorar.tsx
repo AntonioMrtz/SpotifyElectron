@@ -38,9 +38,7 @@ export default function Explorar({
         const fetchUrlFilterItemsByName = `${Global.backendBaseUrl}/search/?name=${filterNameInput}`;
         const resFetchUrlFilterItemsByName = await fetch(
           fetchUrlFilterItemsByName,
-          {
-            credentials: 'include',
-          },
+          {},
         );
         const resFetchUrlFilterItemsByNameJson =
           await resFetchUrlFilterItemsByName.json();
@@ -142,9 +140,7 @@ export default function Explorar({
     try {
       const fetchGetGenresResponse = await fetch(
         encodeURI(`${Global.backendBaseUrl}/genres/`),
-        {
-          credentials: 'include',
-        },
+        {},
       );
       const GenresJson = await fetchGetGenresResponse.json();
       setGenres(GenresJson);

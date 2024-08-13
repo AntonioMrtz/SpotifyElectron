@@ -19,9 +19,7 @@ export default function ItemsAllSongsFromArtist({
         Global.backendBaseUrl
       }/artists/${artistName.replace(/[^a-zA-Z0-9_]/g, '')}`;
 
-      const resFetchGetArtist = await fetch(fetchURLGetArtist, {
-        credentials: 'include',
-      });
+      const resFetchGetArtist = await fetch(fetchURLGetArtist, {});
       resFetchGetArtistJson = await resFetchGetArtist.json();
       console.log(
         '🚀 ~ loadSongsFromArtist ~ resFetchGetArtistJson:',
@@ -40,9 +38,7 @@ export default function ItemsAllSongsFromArtist({
       resFetchGetArtistJson.uploaded_songs.forEach((songName: string) => {
         songPromises.push(
           new Promise((resolve) => {
-            fetch(`${Global.backendBaseUrl}/songs/metadata/${songName}`, {
-              credentials: 'include',
-            })
+            fetch(`${Global.backendBaseUrl}/songs/metadata/${songName}`, {})
               .then((resFetchSongDTO) => {
                 return resFetchSongDTO.json();
               })

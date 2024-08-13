@@ -80,9 +80,7 @@ export default function Playlist({
     try {
       const fetchGetUser = `${Global.backendBaseUrl}/users/${username}`;
 
-      const resFetchGetUser = await fetch(fetchGetUser, {
-        credentials: 'include',
-      });
+      const resFetchGetUser = await fetch(fetchGetUser, {});
       if (resFetchGetUser.status === 200)
         resFetchGetUserJson = await resFetchGetUser.json();
 
@@ -108,7 +106,6 @@ export default function Playlist({
 
       const requestOptionsPatchSavedPlaylistUr: RequestInit = {
         method: 'PATCH',
-        credentials: 'include',
       };
 
       fetch(fetchPatchSavedPlaylistUrl, requestOptionsPatchSavedPlaylistUr)
@@ -123,7 +120,6 @@ export default function Playlist({
 
       const requestOptionsDeleteSavedPlaylistUr: RequestInit = {
         method: 'DELETE',
-        credentials: 'include',
       };
 
       fetch(fetchDeleteSavedPlaylistUrl, requestOptionsDeleteSavedPlaylistUr)
@@ -197,9 +193,7 @@ export default function Playlist({
     try {
       const resFetchGetPlaylistDTO = await fetch(
         encodeURI(`${Global.backendBaseUrl}/playlists/${playlistName}`),
-        {
-          credentials: 'include',
-        },
+        {},
       );
       const resFetchGetPlaylistDTOJson = await resFetchGetPlaylistDTO.json();
 
@@ -227,9 +221,7 @@ export default function Playlist({
           .forEach((songName: string) => {
             songPromises.push(
               new Promise((resolve) => {
-                fetch(`${Global.backendBaseUrl}/songs/metadata/${songName}`, {
-                  credentials: 'include',
-                })
+                fetch(`${Global.backendBaseUrl}/songs/metadata/${songName}`, {})
                   .then((resFetchSongDTO) => {
                     return resFetchSongDTO.json();
                   })
@@ -279,9 +271,7 @@ export default function Playlist({
     try {
       const resGetPlaylistDTO = await fetch(
         `${Global.backendBaseUrl}/playlists/${playlistName}`,
-        {
-          credentials: 'include',
-        },
+        {},
       );
 
       const resGetPlaylistDTOJson = await resGetPlaylistDTO.json();
@@ -303,7 +293,6 @@ export default function Playlist({
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          credentials: 'include',
         },
         body: JSON.stringify(newSongsPutPlaylist),
       };

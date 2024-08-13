@@ -25,37 +25,41 @@ jest.spyOn(Token, 'getTokenUsername').mockReturnValue(userName);
 jest.spyOn(Token, 'getTokenRole').mockReturnValue(roleUser);
 
 global.fetch = jest.fn((url: string) => {
-  if (url === `${Global.backendBaseUrl}songs/${songName}`) {
+  if (url === `${Global.backendBaseUrl}/songs/${songName}`) {
     return Promise.resolve({
       json: () => songMockFetch,
       status: 200,
+      ok: true,
     }).catch((error) => {
       console.log(error);
     });
   }
-  if (url === `${Global.backendBaseUrl}songs/metadata/${songName}`) {
+  if (url === `${Global.backendBaseUrl}/songs/metadata/${songName}`) {
     return Promise.resolve({
       json: () => songMockFetch,
       status: 200,
+      ok: true,
     }).catch((error) => {
       console.log(error);
     });
   }
-  if (url === `${Global.backendBaseUrl}songs/${songName}/streams`) {
+  if (url === `${Global.backendBaseUrl}/songs/${songName}/streams`) {
     return Promise.resolve({
       json: () => {},
       status: 204,
+      ok: true,
     }).catch((error) => {
       console.log(error);
     });
   }
   if (
     url ===
-    `${Global.backendBaseUrl}users/${userName}/playback_history?song_name=${songName}`
+    `${Global.backendBaseUrl}/users/${userName}/playback_history?song_name=${songName}`
   ) {
     return Promise.resolve({
       json: () => {},
       status: 204,
+      ok: true,
     }).catch((error) => {
       console.log(error);
     });

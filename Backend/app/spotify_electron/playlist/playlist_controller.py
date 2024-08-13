@@ -49,7 +49,7 @@ def get_playlist(
     name: str,
     token: Annotated[TokenData, Depends(JWTBearer())],
 ) -> Response:
-    """Get playlsit
+    """Get playlist
 
     Args:
         name (str): playlist name
@@ -207,7 +207,7 @@ def delete_playlist(name: str) -> Response:
 
 @router.get("/")
 def get_playlists(token: Annotated[TokenData, Depends(JWTBearer())]) -> Response:
-    """Return all playlists"""
+    """Get all playlists"""
     try:
         playlists = playlist_service.get_all_playlist()
         playlist_json = json_converter_utils.get_json_with_iterable_field_from_model(

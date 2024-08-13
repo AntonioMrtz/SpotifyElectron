@@ -4,6 +4,7 @@ import '@testing-library/jest-dom/extend-expect';
 import { BrowserRouter } from 'react-router-dom';
 import Global from 'global/global';
 import ItemsAllSongsFromArtist from 'components/ShowAllItems/Items/ItemsAllSongsFromArtist';
+import getMockHeaders from 'utils/mockHeaders';
 
 const playlistName = 'playlisttest';
 const songName = 'songName';
@@ -30,18 +31,22 @@ const songMockFetch = {
 
 test('Render items All Songs from Artist', async () => {
   global.fetch = jest.fn((url: string) => {
-    if (url === `${Global.backendBaseUrl}artists/${artistMockFetch.name}`) {
+    if (url === `${Global.backendBaseUrl}/artists/${artistMockFetch.name}`) {
       return Promise.resolve({
         json: () => artistMockFetch,
         status: 200,
+        ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}songs/metadata/${songName}`) {
+    if (url === `${Global.backendBaseUrl}/songs/metadata/${songName}`) {
       return Promise.resolve({
         json: () => songMockFetch,
         status: 200,
+        ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });

@@ -16,13 +16,13 @@ import Song from '../../components/Song/Song';
 import styles from './playlist.module.css';
 
 interface PropsPlaylist {
-  changeSongName: Function;
-  triggerReloadSidebar: Function;
+  changeSongName: (songName: string) => void;
+  refreshSidebarData: () => void;
 }
 
 export default function Playlist({
   changeSongName,
-  triggerReloadSidebar,
+  refreshSidebarData,
 }: PropsPlaylist) {
   const [mainColorThumbnail, setMainColorThumbnail] = useState('');
 
@@ -78,7 +78,7 @@ export default function Playlist({
     let resFetchGetUserJson;
 
     try {
-      const fetchGetUser = `${Global.backendBaseUrl}users/${username}`;
+      const fetchGetUser = `${Global.backendBaseUrl}/users/${username}`;
 
       const resFetchGetUser = await fetch(fetchGetUser, {
         credentials: 'include',
@@ -104,7 +104,7 @@ export default function Playlist({
     const username = Token.getTokenUsername();
 
     if (liked === false) {
-      const fetchPatchSavedPlaylistUrl = `${Global.backendBaseUrl}users/${username}/saved_playlists?playlist_name=${playlistName}`;
+      const fetchPatchSavedPlaylistUrl = `${Global.backendBaseUrl}/users/${username}/saved_playlists?playlist_name=${playlistName}`;
 
       const requestOptionsPatchSavedPlaylistUr: RequestInit = {
         method: 'PATCH',
@@ -114,12 +114,12 @@ export default function Playlist({
       fetch(fetchPatchSavedPlaylistUrl, requestOptionsPatchSavedPlaylistUr)
         .then(() => {
           setHearthLikedInterface();
-          triggerReloadSidebar();
+          refreshSidebarData();
           return null;
         })
         .catch(() => console.log('Unable to update saved playlists'));
     } else {
-      const fetchDeleteSavedPlaylistUrl = `${Global.backendBaseUrl}users/${username}/saved_playlists?playlist_name=${playlistName}`;
+      const fetchDeleteSavedPlaylistUrl = `${Global.backendBaseUrl}/users/${username}/saved_playlists?playlist_name=${playlistName}`;
 
       const requestOptionsDeleteSavedPlaylistUr: RequestInit = {
         method: 'DELETE',
@@ -129,7 +129,7 @@ export default function Playlist({
       fetch(fetchDeleteSavedPlaylistUrl, requestOptionsDeleteSavedPlaylistUr)
         .then(() => {
           setHearthUnLikedInterface();
-          triggerReloadSidebar();
+          refreshSidebarData();
           return null;
         })
         .catch(() => console.log('Unable to update saved playlists'));
@@ -196,7 +196,7 @@ export default function Playlist({
   const loadPlaylistData = async () => {
     try {
       const resFetchGetPlaylistDTO = await fetch(
-        encodeURI(`${Global.backendBaseUrl}playlists/${playlistName}`),
+        encodeURI(`${Global.backendBaseUrl}/playlists/${playlistName}`),
         {
           credentials: 'include',
         },
@@ -227,7 +227,7 @@ export default function Playlist({
           .forEach((songName: string) => {
             songPromises.push(
               new Promise((resolve) => {
-                fetch(`${Global.backendBaseUrl}songs/metadata/${songName}`, {
+                fetch(`${Global.backendBaseUrl}/songs/metadata/${songName}`, {
                   credentials: 'include',
                 })
                   .then((resFetchSongDTO) => {
@@ -243,7 +243,7 @@ export default function Playlist({
                       index: 0,
                       handleSongCliked: changeSongName,
                       refreshPlaylistData: loadPlaylistData,
-                      refreshSidebarData: triggerReloadSidebar,
+                      refreshSidebarData,
                     };
                     propsSong.artistName = resFetchSongDTOJson.artist;
                     propsSong.duration = resFetchSongDTOJson.seconds_duration;
@@ -278,7 +278,7 @@ export default function Playlist({
 
     try {
       const resGetPlaylistDTO = await fetch(
-        `${Global.backendBaseUrl}playlists/${playlistName}`,
+        `${Global.backendBaseUrl}/playlists/${playlistName}`,
         {
           credentials: 'include',
         },
@@ -287,7 +287,7 @@ export default function Playlist({
       const resGetPlaylistDTOJson = await resGetPlaylistDTO.json();
       const newSongsPutPlaylist = [...resGetPlaylistDTOJson.song_names];
 
-      const url = `${Global.backendBaseUrl}playlists/${playlistName}`;
+      const url = `${Global.backendBaseUrl}/playlists/${playlistName}`;
       const photo =
         formData.photo && formData.photo.includes('http') ? formData.photo : '';
 
@@ -319,11 +319,11 @@ export default function Playlist({
         setopenModalUpdatePlaylist(false);
         if (formData.name !== playlistName && formData.name !== '') {
           //* Al cargar inmediatamente con el useEffect de location produce que el contenido para la nueva url no esta disponible
-          triggerReloadSidebar();
+          refreshSidebarData();
           navigate(`/playlist/${formData.name}`, { replace: true });
         } else {
           loadPlaylistData();
-          triggerReloadSidebar();
+          refreshSidebarData();
         }
       }
     } catch {
@@ -543,7 +543,7 @@ export default function Playlist({
                   duration={song.duration}
                   handleSongCliked={changeSongName}
                   refreshPlaylistData={loadPlaylistData}
-                  refreshSidebarData={triggerReloadSidebar}
+                  refreshSidebarData={refreshSidebarData}
                 />
               );
             })}
@@ -579,7 +579,7 @@ export default function Playlist({
             owner={owner}
             handleCloseParent={handleCloseContextMenu}
             refreshPlaylistData={() => {}}
-            refreshSidebarData={triggerReloadSidebar}
+            refreshSidebarData={refreshSidebarData}
           />
         </Popover>
       </div>

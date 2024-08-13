@@ -11,8 +11,8 @@ import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist
 
 interface PropsUserProfile {
   userType: UserType;
-  refreshSidebarData: Function;
-  changeSongName: Function;
+  refreshSidebarData: () => void;
+  changeSongName: (songName: string) => void;
 }
 
 export default function UserProfile({
@@ -20,7 +20,6 @@ export default function UserProfile({
   changeSongName,
   refreshSidebarData,
 }: PropsUserProfile) {
-  // Use the useParams hook to get the id parameter from the URL
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -36,7 +35,7 @@ export default function UserProfile({
     resGetUserJson.playlists.slice(0, 5).forEach((playlistName: string) => {
       playlistPromises.push(
         new Promise((resolve) => {
-          fetch(`${Global.backendBaseUrl}playlists/${playlistName}`, {
+          fetch(`${Global.backendBaseUrl}/playlists/${playlistName}`, {
             credentials: 'include',
           })
             .then((resFetchPlaylistDTO) => {
@@ -76,7 +75,7 @@ export default function UserProfile({
     resGetUserJson.playback_history.forEach((songName: string) => {
       songPromises.push(
         new Promise((resolve) => {
-          fetch(`${Global.backendBaseUrl}songs/metadata/${songName}`, {
+          fetch(`${Global.backendBaseUrl}/songs/metadata/${songName}`, {
             credentials: 'include',
           })
             .then((resFetchSongDTO) => {
@@ -117,7 +116,7 @@ export default function UserProfile({
     resGetUserJson.uploaded_songs.forEach((songName: string) => {
       songPromises.push(
         new Promise((resolve) => {
-          fetch(`${Global.backendBaseUrl}songs/metadata/${songName}`, {
+          fetch(`${Global.backendBaseUrl}/songs/metadata/${songName}`, {
             credentials: 'include',
           })
             .then((resFetchSongDTO) => {
@@ -153,7 +152,7 @@ export default function UserProfile({
   };
 
   const loadArtistsStreams = () => {
-    fetch(`${Global.backendBaseUrl}artists/${id}/streams`, {
+    fetch(`${Global.backendBaseUrl}/artists/${id}/streams`, {
       credentials: 'include',
     })
       .then((resFetchArtistStreams) => {
@@ -169,7 +168,7 @@ export default function UserProfile({
   };
 
   const handleLoadProfile = async () => {
-    const fetchUrlGetUser = `${Global.backendBaseUrl}users/${id}`;
+    const fetchUrlGetUser = `${Global.backendBaseUrl}/users/${id}`;
 
     const resGetUser = await fetch(fetchUrlGetUser, {
       credentials: 'include',
@@ -317,11 +316,10 @@ export default function UserProfile({
           </div>
           <div className="d-flex flex-row flex-wrap" style={{ gap: '14px' }}>
             {uploadedSongs &&
-              uploadedSongs.map((songItem, index) => {
+              uploadedSongs.map((songItem) => {
                 return (
                   <SongCard
-                    // eslint-disable-next-line react/no-array-index-key
-                    key={`${songItem.name}${index}`}
+                    key={`${songItem.name}`}
                     name={songItem.name}
                     photo={songItem.photo}
                     artist={songItem.artist}
@@ -401,11 +399,10 @@ export default function UserProfile({
           </h2>
           <div className="d-flex flex-row flex-wrap " style={{ gap: '14px' }}>
             {playbackHistory &&
-              playbackHistory.map((songItem, index) => {
+              playbackHistory.map((songItem) => {
                 return (
                   <SongCard
-                    // eslint-disable-next-line react/no-array-index-key
-                    key={`${songItem.name}${index}`}
+                    key={`${songItem.name}`}
                     name={songItem.name}
                     photo={songItem.photo}
                     artist={songItem.artist}

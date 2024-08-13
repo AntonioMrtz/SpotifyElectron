@@ -89,7 +89,7 @@ export default function Player({
       method: 'PATCH',
       credentials: 'include',
     };
-    const fetchUrlUpdateSong: string = `${Global.backendBaseUrl}songs/${songName}/streams`;
+    const fetchUrlUpdateSong: string = `${Global.backendBaseUrl}/songs/${songName}/streams`;
 
     fetch(fetchUrlUpdateSong, requestOptions).catch(() =>
       console.log('Unable to update number of plays'),
@@ -99,7 +99,7 @@ export default function Player({
   const handleUpdatePlaybackHistory = () => {
     const username = Token.getTokenUsername();
 
-    const fetchPatchPlayBackHistory: string = `${Global.backendBaseUrl}users/${username}/playback_history?song_name=${songName}`;
+    const fetchPatchPlayBackHistory: string = `${Global.backendBaseUrl}/users/${username}/playback_history?song_name=${songName}`;
 
     const requestOptionsUpdatePlaybackHistory: RequestInit = {
       method: 'PATCH',
@@ -121,7 +121,7 @@ export default function Player({
       if (songName === Global.noSongPlaying) return;
 
       const resFetchSong = await fetch(
-        `${Global.backendBaseUrl}songs/${songName}`,
+        `${Global.backendBaseUrl}/songs/${songName}`,
         {
           credentials: 'include',
         },
@@ -132,7 +132,7 @@ export default function Player({
       handleIncreaseSongStreams();
       handleUpdatePlaybackHistory();
       const resFetchSongDTO = await fetch(
-        `${Global.backendBaseUrl}songs/metadata/${songName}`,
+        `${Global.backendBaseUrl}/songs/metadata/${songName}`,
         {
           credentials: 'include',
         },
@@ -140,7 +140,7 @@ export default function Player({
 
       const username = Token.getTokenUsername();
 
-      const fetchPatchPlayBackHistory: string = `${Global.backendBaseUrl}users/${username}/playback_history?song_name=${songName}`;
+      const fetchPatchPlayBackHistory: string = `${Global.backendBaseUrl}/users/${username}/playback_history?song_name=${songName}`;
 
       const requestOptionsUpdatePlaybackHistory: RequestInit = {
         method: 'PATCH',

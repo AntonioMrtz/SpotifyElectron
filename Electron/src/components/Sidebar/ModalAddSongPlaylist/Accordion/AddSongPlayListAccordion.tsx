@@ -17,7 +17,7 @@ import styles from './addSongPlayListAccordion.module.css';
 
 interface PropsAddSongPlayListAccordion {
   handleClose: Function;
-  reloadSidebar: Function;
+  refreshSidebarData: () => void;
   setIsCloseAllowed: Function;
 }
 
@@ -35,7 +35,7 @@ const MessagesInfoPopOver = {
 
 export default function AddSongPlayListAccordion({
   handleClose,
-  reloadSidebar,
+  refreshSidebarData,
   setIsCloseAllowed,
 }: PropsAddSongPlayListAccordion) {
   /* Check user type */
@@ -114,7 +114,7 @@ export default function AddSongPlayListAccordion({
     setLoadingUploadSong(true);
     setIsCloseAllowed(false);
 
-    const url = new URL(`${Global.backendBaseUrl}songs/`);
+    const url = new URL(`${Global.backendBaseUrl}/songs/`);
 
     if (formDataSong && songFile) {
       Object.entries(formDataSong).forEach(([key, value]) => {
@@ -195,7 +195,7 @@ export default function AddSongPlayListAccordion({
   const handleSubmitPlaylist = (event: FormEvent<HTMLButtonElement>) => {
     setIsCloseAllowed(false);
 
-    const url = new URL(`${Global.backendBaseUrl}playlists/`);
+    const url = new URL(`${Global.backendBaseUrl}/playlists/`);
 
     event.preventDefault();
 
@@ -227,7 +227,7 @@ export default function AddSongPlayListAccordion({
               MessagesInfoPopOver.PLAYLIST_ADDED_TITLE,
               MessagesInfoPopOver.PLAYLIST_ADDED_DESCRIPTION,
             );
-            reloadSidebar();
+            refreshSidebarData();
           } else {
             console.log('No se a creado la playlist');
 
@@ -256,7 +256,7 @@ export default function AddSongPlayListAccordion({
   const [genres, setGenres] = useState<{}>();
 
   const handleGenres = () => {
-    fetch(`${Global.backendBaseUrl}genres/`, {
+    fetch(`${Global.backendBaseUrl}/genres/`, {
       credentials: 'include',
     })
       .then((res) => res.json())

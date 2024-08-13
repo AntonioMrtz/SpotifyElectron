@@ -50,13 +50,14 @@ const songMockFetch = {
 };
 
 global.fetch = jest.fn((url: string) => {
-  if (url === `${Global.backendBaseUrl}genres/`) {
+  if (url === `${Global.backendBaseUrl}/genres/`) {
     return Promise.resolve({
       json: () => Promise.resolve({ ROCK: 'Rock', POP: 'Pop' }),
       status: 200,
+      ok: true,
     });
   }
-  if (url === `${Global.backendBaseUrl}search/?name=${'prueba'}`) {
+  if (url === `${Global.backendBaseUrl}/search/?name=${'prueba'}`) {
     return Promise.resolve({
       json: () =>
         Promise.resolve({
@@ -66,6 +67,7 @@ global.fetch = jest.fn((url: string) => {
           artists: [artistMockFetch],
         }),
       status: 200,
+      ok: true,
     }).catch((error) => {
       console.log(error);
     });
@@ -78,7 +80,7 @@ test('Render Explorar and get Genres', async () => {
   const component = await act(() => {
     return render(
       <BrowserRouter>
-        <Explorar changeSongName={jest.fn()} refreshSidebar={jest.fn()} />
+        <Explorar changeSongName={jest.fn()} refreshSidebarData={jest.fn()} />
       </BrowserRouter>,
     );
   });
@@ -89,7 +91,7 @@ test('Explorar filter by name', async () => {
   const component = await act(() => {
     return render(
       <BrowserRouter>
-        <Explorar changeSongName={jest.fn()} refreshSidebar={jest.fn()} />
+        <Explorar changeSongName={jest.fn()} refreshSidebarData={jest.fn()} />
       </BrowserRouter>,
     );
   });

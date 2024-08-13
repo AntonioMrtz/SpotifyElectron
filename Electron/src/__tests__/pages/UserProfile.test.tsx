@@ -43,6 +43,7 @@ test('render UserProfile with User', async () => {
     Promise.resolve({
       json: () => Promise.resolve(userMock),
       status: 200,
+      ok: true,
     }),
   ) as jest.Mock;
 
@@ -64,6 +65,7 @@ test('render UserProfile with Artist', async () => {
     Promise.resolve({
       json: () => Promise.resolve(artistMock),
       status: 200,
+      ok: true,
     }),
   ) as jest.Mock;
 
@@ -85,6 +87,7 @@ test('UserProfile User Fields', async () => {
     Promise.resolve({
       json: () => Promise.resolve(userMock),
       status: 200,
+      ok: true,
     }),
   ) as jest.Mock;
 
@@ -110,6 +113,7 @@ test('UserProfile Artist Fields', async () => {
     Promise.resolve({
       json: () => Promise.resolve(artistMock),
       status: 200,
+      ok: true,
     }),
   ) as jest.Mock;
 
@@ -171,35 +175,39 @@ test('UserProfile User load Playback history and his Playlists', async () => {
 
   global.fetch = jest.fn((url: string) => {
     if (
-      url === `${Global.backendBaseUrl}playlists/${playlistDTOMockFetch.name}`
+      url === `${Global.backendBaseUrl}/playlists/${playlistDTOMockFetch.name}`
     ) {
       return Promise.resolve({
         json: () => playlistDTOMockFetch,
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}playlists/`) {
+    if (url === `${Global.backendBaseUrl}/playlists/`) {
       return Promise.resolve({
         json: () => playlistDTOMockFetch,
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}users/${userMockFetch.name}`) {
+    if (url === `${Global.backendBaseUrl}/users/${userMockFetch.name}`) {
       return Promise.resolve({
         json: () => userMockFetch,
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}songs/metadata/${songName}`) {
+    if (url === `${Global.backendBaseUrl}/songs/metadata/${songName}`) {
       return Promise.resolve({
         json: () => songMockFetch,
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
@@ -279,47 +287,52 @@ test('UserProfile Artist load Songs and total streams', async () => {
 
   global.fetch = jest.fn((url: string) => {
     if (
-      url === `${Global.backendBaseUrl}playlists/${playlistDTOMockFetch.name}`
+      url === `${Global.backendBaseUrl}/playlists/${playlistDTOMockFetch.name}`
     ) {
       return Promise.resolve({
         json: () => playlistDTOMockFetch,
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}playlists/`) {
+    if (url === `${Global.backendBaseUrl}/playlists/`) {
       return Promise.resolve({
         json: () => playlistDTOMockFetch,
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}users/${artistMockFetch.name}`) {
+    if (url === `${Global.backendBaseUrl}/users/${artistMockFetch.name}`) {
       return Promise.resolve({
         json: () => artistMockFetch,
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}songs/metadata/${songName}`) {
+    if (url === `${Global.backendBaseUrl}/songs/metadata/${songName}`) {
       return Promise.resolve({
         json: () => songMockFetch,
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
     }
     if (
-      url === `${Global.backendBaseUrl}artists/${artistMockFetch.name}/streams`
+      url === `${Global.backendBaseUrl}/artists/${artistMockFetch.name}/streams`
     ) {
       return Promise.resolve({
         json: () => ({
           streams: songStreams,
         }),
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });

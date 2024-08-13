@@ -27,5 +27,8 @@
   },
   "editor.defaultFormatter": "rvest.vs-code-prettier-eslint",
   "editor.formatOnType": false,
-  "vs-code-prettier-eslint.prettierLast": false
+  "vs-code-prettier-eslint.prettierLast": false,
+  "[typescript]": {
+    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+  }
 }

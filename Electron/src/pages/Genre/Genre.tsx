@@ -1,13 +1,12 @@
-import { useEffect, useState } from 'react';
-import Global from 'global/global';
 import { useLocation } from 'react-router-dom';
-import genreColorsMap from 'utils/genre';
+import { genreColorsMapping } from 'utils/genre';
+import useFetchSongsByGenre from 'hooks/useFetchGetSongsbyGenre';
 import styles from './genre.module.css';
 import SongCard from '../../components/Cards/SongCard/SongCard';
 
 interface PropsGenre {
-  refreshSidebarData: Function;
-  changeSongName: Function;
+  refreshSidebarData: () => void;
+  changeSongName: (songName: string) => void;
 }
 
 export default function Genre({
@@ -20,60 +19,14 @@ export default function Genre({
     location.pathname.split('/').slice(-1)[0],
   );
 
-  type SongProps = {
-    name: string;
-    artist: string;
-    photo: string;
-    duration: string;
-    genre: string;
-    streams: string;
-  };
-
-  const [songs, setSongs] = useState<SongProps[]>();
-
-  const handleSongsFromGenre = () => {
-    const getSongsByGenreUrl = `${Global.backendBaseUrl}songs/genres/${genreName}`;
-
-    fetch(getSongsByGenreUrl, {
-      credentials: 'include',
-    })
-      .then((resGetSongsByGenreUrl) => {
-        return resGetSongsByGenreUrl.json();
-      })
-      .then((resGetSongsByGenreUrlJson) => {
-        const songsFromFetch: SongProps[] = [];
-        resGetSongsByGenreUrlJson.songs.forEach((song: any) => {
-          const songProp: SongProps = {
-            name: song.name,
-            artist: song.artist,
-            photo: song.photo,
-            duration: song.seconds_duration,
-            genre: song.genre,
-            streams: song.streams,
-          };
-
-          songsFromFetch.push(songProp);
-        });
-
-        setSongs(songsFromFetch);
-        return null;
-      })
-      .catch(() => {
-        console.log('Couldnt get Songs by Genre');
-      });
-  };
-
-  useEffect(() => {
-    handleSongsFromGenre();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const { songs } = useFetchSongsByGenre(genreName);
 
   return (
     <div className="d-flex flex-column container-fluid p-0">
       <div
         className={`d-flex align-items-end container-fluid ${styles.headerGenre}`}
         style={{
-          backgroundColor: `${genreColorsMap[genreName]}`,
+          backgroundColor: `${genreColorsMapping[genreName]}`,
           paddingTop: 'var(--pading-top-sticky-header)',
         }}
       >

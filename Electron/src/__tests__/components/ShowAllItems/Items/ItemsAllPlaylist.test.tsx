@@ -5,6 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import Global from 'global/global';
 import * as router from 'react-router';
 import ItemsAllPlaylists from 'components/ShowAllItems/Items/ItemsAllPlaylists';
+import getMockHeaders from 'utils/mockHeaders';
 
 const navigate = jest.fn();
 jest.spyOn(router, 'useNavigate').mockImplementation(() => navigate);
@@ -22,7 +23,7 @@ const playlistDTOMockFetch = {
 
 test('Render itemsAllPlaylist', async () => {
   global.fetch = jest.fn((url: string) => {
-    if (url === `${Global.backendBaseUrl}playlists/`) {
+    if (url === `${Global.backendBaseUrl}/playlists/`) {
       return Promise.resolve({
         json: () =>
           Promise.resolve({
@@ -38,6 +39,8 @@ test('Render itemsAllPlaylist', async () => {
             ],
           }),
         status: 200,
+        ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });

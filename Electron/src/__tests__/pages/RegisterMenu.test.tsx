@@ -91,6 +91,7 @@ test('Register failed different password inputs', () => {
     Promise.resolve({
       json: () => Promise.resolve({}),
       status: 200,
+      ok: true,
     }),
   ) as jest.Mock;
 
@@ -134,11 +135,12 @@ test('Register success', async () => {
   global.fetch = jest.fn((url: string) => {
     if (
       url ===
-      `${Global.backendBaseUrl}users/?name=testuser&photo=testphoto&password=testpassword`
+      `${Global.backendBaseUrl}/users/?name=testuser&photo=testphoto&password=testpassword`
     ) {
       return Promise.resolve({
         json: () => Promise.resolve({}),
         status: 201,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });

@@ -30,21 +30,23 @@ const playlistDTOMockFetch = {
 
 test('Render itemsAllPlaylistFromUser', async () => {
   global.fetch = jest.fn(async (url: string) => {
-    if (url === `${Global.backendBaseUrl}users/${artistMockFetch.name}`) {
+    if (url === `${Global.backendBaseUrl}/users/${artistMockFetch.name}`) {
       return Promise.resolve({
         json: () => artistMockFetch,
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}playlists/selected/${playlistName}`) {
+    if (url === `${Global.backendBaseUrl}/playlists/selected/${playlistName}`) {
       return Promise.resolve({
         json: () =>
           Promise.resolve({
             playlists: [playlistDTOMockFetch],
           }),
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });

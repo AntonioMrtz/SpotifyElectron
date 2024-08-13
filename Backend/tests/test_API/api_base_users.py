@@ -40,3 +40,7 @@ def whoami(token: str):
 
 def get_user_relevant_playlists(name: str, headers: dict[str, str]) -> Response:
     return client.get(f"/users/{name}/relevant_playlists", headers=headers)
+
+
+def get_user_playlist_names(name: str, headers: dict[str, str]) -> Response:
+    return client.get(f"/users/{name}/playlist_names", headers=headers)

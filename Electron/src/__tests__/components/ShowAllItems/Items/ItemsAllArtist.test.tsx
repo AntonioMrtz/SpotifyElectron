@@ -12,7 +12,7 @@ jest.spyOn(router, 'useNavigate').mockImplementation(() => navigate);
 
 test('Render ItemsAllArtist', async () => {
   global.fetch = jest.fn((url: string) => {
-    if (url === `${Global.backendBaseUrl}artists/`) {
+    if (url === `${Global.backendBaseUrl}/artists/`) {
       return Promise.resolve({
         json: () =>
           Promise.resolve({
@@ -29,6 +29,7 @@ test('Render ItemsAllArtist', async () => {
             ],
           }),
         status: 200,
+        ok: true,
       }).catch((error) => {
         console.log(error);
       });

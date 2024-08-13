@@ -3,10 +3,11 @@ name: Generate OpenAPI Schema and Frontend Client
 on:
   pull_request:
     branches:
-      - master
+      - closed
 
 jobs:
   generate-openapi-schema-generate-frontend-client:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     steps:

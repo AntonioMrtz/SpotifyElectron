@@ -21,20 +21,12 @@ export default function ItemsAllSongsFromArtist({
 
       const resFetchGetArtist = await fetch(fetchURLGetArtist, {});
       resFetchGetArtistJson = await resFetchGetArtist.json();
-      console.log(
-        '🚀 ~ loadSongsFromArtist ~ resFetchGetArtistJson:',
-        resFetchGetArtistJson,
-      );
     } catch (err) {
       console.log(`Unable to get artist data: ${err}`);
       return;
     }
 
     if (resFetchGetArtistJson.uploaded_songs) {
-      console.log(
-        '🚀 ~ loadSongsFromArtist ~ resFetchGetArtistJson:',
-        resFetchGetArtistJson,
-      );
       resFetchGetArtistJson.uploaded_songs.forEach((songName: string) => {
         songPromises.push(
           new Promise((resolve) => {

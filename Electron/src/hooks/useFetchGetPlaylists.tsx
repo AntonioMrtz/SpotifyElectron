@@ -16,8 +16,10 @@ const useFetchGetPlaylists = (refreshSidebarData: () => void) => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchPlaylists = async () => {
+    const fetchData = async () => {
       try {
+        setLoading(true);
+
         const data = await PlaylistsService.getPlaylistsPlaylistsGet();
 
         if (data.playlists) {
@@ -45,12 +47,13 @@ const useFetchGetPlaylists = (refreshSidebarData: () => void) => {
       } catch (err) {
         console.log(err);
         setError('Unable to get all playlists');
+        setPlaylists([]);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchPlaylists();
+    fetchData();
   }, [refreshSidebarData]);
 
   return { playlists, loading, error };

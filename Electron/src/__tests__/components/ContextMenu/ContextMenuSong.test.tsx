@@ -7,6 +7,7 @@ import UserType from 'utils/role';
 import Token from 'utils/token';
 import * as router from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
+import getMockHeaders from 'utils/mockHeaders';
 
 const playlistName = 'playlisttest';
 const songName = 'songName';
@@ -48,14 +49,7 @@ global.fetch = jest.fn((url: string, options: any) => {
       json: () => playlistDTOMockFetch,
       status: 200,
       ok: true,
-      headers: {
-        get: (header: any) => {
-          if (header.toLowerCase() === 'content-type') {
-            return 'application/json';
-          }
-          return null;
-        },
-      },
+      headers: getMockHeaders(),
     }).catch((error) => {
       console.log(error);
     });
@@ -68,14 +62,7 @@ global.fetch = jest.fn((url: string, options: any) => {
       json: () => [playlistName],
       status: 200,
       ok: true,
-      headers: {
-        get: (header: any) => {
-          if (header.toLowerCase() === 'content-type') {
-            return 'application/json';
-          }
-          return null;
-        },
-      },
+      headers: getMockHeaders(),
     }).catch((error) => {
       console.log(error);
     });

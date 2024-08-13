@@ -121,7 +121,6 @@ export default function PlayerStreaming({
 
       const resFetchSong = await fetch(
         `${Global.backendBaseUrl}/songs/${songName}`,
-        {},
       );
 
       const resFetchSongJson = await resFetchSong.json();

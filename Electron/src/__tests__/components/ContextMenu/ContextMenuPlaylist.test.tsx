@@ -7,6 +7,7 @@ import { BrowserRouter } from 'react-router-dom';
 import UserType from 'utils/role';
 import Token from 'utils/token';
 import * as router from 'react-router';
+import getMockHeaders from 'utils/mockHeaders';
 
 const playlistName = 'playlisttest';
 const songName = 'songName';
@@ -41,13 +42,13 @@ jest.spyOn(Token, 'getTokenRole').mockReturnValue(roleUser);
 
 global.fetch = jest.fn((url: string, options: any) => {
   if (
-    url === `${Global.backendBaseUrl}/playlists/${playlistDTOMockFetch.name}` &&
-    !options.method
+    url === `${Global.backendBaseUrl}/playlists/${playlistDTOMockFetch.name}`
   ) {
     return Promise.resolve({
       json: () => playlistDTOMockFetch,
       status: 200,
       ok: true,
+      headers: getMockHeaders(),
     }).catch((error) => {
       console.log(error);
     });
@@ -60,19 +61,11 @@ global.fetch = jest.fn((url: string, options: any) => {
       json: () => [playlistName],
       status: 200,
       ok: true,
-      headers: {
-        get: (header: any) => {
-          if (header.toLowerCase() === 'content-type') {
-            return 'application/json';
-          }
-          return null;
-        },
-      },
+      headers: getMockHeaders(),
     }).catch((error) => {
       console.log(error);
     });
   }
-
   if (options && options.method) {
     if (options.method === 'DELETE') {
       return Promise.resolve({
@@ -88,6 +81,7 @@ global.fetch = jest.fn((url: string, options: any) => {
         json: () => {},
         status: 204,
         ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });

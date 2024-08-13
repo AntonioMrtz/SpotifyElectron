@@ -120,7 +120,6 @@ export default function Player({
 
       const resFetchSong = await fetch(
         `${Global.backendBaseUrl}/songs/${songName}`,
-        {},
       );
 
       const resFetchSongJson = await resFetchSong.json();
@@ -129,7 +128,6 @@ export default function Player({
       handleUpdatePlaybackHistory();
       const resFetchSongDTO = await fetch(
         `${Global.backendBaseUrl}/songs/metadata/${songName}`,
-        {},
       );
 
       const username = Token.getTokenUsername();

@@ -13,10 +13,12 @@ interface SongProps {
 
 const useFetchSongsByGenre = (genreName: string) => {
   const [songs, setSongs] = useState<SongProps[]>();
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
         const data = await SongsService.getSongsByGenreSongsGenresGenreGet(
           getGenreFromString(genreName),
@@ -34,13 +36,16 @@ const useFetchSongsByGenre = (genreName: string) => {
       } catch (err) {
         console.log(err);
         setError(`Failed to get Songs by Genre ${genreName}`);
+        setSongs([]);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchData();
   }, [genreName]);
 
-  return { songs, error };
+  return { songs, loading, error };
 };
 
 export default useFetchSongsByGenre;

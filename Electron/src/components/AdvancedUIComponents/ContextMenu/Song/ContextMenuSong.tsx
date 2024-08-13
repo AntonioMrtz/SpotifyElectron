@@ -71,7 +71,6 @@ export default function ContextMenuSong({
     try {
       const playlistResponse = await fetch(
         `${Global.backendBaseUrl}/playlists/${selectedPlaylistName}`,
-        {},
       );
       const playlistData = await playlistResponse.json();
 
@@ -108,7 +107,6 @@ export default function ContextMenuSong({
     try {
       const playlistResponse = await fetch(
         `${Global.backendBaseUrl}/playlists/${playlistName}`,
-        {},
       );
       const playlistData = await playlistResponse.json();
 

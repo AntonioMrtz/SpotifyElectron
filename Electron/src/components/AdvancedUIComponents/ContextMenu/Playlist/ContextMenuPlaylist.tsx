@@ -180,7 +180,6 @@ export default function ContextMenuPlaylist({
 
       const dstResponse = await fetch(
         `${Global.backendBaseUrl}/playlists/${dstPlaylistName}`,
-        {},
       );
 
       const dstPlaylistData = await dstResponse.json();
@@ -191,7 +190,6 @@ export default function ContextMenuPlaylist({
 
       const srcResponse = await fetch(
         `${Global.backendBaseUrl}/playlists/${srcPlaylistName}`,
-        {},
       );
 
       const srcPlaylistData = await srcResponse.json();

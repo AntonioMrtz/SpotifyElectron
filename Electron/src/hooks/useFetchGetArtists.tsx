@@ -14,6 +14,7 @@ const useFetchGetArtists = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
         const data = await ArtistsService.getArtistsArtistsGet();
         if (data.artists) {
@@ -28,7 +29,8 @@ const useFetchGetArtists = () => {
         }
       } catch (err) {
         console.log(err);
-        setError('Failed to fetch artists');
+        setError('Failed to get artists');
+        setArtists([]);
       } finally {
         setLoading(false);
       }

@@ -7,7 +7,8 @@ const useFetchGetUserPlaylistNames = (username: string) => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchUserPlaylistNames = async () => {
+    const fetchData = async () => {
+      setLoading(true);
       try {
         const data =
           await UsersService.getUserPlaylistsNamesUsersNamePlaylistNamesGet(
@@ -23,7 +24,7 @@ const useFetchGetUserPlaylistNames = (username: string) => {
         setLoading(false);
       }
     };
-    fetchUserPlaylistNames();
+    fetchData();
   }, [username]);
 
   return { playlistNames, loading, error };

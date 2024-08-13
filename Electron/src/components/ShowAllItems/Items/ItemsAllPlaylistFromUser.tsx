@@ -17,10 +17,7 @@ export default function ItemsAllPlaylistsFromUser({
     try {
       const fetchUrlPlaylistFromUser = `${Global.backendBaseUrl}/users/${userName}`;
 
-      const resFetchUrlPlaylistFromUser = await fetch(
-        fetchUrlPlaylistFromUser,
-        {},
-      );
+      const resFetchUrlPlaylistFromUser = await fetch(fetchUrlPlaylistFromUser);
       const resFetchUrlPlaylistFromUserJson =
         await resFetchUrlPlaylistFromUser.json();
 

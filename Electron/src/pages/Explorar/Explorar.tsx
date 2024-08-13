@@ -1,13 +1,11 @@
-import { useEffect, useState, ChangeEvent, useCallback } from 'react';
-import Global from 'global/global';
+import { useState, ChangeEvent } from 'react';
 import { genreColorsMapping } from 'utils/genre';
-import SongCard, { PropsSongCard } from 'components/Cards/SongCard/SongCard';
-import { PropsPlaylistCard } from 'components/Cards/PlaylistCard/types/propsPlaylistCard';
-import { PropsUserCard } from 'components/Cards/UserCard/types/propsUserCard';
-import { PropsArtistCard } from 'components/Cards/ArtistCard/types/propsArtistCard';
+import SongCard from 'components/Cards/SongCard/SongCard';
 import PlaylistCard from 'components/Cards/PlaylistCard/PlaylistCard';
 import ArtistCard from 'components/Cards/ArtistCard/ArtistCard';
 import UserCard from 'components/Cards/UserCard/UserCard';
+import useFetchSearchItemsByName from 'hooks/useFetchSearchItemsByName';
+import useFetchGetGenres from '../../hooks/useFetchGetGenres';
 import styles from './explorar.module.css';
 import GenreCard from '../../components/Cards/GenreCard/GenreCard';
 
@@ -22,136 +20,16 @@ export default function Explorar({
 }: PropsExplorar) {
   const [filterName, setFilterName] = useState('');
 
-  const [filteredSongs, setFilteredSongs] = useState<PropsSongCard[]>([]);
-  const [filteredPlaylists, setFilteredPlaylists] = useState<
-    PropsPlaylistCard[]
-  >([]);
-  const [filteredUsers, setFilteredUsers] = useState<PropsUserCard[]>([]);
-  const [filteredArtists, setFilteredArtists] = useState<PropsArtistCard[]>([]);
-
-  const fetchFilteredItemsByName = useCallback(
-    async (filterNameInput: string) => {
-      if (filterNameInput === '') {
-        return;
-      }
-      try {
-        const fetchUrlFilterItemsByName = `${Global.backendBaseUrl}/search/?name=${filterNameInput}`;
-        const resFetchUrlFilterItemsByName = await fetch(
-          fetchUrlFilterItemsByName,
-          {},
-        );
-        const resFetchUrlFilterItemsByNameJson =
-          await resFetchUrlFilterItemsByName.json();
-
-        if (resFetchUrlFilterItemsByNameJson.songs) {
-          const fetchedSongs: PropsSongCard[] = [];
-
-          resFetchUrlFilterItemsByNameJson.songs
-            .slice(0, 4)
-            .forEach((song: any) => {
-              fetchedSongs.push({
-                name: song.name,
-                artist: song.artist,
-                photo: song.photo,
-                refreshSidebarData,
-                changeSongName,
-              });
-            });
-
-          setFilteredSongs(fetchedSongs);
-        }
-
-        if (resFetchUrlFilterItemsByNameJson.playlists) {
-          const fetchedPlaylists: PropsPlaylistCard[] = [];
-
-          resFetchUrlFilterItemsByNameJson.playlists
-            .slice(0, 4)
-            .forEach((playlist: any) => {
-              fetchedPlaylists.push({
-                name: playlist.name,
-                photo: playlist.photo,
-                description: playlist.description,
-                owner: playlist.owner,
-                refreshSidebarData,
-              });
-            });
-
-          setFilteredPlaylists(fetchedPlaylists);
-        }
-
-        if (resFetchUrlFilterItemsByNameJson.artists) {
-          const fetchedArtists: PropsArtistCard[] = [];
-
-          resFetchUrlFilterItemsByNameJson.artists
-            .slice(0, 4)
-            .forEach((artist: any) => {
-              fetchedArtists.push({
-                name: artist.name,
-                photo: artist.photo,
-              });
-            });
-
-          setFilteredArtists(fetchedArtists);
-        }
-
-        if (resFetchUrlFilterItemsByNameJson.users) {
-          const fetchedUsers: PropsUserCard[] = [];
-
-          resFetchUrlFilterItemsByNameJson.users
-            .slice(0, 4)
-            .forEach((user: any) => {
-              fetchedUsers.push({
-                name: user.name,
-                photo: user.photo,
-              });
-            });
-
-          setFilteredUsers(fetchedUsers);
-        }
-      } catch (error) {
-        console.log(`Unable to get filtered items | ${error}`);
-      }
-    },
-    [changeSongName, refreshSidebarData],
-  );
-
-  useEffect(() => {
-    // Use a timeout to debounce the fetchData call
-    const debounceTimeout = setTimeout(() => {
-      if (filterName !== '') {
-        fetchFilteredItemsByName(filterName);
-      }
-    }, 300); // Adjust the debounce time as needed (e.g., 300 milliseconds)
-
-    // Clear the timeout if the component unmounts or if the query changes before the timeout completes
-    return () => clearTimeout(debounceTimeout);
-  }, [fetchFilteredItemsByName, filterName]);
+  const { filteredPlaylists, filteredArtists, filteredSongs, filteredUsers } =
+    useFetchSearchItemsByName(filterName, refreshSidebarData, changeSongName);
 
   const handleChangeSearchBar = (event: ChangeEvent<HTMLInputElement>) => {
-    fetchFilteredItemsByName(event.target.value?.trim());
     setFilterName(event.target.value?.trim());
   };
 
   /* Genres */
 
-  const [genres, setGenres] = useState<{}>();
-
-  const getGenres = async () => {
-    try {
-      const fetchGetGenresResponse = await fetch(
-        encodeURI(`${Global.backendBaseUrl}/genres/`),
-        {},
-      );
-      const GenresJson = await fetchGetGenresResponse.json();
-      setGenres(GenresJson);
-    } catch (error) {
-      console.log('Cannot get genres');
-      setGenres([]);
-    }
-  };
-  useEffect(() => {
-    getGenres();
-  }, []);
+  const { genres } = useFetchGetGenres();
 
   return (
     <div className={`container-fluid d-flex flex-column ${styles.principal}`}>

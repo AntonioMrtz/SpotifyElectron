@@ -1,9 +1,10 @@
 import '@testing-library/jest-dom';
-import { act, fireEvent, render } from '@testing-library/react';
+import { act, fireEvent, render, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import Explorar from 'pages/Explorar/Explorar';
 import { BrowserRouter } from 'react-router-dom';
 import Global from 'global/global';
+import getMockHeaders from 'utils/mockHeaders';
 
 const playlistName = 'playlisttest';
 const songName = 'songName';
@@ -55,6 +56,7 @@ global.fetch = jest.fn((url: string) => {
       json: () => Promise.resolve({ ROCK: 'Rock', POP: 'Pop' }),
       status: 200,
       ok: true,
+      headers: getMockHeaders(),
     });
   }
   if (url === `${Global.backendBaseUrl}/search/?name=${'prueba'}`) {
@@ -68,6 +70,7 @@ global.fetch = jest.fn((url: string) => {
         }),
       status: 200,
       ok: true,
+      headers: getMockHeaders(),
     }).catch((error) => {
       console.log(error);
     });
@@ -101,8 +104,10 @@ test('Explorar filter by name', async () => {
     fireEvent.change(inputSearchBar, { target: { value: 'prueba' } });
   });
 
-  expect(component.getByText(playlistName)).toBeInTheDocument();
-  expect(component.getByText(songName)).toBeInTheDocument();
-  expect(component.getByText(userName)).toBeInTheDocument();
-  expect(component.getByText(artistName)).toBeInTheDocument();
+  await waitFor(() => {
+    expect(component.getByText(playlistName)).toBeInTheDocument();
+    expect(component.getByText(songName)).toBeInTheDocument();
+    expect(component.getByText(userName)).toBeInTheDocument();
+    expect(component.getByText(artistName)).toBeInTheDocument();
+  });
 });

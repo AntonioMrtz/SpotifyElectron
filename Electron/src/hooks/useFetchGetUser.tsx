@@ -12,10 +12,13 @@ interface SongProps {
 
 const useFetchGetUser = (username: string) => {
   const [user, setUser] = useState<SongProps | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchUser = async () => {
+    const fetchData = async () => {
+      setLoading(true);
       try {
         const data = await UsersService.getUserUsersNameGet(username);
         const mappedUser: SongProps = {
@@ -31,13 +34,16 @@ const useFetchGetUser = (username: string) => {
       } catch (err) {
         console.log(err);
         setError(`Failed to get User ${username}`);
+        setUser(null);
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchUser();
+    fetchData();
   }, [username]);
 
-  return { user, error };
+  return { user, loading, error };
 };
 
 export default useFetchGetUser;

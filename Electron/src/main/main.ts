@@ -107,29 +107,6 @@ const createWindow = async () => {
     if (!mainWindow) {
       throw new Error('"mainWindow" is not defined');
     }
-    const ses = mainWindow.webContents.session;
-
-    // Interceptamos las solicitudes web
-    ses.webRequest.onBeforeSendHeaders(async (details, callback) => {
-      // Add credentials to all requests
-      try {
-        const cookies = await ses.cookies.get({});
-
-        const filteredJwtTokens = cookies.filter((cookie) => {
-          return cookie.name === 'jwt';
-        });
-
-        if (filteredJwtTokens && filteredJwtTokens[0]) {
-          details.requestHeaders.Authorization =
-            filteredJwtTokens[filteredJwtTokens.length - 1].value;
-        }
-
-        callback({ cancel: false, requestHeaders: details.requestHeaders });
-      } catch (error) {
-        console.error('Error getting cookies:', error);
-        callback({ cancel: false, requestHeaders: details.requestHeaders });
-      }
-    });
 
     if (process.env.START_MINIMIZED) {
       mainWindow.minimize();

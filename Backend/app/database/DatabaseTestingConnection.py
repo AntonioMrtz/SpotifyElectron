@@ -15,7 +15,7 @@ class DatabaseTestingConnection(BaseDatabaseConnection):
         """Get mock Mongo client class
 
         Returns:
-            Any: the mock Mongo client class
+            MongoClientMock: the mock Mongo client class
         """
         enable_gridfs_integration()
         return MongoClientMock

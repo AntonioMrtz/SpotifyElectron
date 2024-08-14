@@ -31,6 +31,8 @@ class DatabaseCollection(StrEnum):
 
 
 def __is_connection__init__(func: Callable):  # noqa: ANN202
+    """Check database connection is initialized"""
+
     @wraps(func)
     def wrapper(*args, **kwargs):  # noqa: ANN202
         if BaseDatabaseConnection.connection is not None:

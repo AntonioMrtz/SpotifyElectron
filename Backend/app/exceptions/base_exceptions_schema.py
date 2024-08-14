@@ -22,7 +22,7 @@ class BadParameterException(SpotifyElectronException):
         self._set_parameter_name(parameter_name)
         super().__init__(self.error)
 
-    def _set_parameter_name(self, item_name: str):
+    def _set_parameter_name(self, item_name: str) -> None:
         self.error = f"Bad parameter: {item_name}"
 
 

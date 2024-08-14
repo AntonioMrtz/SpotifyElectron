@@ -2,6 +2,7 @@
 
 import sys
 from abc import abstractmethod
+from collections.abc import Callable
 from enum import StrEnum
 from functools import wraps
 from typing import Any
@@ -29,9 +30,9 @@ class DatabaseCollection(StrEnum):
     SONG_BLOB_DATA = "songs"
 
 
-def __is_connection__init__(func):
+def __is_connection__init__(func: Callable):  # noqa: ANN202
     @wraps(func)
-    def wrapper(*args, **kwargs):
+    def wrapper(*args, **kwargs):  # noqa: ANN202
         if BaseDatabaseConnection.connection is not None:
             return func(*args, **kwargs)
 
@@ -63,8 +64,13 @@ class BaseDatabaseConnection:
             self._handle_database_connection_error(exception)
 
     @__is_connection__init__
-    def _ping_database_connection(self):
-        """Pings database connection"""
+    def _ping_database_connection(self) -> None:
+        """Pings database connection
+
+        Raises:
+            DatabasePingFailed: if the ping failed
+            UnexpectedDatabasePingFailed: unexpected exception while pinging database
+        """
         try:
             ping_result = BaseDatabaseConnection.connection.command("ping")  # type: ignore
             self._check_ping_result(ping_result)
@@ -127,7 +133,7 @@ class BaseDatabaseConnection:
         self._logger.critical(f"Error establishing connection with database: {error}")
         sys.exit("Database connection failed, stopping server")
 
-    def _check_ping_result(self, ping_result: dict[str, Any]):
+    def _check_ping_result(self, ping_result: dict[str, Any]) -> None:
         """Checks if ping result is OK
 
         Args:

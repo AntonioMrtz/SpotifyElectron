@@ -20,7 +20,12 @@ extend-select = [
     "D104",
     "D300",
     "D419",
-    "E"
+    "ANN001",
+    "ANN201",
+    "ANN202",
+    "ANN205",
+    "E",
+
 ]
 
 ignore = ["PLR0402","PLR0911"]
@@ -29,6 +34,10 @@ ignore = ["PLR0402","PLR0911"]
 "tests/**/*.py" = [
     "D100", # Ignore missing docstrings for public modules
     "D103", # Ignore missing docstrings for public functions
+    "ANN001", # Ignore missing type annotation for methods
+    "ANN201", # Ignore missing return type annotation for public function
+    "ANN202", # Ignore missing return type annotation for private function
+    "ANN205", # Ignore missing return type annotation for static function
 ]
 
 [lint.pydocstyle]

@@ -33,7 +33,7 @@ from app.spotify_electron.utils.date.date_utils import get_current_iso8601_date
 artist_service_logger = SpotifyElectronLogger(LOGGING_ARTIST_SERVICE).getLogger()
 
 
-def add_song_artist(artist_name: str, song_name: str):
+def add_song_artist(artist_name: str, song_name: str) -> None:
     """Add song to artist
 
     Args:
@@ -76,7 +76,7 @@ def add_song_artist(artist_name: str, song_name: str):
         raise UserServiceException from exception
 
 
-def delete_song_from_artist(artist_name: str, song_name: str):
+def delete_song_from_artist(artist_name: str, song_name: str) -> None:
     """Remove song from artist
 
     Args:

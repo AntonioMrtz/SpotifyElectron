@@ -76,7 +76,7 @@ class SpotifyElectronLogger:
         self._manage_file_handler()
         self._manage_console_handler()
 
-    def _manage_file_handler(self):
+    def _manage_file_handler(self) -> None:
         """Adds logging handler depending if log file has been provided or not"""
         if not self.log_properties_manager.is_log_file_provided():
             return
@@ -87,14 +87,14 @@ class SpotifyElectronLogger:
         )
         self._add_handler(file_log_handler)
 
-    def _manage_console_handler(self):
+    def _manage_console_handler(self) -> None:
         """Adds logging console handler"""
         stream_handler = logging.StreamHandler(sys.stdout)
         self._add_handler(stream_handler)
 
     def _add_handler(
         self, handler: logging.StreamHandler | logging.handlers.RotatingFileHandler
-    ):
+    ) -> None:
         """Add handler to logger
 
         Args:

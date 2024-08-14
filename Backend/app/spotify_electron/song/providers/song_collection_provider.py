@@ -34,8 +34,9 @@ def get_song_collection() -> Collection:
 def get_gridfs_song_collection() -> GridFS:
     """Get gridfs collection for managing song files
 
-    :return GridFS: the gridfs song collection
+    Returns:
+        GridFS: the gridfs song collection
     """
     return DatabaseConnection.connection_instance.get_gridfs_collection_connection(
         DatabaseCollection.SONG_BLOB_DATA
-    )
+    )  # type: ignore

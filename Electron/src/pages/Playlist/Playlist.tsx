@@ -2,7 +2,6 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { ChangeEvent, FormEvent, useEffect, useState, MouseEvent } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import Global from 'global/global';
 import Token from 'utils/token';
 import { PropsSongs } from 'components/Sidebar/types/propsSongs.module';
 import { FastAverageColor } from 'fast-average-color';
@@ -16,6 +15,7 @@ import Song from '../../components/Song/Song';
 import styles from './playlist.module.css';
 import { UsersService } from '../../swagger/api/services/UsersService';
 import { PlaylistsService } from '../../swagger/api/services/PlaylistsService';
+import { SongsService } from '../../swagger/api/services/SongsService';
 
 interface PropsPlaylist {
   changeSongName: (songName: string) => void;
@@ -209,14 +209,13 @@ export default function Playlist({
         setNumberSongs(playlistData.song_names.length);
         const songPromises: Promise<any>[] = [];
 
+        // TODO reduce complexity or refactor
+
         playlistData.song_names.reverse().forEach((songName: string) => {
           songPromises.push(
             new Promise((resolve) => {
-              fetch(`${Global.backendBaseUrl}/songs/metadata/${songName}`, {})
-                .then((resFetchSongDTO) => {
-                  return resFetchSongDTO.json();
-                })
-                .then((resFetchSongDTOJson) => {
+              SongsService.getSongMetadataSongsMetadataNameGet(songName)
+                .then((songData) => {
                   const propsSong: PropsSongs = {
                     name: songName,
                     playlistName,
@@ -228,9 +227,9 @@ export default function Playlist({
                     refreshPlaylistData: loadPlaylistData,
                     refreshSidebarData,
                   };
-                  propsSong.artistName = resFetchSongDTOJson.artist;
-                  propsSong.duration = resFetchSongDTOJson.seconds_duration;
-                  propsSong.streams = resFetchSongDTOJson.streams;
+                  propsSong.artistName = songData.artist;
+                  propsSong.duration = songData.seconds_duration;
+                  propsSong.streams = songData.streams;
 
                   resolve(propsSong);
                   return propsSong;

@@ -139,7 +139,7 @@ export default function AddSongPlayListAccordion({
         MessagesInfoPopOver.SONG_ADDED_DESCRIPTION,
       );
     } catch (err) {
-      console.error('Error creating song:', err);
+      console.log('Error creating song:', err);
       handleShowConfirmationModal(
         InfoPopoverType.ERROR,
         MessagesInfoPopOver.SONG_NOT_ADDED_TITLE,
@@ -202,7 +202,7 @@ export default function AddSongPlayListAccordion({
       );
       refreshSidebarData();
     } catch (err) {
-      console.error('Error creating playlist: ', err);
+      console.log('Error creating playlist: ', err);
       handleShowConfirmationModal(
         InfoPopoverType.ERROR,
         MessagesInfoPopOver.PLAYLIST_NOT_ADDED_TITLE,

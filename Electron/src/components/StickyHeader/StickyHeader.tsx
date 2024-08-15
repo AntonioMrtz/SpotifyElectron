@@ -78,7 +78,7 @@ export default function StickyHeader({ handleLogout }: PropsStickyHeader) {
       };
       setArrowState(responseObj);
     } catch (error) {
-      console.error('Error handling URL change:', error);
+      console.log('Error handling URL change:', error);
     }
   };
 

@@ -17,7 +17,9 @@ class AppInfo:
     CONTACT_EMAIL = "antoniomartinezfernandez17@gmail.com"
     LICENSE_INFO_NAME = "Attribution-NonCommercial-ShareAlike 4.0 International"
     LICENSE_INFO_URL = "https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es"
-    SERVER = [{"url": "http://127.0.0.1:8000"}]
+    SERVER = [
+        {"url": "http://127.0.0.1:8000"}
+    ]  # may cause CORS on local development when using swagger
 
 
 class AppConfig:

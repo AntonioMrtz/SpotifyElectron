@@ -14,11 +14,6 @@
     },
     "version": "1.0.0"
   },
-  "servers": [
-    {
-      "url": "http://127.0.0.1:8000"
-    }
-  ],
   "paths": {
     "/playlists/{name}": {
       "get": {

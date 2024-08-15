@@ -76,7 +76,6 @@ app = FastAPI(
         "name": AppInfo.LICENSE_INFO_NAME,
         "url": AppInfo.LICENSE_INFO_URL,
     },
-    servers=AppInfo.SERVER,
     lifespan=lifespan_handler,
 )
 

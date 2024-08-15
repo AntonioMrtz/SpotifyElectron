@@ -299,12 +299,12 @@ export default function Playlist({
         fetchUrlUpdateSong = `${url}?photo=${photo}&description=${formData.description}`;
       }
 
-      const requestOptions = {
+      const requestOptions: RequestInit = {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          credentials: 'include',
         },
+        credentials: 'include',
         body: JSON.stringify(newSongsPutPlaylist),
       };
 

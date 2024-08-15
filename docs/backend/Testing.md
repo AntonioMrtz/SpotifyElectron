@@ -32,13 +32,13 @@ python -m pytest tests/ --cov=app/ --cov-report=html
 ```
 _If your browser is in a sandbox enviroment use `python -m http.server [port]` inside `htmlcov/` folder to serve an HTTP Server._
 
-_Its also possible to run tests using the vscode launch script **[Run tests - Pytest]**._
+_it's also possible to run tests using the vscode launch script **[Run tests - Pytest]**._
 
 ## 👷‍♂️ Develop tests
 
 ### Testing framework
 
-We're using **Pytest**. Its easier, has less boilerplate than UnitTest and matches our
+We're using **Pytest**. It's easier, has less boilerplate than UnitTest and matches our
 functions over classes develop approach for the project.
 
 ### Recommendations

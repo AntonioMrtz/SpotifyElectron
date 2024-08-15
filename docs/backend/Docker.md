@@ -5,7 +5,7 @@ Docker is used primarily in the project for:
 - **Easing development** automating the set up process for infrastructure like databases and other utilities. The aim was to give a simple script so the developers can focus on getting the work done and to trying to deploy the project or messing installing and configuring different services.
 - **Easing the production development**. When it comes to deploying the app into production is handy to have a script that allows the app to run in every system containerized with a single command. When deploying multiple instances of the backend the deployment time will be cut significantly.
 
-Its recommended to have [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed but only having docker will work.
+it's recommended to have [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed but only having docker will work.
 
 ## Stacks
 
@@ -33,7 +33,7 @@ Run this command to build and up the development containers:
 
 ### Production
 
-This stack only contains backend server and its aimed to fast deployment into production of the service. Its recommended to use a remote database for production mode.
+This stack only contains backend server and it's aimed to fast deployment into production of the service. it's recommended to use a remote database for production mode.
 
 Run the stack with:
 

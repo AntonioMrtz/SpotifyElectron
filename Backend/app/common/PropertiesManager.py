@@ -61,7 +61,7 @@ class _PropertiesManager:
 
     def _set_attributes(self, config_section: str) -> None:
         """Sets app atributes from .ini file into class attributes,\
-            if value its empty string it will load None
+            if value it's empty string it will load None
 
         Args:
         ----
@@ -119,7 +119,7 @@ class _PropertiesManager:
 
         Returns
         -------
-            bool: Returns if its production enviroment
+            bool: Returns if it's production enviroment
 
         """
         return (
@@ -131,7 +131,7 @@ class _PropertiesManager:
 
         Returns
         -------
-            bool: Returns if its development enviroment
+            bool: Returns if it's development enviroment
 
         """
         return (
@@ -143,7 +143,7 @@ class _PropertiesManager:
 
         Returns
         -------
-            bool: Returns if its testing enviroment
+            bool: Returns if it's testing enviroment
 
         """
         return (
@@ -151,11 +151,11 @@ class _PropertiesManager:
         )
 
     def is_log_file_provided(self) -> bool:
-        """Checks if theres a valid log file provided
+        """Checks if there's a valid log file provided
 
         Returns
         -------
-            bool: Returns if theres a valid log provided
+            bool: Returns if there's a valid log provided
 
         """
         return self.__getattribute__(AppConfig.LOG_INI_FILE) is not None

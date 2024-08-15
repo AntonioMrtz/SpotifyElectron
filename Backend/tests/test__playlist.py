@@ -190,7 +190,7 @@ def test_update_playlist_correct():
     assert res_delete_artist.status_code == HTTP_202_ACCEPTED
 
 
-@pytest.skip("mongomock don't support the operator playlists.$")
+@pytest.mark.skip(reason="mongomock don't support the operator playlists.$")
 def test_update_playlist_correct_new_name():
     name = "8232392323623823723"
     photo = "photo"

@@ -41,7 +41,7 @@ class LogPropertiesManager:
         self._set_attributes(config_section)
 
     def _set_attributes(self, config_section: str) -> None:
-        """Sets app atributes from .ini file into class attributes, if value its empty\
+        """Sets app atributes from .ini file into class attributes, if value it's empty\
             string it will load None
 
         Args:
@@ -55,11 +55,11 @@ class LogPropertiesManager:
             setattr(self, key, value)
 
     def is_log_file_provided(self) -> bool:
-        """Checks if theres a valid log file provided
+        """Checks if there's a valid log file provided
 
         Returns
         -------
-            bool: Returns if theres a valid log provided
+            bool: Returns if there's a valid log provided
 
         """
         return self.__getattribute__(AppConfig.LOG_INI_FILE) is not None

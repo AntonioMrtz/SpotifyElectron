@@ -179,7 +179,7 @@ test('AddSongPlaylistAccordion submit song correct', async () => {
   );
   const selectGenreOption = component.getByText('❗ Elige un género');
 
-  // Find the file input element by its name or other suitable selector
+  // Find the file input element by it's name or other suitable selector
   const fileInputElement = component.getByTestId('sidebar-file-input');
 
   // Create a sample file

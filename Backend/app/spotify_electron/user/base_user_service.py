@@ -412,7 +412,7 @@ def delete_playlist_from_owner(playlist_name: str) -> None:
 
 
 def update_playlist_name(old_playlist_name: str, new_playlist_name: str) -> None:
-    """Update playlist name on users that have it saved, liked or its the owner
+    """Update playlist name on users that have it saved, liked or it's the owner
 
     Args:
         old_playlist_name (str): old name

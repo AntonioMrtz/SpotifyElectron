@@ -39,7 +39,7 @@ class JWTBearer(HTTPBearer):
         """
         # TODO Receiving b'"bearer eyJhbGciOiJIUzI"' from frontend
         # instead of b'bearer eyJhbGciOiJIUzI'
-        # replacing " with white space for all headers can be deleted if its solved
+        # replacing " with white space for all headers can be deleted if it's solved
         if len(request.cookies) == 0 or not request.cookies.get(JWT_COOKIE_HEADER_FIELD_NAME):
             jwt_bearer_logger.warning(
                 f"Request with no cookies {request}, getting JWT from Authentication Header"

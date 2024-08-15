@@ -22,7 +22,11 @@ Me gustaría expresar mi más sincero agradecimiento a las siguientes personas p
 
 ## Translators
 
+- [ariceron5](https://github.com/ariceron5)
+
 ## Documentation Contributors
+
+- [ariceron5](https://github.com/ariceron5)
 
 ## Other Contributions
 

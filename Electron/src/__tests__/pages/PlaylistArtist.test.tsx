@@ -6,6 +6,7 @@ import Playlist from 'pages/Playlist/Playlist';
 import Token from 'utils/token';
 import Global from 'global/global';
 import UserType from 'utils/role';
+import getMockHeaders from 'utils/mockHeaders';
 
 const userName = 'prueba';
 const roleArtist = UserType.ARTIST;
@@ -54,6 +55,7 @@ test('Playlist artist role get all info', async () => {
         json: () => playlistDTOMockFetch,
         status: 200,
         ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });
@@ -63,6 +65,7 @@ test('Playlist artist role get all info', async () => {
         json: () => artistMockFetch,
         status: 200,
         ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });
@@ -72,6 +75,7 @@ test('Playlist artist role get all info', async () => {
         json: () => songMockFetch,
         status: 200,
         ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });

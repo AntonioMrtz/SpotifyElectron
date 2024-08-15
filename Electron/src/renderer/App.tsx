@@ -28,8 +28,11 @@ function App() {
   const [refreshSidebarTriggerValue, setRefreshSidebarTriggerValue] =
     useState(false);
   // changes the flag value to its opposite so the component triggers a reload
+  // wait until backend has data updated, fast requests after update can trigger 404 on backend (Ej: playlist update - sidebar - playlist)
   const refreshSidebarData = () => {
-    setRefreshSidebarTriggerValue((state) => !state);
+    setTimeout(() => {
+      setRefreshSidebarTriggerValue((state) => !state);
+    }, 500);
   };
 
   /* Handle change song name */

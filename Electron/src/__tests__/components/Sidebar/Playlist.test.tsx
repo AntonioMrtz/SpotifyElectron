@@ -6,6 +6,7 @@ import Global from 'global/global';
 import Token from 'utils/token';
 import UserType from 'utils/role';
 import Playlist from 'components/Sidebar/Playlist/Playlist';
+import getMockHeaders from 'utils/mockHeaders';
 
 const playlistName = 'playlisttest';
 const songName = 'songName';
@@ -68,6 +69,7 @@ test('Sidebar Playlist handle open context menu', async () => {
         json: () => artistMockFetch,
         status: 200,
         ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });
@@ -80,6 +82,7 @@ test('Sidebar Playlist handle open context menu', async () => {
           }),
         status: 200,
         ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });
@@ -125,6 +128,7 @@ test('Sidebar Playlist left-click', async () => {
         json: () => artistMockFetch,
         status: 200,
         ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });
@@ -137,6 +141,7 @@ test('Sidebar Playlist left-click', async () => {
           }),
         status: 200,
         ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });

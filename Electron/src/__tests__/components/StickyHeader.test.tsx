@@ -6,6 +6,7 @@ import StickyHeader from 'components/StickyHeader/StickyHeader';
 import Token from 'utils/token';
 import UserType from 'utils/role';
 import Global from 'global/global';
+import getMockHeaders from 'utils/mockHeaders';
 
 const userName = 'prueba';
 const roleUser = UserType.USER;
@@ -29,6 +30,7 @@ global.fetch = jest.fn((url: string) => {
       json: () => userMockFetch,
       status: 200,
       ok: true,
+      headers: getMockHeaders(),
     }).catch((error) => {
       console.log(error);
     });

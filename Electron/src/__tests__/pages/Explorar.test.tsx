@@ -59,7 +59,7 @@ global.fetch = jest.fn((url: string) => {
       headers: getMockHeaders(),
     });
   }
-  if (url === `${Global.backendBaseUrl}/search/?name=${'prueba'}`) {
+  if (url === `${Global.backendBaseUrl}/search/?name=prueba`) {
     return Promise.resolve({
       json: () =>
         Promise.resolve({

@@ -1,5 +1,4 @@
 import { ChangeEvent, useState, MouseEvent } from 'react';
-import Global from 'global/global';
 import { InfoPopoverType } from 'components/AdvancedUIComponents/InfoPopOver/types/InfoPopover';
 import InfoPopover from 'components/AdvancedUIComponents/InfoPopOver/InfoPopover';
 // eslint-disable-next-line camelcase
@@ -42,32 +41,14 @@ export default function StartMenu({
       if (!formData.nombre || !formData.password) {
         throw new Error('Unable to login');
       }
-
-      const fetchParameters = new URLSearchParams();
-      fetchParameters.append('username', formData.nombre);
-      fetchParameters.append('password', formData.password);
-
-      const requestOptions: RequestInit = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-
-        body: fetchParameters.toString(),
-      };
-
-      const fetchUrlLogin = `${Global.backendBaseUrl}/login/`;
-      const resFetchUrlLogin = await fetch(fetchUrlLogin, requestOptions);
-      const resFetchUrlLoginJson = await resFetchUrlLogin.json();
-
       // eslint-disable-next-line camelcase
       const loginData: Body_login_usuario_login__post = {
         username: formData.nombre,
         password: formData.password,
       };
 
-      await LoginService.loginUsuarioLoginPost(loginData);
-      localStorage.setItem('jwt', resFetchUrlLoginJson);
+      const loginResponse = await LoginService.loginUsuarioLoginPost(loginData);
+      localStorage.setItem('jwt', loginResponse);
       setIsLogged(true);
     } catch {
       setIsLogged(false);

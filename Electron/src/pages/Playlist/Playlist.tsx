@@ -14,6 +14,8 @@ import { secondsToHoursAndMinutesFormatted } from 'utils/date';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 import Song from '../../components/Song/Song';
 import styles from './playlist.module.css';
+import { UsersService } from '../../swagger/api/services/UsersService';
+import { PlaylistsService } from '../../swagger/api/services/PlaylistsService';
 
 interface PropsPlaylist {
   changeSongName: (songName: string) => void;
@@ -75,19 +77,15 @@ export default function Playlist({
   const loadPlaylistLikedStatus = async () => {
     const username = Token.getTokenUsername();
 
-    let resFetchGetUserJson;
-
     try {
-      const fetchGetUser = `${Global.backendBaseUrl}/users/${username}`;
+      // TODO simplify query to obtain the result directly
 
-      const resFetchGetUser = await fetch(fetchGetUser, {});
-      if (resFetchGetUser.status === 200)
-        resFetchGetUserJson = await resFetchGetUser.json();
+      const userData = await UsersService.getUserUsersNameGet(username);
 
       if (
-        resFetchGetUserJson &&
-        resFetchGetUserJson.saved_playlists &&
-        resFetchGetUserJson.saved_playlists.includes(playlistName)
+        userData &&
+        userData.saved_playlists &&
+        userData.saved_playlists.includes(playlistName)
       ) {
         setHearthLikedInterface();
       } else {
@@ -98,37 +96,35 @@ export default function Playlist({
     }
   };
 
-  const handleLike = (): void => {
+  const handleLike = async () => {
     const username = Token.getTokenUsername();
 
     if (liked === false) {
-      const fetchPatchSavedPlaylistUrl = `${Global.backendBaseUrl}/users/${username}/saved_playlists?playlist_name=${playlistName}`;
-
-      const requestOptionsPatchSavedPlaylistUr: RequestInit = {
-        method: 'PATCH',
-      };
-
-      fetch(fetchPatchSavedPlaylistUrl, requestOptionsPatchSavedPlaylistUr)
-        .then(() => {
-          setHearthLikedInterface();
-          refreshSidebarData();
-          return null;
-        })
-        .catch(() => console.log('Unable to update saved playlists'));
+      try {
+        await UsersService.patchSavedPlaylistsUsersNameSavedPlaylistsPatch(
+          username,
+          playlistName,
+        );
+        setHearthLikedInterface();
+        refreshSidebarData();
+      } catch (err) {
+        console.log(
+          `Unable to add user ${username} saved playlists with ${playlistName}`,
+        );
+      }
     } else {
-      const fetchDeleteSavedPlaylistUrl = `${Global.backendBaseUrl}/users/${username}/saved_playlists?playlist_name=${playlistName}`;
-
-      const requestOptionsDeleteSavedPlaylistUr: RequestInit = {
-        method: 'DELETE',
-      };
-
-      fetch(fetchDeleteSavedPlaylistUrl, requestOptionsDeleteSavedPlaylistUr)
-        .then(() => {
-          setHearthUnLikedInterface();
-          refreshSidebarData();
-          return null;
-        })
-        .catch(() => console.log('Unable to update saved playlists'));
+      try {
+        await UsersService.deleteSavedPlaylistsUsersNameSavedPlaylistsDelete(
+          username,
+          playlistName,
+        );
+        setHearthUnLikedInterface();
+        refreshSidebarData();
+      } catch (err) {
+        console.log(
+          `Unable to delete user ${username} saved playlists with ${playlistName}`,
+        );
+      }
     }
   };
 
@@ -191,64 +187,60 @@ export default function Playlist({
 
   const loadPlaylistData = async () => {
     try {
-      const resFetchGetPlaylistDTO = await fetch(
-        encodeURI(`${Global.backendBaseUrl}/playlists/${playlistName}`),
-      );
-      const resFetchGetPlaylistDTOJson = await resFetchGetPlaylistDTO.json();
-
-      setOwner(resFetchGetPlaylistDTOJson.owner);
-      setCreationDate(resFetchGetPlaylistDTOJson.upload_date.split('-')[0]);
-      setDescription(resFetchGetPlaylistDTOJson.description);
+      // TODO custom hook
+      const playlistData =
+        await PlaylistsService.getPlaylistPlaylistsNameGet(playlistName);
+      setOwner(playlistData.owner);
+      setCreationDate(playlistData.upload_date.split('-')[0]);
+      setDescription(playlistData.description);
 
       setThumbnail(
-        resFetchGetPlaylistDTOJson.photo === ''
+        playlistData.photo === ''
           ? defaultThumbnailPlaylist
-          : resFetchGetPlaylistDTOJson.photo,
+          : playlistData.photo,
       );
       setThumbnailUpdatePlaylist(
-        resFetchGetPlaylistDTOJson.photo === ''
+        playlistData.photo === ''
           ? defaultThumbnailPlaylist
-          : resFetchGetPlaylistDTOJson.photo,
+          : playlistData.photo,
       );
 
-      if (resFetchGetPlaylistDTOJson.song_names) {
-        setNumberSongs(resFetchGetPlaylistDTOJson.song_names.length);
+      if (playlistData.song_names) {
+        setNumberSongs(playlistData.song_names.length);
         const songPromises: Promise<any>[] = [];
 
-        resFetchGetPlaylistDTOJson.song_names
-          .reverse()
-          .forEach((songName: string) => {
-            songPromises.push(
-              new Promise((resolve) => {
-                fetch(`${Global.backendBaseUrl}/songs/metadata/${songName}`, {})
-                  .then((resFetchSongDTO) => {
-                    return resFetchSongDTO.json();
-                  })
-                  .then((resFetchSongDTOJson) => {
-                    const propsSong: PropsSongs = {
-                      name: songName,
-                      playlistName,
-                      artistName: '',
-                      streams: 0,
-                      duration: 0,
-                      index: 0,
-                      handleSongCliked: changeSongName,
-                      refreshPlaylistData: loadPlaylistData,
-                      refreshSidebarData,
-                    };
-                    propsSong.artistName = resFetchSongDTOJson.artist;
-                    propsSong.duration = resFetchSongDTOJson.seconds_duration;
-                    propsSong.streams = resFetchSongDTOJson.streams;
+        playlistData.song_names.reverse().forEach((songName: string) => {
+          songPromises.push(
+            new Promise((resolve) => {
+              fetch(`${Global.backendBaseUrl}/songs/metadata/${songName}`, {})
+                .then((resFetchSongDTO) => {
+                  return resFetchSongDTO.json();
+                })
+                .then((resFetchSongDTOJson) => {
+                  const propsSong: PropsSongs = {
+                    name: songName,
+                    playlistName,
+                    artistName: '',
+                    streams: 0,
+                    duration: 0,
+                    index: 0,
+                    handleSongCliked: changeSongName,
+                    refreshPlaylistData: loadPlaylistData,
+                    refreshSidebarData,
+                  };
+                  propsSong.artistName = resFetchSongDTOJson.artist;
+                  propsSong.duration = resFetchSongDTOJson.seconds_duration;
+                  propsSong.streams = resFetchSongDTOJson.streams;
 
-                    resolve(propsSong);
-                    return propsSong;
-                  })
-                  .catch(() => {
-                    console.log('Unable to get Song Data');
-                  });
-              }),
-            );
-          });
+                  resolve(propsSong);
+                  return propsSong;
+                })
+                .catch(() => {
+                  console.log('Unable to get Song Data');
+                });
+            }),
+          );
+        });
 
         Promise.all(songPromises)
           .then((resSongPromises) => {
@@ -264,55 +256,58 @@ export default function Playlist({
     }
   };
 
+  const refreshPlaylistData = () => {
+    // wait until backend has data updated, fast requests after update can trigger 404 on backend (Ej: playlist update - sidebar - playlist)
+    setTimeout(() => {
+      loadPlaylistData();
+    }, 500);
+  };
+
   const handleUpdatePlaylist = async (event: FormEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
     try {
-      const resGetPlaylistDTO = await fetch(
-        `${Global.backendBaseUrl}/playlists/${playlistName}`,
-      );
+      // TODO add song to playlist instead of fetching already present songs
+      const playlistData =
+        await PlaylistsService.getPlaylistPlaylistsNameGet(playlistName);
+      const newSongsPutPlaylist = [...playlistData.song_names];
 
-      const resGetPlaylistDTOJson = await resGetPlaylistDTO.json();
-      const newSongsPutPlaylist = [...resGetPlaylistDTOJson.song_names];
-
-      const url = `${Global.backendBaseUrl}/playlists/${playlistName}`;
-      const photo =
+      const formPhoto =
         formData.photo && formData.photo.includes('http') ? formData.photo : '';
 
-      let fetchUrlUpdateSong: string;
+      const formDescription = formData.description;
 
       if (formData.name !== playlistName && formData.name !== '') {
-        fetchUrlUpdateSong = `${url}?photo=${photo}&description=${formData.description}&new_name=${formData.name}`;
+        PlaylistsService.updatePlaylistPlaylistsNamePut(
+          playlistName,
+          formPhoto,
+          formDescription,
+          newSongsPutPlaylist,
+          formData.name,
+        );
       } else {
-        fetchUrlUpdateSong = `${url}?photo=${photo}&description=${formData.description}`;
+        PlaylistsService.updatePlaylistPlaylistsNamePut(
+          playlistName,
+          formPhoto,
+          formDescription,
+          newSongsPutPlaylist,
+        );
       }
 
-      const requestOptions = {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newSongsPutPlaylist),
-      };
+      setopenModalUpdatePlaylist(false);
 
-      const resFetchUpdateSong = await fetch(
-        fetchUrlUpdateSong,
-        requestOptions,
-      );
-
-      if (resFetchUpdateSong.status !== 204) {
-        console.log('Unable to update playlist');
-      } else {
-        setopenModalUpdatePlaylist(false);
-        if (formData.name !== playlistName && formData.name !== '') {
-          //* Al cargar inmediatamente con el useEffect de location produce que el contenido para la nueva url no esta disponible
+      if (formData.name !== playlistName && formData.name !== '') {
+        // on name change
+        setTimeout(() => {
           refreshSidebarData();
           navigate(`/playlist/${formData.name}`, { replace: true });
-        } else {
-          loadPlaylistData();
-          refreshSidebarData();
-        }
+        }, 500);
+        refreshPlaylistData();
+        return;
       }
+
+      refreshPlaylistData();
+      refreshSidebarData();
     } catch {
       console.log('Unable to update playlist');
     }
@@ -529,7 +524,7 @@ export default function Playlist({
                   index={index + 1}
                   duration={song.duration}
                   handleSongCliked={changeSongName}
-                  refreshPlaylistData={loadPlaylistData}
+                  refreshPlaylistData={refreshPlaylistData}
                   refreshSidebarData={refreshSidebarData}
                 />
               );
@@ -565,7 +560,7 @@ export default function Playlist({
             playlistName={playlistName}
             owner={owner}
             handleCloseParent={handleCloseContextMenu}
-            refreshPlaylistData={() => {}}
+            refreshPlaylistData={refreshPlaylistData}
             refreshSidebarData={refreshSidebarData}
           />
         </Popover>

@@ -6,6 +6,7 @@ import Playlist from 'pages/Playlist/Playlist';
 import Token from 'utils/token';
 import Global from 'global/global';
 import UserType from 'utils/role';
+import getMockHeaders from 'utils/mockHeaders';
 
 const userName = 'prueba';
 const roleUser = UserType.USER;
@@ -64,6 +65,7 @@ test('Playlist user role get all info', async () => {
         json: () => playlistDTOMockFetch,
         status: 200,
         ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });
@@ -73,6 +75,7 @@ test('Playlist user role get all info', async () => {
         json: () => artistMockFetch,
         status: 200,
         ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });
@@ -82,6 +85,7 @@ test('Playlist user role get all info', async () => {
         json: () => songMockFetch,
         status: 200,
         ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });
@@ -91,6 +95,7 @@ test('Playlist user role get all info', async () => {
         json: () => userMockFetch,
         status: 200,
         ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });
@@ -133,6 +138,7 @@ test('Playlist user role hit like button', async () => {
         json: () => playlistDTOMockFetch,
         status: 200,
         ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });
@@ -142,6 +148,7 @@ test('Playlist user role hit like button', async () => {
         json: () => artistMockFetch,
         status: 200,
         ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });
@@ -151,6 +158,7 @@ test('Playlist user role hit like button', async () => {
         json: () => songMockFetch,
         status: 200,
         ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });
@@ -160,6 +168,7 @@ test('Playlist user role hit like button', async () => {
         json: () => userMockFetch,
         status: 200,
         ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });
@@ -169,6 +178,7 @@ test('Playlist user role hit like button', async () => {
         json: () => {},
         status: 204,
         ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });
@@ -183,6 +193,7 @@ test('Playlist user role hit like button', async () => {
         json: () => {},
         status: 204,
         ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });
@@ -197,6 +208,7 @@ test('Playlist user role hit like button', async () => {
         json: () => {},
         status: 202,
         ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });
@@ -248,6 +260,7 @@ test('Playlist user role get unlike button', async () => {
         json: () => playlistDTOMockFetch,
         status: 200,
         ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });
@@ -257,6 +270,7 @@ test('Playlist user role get unlike button', async () => {
         json: () => artistMockFetch,
         status: 200,
         ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });
@@ -266,6 +280,7 @@ test('Playlist user role get unlike button', async () => {
         json: () => songMockFetch,
         status: 200,
         ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });
@@ -275,6 +290,7 @@ test('Playlist user role get unlike button', async () => {
         json: () => userMockFetch,
         status: 200,
         ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });
@@ -284,6 +300,7 @@ test('Playlist user role get unlike button', async () => {
         json: () => {},
         status: 204,
         ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });
@@ -298,6 +315,7 @@ test('Playlist user role get unlike button', async () => {
         json: () => {},
         status: 204,
         ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });
@@ -312,6 +330,7 @@ test('Playlist user role get unlike button', async () => {
         json: () => {},
         status: 202,
         ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });
@@ -361,6 +380,7 @@ test('Playlist user role update playlist', async () => {
         json: () => playlistDTOMockFetch,
         status: 200,
         ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });
@@ -370,6 +390,7 @@ test('Playlist user role update playlist', async () => {
         json: () => artistMockFetch,
         status: 200,
         ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });
@@ -379,6 +400,7 @@ test('Playlist user role update playlist', async () => {
         json: () => songMockFetch,
         status: 200,
         ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });
@@ -388,6 +410,7 @@ test('Playlist user role update playlist', async () => {
         json: () => userMockFetch,
         status: 200,
         ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });
@@ -397,6 +420,7 @@ test('Playlist user role update playlist', async () => {
         json: () => {},
         status: 204,
         ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(`${error}`);
       });
@@ -411,6 +435,7 @@ test('Playlist user role update playlist', async () => {
         json: () => {},
         status: 204,
         ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });
@@ -425,6 +450,7 @@ test('Playlist user role update playlist', async () => {
         json: () => {},
         status: 202,
         ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });
@@ -438,6 +464,7 @@ test('Playlist user role update playlist', async () => {
         json: () => {},
         status: 204,
         ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });
@@ -476,8 +503,10 @@ test('Playlist user role update playlist', async () => {
 
   const inputName = component.getByPlaceholderText('Añade una descripción');
 
-  fireEvent.change(inputName, {
-    target: { value: 'description' },
+  await act(async () => {
+    fireEvent.change(inputName, {
+      target: { value: 'description' },
+    });
   });
 
   expect(component.queryByText('Editar información')).toBeInTheDocument();

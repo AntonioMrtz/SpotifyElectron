@@ -2,6 +2,7 @@ import '@testing-library/jest-dom';
 import { act, fireEvent, render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import StartMenu from 'pages/StartMenu/StartMenu';
+import getMockHeaders from 'utils/mockHeaders';
 
 afterEach(() => {
   jest.clearAllMocks();
@@ -58,6 +59,7 @@ test('Login success', async () => {
       json: () => Promise.resolve({}),
       status: 200,
       ok: true,
+      headers: getMockHeaders(),
     }),
   ) as jest.Mock;
 

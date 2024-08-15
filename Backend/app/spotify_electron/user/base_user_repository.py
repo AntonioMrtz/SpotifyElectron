@@ -297,21 +297,16 @@ def update_playlist_name(
         UserRepositoryException: unexpected error updating playlist name
     """
     try:
+        # has to be done sequentially, pull and push on the same query generates errors
         collection.update_many(
             {"saved_playlists": old_playlist_name},
-            {
-                "$pull": {"saved_playlists": old_playlist_name},
-                "$push": {"saved_playlists": new_playlist_name},
-            },
+            {"$set": {"saved_playlists.$": new_playlist_name}},
         )
-
         collection.update_many(
             {"playlists": old_playlist_name},
-            {
-                "$pull": {"playlists": old_playlist_name},
-                "$push": {"playlists": new_playlist_name},
-            },
+            {"$set": {"playlists.$": new_playlist_name}},
         )
+
     except Exception as exception:
         base_user_repository_logger.exception(
             f"Error updating playlist name {old_playlist_name} "

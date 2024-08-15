@@ -421,6 +421,9 @@ def update_playlist_name(old_playlist_name: str, new_playlist_name: str) -> None
     validate_playlist_name_parameter(old_playlist_name)
     validate_playlist_name_parameter(new_playlist_name)
 
+    if old_playlist_name == new_playlist_name:
+        return
+
     for collection in user_collection_provider.get_all_collections():
         base_user_repository.update_playlist_name(
             old_playlist_name=old_playlist_name,

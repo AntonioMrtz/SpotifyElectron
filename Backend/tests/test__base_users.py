@@ -247,6 +247,9 @@ def test_patch_saved_playlist_user_correct(clear_test_data_db):
     assert res_delete_user.status_code == HTTP_202_ACCEPTED
 
 
+# TODO test_patch_saved_playlist_user_correct for updating playlist name
+
+
 def test_patch_saved_playlist_user_not_found():
     res_patch_user = patch_playlist_saved("", "", {})
     assert res_patch_user.status_code in (HTTP_404_NOT_FOUND, HTTP_403_FORBIDDEN)

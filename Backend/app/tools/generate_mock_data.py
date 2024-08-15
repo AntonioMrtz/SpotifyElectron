@@ -72,7 +72,7 @@ async def generate_mock_data(size: str) -> None:
                 )
 
 
-def print_help():
+def print_help() -> None:
     """Prints script usage"""
     print(
         "----------------------------\n"

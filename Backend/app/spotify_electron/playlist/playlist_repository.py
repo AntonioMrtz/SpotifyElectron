@@ -277,7 +277,7 @@ def update_playlist(
     photo: str,
     description: str,
     song_names: list[str],
-):
+) -> None:
     """Update playlist
 
     Args:

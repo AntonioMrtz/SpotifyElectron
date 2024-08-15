@@ -10,7 +10,7 @@ router = APIRouter(prefix="/health", tags=["health"])
 
 
 @router.get("/", summary="Health Check Endpoint")
-def get_health():
+def get_health() -> Response:
     """Validates if the app has launched correctly
 
     Returns

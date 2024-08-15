@@ -40,7 +40,7 @@ class _PropertiesManager:
         for config_section in self.config_sections:
             self._load_config_variables(AppConfig.CONFIG_FILENAME, config_section)
 
-    def _load_config_variables(self, config_filename: str, config_section: str):
+    def _load_config_variables(self, config_filename: str, config_section: str) -> None:
         """Loads attributes from .ini file and stores them as class attributes
 
         Args:
@@ -59,7 +59,7 @@ class _PropertiesManager:
         self.config.read(self.config_file)
         self._set_attributes(config_section)
 
-    def _set_attributes(self, config_section: str):
+    def _set_attributes(self, config_section: str) -> None:
         """Sets app atributes from .ini file into class attributes,\
             if value its empty string it will load None
 
@@ -74,7 +74,7 @@ class _PropertiesManager:
                 properties_manager_logger.warning(f"Using None for {key} in {config_section}")
             setattr(self, key, value)
 
-    def _load_architecture(self):
+    def _load_architecture(self) -> None:
         """Loads the current architecture from enviroment and stores it as an\
         attribute, if none is provided DEFAULT_ARCHITECTURE will be selected
         """
@@ -87,7 +87,7 @@ class _PropertiesManager:
         self.__setattr__(AppEnviroment.ARCHITECTURE_ENV_NAME, architecture_type)
         properties_manager_logger.info(f"Architecture selected: {architecture_type}")
 
-    def _load_env_variables(self, env_names: list[str]):
+    def _load_env_variables(self, env_names: list[str]) -> None:
         """Load enviroment variables into class attributes
 
         Args:

@@ -70,7 +70,7 @@ def create_access_token(data: dict[str, str], expires_delta: timedelta | None = 
             expire = datetime.now(timezone.utc) + expires_delta  # noqa: UP017 TODO
         else:
             expire = datetime.now(UTC) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)  # noqa: UP017 TODO
-        to_encode.update({"exp": expire})
+        to_encode.update({"exp": expire})  # type: ignore
         encoded_jwt = jwt.encode(
             to_encode,
             getattr(PropertiesManager, AppEnviroment.SECRET_KEY_SIGN_ENV_NAME),
@@ -185,7 +185,7 @@ def hash_password(plain_password: str) -> bytes:
     return bcrypt.hashpw(plain_password.encode(), bcrypt.gensalt())
 
 
-def verify_password(plain_password: str, hashed_password: bytes):
+def verify_password(plain_password: str, hashed_password: bytes) -> None:
     """Verifies if plan text password is the same as a hashed password
 
     Args:
@@ -195,7 +195,7 @@ def verify_password(plain_password: str, hashed_password: bytes):
 
     Raises:
     ------
-        VerifyPasswordException: if passwords dont match
+        VerifyPasswordException: if passwords don't match
 
     """
     if not bcrypt.checkpw(plain_password.encode(), hashed_password):
@@ -255,7 +255,7 @@ def login_user(name: str, password: str) -> str:
         auth_service_logger.exception("Invalid login credentials")
         raise InvalidCredentialsLoginException from exception
     except VerifyPasswordException as exception:
-        auth_service_logger.exception("Passwords Validation failed: passwords dont match")
+        auth_service_logger.exception("Passwords Validation failed: passwords don't match")
         raise VerifyPasswordException from exception
     except CreateJWTException as exception:
         auth_service_logger.exception(f"Error creating JWT Token from data: {jwt_data}")
@@ -309,7 +309,7 @@ def validate_jwt(token: str) -> None:
         raise JWTValidationException from exception
 
 
-def validate_jwt_user_matches_user(token: TokenData, user_name: str):
+def validate_jwt_user_matches_user(token: TokenData, user_name: str) -> None:
     """Validates if user matches the jwt user
 
     Args:
@@ -317,7 +317,7 @@ def validate_jwt_user_matches_user(token: TokenData, user_name: str):
         user_name (str): user
 
     Raises:
-        UserUnauthorizedException: if the user didnt match the jwt user
+        UserUnauthorizedException: if the user didn't match the jwt user
     """
     if not token.username == user_name:
         raise UserUnauthorizedException
@@ -356,7 +356,7 @@ def validate_token_exists(token: Any) -> None:
         raise JWTNotProvidedException
 
 
-def validate_jwt_credentials_missing(credentials: list[Any]):
+def validate_jwt_credentials_missing(credentials: list[Any]) -> None:
     """Check if any jwt credentials are missing
 
     Args:

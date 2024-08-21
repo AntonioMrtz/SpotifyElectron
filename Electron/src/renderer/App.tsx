@@ -6,7 +6,7 @@ import Global from 'global/global';
 import Genre from 'pages/Genre/Genre';
 import ShowAllItems from 'components/ShowAllItems/ShowAllItems';
 import StartMenu from 'pages/StartMenu/StartMenu';
-import { ShowAllItemsTypes } from 'components/ShowAllItems/types/PropsShowAllItems';
+import { ShowAllItemsTypes } from 'components/ShowAllItems/types/propsShowAllItems';
 import UserProfile from 'pages/UserProfile/UserProfile';
 import UserType from 'utils/role';
 import RegisterMenu from 'pages/StartMenu/RegisterMenu';

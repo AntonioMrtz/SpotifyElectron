@@ -1,11 +1,9 @@
 import { Favorite, FavoriteBorder } from '@mui/icons-material';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './songInfo.module.css';
-
-interface PropsSongInfo {
-  songInfo: JSON | undefined;
-}
+import { PropsSongInfo } from './types/propsSongInfo';
+import defaultThumbnailPlaylist from '../../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 
 export default function SongInfo({ songInfo }: PropsSongInfo | any) {
   const navigate = useNavigate();
@@ -29,22 +27,23 @@ export default function SongInfo({ songInfo }: PropsSongInfo | any) {
     }
   };
 
-  const updateSongInfo = useCallback(() => {
-    if (songInfo) {
-      setName(songInfo.name);
-      setThumbnail(songInfo.photo);
-      setArtist(songInfo.artist);
-      setLiked(false);
-    }
-  }, [songInfo]);
-
   const handleClickArtist = () => {
     navigate(`/artist/${artist}`);
   };
 
   useEffect(() => {
+    const updateSongInfo = () => {
+      if (songInfo) {
+        setName(songInfo.name);
+        setThumbnail(
+          songInfo.photo ? songInfo.photo : defaultThumbnailPlaylist,
+        );
+        setArtist(songInfo.artist);
+        setLiked(false);
+      }
+    };
     updateSongInfo();
-  }, [songInfo, updateSongInfo]);
+  }, [songInfo]);
 
   return (
     <div

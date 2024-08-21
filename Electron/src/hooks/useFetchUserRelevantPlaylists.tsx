@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { PropsPlaylist } from 'components/Sidebar/types/propsPlaylist.module';
+import { PropsPlaylist } from 'components/Sidebar/types/propsPlaylist';
 import { UsersService } from '../swagger/api/services/UsersService';
 import defaultThumbnailPlaylist from '../assets/imgs/DefaultThumbnailPlaylist.jpg';
 

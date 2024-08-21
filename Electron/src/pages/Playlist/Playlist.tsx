@@ -3,7 +3,7 @@
 import { ChangeEvent, FormEvent, useEffect, useState, MouseEvent } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Token from 'utils/token';
-import { PropsSongs } from 'components/Sidebar/types/propsSongs.module';
+import { PropsSongs } from 'components/Sidebar/types/propsSongs';
 import { FastAverageColor } from 'fast-average-color';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';

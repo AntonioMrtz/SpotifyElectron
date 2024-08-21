@@ -9,7 +9,7 @@ import Token from 'utils/token';
 import useFetchGetUserPlaylistNames from 'hooks/useFetchGetUserPlaylistNames';
 import { PlaylistsService } from 'swagger/api';
 import styles from '../contextMenu.module.css';
-import { PropsContextMenuPlaylist } from '../types/PropsContextMenu';
+import { PropsContextMenuPlaylist } from '../types/propsContextMenu';
 
 interface ConfirmationMenuData {
   title: string;

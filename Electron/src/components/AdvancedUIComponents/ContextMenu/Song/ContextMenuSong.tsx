@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import useFetchGetUserPlaylistNames from 'hooks/useFetchGetUserPlaylistNames';
 import { PlaylistsService } from 'swagger/api';
 import styles from '../contextMenu.module.css';
-import { PropsContextMenuSong } from '../types/PropsContextMenu';
+import { PropsContextMenuSong } from '../types/propsContextMenu';
 
 const MessagesInfoPopOver = {
   CLIPBOARD_TITLE: 'Enlace copiado al portapapeles',

@@ -6,6 +6,7 @@ import Global from 'global/global';
 import Token from 'utils/token';
 import UserType from 'utils/role';
 import { act } from 'react-test-renderer';
+import getMockHeaders from 'utils/mockHeaders';
 
 const songName = 'songName';
 const userName = 'prueba';
@@ -30,6 +31,7 @@ global.fetch = jest.fn((url: string) => {
       json: () => songMockFetch,
       status: 200,
       ok: true,
+      headers: getMockHeaders(),
     }).catch((error) => {
       console.log(error);
     });
@@ -39,6 +41,7 @@ global.fetch = jest.fn((url: string) => {
       json: () => songMockFetch,
       status: 200,
       ok: true,
+      headers: getMockHeaders(),
     }).catch((error) => {
       console.log(error);
     });
@@ -48,6 +51,7 @@ global.fetch = jest.fn((url: string) => {
       json: () => {},
       status: 204,
       ok: true,
+      headers: getMockHeaders(),
     }).catch((error) => {
       console.log(error);
     });
@@ -60,6 +64,7 @@ global.fetch = jest.fn((url: string) => {
       json: () => {},
       status: 204,
       ok: true,
+      headers: getMockHeaders(),
     }).catch((error) => {
       console.log(error);
     });

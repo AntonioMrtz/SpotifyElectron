@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import SongCard, { PropsSongCard } from 'components/Cards/SongCard/SongCard';
 import Global from 'global/global';
-import { PropsItemsSongsFromArtist } from '../types/PropsItems';
+import { PropsItemsSongsFromArtist } from '../types/propsItems';
 
 export default function ItemsAllSongsFromArtist({
   artistName,

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { PropsPlaylistCard } from 'components/Cards/PlaylistCard/types/propsPlaylistCard';
 import PlaylistCard from 'components/Cards/PlaylistCard/PlaylistCard';
 import Global from 'global/global';
-import { PropsItemsPlaylistsFromUser } from '../types/PropsItems';
+import { PropsItemsPlaylistsFromUser } from '../types/propsItems';
 import defaultThumbnailPlaylist from '../../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 
 export default function ItemsAllPlaylistsFromUser({

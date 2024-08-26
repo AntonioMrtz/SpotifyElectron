@@ -1,11 +1,15 @@
 import { ChangeEvent, useState, MouseEvent } from 'react';
-import { InfoPopoverType } from 'components/AdvancedUIComponents/InfoPopOver/types/InfoPopover';
+import {
+  InfoPopoverType,
+  PropsInfoPopover,
+} from 'components/AdvancedUIComponents/InfoPopOver/types/InfoPopover';
 import InfoPopover from 'components/AdvancedUIComponents/InfoPopOver/InfoPopover';
 // eslint-disable-next-line camelcase
 import { Body_login_usuario_login__post } from 'swagger/api/models/Body_login_usuario_login__post';
 import styles from './startMenu.module.css';
 import SpotifyElectronLogo from '../../assets/imgs/SpotifyElectronLogo.png';
 import { LoginService } from '../../swagger/api/services/LoginService';
+import timeout from 'utils/timeout';
 
 interface PropsStartMenu {
   setIsLogged: Function;
@@ -19,6 +23,9 @@ export default function StartMenu({
   /* Popover */
 
   const [isOpenPopover, setisOpenPopover] = useState(false);
+  const [propsPopOver, setPropsPopOver] = useState<PropsInfoPopover | null>(
+    null,
+  );
 
   /* Form data */
 
@@ -47,12 +54,39 @@ export default function StartMenu({
         password: formData.password,
       };
 
-      const loginResponse = await LoginService.loginUsuarioLoginPost(loginData);
+      const loginUserPromise =
+        await LoginService.loginUsuarioLoginPost(loginData);
+      const loginResponse = await Promise.race([
+        loginUserPromise,
+        timeout(3000),
+      ]);
       localStorage.setItem('jwt', loginResponse);
       setIsLogged(true);
-    } catch {
+    } catch (error: unknown) {
       setIsLogged(false);
       console.log('Unable to login');
+
+      let title: string;
+      let description: string;
+
+      if (error instanceof Error && error.message === 'Timeout') {
+        title = 'El servidor esta iniciándose';
+        description =
+          'El servidor esta iniciándose (cold-start), inténtelo de nuevo en 1 minuto';
+      } else {
+        title = 'Los credenciales introducidos no son válidos';
+        description = 'No se ha podido iniciar sesión';
+      }
+
+      setPropsPopOver({
+        title,
+        description,
+        type: InfoPopoverType.ERROR,
+        triggerOpenConfirmationModal: false,
+        handleClose: () => {
+          setisOpenPopover(false);
+        },
+      });
       setisOpenPopover(true);
     }
   };
@@ -141,15 +175,15 @@ export default function StartMenu({
         </div>
       </div>
 
-      <InfoPopover
-        type={InfoPopoverType.ERROR}
-        handleClose={() => {
-          setisOpenPopover(false);
-        }}
-        description="Los credenciales introducidos no son válidos"
-        title="No se ha podido iniciar sesión"
-        triggerOpenConfirmationModal={isOpenPopover}
-      />
+      {propsPopOver && (
+        <InfoPopover
+          type={propsPopOver.type}
+          handleClose={propsPopOver.handleClose}
+          description={propsPopOver.description}
+          title={propsPopOver.title}
+          triggerOpenConfirmationModal={isOpenPopover}
+        />
+      )}
     </div>
   );
 }

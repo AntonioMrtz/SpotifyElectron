@@ -165,6 +165,53 @@ def delete_user(name: str) -> Response:
         )
 
 
+@router.patch("/{name}/upgrade_to_artist")
+def upgrade_to_artist(
+    name: str, token: Annotated[TokenData, Depends(JWTBearer())]
+) -> Response:
+    """Upgrade user account to artist account
+
+    Args:
+        name (str): user name
+        token (TokenData): the jwt token. Defaults to None.
+    """
+    try:
+        new_token = user_service.upgrade_user_to_artist(name, token)
+        response_data = {"token": new_token}
+        response_json = json_converter_utils.get_json_from_model(response_data)
+        return Response(
+            content=response_json,
+            media_type="application/json",
+            status_code=HTTP_200_OK,
+        )
+    except UserBadNameException:
+        return Response(
+            status_code=HTTP_400_BAD_REQUEST,
+            content=PropertiesMessagesManager.userBadName,
+        )
+    except UserNotFoundException:
+        return Response(
+            status_code=HTTP_404_NOT_FOUND,
+            content=PropertiesMessagesManager.userNotFound,
+        )
+    except UserUnauthorizedException:
+        return Response(
+            status_code=HTTP_403_FORBIDDEN,
+            content=PropertiesMessagesManager.userUnauthorized,
+        )
+    except BadJWTTokenProvidedException:
+        return Response(
+            status_code=HTTP_403_FORBIDDEN,
+            content=PropertiesMessagesManager.tokenInvalidCredentials,
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    except (Exception, UserServiceException):
+        return Response(
+            status_code=HTTP_500_INTERNAL_SERVER_ERROR,
+            content=PropertiesMessagesManager.commonInternalServerError,
+        )
+
+
 @router.patch("/{name}/playback_history")
 def patch_playback_history(
     name: str, song_name: str, token: Annotated[TokenData, Depends(JWTBearer())]

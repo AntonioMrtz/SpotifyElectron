@@ -78,7 +78,36 @@ def create_user(name: str, photo: str, password: bytes, current_date: str) -> No
         user_repository_logger.exception(f"Error inserting User {user} in database")
         raise UserRepositoryException from exception
     except (UserRepositoryException, Exception) as exception:
-        user_repository_logger.exception(f"Unexpected error inserting user {user} in database")
+        user_repository_logger.exception(
+            f"Unexpected error inserting user {user} in database"
+        )
         raise UserRepositoryException from exception
     else:
         user_repository_logger.info(f"User added to repository: {user}")
+
+
+def update_user_role(user_name: str, new_role: str) -> None:
+    """Update user role
+
+    Args:
+        name (str): user name
+        new_role (str): user role
+
+    Raises:
+        UserNotFoundException: user was not found
+        UserRepositoryException: unexpected error while updating user role
+    """
+    try:
+        user_collection = user_collection_provider.get_user_collection()
+        user = user_collection.find_one({"name": user_name})
+        validate_user_exists(user)
+        user_collection.update_one({"name": user_name}, {"$set": {"role": new_role}})
+    except UserNotFoundException as exception:
+        raise UserNotFoundException from exception
+    except Exception as exception:
+        user_repository_logger.exception(
+            f"Error updating User {user_name} role in database"
+        )
+        raise UserRepositoryException from exception
+    else:
+        user_repository_logger.info(f"User {user_name} role updated to {new_role}")

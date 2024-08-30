@@ -14,7 +14,13 @@ import app.auth.auth_service as auth_service
 import app.spotify_electron.user.base_user_service as base_user_service
 import app.spotify_electron.user.user.user_service as user_service
 from app.auth.auth_schema import VerifyPasswordException
-from tests.test_API.api_test_user import create_user, delete_user, get_user
+from tests.test_API.api_test_artist import get_artist
+from tests.test_API.api_test_user import (
+    create_user,
+    delete_user,
+    get_user,
+    upgrade_to_artist,
+)
 from tests.test_API.api_token import get_user_jwt_header
 
 
@@ -122,6 +128,59 @@ def test_check_encrypted_password_different():
     with pytest.raises(VerifyPasswordException):
         auth_service.verify_password(password, generated_password)
     base_user_service.delete_user(name)
+
+
+def test_upgrade_user_to_artist_correct(clear_test_data_db):
+    name = "8232392323623823723"
+    photo = "https://photo"
+    password = "hola"
+
+    res_create_user = create_user(name=name, password=password, photo=photo)
+    assert res_create_user.status_code == HTTP_201_CREATED
+
+    jwt_headers = get_user_jwt_header(username=name, password=password)
+
+    res_get_user = get_user(name=name, headers=jwt_headers)
+    assert res_get_user.status_code == HTTP_200_OK
+    assert res_get_user.json()["name"] == name
+    assert res_get_user.json()["photo"] == photo
+
+    res_upgrade_user = upgrade_to_artist(user_name=name, headers=jwt_headers)
+    assert res_upgrade_user.status_code == HTTP_200_OK
+
+    new_token_data = res_upgrade_user.json()
+    assert "token" in new_token_data
+    new_token = new_token_data["token"]
+
+    decoded_token = auth_service.get_jwt_token_data(new_token)
+    assert decoded_token.role == "artist"
+
+    res_get_artist = get_artist(name=name, headers=jwt_headers)
+    assert res_get_artist.status_code == HTTP_200_OK
+    artist_data = res_get_artist.json()
+    assert artist_data["name"] == name
+    assert artist_data["photo"] == photo
+
+    base_user_service.delete_user(name)
+
+
+def test_upgrade_to_artist_user_not_found():
+    name = "8232392323623823723"
+    photo = "https://photo"
+    password = "hola"
+
+    res_create_user = create_user(name=name, password=password, photo=photo)
+    assert res_create_user.status_code == HTTP_201_CREATED
+
+    jwt_headers = get_user_jwt_header(username=name, password=password)
+    res_get_user = get_user(name=name, headers=jwt_headers)
+    assert res_get_user.status_code == HTTP_200_OK
+    assert res_get_user.json()["name"] == name
+    assert res_get_user.json()["photo"] == photo
+    base_user_service.delete_user(name)
+
+    res_upgrade_user = upgrade_to_artist(user_name=name, headers=jwt_headers)
+    assert res_upgrade_user.status_code == HTTP_404_NOT_FOUND
 
 
 # executes after all tests

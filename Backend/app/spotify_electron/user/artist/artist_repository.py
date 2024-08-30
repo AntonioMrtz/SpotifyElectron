@@ -11,6 +11,7 @@ from app.spotify_electron.user.artist.artist_schema import (
 )
 from app.spotify_electron.user.user.user_schema import (
     UserCreateException,
+    UserDAO,
     UserNotFoundException,
     UserRepositoryException,
 )
@@ -88,6 +89,41 @@ def create_artist(name: str, photo: str, password: bytes, current_date: str) -> 
         raise UserRepositoryException from exception
     else:
         artist_repository_logger.info(f"Artist added to repository: {artist}")
+
+
+def create_artist_from_user(user_data: UserDAO) -> None:
+    """Create artist based on existing user data
+
+    Args:
+        user_data: UserDao object
+
+    Raises:
+        UserRepositoryException: unexpected error while creating artist
+    """
+    try:
+        artist_data = {
+            "name": user_data.name,
+            "photo": user_data.photo,
+            "register_date": user_data.register_date,
+            "password": user_data.password,
+            "saved_playlists": user_data.saved_playlists,
+            "playlists": user_data.playlists,
+            "playback_history": user_data.playback_history,
+            "uploaded_songs": [],
+        }
+        result = user_collection_provider.get_artist_collection().insert_one(artist_data)
+
+        validate_user_create(result)
+    except UserCreateException as exception:
+        artist_repository_logger.exception(f"Error inserting Artist {artist_data} in database")
+        raise UserRepositoryException from exception
+    except (UserRepositoryException, Exception) as exception:
+        artist_repository_logger.exception(
+            f"Unexpected error inserting artist {artist_data} in database"
+        )
+        raise UserRepositoryException from exception
+    else:
+        artist_repository_logger.info(f"Artist added to repository: {artist_data}")
 
 
 def get_all_artists() -> list[ArtistDAO]:

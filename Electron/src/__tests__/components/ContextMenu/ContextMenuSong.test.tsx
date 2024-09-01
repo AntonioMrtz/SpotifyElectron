@@ -98,7 +98,7 @@ global.fetch = jest.fn((url: string, options: any) => {
   }
 
   // In case the URL doesn't match, return a rejected promise
-  return Promise.reject(new Error('Unhandled URL in fetch mock'));
+  return Promise.reject(new Error(`Unhandled URL in fetch mock: ${url}`));
 }) as jest.Mock;
 
 test('Render ContextMenuSong', async () => {

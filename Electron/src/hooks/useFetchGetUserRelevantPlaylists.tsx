@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { PropsPlaylist } from 'components/Sidebar/types/propsPlaylist';
+import { PropsPlaylistCardSidebar } from 'types/playlist';
 import { UsersService } from '../swagger/api/services/UsersService';
 import defaultThumbnailPlaylist from '../assets/imgs/DefaultThumbnailPlaylist.jpg';
 
@@ -7,7 +7,7 @@ const useFetchGetUserRelevantPlaylists = (
   userName: string,
   refreshSidebarTriggerValue: boolean,
 ) => {
-  const [playlists, setPlaylists] = useState<PropsPlaylist[]>();
+  const [playlists, setPlaylists] = useState<PropsPlaylistCardSidebar[]>();
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -20,10 +20,10 @@ const useFetchGetUserRelevantPlaylists = (
           await UsersService.getUserRelevantPlaylistsUsersNameRelevantPlaylistsGet(
             userName,
           );
-        const propsPlaylists: PropsPlaylist[] = [];
+        const propsPlaylists: PropsPlaylistCardSidebar[] = [];
 
         data.forEach((playlist: any) => {
-          const propsPlaylist: PropsPlaylist = {
+          const propsPlaylist: PropsPlaylistCardSidebar = {
             name: playlist.name,
             photo:
               playlist.photo === '' ? defaultThumbnailPlaylist : playlist.photo,

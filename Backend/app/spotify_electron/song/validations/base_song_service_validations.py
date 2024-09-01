@@ -16,13 +16,10 @@ def validate_song_name_parameter(name: str) -> None:
     """Raises an exception if song name parameter is invalid
 
     Args:
-    ----
-        name (str): name
+        name (str): song name
 
     Raises:
-    ------
         SongBadNameException: if name parameter is invalid
-
     """
     try:
         validate_parameter(name)

@@ -165,3 +165,19 @@ def delete_song_from_artist(artist_name: str, song_name: str) -> None:
             f"Unexpected error removing song {song_name} from artist {artist_name} in database"
         )
         raise UserRepositoryException from exception
+
+
+def get_artist_song_names(artist_name: str) -> list[str]:
+    """Get artist song names
+
+    Args:
+        artist_name (str): artist name
+
+    Returns:
+        list[str]: the artist uploaded song names
+    """
+    artist_data = user_collection_provider.get_artist_collection().find_one(
+        {"name": artist_name}, {"uploaded_songs": 1, "_id": 0}
+    )
+
+    return artist_data["uploaded_songs"]  # type: ignore

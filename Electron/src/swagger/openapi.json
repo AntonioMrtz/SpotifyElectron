@@ -881,6 +881,45 @@
             }
           }
         }
+      },
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get User Playback History",
+        "description": "Get user song playback history\n\nArgs:\n    name (str): user name",
+        "operationId": "get_user_playback_history_users__name__playback_history_get",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Name"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/users/{name}/saved_playlists": {
@@ -999,6 +1038,47 @@
         "summary": "Get User Relevant Playlists",
         "description": "Get relevant playlists for user\n\nArgs:\n    name (str): user name",
         "operationId": "get_user_relevant_playlists_users__name__relevant_playlists_get",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Name"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{name}/playlists": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get User Playlists",
+        "description": "Get playlists created by the user\n\nArgs:\n    name (str): user name",
+        "operationId": "get_user_playlists_users__name__playlists_get",
         "parameters": [
           {
             "name": "name",
@@ -1207,8 +1287,54 @@
           "Artists"
         ],
         "summary": "Get Artist Streams",
-        "description": "Get artist total streams of his songs",
+        "description": "Get artist total streams of his songs\n\nArgs:\n    name (str): artist name",
         "operationId": "get_artist_streams_artists__name__streams_get",
+        "security": [
+          {
+            "JWTBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Name"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/artists/{name}/songs": {
+      "get": {
+        "tags": [
+          "Artists"
+        ],
+        "summary": "Get Artist Songs",
+        "description": "Get artist songs",
+        "operationId": "get_artist_songs_artists__name__songs_get",
         "security": [
           {
             "JWTBearer": []

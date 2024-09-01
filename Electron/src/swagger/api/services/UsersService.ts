@@ -132,6 +132,30 @@ export class UsersService {
         });
     }
     /**
+     * Get User Playback History
+     * Get user song playback history
+     *
+     * Args:
+     * name (str): user name
+     * @param name
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static getUserPlaybackHistoryUsersNamePlaybackHistoryGet(
+        name: string,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/users/{name}/playback_history',
+            path: {
+                'name': name,
+            },
+            errors: {
+                422: `Validation Error`,
+            },
+        });
+    }
+    /**
      * Patch Saved Playlists
      * Add playlist to saved list
      *
@@ -207,6 +231,30 @@ export class UsersService {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/users/{name}/relevant_playlists',
+            path: {
+                'name': name,
+            },
+            errors: {
+                422: `Validation Error`,
+            },
+        });
+    }
+    /**
+     * Get User Playlists
+     * Get playlists created by the user
+     *
+     * Args:
+     * name (str): user name
+     * @param name
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static getUserPlaylistsUsersNamePlaylistsGet(
+        name: string,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/users/{name}/playlists',
             path: {
                 'name': name,
             },

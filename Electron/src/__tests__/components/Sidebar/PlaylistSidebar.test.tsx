@@ -5,7 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import Global from 'global/global';
 import Token from 'utils/token';
 import UserType from 'utils/role';
-import Playlist from 'components/Sidebar/Playlist/Playlist';
+import PlaylistSidebar from 'components/Sidebar/Playlist/PlaylistSidebar';
 import getMockHeaders from 'utils/mockHeaders';
 
 const playlistName = 'playlisttest';
@@ -43,7 +43,7 @@ test('render Sidebar Playlist', async () => {
   const component = await act(() => {
     return render(
       <BrowserRouter>
-        <Playlist
+        <PlaylistSidebar
           name={playlistDTOMockFetch.name}
           photo={playlistDTOMockFetch.photo}
           owner={artistMockFetch.name}
@@ -89,13 +89,13 @@ test('Sidebar Playlist handle open context menu', async () => {
     }
 
     // In case the URL doesn't match, return a rejected promise
-    return Promise.reject(new Error('Unhandled URL in fetch mock'));
+    return Promise.reject(new Error(`Unhandled URL in fetch mock: ${url}`));
   }) as jest.Mock;
 
   const component = await act(() => {
     return render(
       <BrowserRouter>
-        <Playlist
+        <PlaylistSidebar
           name={playlistDTOMockFetch.name}
           photo={playlistDTOMockFetch.photo}
           owner={artistMockFetch.name}
@@ -148,13 +148,13 @@ test('Sidebar Playlist left-click', async () => {
     }
 
     // In case the URL doesn't match, return a rejected promise
-    return Promise.reject(new Error('Unhandled URL in fetch mock'));
+    return Promise.reject(new Error(`Unhandled URL in fetch mock: ${url}`));
   }) as jest.Mock;
 
   const component = await act(() => {
     return render(
       <BrowserRouter>
-        <Playlist
+        <PlaylistSidebar
           name={playlistDTOMockFetch.name}
           photo={playlistDTOMockFetch.photo}
           owner={artistMockFetch.name}

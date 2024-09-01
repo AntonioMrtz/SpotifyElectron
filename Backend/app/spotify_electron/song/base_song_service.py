@@ -6,7 +6,7 @@ Redirects to the specific architecture service in case the method is not common
 """
 
 import app.spotify_electron.song.base_song_repository as base_song_repository
-import app.spotify_electron.user.validations.base_user_service_validations as base_user_service
+import app.spotify_electron.user.validations.base_user_service_validations as base_user_service_validations  # noqa: E501
 from app.logging.logging_constants import LOGGING_BASE_SONG_SERVICE
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.genre.genre_schema import Genre, GenreNotValidException
@@ -173,7 +173,7 @@ def get_artist_streams(artist_name: str) -> int:
         int: the number of streams for the artists songs
     """
     try:
-        base_user_service.validate_user_should_exists(artist_name)
+        base_user_service_validations.validate_user_should_exists(artist_name)
         return base_song_repository.get_artist_total_streams(artist_name)
     except UserNotFoundException as exception:
         base_song_service_logger.exception(f"User not found: {artist_name}")

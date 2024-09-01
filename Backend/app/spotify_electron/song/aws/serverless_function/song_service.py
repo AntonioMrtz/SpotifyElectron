@@ -6,7 +6,7 @@ import app.spotify_electron.song.aws.serverless_function.song_repository as song
 import app.spotify_electron.song.aws.serverless_function.song_serverless_function_api as song_serverless_function_api  # noqa: E501
 import app.spotify_electron.song.base_song_repository as base_song_repository
 import app.spotify_electron.user.artist.artist_service as artist_service
-import app.spotify_electron.user.validations.base_user_service_validations as base_user_service
+import app.spotify_electron.user.validations.base_user_service_validations as base_user_service_validations  # noqa: E501
 from app.auth.auth_schema import (
     TokenData,
     UserUnauthorizedException,
@@ -38,7 +38,7 @@ from app.spotify_electron.song.validations.base_song_service_validations import 
     validate_song_should_exists,
     validate_song_should_not_exists,
 )
-from app.spotify_electron.user.artist.validations.artist_repository_validations import (
+from app.spotify_electron.user.artist.validations.artist_service_validations import (
     validate_user_should_be_artist,
 )
 from app.spotify_electron.user.user.user_schema import (
@@ -150,12 +150,10 @@ async def create_song(  # noqa: C901
 
     try:
         validate_song_name_parameter(name)
-        base_user_service.validate_user_name_parameter(artist)
+        base_user_service_validations.validate_user_name_parameter(artist)
         Genre.check_valid_genre(genre.value)
 
         validate_song_should_not_exists(name)
-        base_user_service.validate_user_should_exists(artist)
-
         validate_user_should_be_artist(artist)
 
         song_duration = get_song_duration_seconds(name, file)
@@ -173,7 +171,7 @@ async def create_song(  # noqa: C901
             duration=song_duration,
             genre=genre,
         )
-        artist_service.add_song_artist(artist, name)
+        artist_service.add_song_to_artist(artist, name)
     except GenreNotValidException as exception:
         song_service_logger.exception(f"Bad genre provided {genre}")
         raise GenreNotValidException from exception
@@ -234,7 +232,7 @@ def delete_song(name: str) -> None:
 
         artist_name = base_song_repository.get_artist_from_song(name=name)
 
-        base_user_service.validate_user_should_exists(artist_name)
+        base_user_service_validations.validate_user_should_exists(artist_name)
 
         artist_service.delete_song_from_artist(
             artist_name,
@@ -251,6 +249,11 @@ def delete_song(name: str) -> None:
     except UserNotFoundException as exception:
         song_service_logger.exception(f"User {artist_name} not found")
         raise UserNotFoundException from exception
+    except UserUnauthorizedException as exception:
+        song_service_logger.exception(
+            f"User {artist_name} cannot have song {name} removed because he's not an artist"
+        )
+        raise SongServiceException from exception
     except SongRepositoryException as exception:
         song_service_logger.exception(
             f"Unexpected error in Song Repository deleting song: {name}"

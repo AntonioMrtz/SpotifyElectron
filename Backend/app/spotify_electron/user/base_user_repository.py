@@ -348,3 +348,18 @@ def get_user_playlist_names(user_name: str, collection: Collection) -> list[str]
     user_data = collection.find_one({"name": user_name}, {"playlists": 1, "_id": 0})
 
     return user_data["playlists"]  # type: ignore
+
+
+def get_user_playback_history_names(user_name: str, collection: Collection) -> list[str]:
+    """Get user playback history song names
+
+    Args:
+        user_name (str): user name
+        collection (Collection): user collection
+
+    Returns:
+        list[str]: the user playback history
+    """
+    user_data = collection.find_one({"name": user_name}, {"playback_history": 1, "_id": 0})
+
+    return user_data["playback_history"]  # type: ignore

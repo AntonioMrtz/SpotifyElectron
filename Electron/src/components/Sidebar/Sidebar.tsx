@@ -3,9 +3,9 @@ import { Link, useLocation } from 'react-router-dom';
 import Token from 'utils/token';
 import LoadingCircle from 'components/AdvancedUIComponents/LoadingCircle/LoadingCircle';
 import styles from './sideBarCss.module.css';
-import Playlist from './Playlist/Playlist';
+import PlaylistSidebar from './Playlist/PlaylistSidebar';
 import ModalAddSongPlaylist from './ModalAddSongPlaylist/ModalAddSongPlaylist';
-import useFetchGetUserRelevantPlaylists from '../../hooks/useFetchUserRelevantPlaylists';
+import useFetchGetUserRelevantPlaylists from '../../hooks/useFetchGetUserRelevantPlaylists';
 
 interface PropsSidebar {
   refreshSidebarTriggerValue: boolean;
@@ -170,7 +170,7 @@ export default function Sidebar({
 
                 return (
                   <Link to={urlPlaylist} key={playlist.name}>
-                    <Playlist
+                    <PlaylistSidebar
                       handleUrlPlaylistClicked={handleUrlPlaylistClicked}
                       name={playlist.name}
                       photo={playlist.photo}

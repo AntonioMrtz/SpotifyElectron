@@ -2,17 +2,17 @@
 import Popover, { PopoverPosition } from '@mui/material/Popover';
 import { useEffect, useState, MouseEvent } from 'react';
 import ContextMenuPlaylist from 'components/AdvancedUIComponents/ContextMenu/Playlist/ContextMenuPlaylist';
-import styles from './playlist.module.css';
-import { PropsPlaylist } from '../types/propsPlaylist';
+import { PropsPlaylistCardSidebar } from 'types/playlist';
+import styles from './playlistSidebar.module.css';
 
-export default function Playlist({
+export default function PlaylistSidebar({
   name,
   photo,
   owner,
   playlistStyle,
   handleUrlPlaylistClicked,
   refreshSidebarData,
-}: PropsPlaylist) {
+}: PropsPlaylistCardSidebar) {
   const handleClickPlaylist = () => {
     handleUrlPlaylistClicked(name);
   };

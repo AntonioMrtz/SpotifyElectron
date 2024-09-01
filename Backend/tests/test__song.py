@@ -358,17 +358,17 @@ def test_post_song_uploaded_songs_updated(clear_test_data_db):
 def test_post_song_uploaded_songs_bad_artist(clear_test_data_db):
     song_name = "8232392323623823723989"
     file_path = "tests/assets/song.mp3"
-    artista = "artista"
+    user_name = "artista"
     genre = "Pop"
     photo = "https://photo"
     password = "hola"
 
-    res_create_artist = create_artist(name=artista, password=password, photo=photo)
-    assert res_create_artist.status_code == HTTP_201_CREATED
+    res_create_user = create_user(name=user_name, password=password, photo=photo)
+    assert res_create_user.status_code == HTTP_201_CREATED
 
-    jwt_headers = get_user_jwt_header(username=artista, password=password)
+    jwt_headers = get_user_jwt_header(username=user_name, password=password)
 
-    res_delete_artist = delete_user(artista)
+    res_delete_artist = delete_user(user_name)
     assert res_delete_artist.status_code == HTTP_202_ACCEPTED
 
     res_create_song = create_song(
@@ -378,7 +378,7 @@ def test_post_song_uploaded_songs_bad_artist(clear_test_data_db):
         photo=photo,
         headers=jwt_headers,
     )
-    assert res_create_song.status_code == HTTP_404_NOT_FOUND
+    assert res_create_song.status_code == HTTP_403_FORBIDDEN
 
 
 def test_delete_song_uploaded_songs_updated(clear_test_data_db):

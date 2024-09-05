@@ -21,7 +21,7 @@ class BaseSongDAO(ABC):
     artist: str
     seconds_duration: int
     genre: Genre
-    streams: list[str]
+    streams: int
 
 
 @dataclass
@@ -33,7 +33,7 @@ class BaseSongDTO(ABC):
     artist: str
     seconds_duration: int
     genre: Genre
-    streams: list[str]
+    streams: int
 
 
 @dataclass

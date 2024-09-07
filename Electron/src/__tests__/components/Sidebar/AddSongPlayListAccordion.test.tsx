@@ -200,7 +200,7 @@ test('AddSongPlaylistAccordion submit song correct', async () => {
     fireEvent.change(inputPhoto, {
       target: { value: 'testpassword' },
     });
-    /* ! TODO For some both fireEvent are necessary and without one
+    /* ! TODO For some reasion both fireEvent are necessary . Without one
     the genre selected is empty causing the test to fail
      */
     fireEvent.change(selectGenreOption, {

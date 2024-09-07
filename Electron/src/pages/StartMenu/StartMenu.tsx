@@ -1,15 +1,16 @@
-import { ChangeEvent, useState, MouseEvent } from 'react';
+import { ChangeEvent, useState, MouseEvent, useEffect } from 'react';
 import {
   InfoPopoverType,
   PropsInfoPopover,
 } from 'components/AdvancedUIComponents/InfoPopOver/types/InfoPopover';
 import InfoPopover from 'components/AdvancedUIComponents/InfoPopOver/InfoPopover';
+import { getToken } from 'utils/token';
 // eslint-disable-next-line camelcase
-import { Body_login_usuario_login__post } from 'swagger/api/models/Body_login_usuario_login__post';
+import { Body_login_user_login__post } from 'swagger/api/models/Body_login_user_login__post';
+import timeout from 'utils/timeout';
 import styles from './startMenu.module.css';
 import SpotifyElectronLogo from '../../assets/imgs/SpotifyElectronLogo.png';
 import { LoginService } from '../../swagger/api/services/LoginService';
-import timeout from 'utils/timeout';
 
 interface PropsStartMenu {
   setIsLogged: Function;
@@ -21,14 +22,15 @@ export default function StartMenu({
   setIsSigningUp,
 }: PropsStartMenu) {
   /* Popover */
-
   const [isOpenPopover, setisOpenPopover] = useState(false);
   const [propsPopOver, setPropsPopOver] = useState<PropsInfoPopover | null>(
     null,
   );
 
-  /* Form data */
+  /* Loading state for auto-login */
+  const [autoLoginLoading, setAutoLoginLoading] = useState(true);
 
+  /* Form data */
   const [formData, setFormData] = useState({
     nombre: '',
     password: '',
@@ -49,13 +51,12 @@ export default function StartMenu({
         throw new Error('Unable to login');
       }
       // eslint-disable-next-line camelcase
-      const loginData: Body_login_usuario_login__post = {
+      const loginData: Body_login_user_login__post = {
         username: formData.nombre,
         password: formData.password,
       };
 
-      const loginUserPromise =
-        await LoginService.loginUsuarioLoginPost(loginData);
+      const loginUserPromise = await LoginService.loginUserLoginPost(loginData);
       const loginResponse = await Promise.race([
         loginUserPromise,
         timeout(3000),
@@ -95,85 +96,103 @@ export default function StartMenu({
     setIsSigningUp(true);
   };
 
+  useEffect(() => {
+    const handleAutoLogin = async () => {
+      try {
+        const token = getToken();
+        if (!token) return;
+        await LoginService.loginUserWithJwtLoginTokenTokenPost(token);
+        setIsLogged(true);
+      } catch (error) {
+        console.log(`User invalid credentials for auto login with JWT token`);
+      } finally {
+        setAutoLoginLoading(false);
+      }
+    };
+    handleAutoLogin();
+  }, [setIsLogged]);
+
   return (
     <div className={`${styles.mainModalContainer}`}>
-      <div className={`${styles.contentWrapper}`}>
-        <div className={`d-flex flex-row ${styles.titleContainer}`}>
-          <img
-            src={SpotifyElectronLogo}
-            className="img-fluid"
-            alt="Spotify Electron Logo"
-          />
-          <h2>Spotify Electron</h2>
-        </div>
-
-        <hr />
-
-        <h1>Inicia sesión en Spotify Electron</h1>
-        <form className={`d-flex flex-column ${styles.formWrapper}`}>
-          <label
-            htmlFor="username"
-            className="d-flex flex-column justify-content-start"
-          >
-            Nombre de usuario
-            <input
-              type="text"
-              name="nombre"
-              id="nombre"
-              placeholder="Nombre de usuario"
-              onChange={handleChange}
-              spellCheck={false}
-              required
+      {!autoLoginLoading && (
+        <div className={`${styles.contentWrapper}`}>
+          <div className={`d-flex flex-row ${styles.titleContainer}`}>
+            <img
+              src={SpotifyElectronLogo}
+              className="img-fluid"
+              alt="Spotify Electron Logo"
             />
-          </label>
-          <label
-            htmlFor="password"
-            className="d-flex flex-column justify-content-start"
-          >
-            Contraseña
-            <input
-              type="password"
-              name="password"
-              id="password"
-              placeholder="Contraseña"
-              onChange={handleChange}
-              spellCheck={false}
-              required
-            />
-          </label>
+            <h2>Spotify Electron</h2>
+          </div>
 
-          <button
-            type="submit"
-            className={`${styles.loginButton}`}
-            onClick={handleLogin}
-          >
-            Iniciar sesión
-          </button>
-        </form>
+          <hr />
 
-        <hr style={{ marginTop: '32px' }} />
+          <h1>Inicia sesión en Spotify Electron</h1>
+          <form className={`d-flex flex-column ${styles.formWrapper}`}>
+            <label
+              htmlFor="username"
+              className="d-flex flex-column justify-content-start"
+            >
+              Nombre de usuario
+              <input
+                type="text"
+                name="nombre"
+                id="nombre"
+                placeholder="Nombre de usuario"
+                onChange={handleChange}
+                spellCheck={false}
+                required
+              />
+            </label>
+            <label
+              htmlFor="password"
+              className="d-flex flex-column justify-content-start"
+            >
+              Contraseña
+              <input
+                type="password"
+                name="password"
+                id="password"
+                placeholder="Contraseña"
+                onChange={handleChange}
+                spellCheck={false}
+                required
+              />
+            </label>
 
-        <div
-          className={`d-flex w-100 justify-content-center ${styles.wrapperRegisterText}`}
-        >
-          <p style={{ color: 'var(--secondary-white)', marginRight: '8px' }}>
-            ¿No tienes cuenta?
-          </p>
-          <button
-            onClick={handleClickRegister}
-            type="button"
-            style={{
-              color: 'var(--pure-white)',
-              textDecoration: 'underline',
-              border: 'none',
-              backgroundColor: 'transparent',
-              padding: '0px',
-            }}
+            <button
+              type="submit"
+              className={`${styles.loginButton}`}
+              onClick={handleLogin}
+            >
+              Iniciar sesión
+            </button>
+          </form>
+
+          <hr style={{ marginTop: '32px' }} />
+
+          <div
+            className={`d-flex w-100 justify-content-center ${styles.wrapperRegisterText}`}
           >
-            Regístrate en Spotify Electron
-          </button>
+            <p style={{ color: 'var(--secondary-white)', marginRight: '8px' }}>
+              ¿No tienes cuenta?
+            </p>
+            <button
+              onClick={handleClickRegister}
+              type="button"
+              style={{
+                color: 'var(--pure-white)',
+                textDecoration: 'underline',
+                border: 'none',
+                backgroundColor: 'transparent',
+                padding: '0px',
+              }}
+            >
+              Regístrate en Spotify Electron
+            </button>
+          </div>
         </div>
-      </div>
+      )}
 
       {propsPopOver && (
         <InfoPopover

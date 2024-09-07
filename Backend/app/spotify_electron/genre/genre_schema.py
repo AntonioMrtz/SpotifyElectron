@@ -76,7 +76,7 @@ class Genre(StrEnum):
 class GenreNotValidException(SpotifyElectronException):
     """Exception for getting a Genre from an invalid value"""
 
-    ERROR = "The genre doesnt exists"
+    ERROR = "The genre doesn't exists"
 
     def __init__(self):
         super().__init__(self.ERROR)

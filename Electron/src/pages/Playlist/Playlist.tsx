@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { ChangeEvent, FormEvent, useEffect, useState, MouseEvent } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import Token from 'utils/token';
+import { getTokenUsername } from 'utils/token';
 import { PropsSongs } from 'components/Sidebar/types/propsSongs';
 import { FastAverageColor } from 'fast-average-color';
 import Modal from '@mui/material/Modal';
@@ -75,7 +75,7 @@ export default function Playlist({
     setLiked(false);
   };
   const loadPlaylistLikedStatus = async () => {
-    const username = Token.getTokenUsername();
+    const username = getTokenUsername();
 
     try {
       // TODO simplify query to obtain the result directly
@@ -97,7 +97,7 @@ export default function Playlist({
   };
 
   const handleLike = async () => {
-    const username = Token.getTokenUsername();
+    const username = getTokenUsername();
 
     if (liked === false) {
       try {
@@ -565,7 +565,7 @@ export default function Playlist({
         </Popover>
       </div>
 
-      {owner === Token.getTokenUsername() && (
+      {owner === getTokenUsername() && (
         <Modal
           className=""
           open={openModalUpdatePlaylist}

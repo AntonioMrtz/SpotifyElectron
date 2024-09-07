@@ -348,6 +348,39 @@ def get_user_relevant_playlists(name: str) -> Response:
         )
 
 
+@router.get("/{name}/playlists")
+def get_user_playlists(name: str) -> Response:
+    """Get playlists created by the user
+
+    Args:
+        name (str): user name
+    """
+    try:
+        playlists = base_user_service.get_user_playlists(name)
+        playlists_json = json_converter_utils.get_json_from_model(playlists)
+        return Response(playlists_json, media_type="application/json", status_code=HTTP_200_OK)
+    except UserBadNameException:
+        return Response(
+            status_code=HTTP_400_BAD_REQUEST,
+            content=PropertiesMessagesManager.userBadName,
+        )
+    except UserNotFoundException:
+        return Response(
+            status_code=HTTP_404_NOT_FOUND,
+            content=PropertiesMessagesManager.userNotFound,
+        )
+    except JsonEncodeException:
+        return Response(
+            status_code=HTTP_500_INTERNAL_SERVER_ERROR,
+            content=PropertiesMessagesManager.commonEncodingError,
+        )
+    except (Exception, UserServiceException):
+        return Response(
+            status_code=HTTP_500_INTERNAL_SERVER_ERROR,
+            content=PropertiesMessagesManager.commonInternalServerError,
+        )
+
+
 @router.get("/{name}/playlist_names")
 def get_user_playlists_names(name: str) -> Response:
     """Get playlist names created by user
@@ -360,6 +393,41 @@ def get_user_playlists_names(name: str) -> Response:
         playlist_names_json = json_converter_utils.get_json_from_model(playlist_names)
         return Response(
             playlist_names_json, media_type="application/json", status_code=HTTP_200_OK
+        )
+    except UserBadNameException:
+        return Response(
+            status_code=HTTP_400_BAD_REQUEST,
+            content=PropertiesMessagesManager.userBadName,
+        )
+    except UserNotFoundException:
+        return Response(
+            status_code=HTTP_404_NOT_FOUND,
+            content=PropertiesMessagesManager.userNotFound,
+        )
+    except JsonEncodeException:
+        return Response(
+            status_code=HTTP_500_INTERNAL_SERVER_ERROR,
+            content=PropertiesMessagesManager.commonEncodingError,
+        )
+    except (Exception, UserServiceException):
+        return Response(
+            status_code=HTTP_500_INTERNAL_SERVER_ERROR,
+            content=PropertiesMessagesManager.commonInternalServerError,
+        )
+
+
+@router.get("/{name}/playback_history")
+def get_user_playback_history(name: str) -> Response:
+    """Get user song playback history
+
+    Args:
+        name (str): user name
+    """
+    try:
+        playback_history = base_user_service.get_user_playback_history(name)
+        playback_history_json = json_converter_utils.get_json_from_model(playback_history)
+        return Response(
+            playback_history_json, media_type="application/json", status_code=HTTP_200_OK
         )
     except UserBadNameException:
         return Response(

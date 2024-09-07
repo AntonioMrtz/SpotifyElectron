@@ -3,7 +3,7 @@ import { act, fireEvent, render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import StickyHeader from 'components/StickyHeader/StickyHeader';
-import Token from 'utils/token';
+import * as TokenModule from 'utils/token';
 import UserType from 'utils/role';
 import Global from 'global/global';
 import getMockHeaders from 'utils/mockHeaders';
@@ -11,8 +11,8 @@ import getMockHeaders from 'utils/mockHeaders';
 const userName = 'prueba';
 const roleUser = UserType.USER;
 
-jest.spyOn(Token, 'getTokenUsername').mockReturnValue(userName);
-jest.spyOn(Token, 'getTokenRole').mockReturnValue(roleUser);
+jest.spyOn(TokenModule, 'getTokenUsername').mockReturnValue(userName);
+jest.spyOn(TokenModule, 'getTokenRole').mockReturnValue(roleUser);
 
 const userMockFetch = {
   name: userName,
@@ -37,7 +37,7 @@ global.fetch = jest.fn((url: string) => {
   }
 
   // In case the URL doesn't match, return a rejected promise
-  return Promise.reject(new Error('Unhandled URL in fetch mock'));
+  return Promise.reject(new Error(`Unhandled URL in fetch mock: ${url}`));
 }) as jest.Mock;
 
 test('Render StickyHeader and get User data', async () => {

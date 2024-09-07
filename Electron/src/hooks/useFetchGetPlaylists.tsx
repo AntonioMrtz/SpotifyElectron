@@ -1,14 +1,7 @@
 import { useState, useEffect } from 'react';
+import { PropsPlaylistCard } from 'types/playlist';
 import defaultThumbnailPlaylist from '../assets/imgs/DefaultThumbnailPlaylist.jpg';
 import { PlaylistsService } from '../swagger/api/services/PlaylistsService';
-
-interface PropsPlaylistCard {
-  name: string;
-  photo: string;
-  description: string;
-  refreshSidebarData: () => void;
-  owner: string;
-}
 
 const useFetchGetPlaylists = (refreshSidebarData: () => void) => {
   const [playlists, setPlaylists] = useState<PropsPlaylistCard[]>([]);

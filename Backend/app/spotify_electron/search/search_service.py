@@ -29,7 +29,7 @@ async def search_by_name(name: str) -> SearchResult:
 
     Raises:
         BadParameterException: if the name is invalid
-        SearchServiceException: if unexpected error getting items by name
+        SearchServiceException: unexpected error getting items by name
 
     Returns:
         SearchResult: the items that partially match the name

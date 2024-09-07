@@ -12,16 +12,18 @@ from starlette.status import (
     HTTP_200_OK,
     HTTP_201_CREATED,
     HTTP_400_BAD_REQUEST,
+    HTTP_403_FORBIDDEN,
     HTTP_404_NOT_FOUND,
     HTTP_500_INTERNAL_SERVER_ERROR,
 )
 
 import app.spotify_electron.user.artist.artist_service as artist_service
 import app.spotify_electron.utils.json_converter.json_converter_utils as json_converter_utils
-from app.auth.auth_schema import TokenData
+from app.auth.auth_schema import TokenData, UserUnauthorizedException
 from app.auth.JWTBearer import JWTBearer
 from app.common.PropertiesMessagesManager import PropertiesMessagesManager
 from app.exceptions.base_exceptions_schema import JsonEncodeException
+from app.spotify_electron.song.base_song_schema import SongBadNameException
 from app.spotify_electron.user.user.user_schema import (
     UserAlreadyExistsException,
     UserBadNameException,
@@ -129,6 +131,11 @@ def get_artists(
             status_code=HTTP_404_NOT_FOUND,
             content=PropertiesMessagesManager.artistNotFound,
         )
+    except UserUnauthorizedException:
+        return Response(
+            status_code=HTTP_403_FORBIDDEN,
+            content=PropertiesMessagesManager.userUnauthorized,
+        )
     except JsonEncodeException:
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
@@ -146,9 +153,13 @@ def get_artist_streams(
     name: str,
     token: Annotated[TokenData | None, Depends(JWTBearer())],
 ) -> Response:
-    """Get artist total streams of his songs"""
+    """Get artist total streams of his songs
+
+    Args:
+        name (str): artist name
+    """
     try:
-        total_streams = artist_service.get_streams_artist(user_name=name)
+        total_streams = artist_service.get_streams_artist(artist_name=name)
 
         total_streams_json = json_converter_utils.get_json_with_iterable_field_from_model(
             total_streams, "streams"
@@ -156,6 +167,41 @@ def get_artist_streams(
 
         return Response(
             total_streams_json, media_type="application/json", status_code=HTTP_200_OK
+        )
+    except JsonEncodeException:
+        return Response(
+            status_code=HTTP_500_INTERNAL_SERVER_ERROR,
+            content=PropertiesMessagesManager.commonEncodingError,
+        )
+    except (Exception, UserServiceException):
+        return Response(
+            status_code=HTTP_500_INTERNAL_SERVER_ERROR,
+            content=PropertiesMessagesManager.commonInternalServerError,
+        )
+
+
+@router.get("/{name}/songs")
+def get_artist_songs(
+    name: str,
+    token: Annotated[TokenData | None, Depends(JWTBearer())],
+) -> Response:
+    """Get artist songs"""
+    try:
+        artist_songs = artist_service.get_artists_songs(name)
+        artist_songs_json = json_converter_utils.get_json_from_model(artist_songs)
+
+        return Response(
+            artist_songs_json, media_type="application/json", status_code=HTTP_200_OK
+        )
+    except SongBadNameException:
+        return Response(
+            status_code=HTTP_400_BAD_REQUEST,
+            content=PropertiesMessagesManager.songBadName,
+        )
+    except UserUnauthorizedException:
+        return Response(
+            status_code=HTTP_403_FORBIDDEN,
+            content=PropertiesMessagesManager.userUnauthorized,
         )
     except JsonEncodeException:
         return Response(

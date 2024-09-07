@@ -6,7 +6,7 @@ import app.auth.auth_service as auth_service
 import app.spotify_electron.user.base_user_repository as base_user_repository
 import app.spotify_electron.user.providers.user_collection_provider as user_collection_provider
 import app.spotify_electron.user.user.user_repository as user_repository
-import app.spotify_electron.user.validations.base_user_service_validations as base_user_service
+import app.spotify_electron.user.validations.base_user_service_validations as base_user_service_validations  # noqa: E501
 from app.logging.logging_constants import LOGGING_USER_SERVICE
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.user.user.user_schema import (
@@ -55,7 +55,7 @@ def get_user(user_name: str) -> UserDTO:
         UserDTO: the user
     """
     try:
-        base_user_service.validate_user_name_parameter(user_name)
+        base_user_service_validations.validate_user_name_parameter(user_name)
         user = user_repository.get_user(user_name)
         user_dto = get_user_dto_from_dao(user)
     except UserBadNameException as exception:
@@ -93,8 +93,8 @@ def create_user(user_name: str, photo: str, password: str) -> None:
         UserServiceException: unexpected error while creating user
     """
     try:
-        base_user_service.validate_user_name_parameter(user_name)
-        base_user_service.validate_user_should_not_exist(user_name)
+        base_user_service_validations.validate_user_name_parameter(user_name)
+        base_user_service_validations.validate_user_should_not_exist(user_name)
 
         date = get_current_iso8601_date()
         photo = photo if "http" in photo else ""
@@ -166,7 +166,7 @@ def search_by_name(name: str) -> list[UserDTO]:
         name (str): name to match
 
     Raises:
-        UserServiceException: if unexpected error searching users that match a name
+        UserServiceException: unexpected error searching users that match a name
 
     Returns:
         list[UserDTO]: users that match the name

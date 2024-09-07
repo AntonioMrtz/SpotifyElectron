@@ -32,13 +32,13 @@ def validate_user_name_parameter(name: str) -> None:
 
 
 def validate_user_should_exists(user_name: str) -> None:
-    """Raises an exception if user doesnt exists
+    """Raises an exception if user doesn't exists
 
     Args:
         user_name (str): the user name
 
     Raises:
-        UserNotFoundException: if the user doesnt exists
+        UserNotFoundException: if the user doesn't exists
     """
     result_artist_exists = artist_service.does_artist_exists(user_name)
     result_user_exists = user_service.does_user_exists(user_name)

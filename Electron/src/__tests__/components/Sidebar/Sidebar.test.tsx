@@ -4,17 +4,18 @@ import '@testing-library/jest-dom/extend-expect';
 import { BrowserRouter } from 'react-router-dom';
 import Global from 'global/global';
 import Sidebar from 'components/Sidebar/Sidebar';
-import Token from 'utils/token';
 import UserType from 'utils/role';
 import getMockHeaders from 'utils/mockHeaders';
 
+import * as TokenModule from 'utils/token';
+
 const playlistName = 'playlisttest';
 const songName = 'songName';
-const username = 'prueba';
+const userName = 'prueba';
 const roleUser = UserType.ARTIST;
 
 const artistMockFetch = {
-  name: username,
+  name: userName,
   photo: 'photo',
   register_date: 'date',
   password: 'hashpassword',
@@ -33,8 +34,8 @@ const playlistDTOMockFetch = {
   song_names: [],
 };
 
-jest.spyOn(Token, 'getTokenUsername').mockReturnValue(username);
-jest.spyOn(Token, 'getTokenRole').mockReturnValue(roleUser);
+jest.spyOn(TokenModule, 'getTokenUsername').mockReturnValue(userName);
+jest.spyOn(TokenModule, 'getTokenRole').mockReturnValue(roleUser);
 
 test('render Sidebar', async () => {
   global.fetch = jest.fn(async (url: string) => {
@@ -49,7 +50,7 @@ test('render Sidebar', async () => {
       });
     }
     if (
-      url === `${Global.backendBaseUrl}/users/${username}/relevant_playlists`
+      url === `${Global.backendBaseUrl}/users/${userName}/relevant_playlists`
     ) {
       return Promise.resolve({
         json: () => Promise.resolve([playlistDTOMockFetch]),
@@ -62,7 +63,7 @@ test('render Sidebar', async () => {
     }
 
     // In case the URL doesn't match, return a rejected promise
-    return Promise.reject(new Error('Unhandled URL in fetch mock'));
+    return Promise.reject(new Error(`Unhandled URL in fetch mock: ${url}`));
   }) as jest.Mock;
 
   const component = await act(() => {

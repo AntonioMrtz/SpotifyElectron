@@ -30,5 +30,9 @@
   "vs-code-prettier-eslint.prettierLast": false,
   "[typescript]": {
     "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+  },
+  "jest.runMode": {
+    "runAllTestsOnStartup": false,
+    "type": "on-demand"
   }
 }

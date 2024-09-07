@@ -30,7 +30,7 @@ def check_openapi_folder_exists() -> bool:
     )
     print(f"> Checking if {openapi_expected_path_folder} folder exists")
     if not os.path.exists(openapi_expected_path_folder):
-        print(f"> Folder {openapi_expected_path_folder} doesnt exists")
+        print(f"> Folder {openapi_expected_path_folder} doesn't exists")
         return False
     print(f"> Folder {openapi_expected_path_folder} exists")
     return True

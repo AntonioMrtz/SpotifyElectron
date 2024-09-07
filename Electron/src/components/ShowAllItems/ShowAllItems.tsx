@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import styles from './showAllItems.module.css';
 import ItemsPlaylist from './Items/ItemsAllPlaylists';
-import { PropsAllItems, ShowAllItemsTypes } from './types/propsShowAllItems';
+import { PropsAllItems, ShowAllItemsTypes } from './types/PropsShowAllItems';
 import ItemsArtist from './Items/ItemsAllArtist';
 import ItemsAllPlaylistsFromUser from './Items/ItemsAllPlaylistFromUser';
 import ItemsAllSongsFromArtist from './Items/ItemsAllSongsFromArtist';

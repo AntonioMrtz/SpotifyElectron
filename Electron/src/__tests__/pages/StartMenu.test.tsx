@@ -1,102 +1,143 @@
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  act,
+} from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { act, fireEvent, render } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
 import StartMenu from 'pages/StartMenu/StartMenu';
-import getMockHeaders from 'utils/mockHeaders';
+import { getToken } from 'utils/token';
+import { LoginService } from '../../swagger/api/services/LoginService';
 
-afterEach(() => {
-  jest.clearAllMocks();
-});
+jest.mock('../../swagger/api/services/LoginService');
+jest.mock('utils/token');
 
-test('render StartMenu', () => {
-  expect(
-    render(<StartMenu setIsLogged={() => {}} setIsSigningUp={() => {}} />),
-  ).toBeTruthy();
-});
+describe('StartMenu Component', () => {
+  const setIsLoggedMock = jest.fn();
+  const setIsSigningUpMock = jest.fn();
 
-test('StartMenu correct text', () => {
-  const component = render(
-    <StartMenu setIsLogged={jest.fn()} setIsSigningUp={jest.fn()} />,
-  );
-
-  expect(component.container).toHaveTextContent(
-    'Inicia sesión en Spotify Electron',
-  );
-});
-
-test('Login failed', () => {
-  const mockSetIsLogged = jest.fn();
-
-  const component = render(
-    <StartMenu setIsLogged={mockSetIsLogged} setIsSigningUp={jest.fn()} />,
-  );
-
-  const loginButton = component.getByText('Iniciar sesión');
-  fireEvent.click(loginButton);
-
-  expect(
-    component.queryByText('No se ha podido iniciar sesión'),
-  ).toBeInTheDocument();
-
-  const popover = document.getElementById('button-info-popover');
-  expect(popover).toBeVisible();
-  if (popover) {
-    fireEvent.click(popover);
-  }
-
-  fireEvent.click(document.body);
-
-  expect(component.queryByText('No se ha podido iniciar sesión')).toBeNull();
-  expect(popover).not.toBeVisible();
-});
-
-test('Login success', async () => {
-  const setIsLogged = jest.fn();
-  const setIsSigningUp = jest.fn();
-
-  global.fetch = jest.fn(() =>
-    Promise.resolve({
-      json: () => Promise.resolve({}),
-      status: 200,
-      ok: true,
-      headers: getMockHeaders(),
-    }),
-  ) as jest.Mock;
-
-  const component = render(
-    <StartMenu setIsLogged={setIsLogged} setIsSigningUp={setIsSigningUp} />,
-  );
-
-  // Simulate user input
-
-  const inputName = component.getByPlaceholderText('Nombre de usuario');
-  const inputPassword = component.getByPlaceholderText('Contraseña');
-
-  fireEvent.change(inputName, {
-    target: { value: 'testuser' },
-  });
-  fireEvent.change(inputPassword, {
-    target: { value: 'testpassword' },
+  beforeEach(() => {
+    jest.clearAllMocks();
   });
 
-  const loginButton = component.getByText('Iniciar sesión');
+  test('renders the component and displays title and form', async () => {
+    await act(async () => {
+      render(
+        <StartMenu
+          setIsLogged={setIsLoggedMock}
+          setIsSigningUp={setIsSigningUpMock}
+        />,
+      );
+    });
 
-  await act(async () => {
-    fireEvent.click(loginButton);
+    expect(screen.getByText('Spotify Electron')).toBeInTheDocument();
+    expect(
+      screen.getByText('Inicia sesión en Spotify Electron'),
+    ).toBeInTheDocument();
+    expect(screen.getByText('Nombre de usuario')).toBeInTheDocument();
+    expect(screen.getByText('Contraseña')).toBeInTheDocument();
   });
 
-  expect(setIsLogged).toHaveBeenCalledWith(true);
-});
+  test('handles input changes and form submission', async () => {
+    (LoginService.loginUserLoginPost as jest.Mock).mockResolvedValue(
+      'mock-jwt-token',
+    );
+    (getToken as jest.Mock).mockReturnValue('mock-jwt-token');
 
-test('Change to register menu', () => {
-  const mockSetIsRegistering = jest.fn();
+    (
+      LoginService.loginUserWithJwtLoginTokenTokenPost as jest.Mock
+    ).mockResolvedValue('mock-jwt-token');
+    (getToken as jest.Mock).mockReturnValue('mock-jwt-token');
 
-  const component = render(
-    <StartMenu setIsLogged={jest.fn()} setIsSigningUp={mockSetIsRegistering} />,
-  );
+    await act(async () => {
+      render(
+        <StartMenu
+          setIsLogged={setIsLoggedMock}
+          setIsSigningUp={setIsSigningUpMock}
+        />,
+      );
+    });
 
-  const regiserButton = component.getByText('Regístrate en Spotify Electron');
-  fireEvent.click(regiserButton);
+    await act(async () => {
+      fireEvent.change(screen.getByPlaceholderText('Nombre de usuario'), {
+        target: { value: 'user123' },
+      });
+      fireEvent.change(screen.getByPlaceholderText('Contraseña'), {
+        target: { value: 'password123' },
+      });
+      fireEvent.click(screen.getByText('Iniciar sesión'));
 
-  expect(mockSetIsRegistering).toHaveBeenCalledWith(true);
+      await waitFor(() => {
+        expect(setIsLoggedMock).toHaveBeenCalledWith(true);
+      });
+    });
+  });
+
+  test('handles auto-login on component mount', async () => {
+    (
+      LoginService.loginUserWithJwtLoginTokenTokenPost as jest.Mock
+    ).mockResolvedValue(undefined);
+    (getToken as jest.Mock).mockReturnValue('mock-jwt-token');
+
+    (getToken as jest.Mock).mockReturnValue('mock-jwt-token');
+
+    await act(async () => {
+      render(
+        <StartMenu
+          setIsLogged={setIsLoggedMock}
+          setIsSigningUp={setIsSigningUpMock}
+        />,
+      );
+    });
+
+    expect(setIsLoggedMock).toHaveBeenCalledWith(true);
+  });
+
+  test('handles login error and displays error popover', async () => {
+    (LoginService.loginUserLoginPost as jest.Mock).mockRejectedValue(
+      new Error('Login error'),
+    );
+
+    await act(async () => {
+      render(
+        <StartMenu
+          setIsLogged={setIsLoggedMock}
+          setIsSigningUp={setIsSigningUpMock}
+        />,
+      );
+    });
+
+    fireEvent.change(screen.getByPlaceholderText('Nombre de usuario'), {
+      target: { value: 'user123' },
+    });
+    fireEvent.change(screen.getByPlaceholderText('Contraseña'), {
+      target: { value: 'password123' },
+    });
+    await act(async () => {
+      fireEvent.click(screen.getByText('Iniciar sesión'));
+    });
+
+    expect(setIsLoggedMock).toHaveBeenCalledWith(false);
+    expect(
+      screen.getByText('Los credenciales introducidos no son válidos'),
+    ).toBeInTheDocument();
+  });
+
+  test('handles register button click', async () => {
+    await act(async () => {
+      render(
+        <StartMenu
+          setIsLogged={setIsLoggedMock}
+          setIsSigningUp={setIsSigningUpMock}
+        />,
+      );
+    });
+
+    act(() => {
+      fireEvent.click(screen.getByText('Regístrate en Spotify Electron'));
+    });
+
+    expect(setIsSigningUpMock).toHaveBeenCalledWith(true);
+  });
 });

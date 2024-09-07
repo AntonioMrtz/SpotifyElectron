@@ -19,7 +19,7 @@ def get_json_from_model(object: Any) -> str:
 
     Args:
     ----
-        object (Any): the object thats going to be converted into json string
+        object (Any): the object that's going to be converted into json string
 
     Raises:
     ------
@@ -56,7 +56,7 @@ def _get_json_from_model(object: Any) -> str:
 
     Args:
     ----
-        object (Any): the object thats going to be converted into json string
+        object (Any): the object that's going to be converted into json string
 
     Raises:
     ------

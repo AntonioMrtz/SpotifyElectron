@@ -4,10 +4,10 @@ import { act, fireEvent, render } from '@testing-library/react';
 import ContextMenuSong from 'components/AdvancedUIComponents/ContextMenu/Song/ContextMenuSong';
 import Global from 'global/global';
 import UserType from 'utils/role';
-import Token from 'utils/token';
 import * as router from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
 import getMockHeaders from 'utils/mockHeaders';
+import * as TokenModule from 'utils/token';
 
 const playlistName = 'playlisttest';
 const songName = 'songName';
@@ -38,8 +38,9 @@ const playlistDTOMockFetch = {
 const navigate = jest.fn();
 
 jest.spyOn(router, 'useNavigate').mockImplementation(() => navigate);
-jest.spyOn(Token, 'getTokenUsername').mockReturnValue(userName);
-jest.spyOn(Token, 'getTokenRole').mockReturnValue(roleUser);
+
+jest.spyOn(TokenModule, 'getTokenUsername').mockReturnValue(userName);
+jest.spyOn(TokenModule, 'getTokenRole').mockReturnValue(roleUser);
 
 global.fetch = jest.fn((url: string, options: any) => {
   if (
@@ -98,7 +99,7 @@ global.fetch = jest.fn((url: string, options: any) => {
   }
 
   // In case the URL doesn't match, return a rejected promise
-  return Promise.reject(new Error('Unhandled URL in fetch mock'));
+  return Promise.reject(new Error(`Unhandled URL in fetch mock: ${url}`));
 }) as jest.Mock;
 
 test('Render ContextMenuSong', async () => {

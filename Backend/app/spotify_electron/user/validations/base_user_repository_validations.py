@@ -28,7 +28,7 @@ def validate_password_exists(password: bytes) -> None:
 
 
 def validate_user_exists(user: UserDAO | None) -> None:
-    """Raises an exception if user doesnt exists
+    """Raises an exception if user doesn't exists
 
     Args:
     ----
@@ -36,7 +36,7 @@ def validate_user_exists(user: UserDAO | None) -> None:
 
     Raises:
     ------
-        UserNotFoundException: if the user doesnt exists
+        UserNotFoundException: if the user doesn't exists
 
     """
     if user is None:

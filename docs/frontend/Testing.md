@@ -10,7 +10,7 @@ Standard run
 npm run test
 ```
 
-Run test and generate coverage
+Run test and generate coverage, there will be a coverage folder under `Electron/`. Open `index.html` file to get an UI for visualizing coverage.
 
 ```
 npm run test:coverage
@@ -22,6 +22,48 @@ npm run test:coverage
 2. Run `npx jest filename.test.tsx`
 
 ## 👷‍♂️ Develop tests
+
+
+### Test debugging
+
+For debugging the state of the interface we'll be using [Jest Preview](https://www.jest-preview.com/docs/api/debug/). This package will help us preview the state of the interface in certain point after the test finished running.
+
+First launch Jest preview server:
+```
+npx jest-preview
+```
+
+An output with the port should be logged. Launch a browser instance and go to `localhost:3336` or the output port shown after running the command:
+```
+Jest Preview Server listening on port 3336
+```
+
+Select the state of the code that you want to preview and add `debug()` statement:
+```
+import { debug } from 'jest-preview'; // ---> Import this line to the test file
+
+test('renders the component and displays title and form', async () => {
+    await act(async () => {
+      render(
+        <StartMenu
+          setIsLogged={setIsLoggedMock}
+          setIsSigningUp={setIsSigningUpMock}
+        />,
+      );
+    });
+
+    expect(screen.getByText('Spotify Electron')).toBeInTheDocument();
+    expect(
+      screen.getByText('Inicia sesión en Spotify Electron'),
+    ).toBeInTheDocument();
+    expect(screen.getByText('Nombre de usuario')).toBeInTheDocument();
+    expect(screen.getByText('Contraseña')).toBeInTheDocument();
+
+    debug() // ---> Add this statement, the browser will reflect the state of the UI in this point
+  });
+```
+Go to the previously opened browser instance and check the state of the UI in the last `debug` statement.
+
 
 ### Mock Fetch
 

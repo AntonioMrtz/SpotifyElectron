@@ -3,16 +3,17 @@ import { act, fireEvent, render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { BrowserRouter } from 'react-router-dom';
 import Global from 'global/global';
-import Token from 'utils/token';
 import UserType from 'utils/role';
 import AddSongPlayListAccordion from 'components/Sidebar/ModalAddSongPlaylist/Accordion/AddSongPlayListAccordion';
 import getMockHeaders from 'utils/mockHeaders';
 
+import * as TokenModule from 'utils/token';
+
 const userName = 'prueba';
 const roleUser = UserType.ARTIST;
 
-jest.spyOn(Token, 'getTokenUsername').mockReturnValue(userName);
-jest.spyOn(Token, 'getTokenRole').mockReturnValue(roleUser);
+jest.spyOn(TokenModule, 'getTokenUsername').mockReturnValue(userName);
+jest.spyOn(TokenModule, 'getTokenRole').mockReturnValue(roleUser);
 
 test('render AddSongPlaylistAccordion', async () => {
   const handleCloseMock = jest.fn();
@@ -32,7 +33,7 @@ test('render AddSongPlaylistAccordion', async () => {
     }
 
     // In case the URL doesn't match, return a rejected promise
-    return Promise.reject(new Error('Unhandled URL in fetch mock'));
+    return Promise.reject(new Error(`Unhandled URL in fetch mock: ${url}`));
   }) as jest.Mock;
 
   const component = await act(() => {
@@ -199,7 +200,7 @@ test('AddSongPlaylistAccordion submit song correct', async () => {
     fireEvent.change(inputPhoto, {
       target: { value: 'testpassword' },
     });
-    /* ! TODO For some both fireEvent are necessary and without one
+    /* ! TODO For some reasion both fireEvent are necessary . Without one
     the genre selected is empty causing the test to fail
      */
     fireEvent.change(selectGenreOption, {

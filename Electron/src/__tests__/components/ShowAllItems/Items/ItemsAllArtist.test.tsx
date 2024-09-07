@@ -5,6 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import Global from 'global/global';
 import ItemsAllArtist from 'components/ShowAllItems/Items/ItemsAllArtist';
 import * as router from 'react-router';
+import getMockHeaders from 'utils/mockHeaders';
 
 const navigate = jest.fn();
 
@@ -30,12 +31,13 @@ test('Render ItemsAllArtist', async () => {
           }),
         status: 200,
         ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });
     }
     // In case the URL doesn't match, return a rejected promise
-    return Promise.reject(new Error('Unhandled URL in fetch mock'));
+    return Promise.reject(new Error(`Unhandled URL in fetch mock: ${url}`));
   }) as jest.Mock;
   const component = await act(() => {
     return render(

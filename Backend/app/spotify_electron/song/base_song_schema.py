@@ -21,7 +21,7 @@ class BaseSongDAO(ABC):
     artist: str
     seconds_duration: int
     genre: Genre
-    streams: list[str]
+    streams: int
 
 
 @dataclass
@@ -33,7 +33,7 @@ class BaseSongDTO(ABC):
     artist: str
     seconds_duration: int
     genre: Genre
-    streams: list[str]
+    streams: int
 
 
 @dataclass
@@ -144,7 +144,7 @@ class SongtUpdateException(SpotifyElectronException):
 class SongServiceException(SpotifyElectronException):
     """Exception for Song Service Unexpected Exceptions"""
 
-    ERROR = "Error accessing Song SERVICE"
+    ERROR = "Error accessing Song Service"
 
     def __init__(self):
         super().__init__(self.ERROR)

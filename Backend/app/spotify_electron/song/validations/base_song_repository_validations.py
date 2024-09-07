@@ -13,7 +13,7 @@ from app.spotify_electron.song.base_song_schema import (
 
 
 def validate_song_exists(song: BaseSongDAO | None) -> None:
-    """Raises an exception if song doesnt exists
+    """Raises an exception if song doesn't exists
 
     Args:
     ----
@@ -21,7 +21,7 @@ def validate_song_exists(song: BaseSongDAO | None) -> None:
 
     Raises:
     ------
-        SongNotFoundException: if the song doesnt exists
+        SongNotFoundException: if the song doesn't exists
 
     """
     if song is None:

@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { PropsSongCard } from 'components/Cards/SongCard/SongCard';
 import { PropsUserCard } from 'components/Cards/UserCard/types/propsUserCard';
 import { PropsArtistCard } from 'components/Cards/ArtistCard/types/propsArtistCard';
-import { PropsPlaylistCard } from 'components/Cards/PlaylistCard/types/propsPlaylistCard';
+import { PropsPlaylistCard } from 'types/playlist';
+import { PropsSongCard } from 'types/song';
 import { SearchService } from '../swagger/api/services/SearchService';
 
 const useFetchSearchItemsByName = (

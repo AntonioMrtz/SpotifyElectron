@@ -3,10 +3,11 @@ import { act, fireEvent, render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { BrowserRouter } from 'react-router-dom';
 import Global from 'global/global';
-import Token from 'utils/token';
 import UserType from 'utils/role';
 import PlaylistSidebar from 'components/Sidebar/Playlist/PlaylistSidebar';
 import getMockHeaders from 'utils/mockHeaders';
+
+import * as TokenModule from 'utils/token';
 
 const playlistName = 'playlisttest';
 const songName = 'songName';
@@ -33,8 +34,8 @@ const playlistDTOMockFetch = {
   song_names: [],
 };
 
-jest.spyOn(Token, 'getTokenUsername').mockReturnValue(userName);
-jest.spyOn(Token, 'getTokenRole').mockReturnValue(roleUser);
+jest.spyOn(TokenModule, 'getTokenUsername').mockReturnValue(userName);
+jest.spyOn(TokenModule, 'getTokenRole').mockReturnValue(roleUser);
 
 test('render Sidebar Playlist', async () => {
   const handleUrlPlaylistClicked = () => jest.fn();

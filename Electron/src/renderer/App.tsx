@@ -10,6 +10,7 @@ import { ShowAllItemsTypes } from 'components/ShowAllItems/types/PropsShowAllIte
 import UserProfile from 'pages/UserProfile/UserProfile';
 import UserType from 'utils/role';
 import RegisterMenu from 'pages/StartMenu/RegisterMenu';
+import { deleteToken } from 'utils/token';
 import styles from './AppCss.module.css';
 import Sidebar from '../components/Sidebar/Sidebar';
 import Home from '../pages/Home/Home';
@@ -48,6 +49,7 @@ function App() {
 
   const handleLogout = () => {
     changeSongName(Global.noSongPlaying);
+    deleteToken();
     setIsLogged(false);
   };
 

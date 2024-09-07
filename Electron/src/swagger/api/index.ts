@@ -8,7 +8,7 @@ export { OpenAPI } from './core/OpenAPI';
 export type { OpenAPIConfig } from './core/OpenAPI';
 
 export type { Body_create_song_songs__post } from './models/Body_create_song_songs__post';
-export type { Body_login_usuario_login__post } from './models/Body_login_usuario_login__post';
+export type { Body_login_user_login__post } from './models/Body_login_user_login__post';
 export { Genre } from './models/Genre';
 export type { HTTPValidationError } from './models/HTTPValidationError';
 export type { ValidationError } from './models/ValidationError';

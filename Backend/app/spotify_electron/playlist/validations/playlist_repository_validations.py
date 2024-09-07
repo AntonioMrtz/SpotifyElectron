@@ -14,7 +14,7 @@ from app.spotify_electron.playlist.playlist_schema import (
 
 
 def validate_playlist_exists(playlist: PlaylistDAO | None) -> None:
-    """Raises an exception if playlist doesnt exists
+    """Raises an exception if playlist doesn't exists
 
     Args:
     ----
@@ -22,7 +22,7 @@ def validate_playlist_exists(playlist: PlaylistDAO | None) -> None:
 
     Raises:
     ------
-        PlaylistNotFoundException: if the playlists doesnt exists
+        PlaylistNotFoundException: if the playlists doesn't exists
 
     """
     if playlist is None:

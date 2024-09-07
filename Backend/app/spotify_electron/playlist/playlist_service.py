@@ -107,7 +107,7 @@ def create_playlist(
     ------
         PlaylistBadNameException: invalid playlist name
         PlaylistAlreadyExistsException: playlist already exists
-        UserNotFoundException: user doesnt exists
+        UserNotFoundException: user doesn't exists
         PlaylistServiceException: unexpected error while creating playlist
 
     """
@@ -176,7 +176,7 @@ def update_playlist(  # noqa: PLR0913
     Raises:
     ------
         PlaylistBadNameException: invalid playlist name
-        PlaylistNotFoundException: playlist doesnt exists
+        PlaylistNotFoundException: playlist doesn't exists
         PlaylistServiceException: unexpected error while updating playlist
 
     """
@@ -237,7 +237,7 @@ def delete_playlist(name: str) -> None:
     Raises:
     ------
         PlaylistBadNameException: invalid playlist name
-        PlaylistNotFoundException: playlist doesnt exists
+        PlaylistNotFoundException: playlist doesn't exists
         PlaylistServiceException: unexpected error while deleting playlist
 
     """

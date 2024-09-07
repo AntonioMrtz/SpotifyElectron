@@ -61,7 +61,7 @@ class _PropertiesMessagesManager:
 class MessageNotFoundException(SpotifyElectronException):
     """Exception for message not found in PropertiesMessagesManager"""
 
-    ERROR = "Error getting message from PropertiesMessagesManager, it doesnt exists"
+    ERROR = "Error getting message from PropertiesMessagesManager, it doesn't exists"
 
     def __init__(self):
         super().__init__(self.ERROR)

@@ -48,7 +48,7 @@ def get_song_metadata(name: str) -> SongMetadataDTO:
 
     Raises:
         SongBadNameException: bad song name
-        SongNotFoundException: song doesnt exists
+        SongNotFoundException: song doesn't exists
         SongServiceException: unexpected error getting song metadata
 
     Returns:
@@ -123,7 +123,7 @@ def increase_song_streams(name: str) -> None:
         name (str): song name
 
     Raises:
-        SongNotFoundException: song doesnt exists
+        SongNotFoundException: song doesn't exists
         SongServiceException: unexpected error increasing song streams
     """
     try:
@@ -166,7 +166,7 @@ def get_artist_streams(artist_name: str) -> int:
         artist_name (str): artist name
 
     Raises:
-        UserNotFoundException: artist doesnt exists
+        UserNotFoundException: artist doesn't exists
         SongServiceException: unexpected error getting artist songs total streams
 
     Returns:

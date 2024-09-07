@@ -5,9 +5,9 @@ import ContextMenuPlaylist from 'components/AdvancedUIComponents/ContextMenu/Pla
 import Global from 'global/global';
 import { BrowserRouter } from 'react-router-dom';
 import UserType from 'utils/role';
-import Token from 'utils/token';
 import * as router from 'react-router';
 import getMockHeaders from 'utils/mockHeaders';
+import * as TokenModule from 'utils/token';
 
 const playlistName = 'playlisttest';
 const songName = 'songName';
@@ -37,8 +37,9 @@ const playlistDTOMockFetch = {
 const navigate = jest.fn();
 
 jest.spyOn(router, 'useNavigate').mockImplementation(() => navigate);
-jest.spyOn(Token, 'getTokenUsername').mockReturnValue(userName);
-jest.spyOn(Token, 'getTokenRole').mockReturnValue(roleUser);
+
+jest.spyOn(TokenModule, 'getTokenUsername').mockReturnValue(userName);
+jest.spyOn(TokenModule, 'getTokenRole').mockReturnValue(roleUser);
 
 global.fetch = jest.fn((url: string, options: any) => {
   if (

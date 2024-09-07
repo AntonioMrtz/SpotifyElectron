@@ -9,3 +9,7 @@ client = TestClient(app)
 def post_login(user_name: str, password: str) -> Response:
     data = {"username": user_name, "password": password}
     return client.post("/login", data=data)
+
+
+def post_login_jwt(jwt: str) -> Response:
+    return client.post(f"/login/token/{jwt}")

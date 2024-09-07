@@ -57,7 +57,8 @@
       "\\.(css|less|sass|scss)$": "identity-obj-proxy"
     },
     "setupFiles": [
-      "./.erb/scripts/check-build-exists.ts","./src/utils/loadOpenApiTests.ts"
+      "./.erb/scripts/check-build-exists.ts",
+      "./src/utils/loadOpenApiTests.ts"
     ],
     "testEnvironment": "jsdom",
     "testEnvironmentOptions": {
@@ -135,6 +136,7 @@
     "identity-obj-proxy": "^3.0.0",
     "jest": "^29.5.0",
     "jest-environment-jsdom": "^29.5.0",
+    "jest-preview": "^0.2.3",
     "mini-css-extract-plugin": "^2.7.6",
     "prettier": "^3.2.5",
     "prettier-eslint": "^16.3.0",

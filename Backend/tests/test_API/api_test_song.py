@@ -40,4 +40,4 @@ def get_songs_by_genre(genre: str, headers: dict[str, str]) -> Response:
 
 
 def get_song_metadata(name: str, headers: dict[str, str]) -> Response:
-    return client.get(f"/canciones/metadata/{name}", headers=headers)
+    return client.get(f"/songs/metadata/{name}", headers=headers)

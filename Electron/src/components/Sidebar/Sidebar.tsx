@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import Token from 'utils/token';
+import { getTokenUsername } from 'utils/token';
 import LoadingCircle from 'components/AdvancedUIComponents/LoadingCircle/LoadingCircle';
 import styles from './sideBarCss.module.css';
 import PlaylistSidebar from './Playlist/PlaylistSidebar';
@@ -76,7 +76,7 @@ export default function Sidebar({
     setSelectedPlaylist(name); // Actualizar el estado cuando se hace clic en una playlist
   };
 
-  const userName = Token.getTokenUsername();
+  const userName = getTokenUsername();
 
   const { playlists, loading } = useFetchGetUserRelevantPlaylists(
     userName,

@@ -6,7 +6,7 @@ import {
   useCallback,
 } from 'react';
 import Global from 'global/global';
-import Token from 'utils/token';
+import { getTokenUsername } from 'utils/token';
 import { SongsService } from 'swagger/api/services/SongsService';
 import { UsersService } from 'swagger/api/services/UsersService';
 import styles from './player.module.css';
@@ -89,7 +89,7 @@ export default function PlayerStreaming({
   };
 
   const handleUpdatePlaybackHistory = async () => {
-    const userName = Token.getTokenUsername();
+    const userName = getTokenUsername();
 
     try {
       await UsersService.patchPlaybackHistoryUsersNamePlaybackHistoryPatch(

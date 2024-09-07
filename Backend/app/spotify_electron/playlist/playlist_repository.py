@@ -69,7 +69,7 @@ def get_playlist(
 
     Raises:
     ------
-        PlaylistNotFoundException: playlists doesnt exists on database
+        PlaylistNotFoundException: playlists doesn't exists on database
         PlaylistRepositoryException: an error occurred while getting playlist from database
 
     Returns:

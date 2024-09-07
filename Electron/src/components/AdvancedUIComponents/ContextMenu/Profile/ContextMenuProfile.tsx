@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import Token from 'utils/token';
+import { getTokenRole, getTokenUsername } from 'utils/token';
 import styles from '../contextMenu.module.css';
 
 interface PropsContextMenuProfile {
@@ -19,8 +19,8 @@ export default function ContextMenuProfile({
   const navigate = useNavigate();
 
   const handleClickProfile = () => {
-    const username = Token.getTokenUsername();
-    const type = Token.getTokenRole();
+    const username = getTokenUsername();
+    const type = getTokenRole();
     navigate(`/${linkUserTypeMap[type]}/${username}`);
     handleClose();
   };

@@ -3,16 +3,17 @@ import { act, fireEvent, render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { BrowserRouter } from 'react-router-dom';
 import Global from 'global/global';
-import Token from 'utils/token';
 import UserType from 'utils/role';
 import AddSongPlayListAccordion from 'components/Sidebar/ModalAddSongPlaylist/Accordion/AddSongPlayListAccordion';
 import getMockHeaders from 'utils/mockHeaders';
 
+import * as TokenModule from 'utils/token';
+
 const userName = 'prueba';
 const roleUser = UserType.ARTIST;
 
-jest.spyOn(Token, 'getTokenUsername').mockReturnValue(userName);
-jest.spyOn(Token, 'getTokenRole').mockReturnValue(roleUser);
+jest.spyOn(TokenModule, 'getTokenUsername').mockReturnValue(userName);
+jest.spyOn(TokenModule, 'getTokenRole').mockReturnValue(roleUser);
 
 test('render AddSongPlaylistAccordion', async () => {
   const handleCloseMock = jest.fn();

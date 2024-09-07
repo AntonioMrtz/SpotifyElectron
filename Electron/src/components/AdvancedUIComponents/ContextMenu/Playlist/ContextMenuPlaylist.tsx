@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import LoadingCircle from 'components/AdvancedUIComponents/LoadingCircle/LoadingCircle';
 import InfoPopover from 'components/AdvancedUIComponents/InfoPopOver/InfoPopover';
 import { InfoPopoverType } from 'components/AdvancedUIComponents/InfoPopOver/types/InfoPopover';
-import Token from 'utils/token';
+import { getTokenUsername } from 'utils/token';
 import useFetchGetUserPlaylistNames from 'hooks/useFetchGetUserPlaylistNames';
 import { PlaylistsService } from 'swagger/api';
 import styles from '../contextMenu.module.css';
@@ -150,7 +150,7 @@ export default function ContextMenuPlaylist({
   const open = Boolean(anchorEl);
   const id = open ? 'child-popover' : undefined;
 
-  const username = Token.getTokenUsername();
+  const username = getTokenUsername();
 
   const { playlistNames, loading } = useFetchGetUserPlaylistNames(username);
 

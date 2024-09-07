@@ -4,7 +4,7 @@ import LoadingCircle from 'components/AdvancedUIComponents/LoadingCircle/Loading
 import InfoPopover from 'components/AdvancedUIComponents/InfoPopOver/InfoPopover';
 import { InfoPopoverType } from 'components/AdvancedUIComponents/InfoPopOver/types/InfoPopover';
 import Global from 'global/global';
-import Token from 'utils/token';
+import { getTokenUsername } from 'utils/token';
 import { useNavigate } from 'react-router-dom';
 import useFetchGetUserPlaylistNames from 'hooks/useFetchGetUserPlaylistNames';
 import { PlaylistsService } from 'swagger/api';
@@ -54,7 +54,7 @@ export default function ContextMenuSong({
   const open = Boolean(anchorEl);
   const id = open ? 'child-popover' : undefined;
 
-  const username = Token.getTokenUsername();
+  const username = getTokenUsername();
 
   const { playlistNames, loading } = useFetchGetUserPlaylistNames(username);
 

@@ -19,15 +19,13 @@ import app.auth.auth_service as auth_service
 import app.spotify_electron.utils.json_converter.json_converter_utils as json_converter_utils
 from app.auth.auth_schema import (
     CreateJWTException,
+    JWTValidationException,
     UnexpectedLoginUserException,
     VerifyPasswordException,
 )
 from app.common.PropertiesMessagesManager import PropertiesMessagesManager
 from app.spotify_electron.login.login_schema import InvalidCredentialsLoginException
-from app.spotify_electron.user.user.user_schema import (
-    UserNotFoundException,
-    UserServiceException,
-)
+from app.spotify_electron.user.user.user_schema import UserNotFoundException
 
 router = APIRouter(
     prefix="/login",
@@ -36,7 +34,7 @@ router = APIRouter(
 
 
 @router.post("/")
-def login_usuario(
+def login_user(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
 ) -> Response:
     """Login user
@@ -67,7 +65,7 @@ def login_usuario(
             status_code=HTTP_404_NOT_FOUND,
             content=PropertiesMessagesManager.userNotFound,
         )
-    except (UnexpectedLoginUserException, UserServiceException, Exception):
+    except (UnexpectedLoginUserException, Exception):
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonInternalServerError,
@@ -79,6 +77,45 @@ def login_usuario(
         response.set_cookie(
             key="jwt",
             value=f"Bearer {jwt}",
+            httponly=True,
+            path="/",
+            samesite="none",
+            expires=expiration_date,
+            secure=True,
+        )
+        return response
+
+
+@router.post("/token/{token}")
+def login_user_with_jwt(token: str) -> Response:
+    """Login user with token
+
+    Args:
+        token (str): the user token
+    """
+    try:
+        auth_service.login_user_with_token(token)
+    except JWTValidationException:
+        return Response(
+            status_code=HTTP_403_FORBIDDEN,
+            content=PropertiesMessagesManager.tokenInvalidCredentialsAutoLogin,
+        )
+    except UserNotFoundException:
+        return Response(
+            status_code=HTTP_404_NOT_FOUND,
+            content=PropertiesMessagesManager.userNotFound,
+        )
+    except (UnexpectedLoginUserException, Exception):
+        return Response(
+            status_code=HTTP_500_INTERNAL_SERVER_ERROR,
+            content=PropertiesMessagesManager.commonInternalServerError,
+        )
+    else:
+        expiration_date = auth_service.get_token_expire_date()
+        response = Response(status_code=HTTP_200_OK)
+        response.set_cookie(
+            key="jwt",
+            value=f"Bearer {token}",
             httponly=True,
             path="/",
             samesite="none",

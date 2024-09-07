@@ -156,9 +156,6 @@ def get_current_user(
         jwt_username = token.username
 
         user = base_user_service.get_user(jwt_username)
-    except BadJWTTokenProvidedException as exception:
-        auth_service_logger.exception("Error getting jwt token data")
-        raise BadJWTTokenProvidedException from exception
     except UserNotFoundException as exception:
         auth_service_logger.exception(f"User {jwt_username} not found")
         raise UserNotFoundException from exception
@@ -226,7 +223,7 @@ def login_user(name: str, password: str) -> str:
     ------
         InvalidCredentialsLoginException: bad user credentials
         VerifyPasswordException: failing authenticating user and password
-        UserNotFoundException: user doesnt exists
+        UserNotFoundException: user doesn't exists
         UnexpectedLoginUserException: unexpected error during user login
 
     Returns:
@@ -261,7 +258,7 @@ def login_user(name: str, password: str) -> str:
         auth_service_logger.exception(f"Error creating JWT Token from data: {jwt_data}")
         raise VerifyPasswordException from exception
     except UserNotFoundException as exception:
-        auth_service_logger.exception(f"User {name} doesnt exists")
+        auth_service_logger.exception(f"User {name} doesn't exists")
         raise UserNotFoundException from exception
     except UserServiceException as exception:
         auth_service_logger.exception(
@@ -274,6 +271,41 @@ def login_user(name: str, password: str) -> str:
     else:
         auth_service_logger.info(f"User {name} logged successfully")
         return access_token_data
+
+
+def login_user_with_token(raw_token: str) -> None:
+    """User Login with token
+
+    Args:
+        raw_token (str): the jwt token
+
+    Raises:
+        JWTValidationException: invalid JWT credentials
+        UserNotFoundException: user doesn't exists
+        UnexpectedLoginUserException: unexpected error during user login
+    """
+    try:
+        validate_jwt(raw_token)
+
+        token_data = get_jwt_token_data(raw_token)
+        base_user_service_validations.validate_user_should_exists(token_data.username)
+
+    except (JWTValidationException, BadJWTTokenProvidedException) as exception:
+        auth_service_logger.exception(f"Error validating jwt token data: {raw_token}")
+        raise JWTValidationException from exception
+    except UserNotFoundException as exception:
+        auth_service_logger.exception(f"User {token_data.username} not found")
+        raise UserNotFoundException from exception
+    except UserServiceException as exception:
+        auth_service_logger.exception(
+            f"Unexpected error in User service while auto login user: {token_data.username}"
+        )
+        raise UnexpectedLoginUserException from exception
+    except Exception as exception:
+        auth_service_logger.exception(
+            f"Unexpected error auto login user: {token_data.username}"
+        )
+        raise UnexpectedLoginUserException from exception
 
 
 def validate_jwt(token: str) -> None:

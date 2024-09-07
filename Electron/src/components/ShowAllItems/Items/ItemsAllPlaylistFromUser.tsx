@@ -1,6 +1,6 @@
 import PlaylistCard from 'components/Cards/PlaylistCard/PlaylistCard';
 import useFetchGetUserPlaylists from 'hooks/useFetchGetUserPlaylists';
-import { PropsItemsPlaylistsFromUser } from '../types/propsItems';
+import { PropsItemsPlaylistsFromUser } from '../types/PropsItems';
 import defaultThumbnailPlaylist from '../../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 
 export default function ItemsAllPlaylistsFromUser({

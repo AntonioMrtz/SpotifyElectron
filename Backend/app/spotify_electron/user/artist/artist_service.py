@@ -45,7 +45,7 @@ def add_song_to_artist(artist_name: str, song_name: str) -> None:
 
     Raises:
         UserBadNameException: user invalid name
-        UserNotFoundException: user doesnt exists
+        UserNotFoundException: user doesn't exists
         SongBadNameException: song invalid name
         UserServiceException: unexpected error adding song to artist
     """
@@ -91,7 +91,7 @@ def delete_song_from_artist(artist_name: str, song_name: str) -> None:
 
     Raises:
         UserBadNameException: user invalid name
-        UserNotFoundException: user doesnt exists
+        UserNotFoundException: user doesn't exists
         SongBadNameException: song invalid name
         UserServiceException: unexpected error removing song from artist
     """
@@ -259,7 +259,7 @@ def get_streams_artist(artist_name: str) -> int:
         user_name (str): artist name
 
     Raises:
-        UserNotFoundException: artist doesnt exists
+        UserNotFoundException: artist doesn't exists
         UserBadNameException: artist bad name
         UserUnauthorizedException: user is not artist
         UserServiceException: unexpected error getting artist total streams

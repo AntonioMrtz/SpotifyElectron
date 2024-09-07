@@ -5,52 +5,54 @@ interface DecodedJwt {
   role: string;
 }
 
-namespace Token {
-  export const getToken = () => {
-    const jwt = localStorage.getItem('jwt');
+const JWT_TOKEN_LOCAL_STORAGE_KEY = 'jwt';
 
-    if (jwt) {
-      return jwt;
-    }
+export const getToken = () => {
+  const jwt = localStorage.getItem(JWT_TOKEN_LOCAL_STORAGE_KEY);
 
-    return '';
-  };
+  if (jwt) {
+    return jwt;
+  }
 
-  export const getTokenHeader = () => {
-    const jwt = localStorage.getItem('jwt');
+  return '';
+};
 
-    if (jwt) {
-      return { Authorization: `Bearer ${jwt}` };
-    }
+export const deleteToken = () => {
+  localStorage.removeItem(JWT_TOKEN_LOCAL_STORAGE_KEY);
+};
 
-    return { Authorization: 'Bearer ' };
-  };
+export const getTokenHeader = () => {
+  const jwt = localStorage.getItem(JWT_TOKEN_LOCAL_STORAGE_KEY);
 
-  export const getTokenUsername = () => {
-    try {
-      const jwt = getToken();
-      const decodedJwt = jwtDecode<DecodedJwt>(jwt);
+  if (jwt) {
+    return { Authorization: `Bearer ${jwt}` };
+  }
 
-      return decodedJwt.access_token;
-    } catch {
-      console.log('Unable to get username from Jwt Token');
-    }
+  return { Authorization: 'Bearer ' };
+};
 
-    return '';
-  };
+export const getTokenUsername = () => {
+  try {
+    const jwt = getToken();
+    const decodedJwt = jwtDecode<DecodedJwt>(jwt);
 
-  export const getTokenRole = () => {
-    try {
-      const jwt = getToken();
-      const decodedJwt = jwtDecode<DecodedJwt>(jwt);
+    return decodedJwt.access_token;
+  } catch {
+    console.log('Unable to get username from Jwt Token');
+  }
 
-      return decodedJwt.role;
-    } catch {
-      console.log('Unable to get username from Jwt Token');
-    }
+  return '';
+};
 
-    return '';
-  };
-}
+export const getTokenRole = () => {
+  try {
+    const jwt = getToken();
+    const decodedJwt = jwtDecode<DecodedJwt>(jwt);
 
-export default Token;
+    return decodedJwt.role;
+  } catch {
+    console.log('Unable to get username from Jwt Token');
+  }
+
+  return '';
+};

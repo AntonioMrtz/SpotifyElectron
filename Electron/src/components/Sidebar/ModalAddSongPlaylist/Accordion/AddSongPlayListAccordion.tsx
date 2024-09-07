@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import LibraryMusicRoundedIcon from '@mui/icons-material/LibraryMusicRounded';
 import AudiotrackIcon from '@mui/icons-material/Audiotrack';
-import Token from 'utils/token';
+import { getTokenRole } from 'utils/token';
 import { InfoPopoverType } from 'components/AdvancedUIComponents/InfoPopOver/types/InfoPopover';
 import ConfirmationModal from 'components/AdvancedUIComponents/InfoPopOver/InfoPopover';
 import UserType from 'utils/role';
@@ -46,7 +46,7 @@ export default function AddSongPlayListAccordion({
   const [isArtist, setIsArtist] = useState(false);
 
   const checkIsArtist = async () => {
-    const role = Token.getTokenRole();
+    const role = getTokenRole();
 
     if (role === UserType.ARTIST) {
       setIsArtist(true);

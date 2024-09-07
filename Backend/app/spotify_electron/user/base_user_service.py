@@ -158,11 +158,11 @@ def add_playback_history(user_name: str, song_name: str, token: TokenData) -> No
 
     Raises:
         UserBadNameException: invalid user name
-        UserNotFoundException: user doesnt exists
+        UserNotFoundException: user doesn't exists
         SongBadNameException: invalid song name
         UserUnauthorizedException: user cannot modify playback history that \
             is not created by him
-        SongNotFoundException: song doesnt exists
+        SongNotFoundException: song doesn't exists
         UserServiceException: unexpected error adding playback history to user
     """
     try:
@@ -226,7 +226,7 @@ def add_saved_playlist(user_name: str, playlist_name: str, token: TokenData) -> 
         UserBadNameException: invalid user name
         PlaylistBadNameException: invalid playlist name
         UserUnauthorizedException: user cannot access a playlist that is not created by him
-        PlaylistNotFoundException: playlist doesnt exists
+        PlaylistNotFoundException: playlist doesn't exists
         UserServiceException: unexpected error adding saved playlist to user
     """
     try:
@@ -285,7 +285,7 @@ def delete_saved_playlist(user_name: str, playlist_name: str, token: TokenData) 
         UserBadNameException: invalid user name
         PlaylistBadNameException: invalid playlist name
         UserUnauthorizedException: user cannot access a playlist that is created by him
-        PlaylistNotFoundException: playlist doesnt exists
+        PlaylistNotFoundException: playlist doesn't exists
         UserServiceException: unexpected error deleting saved playlist from user
     """
     try:

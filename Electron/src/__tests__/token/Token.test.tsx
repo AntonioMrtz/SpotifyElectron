@@ -1,5 +1,10 @@
 import '@testing-library/jest-dom/extend-expect';
-import Token from 'utils/token';
+import {
+  getToken,
+  getTokenHeader,
+  getTokenRole,
+  getTokenUsername,
+} from 'utils/token';
 import UserType from 'utils/role';
 
 const token =
@@ -19,25 +24,25 @@ Object.defineProperty(window, 'localStorage', {
 });
 
 test('Get jwt token', () => {
-  const jwtToken = Token.getToken();
+  const jwtToken = getToken();
 
   expect(token).toEqual(jwtToken);
 });
 
 test('Get jwt token username', () => {
-  const usernameJwtToken = Token.getTokenUsername();
+  const usernameJwtToken = getTokenUsername();
 
   expect(username).toEqual(usernameJwtToken);
 });
 
 test('Get jwt token role', () => {
-  const userTypeJwtToken = Token.getTokenRole();
+  const userTypeJwtToken = getTokenRole();
 
   expect(userType).toEqual(userTypeJwtToken);
 });
 
 test('Get jwt header', () => {
-  const headerJwtToken = Token.getTokenHeader();
+  const headerJwtToken = getTokenHeader();
 
   expect({ Authorization: `Bearer ${token}` }).toMatchObject(headerJwtToken);
 });

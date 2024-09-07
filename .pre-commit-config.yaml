@@ -4,7 +4,7 @@ repos:
     hooks:
       - id: check-yaml
       - id: check-json
-        exclude: ^.devcontainer/
+        exclude: ^(.devcontainer/|Electron/.vscode/|Backend/.vscode)
       - id: end-of-file-fixer
         exclude: ^Electron/src/swagger/
       - id: trailing-whitespace

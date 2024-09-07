@@ -31,7 +31,7 @@ def validate_playlist_name_parameter(name: str) -> None:
 
 
 def validate_playlist_should_exists(name: str) -> None:
-    """Raises an exception if playlist doesnt exists
+    """Raises an exception if playlist doesn't exists
 
     Args:
     ----
@@ -39,7 +39,7 @@ def validate_playlist_should_exists(name: str) -> None:
 
     Raises:
     ------
-        PlaylistNotFoundException: if playlist doesnt exists
+        PlaylistNotFoundException: if playlist doesn't exists
 
     """
     if not check_playlist_exists(name):

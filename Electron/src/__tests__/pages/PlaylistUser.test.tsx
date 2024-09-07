@@ -3,10 +3,10 @@ import { act, fireEvent, render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import Playlist from 'pages/Playlist/Playlist';
-import Token from 'utils/token';
 import Global from 'global/global';
 import UserType from 'utils/role';
 import getMockHeaders from 'utils/mockHeaders';
+import * as TokenModule from 'utils/token';
 
 const userName = 'prueba';
 const roleUser = UserType.USER;
@@ -53,8 +53,8 @@ const userMockFetch = {
   saved_playlists: [playlistName],
 };
 
-jest.spyOn(Token, 'getTokenUsername').mockReturnValue(userName);
-jest.spyOn(Token, 'getTokenRole').mockReturnValue(roleUser);
+jest.spyOn(TokenModule, 'getTokenUsername').mockReturnValue(userName);
+jest.spyOn(TokenModule, 'getTokenRole').mockReturnValue(roleUser);
 
 test('Playlist user role get all info', async () => {
   global.fetch = jest.fn((url: string) => {

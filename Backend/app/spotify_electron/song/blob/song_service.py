@@ -105,7 +105,7 @@ async def create_song(  # noqa: C901
     Raises:
         GenreNotValidException: invalid genre
         UserBadNameException: invalid user name
-        UserNotFoundException: user doesnt exists
+        UserNotFoundException: user doesn't exists
         EncodingFileException: error encoding file
         SongBadNameException: song bad name
         SongUnAuthorizedException: song created by unauthorized user
@@ -174,9 +174,9 @@ def delete_song(name: str) -> None:
         name (str): song name
 
     Raises:
-        SongNotFoundException: song doesnt exists
+        SongNotFoundException: song doesn't exists
         SongBadNameException: invalid song nae
-        UserNotFoundException: artist doesnt exists
+        UserNotFoundException: artist doesn't exists
         SongServiceException: unexpected error deleting song
     """
     try:

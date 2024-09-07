@@ -3,10 +3,11 @@ import '@testing-library/jest-dom/extend-expect';
 import { render } from '@testing-library/react';
 import PlayerFiles from 'components/footer/Player/PlayerFiles';
 import Global from 'global/global';
-import Token from 'utils/token';
 import UserType from 'utils/role';
 import { act } from 'react-test-renderer';
 import getMockHeaders from 'utils/mockHeaders';
+
+import * as TokenModule from 'utils/token';
 
 const songName = 'songName';
 const userName = 'prueba';
@@ -22,8 +23,8 @@ const songMockFetch = {
   url: 'https://5b44cf20b0388.streamlock.net:8443/vod/smil:bbb.smil/playlist.m3u8',
 };
 
-jest.spyOn(Token, 'getTokenUsername').mockReturnValue(userName);
-jest.spyOn(Token, 'getTokenRole').mockReturnValue(roleUser);
+jest.spyOn(TokenModule, 'getTokenUsername').mockReturnValue(userName);
+jest.spyOn(TokenModule, 'getTokenRole').mockReturnValue(roleUser);
 
 global.fetch = jest.fn((url: string) => {
   if (url === `${Global.backendBaseUrl}/songs/${songName}`) {

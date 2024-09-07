@@ -1378,19 +1378,60 @@
         "tags": [
           "Login"
         ],
-        "summary": "Login Usuario",
+        "summary": "Login User",
         "description": "Login user\n\nArgs:\n----\n    form_data (Annotated[OAuth2PasswordRequestForm, Depends): user and password",
-        "operationId": "login_usuario_login__post",
+        "operationId": "login_user_login__post",
         "requestBody": {
           "content": {
             "application/x-www-form-urlencoded": {
               "schema": {
-                "$ref": "#/components/schemas/Body_login_usuario_login__post"
+                "$ref": "#/components/schemas/Body_login_user_login__post"
               }
             }
           },
           "required": true
         },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/login/token/{token}": {
+      "post": {
+        "tags": [
+          "Login"
+        ],
+        "summary": "Login User With Jwt",
+        "description": "Login user with token\n\nArgs:\n    token (str): the user token",
+        "operationId": "login_user_with_jwt_login_token__token__post",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Token"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -1496,7 +1537,7 @@
         ],
         "title": "Body_create_song_songs__post"
       },
-      "Body_login_usuario_login__post": {
+      "Body_login_user_login__post": {
         "properties": {
           "grant_type": {
             "anyOf": [
@@ -1551,7 +1592,7 @@
           "username",
           "password"
         ],
-        "title": "Body_login_usuario_login__post"
+        "title": "Body_login_user_login__post"
       },
       "Genre": {
         "type": "string",

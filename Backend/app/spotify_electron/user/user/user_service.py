@@ -3,10 +3,12 @@ User service for handling business logic
 """
 
 import app.auth.auth_service as auth_service
+import app.spotify_electron.user.artist.artist_repository as artist_repository
 import app.spotify_electron.user.base_user_repository as base_user_repository
 import app.spotify_electron.user.providers.user_collection_provider as user_collection_provider
 import app.spotify_electron.user.user.user_repository as user_repository
 import app.spotify_electron.user.validations.base_user_service_validations as base_user_service
+from app.auth.auth_schema import TokenData
 from app.logging.logging_constants import LOGGING_USER_SERVICE
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.user.user.user_schema import (
@@ -17,6 +19,9 @@ from app.spotify_electron.user.user.user_schema import (
     UserRepositoryException,
     UserServiceException,
     get_user_dto_from_dao,
+)
+from app.spotify_electron.user.validations.base_user_repository_validations import (
+    validate_user_exists,
 )
 from app.spotify_electron.utils.date.date_utils import get_current_iso8601_date
 
@@ -187,3 +192,51 @@ def search_by_name(name: str) -> list[UserDTO]:
             f"Unexpected error in User Service getting items by name {name}"
         )
         raise UserServiceException from exception
+
+
+# TODO wrap within DB transaction to be treated as atomic operation
+def upgrade_user_to_artist(user_name: str, token: TokenData) -> None:
+    """Upgrade user account to artist account
+
+    Args:
+        user_name (str): user name
+        token (TokenData): token data from user
+
+    Raises:
+        UserNotFoundException: if the user does not exist
+        UserServiceException: unexpected error while upgrading user to artist
+        UserBadNameException: if the user name is invalid
+    """
+    try:
+        base_user_service.validate_user_name_parameter(user_name)
+        validate_user_exists(user_name)
+        auth_service.validate_jwt_user_matches_user(token, user_name)
+        user_data = user_repository.get_user(user_name)
+        artist_repository.create_artist_from_user(user_data)
+        user_repository.update_user_role(user_name, "artist")
+        new_token_data = {
+            "access_token": user_name,
+            "role": "artist",
+            "token_type": "bearer",
+        }
+        new_token = auth_service.create_access_token(new_token_data)
+
+    except UserBadNameException as exception:
+        user_service_logger.exception(f"Bad User Name Parameter: {user_name}")
+        raise UserBadNameException from exception
+    except UserNotFoundException as exception:
+        user_service_logger.exception(f"User not found: {user_name}")
+        raise UserNotFoundException from exception
+    except UserRepositoryException as exception:
+        user_service_logger.exception(
+            f"Unexpected error in User Repository upgrading user to artist: {user_name}"
+        )
+        raise UserServiceException from exception
+    except Exception as exception:
+        user_service_logger.exception(
+            f"Unexpected error in User Service upgrading user to artist: {user_name}"
+        )
+        raise UserServiceException from exception
+    else:
+        user_service_logger.info(f"Account {user_name} upgraded to artist successfully")
+        return new_token

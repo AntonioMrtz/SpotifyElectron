@@ -111,15 +111,5 @@ def login_user_with_jwt(token: str) -> Response:
             content=PropertiesMessagesManager.commonInternalServerError,
         )
     else:
-        expiration_date = auth_service.get_token_expire_date()
         response = Response(status_code=HTTP_200_OK)
-        response.set_cookie(
-            key="jwt",
-            value=f"Bearer {token}",
-            httponly=True,
-            path="/",
-            samesite="none",
-            expires=expiration_date,
-            secure=True,
-        )
         return response

@@ -39,7 +39,3 @@ def update_user(  # noqa: PLR0913
 
 def delete_user(name: str) -> Response:
     return client.delete(f"/users/{name}")
-
-
-def patch_history_playback(user_name: str, song_name: str) -> Response:
-    return client.patch(f"/users/{user_name}/playback_history/?song_name={song_name}")

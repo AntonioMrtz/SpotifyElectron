@@ -7,6 +7,7 @@ import { BrowserRouter } from 'react-router-dom';
 import UserType from 'utils/role';
 import Token from 'utils/token';
 import * as router from 'react-router';
+import getMockHeaders from 'utils/mockHeaders';
 
 const playlistName = 'playlisttest';
 const songName = 'songName';
@@ -41,30 +42,30 @@ jest.spyOn(Token, 'getTokenRole').mockReturnValue(roleUser);
 
 global.fetch = jest.fn((url: string, options: any) => {
   if (
-    url === `${Global.backendBaseUrl}playlists/${playlistDTOMockFetch.name}` &&
-    !options.method
+    url === `${Global.backendBaseUrl}/playlists/${playlistDTOMockFetch.name}`
   ) {
     return Promise.resolve({
       json: () => playlistDTOMockFetch,
       status: 200,
       ok: true,
+      headers: getMockHeaders(),
     }).catch((error) => {
       console.log(error);
     });
   }
   if (
     url ===
-    `${Global.backendBaseUrl}users/${artistMockFetch.name}/playlist_names`
+    `${Global.backendBaseUrl}/users/${artistMockFetch.name}/playlist_names`
   ) {
     return Promise.resolve({
       json: () => [playlistName],
       status: 200,
       ok: true,
+      headers: getMockHeaders(),
     }).catch((error) => {
       console.log(error);
     });
   }
-
   if (options && options.method) {
     if (options.method === 'DELETE') {
       return Promise.resolve({
@@ -80,6 +81,7 @@ global.fetch = jest.fn((url: string, options: any) => {
         json: () => {},
         status: 204,
         ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });
@@ -95,9 +97,8 @@ global.fetch = jest.fn((url: string, options: any) => {
       });
     }
   }
-
   // In case the URL doesn't match, return a rejected promise
-  return Promise.reject(new Error('Unhandled URL in fetch mock'));
+  return Promise.reject(new Error(`Unhandled URL in fetch mock: ${url}`));
 }) as jest.Mock;
 
 test('Render ContextMenuPlaylist', async () => {

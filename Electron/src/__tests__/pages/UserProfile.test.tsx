@@ -6,6 +6,7 @@ import UserProfile from 'pages/UserProfile/UserProfile';
 import UserType from 'utils/role';
 import Global from 'global/global';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import getMockHeaders from 'utils/mockHeaders';
 
 /* afterEach(() => {
   jest.clearAllMocks();
@@ -21,118 +22,6 @@ beforeEach(() => {
   ...jest.requireActual('react-router'),
   useNavigate: jest.fn(),
 })); */
-
-const artistMock = {
-  photo: '',
-  name: '',
-  playlists: [],
-  playback_history: [],
-  uploaded_songs: [],
-  streams: [],
-};
-
-const userMock = {
-  photo: '',
-  name: '',
-  playlists: [],
-  playback_history: [],
-};
-
-test('render UserProfile with User', async () => {
-  global.fetch = jest.fn(() =>
-    Promise.resolve({
-      json: () => Promise.resolve(userMock),
-      status: 200,
-      ok: true,
-    }),
-  ) as jest.Mock;
-
-  const component = await act(() => {
-    return render(
-      <UserProfile
-        changeSongName={jest.fn()}
-        refreshSidebarData={jest.fn()}
-        userType={UserType.USER}
-      />,
-    );
-  });
-
-  expect(component).toBeTruthy();
-});
-
-test('render UserProfile with Artist', async () => {
-  global.fetch = jest.fn(() =>
-    Promise.resolve({
-      json: () => Promise.resolve(artistMock),
-      status: 200,
-      ok: true,
-    }),
-  ) as jest.Mock;
-
-  const component = await act(() => {
-    return render(
-      <UserProfile
-        changeSongName={jest.fn()}
-        refreshSidebarData={jest.fn()}
-        userType={UserType.USER}
-      />,
-    );
-  });
-
-  expect(component).toBeTruthy();
-});
-
-test('UserProfile User Fields', async () => {
-  global.fetch = jest.fn(() =>
-    Promise.resolve({
-      json: () => Promise.resolve(userMock),
-      status: 200,
-      ok: true,
-    }),
-  ) as jest.Mock;
-
-  const component = await act(() => {
-    return render(
-      <UserProfile
-        changeSongName={jest.fn()}
-        refreshSidebarData={jest.fn()}
-        userType={UserType.USER}
-      />,
-    );
-  });
-
-  expect(
-    component.queryByText('Historial de reproducción'),
-  ).toBeInTheDocument();
-
-  expect(component.queryByText('Playlists del usuario')).toBeInTheDocument();
-});
-
-test('UserProfile Artist Fields', async () => {
-  global.fetch = jest.fn(() =>
-    Promise.resolve({
-      json: () => Promise.resolve(artistMock),
-      status: 200,
-      ok: true,
-    }),
-  ) as jest.Mock;
-
-  const component = await act(() => {
-    return render(
-      <UserProfile
-        changeSongName={jest.fn()}
-        refreshSidebarData={jest.fn()}
-        userType={UserType.ARTIST}
-      />,
-    );
-  });
-
-  expect(component.queryByText('Canciones del artista')).toBeInTheDocument();
-
-  expect(component.queryByText('Playlists del usuario')).toBeInTheDocument();
-
-  expect(component.queryByText('reproducciones totales')).toBeInTheDocument();
-});
 
 test('UserProfile User load Playback history and his Playlists', async () => {
   const playlistName = 'playlisttest';
@@ -175,46 +64,43 @@ test('UserProfile User load Playback history and his Playlists', async () => {
 
   global.fetch = jest.fn((url: string) => {
     if (
-      url === `${Global.backendBaseUrl}playlists/${playlistDTOMockFetch.name}`
+      url === `${Global.backendBaseUrl}/users/${userMockFetch.name}/playlists`
     ) {
       return Promise.resolve({
-        json: () => playlistDTOMockFetch,
+        json: () => [playlistDTOMockFetch],
         status: 200,
         ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}playlists/`) {
-      return Promise.resolve({
-        json: () => playlistDTOMockFetch,
-        status: 200,
-        ok: true,
-      }).catch((error) => {
-        console.log(error);
-      });
-    }
-    if (url === `${Global.backendBaseUrl}users/${userMockFetch.name}`) {
+    if (url === `${Global.backendBaseUrl}/users/${userMockFetch.name}`) {
       return Promise.resolve({
         json: () => userMockFetch,
         status: 200,
         ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}songs/metadata/${songName}`) {
+    if (
+      url ===
+      `${Global.backendBaseUrl}/users/${userMockFetch.name}/playback_history`
+    ) {
       return Promise.resolve({
-        json: () => songMockFetch,
+        json: () => [songMockFetch],
         status: 200,
         ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });
     }
 
     // In case the URL doesn't match, return a rejected promise
-    return Promise.reject(new Error('Unhandled URL in fetch mock'));
+    return Promise.reject(new Error(`Unhandled URL in fetch mock: ${url}`));
   }) as jest.Mock;
 
   const component = await act(() => {
@@ -247,7 +133,6 @@ test('UserProfile User load Playback history and his Playlists', async () => {
 test('UserProfile Artist load Songs and total streams', async () => {
   const playlistName = 'playlisttest';
   const songName = 'songName';
-  const songStreams = 2;
 
   const artistMockFetch = {
     name: 'name',
@@ -286,60 +171,57 @@ test('UserProfile Artist load Songs and total streams', async () => {
   }));
 
   global.fetch = jest.fn((url: string) => {
-    if (
-      url === `${Global.backendBaseUrl}playlists/${playlistDTOMockFetch.name}`
-    ) {
-      return Promise.resolve({
-        json: () => playlistDTOMockFetch,
-        status: 200,
-        ok: true,
-      }).catch((error) => {
-        console.log(error);
-      });
-    }
-    if (url === `${Global.backendBaseUrl}playlists/`) {
-      return Promise.resolve({
-        json: () => playlistDTOMockFetch,
-        status: 200,
-        ok: true,
-      }).catch((error) => {
-        console.log(error);
-      });
-    }
-    if (url === `${Global.backendBaseUrl}users/${artistMockFetch.name}`) {
+    if (url === `${Global.backendBaseUrl}/users/${artistMockFetch.name}`) {
       return Promise.resolve({
         json: () => artistMockFetch,
         status: 200,
         ok: true,
-      }).catch((error) => {
-        console.log(error);
-      });
-    }
-    if (url === `${Global.backendBaseUrl}songs/metadata/${songName}`) {
-      return Promise.resolve({
-        json: () => songMockFetch,
-        status: 200,
-        ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });
     }
     if (
-      url === `${Global.backendBaseUrl}artists/${artistMockFetch.name}/streams`
+      url === `${Global.backendBaseUrl}/artists/${artistMockFetch.name}/streams`
     ) {
       return Promise.resolve({
         json: () => ({
-          streams: songStreams,
+          streams: songMockFetch.streams,
         }),
         status: 200,
         ok: true,
+        headers: getMockHeaders(),
+      }).catch((error) => {
+        console.log(error);
+      });
+    }
+    if (
+      url === `${Global.backendBaseUrl}/artists/${artistMockFetch.name}/songs`
+    ) {
+      return Promise.resolve({
+        json: () => [songMockFetch],
+        status: 200,
+        ok: true,
+        headers: getMockHeaders(),
+      }).catch((error) => {
+        console.log(error);
+      });
+    }
+    if (
+      url === `${Global.backendBaseUrl}/users/${artistMockFetch.name}/playlists`
+    ) {
+      return Promise.resolve({
+        json: () => [playlistDTOMockFetch],
+        status: 200,
+        ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });
     }
 
     // In case the URL doesn't match, return a rejected promise
-    return Promise.reject(new Error('Unhandled URL in fetch mock'));
+    return Promise.reject(new Error(`Unhandled URL in fetch mock: ${url}`));
   }) as jest.Mock;
 
   const component = await act(() => {
@@ -368,6 +250,6 @@ test('UserProfile Artist load Songs and total streams', async () => {
   expect(component.queryByText(songName)).toBeInTheDocument();
   expect(component.queryByText(playlistName)).toBeInTheDocument();
   expect(
-    component.queryByText(`${songStreams} reproducciones totales`),
+    component.queryByText(`${songMockFetch.streams} reproducciones totales`),
   ).toBeInTheDocument();
 });

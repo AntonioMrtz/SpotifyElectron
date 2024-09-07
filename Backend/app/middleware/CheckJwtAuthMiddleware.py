@@ -98,11 +98,11 @@ class CheckJwtAuthMiddleware(BaseHTTPMiddleware):
         ----
             jwt (str): the jwt token
             request (Request): the incoming request
-            call_next (_type_): the method for continuing the workflow
+            call_next (Callable[[Any], Any]): the method for continuing the workflow
 
         Returns:
         -------
-            Response: the Response thats gonna be sended to the client,\
+            Response: the Response that's gonna be sended to the client,\
                 HTTP_403_FORBIDDEN if jwt is not valid
 
         """

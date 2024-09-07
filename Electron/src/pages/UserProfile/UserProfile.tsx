@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { FastAverageColor } from 'fast-average-color';
-import Global from 'global/global';
-import { PropsPlaylistCard } from 'components/Cards/PlaylistCard/types/propsPlaylistCard';
-import SongCard, { PropsSongCard } from 'components/Cards/SongCard/SongCard';
+import SongCard from 'components/Cards/SongCard/SongCard';
 import PlaylistCard from 'components/Cards/PlaylistCard/PlaylistCard';
 import { useParams, useNavigate } from 'react-router-dom';
 import UserType from 'utils/role';
+import { PropsSongCard } from 'types/song';
+import { ArtistsService, UsersService } from 'swagger/api';
+import useFetchGetUserPlaylists from 'hooks/useFetchGetUserPlaylists';
 import styles from './userProfile.module.css';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 
@@ -15,6 +16,7 @@ interface PropsUserProfile {
   changeSongName: (songName: string) => void;
 }
 
+// TODO refactor component?
 export default function UserProfile({
   userType,
   changeSongName,
@@ -25,173 +27,61 @@ export default function UserProfile({
 
   const [thumbnail, setThumbnail] = useState<string>(defaultThumbnailPlaylist);
   const [mainColorThumbnail, setMainColorThumbnail] = useState('');
-  const [playlists, setPlaylists] = useState<PropsPlaylistCard[]>([]);
   const [playbackHistory, setPlaybackHistory] = useState<PropsSongCard[]>([]);
   const [uploadedSongs, setUploadedSongs] = useState<PropsSongCard[]>([]);
   const [artistStreams, setArtistStreams] = useState(0);
 
-  const loadPlaylists = async (resGetUserJson: any) => {
-    const playlistPromises: Promise<any>[] = [];
-    resGetUserJson.playlists.slice(0, 5).forEach((playlistName: string) => {
-      playlistPromises.push(
-        new Promise((resolve) => {
-          fetch(`${Global.backendBaseUrl}playlists/${playlistName}`, {
-            credentials: 'include',
-          })
-            .then((resFetchPlaylistDTO) => {
-              return resFetchPlaylistDTO.json();
-            })
-            .then((resFetchPlaylistDTOJson) => {
-              const propsPlaylist: PropsPlaylistCard = {
-                name: resFetchPlaylistDTOJson.name,
-                description: resFetchPlaylistDTOJson.description,
-                owner: resFetchPlaylistDTOJson.owner,
-                photo: resFetchPlaylistDTOJson.photo,
-                refreshSidebarData,
-              };
-
-              resolve(propsPlaylist);
-              return propsPlaylist;
-            })
-            .catch(() => {
-              console.log('Unable to get Playlists Data');
-            });
-        }),
-      );
-    });
-
-    Promise.all(playlistPromises)
-      .then((resPlaylistPromises) => {
-        setPlaylists([...resPlaylistPromises]);
-        return null;
-      })
-      .catch(() => {
-        console.log('Unable to get Playlists Data');
-      });
-  };
-
-  const loadPlaybackHistory = (resGetUserJson: any) => {
-    const songPromises: Promise<any>[] = [];
-    resGetUserJson.playback_history.forEach((songName: string) => {
-      songPromises.push(
-        new Promise((resolve) => {
-          fetch(`${Global.backendBaseUrl}songs/metadata/${songName}`, {
-            credentials: 'include',
-          })
-            .then((resFetchSongDTO) => {
-              return resFetchSongDTO.json();
-            })
-            .then((resFetchSongDTOJson) => {
-              const propsSong: PropsSongCard = {
-                name: resFetchSongDTOJson.name,
-                photo: resFetchSongDTOJson.photo,
-                artist: resFetchSongDTOJson.artist,
-                changeSongName,
-                refreshSidebarData,
-              };
-
-              resolve(propsSong);
-              return propsSong;
-            })
-            .catch(() => {
-              console.log('Unable to get Songs Data');
-            });
-        }),
-      );
-    });
-
-    Promise.all(songPromises)
-      .then((resSongPromises) => {
-        setPlaybackHistory([...resSongPromises]);
-        return null;
-      })
-      .catch(() => {
-        console.log('Unable to get Songs Data');
-      });
-  };
-
-  const loadSongsFromArtist = (resGetUserJson: any) => {
-    const songPromises: Promise<any>[] = [];
-
-    resGetUserJson.uploaded_songs.forEach((songName: string) => {
-      songPromises.push(
-        new Promise((resolve) => {
-          fetch(`${Global.backendBaseUrl}songs/metadata/${songName}`, {
-            credentials: 'include',
-          })
-            .then((resFetchSongDTO) => {
-              return resFetchSongDTO.json();
-            })
-            .then((resFetchSongDTOJson) => {
-              const propsSong: PropsSongCard = {
-                name: resFetchSongDTOJson.name,
-                photo: resFetchSongDTOJson.photo,
-                artist: resFetchSongDTOJson.artist,
-                changeSongName,
-                refreshSidebarData,
-              };
-
-              resolve(propsSong);
-              return propsSong;
-            })
-            .catch(() => {
-              console.log('Unable to get Songs Data from Artist');
-            });
-        }),
-      );
-    });
-
-    Promise.all(songPromises)
-      .then((resSongPromises) => {
-        setUploadedSongs([...resSongPromises.slice(0, 5)]);
-        return null;
-      })
-      .catch(() => {
-        console.log('Unable to get Songs Data from Artist');
-      });
-  };
-
-  const loadArtistsStreams = () => {
-    fetch(`${Global.backendBaseUrl}artists/${id}/streams`, {
-      credentials: 'include',
-    })
-      .then((resFetchArtistStreams) => {
-        return resFetchArtistStreams.json();
-      })
-      .then((resFetchArtistStreamsJson) => {
-        setArtistStreams(resFetchArtistStreamsJson.streams);
-        return null;
-      })
-      .catch(() => {
-        console.log('Unable to get play count from artist');
-      });
-  };
-
-  const handleLoadProfile = async () => {
-    const fetchUrlGetUser = `${Global.backendBaseUrl}users/${id}`;
-
-    const resGetUser = await fetch(fetchUrlGetUser, {
-      credentials: 'include',
-    });
-
-    if (resGetUser.status === 404) return;
-    const resGetUserJson = await resGetUser.json();
-
-    loadPlaylists(resGetUserJson);
-    setThumbnail(resGetUserJson.photo);
-
-    if (userType === UserType.USER) {
-      loadPlaybackHistory(resGetUserJson);
-    } else if (userType === UserType.ARTIST) {
-      loadSongsFromArtist(resGetUserJson);
-      loadArtistsStreams();
-    }
-  };
+  const { playlists } = useFetchGetUserPlaylists(id);
 
   useEffect(() => {
-    handleLoadProfile();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
+    const loadArtistsStreams = async (userName: string) => {
+      try {
+        const artistData =
+          await ArtistsService.getArtistStreamsArtistsNameStreamsGet(userName);
+        setArtistStreams(artistData.streams);
+      } catch (error) {
+        setArtistStreams(0);
+        console.log(`Unable to get streams from artist ${id}`);
+      }
+    };
+    const loadPlaybackHistory = async (userName: string) => {
+      try {
+        const playbackHistoryData =
+          await UsersService.getUserPlaybackHistoryUsersNamePlaybackHistoryGet(
+            userName,
+          );
+        setPlaybackHistory(playbackHistoryData);
+      } catch (error) {
+        setPlaybackHistory([]);
+        console.log(`Unable to get playback history from user ${id}`);
+      }
+    };
+    const loadSongsFromArtist = async (artistName: string) => {
+      try {
+        const artistSongsData =
+          await ArtistsService.getArtistSongsArtistsNameSongsGet(artistName);
+
+        setUploadedSongs(artistSongsData);
+      } catch (error) {
+        setPlaybackHistory([]);
+        console.log(`Unable to get playback history from user ${id}`);
+      }
+    };
+    const handleLoadProfile = async (userName: string) => {
+      const userData = await UsersService.getUserUsersNameGet(userName);
+
+      setThumbnail(userData.photo);
+
+      if (userType === UserType.USER) {
+        loadPlaybackHistory(userName);
+      } else if (userType === UserType.ARTIST) {
+        loadSongsFromArtist(userName);
+        loadArtistsStreams(userName);
+      }
+    };
+    if (!id) return;
+    handleLoadProfile(id);
+  }, [id, userType]);
 
   /* Process photo color */
   useEffect(() => {
@@ -399,14 +289,15 @@ export default function UserProfile({
           </h2>
           <div className="d-flex flex-row flex-wrap " style={{ gap: '14px' }}>
             {playbackHistory &&
-              playbackHistory.map((songItem) => {
+              playbackHistory.map((songItem, index) => {
                 return (
                   <SongCard
-                    key={`${songItem.name}`}
+                    // eslint-disable-next-line react/no-array-index-key
+                    key={`${songItem.name}-${index}`}
                     name={songItem.name}
                     photo={songItem.photo}
                     artist={songItem.artist}
-                    changeSongName={songItem.changeSongName}
+                    changeSongName={changeSongName}
                     refreshSidebarData={refreshSidebarData}
                   />
                 );

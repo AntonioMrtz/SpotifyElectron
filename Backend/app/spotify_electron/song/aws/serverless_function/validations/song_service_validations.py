@@ -32,7 +32,7 @@ def validate_song_creating_streaming_response(name: str, response: Response) -> 
     """
     if response.status_code != HTTP_201_CREATED:
         song_service_logger.error(
-            f"Error retrieving Streaming url for song {name}"
+            f"Error retrieving Streaming url for song {name}\n"
             f"Request Status {response.status_code} with Content {response.content}"
         )
         raise SongCreateSongStreamingException
@@ -50,7 +50,7 @@ def validate_get_song_url_streaming_response(name: str, response: Response) -> N
     """
     if response.status_code != HTTP_200_OK:
         song_service_logger.error(
-            f"Error retrieving Streaming url for song {name}"
+            f"Error retrieving Streaming url for song {name}\n"
             f"Request Status {response.status_code} with Content {response.content}"
         )
         raise SongGetUrlStreamingException
@@ -68,7 +68,7 @@ def validate_song_deleting_streaming_response(name: str, response: Response) -> 
     """
     if response.status_code != HTTP_202_ACCEPTED:
         song_service_logger.error(
-            f"Error retrieving Streaming url for song {name}"
+            f"Error retrieving Streaming url for song {name}\n"
             f"Request Status {response.status_code} with Content {response.content}"
         )
         raise SongDeleteSongStreamingException

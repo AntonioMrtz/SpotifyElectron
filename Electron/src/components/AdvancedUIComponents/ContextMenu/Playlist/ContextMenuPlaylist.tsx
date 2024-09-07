@@ -7,8 +7,9 @@ import InfoPopover from 'components/AdvancedUIComponents/InfoPopOver/InfoPopover
 import { InfoPopoverType } from 'components/AdvancedUIComponents/InfoPopOver/types/InfoPopover';
 import Token from 'utils/token';
 import useFetchGetUserPlaylistNames from 'hooks/useFetchGetUserPlaylistNames';
+import { PlaylistsService } from 'swagger/api';
 import styles from '../contextMenu.module.css';
-import { PropsContextMenuPlaylist } from '../types/PropsContextMenu';
+import { PropsContextMenuPlaylist } from '../types/propsContextMenu';
 
 interface ConfirmationMenuData {
   title: string;
@@ -176,54 +177,27 @@ export default function ContextMenuPlaylist({
     srcPlaylistName: string,
   ) => {
     try {
-      const url = `${Global.backendBaseUrl}playlists/${dstPlaylistName}`;
-
-      const dstResponse = await fetch(
-        `${Global.backendBaseUrl}playlists/${dstPlaylistName}`,
-        {
-          credentials: 'include',
-        },
-      );
-
-      const dstPlaylistData = await dstResponse.json();
+      // TODO add songs to playlist refactor
       // eslint-disable-next-line camelcase
-      const { photo, description, song_names } = dstPlaylistData;
+      const { photo, description, song_names } =
+        await PlaylistsService.getPlaylistPlaylistsNameGet(playlistName);
 
-      const putUrl = `${url}?photo=${photo}&description=${description}`;
-
-      const srcResponse = await fetch(
-        `${Global.backendBaseUrl}playlists/${srcPlaylistName}`,
-        {
-          credentials: 'include',
-        },
-      );
-
-      const srcPlaylistData = await srcResponse.json();
+      const srcPlaylistData =
+        await PlaylistsService.getPlaylistPlaylistsNameGet(playlistName);
       const newSongsPutPlaylist = [
         // eslint-disable-next-line camelcase
         ...song_names,
         ...srcPlaylistData.song_names,
       ];
 
-      const requestOptions: RequestInit = {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify(newSongsPutPlaylist),
-      };
+      await PlaylistsService.updatePlaylistPlaylistsNamePut(
+        dstPlaylistName,
+        photo,
+        description,
+        newSongsPutPlaylist,
+      );
 
-      const updateResponse = await fetch(putUrl, requestOptions);
-
-      if (updateResponse.status !== 204) {
-        console.log(
-          `Unable to add songs from ${srcPlaylistName} to ${dstPlaylistName}`,
-        );
-        displayConfirmationModal(ConfirmationMenuActionKind.ADD_ERROR);
-      } else {
-        displayConfirmationModal(ConfirmationMenuActionKind.ADD_SUCCESS);
-      }
+      displayConfirmationModal(ConfirmationMenuActionKind.ADD_SUCCESS);
     } catch (error) {
       console.log(
         `Unable to add songs from ${srcPlaylistName} to ${dstPlaylistName}`,
@@ -233,21 +207,14 @@ export default function ContextMenuPlaylist({
   };
 
   const handleDeletePlaylist = async (playlistNameToDelete: string) => {
-    const deletePlaylistURL = `${Global.backendBaseUrl}playlists/${playlistNameToDelete}`;
-
     try {
-      const deletePlaylistResponse = await fetch(deletePlaylistURL, {
-        method: 'DELETE',
-        credentials: 'include',
-      });
-      if (!deletePlaylistResponse.ok) {
-        displayConfirmationModal(ConfirmationMenuActionKind.DELETE_ERROR);
-        throw new Error('Unable to delete playlist');
-      }
+      await PlaylistsService.deletePlaylistPlaylistsNameDelete(
+        playlistNameToDelete,
+      );
       refreshSidebarData();
       navigate(`/home`);
     } catch (err) {
-      console.error('Unable to delete playlist: ', err);
+      console.log(`Unable to delete playlist ${playlistNameToDelete}: `, err);
       displayConfirmationModal(ConfirmationMenuActionKind.DELETE_ERROR);
     } finally {
       handleClose();

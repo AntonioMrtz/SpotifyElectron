@@ -7,14 +7,12 @@ import {
 } from 'react';
 import Global from 'global/global';
 import Token from 'utils/token';
+import { SongsService, UsersService } from 'swagger/api';
 import styles from './player.module.css';
 import TimeSlider from './TimeSlider/TimeSlider';
+import { PropsPlayer } from './types/propsPlayer';
 
-interface PropsPlayer {
-  volume: number;
-  songName: string;
-  changeSongInfo: (data: JSON) => void;
-}
+// TODO refactor common logic with streaming player
 
 export default function Player({
   volume,
@@ -84,35 +82,33 @@ export default function Player({
 
   /* Handles updates of DB when song is played */
 
-  const handleIncreaseSongStreams = () => {
-    const requestOptions: RequestInit = {
-      method: 'PATCH',
-      credentials: 'include',
-    };
-    const fetchUrlUpdateSong: string = `${Global.backendBaseUrl}songs/${songName}/streams`;
-
-    fetch(fetchUrlUpdateSong, requestOptions).catch(() =>
-      console.log('Unable to update number of plays'),
-    );
+  const handleIncreaseSongStreams = async () => {
+    try {
+      await SongsService.increaseSongStreamsSongsNameStreamsPatch(songName);
+    } catch (err) {
+      console.log(`Unable to update number of streams of Song ${songName}`);
+      console.log(err);
+    }
   };
 
-  const handleUpdatePlaybackHistory = () => {
-    const username = Token.getTokenUsername();
+  const handleUpdatePlaybackHistory = async () => {
+    const userName = Token.getTokenUsername();
 
-    const fetchPatchPlayBackHistory: string = `${Global.backendBaseUrl}users/${username}/playback_history?song_name=${songName}`;
-
-    const requestOptionsUpdatePlaybackHistory: RequestInit = {
-      method: 'PATCH',
-      credentials: 'include',
-    };
-
-    fetch(fetchPatchPlayBackHistory, requestOptionsUpdatePlaybackHistory).catch(
-      () => console.log('Unable to update playback history'),
-    );
+    try {
+      await UsersService.patchPlaybackHistoryUsersNamePlaybackHistoryPatch(
+        userName,
+        songName,
+      );
+    } catch (err) {
+      console.log(
+        `Unable to update User ${userName} playback history with Son ${songName}`,
+      );
+      console.log(err);
+    }
   };
 
   /* Loads the song and metadata to the Player */
-  const handleMetaData = async () => {
+  const handlSongInfo = async () => {
     try {
       if (audio.current) {
         audio.current.pause();
@@ -120,42 +116,18 @@ export default function Player({
 
       if (songName === Global.noSongPlaying) return;
 
-      const resFetchSong = await fetch(
-        `${Global.backendBaseUrl}songs/${songName}`,
-        {
-          credentials: 'include',
-        },
-      );
-
-      const resFetchSongJson = await resFetchSong.json();
+      const songData = await SongsService.getSongSongsNameGet(songName);
 
       handleIncreaseSongStreams();
       handleUpdatePlaybackHistory();
-      const resFetchSongDTO = await fetch(
-        `${Global.backendBaseUrl}songs/metadata/${songName}`,
-        {
-          credentials: 'include',
-        },
-      );
 
-      const username = Token.getTokenUsername();
+      changeSongInfo({
+        name: songData.name,
+        thumbnail: songData.thumbnail,
+        artist: songData.artist,
+      });
 
-      const fetchPatchPlayBackHistory: string = `${Global.backendBaseUrl}users/${username}/playback_history?song_name=${songName}`;
-
-      const requestOptionsUpdatePlaybackHistory: RequestInit = {
-        method: 'PATCH',
-        credentials: 'include',
-      };
-
-      fetch(
-        fetchPatchPlayBackHistory,
-        requestOptionsUpdatePlaybackHistory,
-      ).catch(() => console.log('Unable to update playback history'));
-
-      const resFetchSongDTOJson = await resFetchSongDTO.json();
-      changeSongInfo(resFetchSongDTOJson);
-
-      let audioBytesString = resFetchSongJson.file;
+      let audioBytesString = songData.file;
 
       if (audioBytesString !== undefined) {
         audioBytesString = audioBytesString
@@ -227,15 +199,17 @@ export default function Player({
     }
   };
 
+  // TODO use hooks
   useEffect(() => {
     if (audio.current) {
       audio.current.pause();
       handlePause();
     }
-    handleMetaData();
+    handlSongInfo();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [songName, changeSongInfo]);
 
+  // TODO put inside single use effect?
   useEffect(() => {
     /* Pause audio if component unmount */
     return () => {

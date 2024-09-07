@@ -48,7 +48,7 @@ test('Home fields', async () => {
 
 test('prueba', async () => {
   global.fetch = jest.fn((url: string) => {
-    if (url === `${Global.backendBaseUrl}artists/`) {
+    if (url === `${Global.backendBaseUrl}/artists/`) {
       return Promise.resolve({
         json: () =>
           Promise.resolve({
@@ -70,7 +70,7 @@ test('prueba', async () => {
         console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}playlists/`) {
+    if (url === `${Global.backendBaseUrl}/playlists/`) {
       return Promise.resolve({
         json: () =>
           Promise.resolve({
@@ -93,7 +93,7 @@ test('prueba', async () => {
     }
 
     // In case the URL doesn't match, return a rejected promise
-    return Promise.reject(new Error('Unhandled URL in fetch mock'));
+    return Promise.reject(new Error(`Unhandled URL in fetch mock: ${url}`));
   }) as jest.Mock;
 
   const component = await act(() => {

@@ -6,6 +6,7 @@ import Playlist from 'pages/Playlist/Playlist';
 import Token from 'utils/token';
 import Global from 'global/global';
 import UserType from 'utils/role';
+import getMockHeaders from 'utils/mockHeaders';
 
 const userName = 'prueba';
 const roleArtist = UserType.ARTIST;
@@ -48,37 +49,40 @@ jest.spyOn(Token, 'getTokenRole').mockReturnValue(roleArtist);
 test('Playlist artist role get all info', async () => {
   global.fetch = jest.fn((url: string) => {
     if (
-      url === `${Global.backendBaseUrl}playlists/${playlistDTOMockFetch.name}`
+      url === `${Global.backendBaseUrl}/playlists/${playlistDTOMockFetch.name}`
     ) {
       return Promise.resolve({
         json: () => playlistDTOMockFetch,
         status: 200,
         ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}artists/${userName}`) {
+    if (url === `${Global.backendBaseUrl}/artists/${userName}`) {
       return Promise.resolve({
         json: () => artistMockFetch,
         status: 200,
         ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}songs/metadata/${songName}`) {
+    if (url === `${Global.backendBaseUrl}/songs/metadata/${songName}`) {
       return Promise.resolve({
         json: () => songMockFetch,
         status: 200,
         ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });
     }
 
     // In case the URL doesn't match, return a rejected promise
-    return Promise.reject(new Error('Unhandled URL in fetch mock'));
+    return Promise.reject(new Error(`Unhandled URL in fetch mock: ${url}`));
   }) as jest.Mock;
 
   const component = await act(() => {

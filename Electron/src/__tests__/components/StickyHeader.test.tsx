@@ -6,6 +6,7 @@ import StickyHeader from 'components/StickyHeader/StickyHeader';
 import Token from 'utils/token';
 import UserType from 'utils/role';
 import Global from 'global/global';
+import getMockHeaders from 'utils/mockHeaders';
 
 const userName = 'prueba';
 const roleUser = UserType.USER;
@@ -24,18 +25,19 @@ const userMockFetch = {
 };
 
 global.fetch = jest.fn((url: string) => {
-  if (url === `${Global.backendBaseUrl}users/${userMockFetch.name}`) {
+  if (url === `${Global.backendBaseUrl}/users/${userMockFetch.name}`) {
     return Promise.resolve({
       json: () => userMockFetch,
       status: 200,
       ok: true,
+      headers: getMockHeaders(),
     }).catch((error) => {
       console.log(error);
     });
   }
 
   // In case the URL doesn't match, return a rejected promise
-  return Promise.reject(new Error('Unhandled URL in fetch mock'));
+  return Promise.reject(new Error(`Unhandled URL in fetch mock: ${url}`));
 }) as jest.Mock;
 
 test('Render StickyHeader and get User data', async () => {

@@ -1,9 +1,10 @@
 import '@testing-library/jest-dom';
-import { act, fireEvent, render } from '@testing-library/react';
+import { act, fireEvent, render, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import Explorar from 'pages/Explorar/Explorar';
 import { BrowserRouter } from 'react-router-dom';
 import Global from 'global/global';
+import getMockHeaders from 'utils/mockHeaders';
 
 const playlistName = 'playlisttest';
 const songName = 'songName';
@@ -50,14 +51,15 @@ const songMockFetch = {
 };
 
 global.fetch = jest.fn((url: string) => {
-  if (url === `${Global.backendBaseUrl}genres/`) {
+  if (url === `${Global.backendBaseUrl}/genres/`) {
     return Promise.resolve({
       json: () => Promise.resolve({ ROCK: 'Rock', POP: 'Pop' }),
       status: 200,
       ok: true,
+      headers: getMockHeaders(),
     });
   }
-  if (url === `${Global.backendBaseUrl}search/?name=${'prueba'}`) {
+  if (url === `${Global.backendBaseUrl}/search/?name=prueba`) {
     return Promise.resolve({
       json: () =>
         Promise.resolve({
@@ -68,12 +70,13 @@ global.fetch = jest.fn((url: string) => {
         }),
       status: 200,
       ok: true,
+      headers: getMockHeaders(),
     }).catch((error) => {
       console.log(error);
     });
   }
   // In case the URL doesn't match, return a rejected promise
-  return Promise.reject(new Error('Unhandled URL in fetch mock'));
+  return Promise.reject(new Error(`Unhandled URL in fetch mock: ${url}`));
 }) as jest.Mock;
 
 test('Render Explorar and get Genres', async () => {
@@ -101,8 +104,10 @@ test('Explorar filter by name', async () => {
     fireEvent.change(inputSearchBar, { target: { value: 'prueba' } });
   });
 
-  expect(component.getByText(playlistName)).toBeInTheDocument();
-  expect(component.getByText(songName)).toBeInTheDocument();
-  expect(component.getByText(userName)).toBeInTheDocument();
-  expect(component.getByText(artistName)).toBeInTheDocument();
+  await waitFor(() => {
+    expect(component.getByText(playlistName)).toBeInTheDocument();
+    expect(component.getByText(songName)).toBeInTheDocument();
+    expect(component.getByText(userName)).toBeInTheDocument();
+    expect(component.getByText(artistName)).toBeInTheDocument();
+  });
 });

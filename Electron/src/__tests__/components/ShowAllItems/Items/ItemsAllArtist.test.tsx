@@ -5,6 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import Global from 'global/global';
 import ItemsAllArtist from 'components/ShowAllItems/Items/ItemsAllArtist';
 import * as router from 'react-router';
+import getMockHeaders from 'utils/mockHeaders';
 
 const navigate = jest.fn();
 
@@ -12,7 +13,7 @@ jest.spyOn(router, 'useNavigate').mockImplementation(() => navigate);
 
 test('Render ItemsAllArtist', async () => {
   global.fetch = jest.fn((url: string) => {
-    if (url === `${Global.backendBaseUrl}artists/`) {
+    if (url === `${Global.backendBaseUrl}/artists/`) {
       return Promise.resolve({
         json: () =>
           Promise.resolve({
@@ -30,12 +31,13 @@ test('Render ItemsAllArtist', async () => {
           }),
         status: 200,
         ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });
     }
     // In case the URL doesn't match, return a rejected promise
-    return Promise.reject(new Error('Unhandled URL in fetch mock'));
+    return Promise.reject(new Error(`Unhandled URL in fetch mock: ${url}`));
   }) as jest.Mock;
   const component = await act(() => {
     return render(

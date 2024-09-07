@@ -6,6 +6,7 @@ import Global from 'global/global';
 import Token from 'utils/token';
 import UserType from 'utils/role';
 import { act } from 'react-test-renderer';
+import getMockHeaders from 'utils/mockHeaders';
 
 const songName = 'songName';
 const userName = 'prueba';
@@ -25,48 +26,52 @@ jest.spyOn(Token, 'getTokenUsername').mockReturnValue(userName);
 jest.spyOn(Token, 'getTokenRole').mockReturnValue(roleUser);
 
 global.fetch = jest.fn((url: string) => {
-  if (url === `${Global.backendBaseUrl}songs/${songName}`) {
+  if (url === `${Global.backendBaseUrl}/songs/${songName}`) {
     return Promise.resolve({
       json: () => songMockFetch,
       status: 200,
       ok: true,
+      headers: getMockHeaders(),
     }).catch((error) => {
       console.log(error);
     });
   }
-  if (url === `${Global.backendBaseUrl}songs/metadata/${songName}`) {
+  if (url === `${Global.backendBaseUrl}/songs/metadata/${songName}`) {
     return Promise.resolve({
       json: () => songMockFetch,
       status: 200,
       ok: true,
+      headers: getMockHeaders(),
     }).catch((error) => {
       console.log(error);
     });
   }
-  if (url === `${Global.backendBaseUrl}songs/${songName}/streams`) {
+  if (url === `${Global.backendBaseUrl}/songs/${songName}/streams`) {
     return Promise.resolve({
       json: () => {},
       status: 204,
       ok: true,
+      headers: getMockHeaders(),
     }).catch((error) => {
       console.log(error);
     });
   }
   if (
     url ===
-    `${Global.backendBaseUrl}users/${userName}/playback_history?song_name=${songName}`
+    `${Global.backendBaseUrl}/users/${userName}/playback_history?song_name=${songName}`
   ) {
     return Promise.resolve({
       json: () => {},
       status: 204,
       ok: true,
+      headers: getMockHeaders(),
     }).catch((error) => {
       console.log(error);
     });
   }
 
   // In case the URL doesn't match, return a rejected promise
-  return Promise.reject(new Error('Unhandled URL in fetch mock'));
+  return Promise.reject(new Error(`Unhandled URL in fetch mock: ${url}`));
 }) as jest.Mock;
 
 jest

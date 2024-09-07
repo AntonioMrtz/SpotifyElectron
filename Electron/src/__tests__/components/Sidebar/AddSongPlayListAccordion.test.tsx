@@ -6,6 +6,7 @@ import Global from 'global/global';
 import Token from 'utils/token';
 import UserType from 'utils/role';
 import AddSongPlayListAccordion from 'components/Sidebar/ModalAddSongPlaylist/Accordion/AddSongPlayListAccordion';
+import getMockHeaders from 'utils/mockHeaders';
 
 const userName = 'prueba';
 const roleUser = UserType.ARTIST;
@@ -19,18 +20,19 @@ test('render AddSongPlaylistAccordion', async () => {
   const setIsCloseAllowed = jest.fn();
 
   global.fetch = jest.fn(async (url: string) => {
-    if (url === `${Global.backendBaseUrl}genres/`) {
+    if (url === `${Global.backendBaseUrl}/genres/`) {
       return Promise.resolve({
         json: () => JSON.stringify({ Rock: 'Rock', Pop: 'Pop' }),
         status: 200,
         ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });
     }
 
     // In case the URL doesn't match, return a rejected promise
-    return Promise.reject(new Error('Unhandled URL in fetch mock'));
+    return Promise.reject(new Error(`Unhandled URL in fetch mock: ${url}`));
   }) as jest.Mock;
 
   const component = await act(() => {
@@ -54,11 +56,12 @@ test('AddSongPlaylistAccordion submit playlist correct', async () => {
   const setIsCloseAllowed = jest.fn();
 
   global.fetch = jest.fn(async (url: string) => {
-    if (url === `${Global.backendBaseUrl}genres/`) {
+    if (url === `${Global.backendBaseUrl}/genres/`) {
       return Promise.resolve({
         json: () => JSON.stringify({ Rock: 'Rock', Pop: 'Pop' }),
         status: 200,
         ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });
@@ -68,6 +71,7 @@ test('AddSongPlaylistAccordion submit playlist correct', async () => {
       json: () => {},
       status: 201,
       ok: true,
+      headers: getMockHeaders(),
     }).catch((error) => {
       console.log(error);
     });
@@ -132,11 +136,12 @@ test('AddSongPlaylistAccordion submit song correct', async () => {
   const setIsCloseAllowed = jest.fn();
 
   global.fetch = jest.fn(async (url: string) => {
-    if (url === `${Global.backendBaseUrl}genres/`) {
+    if (url === `${Global.backendBaseUrl}/genres/`) {
       return Promise.resolve({
         json: () => JSON.stringify({ Rock: 'Rock', Pop: 'Pop' }),
         status: 200,
         ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });
@@ -146,6 +151,7 @@ test('AddSongPlaylistAccordion submit song correct', async () => {
       json: () => {},
       status: 201,
       ok: true,
+      headers: getMockHeaders(),
     }).catch((error) => {
       console.log(error);
     });
@@ -175,9 +181,10 @@ test('AddSongPlaylistAccordion submit song correct', async () => {
 
   const inputName = component.getByPlaceholderText('Nombre de la canción');
   const inputPhoto = component.getByPlaceholderText(
-    'URL de la miniatura de la playlist',
+    'URL de la miniatura de la canción',
   );
   const selectGenreOption = component.getByText('❗ Elige un género');
+  const dropdown = component.getByTestId('select-genre');
 
   // Find the file input element by it's name or other suitable selector
   const fileInputElement = component.getByTestId('sidebar-file-input');
@@ -185,19 +192,22 @@ test('AddSongPlaylistAccordion submit song correct', async () => {
   // Create a sample file
   const file = new File(['(⌐□_□)'], 'sample.mp3', { type: 'audio/mp3' });
 
-  fireEvent.change(inputName, {
-    target: { value: 'testuser' },
+  await act(async () => {
+    fireEvent.change(inputName, {
+      target: { value: 'testuser' },
+    });
+    fireEvent.change(inputPhoto, {
+      target: { value: 'testpassword' },
+    });
+    /* ! TODO For some both fireEvent are necessary and without one
+    the genre selected is empty causing the test to fail
+     */
+    fireEvent.change(selectGenreOption, {
+      target: { value: 'Rock' },
+    });
+    fireEvent.change(dropdown, { target: { value: 'Rock' } });
+    fireEvent.change(fileInputElement, { target: { files: [file] } });
   });
-  fireEvent.change(inputPhoto, {
-    target: { value: 'testpassword' },
-  });
-
-  // Simulate selecting an option
-  fireEvent.change(selectGenreOption, {
-    target: { value: 'Rock' },
-  });
-
-  fireEvent.change(fileInputElement, { target: { files: [file] } });
 
   const submitSongButton = component.getByTestId(
     'sidebar-addsongplaylistaccordion-submit-song',

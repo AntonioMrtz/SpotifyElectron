@@ -1,9 +1,11 @@
 import { ChangeEvent, useState, MouseEvent } from 'react';
-import Global from 'global/global';
 import { InfoPopoverType } from 'components/AdvancedUIComponents/InfoPopOver/types/InfoPopover';
 import InfoPopover from 'components/AdvancedUIComponents/InfoPopOver/InfoPopover';
+// eslint-disable-next-line camelcase
+import { Body_login_usuario_login__post } from 'swagger/api/models/Body_login_usuario_login__post';
 import styles from './startMenu.module.css';
 import SpotifyElectronLogo from '../../assets/imgs/SpotifyElectronLogo.png';
+import { LoginService } from '../../swagger/api/services/LoginService';
 
 interface PropsStartMenu {
   setIsLogged: Function;
@@ -39,32 +41,17 @@ export default function StartMenu({
       if (!formData.nombre || !formData.password) {
         throw new Error('Unable to login');
       }
-
-      const fetchParameters = new URLSearchParams();
-      fetchParameters.append('username', formData.nombre);
-      fetchParameters.append('password', formData.password);
-
-      const requestOptions: RequestInit = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        credentials: 'include',
-        body: fetchParameters.toString(),
+      // eslint-disable-next-line camelcase
+      const loginData: Body_login_usuario_login__post = {
+        username: formData.nombre,
+        password: formData.password,
       };
 
-      const fetchUrlLogin = `${Global.backendBaseUrl}login/`;
-      const resFetchUrlLogin = await fetch(fetchUrlLogin, requestOptions);
-      const resFetchUrlLoginJson = await resFetchUrlLogin.json();
-
-      if (resFetchUrlLogin.status !== 200) {
-        setIsLogged(false);
-        throw new Error('Unable to login');
-      } else {
-        localStorage.setItem('jwt', resFetchUrlLoginJson);
-        setIsLogged(true);
-      }
+      const loginResponse = await LoginService.loginUsuarioLoginPost(loginData);
+      localStorage.setItem('jwt', loginResponse);
+      setIsLogged(true);
     } catch {
+      setIsLogged(false);
       console.log('Unable to login');
       setisOpenPopover(true);
     }

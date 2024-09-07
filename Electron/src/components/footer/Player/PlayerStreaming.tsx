@@ -7,14 +7,11 @@ import {
 } from 'react';
 import Global from 'global/global';
 import Token from 'utils/token';
+import { SongsService } from 'swagger/api/services/SongsService';
+import { UsersService } from 'swagger/api/services/UsersService';
 import styles from './player.module.css';
 import TimeSlider from './TimeSlider/TimeSlider';
-
-interface PropsPlayer {
-  volume: number;
-  songName: string;
-  changeSongInfo: (data: JSON) => void;
-}
+import { PropsPlayer } from './types/propsPlayer';
 
 export default function PlayerStreaming({
   volume,
@@ -82,37 +79,34 @@ export default function PlayerStreaming({
     setVolume();
   }, [setVolume, volume]);
 
-  /* Handles updates of DB when song is played */
-
-  const handleIncreaseSongStreams = () => {
-    const requestOptions: RequestInit = {
-      method: 'PATCH',
-      credentials: 'include',
-    };
-    const fetchUrlUpdateSong: string = `${Global.backendBaseUrl}songs/${songName}/streams`;
-
-    fetch(fetchUrlUpdateSong, requestOptions).catch(() =>
-      console.log('Unable to update number of plays'),
-    );
+  const handleIncreaseSongStreams = async () => {
+    try {
+      await SongsService.increaseSongStreamsSongsNameStreamsPatch(songName);
+    } catch (err) {
+      console.log(`Unable to update number of streams of Song ${songName}`);
+      console.log(err);
+    }
   };
 
-  const handleUpdatePlaybackHistory = () => {
-    const username = Token.getTokenUsername();
+  const handleUpdatePlaybackHistory = async () => {
+    const userName = Token.getTokenUsername();
 
-    const fetchPatchPlayBackHistory: string = `${Global.backendBaseUrl}users/${username}/playback_history?song_name=${songName}`;
-
-    const requestOptionsUpdatePlaybackHistory = {
-      method: 'PATCH',
-    };
-
-    fetch(fetchPatchPlayBackHistory, requestOptionsUpdatePlaybackHistory).catch(
-      () => console.log('Unable to update playback history'),
-    );
+    try {
+      await UsersService.patchPlaybackHistoryUsersNamePlaybackHistoryPatch(
+        userName,
+        songName,
+      );
+    } catch (err) {
+      console.log(
+        `Unable to update User ${userName} playback history with Son ${songName}`,
+      );
+      console.log(err);
+    }
   };
 
   /* Loads the song and metadata to the Player */
 
-  const handleMetaData = async () => {
+  const handleSongInfo = async () => {
     try {
       if (audio.current) {
         audio.current.pause();
@@ -120,27 +114,18 @@ export default function PlayerStreaming({
 
       if (songName === Global.noSongPlaying) return;
 
-      const resFetchSong = await fetch(
-        `${Global.backendBaseUrl}songs/${songName}`,
-        {
-          credentials: 'include',
-        },
-      );
-
-      const resFetchSongJson = await resFetchSong.json();
+      const songData = await SongsService.getSongSongsNameGet(songName);
 
       handleIncreaseSongStreams();
-
       handleUpdatePlaybackHistory();
 
-      const resFetchSongDTO = await fetch(
-        `${Global.backendBaseUrl}songs/metadata/${songName}`,
-      );
+      changeSongInfo({
+        name: songData.name,
+        thumbnail: songData.thumbnail,
+        artist: songData.artist,
+      });
 
-      const resFetchSongDTOJson = await resFetchSongDTO.json();
-      changeSongInfo(resFetchSongDTOJson);
-
-      const audioStreamingURL = resFetchSongJson.url;
+      const audioStreamingURL = songData.url;
 
       if (audioStreamingURL !== undefined) {
         audio.current = new Audio(audioStreamingURL);
@@ -211,7 +196,7 @@ export default function PlayerStreaming({
       audio.current.pause();
       handlePause();
     }
-    handleMetaData();
+    handleSongInfo();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [songName, changeSongInfo]);
 

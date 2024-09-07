@@ -1,7 +1,8 @@
 import SongArchitecture from './SongArchitecture';
 
 namespace Global {
-  export const backendBaseUrl: string = 'http://127.0.0.1:8000/';
+  export const backendBaseUrl: string = 'http://127.0.0.1:8000';
+  export const appVersion: string = '1.0.0';
 
   export const repositoryUrl: string =
     'https://github.com/AntonioMrtz/SpotifyElectron/';

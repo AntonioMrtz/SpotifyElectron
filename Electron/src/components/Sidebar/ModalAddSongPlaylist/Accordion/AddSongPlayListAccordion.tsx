@@ -6,14 +6,17 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import LibraryMusicRoundedIcon from '@mui/icons-material/LibraryMusicRounded';
 import AudiotrackIcon from '@mui/icons-material/Audiotrack';
-import Global from 'global/global';
 import Token from 'utils/token';
 import { InfoPopoverType } from 'components/AdvancedUIComponents/InfoPopOver/types/InfoPopover';
 import ConfirmationModal from 'components/AdvancedUIComponents/InfoPopOver/InfoPopover';
 import UserType from 'utils/role';
 import LoadingCircleSmall from 'components/AdvancedUIComponents/LoadingCircle/LoadingCircleSmallNoPadding';
+import { getGenreFromString } from 'utils/genre';
 import GenreOption from './GenreOption/GenreOption';
 import styles from './addSongPlayListAccordion.module.css';
+import useFetchGetGenres from '../../../../hooks/useFetchGetGenres';
+import { PlaylistsService } from '../../../../swagger/api/services/PlaylistsService';
+import { SongsService } from '../../../../swagger/api/services/SongsService';
 
 interface PropsAddSongPlayListAccordion {
   handleClose: Function;
@@ -76,6 +79,10 @@ export default function AddSongPlayListAccordion({
     setTriggerOpenConfirmationModal((state) => !state);
   };
 
+  /* GENRE */
+
+  const { genres } = useFetchGetGenres();
+
   /* SONG */
 
   const [songFile, setSongFile] = useState<File>();
@@ -92,7 +99,7 @@ export default function AddSongPlayListAccordion({
     event: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     if (event.target && event.target.name) {
-      if (event.target.name === 'foto') {
+      if (event.target.name === 'photo') {
         setThumbnailUploadSong(event.target.value);
       }
 
@@ -109,59 +116,38 @@ export default function AddSongPlayListAccordion({
     }
   };
 
-  const handleSubmitSong = (event: FormEvent<HTMLButtonElement>) => {
+  const handleSubmitSong = async (event: FormEvent<HTMLButtonElement>) => {
     event.preventDefault();
     setLoadingUploadSong(true);
     setIsCloseAllowed(false);
 
-    const url = new URL(`${Global.backendBaseUrl}songs/`);
+    if (!formDataSong || !songFile) {
+      return;
+    }
 
-    if (formDataSong && songFile) {
-      Object.entries(formDataSong).forEach(([key, value]) => {
-        if (key !== 'file' && typeof value === 'string') {
-          url.searchParams.set(key, value);
-        }
-      });
-
-      const formDataFile = new FormData();
-      formDataFile.append('file', songFile);
-
-      const requestOptions: RequestInit = {
-        method: 'POST',
-        body: formDataFile,
-        credentials: 'include',
-      };
-
-      fetch(url, requestOptions)
-        .then((response) => {
-          if (response.status === 201) {
-            console.log('Cancion creada');
-            handleShowConfirmationModal(
-              InfoPopoverType.SUCCESS,
-              MessagesInfoPopOver.SONG_ADDED_TITLE,
-              MessagesInfoPopOver.SONG_ADDED_DESCRIPTION,
-            );
-          } else {
-            console.log('No se a creado la cancion');
-            handleShowConfirmationModal(
-              InfoPopoverType.ERROR,
-              MessagesInfoPopOver.SONG_NOT_ADDED_TITLE,
-              MessagesInfoPopOver.SONG_NOT_ADDED_DESCRIPTION,
-            );
-          }
-          setLoadingUploadSong(false);
-          setIsCloseAllowed(true);
-
-          return null;
-        })
-        .finally(() => {
-          // props.handleClose();
-        })
-        .catch((error) => {
-          console.error('Error:', error);
-          setLoadingUploadSong(false);
-          setIsCloseAllowed(true);
-        });
+    try {
+      await SongsService.createSongSongsPost(
+        formDataSong.name,
+        getGenreFromString(formDataSong.genre),
+        formDataSong.photo,
+        { file: songFile },
+      );
+      console.log('Song created');
+      handleShowConfirmationModal(
+        InfoPopoverType.SUCCESS,
+        MessagesInfoPopOver.SONG_ADDED_TITLE,
+        MessagesInfoPopOver.SONG_ADDED_DESCRIPTION,
+      );
+    } catch (err) {
+      console.log('Error creating song:', err);
+      handleShowConfirmationModal(
+        InfoPopoverType.ERROR,
+        MessagesInfoPopOver.SONG_NOT_ADDED_TITLE,
+        MessagesInfoPopOver.SONG_NOT_ADDED_DESCRIPTION,
+      );
+    } finally {
+      setLoadingUploadSong(false);
+      setIsCloseAllowed(true);
     }
   };
 
@@ -171,8 +157,9 @@ export default function AddSongPlayListAccordion({
     useState<string>();
 
   const [formDataPlaylist, setFormDataPlaylist] = useState({
-    nombre: '',
-    foto: '',
+    name: '',
+    photo: '',
+    description: '',
   });
 
   const handleChangePlaylist = (
@@ -192,86 +179,39 @@ export default function AddSongPlayListAccordion({
     }
   };
 
-  const handleSubmitPlaylist = (event: FormEvent<HTMLButtonElement>) => {
+  const handleSubmitPlaylist = async (event: FormEvent<HTMLButtonElement>) => {
     setIsCloseAllowed(false);
-
-    const url = new URL(`${Global.backendBaseUrl}playlists/`);
 
     event.preventDefault();
 
-    if (formDataPlaylist) {
-      Object.entries(formDataPlaylist).forEach(([key, value]) => {
-        if (typeof value === 'string') {
-          url.searchParams.set(key, value);
-        }
-      });
+    if (!formDataPlaylist) {
+      return;
+    }
 
-      if (!url.searchParams.get('description')) {
-        url.searchParams.set('description', '');
-      }
-
-      const requestOptions: RequestInit = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify([]),
-      };
-
-      fetch(url, requestOptions)
-        .then((response) => {
-          if (response.status === 201) {
-            handleShowConfirmationModal(
-              InfoPopoverType.SUCCESS,
-              MessagesInfoPopOver.PLAYLIST_ADDED_TITLE,
-              MessagesInfoPopOver.PLAYLIST_ADDED_DESCRIPTION,
-            );
-            refreshSidebarData();
-          } else {
-            console.log('No se a creado la playlist');
-
-            handleShowConfirmationModal(
-              InfoPopoverType.ERROR,
-              MessagesInfoPopOver.PLAYLIST_NOT_ADDED_TITLE,
-              MessagesInfoPopOver.PLAYLIST_NOT_ADDED_DESCRIPTION,
-            );
-          }
-          setIsCloseAllowed(true);
-
-          return null;
-        })
-        .finally(() => {
-          // props.handleClose();
-        })
-        .catch((error) => {
-          console.error('Error:', error);
-          setIsCloseAllowed(true);
-        });
+    try {
+      await PlaylistsService.createPlaylistPlaylistsPost(
+        formDataPlaylist.name,
+        formDataPlaylist.photo,
+        formDataPlaylist.description,
+        [],
+      );
+      handleShowConfirmationModal(
+        InfoPopoverType.SUCCESS,
+        MessagesInfoPopOver.PLAYLIST_ADDED_TITLE,
+        MessagesInfoPopOver.PLAYLIST_ADDED_DESCRIPTION,
+      );
+      refreshSidebarData();
+    } catch (err) {
+      console.log('Error creating playlist: ', err);
+      handleShowConfirmationModal(
+        InfoPopoverType.ERROR,
+        MessagesInfoPopOver.PLAYLIST_NOT_ADDED_TITLE,
+        MessagesInfoPopOver.PLAYLIST_NOT_ADDED_DESCRIPTION,
+      );
+    } finally {
+      setIsCloseAllowed(true);
     }
   };
-
-  /* GENRES */
-
-  const [genres, setGenres] = useState<{}>();
-
-  const handleGenres = () => {
-    fetch(`${Global.backendBaseUrl}genres/`, {
-      credentials: 'include',
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        setGenres(res);
-        return null;
-      })
-      .catch(() => {
-        console.log('No se pudieron obtener los géneros');
-      });
-  };
-
-  useEffect(() => {
-    handleGenres();
-  }, []);
 
   return (
     <>
@@ -421,6 +361,8 @@ export default function AddSongPlayListAccordion({
                     aria-label="Default select example"
                     onChange={handleChangeSong}
                     name="genre"
+                    id="genre"
+                    data-testid="select-genre"
                     required
                     defaultValue="Elige un género"
                   >
@@ -434,10 +376,7 @@ export default function AddSongPlayListAccordion({
 
                     {genres &&
                       Object.entries(genres).map(([key, value]) => {
-                        if (
-                          typeof value === 'string' &&
-                          typeof value === 'string'
-                        ) {
+                        if (typeof value === 'string') {
                           return (
                             <GenreOption key={key} value={value} name={value} />
                           );
@@ -477,7 +416,6 @@ export default function AddSongPlayListAccordion({
           </AccordionDetails>
         </Accordion>
       )}
-
       <ConfirmationModal
         type={type}
         title={title}

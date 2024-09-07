@@ -1,5 +1,6 @@
 from datetime import datetime
 
+import pytest
 from pytest import fixture
 from starlette.status import (
     HTTP_200_OK,
@@ -19,7 +20,7 @@ from tests.test_API.api_test_playlist import (
     get_playlists,
     update_playlist,
 )
-from tests.test_API.api_test_user import create_user, delete_user
+from tests.test_API.api_test_user import delete_user, get_user
 from tests.test_API.api_token import get_user_jwt_header
 
 
@@ -189,64 +190,7 @@ def test_update_playlist_correct():
     assert res_delete_artist.status_code == HTTP_202_ACCEPTED
 
 
-def test_update_playlist_new_name_check_cascade_update_playlists_users_and_artists():
-    name = "8232392323623823723"
-    photo = "photo"
-    descripcion = "descripcion"
-    owner = "usuarioprueba834783478923489734298"
-    password = "password"
-
-    user_name = "user_name"
-
-    res_create_artist = create_artist(owner, photo, password)
-    assert res_create_artist.status_code == HTTP_201_CREATED
-
-    res_create_user = create_user(user_name, photo, password)
-    assert res_create_user.status_code == HTTP_201_CREATED
-
-    jwt_artist_headers = get_user_jwt_header(username=owner, password=password)
-    user_artist_headers = get_user_jwt_header(username=user_name, password=password)
-
-    res_create_playlist = create_playlist(
-        name=name, descripcion=descripcion, photo=photo, headers=jwt_artist_headers
-    )
-    assert res_create_playlist.status_code == HTTP_201_CREATED
-
-    res_patch_playlist_saved = patch_playlist_saved(
-        user_name=user_name, playlist_name=name, headers=user_artist_headers
-    )
-    assert res_patch_playlist_saved.status_code == HTTP_204_NO_CONTENT
-
-    # TODO comprobar que playlist esta en usuario y artista , cuando se termine método de
-    # obtener playlist por usuario
-
-    new_name = "82323923236238237237"
-    new_description = "nuevadescripcion"
-
-    res_update_playlist = update_playlist(
-        name=name,
-        photo=photo,
-        descripcion=new_description,
-        nuevo_nombre=new_name,
-        headers=jwt_artist_headers,
-    )
-    assert res_update_playlist.status_code == HTTP_204_NO_CONTENT
-
-    # TODO comprobar que playlist esta en usuario y artista
-
-    res_get_playlist = get_playlist(new_name, headers=jwt_artist_headers)
-    assert res_get_playlist.status_code == HTTP_200_OK
-
-    res_delete_playlist = delete_playlist(new_name)
-    assert res_delete_playlist.status_code == HTTP_202_ACCEPTED
-
-    res_delete_artist = delete_user(owner)
-    assert res_delete_artist.status_code == HTTP_202_ACCEPTED
-
-    res_delete_user = delete_user(user_name)
-    assert res_delete_user.status_code == HTTP_202_ACCEPTED
-
-
+@pytest.mark.skip(reason="mongomock don't support the operator playlists.$")
 def test_update_playlist_correct_new_name():
     name = "8232392323623823723"
     photo = "photo"
@@ -264,6 +208,11 @@ def test_update_playlist_correct_new_name():
     )
     assert res_create_playlist.status_code == HTTP_201_CREATED
 
+    res_patch_playlist_saved = patch_playlist_saved(
+        user_name=owner, playlist_name=name, headers=jwt_headers
+    )
+    assert res_patch_playlist_saved.status_code == HTTP_204_NO_CONTENT
+
     new_name = "82323923236238237237"
     new_description = "nuevadescripcion"
 
@@ -278,6 +227,10 @@ def test_update_playlist_correct_new_name():
 
     res_get_playlist = get_playlist(new_name, headers=jwt_headers)
     assert res_get_playlist.status_code == HTTP_200_OK
+
+    res_get_user = get_user(owner, jwt_headers)
+    assert new_name in res_get_user.json()["playlists"]
+    assert new_name in res_get_user.json()["saved_playlists"]
 
     res_delete_playlist = delete_playlist(new_name)
     assert res_delete_playlist.status_code == HTTP_202_ACCEPTED

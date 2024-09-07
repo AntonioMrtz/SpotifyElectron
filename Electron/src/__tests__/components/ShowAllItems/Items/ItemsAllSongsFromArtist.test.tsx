@@ -4,6 +4,7 @@ import '@testing-library/jest-dom/extend-expect';
 import { BrowserRouter } from 'react-router-dom';
 import Global from 'global/global';
 import ItemsAllSongsFromArtist from 'components/ShowAllItems/Items/ItemsAllSongsFromArtist';
+import getMockHeaders from 'utils/mockHeaders';
 
 const playlistName = 'playlisttest';
 const songName = 'songName';
@@ -30,27 +31,21 @@ const songMockFetch = {
 
 test('Render items All Songs from Artist', async () => {
   global.fetch = jest.fn((url: string) => {
-    if (url === `${Global.backendBaseUrl}artists/${artistMockFetch.name}`) {
+    if (
+      url === `${Global.backendBaseUrl}/artists/${artistMockFetch.name}/songs`
+    ) {
       return Promise.resolve({
-        json: () => artistMockFetch,
+        json: () => [songMockFetch],
         status: 200,
         ok: true,
-      }).catch((error) => {
-        console.log(error);
-      });
-    }
-    if (url === `${Global.backendBaseUrl}songs/metadata/${songName}`) {
-      return Promise.resolve({
-        json: () => songMockFetch,
-        status: 200,
-        ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });
     }
 
     // In case the URL doesn't match, return a rejected promise
-    return Promise.reject(new Error('Unhandled URL in fetch mock'));
+    return Promise.reject(new Error(`Unhandled URL in fetch mock: ${url}`));
   }) as jest.Mock;
 
   const component = await act(() => {

@@ -1,14 +1,7 @@
 import { useState, useEffect } from 'react';
-import Global from 'global/global';
+import { PropsPlaylistCard } from 'types/playlist';
 import defaultThumbnailPlaylist from '../assets/imgs/DefaultThumbnailPlaylist.jpg';
-
-interface PropsPlaylistCard {
-  name: string;
-  photo: string;
-  description: string;
-  refreshSidebarData: () => void;
-  owner: string;
-}
+import { PlaylistsService } from '../swagger/api/services/PlaylistsService';
 
 const useFetchGetPlaylists = (refreshSidebarData: () => void) => {
   const [playlists, setPlaylists] = useState<PropsPlaylistCard[]>([]);
@@ -16,16 +9,11 @@ const useFetchGetPlaylists = (refreshSidebarData: () => void) => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchPlaylists = async () => {
+    const fetchData = async () => {
       try {
-        const getPlaylistsURL = `${Global.backendBaseUrl}playlists/`;
-        const response = await fetch(getPlaylistsURL, {
-          credentials: 'include',
-        });
-        if (!response.ok) {
-          throw new Error(`Failed to fetch all playlists`);
-        }
-        const data = await response.json();
+        setLoading(true);
+
+        const data = await PlaylistsService.getPlaylistsPlaylistsGet();
 
         if (data.playlists) {
           const propsPlaylists: PropsPlaylistCard[] = [];
@@ -52,12 +40,13 @@ const useFetchGetPlaylists = (refreshSidebarData: () => void) => {
       } catch (err) {
         console.log(err);
         setError('Unable to get all playlists');
+        setPlaylists([]);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchPlaylists();
+    fetchData();
   }, [refreshSidebarData]);
 
   return { playlists, loading, error };

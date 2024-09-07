@@ -1,9 +1,9 @@
 import { ChangeEvent, useState, MouseEvent } from 'react';
-import Global from 'global/global';
 import InfoPopover from 'components/AdvancedUIComponents/InfoPopOver/InfoPopover';
 import { InfoPopoverType } from 'components/AdvancedUIComponents/InfoPopOver/types/InfoPopover';
 import styles from './startMenu.module.css';
 import SpotifyElectronLogo from '../../assets/imgs/SpotifyElectronLogo.png';
+import { UsersService } from '../../swagger/api/services/UsersService';
 
 interface PropsRegisterMenu {
   setIsSigningUp: Function;
@@ -76,38 +76,28 @@ export default function RegisterMenu({ setIsSigningUp }: PropsRegisterMenu) {
     }
 
     try {
-      const fetchPostUserURL = `${Global.backendBaseUrl}users/?name=${formData.name}&photo=${formData.photo}&password=${formData.password}`;
-
-      const requestOptions: RequestInit = {
-        method: 'POST',
-        credentials: 'include',
-      };
-
-      const resfetchPostUser = await fetch(fetchPostUserURL, requestOptions);
-
-      if (resfetchPostUser.status !== 201) {
-        const resfetchPostUserJson = await resfetchPostUser.json();
-        throw new Error(resfetchPostUserJson.detail);
-      } else {
-        setisOpenPopover(true);
-
-        setPropsPopOver({
-          title: 'Usuario registrado',
-          description: 'El usuario ha sido registrado con éxito',
-          type: InfoPopoverType.SUCCESS,
-          handleClose: () => {
-            setisOpenPopover(false);
-            setIsSigningUp(false);
-          },
-        });
-      }
-    } catch (error) {
-      console.log('Unable to login');
+      await UsersService.createUserUsersPost(
+        formData.name,
+        formData.photo,
+        formData.password,
+      );
       setisOpenPopover(true);
 
       setPropsPopOver({
-        title: (error as Error).message,
-        description: '',
+        title: 'Usuario registrado',
+        description: 'El usuario ha sido registrado con éxito',
+        type: InfoPopoverType.SUCCESS,
+        handleClose: () => {
+          setisOpenPopover(false);
+          setIsSigningUp(false);
+        },
+      });
+    } catch (error) {
+      console.log('Unable to register');
+      setisOpenPopover(true);
+      setPropsPopOver({
+        title: 'Los credenciales introducidos no son válidos',
+        description: 'No se ha podido registrar el usuario',
         type: InfoPopoverType.ERROR,
         handleClose: () => {
           setisOpenPopover(false);

@@ -1,5 +1,5 @@
 import { useLocation } from 'react-router-dom';
-import genreColorsMap from 'utils/genre';
+import { genreColorsMapping } from 'utils/genre';
 import useFetchSongsByGenre from 'hooks/useFetchGetSongsbyGenre';
 import styles from './genre.module.css';
 import SongCard from '../../components/Cards/SongCard/SongCard';
@@ -26,7 +26,7 @@ export default function Genre({
       <div
         className={`d-flex align-items-end container-fluid ${styles.headerGenre}`}
         style={{
-          backgroundColor: `${genreColorsMap[genreName]}`,
+          backgroundColor: `${genreColorsMapping[genreName]}`,
           paddingTop: 'var(--pading-top-sticky-header)',
         }}
       >

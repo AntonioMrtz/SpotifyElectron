@@ -7,14 +7,17 @@ import Global from 'global/global';
 import Token from 'utils/token';
 import { useNavigate } from 'react-router-dom';
 import useFetchGetUserPlaylistNames from 'hooks/useFetchGetUserPlaylistNames';
+import { PlaylistsService } from 'swagger/api';
 import styles from '../contextMenu.module.css';
-import { PropsContextMenuSong } from '../types/PropsContextMenu';
+import { PropsContextMenuSong } from '../types/propsContextMenu';
 
 const MessagesInfoPopOver = {
   CLIPBOARD_TITLE: 'Enlace copiado al portapapeles',
   CLIPBOARD_DESCRIPTION:
     'El enlace del repositorio del proyecto ha sido copiado éxitosamente',
 };
+
+// TODO tests not failing when app does
 
 export default function ContextMenuSong({
   songName,
@@ -67,120 +70,84 @@ export default function ContextMenuSong({
     setTriggerOpenConfirmationModal(true);
   };
 
-  const handleAddToPlaylist = async (selectedPlaylistName: string) => {
+  const handleAddSongToPlaylist = async (selectedPlaylistName: string) => {
     try {
-      const playlistResponse = await fetch(
-        `${Global.backendBaseUrl}playlists/${selectedPlaylistName}`,
-        {
-          credentials: 'include',
-        },
-      );
-      const playlistData = await playlistResponse.json();
+      const playlistData =
+        await PlaylistsService.getPlaylistPlaylistsNameGet(
+          selectedPlaylistName,
+        );
 
-      const url = `${Global.backendBaseUrl}playlists/${selectedPlaylistName}`;
-      const { photo } = playlistData;
-
-      const fetchUrlUpdateSong = `${url}?photo=${photo}&description=${playlistData.description}`;
+      const { photo, description } = playlistData;
 
       const newSongsPutPlaylist: string[] = [
         songName,
         ...playlistData.song_names,
       ];
-      const requestOptions: RequestInit = {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify(newSongsPutPlaylist),
-      };
 
-      const updateResponse = await fetch(fetchUrlUpdateSong, requestOptions);
-      if (updateResponse.status !== 204) {
-        console.log('Unable to add the Song to Playlist');
-      }
-
+      await PlaylistsService.updatePlaylistPlaylistsNamePut(
+        selectedPlaylistName,
+        photo,
+        description,
+        newSongsPutPlaylist,
+      );
       handleClose();
-    } catch (error) {
-      console.log('Unable to update playlist', error);
+    } catch (err) {
+      console.log(
+        `Unable to add Song ${songName} to Playlist ${selectedPlaylistName}`,
+      );
+      console.log(err);
     }
   };
 
-  const handleDeleteFromPlaylist = async () => {
+  const handleDeleteSongFromPlaylist = async () => {
+    // TODO replace multiple calls with method for removing song from playlist
     try {
-      const playlistResponse = await fetch(
-        `${Global.backendBaseUrl}playlists/${playlistName}`,
-        {
-          credentials: 'include',
-        },
-      );
-      const playlistData = await playlistResponse.json();
+      const playlistData =
+        await PlaylistsService.getPlaylistPlaylistsNameGet(playlistName);
 
-      const url = `${Global.backendBaseUrl}playlists/${playlistName}`;
       const { photo, description } = playlistData;
-
-      const fetchUrlUpdateSong = `${url}?photo=${photo}&description=${description}`;
 
       const newSongsPutPlaylist = playlistData.song_names.filter(
         (songNameFetch: any) => songNameFetch !== songName,
       );
-
-      const requestOptions: RequestInit = {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify(newSongsPutPlaylist),
-      };
-
-      const updateResponse = await fetch(fetchUrlUpdateSong, requestOptions);
-      if (updateResponse.status === 204) {
-        refreshPlaylistData();
-      } else {
-        console.log('Unable to delete Song from Playlist');
-      }
-
+      await PlaylistsService.updatePlaylistPlaylistsNamePut(
+        playlistName,
+        photo,
+        description,
+        newSongsPutPlaylist,
+      );
+      refreshPlaylistData();
       handleClose();
-    } catch (error) {
-      console.log('Unable to update playlist', error);
+    } catch (err) {
+      console.log(
+        `Unable to delete song ${songName} from playlist ${playlistName}`,
+      );
+      console.log(err);
     }
   };
 
   /* Handle crear lista */
 
-  const handleCrearLista = async () => {
+  const HandleCreatePlaylistFromSong = async () => {
     try {
       // TODO may cause problems in the future if playlist already exists -> answer backend for valid name
       const newPlaylistName = `Playlist${Math.trunc(
         Math.floor(Math.random() * 1000),
       ).toString()}`;
 
-      const fetchPostPlaylistWithSongUrl = `${Global.backendBaseUrl}playlists/?name=${newPlaylistName}&photo=foto&description=Insertar+descripcion`;
-
-      const requestOptions: RequestInit = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify([songName]),
-      };
-
-      const postResponse = await fetch(
-        fetchPostPlaylistWithSongUrl,
-        requestOptions,
+      await PlaylistsService.createPlaylistPlaylistsPost(
+        newPlaylistName,
+        'no-photo',
+        'Insertar descripción',
+        [songName],
       );
-
-      if (postResponse.status === 201) {
-        refreshSidebarData();
-      } else {
-        console.log('Unable to create playlist with this Song');
-      }
-
+      refreshSidebarData();
       handleClose();
-    } catch {
-      console.log(console.log('Unable to create playlist with this Song'));
+    } catch (err) {
+      console.log(
+        console.log(`Unable to create playlist from Song ${songName}`),
+      );
+      console.log(err);
     }
   };
 
@@ -200,7 +167,10 @@ export default function ContextMenuSong({
         <li>
           <button type="button">Quitar de canciones que te gustan</button>
           {playlistName !== '' && (
-            <button type="button" onClick={() => handleDeleteFromPlaylist()}>
+            <button
+              type="button"
+              onClick={() => handleDeleteSongFromPlaylist()}
+            >
               Quitar de esta lista
             </button>
           )}
@@ -238,7 +208,10 @@ export default function ContextMenuSong({
                     <button type="button">Buscar una lista</button>
                   </li>
                   <li>
-                    <button type="button" onClick={handleCrearLista}>
+                    <button
+                      type="button"
+                      onClick={HandleCreatePlaylistFromSong}
+                    >
                       Crear lista
                     </button>
                   </li>
@@ -253,7 +226,9 @@ export default function ContextMenuSong({
                           <button
                             type="button"
                             onClick={() =>
-                              handleAddToPlaylist(playlistNameItem.toString())
+                              handleAddSongToPlaylist(
+                                playlistNameItem.toString(),
+                              )
                             }
                           >
                             {playlistNameItem}

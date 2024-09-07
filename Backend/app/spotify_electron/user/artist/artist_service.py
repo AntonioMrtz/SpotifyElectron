@@ -5,13 +5,16 @@ Artist service for handling business logic
 import app.auth.auth_service as auth_service
 import app.spotify_electron.song.base_song_service as base_song_service
 import app.spotify_electron.user.artist.artist_repository as artist_repository
+import app.spotify_electron.user.artist.validations.artist_service_validations as artist_service_validations  # noqa: E501
 import app.spotify_electron.user.base_user_repository as base_user_repository
 import app.spotify_electron.user.providers.user_collection_provider as user_collection_provider
-import app.spotify_electron.user.validations.base_user_service_validations as base_user_service
+import app.spotify_electron.user.validations.base_user_service_validations as base_user_service_validations  # noqa: E501
+from app.auth.auth_schema import UserUnauthorizedException
 from app.logging.logging_constants import LOGGING_ARTIST_SERVICE
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.song.base_song_schema import (
     SongBadNameException,
+    SongMetadataDTO,
     SongServiceException,
 )
 from app.spotify_electron.song.validations.base_song_service_validations import (
@@ -33,7 +36,7 @@ from app.spotify_electron.utils.date.date_utils import get_current_iso8601_date
 artist_service_logger = SpotifyElectronLogger(LOGGING_ARTIST_SERVICE).getLogger()
 
 
-def add_song_artist(artist_name: str, song_name: str) -> None:
+def add_song_to_artist(artist_name: str, song_name: str) -> None:
     """Add song to artist
 
     Args:
@@ -47,10 +50,10 @@ def add_song_artist(artist_name: str, song_name: str) -> None:
         UserServiceException: unexpected error adding song to artist
     """
     try:
-        base_user_service.validate_user_name_parameter(artist_name)
+        base_user_service_validations.validate_user_name_parameter(artist_name)
         validate_song_name_parameter(song_name)
 
-        base_user_service.validate_user_should_exists(artist_name)
+        artist_service_validations.validate_user_should_be_artist(artist_name)
 
         artist_repository.add_song_to_artist(artist_name, song_name)
 
@@ -63,6 +66,9 @@ def add_song_artist(artist_name: str, song_name: str) -> None:
     except SongBadNameException as exception:
         artist_service_logger.exception(f"Bad Song Name Parameter: {song_name}")
         raise SongBadNameException from exception
+    except UserUnauthorizedException as exception:
+        artist_service_logger.exception(f"User {artist_name} is not Artist")
+        raise UserUnauthorizedException from exception
     except UserRepositoryException as exception:
         artist_service_logger.exception(
             f"Unexpected error adding song {song_name} to artist {artist_name}"
@@ -90,10 +96,10 @@ def delete_song_from_artist(artist_name: str, song_name: str) -> None:
         UserServiceException: unexpected error removing song from artist
     """
     try:
-        base_user_service.validate_user_name_parameter(artist_name)
+        base_user_service_validations.validate_user_name_parameter(artist_name)
         validate_song_name_parameter(song_name)
 
-        base_user_service.validate_user_should_exists(artist_name)
+        artist_service_validations.validate_user_should_be_artist(artist_name)
 
         artist_repository.delete_song_from_artist(artist_name, song_name)
     except UserBadNameException as exception:
@@ -105,6 +111,9 @@ def delete_song_from_artist(artist_name: str, song_name: str) -> None:
     except SongBadNameException as exception:
         artist_service_logger.exception(f"Bad Song Name Parameter: {song_name}")
         raise SongBadNameException from exception
+    except UserUnauthorizedException as exception:
+        artist_service_logger.exception(f"User {artist_name} is not Artist")
+        raise UserUnauthorizedException from exception
     except UserRepositoryException as exception:
         artist_service_logger.exception(
             f"Unexpected error removing song {song_name} from artist {artist_name}"
@@ -145,7 +154,7 @@ def get_artist(artist_name: str) -> ArtistDTO:
         ArtistDTO: the artist
     """
     try:
-        base_user_service.validate_user_name_parameter(artist_name)
+        base_user_service_validations.validate_user_name_parameter(artist_name)
         artist = artist_repository.get_user(artist_name)
         artist_dto = get_artist_dto_from_dao(artist)
     except UserBadNameException as exception:
@@ -183,8 +192,8 @@ def create_artist(user_name: str, photo: str, password: str) -> None:
         UserServiceException: unexpected error while creating artist
     """
     try:
-        base_user_service.validate_user_name_parameter(user_name)
-        base_user_service.validate_user_should_not_exist(user_name)
+        base_user_service_validations.validate_user_name_parameter(user_name)
+        base_user_service_validations.validate_user_should_not_exist(user_name)
 
         date = get_current_iso8601_date()
         photo = photo if "http" in photo else ""
@@ -242,7 +251,8 @@ def get_all_artists() -> list[ArtistDTO]:
         return artists_dto
 
 
-def get_streams_artist(user_name: str) -> int:
+# TODO make it a dynamic property
+def get_streams_artist(artist_name: str) -> int:
     """Get artist songs total streams
 
     Args:
@@ -251,35 +261,39 @@ def get_streams_artist(user_name: str) -> int:
     Raises:
         UserNotFoundException: artist doesnt exists
         UserBadNameException: artist bad name
+        UserUnauthorizedException: user is not artist
         UserServiceException: unexpected error getting artist total streams
 
     Returns:
         int: the total for all artist songs
     """
     try:
-        base_user_service.validate_user_name_parameter(user_name)
-        base_user_service.validate_user_should_exists(user_name)
+        base_user_service_validations.validate_user_name_parameter(artist_name)
+        artist_service_validations.validate_user_should_be_artist(artist_name)
 
-        return base_song_service.get_artist_streams(user_name)
+        return base_song_service.get_artist_streams(artist_name)
     except UserNotFoundException as exception:
-        artist_service_logger.exception(f"Artist not found: {user_name}")
+        artist_service_logger.exception(f"Artist not found: {artist_name}")
         raise UserNotFoundException from exception
     except UserBadNameException as exception:
-        artist_service_logger.exception(f"Bad Artist Name Parameter: {user_name}")
+        artist_service_logger.exception(f"Bad Artist Name Parameter: {artist_name}")
         raise UserBadNameException from exception
+    except UserUnauthorizedException as exception:
+        artist_service_logger.exception(f"User {artist_name} is not Artist")
+        raise UserUnauthorizedException from exception
     except UserRepositoryException as exception:
         artist_service_logger.exception(
-            f"Unexpected error in Artist Repository getting artist: {user_name}"
+            f"Unexpected error in Artist Repository getting artist: {artist_name}"
         )
         raise UserServiceException from exception
     except SongServiceException as exception:
         artist_service_logger.exception(
-            f"Unexpected error in Song Service getting artist: {user_name}"
+            f"Unexpected error in Song Service getting artist: {artist_name}"
         )
         raise UserServiceException from exception
     except Exception as exception:
         artist_service_logger.exception(
-            f"Unexpected error in Artist Service getting artist: {user_name}"
+            f"Unexpected error in Artist Service getting artist: {artist_name}"
         )
         raise UserServiceException from exception
 
@@ -292,7 +306,7 @@ def get_artists(user_names: list[str]) -> list[ArtistDTO]:
         user_names (list[str]): the list with the artist names to retrieve
 
     Raises:
-        UserServiceException: if unexpected error getting selected artists
+        UserServiceException: unexpected error getting selected artists
 
     Returns:
         list[ArtistDTO]: the selected artists
@@ -324,7 +338,7 @@ def search_by_name(name: str) -> list[ArtistDTO]:
         name (str): name to match
 
     Raises:
-        UserServiceException: if unexpected error searching artists that match a name
+        UserServiceException: unexpected error searching artists that match a name
 
     Returns:
         list[ArtistDTO]: artists that match the name
@@ -362,3 +376,42 @@ def does_artist_exists(user_name: str) -> bool:
     return base_user_repository.check_user_exists(
         user_name, user_collection_provider.get_artist_collection()
     )
+
+
+def get_artists_songs(artist_name: str) -> list[SongMetadataDTO]:
+    """Get artists songs
+
+    Args:
+        artist_name (str): artist name
+
+    Raises:
+        SongBadNameException: song invalid name
+        UserUnauthorizedException: user is not artist
+        UserServiceException: unexpected error getting artist songs
+
+    Returns:
+        list[SongMetadataDTO]: the artist songs
+    """
+    try:
+        validate_song_name_parameter(artist_name)
+        artist_service_validations.validate_user_should_be_artist(artist_name)
+        artist_song_names = artist_repository.get_artist_song_names(artist_name)
+        artist_songs = base_song_service.get_songs_metadata(artist_song_names)
+    except SongBadNameException as exception:
+        artist_service_logger.exception(f"Bad Song name parameter in: {artist_song_names}")
+        raise SongBadNameException from exception
+    except UserUnauthorizedException as exception:
+        artist_service_logger.exception(f"User {artist_name} is not Artist")
+        raise UserUnauthorizedException from exception
+    except SongServiceException as exception:
+        artist_service_logger.exception(
+            f"Unexpected error in Song Service songs from artist {artist_name}"
+        )
+        raise UserServiceException from exception
+    except Exception as exception:
+        artist_service_logger.exception(
+            f"Unexpected error in Artist Service songs from artist {artist_name}"
+        )
+        raise UserServiceException from exception
+    else:
+        return artist_songs

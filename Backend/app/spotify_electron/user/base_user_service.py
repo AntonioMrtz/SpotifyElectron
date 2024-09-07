@@ -5,6 +5,7 @@ Redirects to the specific user type service for non common logic
 
 import app.auth.auth_service as auth_service
 import app.spotify_electron.playlist.playlist_service as playlist_service
+import app.spotify_electron.song.base_song_service as base_song_service
 import app.spotify_electron.user.artist.artist_service as artist_service
 import app.spotify_electron.user.base_user_repository as base_user_repository
 import app.spotify_electron.user.providers.user_collection_provider as user_collection_provider
@@ -28,6 +29,7 @@ from app.spotify_electron.playlist.validations.playlist_service_validations impo
 )
 from app.spotify_electron.song.base_song_schema import (
     SongBadNameException,
+    SongMetadataDTO,
     SongNotFoundException,
 )
 from app.spotify_electron.song.validations.base_song_service_validations import (
@@ -92,9 +94,9 @@ def delete_user(user_name: str) -> None:
         UserServiceException: unexpected error while deleting user
     """
     try:
-        collection = user_collection_provider.get_user_associated_collection(user_name)
         base_user_service_validations.validate_user_name_parameter(user_name)
         base_user_service_validations.validate_user_should_exists(user_name)
+        collection = user_collection_provider.get_user_associated_collection(user_name)
         base_user_repository.delete_user(user_name, collection)
     except UserBadNameException as exception:
         base_users_service_logger.exception(f"Bad user Parameter: {user_name}")
@@ -421,6 +423,9 @@ def update_playlist_name(old_playlist_name: str, new_playlist_name: str) -> None
     validate_playlist_name_parameter(old_playlist_name)
     validate_playlist_name_parameter(new_playlist_name)
 
+    if old_playlist_name == new_playlist_name:
+        return
+
     for collection in user_collection_provider.get_all_collections():
         base_user_repository.update_playlist_name(
             old_playlist_name=old_playlist_name,
@@ -444,6 +449,7 @@ def get_user_relevant_playlists(user_name: str) -> list[PlaylistDTO]:
         list[PlaylistDTO]: the relevant playlists
     """
     try:
+        base_user_service_validations.validate_user_name_parameter(user_name)
         base_user_service_validations.validate_user_should_exists(user_name)
         collection = user_collection_provider.get_user_associated_collection(user_name)
         relevant_playlist_names = base_user_repository.get_user_relevant_playlist_names(
@@ -458,24 +464,74 @@ def get_user_relevant_playlists(user_name: str) -> list[PlaylistDTO]:
         raise UserNotFoundException from exception
     except UserRepositoryException as exception:
         base_users_service_logger.exception(
-            f"Unexpected error in User Repository getting user relevant playlists"
+            f"Unexpected error in User Repository getting user relevant playlists "
             f"from user {user_name}"
         )
         raise UserServiceException from exception
     except PlaylistServiceException as exception:
         base_users_service_logger.exception(
-            f"Unexpected error in Playlist Service getting user relevant playlists"
+            f"Unexpected error in Playlist Service getting user relevant playlists "
             f"from user {user_name}"
         )
         raise UserServiceException from exception
     except Exception as exception:
         base_users_service_logger.exception(
-            f"Unexpected error in User Service getting user relevant playlists"
+            f"Unexpected error in User Service getting user relevant playlists "
             f"from user {user_name}"
         )
         raise UserServiceException from exception
     else:
         return relevant_playlists
+
+
+def get_user_playlists(user_name: str) -> list[PlaylistDTO]:
+    """Get user created playlists
+
+    Args:
+        user_name (str): user name
+
+    Raises:
+        UserBadNameException: invalid user name
+        UserNotFoundException: user not found
+        UserServiceException: unexpected error getting playlists created by the user
+
+    Returns:
+        list[PlaylistDTO]: the playlists created by the user
+    """
+    try:
+        base_user_service_validations.validate_user_name_parameter(user_name)
+        base_user_service_validations.validate_user_should_exists(user_name)
+        collection = user_collection_provider.get_user_associated_collection(user_name)
+        user_playlist_names = base_user_repository.get_user_playlist_names(
+            user_name, collection
+        )
+        user_playlists = playlist_service.get_selected_playlists(user_playlist_names)
+    except UserBadNameException as exception:
+        base_users_service_logger.exception(f"Bad user Parameter: {user_name}")
+        raise UserBadNameException from exception
+    except UserNotFoundException as exception:
+        base_users_service_logger.exception(f"User not found: {user_name}")
+        raise UserNotFoundException from exception
+    except UserRepositoryException as exception:
+        base_users_service_logger.exception(
+            f"Unexpected error in User Repository getting playlists created "
+            f"by user {user_name}"
+        )
+        raise UserServiceException from exception
+    except PlaylistServiceException as exception:
+        base_users_service_logger.exception(
+            f"Unexpected error in Playlist Service getting playlists created "
+            f"by user {user_name}"
+        )
+        raise UserServiceException from exception
+    except Exception as exception:
+        base_users_service_logger.exception(
+            f"Unexpected error in User Service getting playlists created "
+            f"by user {user_name}"
+        )
+        raise UserServiceException from exception
+    else:
+        return user_playlists
 
 
 def get_user_playlist_names(user_name: str) -> list[str]:
@@ -493,6 +549,7 @@ def get_user_playlist_names(user_name: str) -> list[str]:
         list[str]: the playlist names created by the user
     """
     try:
+        base_user_service_validations.validate_user_name_parameter(user_name)
         base_user_service_validations.validate_user_should_exists(user_name)
         collection = user_collection_provider.get_user_associated_collection(user_name)
         user_playlist_names = base_user_repository.get_user_playlist_names(
@@ -506,15 +563,60 @@ def get_user_playlist_names(user_name: str) -> list[str]:
         raise UserNotFoundException from exception
     except UserRepositoryException as exception:
         base_users_service_logger.exception(
-            f"Unexpected error in User Repository getting user playlist names"
+            f"Unexpected error in User Repository getting user playlist names "
             f"from owner {user_name}"
         )
         raise UserServiceException from exception
     except Exception as exception:
         base_users_service_logger.exception(
-            f"Unexpected error in User Service getting user playlist names"
+            f"Unexpected error in User Service getting user playlist names "
             f"from owner {user_name}"
         )
         raise UserServiceException from exception
     else:
         return user_playlist_names
+
+
+def get_user_playback_history(user_name: str) -> list[SongMetadataDTO]:
+    """Get user song playback history
+
+    Args:
+        user_name (str): user name
+
+    Raises:
+        UserBadNameException: invalid user name
+        UserNotFoundException: user not found
+        UserServiceException: unexpected error getting playback history from user
+
+    Returns:
+        list[str]: the song playback history from user
+    """
+    try:
+        base_user_service_validations.validate_user_name_parameter(user_name)
+        base_user_service_validations.validate_user_should_exists(user_name)
+        collection = user_collection_provider.get_user_associated_collection(user_name)
+        playback_history_names = base_user_repository.get_user_playback_history_names(
+            user_name=user_name, collection=collection
+        )
+        songs_metadata = base_song_service.get_songs_metadata(playback_history_names)
+
+    except UserBadNameException as exception:
+        base_users_service_logger.exception(f"Bad user Parameter: {user_name}")
+        raise UserBadNameException from exception
+    except UserNotFoundException as exception:
+        base_users_service_logger.exception(f"User not found: {user_name}")
+        raise UserNotFoundException from exception
+    except UserRepositoryException as exception:
+        base_users_service_logger.exception(
+            f"Unexpected error in User Repository getting playback history "
+            f"from owner {user_name}"
+        )
+        raise UserServiceException from exception
+    except Exception as exception:
+        base_users_service_logger.exception(
+            f"Unexpected error in User Service getting getting playback history "
+            f"from owner {user_name}"
+        )
+        raise UserServiceException from exception
+    else:
+        return songs_metadata

@@ -1,32 +1,21 @@
 import { useState, useEffect } from 'react';
-import Global from 'global/global';
-
-interface SongProps {
-  name: string;
-  artist: string;
-  photo: string;
-  duration: string;
-  genre: string;
-  streams: string;
-}
+import { getGenreFromString } from 'utils/genre';
+import { PropsSongCard } from 'types/song';
+import { SongsService } from '../swagger/api/services/SongsService';
 
 const useFetchSongsByGenre = (genreName: string) => {
-  const [songs, setSongs] = useState<SongProps[]>();
+  const [songs, setSongs] = useState<PropsSongCard[]>();
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
-        const getSongsByGenreURL = `${Global.backendBaseUrl}songs/genres/${genreName}`;
-        const response = await fetch(getSongsByGenreURL, {
-          credentials: 'include',
-        });
-        if (!response.ok) {
-          throw new Error(`Failed to fetch Songs by Genre ${genreName}`);
-        }
-
-        const data = await response.json();
-        const songsFromFetch: SongProps[] = data.songs.map((song: any) => ({
+        const data = await SongsService.getSongsByGenreSongsGenresGenreGet(
+          getGenreFromString(genreName),
+        );
+        const songsFromFetch: PropsSongCard[] = data.songs.map((song: any) => ({
           name: song.name,
           artist: song.artist,
           photo: song.photo,
@@ -39,13 +28,16 @@ const useFetchSongsByGenre = (genreName: string) => {
       } catch (err) {
         console.log(err);
         setError(`Failed to get Songs by Genre ${genreName}`);
+        setSongs([]);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchData();
   }, [genreName]);
 
-  return { songs, error };
+  return { songs, loading, error };
 };
 
 export default useFetchSongsByGenre;

@@ -62,6 +62,7 @@ async def lifespan_handler(app: FastAPI):  # noqa: ANN201
 
 app = FastAPI(
     title=AppInfo.TITLE,
+    version=AppInfo.VERSION,
     description=AppInfo.DESCRIPTION,
     contact={
         "name": AppInfo.CONTACT_NAME,

@@ -6,6 +6,7 @@ import SongInfo from './SongInfo/SongInfo';
 import SongConfig from './SongConfig/SongConfig';
 import PlayerStreaming from './Player/PlayerStreaming';
 import PlayerFiles from './Player/PlayerFiles';
+import { PropsSongInfo } from './SongInfo/types/propsSongInfo';
 
 interface PropsFooter {
   songName: string;
@@ -13,7 +14,7 @@ interface PropsFooter {
 
 export default function Footer({ songName }: PropsFooter) {
   const [volume, setVolume] = useState<number>(50);
-  const [songInfo, setSongInfo] = useState<JSON | undefined>();
+  const [songInfo, setSongInfo] = useState<PropsSongInfo | undefined>();
 
   return (
     <div

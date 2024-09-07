@@ -6,6 +6,7 @@ import Global from 'global/global';
 import Sidebar from 'components/Sidebar/Sidebar';
 import Token from 'utils/token';
 import UserType from 'utils/role';
+import getMockHeaders from 'utils/mockHeaders';
 
 const playlistName = 'playlisttest';
 const songName = 'songName';
@@ -37,35 +38,37 @@ jest.spyOn(Token, 'getTokenRole').mockReturnValue(roleUser);
 
 test('render Sidebar', async () => {
   global.fetch = jest.fn(async (url: string) => {
-    if (url === `${Global.backendBaseUrl}artists/${artistMockFetch.name}`) {
+    if (url === `${Global.backendBaseUrl}/artists/${artistMockFetch.name}`) {
       return Promise.resolve({
         json: () => artistMockFetch,
         status: 200,
         ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });
     }
     if (
-      url === `${Global.backendBaseUrl}users/${username}/relevant_playlists`
+      url === `${Global.backendBaseUrl}/users/${username}/relevant_playlists`
     ) {
       return Promise.resolve({
         json: () => Promise.resolve([playlistDTOMockFetch]),
         status: 200,
         ok: true,
+        headers: getMockHeaders(),
       }).catch((error) => {
         console.log(error);
       });
     }
 
     // In case the URL doesn't match, return a rejected promise
-    return Promise.reject(new Error('Unhandled URL in fetch mock'));
+    return Promise.reject(new Error(`Unhandled URL in fetch mock: ${url}`));
   }) as jest.Mock;
 
   const component = await act(() => {
     return render(
       <BrowserRouter>
-        <Sidebar refreshSidebarData />
+        <Sidebar refreshSidebarData={jest.fn()} refreshSidebarTriggerValue />
       </BrowserRouter>,
     );
   });

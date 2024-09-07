@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import Global from 'global/global';
 import defaultThumbnailPlaylist from '../assets/imgs/DefaultThumbnailPlaylist.jpg';
+import { ArtistsService } from '../swagger/api/services/ArtistsService';
 
 interface PropsArtistCard {
   name: string;
@@ -10,19 +10,13 @@ interface PropsArtistCard {
 const useFetchGetArtists = () => {
   const [artists, setArtists] = useState<PropsArtistCard[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
-        const getArtistsURL = `${Global.backendBaseUrl}artists/`;
-        const response = await fetch(getArtistsURL, {
-          credentials: 'include',
-        });
-        if (!response.ok) {
-          throw new Error(`Failed to fetch Artists`);
-        }
-
-        const data = await response.json();
+        const data = await ArtistsService.getArtistsArtistsGet();
         if (data.artists) {
           const propsArtists: PropsArtistCard[] = data.artists.map(
             (artist: any) => ({
@@ -34,7 +28,9 @@ const useFetchGetArtists = () => {
           setArtists(propsArtists);
         }
       } catch (err) {
-        console.log('Failed to fetch artists:', err);
+        console.log(err);
+        setError('Failed to get artists');
+        setArtists([]);
       } finally {
         setLoading(false);
       }
@@ -43,7 +39,7 @@ const useFetchGetArtists = () => {
     fetchData();
   }, []);
 
-  return { artists, loading };
+  return { artists, loading, error };
 };
 
 export default useFetchGetArtists;

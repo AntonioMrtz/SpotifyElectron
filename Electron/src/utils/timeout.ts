@@ -1,5 +1,5 @@
 const timeout = (ms: number | undefined) =>
-  new Promise((_, reject) => {
+  new Promise((_resolve, reject) => {
     setTimeout(() => reject(new Error('Timeout')), ms);
   });
 

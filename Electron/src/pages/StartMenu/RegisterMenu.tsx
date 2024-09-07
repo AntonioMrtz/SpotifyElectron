@@ -4,10 +4,10 @@ import {
   InfoPopoverType,
   PropsInfoPopover,
 } from 'components/AdvancedUIComponents/InfoPopOver/types/InfoPopover';
+import timeout from 'utils/timeout';
 import styles from './startMenu.module.css';
 import SpotifyElectronLogo from '../../assets/imgs/SpotifyElectronLogo.png';
 import { UsersService } from '../../swagger/api/services/UsersService';
-import timeout from 'utils/timeout';
 
 interface PropsRegisterMenu {
   setIsSigningUp: Function;

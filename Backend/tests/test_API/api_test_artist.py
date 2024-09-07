@@ -45,3 +45,7 @@ def get_artists(headers: dict[str, str]) -> Response:
 
 def get_artist_streams(name: str, headers: dict[str, str]) -> Response:
     return client.get(f"/artists/{name}/streams", headers=headers)
+
+
+def get_artist_songs(name: str, headers: dict[str, str]) -> Response:
+    return client.get(f"/artists/{name}/songs", headers=headers)

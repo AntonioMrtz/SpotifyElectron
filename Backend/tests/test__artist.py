@@ -7,18 +7,20 @@ from starlette.status import (
     HTTP_201_CREATED,
     HTTP_202_ACCEPTED,
     HTTP_204_NO_CONTENT,
+    HTTP_403_FORBIDDEN,
     HTTP_404_NOT_FOUND,
     HTTP_405_METHOD_NOT_ALLOWED,
 )
 from test_API.api_test_artist import (
     create_artist,
     get_artist,
+    get_artist_songs,
     get_artist_streams,
     get_artists,
 )
 
 from tests.test_API.api_test_song import create_song, delete_song, increase_song_streams
-from tests.test_API.api_test_user import delete_user
+from tests.test_API.api_test_user import create_user, delete_user
 from tests.test_API.api_token import get_user_jwt_header
 
 
@@ -173,6 +175,72 @@ def test_get_total_streams_artist_correct(clear_test_data_db):
     assert res_delete_song.status_code == HTTP_202_ACCEPTED
 
     res_delete_artist = delete_user(artista)
+    assert res_delete_artist.status_code == HTTP_202_ACCEPTED
+
+
+def test_get_artist_songs_correct():
+    song_name = "8232392323623823723989"
+    song_name_2 = "82323923236238237239892"
+    file_path = "tests/assets/song.mp3"
+    artist = "8232392323623823723"
+    genre = "Pop"
+    photo = "https://photo"
+    password = "hola"
+    EXPECTED_ARTISTS_SONGS = [song_name, song_name_2]
+
+    res_create_artist = create_artist(name=artist, password=password, photo=photo)
+    assert res_create_artist.status_code == HTTP_201_CREATED
+
+    jwt_headers = get_user_jwt_header(username=artist, password=password)
+
+    res_create_song = create_song(
+        name=song_name,
+        file_path=file_path,
+        genre=genre,
+        photo=photo,
+        headers=jwt_headers,
+    )
+    assert res_create_song.status_code == HTTP_201_CREATED
+
+    res_create_song = create_song(
+        name=song_name_2,
+        file_path=file_path,
+        genre=genre,
+        photo=photo,
+        headers=jwt_headers,
+    )
+    assert res_create_song.status_code == HTTP_201_CREATED
+
+    res_get_artists_songs = get_artist_songs(artist, jwt_headers)
+    assert res_get_artists_songs.status_code == HTTP_200_OK
+    assert set(EXPECTED_ARTISTS_SONGS) == set(
+        [song["name"] for song in res_get_artists_songs.json()]
+    )
+
+    res_delete_song = delete_song(song_name)
+    assert res_delete_song.status_code == HTTP_202_ACCEPTED
+
+    res_delete_song = delete_song(song_name_2)
+    assert res_delete_song.status_code == HTTP_202_ACCEPTED
+
+    res_delete_artist = delete_user(artist)
+    assert res_delete_artist.status_code == HTTP_202_ACCEPTED
+
+
+def test_get_artist_songs_user_unauthorized():
+    user_name = "8232392323623823723"
+    photo = "https://photo"
+    password = "hola"
+
+    res_create_user = create_user(name=user_name, password=password, photo=photo)
+    assert res_create_user.status_code == HTTP_201_CREATED
+
+    jwt_headers = get_user_jwt_header(username=user_name, password=password)
+
+    res_get_artists_songs = get_artist_songs(user_name, jwt_headers)
+    assert res_get_artists_songs.status_code == HTTP_403_FORBIDDEN
+
+    res_delete_artist = delete_user(user_name)
     assert res_delete_artist.status_code == HTTP_202_ACCEPTED
 
 

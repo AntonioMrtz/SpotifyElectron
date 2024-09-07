@@ -26,6 +26,7 @@ from app.common.PropertiesMessagesManager import PropertiesMessagesManager
 from app.exceptions.base_exceptions_schema import JsonEncodeException
 from app.spotify_electron.genre.genre_schema import Genre, GenreNotValidException
 from app.spotify_electron.song.base_song_schema import (
+    SongAlreadyExistsException,
     SongBadNameException,
     SongNotFoundException,
     SongServiceException,
@@ -124,6 +125,11 @@ async def create_song(
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
             content=PropertiesMessagesManager.songBadName,
+        )
+    except SongAlreadyExistsException:
+        return Response(
+            status_code=HTTP_400_BAD_REQUEST,
+            content=PropertiesMessagesManager.songAlreadyExists,
         )
     except UserNotFoundException:
         return Response(

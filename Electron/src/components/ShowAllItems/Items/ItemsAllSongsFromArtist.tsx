@@ -1,7 +1,7 @@
 import SongCard from 'components/Cards/SongCard/SongCard';
 import useFetchGetArtistSongs from 'hooks/useFetchGetArtistSongs';
 import { saniticeUserName } from 'utils/saniticeParameters';
-import { PropsItemsSongsFromArtist } from '../types/propsItems';
+import { PropsItemsSongsFromArtist } from '../types/PropsItems';
 
 export default function ItemsAllSongsFromArtist({
   artistName,

@@ -1,9 +1,13 @@
 import { ChangeEvent, useState, MouseEvent, useEffect } from 'react';
-import { InfoPopoverType } from 'components/AdvancedUIComponents/InfoPopOver/types/InfoPopover';
+import {
+  InfoPopoverType,
+  PropsInfoPopover,
+} from 'components/AdvancedUIComponents/InfoPopOver/types/InfoPopover';
 import InfoPopover from 'components/AdvancedUIComponents/InfoPopOver/InfoPopover';
 import { getToken } from 'utils/token';
 // eslint-disable-next-line camelcase
 import { Body_login_user_login__post } from 'swagger/api/models/Body_login_user_login__post';
+import timeout from 'utils/timeout';
 import styles from './startMenu.module.css';
 import SpotifyElectronLogo from '../../assets/imgs/SpotifyElectronLogo.png';
 import { LoginService } from '../../swagger/api/services/LoginService';
@@ -19,9 +23,13 @@ export default function StartMenu({
 }: PropsStartMenu) {
   /* Popover */
   const [isOpenPopover, setisOpenPopover] = useState(false);
+  const [propsPopOver, setPropsPopOver] = useState<PropsInfoPopover | null>(
+    null,
+  );
 
   /* Loading state for auto-login */
-  const [autoLoginLoading, setAutoLoginLoading] = useState(true);
+  const [autoLoginLoading, setAutoLoginLoading] = useState(false);
+  const [loginLoading, setLoginLoading] = useState(false);
 
   /* Form data */
   const [formData, setFormData] = useState({
@@ -40,6 +48,7 @@ export default function StartMenu({
   const handleLogin = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     try {
+      setLoginLoading(true);
       if (!formData.nombre || !formData.password) {
         throw new Error('Unable to login');
       }
@@ -49,13 +58,41 @@ export default function StartMenu({
         password: formData.password,
       };
 
-      const loginResponse = await LoginService.loginUserLoginPost(loginData);
+      const loginUserPromise = LoginService.loginUserLoginPost(loginData);
+      const loginResponse = await Promise.race([
+        loginUserPromise,
+        timeout(5000),
+      ]);
       localStorage.setItem('jwt', loginResponse);
       setIsLogged(true);
-    } catch {
+    } catch (error: unknown) {
       setIsLogged(false);
       console.log('Unable to login');
+
+      let title: string;
+      let description: string;
+
+      if (error instanceof Error && error.message === 'Timeout') {
+        title = 'El servidor esta iniciándose';
+        description =
+          'El servidor esta iniciándose (cold-start), inténtelo de nuevo en 1 minuto';
+      } else {
+        title = 'Los credenciales introducidos no son válidos';
+        description = 'No se ha podido iniciar sesión';
+      }
+
+      setPropsPopOver({
+        title,
+        description,
+        type: InfoPopoverType.ERROR,
+        triggerOpenConfirmationModal: false,
+        handleClose: () => {
+          setisOpenPopover(false);
+        },
+      });
       setisOpenPopover(true);
+    } finally {
+      setLoginLoading(false);
     }
   };
 
@@ -66,6 +103,7 @@ export default function StartMenu({
   useEffect(() => {
     const handleAutoLogin = async () => {
       try {
+        setAutoLoginLoading(true);
         const token = getToken();
         if (!token) return;
         await LoginService.loginUserWithJwtLoginTokenTokenPost(token);
@@ -131,6 +169,7 @@ export default function StartMenu({
               type="submit"
               className={`${styles.loginButton}`}
               onClick={handleLogin}
+              disabled={loginLoading}
             >
               Iniciar sesión
             </button>
@@ -161,15 +200,15 @@ export default function StartMenu({
         </div>
       )}
 
-      <InfoPopover
-        type={InfoPopoverType.ERROR}
-        handleClose={() => {
-          setisOpenPopover(false);
-        }}
-        description="Los credenciales introducidos no son válidos"
-        title="No se ha podido iniciar sesión"
-        triggerOpenConfirmationModal={isOpenPopover}
-      />
+      {propsPopOver && (
+        <InfoPopover
+          type={propsPopOver.type}
+          handleClose={propsPopOver.handleClose}
+          description={propsPopOver.description}
+          title={propsPopOver.title}
+          triggerOpenConfirmationModal={isOpenPopover}
+        />
+      )}
     </div>
   );
 }

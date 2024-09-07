@@ -1,6 +1,10 @@
 import { ChangeEvent, useState, MouseEvent } from 'react';
 import InfoPopover from 'components/AdvancedUIComponents/InfoPopOver/InfoPopover';
-import { InfoPopoverType } from 'components/AdvancedUIComponents/InfoPopOver/types/InfoPopover';
+import {
+  InfoPopoverType,
+  PropsInfoPopover,
+} from 'components/AdvancedUIComponents/InfoPopOver/types/InfoPopover';
+import timeout from 'utils/timeout';
 import styles from './startMenu.module.css';
 import SpotifyElectronLogo from '../../assets/imgs/SpotifyElectronLogo.png';
 import { UsersService } from '../../swagger/api/services/UsersService';
@@ -29,16 +33,11 @@ export default function RegisterMenu({ setIsSigningUp }: PropsRegisterMenu) {
 
   /* PopOver atrributes */
 
-  interface IPropsPopover {
-    type: InfoPopoverType;
-    handleClose: Function;
-    title: string;
-    description: string;
-  }
-
   const [isOpenPopover, setisOpenPopover] = useState(false);
 
-  const [propsPopOver, setPropsPopOver] = useState<IPropsPopover | null>(null);
+  const [propsPopOver, setPropsPopOver] = useState<PropsInfoPopover | null>(
+    null,
+  );
 
   const handleRegister = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -54,6 +53,7 @@ export default function RegisterMenu({ setIsSigningUp }: PropsRegisterMenu) {
         title: 'No se han introducido todos los datos de registro obligatorios',
         description: 'Introduce los datos restantes',
         type: InfoPopoverType.ERROR,
+        triggerOpenConfirmationModal: false,
         handleClose: () => {
           setisOpenPopover(false);
         },
@@ -68,6 +68,7 @@ export default function RegisterMenu({ setIsSigningUp }: PropsRegisterMenu) {
         title: 'Las contraseñas no coinciden',
         description: 'Asegúrese de que las contraseñas son iguales',
         type: InfoPopoverType.ERROR,
+        triggerOpenConfirmationModal: false,
         handleClose: () => {
           setisOpenPopover(false);
         },
@@ -76,33 +77,50 @@ export default function RegisterMenu({ setIsSigningUp }: PropsRegisterMenu) {
     }
 
     try {
-      await UsersService.createUserUsersPost(
+      const createUserPromise = UsersService.createUserUsersPost(
         formData.name,
         formData.photo,
         formData.password,
       );
+
+      await Promise.race([createUserPromise, timeout(3000)]);
       setisOpenPopover(true);
 
       setPropsPopOver({
         title: 'Usuario registrado',
         description: 'El usuario ha sido registrado con éxito',
         type: InfoPopoverType.SUCCESS,
+        triggerOpenConfirmationModal: false,
         handleClose: () => {
           setisOpenPopover(false);
           setIsSigningUp(false);
         },
       });
-    } catch (error) {
+    } catch (error: unknown) {
       console.log('Unable to register');
-      setisOpenPopover(true);
+
+      let title: string;
+      let description: string;
+
+      if (error instanceof Error && error.message === 'Timeout') {
+        title = 'El servidor esta iniciándose';
+        description =
+          'El servidor esta iniciándose (cold-start), inténtelo de nuevo en 1 minuto';
+      } else {
+        title = 'Los credenciales introducidos no son válidos';
+        description = 'No se ha podido registrar el usuario';
+      }
+
       setPropsPopOver({
-        title: 'Los credenciales introducidos no son válidos',
-        description: 'No se ha podido registrar el usuario',
+        title,
+        description,
         type: InfoPopoverType.ERROR,
+        triggerOpenConfirmationModal: false,
         handleClose: () => {
           setisOpenPopover(false);
         },
       });
+      setisOpenPopover(true);
     }
   };
 

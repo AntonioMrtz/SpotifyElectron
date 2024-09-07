@@ -378,7 +378,6 @@ def does_artist_exists(user_name: str) -> bool:
     )
 
 
-# TODO tests #190
 def get_artists_songs(artist_name: str) -> list[SongMetadataDTO]:
     """Get artists songs
 

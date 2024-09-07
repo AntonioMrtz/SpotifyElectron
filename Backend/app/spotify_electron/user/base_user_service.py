@@ -577,7 +577,6 @@ def get_user_playlist_names(user_name: str) -> list[str]:
         return user_playlist_names
 
 
-# TODO Tests #190
 def get_user_playback_history(user_name: str) -> list[SongMetadataDTO]:
     """Get user song playback history
 

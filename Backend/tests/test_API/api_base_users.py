@@ -48,3 +48,7 @@ def get_user_playlist_names(name: str, headers: dict[str, str]) -> Response:
 
 def get_user_playlists(name: str, headers: dict[str, str]) -> Response:
     return client.get(f"/users/{name}/playlists", headers=headers)
+
+
+def get_user_playback_history(user_name: str, headers: dict[str, str]) -> Response:
+    return client.get(f"/users/{user_name}/playback_history", headers=headers)

@@ -27,6 +27,7 @@ from app.spotify_electron.song.aws.serverless_function.validations.song_service_
     validate_song_deleting_streaming_response,
 )
 from app.spotify_electron.song.base_song_schema import (
+    SongAlreadyExistsException,
     SongBadNameException,
     SongNotFoundException,
     SongRepositoryException,
@@ -187,6 +188,9 @@ async def create_song(  # noqa: C901
     except SongBadNameException as exception:
         song_service_logger.exception(f"Bad Song Name Parameter: {name}")
         raise SongBadNameException from exception
+    except SongAlreadyExistsException as exception:
+        song_service_logger.exception(f"Song already exists: {name}")
+        raise SongAlreadyExistsException from exception
     except UserUnauthorizedException as exception:
         song_service_logger.exception(
             f"User {artist} cannot create song {name} because hes not artist"

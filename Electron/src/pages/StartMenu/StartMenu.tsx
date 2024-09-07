@@ -28,7 +28,8 @@ export default function StartMenu({
   );
 
   /* Loading state for auto-login */
-  const [autoLoginLoading, setAutoLoginLoading] = useState(true);
+  const [autoLoginLoading, setAutoLoginLoading] = useState(false);
+  const [loginLoading, setLoginLoading] = useState(false);
 
   /* Form data */
   const [formData, setFormData] = useState({
@@ -47,6 +48,7 @@ export default function StartMenu({
   const handleLogin = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     try {
+      setLoginLoading(true);
       if (!formData.nombre || !formData.password) {
         throw new Error('Unable to login');
       }
@@ -56,10 +58,10 @@ export default function StartMenu({
         password: formData.password,
       };
 
-      const loginUserPromise = await LoginService.loginUserLoginPost(loginData);
+      const loginUserPromise = LoginService.loginUserLoginPost(loginData);
       const loginResponse = await Promise.race([
         loginUserPromise,
-        timeout(3000),
+        timeout(5000),
       ]);
       localStorage.setItem('jwt', loginResponse);
       setIsLogged(true);
@@ -89,6 +91,8 @@ export default function StartMenu({
         },
       });
       setisOpenPopover(true);
+    } finally {
+      setLoginLoading(false);
     }
   };
 
@@ -99,6 +103,7 @@ export default function StartMenu({
   useEffect(() => {
     const handleAutoLogin = async () => {
       try {
+        setAutoLoginLoading(true);
         const token = getToken();
         if (!token) return;
         await LoginService.loginUserWithJwtLoginTokenTokenPost(token);
@@ -164,6 +169,7 @@ export default function StartMenu({
               type="submit"
               className={`${styles.loginButton}`}
               onClick={handleLogin}
+              disabled={loginLoading}
             >
               Iniciar sesión
             </button>

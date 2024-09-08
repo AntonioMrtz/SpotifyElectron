@@ -1,4 +1,4 @@
-# environment
+# Environment
 
 In this document we will cover:
 

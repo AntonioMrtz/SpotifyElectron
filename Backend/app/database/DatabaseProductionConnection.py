@@ -1,7 +1,5 @@
 """Database connection for production"""
 
-from typing import Any
-
 from pymongo import MongoClient
 
 from app.database.database_schema import BaseDatabaseConnection
@@ -10,7 +8,8 @@ from app.database.database_schema import BaseDatabaseConnection
 class DatabaseProductionConnection(BaseDatabaseConnection):
     """Database connection for production"""
 
-    def _get_mongo_client(self) -> Any:
+    @classmethod
+    def _get_mongo_client(cls) -> type[MongoClient]:
         """Get Mongo client class
 
         Returns:
@@ -18,7 +17,8 @@ class DatabaseProductionConnection(BaseDatabaseConnection):
         """
         return MongoClient
 
-    def _get_collection_name_prefix(self) -> str:
+    @classmethod
+    def _get_collection_name_prefix(cls) -> str:
         """Returns prod prefix for collections
 
         Returns:

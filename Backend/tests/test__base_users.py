@@ -575,7 +575,9 @@ def test_get_user_relevant_playlist_correct():
     assert res_create_playlist.status_code == HTTP_201_CREATED
 
     res_patch_user = patch_playlist_saved(
-        user_name=user_name, playlist_name=playlist_name_artist_saved, headers=jwt_headers_user
+        user_name=user_name,
+        playlist_name=playlist_name_artist_saved,
+        headers=jwt_headers_user,
     )
     assert res_patch_user.status_code == HTTP_204_NO_CONTENT
 
@@ -704,7 +706,9 @@ def test_get_user_playlist_names_correct():
     assert res_create_playlist.status_code == HTTP_201_CREATED
 
     res_patch_user = patch_playlist_saved(
-        user_name=user_name, playlist_name=playlist_name_artist_saved, headers=jwt_headers_user
+        user_name=user_name,
+        playlist_name=playlist_name_artist_saved,
+        headers=jwt_headers_user,
     )
     assert res_patch_user.status_code == HTTP_204_NO_CONTENT
 
@@ -832,7 +836,9 @@ def test_get_user_playlists_correct():
     assert res_create_playlist.status_code == HTTP_201_CREATED
 
     res_patch_user = patch_playlist_saved(
-        user_name=user_name, playlist_name=playlist_name_artist_saved, headers=jwt_headers_user
+        user_name=user_name,
+        playlist_name=playlist_name_artist_saved,
+        headers=jwt_headers_user,
     )
     assert res_patch_user.status_code == HTTP_204_NO_CONTENT
 

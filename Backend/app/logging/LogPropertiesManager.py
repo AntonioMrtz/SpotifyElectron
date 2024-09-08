@@ -13,7 +13,7 @@ from app.common.app_schema import (
 
 
 class LogPropertiesManager:
-    """Parses and stores enviroment and config files"""
+    """Parses and stores environment and config files"""
 
     def __init__(self) -> None:
         load_dotenv()

@@ -1,12 +1,12 @@
-# Enviroment
+# environment
 
 In this document we will cover:
 
-- How to use enviroment variables
-- Enviroment variables usage
-- Development enviroment variables
+- How to use environment variables
+- environment variables usage
+- Development environment variables
 
-## 🖐️ How to use enviroments
+## 🖐️ How to use environments
 
 To use environments in the app, you will need to place a file named `.env` under the `Backend` folder. The file should contain key-value pairs, with each pair on a separate line and the key and value separated by an equals sign (`=`). For example:
 
@@ -14,18 +14,18 @@ To use environments in the app, you will need to place a file named `.env` under
 KEY1=value1
 ```
 
-_Note that file has to be named `.env` not `.env.local` or similars, having a different name will not make its variables part of the enviroment variables_ recognized by the backend.
+_Note that file has to be named `.env` not `.env.local` or similars, having a different name will not make its variables part of the environment variables_ recognized by the backend.
 
-## 📄 Enviroments variables
+## 📄 environments variables
 
-In this section we will explain the meaning and the usage of the enviroment variables. Some of them are only necessary for one [architecture](../Architecture.md), this means you can not declared them at all at the `.env` file.
+In this section we will explain the meaning and the usage of the environment variables. Some of them are only necessary for one [architecture](../Architecture.md), this means you can not declared them at all at the `.env` file.
 
 ### ➡️ Commons
 
 - **SECRET_KEY_SIGN**: 32 byte key for signing JWT Tokens that will authenticate the user. You can use `f24e2f3ac557d487b6d879fb2d86f2b2` as an example. This key will make sure the JWT Tokens are provided by our backend and not someone else's. For generating a new secret use `openssl rand -hex 32`.
-- **ENV_VALUE**: determines the current enviroment of the app, it can be:
-  - `PROD`: production enviroment.
-  - `DEV`: development enviroment. Enables hot reload.
+- **ENV_VALUE**: determines the current environment of the app, it can be:
+  - `PROD`: production environment.
+  - `DEV`: development environment. Enables hot reload.
 - **ARCH**: the song architecture selected, it can be one of the following [architectures](../Architecture.md):
   - `STREAMING_SERVERLESS_FUNCTION`: song architecture using AWS Serverless Function with streaming.
   - `BLOB(Recommended for testing)`: song architecture with no streaming/cloud, storing and serving songs directly from the database.
@@ -56,7 +56,7 @@ ARCH=BLOB
 
 ---
 
-## ✅ DEVELOPMENT READY ENVIROMENT
+## ✅ DEVELOPMENT READY environment
 
 The following file can be used out of the box for development purpouse. It contains the following characteristics:
 
@@ -74,9 +74,9 @@ ARCH=BLOB
 
 ---
 
-## 🪨 ALL ROUND ENVIROMENT
+## 🪨 ALL ROUND environment
 
-You can also use the following `.env` file for changing between architectures as it contains all the variables needed. Just be sure to fill the the needed enviroments for the architecture seleted.
+You can also use the following `.env` file for changing between architectures as it contains all the variables needed. Just be sure to fill the the needed environments for the architecture seleted.
 
 ```
 MONGO_URI=mongodb://root:root@localhost:27017/

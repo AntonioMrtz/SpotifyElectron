@@ -7,15 +7,17 @@ FastAPI APP entrypoint
 - Configures server
 """
 
+from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
+from typing import Any
 
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.common.app_schema import AppConfig, AppInfo
+from app.common.app_schema import AppConfig, AppEnvironment, AppInfo
 from app.common.PropertiesManager import PropertiesManager
-from app.database.database_connection_provider import init_database_connection
+from app.database.DatabaseConnection import DatabaseConnectionManager
 from app.logging.logging_constants import LOGGING_MAIN
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.middleware.cors_middleware_config import (
@@ -31,6 +33,7 @@ from app.spotify_electron.login import login_controller
 from app.spotify_electron.playlist import playlist_controller
 from app.spotify_electron.search import search_controller
 from app.spotify_electron.song import song_controller
+from app.spotify_electron.song.providers.song_service_provider import SongServiceProvider
 from app.spotify_electron.user import user_controller
 from app.spotify_electron.user.artist import artist_controller
 
@@ -38,7 +41,7 @@ main_logger = SpotifyElectronLogger(LOGGING_MAIN).getLogger()
 
 
 @asynccontextmanager
-async def lifespan_handler(app: FastAPI):  # noqa: ANN201
+async def lifespan_handler(app: FastAPI) -> AsyncGenerator[None, Any]:
     """FastAPI the configured app object
 
     Args:
@@ -46,7 +49,13 @@ async def lifespan_handler(app: FastAPI):  # noqa: ANN201
     """
     main_logger.info("Spotify Electron Backend Started")
 
-    init_database_connection(PropertiesManager.get_enviroment())
+    environment = PropertiesManager.get_environment()
+    connection_uri = getattr(PropertiesManager, AppEnvironment.MONGO_URI_ENV_NAME)
+
+    DatabaseConnectionManager.init_database_connection(
+        environment=environment, connection_uri=connection_uri
+    )
+    SongServiceProvider.init_service()
 
     app.include_router(playlist_controller.router)
     app.include_router(song_controller.router)
@@ -90,5 +99,5 @@ if __name__ == "__main__":
         app=PropertiesManager.__getattribute__(AppConfig.APP_INI_KEY),
         host=PropertiesManager.__getattribute__(AppConfig.HOST_INI_KEY),
         port=int(PropertiesManager.__getattribute__(AppConfig.PORT_INI_KEY)),
-        reload=PropertiesManager.is_development_enviroment(),
+        reload=PropertiesManager.is_development_environment(),
     )

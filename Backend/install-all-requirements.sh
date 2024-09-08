@@ -1,6 +1,6 @@
 #!/bin/bash
-# Install all dependencies stored in the root directory in an existing venv enviroment.
-# Virtual enviroment folder must be named `venv`
+# Install all dependencies stored in the root directory in an existing venv environment.
+# Virtual environment folder must be named `venv`
 
 # Exit immediately if a command exits with a non-zero status.
 set -e

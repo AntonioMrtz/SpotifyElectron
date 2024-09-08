@@ -19,7 +19,7 @@ def get_song_collection() -> Collection:
         Collection: the song collection depending on architecture
     """
     repository_map = {
-        AppArchitecture.ARCH_BLOB: DatabaseConnectionManager.get_collection_connection(  # noqa: E501
+        AppArchitecture.ARCH_BLOB: DatabaseConnectionManager.get_collection_connection(
             DatabaseCollection.SONG_BLOB_FILE
         ),
         AppArchitecture.ARCH_STREAMING_SERVERLESS_FUNCTION: DatabaseConnectionManager.get_collection_connection(  # noqa: E501

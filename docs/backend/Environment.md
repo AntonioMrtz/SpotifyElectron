@@ -3,7 +3,7 @@
 In this document we will cover:
 
 - How to use environment variables
-- environment variables usage
+- Environment variables usage
 - Development environment variables
 
 ## 🖐️ How to use environments
@@ -16,7 +16,7 @@ KEY1=value1
 
 _Note that file has to be named `.env` not `.env.local` or similars, having a different name will not make its variables part of the environment variables_ recognized by the backend.
 
-## 📄 environments variables
+## 📄 Environments variables
 
 In this section we will explain the meaning and the usage of the environment variables. Some of them are only necessary for one [architecture](../Architecture.md), this means you can not declared them at all at the `.env` file.
 
@@ -56,7 +56,7 @@ ARCH=BLOB
 
 ---
 
-## ✅ DEVELOPMENT READY environment
+## ✅ DEVELOPMENT READY ENVIRONMENT
 
 The following file can be used out of the box for development purpouse. It contains the following characteristics:
 
@@ -74,7 +74,7 @@ ARCH=BLOB
 
 ---
 
-## 🪨 ALL ROUND environment
+## 🪨 ALL ROUND ENVIRONMENT
 
 You can also use the following `.env` file for changing between architectures as it contains all the variables needed. Just be sure to fill the the needed environments for the architecture seleted.
 

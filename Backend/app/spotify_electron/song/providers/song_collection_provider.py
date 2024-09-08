@@ -9,7 +9,7 @@ from pymongo.collection import Collection
 from app.common.app_schema import AppArchitecture, AppEnvironment
 from app.common.PropertiesManager import PropertiesManager
 from app.database.database_schema import DatabaseCollection
-from app.database.DatabaseConnection import DatabaseConnectionManager
+from app.database.DatabaseConnectionManager import DatabaseConnectionManager
 
 
 def get_song_collection() -> Collection:

@@ -17,7 +17,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.common.app_schema import AppConfig, AppEnvironment, AppInfo
 from app.common.PropertiesManager import PropertiesManager
-from app.database.DatabaseConnection import DatabaseConnectionManager
+from app.database.DatabaseConnectionManager import DatabaseConnectionManager
 from app.logging.logging_constants import LOGGING_MAIN
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.middleware.cors_middleware_config import (

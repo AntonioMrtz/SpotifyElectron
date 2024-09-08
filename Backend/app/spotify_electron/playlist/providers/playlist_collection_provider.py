@@ -5,7 +5,7 @@ Provider class for supplying playlist collection connection with database
 from pymongo.collection import Collection
 
 from app.database.database_schema import DatabaseCollection
-from app.database.DatabaseConnection import DatabaseConnectionManager
+from app.database.DatabaseConnectionManager import DatabaseConnectionManager
 
 
 def get_playlist_collection() -> Collection:

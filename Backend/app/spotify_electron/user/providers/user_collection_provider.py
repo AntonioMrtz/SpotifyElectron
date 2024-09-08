@@ -7,7 +7,7 @@ from pymongo.collection import Collection
 
 import app.spotify_electron.user.base_user_service as base_user_service
 from app.database.database_schema import DatabaseCollection
-from app.database.DatabaseConnection import DatabaseConnectionManager
+from app.database.DatabaseConnectionManager import DatabaseConnectionManager
 from app.logging.logging_constants import LOGGING_USER_COLLECTION_PROVIDER
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.user.user.user_schema import UserType

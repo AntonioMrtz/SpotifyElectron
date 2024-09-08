@@ -1,6 +1,6 @@
 """
 Manages APP global state variables and manages initialization of\
-      enviroment variables and .ini files
+      environment variables and .ini files
 
 Declares PropertiesManager global object to be accessed from across the app
 """
@@ -12,7 +12,7 @@ from dotenv import load_dotenv
 
 from app.common.app_schema import (
     AppConfig,
-    AppEnviroment,
+    AppEnvironment,
     AppEnvironmentMode,
 )
 from app.logging.logging_constants import LOGGING_PROPERTIES_MANAGER
@@ -22,7 +22,7 @@ properties_manager_logger = SpotifyElectronLogger(LOGGING_PROPERTIES_MANAGER).ge
 
 
 class _PropertiesManager:
-    """Parses and stores enviroment and config files"""
+    """Parses and stores environment and config files"""
 
     def __init__(self) -> None:
         properties_manager_logger.info("Initializing PropertiesManager")
@@ -30,10 +30,10 @@ class _PropertiesManager:
         self.current_directory = os.getcwd()
         self.config_sections = [AppConfig.APP_INI_SECTION]
         self.env_variables = [
-            AppEnviroment.MONGO_URI_ENV_NAME,
-            AppEnviroment.SECRET_KEY_SIGN_ENV_NAME,
-            AppEnviroment.SERVERLESS_FUNCTION_URL_ENV_NAME,
-            AppEnviroment.ENV_VALUE_ENV_NAME,
+            AppEnvironment.MONGO_URI_ENV_NAME,
+            AppEnvironment.SECRET_KEY_SIGN_ENV_NAME,
+            AppEnvironment.SERVERLESS_FUNCTION_URL_ENV_NAME,
+            AppEnvironment.ENV_VALUE_ENV_NAME,
         ]
         self._load_env_variables(self.env_variables)
         self._load_architecture()
@@ -75,79 +75,79 @@ class _PropertiesManager:
             setattr(self, key, value)
 
     def _load_architecture(self) -> None:
-        """Loads the current architecture from enviroment and stores it as an\
+        """Loads the current architecture from environment and stores it as an\
         attribute, if none is provided DEFAULT_ARCHITECTURE will be selected
         """
-        architecture_type = os.getenv(AppEnviroment.ARCHITECTURE_ENV_NAME)
+        architecture_type = os.getenv(AppEnvironment.ARCHITECTURE_ENV_NAME)
         if not architecture_type:
-            architecture_type = AppEnviroment.DEFAULT_ARCHITECTURE
+            architecture_type = AppEnvironment.DEFAULT_ARCHITECTURE
             properties_manager_logger.warning(
-                f"No architecture type selected, using {AppEnviroment.DEFAULT_ARCHITECTURE}"
+                f"No architecture type selected, using {AppEnvironment.DEFAULT_ARCHITECTURE}"
             )
-        self.__setattr__(AppEnviroment.ARCHITECTURE_ENV_NAME, architecture_type)
+        self.__setattr__(AppEnvironment.ARCHITECTURE_ENV_NAME, architecture_type)
         properties_manager_logger.info(f"Architecture selected: {architecture_type}")
 
     def _load_env_variables(self, env_names: list[str]) -> None:
-        """Load enviroment variables into class attributes
+        """Load environment variables into class attributes
 
         Args:
         ----
-            env_names (List[str]): enviroment variables names
+            env_names (List[str]): environment variables names
 
         """
         for env_name in env_names:
             env_variable_value = os.getenv(env_name)
             if not env_variable_value:
                 properties_manager_logger.warning(
-                    f"No enviroment variable provided for {env_name}"
+                    f"No environment variable provided for {env_name}"
                 )
                 env_names.remove(env_name)
                 continue
             self.__setattr__(env_name, env_variable_value)
-        properties_manager_logger.info(f"Enviroment variables loaded: {env_names}")
+        properties_manager_logger.info(f"environment variables loaded: {env_names}")
 
-    def get_enviroment(self) -> AppEnvironmentMode:
-        """Get current enviroment
+    def get_environment(self) -> AppEnvironmentMode:
+        """Get current environment
 
         Returns:
-            Enviroment: the current selected enviroment
+            environment: the current selected environment
         """
-        return self.__getattribute__(AppEnviroment.ENV_VALUE_ENV_NAME)
+        return self.__getattribute__(AppEnvironment.ENV_VALUE_ENV_NAME)
 
-    def is_production_enviroment(self) -> bool:
-        """Checks if the enviroment is production
+    def is_production_environment(self) -> bool:
+        """Checks if the environment is production
 
         Returns
         -------
-            bool: Returns if it's production enviroment
+            bool: Returns if it's production environment
 
         """
         return (
-            self.__getattribute__(AppEnviroment.ENV_VALUE_ENV_NAME) == AppEnvironmentMode.PROD
+            self.__getattribute__(AppEnvironment.ENV_VALUE_ENV_NAME) == AppEnvironmentMode.PROD
         )
 
-    def is_development_enviroment(self) -> bool:
-        """Checks if the enviroment is development
+    def is_development_environment(self) -> bool:
+        """Checks if the environment is development
 
         Returns
         -------
-            bool: Returns if it's development enviroment
+            bool: Returns if it's development environment
 
         """
         return (
-            self.__getattribute__(AppEnviroment.ENV_VALUE_ENV_NAME) == AppEnvironmentMode.DEV
+            self.__getattribute__(AppEnvironment.ENV_VALUE_ENV_NAME) == AppEnvironmentMode.DEV
         )
 
-    def is_testing_enviroment(self) -> bool:
-        """Checks if the enviroment is testing
+    def is_testing_environment(self) -> bool:
+        """Checks if the environment is testing
 
         Returns
         -------
-            bool: Returns if it's testing enviroment
+            bool: Returns if it's testing environment
 
         """
         return (
-            self.__getattribute__(AppEnviroment.ENV_VALUE_ENV_NAME) == AppEnvironmentMode.TEST
+            self.__getattribute__(AppEnvironment.ENV_VALUE_ENV_NAME) == AppEnvironmentMode.TEST
         )
 
     def is_log_file_provided(self) -> bool:

@@ -41,7 +41,7 @@ class AppConfig:
 
 
 class AppEnvironmentMode(StrEnum):
-    """App enviroment mode constants"""
+    """App environment mode constants"""
 
     PROD = "PROD"
     DEV = "DEV"
@@ -55,8 +55,8 @@ class AppArchitecture:
     ARCH_BLOB = "BLOB"
 
 
-class AppEnviroment:
-    """App enviroment constants"""
+class AppEnvironment:
+    """App environment constants"""
 
     ARCHITECTURE_ENV_NAME = "ARCH"
     DEFAULT_ARCHITECTURE = AppArchitecture.ARCH_BLOB

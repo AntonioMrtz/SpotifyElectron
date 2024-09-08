@@ -27,7 +27,11 @@ def get_playlists(song_names: str, headers: dict[str, str]):
 
 
 def update_playlist(
-    name: str, descripcion: str, photo: str, headers: dict[str, str], nuevo_nombre: str = ""
+    name: str,
+    descripcion: str,
+    photo: str,
+    headers: dict[str, str],
+    nuevo_nombre: str = "",
 ) -> Response:
     if nuevo_nombre == "":
         url = f"/playlists/{name}/?photo={photo}&description={descripcion}"

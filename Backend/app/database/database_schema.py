@@ -2,20 +2,18 @@
 
 import sys
 from abc import abstractmethod
-from collections.abc import Callable
 from enum import StrEnum
-from functools import wraps
-from typing import Any
 
 from gridfs import GridFS
 from pymongo.collection import Collection
-from pymongo.errors import ConnectionFailure
+from pymongo.database import Database
+from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 
-from app.common.app_schema import AppEnviroment
+from app.common.app_schema import AppEnvironment
 from app.common.PropertiesManager import PropertiesManager
 from app.exceptions.base_exceptions_schema import SpotifyElectronException
-from app.logging.logging_constants import LOGGING_DATABASE
+from app.logging.logging_constants import LOGGING_DATABASE_CONNECTION
 from app.logging.logging_schema import SpotifyElectronLogger
 
 
@@ -30,68 +28,46 @@ class DatabaseCollection(StrEnum):
     SONG_BLOB_DATA = "songs"
 
 
-def __is_connection__init__(func: Callable):  # noqa: ANN202
-    """Check database connection is initialized"""
-
-    @wraps(func)
-    def wrapper(*args, **kwargs):  # noqa: ANN202
-        if BaseDatabaseConnection.connection is not None:
-            return func(*args, **kwargs)
-
-    return wrapper
-
-
 class BaseDatabaseConnection:
-    """MongoDB connection Instance"""
+    """Base MongoDB connection Instance. Manages a single connection for the whole app"""
 
     DATABASE_NAME = "SpotifyElectron"
-    connection = None
-    collection_name_prefix = None
+    """Database name"""
+    connection: Database
+    """Database connection"""
+    collection_name_prefix: str = ""
+    """Database collection prefix applied to all collections"""
+    _logger = SpotifyElectronLogger(LOGGING_DATABASE_CONNECTION).getLogger()
 
-    def __init__(self):
-        self._logger = SpotifyElectronLogger(LOGGING_DATABASE).getLogger()
-        try:
-            uri = getattr(PropertiesManager, AppEnviroment.MONGO_URI_ENV_NAME)
-            BaseDatabaseConnection.collection_name_prefix = self._get_collection_name_prefix()
-            client = self._get_mongo_client()
-            BaseDatabaseConnection.connection = client(uri, server_api=ServerApi("1"))[
-                self.DATABASE_NAME
-            ]
-            self._ping_database_connection()
-        except (
-            DatabasePingFailed,
-            UnexpectedDatabasePingFailed,
-            Exception,
-        ) as exception:
-            self._handle_database_connection_error(exception)
+    @classmethod
+    def init_connection(cls, uri: str):
+        """Init database connection
 
-    @__is_connection__init__
-    def _ping_database_connection(self) -> None:
-        """Pings database connection
-
-        Raises:
-            DatabasePingFailed: if the ping failed
-            UnexpectedDatabasePingFailed: unexpected exception while pinging database
+        Args:
+            uri (str): database connection URI
         """
         try:
-            ping_result = BaseDatabaseConnection.connection.command("ping")  # type: ignore
-            self._check_ping_result(ping_result)
-        except ConnectionFailure as exception:
-            raise DatabasePingFailed from exception
+            uri = getattr(PropertiesManager, AppEnvironment.MONGO_URI_ENV_NAME)
+            cls.collection_name_prefix = cls._get_collection_name_prefix()
+            client = cls._get_mongo_client()(uri, server_api=ServerApi("1"))
+            cls.connection = client[cls.DATABASE_NAME]
         except Exception as exception:
-            raise UnexpectedDatabasePingFailed from exception
+            cls._logger.critical(f"Error establishing connection with database: {exception}")
+            sys.exit("Database connection failed, stopping server")
 
+    @classmethod
     @abstractmethod
-    def _get_mongo_client(self) -> Any:
-        """Get mongo client
+    def _get_mongo_client(cls) -> type[MongoClient]:
+        """Get mongo client class
 
         Returns:
-            Any: the mongo client
+            type[MongoClient]: the mongo client class
         """
         pass
 
+    @classmethod
     @abstractmethod
-    def _get_collection_name_prefix(self) -> str:
+    def _get_collection_name_prefix(cls) -> str:
         """Returns collection prefix
 
         Returns:
@@ -99,56 +75,34 @@ class BaseDatabaseConnection:
         """
         pass
 
-    @__is_connection__init__
-    @staticmethod
-    def get_collection_connection(collection_name: DatabaseCollection) -> Collection:
+    @classmethod
+    def get_collection_connection(cls, collection_name: DatabaseCollection) -> Collection:
         """Returns the connection with a collection
 
         Args:
             collection_name (str): the collection name
 
         Returns:
-            Any: the connection to the collection
+            Collection: the connection to the collection
         """
-        return BaseDatabaseConnection.connection[  # type: ignore
-            BaseDatabaseConnection.collection_name_prefix + collection_name  # type: ignore
-        ]
+        return cls.connection[cls.collection_name_prefix + collection_name]
 
-    @__is_connection__init__
-    @staticmethod
-    def get_gridfs_collection_connection(collection_name: DatabaseCollection) -> Any:
+    @classmethod
+    def get_gridfs_collection_connection(cls, collection_name: DatabaseCollection) -> GridFS:
         """Returns the connection with gridfs collection
 
         Args:
             collection_name (DatabaseCollections): the collection name
 
         Returns:
-            Any: the gridfs collection connection
+            GridFS: the gridfs collection connection
         """
+        assert cls.connection is not None, "DatabaseConnectionManager connection is not init"
+
         return GridFS(
-            BaseDatabaseConnection.connection,  # type: ignore
-            collection=BaseDatabaseConnection.collection_name_prefix + collection_name,  # type: ignore
+            cls.connection,
+            collection=cls.collection_name_prefix + collection_name,
         )
-
-    def _handle_database_connection_error(self, error: Exception) -> None:
-        """Handles database connection errors"""
-        self._logger.critical(f"Error establishing connection with database: {error}")
-        sys.exit("Database connection failed, stopping server")
-
-    def _check_ping_result(self, ping_result: dict[str, Any]) -> None:
-        """Checks if ping result is OK
-
-        Args:
-        ----
-            ping_result (dict): ping result response
-
-        Raises:
-        ------
-            DatabasePingFailed: if ping result is not OK
-
-        """
-        if not ping_result:
-            raise DatabasePingFailed
 
 
 class DatabasePingFailed(SpotifyElectronException):

@@ -8,7 +8,7 @@
 
 ## 🌐 Website
 
-Check our [website](https://antoniomrtz.github.io/SpotifyElectron_Web/).
+Check out our [website](https://antoniomrtz.github.io/SpotifyElectron_Web/). Contributions to the website can made through [its repository](https://github.com/AntonioMrtz/SpotifyElectron_Web).
 
 ## 📚 Docs
 

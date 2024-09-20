@@ -9,7 +9,7 @@ from app.logging.logging_constants import (
     LOGGING_SONG_AWS_SERVERLESS_SERVICE_VALIDATIONS,
 )
 from app.logging.logging_schema import SpotifyElectronLogger
-from app.spotify_electron.song.aws.serverless.song_schema import (
+from app.spotify_electron.song.serverless.song_schema import (
     SongCreateSongStreamingException,
     SongDeleteSongStreamingException,
     SongGetUrlStreamingException,

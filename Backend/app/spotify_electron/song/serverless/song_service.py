@@ -2,10 +2,8 @@
 Song service for handling business logic
 """
 
-import Backend.app.spotify_electron.song.aws.serverless.song_serverless_api as song_serverless_api  # noqa: E501
-
-import app.spotify_electron.song.aws.serverless.song_repository as song_repository
 import app.spotify_electron.song.base_song_repository as base_song_repository
+import app.spotify_electron.song.serverless.song_repository as song_repository
 import app.spotify_electron.user.artist.artist_service as artist_service
 import app.spotify_electron.user.validations.base_user_service_validations as base_user_service_validations  # noqa: E501
 from app.auth.auth_schema import (
@@ -15,18 +13,6 @@ from app.auth.auth_schema import (
 from app.logging.logging_constants import LOGGING_SONG_AWS_SERVERLESS_SERVICE
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.genre.genre_schema import Genre, GenreNotValidException
-from app.spotify_electron.song.aws.serverless.song_schema import (
-    SongCreateSongStreamingException,
-    SongDeleteSongStreamingException,
-    SongDTO,
-    SongGetUrlStreamingException,
-    get_song_dto_from_dao,
-)
-from app.spotify_electron.song.aws.serverless.validations.song_service_validations import (  # noqa: E501
-    validate_get_song_url_streaming_response,
-    validate_song_creating_streaming_response,
-    validate_song_deleting_streaming_response,
-)
 from app.spotify_electron.song.base_song_schema import (
     SongAlreadyExistsException,
     SongBadNameException,
@@ -34,6 +20,19 @@ from app.spotify_electron.song.base_song_schema import (
     SongRepositoryException,
     SongServiceException,
     SongUnAuthorizedException,
+)
+from app.spotify_electron.song.serverless import song_serverless_api
+from app.spotify_electron.song.serverless.song_schema import (
+    SongCreateSongStreamingException,
+    SongDeleteSongStreamingException,
+    SongDTO,
+    SongGetUrlStreamingException,
+    get_song_dto_from_dao,
+)
+from app.spotify_electron.song.serverless.validations.song_service_validations import (  # noqa: E501
+    validate_get_song_url_streaming_response,
+    validate_song_creating_streaming_response,
+    validate_song_deleting_streaming_response,
 )
 from app.spotify_electron.song.validations.base_song_service_validations import (
     validate_song_name_parameter,

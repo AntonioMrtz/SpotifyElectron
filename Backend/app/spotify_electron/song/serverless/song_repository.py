@@ -11,14 +11,14 @@ from app.logging.logging_constants import (
 )
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.genre.genre_schema import Genre
-from app.spotify_electron.song.aws.serverless.song_schema import (
-    SongDAO,
-    get_song_dao_from_document,
-)
 from app.spotify_electron.song.base_song_schema import (
     SongCreateException,
     SongNotFoundException,
     SongRepositoryException,
+)
+from app.spotify_electron.song.serverless.song_schema import (
+    SongDAO,
+    get_song_dao_from_document,
 )
 from app.spotify_electron.song.validations.base_song_repository_validations import (
     validate_base_song_create,

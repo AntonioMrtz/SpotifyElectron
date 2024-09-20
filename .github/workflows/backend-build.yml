@@ -35,7 +35,7 @@ jobs:
       - name: Run health check
         run: |
           sleep 20
-          curl -fv localhost:8000/health
+          curl -f localhost:8000/health/
 
 
       - name: Shutdown Docker Compose

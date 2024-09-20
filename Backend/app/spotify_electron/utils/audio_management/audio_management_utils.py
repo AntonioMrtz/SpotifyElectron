@@ -32,8 +32,8 @@ def get_song_duration_seconds(name: str, file: bytes) -> int:
 
     except Exception:
         # If it's not a sound file
-        audio_management_utils_logger.exception(
-            f"Song File with name {name} is not a song, set duration to default"
+        audio_management_utils_logger.warning(
+            f"Cannot get song {name} duration, setting duration to default"
         )
         duration = 0
 

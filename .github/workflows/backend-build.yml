@@ -34,7 +34,7 @@ jobs:
 
       - name: Run health check
         run: |
-          curl -f http://localhost:8000/health
+          curl -fv http://localhost:8000/health
 
       - name: Shutdown Docker Compose
         working-directory: Backend/docker/

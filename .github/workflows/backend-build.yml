@@ -39,7 +39,7 @@ jobs:
 
       - name: Run health check
         run: |
-          docker-compose exec backend curl -f http://localhost:8000/health
+          docker-compose exec backend curl -f http://backend:8000/health
 
       - name: Shutdown Docker Compose
         working-directory: Backend/docker/

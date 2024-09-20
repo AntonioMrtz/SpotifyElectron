@@ -36,4 +36,3 @@ jobs:
           SECRET_KEY_SIGN: "f24e2f3ac557d487b6d879fb2d86f2b2"
           ARCH: "BLOB"
           ENV_VALUE: "PROD"
-          SERVERLESS_FUNCTION_URL: "none"

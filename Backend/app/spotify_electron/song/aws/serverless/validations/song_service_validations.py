@@ -1,22 +1,22 @@
 """
-Validations for AWS Serverless Function Song service
+Validations for AWS Serverless function Song service
 """
 
 from requests import Response
 from starlette.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_202_ACCEPTED
 
 from app.logging.logging_constants import (
-    LOGGING_SONG_AWS_SERVERLESS_FUNCTION_SERVICE_VALIDATIONS,
+    LOGGING_SONG_AWS_SERVERLESS_SERVICE_VALIDATIONS,
 )
 from app.logging.logging_schema import SpotifyElectronLogger
-from app.spotify_electron.song.aws.serverless_function.song_schema import (
+from app.spotify_electron.song.aws.serverless.song_schema import (
     SongCreateSongStreamingException,
     SongDeleteSongStreamingException,
     SongGetUrlStreamingException,
 )
 
 song_service_logger = SpotifyElectronLogger(
-    LOGGING_SONG_AWS_SERVERLESS_FUNCTION_SERVICE_VALIDATIONS
+    LOGGING_SONG_AWS_SERVERLESS_SERVICE_VALIDATIONS
 ).getLogger()
 
 

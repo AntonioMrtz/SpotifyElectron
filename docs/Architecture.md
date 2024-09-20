@@ -1,9 +1,9 @@
 # Architecture
 
 The app has two different architectures. These architectures only differ on song store, managment, serving
-and playing. `BLOB` architecture is recommended for testing and only requires a MongoDB database instance. In production `STREAMING_SERVERLESS_FUNCTION` is used, it requires a serverless function to manage song resources and streaming. Currently the app ships with `STREAMING_SERVERLESS_FUNCTION` using AWS Lambda for serverless function, S3 Bucket for storing songs and Cloudfront for streaming songs into the client using a URL.
+and playing. `BLOB` architecture is recommended for testing and only requires a MongoDB database instance. In production `STREAMING_SERVERLESS` is used, it requires a serverless function to manage song resources and streaming. Currently the app ships with `STREAMING_SERVERLESS` using AWS Lambda for serverless function, S3 Bucket for storing songs and Cloudfront for streaming songs into the client using a URL.
 
-## STREAMING_SERVERLESS_FUNCTION
+## STREAMING_SERVERLESS
 
 As seen in the architecture diagram below, the song data is manage using and AWS Lambda serverless function, it
 stores the data into an S3 Bucket. The stored data is linked with Cloudfront streaming service which provides
@@ -18,11 +18,11 @@ export const songArchitecture: SongArchitecture = SongArchitecture.STREAMING_ARC
 Backend has to use the following config in `.env`:
 
 ```
-ARCH=STREAMING_SERVERLESS_FUNCTION
+ARCH=STREAMING_SERVERLESS
 ```
 
 ![STREAMING SERVERLESS ARCHITECTURE](assets/architecture/app_architecture_aws_serverless.png)
-![STREAMING SONG ARCHITECTURE](assets/architecture/song_architecture_aws_serverless_function.png)
+![STREAMING SONG ARCHITECTURE](assets/architecture/song_architecture_aws_serverless.png)
 
 
 ## BLOB

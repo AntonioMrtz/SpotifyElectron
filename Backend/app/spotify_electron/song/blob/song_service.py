@@ -13,7 +13,7 @@ from app.auth.auth_schema import (
 from app.logging.logging_constants import LOGGING_SONG_BLOB_SERVICE
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.genre.genre_schema import Genre, GenreNotValidException
-from app.spotify_electron.song.aws.serverless_function.song_schema import (
+from app.spotify_electron.song.aws.serverless.song_schema import (
     SongGetUrlStreamingException,
 )
 from app.spotify_electron.song.base_song_schema import (

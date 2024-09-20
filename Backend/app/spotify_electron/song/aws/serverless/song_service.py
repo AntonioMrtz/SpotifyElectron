@@ -2,8 +2,9 @@
 Song service for handling business logic
 """
 
-import app.spotify_electron.song.aws.serverless_function.song_repository as song_repository
-import app.spotify_electron.song.aws.serverless_function.song_serverless_function_api as song_serverless_function_api  # noqa: E501
+import Backend.app.spotify_electron.song.aws.serverless.song_serverless_api as song_serverless_api  # noqa: E501
+
+import app.spotify_electron.song.aws.serverless.song_repository as song_repository
 import app.spotify_electron.song.base_song_repository as base_song_repository
 import app.spotify_electron.user.artist.artist_service as artist_service
 import app.spotify_electron.user.validations.base_user_service_validations as base_user_service_validations  # noqa: E501
@@ -11,17 +12,17 @@ from app.auth.auth_schema import (
     TokenData,
     UserUnauthorizedException,
 )
-from app.logging.logging_constants import LOGGING_SONG_AWS_SERVERLESS_FUNCTION_SERVICE
+from app.logging.logging_constants import LOGGING_SONG_AWS_SERVERLESS_SERVICE
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.genre.genre_schema import Genre, GenreNotValidException
-from app.spotify_electron.song.aws.serverless_function.song_schema import (
+from app.spotify_electron.song.aws.serverless.song_schema import (
     SongCreateSongStreamingException,
     SongDeleteSongStreamingException,
     SongDTO,
     SongGetUrlStreamingException,
     get_song_dto_from_dao,
 )
-from app.spotify_electron.song.aws.serverless_function.validations.song_service_validations import (  # noqa: E501
+from app.spotify_electron.song.aws.serverless.validations.song_service_validations import (  # noqa: E501
     validate_get_song_url_streaming_response,
     validate_song_creating_streaming_response,
     validate_song_deleting_streaming_response,
@@ -53,9 +54,7 @@ from app.spotify_electron.utils.audio_management.audio_management_utils import (
     get_song_duration_seconds,
 )
 
-song_service_logger = SpotifyElectronLogger(
-    LOGGING_SONG_AWS_SERVERLESS_FUNCTION_SERVICE
-).getLogger()
+song_service_logger = SpotifyElectronLogger(LOGGING_SONG_AWS_SERVERLESS_SERVICE).getLogger()
 
 
 def get_song_streaming_url(name: str) -> str:
@@ -70,7 +69,7 @@ def get_song_streaming_url(name: str) -> str:
     Returns:
         str: the streaming url
     """
-    response_get_url_streaming_request = song_serverless_function_api.get_song(name)
+    response_get_url_streaming_request = song_serverless_api.get_song(name)
     validate_get_song_url_streaming_response(
         name,
         response_get_url_streaming_request,
@@ -160,7 +159,7 @@ async def create_song(  # noqa: C901
         song_duration = get_song_duration_seconds(name, file)
         encoded_bytes = encode_file(name, file)
 
-        response_create_song_request = song_serverless_function_api.create_song(
+        response_create_song_request = song_serverless_api.create_song(
             song_name=name, encoded_bytes=encoded_bytes
         )
         validate_song_creating_streaming_response(name, response_create_song_request)
@@ -231,7 +230,7 @@ def delete_song(name: str) -> None:
     try:
         validate_song_name_parameter(name)
         validate_song_should_exists(name)
-        delete_song_streaming_response = song_serverless_function_api.delete_song(name)
+        delete_song_streaming_response = song_serverless_api.delete_song(name)
         validate_song_deleting_streaming_response(name, delete_song_streaming_response)
 
         artist_name = base_song_repository.get_artist_from_song(name=name)

@@ -1,4 +1,4 @@
-name: Backend Tests - Streaming Serverless Function
+name: Backend Tests - Streaming Serverless
 
 on:
   pull_request:
@@ -35,7 +35,7 @@ jobs:
           MONGO_URI: mongodb://root:root@localhost:27017/
           SECRET_KEY_SIGN: ${{ secrets.SECRET_KEY_SIGN }}
           SERVERLESS_FUNCTION_URL: ${{ secrets.SERVERLESS_FUNCTION_URL }}
-          ARCH: "STREAMING_SERVERLESS_FUNCTION"
+          ARCH: "STREAMING_SERVERLESS"
           ENV_VALUE: "PROD"
 
       - name: Fail workflow on test failure

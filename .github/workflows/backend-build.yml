@@ -21,6 +21,11 @@ jobs:
           sudo apt-get update
           sudo apt-get install docker-compose -y
 
+      - name: Prepara environment
+        working-directory: Backend/
+        run: |
+          echo -e "MONGO_URI=mongodb://root:root@localhost:27017/\nSECRET_KEY_SIGN=f24e2f3ac557d487b6d879fb2d86f2b2\nARCH=BLOB\nENV_VALUE=PROD" > .env
+
       - name: Build Docker Compose
         working-directory: Backend/docker/
         run: |

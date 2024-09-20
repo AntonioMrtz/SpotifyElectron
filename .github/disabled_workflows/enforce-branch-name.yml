@@ -22,10 +22,3 @@ jobs:
             echo "Branch name doesn't match the required format."
             exit 1
           fi
-
-      - name: Delete branch if fail
-        if: ${{ failure() }}
-        uses: dawidd6/action-delete-branch@v3
-        with:
-          github_token: ${{github.token}}
-          branches: ${{ github.ref_name }}

@@ -30,7 +30,3 @@ jobs:
           pip install -r requirements-test.txt
           pip install -r requirements-dev.txt
           python -m black . --check
-
-      - name: Fail workflow on style check failure
-        if: ${{ failure() }}
-        run: exit 1

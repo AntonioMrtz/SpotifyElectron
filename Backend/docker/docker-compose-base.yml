@@ -9,8 +9,8 @@ services:
     env_file:
       - ../.env
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
-      interval: 30s
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health/"]
+      interval: 10s
       timeout: 10s
-      retries: 3
-      start_period: 30s
+      retries: 10
+      start_period: 10s

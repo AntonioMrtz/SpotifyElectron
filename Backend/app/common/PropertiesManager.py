@@ -95,16 +95,17 @@ class _PropertiesManager:
             env_names (List[str]): environment variables names
 
         """
+        loaded_envs = []
         for env_name in env_names:
             env_variable_value = os.getenv(env_name)
             if not env_variable_value:
                 properties_manager_logger.warning(
                     f"No environment variable provided for {env_name}"
                 )
-                env_names.remove(env_name)
                 continue
             self.__setattr__(env_name, env_variable_value)
-        properties_manager_logger.info(f"environment variables loaded: {env_names}")
+            loaded_envs.append(env_name)
+        properties_manager_logger.info(f"Environment variables loaded: {loaded_envs}")
 
     def get_environment(self) -> AppEnvironmentMode:
         """Get current environment

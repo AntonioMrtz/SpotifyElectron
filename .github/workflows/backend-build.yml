@@ -34,7 +34,6 @@ jobs:
 
       - name: Run health check
         run: |
-          apt-get update; apt-get install curl -y
           curl -fv http://0.0.0.0:8000/health
 
       - name: Shutdown Docker Compose

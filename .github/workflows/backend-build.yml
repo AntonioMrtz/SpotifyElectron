@@ -9,7 +9,6 @@ on:
 jobs:
   backend-build:
     runs-on: ubuntu-latest
-    container: ubuntu
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -22,7 +21,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install docker-compose -y
 
-      - name: Prepara environment
+      - name: Prepare environment
         working-directory: Backend/
         run: |
           echo -e "MONGO_URI=${{ secrets.MONGO_URI }}\nSECRET_KEY_SIGN=f24e2f3ac557d487b6d879fb2d86f2b2\nARCH=BLOB\nENV_VALUE=PROD" > .env
@@ -36,7 +35,7 @@ jobs:
       - name: Run health check
         run: |
           apt-get update; apt-get install curl -y
-          curl -fv http://localhost:8000/health
+          curl -fv http://0.0.0.0:8000/health
 
       - name: Shutdown Docker Compose
         working-directory: Backend/docker/

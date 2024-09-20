@@ -104,7 +104,7 @@ class _PropertiesManager:
                 env_names.remove(env_name)
                 continue
             self.__setattr__(env_name, env_variable_value)
-        properties_manager_logger.info(f"environment variables loaded: {env_names}")
+        properties_manager_logger.info(f"Environment variables loaded: {env_names}")
 
     def get_environment(self) -> AppEnvironmentMode:
         """Get current environment

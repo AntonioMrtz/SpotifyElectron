@@ -34,8 +34,7 @@ jobs:
 
       - name: Run health check
         run: |
-          docker-compose exec backend /bin/bash
-          apt-get -y update; apt-get -y install curl
+          docker-compose exec backend bash -c "apt-get -y update && apt-get -y install --no-install-recommends curl"
           docker-compose exec backend curl -f http://localhost:8000/health
 
       - name: Shutdown Docker Compose

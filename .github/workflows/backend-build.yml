@@ -33,7 +33,7 @@ jobs:
           docker-compose -f docker-compose-prod.yml up -d
 
       - name: Run health check
-        run: |
+        run: | # wait until container starts and internal health check is made, see healthcheck on docker compose
           sleep 20
           curl -f localhost:8000/health/
 

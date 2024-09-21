@@ -23,7 +23,7 @@ npm install
 ### 3. Select architecture in global.ts
 
 ```
-export const songArchitecture: SongArchitecture = SongArchitecture.STREAMING_ARCHITECTURE;
+export const songArchitecture: SongArchitecture = SongArchitecture.FILE_ARCHITECTURE;
 ```
 
 ### 4. Build main and renderer process
@@ -40,7 +40,7 @@ npm start
 
 ## ▶ Select Music Player depending on Song Architecture backend ( optional )
 
-You can select a custom music player dependending if the song architecture is managed by streaming or encoded base64 bytes. By default streaming service is selected.
+You can select a custom music player dependending if the song architecture is managed by streaming or encoded base64 bytes. By default file architecture service is selected.
 
 ### 1. Enter frontend global configuration file
 
@@ -52,13 +52,13 @@ cd Electron/src/global/global.ts
 
 We have to selected if we want . Backend should also have the same architecture selected in order for songs to be played correctly.
 
-Files (RECOMMENDED for DEVELOPMENT)
+Files (DEVELOPMENT and PRODUCTION)
 
 ```
 export const songArchitecture: SongArchitecture = SongArchitecture.FILE_ARCHITECTURE
 ```
 
-Streaming
+Streaming (deprecated)
 
 ```
 export const songArchitecture: SongArchitecture = SongArchitecture.STREAMING_ARCHITECTURE

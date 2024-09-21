@@ -5,7 +5,7 @@ In this section we will cover how to package app for production. After following
 ### 1. Select wanted architecture in global.ts
 
 ```
-export const songArchitecture: SongArchitecture = SongArchitecture.STREAMING_ARCHITECTURE;
+export const songArchitecture: SongArchitecture = SongArchitecture.FILE_ARCHITECTURE;
 ```
 
 ### 2. Build the app

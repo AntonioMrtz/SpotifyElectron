@@ -51,16 +51,16 @@ class AppEnvironmentMode(StrEnum):
 class AppArchitecture:
     """App architecture constants"""
 
-    ARCH_STREAMING_SERVERLESS = "STREAMING_SERVERLESS"
     ARCH_BLOB = "BLOB"
+    ARCH_STREAMING_SERVERLESS = "STREAMING_SERVERLESS"
 
 
 class AppEnvironment:
     """App environment constants"""
 
     ARCHITECTURE_ENV_NAME = "ARCH"
-    DEFAULT_ARCHITECTURE = AppArchitecture.ARCH_BLOB
 
+    DEFAULT_ARCHITECTURE = AppArchitecture.ARCH_BLOB
     SECRET_KEY_SIGN_ENV_NAME = "SECRET_KEY_SIGN"
     MONGO_URI_ENV_NAME = "MONGO_URI"
     SERVERLESS_STREAMING_URL_ENV_NAME = "SERVERLESS_FUNCTION_URL"

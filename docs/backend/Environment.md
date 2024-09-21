@@ -27,21 +27,8 @@ In this section we will explain the meaning and the usage of the environment var
   - `PROD`: production environment.
   - `DEV`: development environment. Enables hot reload.
 - **ARCH**: the song architecture selected, it can be one of the following [architectures](../Architecture.md):
-  - `STREAMING_SERVERLESS`: song architecture using AWS Serverless Function with streaming.
-  - `BLOB(Recommended for testing)`: song architecture with no streaming/cloud, storing and serving songs directly from the database.
-
-### ➡️ Streaming using AWS Serverless Functions (`STREAMING_SERVERLESS`)
-
-- **SERVERLESS_FUNCTION_URL**: the url of the AWS serverless function (Lambda) that manages songs and comunicates with cloud storage.
-- **MONGO_URI**: the database connection URI such as `mongodb://root:root@localhost:27017/`, this will connect backend into the selected database for storing all persistent data but not including song files.
-
-```
-MONGO_URI=mongodb://root:root@localhost:27017/
-SECRET_KEY_SIGN=f24e2f3ac557d487b6d879fb2d86f2b2
-SERVERLESS_FUNCTION_URL=https://lambda-url.us-east-1.on.aws/path/
-ENV_VALUE=DEV
-ARCH=STREAMING_SERVERLESS
-```
+  - `BLOB(Recommended for testing and production)`: song architecture with no streaming/cloud, storing and serving songs directly from the database.
+  - `STREAMING_SERVERLESS`: (deprecated) song architecture using AWS Serverless Function with streaming.
 
 ### ➡️ No streaming with songs stored in database (`BLOB`)
 
@@ -52,6 +39,19 @@ MONGO_URI=mongodb://root:root@localhost:27017/
 SECRET_KEY_SIGN=f24e2f3ac557d487b6d879fb2d86f2b2
 ENV_VALUE=DEV
 ARCH=BLOB
+```
+
+### ➡️ Streaming using AWS Serverless Functions (`STREAMING_SERVERLESS`)(deprecated)
+
+- **SERVERLESS_FUNCTION_URL**: the url of the AWS serverless function (Lambda) that manages songs and comunicates with cloud storage.
+- **MONGO_URI**: the database connection URI such as `mongodb://root:root@localhost:27017/`, this will connect backend into the selected database for storing all persistent data but not including song files.
+
+```
+MONGO_URI=mongodb://root:root@localhost:27017/
+SECRET_KEY_SIGN=f24e2f3ac557d487b6d879fb2d86f2b2
+SERVERLESS_FUNCTION_URL=https://lambda-url.us-east-1.on.aws/path/
+ENV_VALUE=DEV
+ARCH=STREAMING_SERVERLESS
 ```
 
 ---

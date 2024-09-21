@@ -25,8 +25,8 @@ Frontend interface uses React with TypeScript combined with css modules. The nam
 is the following:
 
 - 📁 ReactComponent
-    - 📄 ReactComponent.tsx
-    - 📄 contextMenu.module.css
+  - 📄 ReactComponent.tsx
+  - 📄 contextMenu.module.css
 
 ## ⚙️ .vscode
 

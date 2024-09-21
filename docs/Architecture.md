@@ -1,29 +1,9 @@
 # Architecture
 
 The app has two different architectures. These architectures only differ on song store, managment, serving
-and playing. `BLOB` architecture is recommended for testing and only requires a MongoDB database instance. In production `STREAMING_SERVERLESS` is used, it requires a serverless function to manage song resources and streaming. Currently the app ships with `STREAMING_SERVERLESS` using AWS Lambda for serverless function, S3 Bucket for storing songs and Cloudfront for streaming songs into the client using a URL.
+and playing. `BLOB` architecture is recommended for both testing and production and only requires a MongoDB database instance.
 
-## STREAMING_SERVERLESS
-
-As seen in the architecture diagram below, the song data is manage using and AWS Lambda serverless function, it
-stores the data into an S3 Bucket. The stored data is linked with Cloudfront streaming service which provides
-a URL that is injected into the music player for streaming the song data. Song metadata such as name, artist, streams, etc is stored in the MongoDB database instance.
-
-Frontend has to set the following config in `global.ts` file:
-
-```
-export const songArchitecture: SongArchitecture = SongArchitecture.STREAMING_ARCHITECTURE;
-```
-
-Backend has to use the following config in `.env`:
-
-```
-ARCH=STREAMING_SERVERLESS
-```
-
-![STREAMING SERVERLESS ARCHITECTURE](assets/architecture/app_architecture_aws_serverless.png)
-![STREAMING SONG ARCHITECTURE](assets/architecture/song_architecture_aws_serverless.png)
-
+`STREAMING_SERVERLESS` architecture is also provided, it requires a serverless function to manage song resources and streaming. This architecture uses AWS Lambda for serverless function, S3 Bucket for storing songs and Cloudfront for streaming songs into the client using a URL.
 
 ## BLOB
 
@@ -50,3 +30,25 @@ Using this config Frontend will load the `BLOB` architecture music player that m
 encoded base64 bytes of the song data and injects it into the music player.
 
 ![BLOB ARCHITECTURE](assets/architecture/app_architecture_blob.png)
+
+
+## STREAMING_SERVERLESS (deprecated)
+
+As seen in the architecture diagram below, the song data is manage using and AWS Lambda serverless function, it
+stores the data into an S3 Bucket. The stored data is linked with Cloudfront streaming service which provides
+a URL that is injected into the music player for streaming the song data. Song metadata such as name, artist, streams, etc is stored in the MongoDB database instance.
+
+Frontend has to set the following config in `global.ts` file:
+
+```
+export const songArchitecture: SongArchitecture = SongArchitecture.STREAMING_ARCHITECTURE;
+```
+
+Backend has to use the following config in `.env`:
+
+```
+ARCH=STREAMING_SERVERLESS
+```
+
+![STREAMING SERVERLESS ARCHITECTURE](assets/architecture/app_architecture_aws_serverless.png)
+![STREAMING SONG ARCHITECTURE](assets/architecture/song_architecture_aws_serverless.png)

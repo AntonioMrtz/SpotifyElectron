@@ -26,8 +26,8 @@ class SongServiceProvider:
         """Init song service"""
         cls.logger = SpotifyElectronLogger(LOGGING_SONG_SERVICE_PROVIDER).getLogger()
         cls.song_services = {
-            AppArchitecture.ARCH_STREAMING_SERVERLESS: SONG_SERVICE_STREAMING_SERVERLESS_MODULE_NAME,  # noqa: E501
             AppArchitecture.ARCH_BLOB: SONG_SERVICE_BLOB_MODULE_NAME,
+            AppArchitecture.ARCH_STREAMING_SERVERLESS: SONG_SERVICE_STREAMING_SERVERLESS_MODULE_NAME,  # noqa: E501
         }
         cls.create_song_service()
 

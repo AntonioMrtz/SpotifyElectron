@@ -50,6 +50,7 @@ class BaseDatabaseConnection:
             uri = getattr(PropertiesManager, AppEnvironment.MONGO_URI_ENV_NAME)
             cls.collection_name_prefix = cls._get_collection_name_prefix()
             client = cls._get_mongo_client()(uri, server_api=ServerApi("1"))
+            client.admin.command("ping")
             cls.connection = client[cls.DATABASE_NAME]
         except Exception as exception:
             cls._logger.critical(f"Error establishing connection with database: {exception}")

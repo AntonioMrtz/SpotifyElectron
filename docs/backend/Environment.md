@@ -22,7 +22,7 @@ In this section we will explain the meaning and the usage of the environment var
 
 ### ➡️ Commons
 
-- **SECRET_KEY_SIGN**: 32 byte key for signing JWT Tokens that will authenticate the user. You can use `f24e2f3ac557d487b6d879fb2d86f2b2` as an example. This key will make sure the JWT Tokens are provided by our backend and not someone else's. For generating a new secret use `openssl rand -hex 32`.
+- **SECRET_KEY_SIGN**: 32 byte key(16 characters) for signing JWT Tokens that will authenticate the user. You can use `f24e2f3ac557d487b6d879fb2d86f2b2` as an example. This key will make sure the JWT Tokens are provided by our backend and not someone else's. For generating a new secret use `openssl rand -hex 16`.
 - **ENV_VALUE**: determines the current environment of the app, it can be:
   - `PROD`: production environment.
   - `DEV`: development environment. Enables hot reload.

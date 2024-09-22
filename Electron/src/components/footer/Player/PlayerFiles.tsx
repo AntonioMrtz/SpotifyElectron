@@ -7,13 +7,14 @@ import {
 } from 'react';
 import Global from 'global/global';
 import { getTokenUsername } from 'utils/token';
-import { SongsService } from 'swagger/api/services/SongsService';
-import { UsersService } from 'swagger/api/services/UsersService';
+import { SongsService, UsersService } from 'swagger/api';
 import styles from './player.module.css';
 import TimeSlider from './TimeSlider/TimeSlider';
 import { PropsPlayer } from './types/propsPlayer';
 
-export default function PlayerStreaming({
+// TODO refactor common logic with streaming player
+
+export default function PlayerFiles({
   volume,
   songName,
   changeSongInfo,
@@ -79,6 +80,8 @@ export default function PlayerStreaming({
     setVolume();
   }, [setVolume, volume]);
 
+  /* Handles updates of DB when song is played */
+
   const handleIncreaseSongStreams = async () => {
     try {
       await SongsService.increaseSongStreamsSongsNameStreamsPatch(songName);
@@ -105,8 +108,7 @@ export default function PlayerStreaming({
   };
 
   /* Loads the song and metadata to the Player */
-
-  const handleSongInfo = async () => {
+  const handlSongInfo = async () => {
     try {
       if (audio.current) {
         audio.current.pause();
@@ -125,39 +127,38 @@ export default function PlayerStreaming({
         artist: songData.artist,
       });
 
-      const audioStreamingURL = songData.url;
+      const audioStreamingURL = `${Global.backendBaseUrl}${songData.url}`;
 
       if (audioStreamingURL !== undefined) {
         audio.current = new Audio(audioStreamingURL);
       }
 
-      if (audio.current) {
-        // Listener that handles the time update of playbacktime
-        audio.current.addEventListener('timeupdate', () => {
-          if (
-            audio.current &&
-            audio.current.currentTime &&
-            audio.current.duration
-          ) {
-            const time = audio.current.currentTime;
-            setPlayBackTime(+time.toFixed(2));
+      if (!audio.current) return;
+      // Listener that handles the time update of playbacktime
+      audio.current.addEventListener('timeupdate', () => {
+        if (
+          audio.current &&
+          audio.current.currentTime &&
+          audio.current.duration
+        ) {
+          const time = audio.current.currentTime;
+          setPlayBackTime(+time.toFixed(2));
 
-            if (audio.current.currentTime === audio.current.duration) {
-              handlePause();
-            }
+          if (audio.current.currentTime === audio.current.duration) {
+            handlePause();
           }
-        });
+        }
+      });
 
-        // When metadata such as duration,etc is loaded
-        audio.current.addEventListener('loadedmetadata', () => {
-          if (audio.current) {
-            audio.current.play();
-            handlePlay();
-            setSongDuration(audio.current.duration); // not updating every 0.5s as playback time
-            setVolume();
-          }
-        });
-      }
+      // When metadata such as duration,etc is loaded
+      audio.current.addEventListener('loadedmetadata', () => {
+        if (audio.current) {
+          audio.current.play();
+          handlePlay();
+          setSongDuration(audio.current.duration); // not updating every 0.5s as playback time
+          setVolume();
+        }
+      });
 
       // set play and pause functions
 
@@ -191,15 +192,17 @@ export default function PlayerStreaming({
     }
   };
 
+  // TODO use hooks
   useEffect(() => {
     if (audio.current) {
       audio.current.pause();
       handlePause();
     }
-    handleSongInfo();
+    handlSongInfo();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [songName, changeSongInfo]);
 
+  // TODO put inside single use effect?
   useEffect(() => {
     /* Pause audio if component unmount */
     return () => {

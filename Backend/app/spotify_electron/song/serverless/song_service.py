@@ -10,7 +10,7 @@ from app.auth.auth_schema import (
     TokenData,
     UserUnauthorizedException,
 )
-from app.logging.logging_constants import LOGGING_SONG_AWS_SERVERLESS_SERVICE
+from app.logging.logging_constants import LOGGING_SONG_SERVERLESS_SERVICE
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.genre.genre_schema import Genre, GenreNotValidException
 from app.spotify_electron.song.base_song_schema import (
@@ -53,7 +53,7 @@ from app.spotify_electron.utils.audio_management.audio_management_utils import (
     get_song_duration_seconds,
 )
 
-song_service_logger = SpotifyElectronLogger(LOGGING_SONG_AWS_SERVERLESS_SERVICE).getLogger()
+song_service_logger = SpotifyElectronLogger(LOGGING_SONG_SERVERLESS_SERVICE).getLogger()
 
 
 def get_song_streaming_url(name: str) -> str:

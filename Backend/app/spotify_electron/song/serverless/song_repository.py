@@ -7,7 +7,7 @@ When the song file is not needed, and only the metadata is required use base son
 
 import app.spotify_electron.song.providers.song_collection_provider as song_collection_provider
 from app.logging.logging_constants import (
-    LOGGING_SONG_AWS_SERVERLESS_REPOSITORY,
+    LOGGING_SONG_SERVERLESS_REPOSITORY,
 )
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.genre.genre_schema import Genre
@@ -25,9 +25,7 @@ from app.spotify_electron.song.validations.base_song_repository_validations impo
     validate_song_exists,
 )
 
-song_repository_logger = SpotifyElectronLogger(
-    LOGGING_SONG_AWS_SERVERLESS_REPOSITORY
-).getLogger()
+song_repository_logger = SpotifyElectronLogger(LOGGING_SONG_SERVERLESS_REPOSITORY).getLogger()
 
 
 def get_song(name: str) -> SongDAO:

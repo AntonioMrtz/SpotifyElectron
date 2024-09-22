@@ -8,7 +8,7 @@ env_variables_mapping = {
     AppEnvironment.ARCHITECTURE_ENV_NAME: "ARCH",
     AppEnvironment.SECRET_KEY_SIGN_ENV_NAME: "SECRET_KEY_SIGN",
     AppEnvironment.MONGO_URI_ENV_NAME: "MONGO_URI",
-    AppEnvironment.SERVERLESS_STREAMING_URL_ENV_NAME: "SERVERLESS_FUNCTION_URL",
+    AppEnvironment.SERVERLESS_URL_ENV_NAME: "SERVERLESS_FUNCTION_URL",
     AppEnvironment.ENV_VALUE_ENV_NAME: "ENV_VALUE",
 }
 

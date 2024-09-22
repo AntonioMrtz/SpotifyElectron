@@ -4,8 +4,8 @@ import Global from 'global/global';
 import styles from './footer.module.css';
 import SongInfo from './SongInfo/SongInfo';
 import SongConfig from './SongConfig/SongConfig';
-import PlayerStreaming from './Player/PlayerStreaming';
-import PlayerFiles from './Player/PlayerStreamingFiles';
+import PlayerServerless from './Player/PlayerServerless';
+import PlayerFiles from './Player/PlayerFiles';
 import { PropsSongInfo } from './SongInfo/types/propsSongInfo';
 
 interface PropsFooter {
@@ -22,8 +22,8 @@ export default function Footer({ songName }: PropsFooter) {
     >
       <SongInfo songInfo={songInfo} />
 
-      {Global.songArchitecture === SongArchitecture.STREAMING_ARCHITECTURE ? (
-        <PlayerStreaming
+      {Global.songArchitecture === SongArchitecture.SERVERLESS_ARCHITECTURE ? (
+        <PlayerServerless
           volume={volume}
           songName={songName}
           changeSongInfo={setSongInfo}

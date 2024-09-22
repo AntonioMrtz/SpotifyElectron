@@ -38,6 +38,7 @@ class AppConfig:
     APP_INI_KEY = "app.path"
     HOST_INI_KEY = "host"
     PORT_INI_KEY = "port"
+    WORKERS = "workers"
 
 
 class AppEnvironmentMode(StrEnum):

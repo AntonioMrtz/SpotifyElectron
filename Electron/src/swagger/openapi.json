@@ -1500,6 +1500,47 @@
         }
       }
     },
+    "/stream/{name}": {
+      "get": {
+        "tags": [
+          "stream"
+        ],
+        "summary": "Stream Song",
+        "description": "Streams song audio\n\nArgs:\n    name (str): song name\n    request (Request): incoming request",
+        "operationId": "stream_song_stream__name__get",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Name"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/health/": {
       "get": {
         "tags": [

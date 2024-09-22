@@ -5,7 +5,7 @@ import styles from './footer.module.css';
 import SongInfo from './SongInfo/SongInfo';
 import SongConfig from './SongConfig/SongConfig';
 import PlayerStreaming from './Player/PlayerStreaming';
-import PlayerFiles from './Player/PlayerFiles';
+import PlayerFiles from './Player/PlayerStreamingFiles';
 import { PropsSongInfo } from './SongInfo/types/propsSongInfo';
 
 interface PropsFooter {

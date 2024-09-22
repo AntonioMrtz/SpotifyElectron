@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
 import '@testing-library/jest-dom/extend-expect';
 import { render } from '@testing-library/react';
-import PlayerFiles from 'components/footer/Player/PlayerFiles';
+import PlayerFiles from 'components/footer/Player/PlayerStreamingFiles';
 import Global from 'global/global';
 import UserType from 'utils/role';
 import { act } from 'react-test-renderer';

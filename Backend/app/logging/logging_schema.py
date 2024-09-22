@@ -12,6 +12,8 @@ from app.logging.LogPropertiesManager import LogPropertiesManager
 
 
 class SpotifyElectronFormatter(logging.Formatter):
+    """Custom Spotify Electron logger"""
+
     MODULE_COLOR = "\033[4m"  # Underline
     LEVEL_DEBUG_COLOR = "\033[94m"  # Blue
     LEVEL_INFO_COLOR = "\033[92m"  # Green

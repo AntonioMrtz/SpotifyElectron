@@ -127,45 +127,38 @@ export default function Player({
         artist: songData.artist,
       });
 
-      let audioBytesString = songData.file;
+      const audioStreamingURL = `${Global.backendBaseUrl}${songData.url}`;
 
-      if (audioBytesString !== undefined) {
-        audioBytesString = audioBytesString
-          .replace('"', '')
-          .replace('b', '')
-          .replace("'", '')
-          .slice(0, -1);
-        const dataURI = `data:audio/mp3;base64,${audioBytesString}`;
-        audio.current = new Audio(dataURI);
+      if (audioStreamingURL !== undefined) {
+        audio.current = new Audio(audioStreamingURL);
       }
 
-      if (audio.current) {
-        // Listener that handles the time update of playbacktime
-        audio.current.addEventListener('timeupdate', () => {
-          if (
-            audio.current &&
-            audio.current.currentTime &&
-            audio.current.duration
-          ) {
-            const time = audio.current.currentTime;
-            setPlayBackTime(+time.toFixed(2));
+      if (!audio.current) return;
+      // Listener that handles the time update of playbacktime
+      audio.current.addEventListener('timeupdate', () => {
+        if (
+          audio.current &&
+          audio.current.currentTime &&
+          audio.current.duration
+        ) {
+          const time = audio.current.currentTime;
+          setPlayBackTime(+time.toFixed(2));
 
-            if (audio.current.currentTime === audio.current.duration) {
-              handlePause();
-            }
+          if (audio.current.currentTime === audio.current.duration) {
+            handlePause();
           }
-        });
+        }
+      });
 
-        // When metadata such as duration,etc is loaded
-        audio.current.addEventListener('loadedmetadata', () => {
-          if (audio.current) {
-            audio.current.play();
-            handlePlay();
-            setSongDuration(audio.current.duration); // not updating every 0.5s as playback time
-            setVolume();
-          }
-        });
-      }
+      // When metadata such as duration,etc is loaded
+      audio.current.addEventListener('loadedmetadata', () => {
+        if (audio.current) {
+          audio.current.play();
+          handlePlay();
+          setSongDuration(audio.current.duration); // not updating every 0.5s as playback time
+          setVolume();
+        }
+      });
 
       // set play and pause functions
 

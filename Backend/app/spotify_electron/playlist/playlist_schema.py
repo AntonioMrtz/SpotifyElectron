@@ -75,7 +75,7 @@ def get_playlist_dto_from_dao(playlist_dao: PlaylistDAO) -> PlaylistDTO:
 
 
 class PlaylistRepositoryException(SpotifyElectronException):
-    """Exception for Playlist Repository Unexpected Exceptions"""
+    """Repository Unexpected Exceptions"""
 
     ERROR = "Error accessing Playlist Repository"
 
@@ -84,7 +84,7 @@ class PlaylistRepositoryException(SpotifyElectronException):
 
 
 class PlaylistNotFoundException(SpotifyElectronException):
-    """Exception for Playlist item not found"""
+    """Playlist not found"""
 
     ERROR = "Playlist not found"
 
@@ -93,7 +93,7 @@ class PlaylistNotFoundException(SpotifyElectronException):
 
 
 class PlaylistAlreadyExistsException(SpotifyElectronException):
-    """Exception for Playlist that already exists"""
+    """Playlist to create already exists"""
 
     ERROR = "Playlist already exists"
 
@@ -102,7 +102,7 @@ class PlaylistAlreadyExistsException(SpotifyElectronException):
 
 
 class PlaylistDeleteException(SpotifyElectronException):
-    """Exception for Playlist delete"""
+    """Playlist deletion"""
 
     ERROR = "Error deleting Playlist"
 
@@ -111,7 +111,7 @@ class PlaylistDeleteException(SpotifyElectronException):
 
 
 class PlaylistCreateException(SpotifyElectronException):
-    """Exception for Playlist creation"""
+    """Playlist creation"""
 
     ERROR = "Error creating Playlist"
 
@@ -120,7 +120,7 @@ class PlaylistCreateException(SpotifyElectronException):
 
 
 class PlaylistUpdateException(SpotifyElectronException):
-    """Exception for Playlist update"""
+    """Playlist update"""
 
     ERROR = "Error updating Playlist"
 
@@ -129,7 +129,7 @@ class PlaylistUpdateException(SpotifyElectronException):
 
 
 class PlaylistServiceException(SpotifyElectronException):
-    """Exception for Playlist Service Unexpected Exceptions"""
+    """Service Unexpected Exceptions"""
 
     ERROR = "Error accessing Playlist SERVICE"
 
@@ -138,7 +138,7 @@ class PlaylistServiceException(SpotifyElectronException):
 
 
 class PlaylistBadNameException(SpotifyElectronException):
-    """Exception for bad name of Playlist"""
+    """Bad name"""
 
     ERROR = "Bad parameters provided for playlist"
 
@@ -147,7 +147,7 @@ class PlaylistBadNameException(SpotifyElectronException):
 
 
 class PlaylistUnAuthorizedException(SpotifyElectronException):
-    """Exception for user accessing unauthorized playlist"""
+    """User accessing unauthorized playlist"""
 
     ERROR = "Unauthorized playlist resource for user"
 

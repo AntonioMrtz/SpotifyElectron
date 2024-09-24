@@ -65,7 +65,7 @@ def encode_file(name: str, file: bytes) -> str:
 
 
 class EncodingFileException(SpotifyElectronException):
-    """Exception for Unexpected errors encoding files"""
+    """File encoding error"""
 
     def __init__(self):
         super().__init__("Error encoding file")

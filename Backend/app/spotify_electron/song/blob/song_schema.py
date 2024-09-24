@@ -111,7 +111,7 @@ def _get_song_base64_encoded_bytes_from_gridfs(song_name: str, song_data: GridOu
 
 
 class GetEncodedBytesFromGridFSException(SpotifyElectronException):
-    """Exception for an error getting encoded bytes from GridFs"""
+    """Get encoded bytes from GridFs error"""
 
     ERROR = "Error getting encoded bytes from GridFs"
 

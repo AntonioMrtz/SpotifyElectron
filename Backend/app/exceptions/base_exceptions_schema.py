@@ -1,5 +1,5 @@
 """
-Base common exceptions for the whole app
+Base common exceptions
 """
 
 from app.logging.logging_constants import LOGGING_EXCEPTION
@@ -16,7 +16,7 @@ class SpotifyElectronException(Exception):
 
 
 class BadParameterException(SpotifyElectronException):
-    """Exception for bad parameter"""
+    """Bad parameter"""
 
     def __init__(self, parameter_name: str | None = None):
         self._set_parameter_name(parameter_name)
@@ -27,7 +27,7 @@ class BadParameterException(SpotifyElectronException):
 
 
 class JsonEncodeException(SpotifyElectronException):
-    """Exception for error encoding object into json"""
+    """Error encoding object into json"""
 
     ERROR = "Error encoding object into json"
 

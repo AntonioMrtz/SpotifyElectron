@@ -59,7 +59,7 @@ class _PropertiesMessagesManager:
 
 
 class MessageNotFoundException(SpotifyElectronException):
-    """Exception for message not found in PropertiesMessagesManager"""
+    """Message not found in PropertiesMessagesManager"""
 
     ERROR = "Error getting message from PropertiesMessagesManager, it doesn't exists"
 

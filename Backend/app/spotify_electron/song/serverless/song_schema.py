@@ -70,7 +70,7 @@ def get_song_dto_from_dao(song_dao: SongDAO, url: str) -> SongDTO:
 
 
 class SongGetUrlStreamingException(SpotifyElectronException):
-    """Exception for unexpected error getting streaming url of Song"""
+    """Get Song url for streaming error"""
 
     ERROR = "Unexpected error getting streaming url of Song"
 
@@ -79,18 +79,18 @@ class SongGetUrlStreamingException(SpotifyElectronException):
 
 
 class SongCreateSongStreamingException(SpotifyElectronException):
-    """Exception for unexpected error creating song for streaming"""
+    """Song creation"""
 
-    ERROR = "Unexpected error creating streaming Song"
+    ERROR = "Unexpected error creating Song"
 
     def __init__(self):
         super().__init__(self.ERROR)
 
 
 class SongDeleteSongStreamingException(SpotifyElectronException):
-    """Exception for unexpected error deleting song for streaming"""
+    """Song deletion"""
 
-    ERROR = "Unexpected error deleting streaming Song"
+    ERROR = "Unexpected error deleting Song"
 
     def __init__(self):
         super().__init__(self.ERROR)

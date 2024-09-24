@@ -87,21 +87,21 @@ def get_user_dto_from_dao(user_dao: UserDAO) -> UserDTO:
 
 
 class UserRepositoryException(SpotifyElectronException):
-    """Exception for User Repository Unexpected Exceptions"""
+    """Repository Unexpected error"""
 
     def __init__(self):
         super().__init__("Error accessing User REPOSITORY")
 
 
 class UserNotFoundException(SpotifyElectronException):
-    """Exception raised when a User is not found"""
+    """User not found"""
 
     def __init__(self):
         super().__init__("User not found")
 
 
 class UserBadNameException(SpotifyElectronException):
-    """Exception for bad name of Playlist"""
+    """Bad name"""
 
     ERROR = "Bad parameters provided for user"
 

@@ -81,7 +81,7 @@ You can also use the following `.env` file for changing between architectures as
 ```
 MONGO_URI=mongodb://root:root@localhost:27017/
 SECRET_KEY_SIGN=f24e2f3ac557d487b6d879fb2d86f2b2
-SERVERLESS=https://lambda-url.us-east-1.on.aws/path/
+SERVERLESS_FUNCTION_URL=https://lambda-url.us-east-1.on.aws/path/
 ENV_VALUE=DEV
 ARCH=BLOB
 ```

@@ -88,7 +88,7 @@ def get_song_metadata_dto_from_dao(song_dao: SongMetadataDAO) -> SongMetadataDTO
 
 
 class SongRepositoryException(SpotifyElectronException):
-    """Exception for Song Repository Unexpected Exceptions"""
+    """Repository Unexpected error"""
 
     ERROR = "Error accessing Song Repository"
 
@@ -97,7 +97,7 @@ class SongRepositoryException(SpotifyElectronException):
 
 
 class SongNotFoundException(SpotifyElectronException):
-    """Exception for Song item not found"""
+    """Song not found"""
 
     ERROR = "Song not found"
 
@@ -106,7 +106,7 @@ class SongNotFoundException(SpotifyElectronException):
 
 
 class SongAlreadyExistsException(SpotifyElectronException):
-    """Exception for Song that already exists"""
+    """Song already exists"""
 
     ERROR = "Song already exists"
 
@@ -115,7 +115,7 @@ class SongAlreadyExistsException(SpotifyElectronException):
 
 
 class SongDeleteException(SpotifyElectronException):
-    """Exception for Song delete"""
+    """Song deletion error"""
 
     ERROR = "Error deleting Song"
 
@@ -124,7 +124,7 @@ class SongDeleteException(SpotifyElectronException):
 
 
 class SongCreateException(SpotifyElectronException):
-    """Exception for Song creation"""
+    """Song creation error"""
 
     ERROR = "Error creating Song"
 
@@ -133,7 +133,7 @@ class SongCreateException(SpotifyElectronException):
 
 
 class SongtUpdateException(SpotifyElectronException):
-    """Exception for Song update"""
+    """Song update error"""
 
     ERROR = "Error updating Song"
 
@@ -142,7 +142,7 @@ class SongtUpdateException(SpotifyElectronException):
 
 
 class SongServiceException(SpotifyElectronException):
-    """Exception for Song Service Unexpected Exceptions"""
+    """Song Service Unexpected error"""
 
     ERROR = "Error accessing Song Service"
 
@@ -151,7 +151,7 @@ class SongServiceException(SpotifyElectronException):
 
 
 class SongBadNameException(SpotifyElectronException):
-    """Exception for bad name of Song"""
+    """Bad name"""
 
     ERROR = "Bad parameters provided for Song"
 
@@ -160,7 +160,7 @@ class SongBadNameException(SpotifyElectronException):
 
 
 class SongUnAuthorizedException(SpotifyElectronException):
-    """Exception for user accessing unauthorized Song"""
+    """User accessing unauthorized Song"""
 
     ERROR = "Unauthorized Song resource for user"
 

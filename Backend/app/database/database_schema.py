@@ -107,7 +107,7 @@ class BaseDatabaseConnection:
 
 
 class DatabasePingFailed(SpotifyElectronException):
-    """Exception for database ping failure"""
+    """Database ping failure"""
 
     ERROR = "Ping to the database failed"
 
@@ -116,7 +116,7 @@ class DatabasePingFailed(SpotifyElectronException):
 
 
 class UnexpectedDatabasePingFailed(SpotifyElectronException):
-    """Exception for unexpected database ping failure"""
+    """Unexpected database ping failure"""
 
     ERROR = "Unexpected error while pinging to the database"
 

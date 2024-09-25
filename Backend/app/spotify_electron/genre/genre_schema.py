@@ -74,7 +74,7 @@ class Genre(StrEnum):
 
 
 class GenreNotValidException(SpotifyElectronException):
-    """Exception for getting a Genre from an invalid value"""
+    """Getting a Genre from an invalid value"""
 
     ERROR = "The genre doesn't exists"
 
@@ -83,7 +83,7 @@ class GenreNotValidException(SpotifyElectronException):
 
 
 class GenreServiceException(SpotifyElectronException):
-    """Exception for unexpected error getting genres"""
+    """Unexpected error getting genres"""
 
     ERROR = "Unexpected error while getting genres"
 

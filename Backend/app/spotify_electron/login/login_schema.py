@@ -6,7 +6,7 @@ from app.exceptions.base_exceptions_schema import SpotifyElectronException
 
 
 class InvalidCredentialsLoginException(SpotifyElectronException):
-    """Exception for invalid credentials while log in"""
+    """Invalid credentials for log in"""
 
     ERROR = "Invalid credentials while logging"
 

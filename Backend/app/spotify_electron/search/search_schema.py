@@ -22,7 +22,7 @@ class SearchResult:
 
 
 class BadSearchParameterException(SpotifyElectronException):
-    """Exception for bad parameter provided for search"""
+    """Bad parameter provided for search"""
 
     ERROR = "Bad parameter provided for search"
 
@@ -31,7 +31,7 @@ class BadSearchParameterException(SpotifyElectronException):
 
 
 class SearchServiceException(SpotifyElectronException):
-    """Exception for unexpected error in search service"""
+    """Unexpected error in service"""
 
     ERROR = "Unexpected error in search service"
 

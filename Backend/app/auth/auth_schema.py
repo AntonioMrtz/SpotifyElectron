@@ -31,16 +31,16 @@ class FakeRequest:
 
 
 class BadJWTTokenProvidedException(SpotifyElectronException):
-    """Exception for bad JWT Token provided"""
+    """Bad JWT Token provided"""
 
-    ERROR = "Exception for bad JWT Token provided"
+    ERROR = "bad JWT Token provided"
 
     def __init__(self):
         super().__init__(self.ERROR)
 
 
 class JWTNotProvidedException(SpotifyElectronException):
-    """Exception for JWT Token not provided"""
+    """JWT Token not provided"""
 
     ERROR = "JWT Token not provided"
 
@@ -49,7 +49,7 @@ class JWTNotProvidedException(SpotifyElectronException):
 
 
 class JWTMissingCredentialsException(SpotifyElectronException):
-    """Exception for missing credentials obtained from JWT Token"""
+    """Missing credentials obtained from JWT Token"""
 
     ERROR = "Missing credentials in JWT Token"
 
@@ -58,7 +58,7 @@ class JWTMissingCredentialsException(SpotifyElectronException):
 
 
 class JWTGetUserException(SpotifyElectronException):
-    """Exception for error getting user data from JWT Token"""
+    """Get user data from JWT Token error"""
 
     ERROR = "Error getting user data from JWT Token"
 
@@ -67,7 +67,7 @@ class JWTGetUserException(SpotifyElectronException):
 
 
 class CreateJWTException(SpotifyElectronException):
-    """Exception for error creating JWT Token"""
+    """JWT Token creation error"""
 
     ERROR = "Error creating JWT Token"
 
@@ -76,7 +76,7 @@ class CreateJWTException(SpotifyElectronException):
 
 
 class JWTDecodeException(SpotifyElectronException):
-    """Exception for error decoding JWT Token"""
+    """Decoding JWT Token error"""
 
     ERROR = "Error decoding JWT Token"
 
@@ -85,7 +85,7 @@ class JWTDecodeException(SpotifyElectronException):
 
 
 class JWTExpiredException(SpotifyElectronException):
-    """Exception for expired JWT Token"""
+    """Expired JWT Token"""
 
     ERROR = "JWT token is expired"
 
@@ -94,7 +94,7 @@ class JWTExpiredException(SpotifyElectronException):
 
 
 class JWTValidationException(SpotifyElectronException):
-    """Exception for error validating JWT Token"""
+    """Validating JWT Token error"""
 
     ERROR = "JWT Token validation failure"
 
@@ -103,7 +103,7 @@ class JWTValidationException(SpotifyElectronException):
 
 
 class VerifyPasswordException(SpotifyElectronException):
-    """Exception for error validating password"""
+    """Validating password error"""
 
     ERROR = "Password validation failure"
 
@@ -112,7 +112,7 @@ class VerifyPasswordException(SpotifyElectronException):
 
 
 class UnexpectedGetJWTTokenException(SpotifyElectronException):
-    """Exception for unexpected error getting JWT token data"""
+    """Unexpected error getting JWT token data"""
 
     ERROR = "Unexpected error getting data from JWT"
 
@@ -121,7 +121,7 @@ class UnexpectedGetJWTTokenException(SpotifyElectronException):
 
 
 class UnexpectedLoginUserException(SpotifyElectronException):
-    """Exception for unexpected error during user login"""
+    """Unexpected error during user login"""
 
     ERROR = "Unexpected error during user login"
 
@@ -130,7 +130,7 @@ class UnexpectedLoginUserException(SpotifyElectronException):
 
 
 class UserUnauthorizedException(SpotifyElectronException):
-    """Exception raised when user is unauthorized to access the resource"""
+    """User is unauthorized to access the resource"""
 
     def __init__(self):
         super().__init__("User is unauthorized to access the resource")

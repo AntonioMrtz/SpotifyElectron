@@ -5,7 +5,7 @@ import styles from './footer.module.css';
 import SongInfo from './SongInfo/SongInfo';
 import SongConfig from './SongConfig/SongConfig';
 import PlayerServerless from './Player/PlayerServerless';
-import PlayerFiles from './Player/PlayerFiles';
+import PlayerBlob from './Player/PlayerBlob';
 import { PropsSongInfo } from './SongInfo/types/propsSongInfo';
 
 interface PropsFooter {
@@ -29,7 +29,7 @@ export default function Footer({ songName }: PropsFooter) {
           changeSongInfo={setSongInfo}
         />
       ) : (
-        <PlayerFiles
+        <PlayerBlob
           volume={volume}
           songName={songName}
           changeSongInfo={setSongInfo}

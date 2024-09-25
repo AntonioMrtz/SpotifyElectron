@@ -1,14 +1,17 @@
 # Architecture
 
 The app has two different architectures. These architectures only differ on song store, managment, serving
-and playing. `BLOB` architecture is recommended for both testing and production and only requires a MongoDB database instance.
+and playing.
 
-`SERVERLESS` architecture is also provided, it requires a serverless function to manage song resources and streaming. This architecture uses AWS Lambda for serverless function, S3 Bucket for storing songs and Cloudfront for streaming songs into the client using a URL.
+* `BLOB` architecture is recommended for both production and development and only requires a MongoDB database instance.
+
+* `SERVERLESS` architecture is also provided, it requires a serverless function to manage song resources and streaming. This architecture uses AWS Lambda for serverless function, S3 Bucket for storing songs and Cloudfront for streaming songs into the client using a URL.
 
 ## BLOB
 
-Songs are stored using a MongoDB database using the BLOB data type. Songs can be stored directly in a MongoDB database using [GridFS specification](https://www.mongodb.com/docs/manual/core/gridfs/). Where
-a song is stored in the database two collections are used:
+Songs are stored using a MongoDB database using the BLOB data type and streamed directly by backend.
+
+Songs storage is based on [GridFS specification](https://www.mongodb.com/docs/manual/core/gridfs/). Two collections are used:
 
 * **data.files**: stores song metadata, such as the first data chunk of content and other data that
 eases handling songs without needing to get the full song data.
@@ -17,7 +20,7 @@ eases handling songs without needing to get the full song data.
 Frontend has to set the following config in `global.ts` file:
 
 ```
-export const songArchitecture: SongArchitecture = SongArchitecture.FILE_ARCHITECTURE;
+export const songArchitecture: SongArchitecture = SongArchitecture.BLOB_ARCHITECTURE;
 ```
 
 Backend has to use the following config in `.env`:
@@ -26,11 +29,13 @@ Backend has to use the following config in `.env`:
 ARCH=BLOB
 ```
 
-Using this config Frontend will load the `BLOB` architecture music player that manages the incoming
-encoded base64 bytes of the song data and injects it into the music player.
+### App architecture
 
 ![BLOB ARCHITECTURE](assets/architecture/app_architecture_blob.png)
 
+### Song architecture
+
+![SONG ARCHITECTURE](assets/architecture/song-architecture-blob.png)
 
 ## SERVERLESS (deprecated)
 
@@ -41,7 +46,7 @@ a URL that is injected into the music player for streaming the song data. Song m
 Frontend has to set the following config in `global.ts` file:
 
 ```
-export const songArchitecture: SongArchitecture = SongArchitecture.STREAMING_ARCHITECTURE;
+export const songArchitecture: SongArchitecture = SongArchitecture.SERVERLESS_ARCHITECTURE;
 ```
 
 Backend has to use the following config in `.env`:
@@ -50,5 +55,8 @@ Backend has to use the following config in `.env`:
 ARCH=SERVERLESS
 ```
 
+### App architecture
 ![STREAMING SERVERLESS ARCHITECTURE](assets/architecture/app_architecture_serverless.png)
+
+### Song architecture
 ![STREAMING SONG ARCHITECTURE](assets/architecture/song_architecture_serverless.png)

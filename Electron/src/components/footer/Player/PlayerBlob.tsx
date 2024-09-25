@@ -14,7 +14,7 @@ import { PropsPlayer } from './types/propsPlayer';
 
 // TODO refactor common logic with streaming player
 
-export default function PlayerFiles({
+export default function PlayerBlob({
   volume,
   songName,
   changeSongInfo,

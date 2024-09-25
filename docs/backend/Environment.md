@@ -27,7 +27,7 @@ In this section we will explain the meaning and the usage of the environment var
   - `PROD`: production environment.
   - `DEV`: development environment. Enables hot reload.
 - **ARCH**: the song architecture selected, it can be one of the following [architectures](../Architecture.md):
-  - `BLOB(Recommended for testing and production)`: song architecture with no streaming/cloud, storing and serving songs directly from the database.
+  - `BLOB(Recommended for production and development)`: song architecture that stores songs in database and streams them using an endpoint.
   - `SERVERLESS`: (deprecated) song architecture using AWS Serverless Function with streaming.
 
 ### ➡️ No streaming with songs stored in database (`BLOB`)

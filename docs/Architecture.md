@@ -5,7 +5,7 @@ and playing.
 
 * `BLOB` architecture is recommended for both production and development and only requires a MongoDB database instance.
 
-* `SERVERLESS` architecture is also provided, it requires a serverless function to manage song resources and streaming. This architecture uses AWS Lambda for serverless function, S3 Bucket for storing songs and Cloudfront for streaming songs into the client using a URL.
+* `SERVERLESS` architecture is also provided, it requires a serverless function to manage song resources and streaming. This architecture uses AWS Lambda as serverless function, S3 Bucket for storing songs and Cloudfront for streaming songs into the client using a URL.
 
 ## BLOB
 

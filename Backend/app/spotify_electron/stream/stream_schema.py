@@ -12,9 +12,13 @@ class StreamAudioContent:
     """Content data for streaming audio"""
 
     start: int
+    """Request start byte"""
     end: int
+    """Request end byte"""
     headers: dict[str, str]
+    """Response headers"""
     song_data: bytes
+    """Song data from start-end bytes"""
 
 
 class StreamServiceException(SpotifyElectronException):

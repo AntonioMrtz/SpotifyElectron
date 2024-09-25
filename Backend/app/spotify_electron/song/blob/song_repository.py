@@ -24,7 +24,7 @@ from app.spotify_electron.song.blob.song_schema import (
     get_song_dao_from_document,
 )
 from app.spotify_electron.song.blob.validations.song_repository_validations import (
-    validate_song_file_exists,
+    validate_song_data_exists,
 )
 from app.spotify_electron.song.blob.validations.song_service_validations import (
     validate_song_create,
@@ -123,7 +123,7 @@ def get_song_data(name: str) -> GridOut:
     try:
         file_collection = song_collection_provider.get_gridfs_song_collection()
         song_data = file_collection.find_one({"name": name})
-        validate_song_file_exists(song_data)
+        validate_song_data_exists(song_data)
 
     except SongDataNotFoundException as exception:
         song_repository_logger.exception(f"Song data not found: {name}")

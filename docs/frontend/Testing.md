@@ -6,13 +6,13 @@ In this section we will cover how to run tests and develop them.
 
 Standard run
 
-```
+```console
 npm run test
 ```
 
 Run test and generate coverage, there will be a coverage folder under `Electron/`. Open `index.html` file to get an UI for visualizing coverage.
 
-```
+```console
 npm run test:coverage
 ```
 
@@ -29,17 +29,17 @@ npm run test:coverage
 For debugging the state of the interface we'll be using [Jest Preview](https://www.jest-preview.com/docs/api/debug/). This package will help us preview the state of the interface in certain point after the test finished running.
 
 First launch Jest preview server:
-```
+```console
 npx jest-preview
 ```
 
 An output with the port should be logged. Launch a browser instance and go to `localhost:3336` or the output port shown after running the command:
-```
+```console
 Jest Preview Server listening on port 3336
 ```
 
 Select the state of the code that you want to preview and add `debug()` statement:
-```
+```ts
 import { debug } from 'jest-preview'; // ---> Import this line to the test file
 
 test('renders the component and displays title and form', async () => {
@@ -70,7 +70,7 @@ Go to the previously opened browser instance and check the state of the UI in th
 Every request has to be mocked manually for the test to interactuate with real data. The following
 code snippet can be used as a mock template for fetch requests:
 
-```
+```ts
 global.fetch = jest.fn(async (url: string) => {
     if (url === `${Global.backendBaseUrl}/genres/`) {
       return Promise.resolve({
@@ -94,7 +94,7 @@ Note that there's two fields included in the response that can be useful/necessa
 
 If it´s necessary to run a script before any test execution you can specify it in `package.json`file under `jest` section:
 
-```
+```json
 "setupFiles": [
       "./.erb/scripts/check-build-exists.ts","./src/utils/loadOpenApiTests.ts"
     ],

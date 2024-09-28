@@ -156,7 +156,9 @@ Electron/.erb/dll/vendors-node_modules_prettier_standalone_mjs.dev.dll.js
 Electron/.erb/dll/**
 
 # release
-release/
+Electron/release/build/**
+Electron/release/app/dist/**
+
 
 #python
 __pycache__

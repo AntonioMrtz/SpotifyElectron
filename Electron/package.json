@@ -2,10 +2,15 @@
   "name": "spotify-electron",
   "version": "1.0.0",
   "description": "Spotify Electron is a cross-platform music streaming desktop app made with Electron-React frontend and Python-FastAPI-AWS Backend. The goal is to reproduce the original Spotify functionality while adding new ones like uploading songs",
-  "author": "Antonio Martinez Fernandez",
-  "license": "MIT",
+  "author": {
+    "name": "Antonio Martinez Fernandez",
+    "email": "antoniomartinezfernandez17@gmail.com",
+    "url": "https://github.com/AntonioMrtz/"
+  },
+  "homepage": "https://github.com/AntonioMrtz/SpotifyElectron",
+  "license": "Attribution-NonCommercial-ShareAlike 4.0 International",
   "main": "./src/main/main.ts",
-  "icon": "assets/icon.ico",
+  "icon": "assets/icon.png",
   "scripts": {
     "build": "concurrently \"npm run build:main\" \"npm run build:renderer\"",
     "build:main": "cross-env NODE_ENV=production TS_NODE_TRANSPILE_ONLY=true webpack --config ./.erb/configs/webpack.config.main.prod.ts",
@@ -15,6 +20,9 @@
     "format:write": "prettier src/ --write --ignore-path .prettierignore",
     "format:check": "prettier src/ --check --ignore-path .prettierignore",
     "package": "ts-node ./.erb/scripts/clean.js dist && npm run build && electron-builder build --publish never",
+    "package:win": "ts-node ./.erb/scripts/clean.js dist && npm run build && electron-builder build --publish never --win",
+    "package:linux:deb": "ts-node ./.erb/scripts/clean.js dist && npm run build && electron-builder build --publish never --linux deb",
+    "package:linux:appimage": "ts-node ./.erb/scripts/clean.js dist && npm run build && electron-builder build --publish never --linux appimage",
     "rebuild": "electron-rebuild --parallel --types prod,dev,optional --module-dir release/app",
     "start": "ts-node ./.erb/scripts/check-port-in-use.js && npm run start:renderer",
     "start:main": "cross-env NODE_ENV=development electronmon -r ts-node/register/transpile-only .",

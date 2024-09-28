@@ -22,7 +22,7 @@ Donwload the installer [here](https://github.com/AntonioMrtz/SpotifyElectron/rel
 
 ### 1. Clone the repository
 
-```
+```console
 git clone https://github.com/AntonioMrtz/SpotifyElectron.git
 ```
 

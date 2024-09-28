@@ -1,6 +1,6 @@
 # Spotify Electron
 
-![Spotify Electron Media Preview](assets/videos/SpotifyElectronReadmePreview.gif)
+![Spotify Electron Media Preview](adocs/assets/videos/SpotifyElectronReadmePreview.gif)
 
 ## Overview
 

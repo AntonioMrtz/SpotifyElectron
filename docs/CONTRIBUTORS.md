@@ -1,4 +1,4 @@
-# Contributors of Spotify Electron
+# 🤵🏼 Contributors of Spotify Electron
 
 I would like to express my heartfelt gratitude to the following individuals for their invaluable contributions to Spotify Electron. Your efforts are immensely appreciated and hold significant importance for me and the project.
 
@@ -6,11 +6,11 @@ Me gustaría expresar mi más sincero agradecimiento a las siguientes personas p
 
 ## Code Contributors
 
-- [Ercamarero](https://github.com/Ercamarero)
 - [Ferbo12](https://github.com/contributor1)
+- [Ercamarero](https://github.com/Ercamarero)
 - [KarlosM2](https://github.com/KarlosM2)
-- [Javiks-P](https://github.com/Javiks-P)
 - [mariete1223](https://github.com/mariete1223)
+- [Javiks-P](https://github.com/Javiks-P)
 - [raulZC ](https://github.com/raulZC)
 - [TalhaBinNasir](https://github.com/TalhaBinNasir)
 - [xiomaraR](https://github.com/xiomaraR)

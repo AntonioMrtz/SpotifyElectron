@@ -10,14 +10,14 @@ MkDocs is a static site generator specifically designed for creating project doc
 2. Create virtual enviroment and install dependencies
 
 🪟 **Windows**
-```
+```console
 python -m venv venv;
 venv/Scripts/activate;
 pip install -r requirements-docs.txt
 ```
 
 🐧 **Linux**
-```
+```console
 python3.11 -m venv venv &&
 source venv/bin/activate &&
 pip install -r requirements-docs.txt
@@ -27,7 +27,7 @@ pip install -r requirements-docs.txt
 
 There's a pipeline that pushes the latest documentation files into the prodution website. For manual deployment run:
 
-```
+```console
 python -m mkdocs gh-deploy
 ```
 

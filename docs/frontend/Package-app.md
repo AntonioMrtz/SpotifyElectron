@@ -2,10 +2,20 @@
 
 In this section we will cover how to package app for production. After following the steps the generated installer will be placed at `Electron/release/build`.
 
-## 1. Select wanted architecture in global.ts
+## 1. Update `global.ts` client data
+
+### Select desired architecture
 
 ```ts
 export const songArchitecture: SongArchitecture = SongArchitecture.FILE_ARCHITECTURE;
+```
+
+### Update production backend url
+
+❗ Set backend url path without trailing `/`
+
+```ts
+export const backendBaseUrl: string = 'http://127.0.0.1:8000';
 ```
 
 ## 2. Build the app

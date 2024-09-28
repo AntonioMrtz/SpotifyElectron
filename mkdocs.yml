@@ -29,9 +29,10 @@ nav:
       - Package app: frontend/Package-app.md
       - FAQ: frontend/FAQ.md
   - Utils:
+    - Release procedure: utils/Release-Procedure.md
     - OpenAPI schema generation & usage: utils/OpenAPI.md
-    - Generate Mock data: utils/Generate-Mock-Data.md
     - Mkdocs development & usage: utils/Mkdocs.md
+    - Generate Mock data: utils/Generate-Mock-Data.md
   - Code of conduct: CODE_OF_CONDUCT.md
   - Contributors: CONTRIBUTORS.md
 

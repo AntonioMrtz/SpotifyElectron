@@ -339,6 +339,116 @@
         }
       }
     },
+    "/playlists/{name}/songs": {
+      "patch": {
+        "tags": [
+          "Playlists"
+        ],
+        "summary": "Add Songs To Playlist",
+        "description": "Add songs to playlist\n\nArgs:\n    name (str): playlist name\n    song_names (list[str]): song names",
+        "operationId": "add_songs_to_playlist_playlists__name__songs_patch",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Name"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "title": "Song Names"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/playlists/{name}/songs/": {
+      "delete": {
+        "tags": [
+          "Playlists"
+        ],
+        "summary": "Remove Songs From Playlist",
+        "description": "Remove songs from playlist\n\nArgs:\n    name (str): playlist name\n    song_names (list[str]): song names",
+        "operationId": "remove_songs_from_playlist_playlists__name__songs__delete",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Name"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "title": "Song Names"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/songs/{name}": {
       "get": {
         "tags": [

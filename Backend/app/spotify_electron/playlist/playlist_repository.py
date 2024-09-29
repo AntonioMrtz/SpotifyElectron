@@ -10,6 +10,7 @@ from app.spotify_electron.playlist.playlist_schema import (
     PlaylistDeleteException,
     PlaylistNotFoundException,
     PlaylistRepositoryException,
+    PlaylistUpdateException,
     get_playlist_dao_from_document,
 )
 from app.spotify_electron.playlist.providers.playlist_collection_provider import (
@@ -305,7 +306,7 @@ def update_playlist(
         )
         validate_playlist_update(result_update)
 
-    except PlaylistCreateException as exception:
+    except PlaylistUpdateException as exception:
         playlist_repository_logger.exception(
             f"Error updating playlist {name}:\n"
             f"new_name = {new_name},\n"
@@ -333,3 +334,62 @@ def update_playlist(
             f"description = {description},\n"
             f"song_names = {song_names}"
         )
+
+
+def add_songs_to_playlist(name: str, song_names: list[str]) -> None:
+    """Add songs to playlist
+
+    Args:
+        name (str): playlist name
+        song_names (list[str]): song names
+
+    Raises:
+        PlaylistRepositoryException: unexpected error adding songs to playlist
+    """
+    try:
+        collection = get_playlist_collection()
+        result_update = collection.update_one(
+            {"name": name}, {"$addToSet": {"song_names": song_names}}
+        )
+        validate_playlist_update(result_update)
+    except PlaylistUpdateException as exception:
+        playlist_repository_logger.info(f"Error adding songs to playlist {name}: {song_names}")
+        raise PlaylistRepositoryException from exception
+    except Exception as exception:
+        playlist_repository_logger.info(
+            f"Unexpected error adding songs to playlist {name}: {song_names}"
+        )
+        raise PlaylistRepositoryException from exception
+    else:
+        playlist_repository_logger.info(f"Songs added to playlist {name}: {song_names}")
+
+
+def remove_songs_from_playlist(name: str, song_names: list[str]) -> None:
+    """Remove songs from playlist
+
+    Args:
+        name (str): playlist name
+        song_names (list[str]): song names
+
+    Raises:
+        PlaylistRepositoryException: unexpected error adding songs to playlist
+    """
+    try:
+        collection = get_playlist_collection()
+        result_update = collection.update_one(
+            {"name": name},
+            {"$pull": {"song_names": {"$in": song_names}}},
+        )
+        validate_playlist_update(result_update)
+    except PlaylistUpdateException as exception:
+        playlist_repository_logger.info(
+            f"Error removing songs from playlist {name}: {song_names}"
+        )
+        raise PlaylistRepositoryException from exception
+    except Exception as exception:
+        playlist_repository_logger.info(
+            f"Unexpected error removing songs from playlist {name}: {song_names}"
+        )
+        raise PlaylistRepositoryException from exception
+    else:
+        playlist_repository_logger.info(f"Songs removed from playlist {name}: {song_names}")

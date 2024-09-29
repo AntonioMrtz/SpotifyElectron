@@ -279,3 +279,7 @@ def test_get_playlists():
 
     res_delete_artist = delete_user(owner)
     assert res_delete_artist.status_code == HTTP_202_ACCEPTED
+
+
+def test_add_songs_to_playlist():
+    assert False

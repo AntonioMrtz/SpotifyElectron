@@ -169,4 +169,62 @@ export class PlaylistsService {
             },
         });
     }
+    /**
+     * Add Songs To Playlist
+     * Add songs to playlist
+     *
+     * Args:
+     * name (str): playlist name
+     * song_names (list[str]): song names
+     * @param name
+     * @param requestBody
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static addSongsToPlaylistPlaylistsNameSongsPatch(
+        name: string,
+        requestBody: Array<string>,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'PATCH',
+            url: '/playlists/{name}/songs',
+            path: {
+                'name': name,
+            },
+            body: requestBody,
+            mediaType: 'application/json',
+            errors: {
+                422: `Validation Error`,
+            },
+        });
+    }
+    /**
+     * Remove Songs From Playlist
+     * Remove songs from playlist
+     *
+     * Args:
+     * name (str): playlist name
+     * song_names (list[str]): song names
+     * @param name
+     * @param requestBody
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static removeSongsFromPlaylistPlaylistsNameSongsDelete(
+        name: string,
+        requestBody: Array<string>,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'DELETE',
+            url: '/playlists/{name}/songs/',
+            path: {
+                'name': name,
+            },
+            body: requestBody,
+            mediaType: 'application/json',
+            errors: {
+                422: `Validation Error`,
+            },
+        });
+    }
 }

@@ -177,30 +177,20 @@ export default function ContextMenuPlaylist({
     srcPlaylistName: string,
   ) => {
     try {
-      // TODO add songs to playlist refactor
       // eslint-disable-next-line camelcase
-      const { photo, description, song_names } =
+      const { song_names } =
         await PlaylistsService.getPlaylistPlaylistsNameGet(playlistName);
 
-      const srcPlaylistData =
-        await PlaylistsService.getPlaylistPlaylistsNameGet(playlistName);
-      const newSongsPutPlaylist = [
-        // eslint-disable-next-line camelcase
-        ...song_names,
-        ...srcPlaylistData.song_names,
-      ];
-
-      await PlaylistsService.updatePlaylistPlaylistsNamePut(
+      await PlaylistsService.addSongsToPlaylistPlaylistsNameSongsPatch(
         dstPlaylistName,
-        photo,
-        description,
-        newSongsPutPlaylist,
+        song_names,
       );
 
       displayConfirmationModal(ConfirmationMenuActionKind.ADD_SUCCESS);
-    } catch (error) {
-      console.log(
-        `Unable to add songs from ${srcPlaylistName} to ${dstPlaylistName}`,
+    } catch (err) {
+      console.error(
+        `Unable to add songs from ${srcPlaylistName} to ${dstPlaylistName}: `,
+        err,
       );
       displayConfirmationModal(ConfirmationMenuActionKind.ADD_ERROR);
     }

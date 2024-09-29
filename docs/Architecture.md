@@ -16,13 +16,13 @@ makes easier to handle songs without needing to get the full song data.
 
 Frontend has to set the following configuration in `global.ts` file:
 
-```
+```ts
 export const songArchitecture: SongArchitecture = SongArchitecture.FILE_ARCHITECTURE;
 ```
 
 Backend has to use the following configuration in `.env`:
 
-```
+```console
 ARCH=BLOB
 ```
 
@@ -40,13 +40,13 @@ a URL that is injected into the music player for streaming the song data. Song m
 
 Frontend has to set the following config in `global.ts` file:
 
-```
+```ts
 export const songArchitecture: SongArchitecture = SongArchitecture.STREAMING_ARCHITECTURE;
 ```
 
 Backend has to use the following config in `.env`:
 
-```
+```console
 ARCH=STREAMING_SERVERLESS
 ```
 

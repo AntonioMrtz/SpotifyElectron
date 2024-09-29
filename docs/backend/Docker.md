@@ -27,7 +27,7 @@ Mongo Express administration dashboard is also shipped using this stack. This se
 
 Run this command to build and up the development containers:
 
-```
+```console
 ./build_and_up_dev.sh
 ```
 
@@ -37,6 +37,6 @@ This stack only contains backend server and it's aimed to fast deployment into p
 
 Run the stack with:
 
-```
+```console
 ./build_and_up_prod.sh
 ```

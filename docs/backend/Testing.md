@@ -21,13 +21,13 @@ A valid path for a serverless function `SERVERLESS_FUNCTION_URL` is needed in en
 
 Standar test run
 
-```
+```console
 python -m pytest tests/
 ```
 
 Test run and generate code coverage in folder htmlcov/index.html.
 
-```
+```console
 python -m pytest tests/ --cov=app/ --cov-report=html
 ```
 _If your browser is in a sandbox enviroment use `python -m http.server [port]` inside `htmlcov/` folder to serve an HTTP Server._

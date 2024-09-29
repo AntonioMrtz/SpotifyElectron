@@ -12,13 +12,13 @@ Pre-commit is used for ensuring code quality before it gets commited. When insta
 
 #### 1. Install dependencies
 
-```
+```console
 pip install -r requirements-global.txt
 ```
 
 #### 2. Install pre-commits hooks
 
-```
+```console
 pre-commit install
 pre-commit install --hook-type commit-msg
 ```
@@ -27,7 +27,7 @@ pre-commit install --hook-type commit-msg
 
 If you want to test pre-commit before commiting to the repository run the following command:
 
-```
+```console
 pre-commit run --all-files
 ```
 

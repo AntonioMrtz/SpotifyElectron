@@ -10,7 +10,7 @@ In this document we will cover:
 
 To use environments in the app, you will need to place a file named `.env` under the `Backend` folder. The file should contain key-value pairs, with each pair on a separate line and the key and value separated by an equals sign (`=`). For example:
 
-```
+```console
 KEY1=value1
 ```
 

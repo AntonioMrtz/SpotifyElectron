@@ -251,7 +251,7 @@ export default function AddSongPlayListAccordion({
                     type="text"
                     id="name"
                     name="name"
-                    placeholder="Nombre de la playlist"
+                    placeholder="Nombre de la playlist *"
                     className={` `}
                     onChange={handleChangePlaylist}
                     required
@@ -287,6 +287,7 @@ export default function AddSongPlayListAccordion({
               onClick={handleSubmitPlaylist}
               className={`btn btn-lg ${styles.btnSend}`}
               data-testid="sidebar-addsongplaylistaccordion-submit-playlist"
+              disabled={!formDataPlaylist.name}
             >
               Subir
             </button>
@@ -333,7 +334,7 @@ export default function AddSongPlayListAccordion({
                     type="text"
                     id="name"
                     name="name"
-                    placeholder="Nombre de la canción"
+                    placeholder="Nombre de la canción *"
                     className={` ${styles.input}`}
                     onChange={handleChangeSong}
                     required
@@ -386,7 +387,7 @@ export default function AddSongPlayListAccordion({
                       })}
                   </select>
                 </div>
-                <div className="mb-3">
+                <div className="mb-3 d-flex">
                   <input
                     className={`form-control-md ${styles.input}`}
                     type="file"
@@ -397,6 +398,7 @@ export default function AddSongPlayListAccordion({
                     required
                     data-testid="sidebar-file-input"
                   />
+                  <p className='ml-1'>*</p>
                 </div>
               </div>
 
@@ -405,6 +407,7 @@ export default function AddSongPlayListAccordion({
                 onClick={handleSubmitSong}
                 className={`btn btn-lg ${styles.btnSend} d-flex flex-row justify-content-center`}
                 data-testid="sidebar-addsongplaylistaccordion-submit-song"
+                disabled={!formDataSong.name && !formDataSong.genre && !songFile}
               >
                 Subir {loadingUploadSong && <LoadingCircleSmall />}
               </button>

@@ -7,26 +7,26 @@ and playing. `BLOB` architecture is recommended for both testing and production 
 
 ## BLOB
 
-Songs are stored using a MongoDB database using the BLOB data type. Songs can be stored directly in a MongoDB database using [GridFS specification](https://www.mongodb.com/docs/manual/core/gridfs/). Where
+Songs are stored using a MongoDB database which uses the BLOB data type. Therefore, songs can be stored directly in a MongoDB database using [GridFS specification](https://www.mongodb.com/docs/manual/core/gridfs/). When
 a song is stored in the database two collections are used:
 
-* **data.files**: stores song metadata, such as the first data chunk of content and other data that
-eases handling songs without needing to get the full song data.
-* **data.chunks**: linked list of BLOB data that stores the song content.
+* **data.files**, which stores song metadata, like the first data chunk of content and other data that
+makes easier to handle songs without needing to get the full song data.
+* **data.chunks**, a linked list of BLOB data that stores the song content.
 
-Frontend has to set the following config in `global.ts` file:
+Frontend has to set the following configuration in `global.ts` file:
 
 ```ts
 export const songArchitecture: SongArchitecture = SongArchitecture.FILE_ARCHITECTURE;
 ```
 
-Backend has to use the following config in `.env`:
+Backend has to use the following configuration in `.env`:
 
 ```console
 ARCH=BLOB
 ```
 
-Using this config Frontend will load the `BLOB` architecture music player that manages the incoming
+With this configuration, frontend will load the `BLOB` architecture music player that manages the incoming
 encoded base64 bytes of the song data and injects it into the music player.
 
 ![BLOB ARCHITECTURE](assets/architecture/app_architecture_blob.png)

@@ -51,7 +51,7 @@ Check our [project goals and vision](docs/VISION.md).
 
 ### 🎵 Song Architecture
 
-![Spotify_Electron_Software_Song_Diagram](docs/assets/architecture/song_architecture_blob.png)
+![Spotify_Electron_Software_Song_Diagram](docs/assets/architecture/song-architecture-blob.png)
 
 ---
 

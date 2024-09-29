@@ -24,6 +24,8 @@ HELP_COMMAND = "help"
 
 
 class DataSize(StrEnum):
+    """Mock data size"""
+
     SMALL_MOCK_DATA_COMMAND = "small"
     MEDIUM_MOCK_DATA_COMMAND = "medium"
     LARGE_MOCK_DATA_COMMAND = "large"

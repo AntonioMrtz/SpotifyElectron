@@ -69,7 +69,7 @@ export default function Explorar({
                       artist={song.artist}
                       photo={song.photo}
                       refreshSidebarData={song.refreshSidebarData}
-                      changeSongName={song.changeSongName}
+                      changeSongName={changeSongName}
                       key={`${song.name}${song.artist}`}
                     />
                   ))}

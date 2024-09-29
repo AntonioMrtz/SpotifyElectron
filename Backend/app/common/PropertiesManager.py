@@ -32,7 +32,7 @@ class _PropertiesManager:
         self.env_variables = [
             AppEnvironment.MONGO_URI_ENV_NAME,
             AppEnvironment.SECRET_KEY_SIGN_ENV_NAME,
-            AppEnvironment.SERVERLESS_STREAMING_URL_ENV_NAME,
+            AppEnvironment.SERVERLESS_URL_ENV_NAME,
             AppEnvironment.ENV_VALUE_ENV_NAME,
         ]
         self._load_env_variables(self.env_variables)

@@ -7,14 +7,13 @@ import {
 } from 'react';
 import Global from 'global/global';
 import { getTokenUsername } from 'utils/token';
-import { SongsService, UsersService } from 'swagger/api';
+import { SongsService } from 'swagger/api/services/SongsService';
+import { UsersService } from 'swagger/api/services/UsersService';
 import styles from './player.module.css';
 import TimeSlider from './TimeSlider/TimeSlider';
 import { PropsPlayer } from './types/propsPlayer';
 
-// TODO refactor common logic with streaming player
-
-export default function Player({
+export default function PlayerServerless({
   volume,
   songName,
   changeSongInfo,
@@ -80,8 +79,6 @@ export default function Player({
     setVolume();
   }, [setVolume, volume]);
 
-  /* Handles updates of DB when song is played */
-
   const handleIncreaseSongStreams = async () => {
     try {
       await SongsService.increaseSongStreamsSongsNameStreamsPatch(songName);
@@ -108,7 +105,8 @@ export default function Player({
   };
 
   /* Loads the song and metadata to the Player */
-  const handlSongInfo = async () => {
+
+  const handleSongInfo = async () => {
     try {
       if (audio.current) {
         audio.current.pause();
@@ -127,16 +125,10 @@ export default function Player({
         artist: songData.artist,
       });
 
-      let audioBytesString = songData.file;
+      const audioStreamingURL = songData.url;
 
-      if (audioBytesString !== undefined) {
-        audioBytesString = audioBytesString
-          .replace('"', '')
-          .replace('b', '')
-          .replace("'", '')
-          .slice(0, -1);
-        const dataURI = `data:audio/mp3;base64,${audioBytesString}`;
-        audio.current = new Audio(dataURI);
+      if (audioStreamingURL !== undefined) {
+        audio.current = new Audio(audioStreamingURL);
       }
 
       if (audio.current) {
@@ -199,17 +191,15 @@ export default function Player({
     }
   };
 
-  // TODO use hooks
   useEffect(() => {
     if (audio.current) {
       audio.current.pause();
       handlePause();
     }
-    handlSongInfo();
+    handleSongInfo();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [songName, changeSongInfo]);
 
-  // TODO put inside single use effect?
   useEffect(() => {
     /* Pause audio if component unmount */
     return () => {

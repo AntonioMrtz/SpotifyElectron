@@ -20,4 +20,5 @@ export { LoginService } from './services/LoginService';
 export { PlaylistsService } from './services/PlaylistsService';
 export { SearchService } from './services/SearchService';
 export { SongsService } from './services/SongsService';
+export { StreamService } from './services/StreamService';
 export { UsersService } from './services/UsersService';

@@ -34,6 +34,7 @@ from app.spotify_electron.playlist import playlist_controller
 from app.spotify_electron.search import search_controller
 from app.spotify_electron.song import song_controller
 from app.spotify_electron.song.providers.song_service_provider import SongServiceProvider
+from app.spotify_electron.stream import stream_controller
 from app.spotify_electron.user import user_controller
 from app.spotify_electron.user.artist import artist_controller
 
@@ -64,6 +65,7 @@ async def lifespan_handler(app: FastAPI) -> AsyncGenerator[None, Any]:
     app.include_router(artist_controller.router)
     app.include_router(login_controller.router)
     app.include_router(search_controller.router)
+    app.include_router(stream_controller.router)
     app.include_router(health_controller.router)
     yield
     main_logger.info("Spotify Electron Backend Stopped")
@@ -100,4 +102,5 @@ if __name__ == "__main__":
         host=PropertiesManager.__getattribute__(AppConfig.HOST_INI_KEY),
         port=int(PropertiesManager.__getattribute__(AppConfig.PORT_INI_KEY)),
         reload=PropertiesManager.is_development_environment(),
+        workers=int(PropertiesManager.__getattribute__(AppConfig.WORKERS)),
     )

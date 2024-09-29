@@ -7,7 +7,7 @@ on:
       - 'master-*'
 
 jobs:
-  run_tests_streaming_serverless:
+  run_tests_serverless:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -35,5 +35,5 @@ jobs:
           MONGO_URI: mongodb://root:root@localhost:27017/
           SECRET_KEY_SIGN: "f24e2f3ac557d487b6d879fb2d86f2b2"
           SERVERLESS_FUNCTION_URL: ${{ secrets.SERVERLESS_FUNCTION_URL }}
-          ARCH: "STREAMING_SERVERLESS"
+          ARCH: "SERVERLESS"
           ENV_VALUE: "PROD"

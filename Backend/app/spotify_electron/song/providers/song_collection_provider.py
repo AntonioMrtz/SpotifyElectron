@@ -22,7 +22,7 @@ def get_song_collection() -> Collection:
         AppArchitecture.ARCH_BLOB: DatabaseConnectionManager.get_collection_connection(
             DatabaseCollection.SONG_BLOB_FILE
         ),
-        AppArchitecture.ARCH_STREAMING_SERVERLESS: DatabaseConnectionManager.get_collection_connection(  # noqa: E501
+        AppArchitecture.ARCH_SERVERLESS: DatabaseConnectionManager.get_collection_connection(  # noqa: E501
             DatabaseCollection.SONG_STREAMING
         ),
     }

@@ -24,8 +24,8 @@ The enviroment variables are the following:
 ```
 * MONGO_URI= uri for connecting into a MongoDB database (example: mongodb://root:root@localhost:27017/)
 * SECRET_KEY_SIGN= 32 byte key for signing tokens in backend
-* SERVERLESS_FUNCTION_URL= (optional) URL of Serverless/Lambda API for accesing AWS services and managing song (only needed in STREAMING_SERVERLESS architecture)
-* ARCH= song architecture (BLOB | STREAMING_SERVERLESS)
+* SERVERLESS_FUNCTION_URL= (optional) URL of Serverless/Lambda API for accesing AWS services and managing song (only needed in SERVERLESS architecture)
+* ARCH= song architecture (BLOB | SERVERLESS)
 * ENV_VALUE= prod or development (PROD | DEV)
 ```
 

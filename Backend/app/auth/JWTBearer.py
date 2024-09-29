@@ -22,6 +22,8 @@ jwt_bearer_logger = SpotifyElectronLogger(LOGGING_JWT_BEARER_AUTH).getLogger()
 
 
 class JWTBearer(HTTPBearer):
+    """JWT Bearer authentication manager"""
+
     def __init__(self, auto_error: bool = True):
         super().__init__(auto_error=auto_error)
 

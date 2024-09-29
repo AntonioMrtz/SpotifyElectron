@@ -12,7 +12,7 @@ from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.song.song_service_constants import (
     MODULE_PREFIX_NAME,
     SONG_SERVICE_BLOB_MODULE_NAME,
-    SONG_SERVICE_STREAMING_SERVERLESS_MODULE_NAME,
+    SONG_SERVICE_SERVERLESS_MODULE_NAME,
 )
 
 
@@ -27,7 +27,7 @@ class SongServiceProvider:
         cls.logger = SpotifyElectronLogger(LOGGING_SONG_SERVICE_PROVIDER).getLogger()
         cls.song_services = {
             AppArchitecture.ARCH_BLOB: SONG_SERVICE_BLOB_MODULE_NAME,
-            AppArchitecture.ARCH_STREAMING_SERVERLESS: SONG_SERVICE_STREAMING_SERVERLESS_MODULE_NAME,  # noqa: E501
+            AppArchitecture.ARCH_SERVERLESS: SONG_SERVICE_SERVERLESS_MODULE_NAME,  # noqa: E501
         }
         cls.create_song_service()
 

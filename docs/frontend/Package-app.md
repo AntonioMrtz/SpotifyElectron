@@ -4,10 +4,8 @@ In this section we will cover how to package app for production. After following
 
 ## 1. Update `global.ts` client data
 
-### Select desired architecture
-
 ```ts
-export const songArchitecture: SongArchitecture = SongArchitecture.FILE_ARCHITECTURE;
+export const songArchitecture: SongArchitecture = SongArchitecture.BLOB_ARCHITECTURE;
 ```
 
 ### Update production backend url

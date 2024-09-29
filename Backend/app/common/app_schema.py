@@ -38,6 +38,7 @@ class AppConfig:
     APP_INI_KEY = "app.path"
     HOST_INI_KEY = "host"
     PORT_INI_KEY = "port"
+    WORKERS = "workers"
 
 
 class AppEnvironmentMode(StrEnum):
@@ -52,7 +53,7 @@ class AppArchitecture:
     """App architecture constants"""
 
     ARCH_BLOB = "BLOB"
-    ARCH_STREAMING_SERVERLESS = "STREAMING_SERVERLESS"
+    ARCH_SERVERLESS = "SERVERLESS"
 
 
 class AppEnvironment:
@@ -63,5 +64,5 @@ class AppEnvironment:
     DEFAULT_ARCHITECTURE = AppArchitecture.ARCH_BLOB
     SECRET_KEY_SIGN_ENV_NAME = "SECRET_KEY_SIGN"
     MONGO_URI_ENV_NAME = "MONGO_URI"
-    SERVERLESS_STREAMING_URL_ENV_NAME = "SERVERLESS_FUNCTION_URL"
+    SERVERLESS_URL_ENV_NAME = "SERVERLESS_FUNCTION_URL"
     ENV_VALUE_ENV_NAME = "ENV_VALUE"

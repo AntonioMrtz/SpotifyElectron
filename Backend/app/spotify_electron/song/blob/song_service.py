@@ -22,6 +22,7 @@ from app.spotify_electron.song.base_song_schema import (
     SongUnAuthorizedException,
 )
 from app.spotify_electron.song.blob.song_schema import (
+    SongDataNotFoundException,
     SongDTO,
     get_song_dto_from_dao,
 )
@@ -67,7 +68,7 @@ def get_song(name: str) -> SongDTO:
         validate_song_name_parameter(name)
 
         song_dao = song_repository.get_song(name)
-        song_dto = get_song_dto_from_dao(song_dao)
+        song_dto = get_song_dto_from_dao(song_dao, song_dao.url)
 
     except SongBadNameException as exception:
         song_service_logger.exception(f"Bad Song Name Parameter: {name}")
@@ -178,8 +179,8 @@ def delete_song(name: str) -> None:
         name (str): song name
 
     Raises:
+        SongBadNameException: invalid song name
         SongNotFoundException: song doesn't exists
-        SongBadNameException: invalid song nae
         UserNotFoundException: artist doesn't exists
         SongServiceException: unexpected error deleting song
     """
@@ -196,12 +197,12 @@ def delete_song(name: str) -> None:
         )
         base_song_repository.delete_song(name)
 
-    except SongNotFoundException as exception:
-        song_service_logger.exception(f"Song not found: {name}")
-        raise SongNotFoundException from exception
     except SongBadNameException as exception:
         song_service_logger.exception(f"Bad Song Name Parameter: {name}")
         raise SongBadNameException from exception
+    except SongNotFoundException as exception:
+        song_service_logger.exception(f"Song not found: {name}")
+        raise SongNotFoundException from exception
     except UserNotFoundException as exception:
         song_service_logger.exception(f"User {artist_name} not found")
         raise UserNotFoundException from exception
@@ -220,3 +221,46 @@ def delete_song(name: str) -> None:
             f"Unexpected error in Song Service deleting song: {name}"
         )
         raise SongServiceException from exception
+
+
+def get_song_data(name: str) -> bytes:
+    """Get song data
+
+    Args:
+        name (str): song name
+
+    Raises:
+        SongBadNameException: invalid song name
+        SongNotFoundException: song not found
+        SongDataNotFoundException: song data doesn't exists
+        SongServiceException: unexpected error getting song data
+
+    Returns:
+        bytes: song data
+    """
+    try:
+        validate_song_name_parameter(name)
+        validate_song_should_exists(name)
+
+        song_data = song_repository.get_song_data(name).read()
+    except SongBadNameException as exception:
+        song_service_logger.exception(f"Bad Song Name Parameter: {name}")
+        raise SongBadNameException from exception
+    except SongNotFoundException as exception:
+        song_service_logger.exception(f"Song not found: {name}")
+        raise SongNotFoundException from exception
+    except SongDataNotFoundException as exception:
+        song_service_logger.exception(f"Song data not found: {name}")
+        raise SongDataNotFoundException from exception
+    except SongRepositoryException as exception:
+        song_service_logger.exception(
+            f"Unexpected error in Song Repository getting song data: {name}"
+        )
+        raise SongServiceException from exception
+    except Exception as exception:
+        song_service_logger.exception(
+            f"Unexpected error in Song Service getting song data: {name}"
+        )
+        raise SongServiceException from exception
+    else:
+        return song_data

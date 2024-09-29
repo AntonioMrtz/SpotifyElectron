@@ -21,7 +21,7 @@ export default function TimeSlider({
   const [songPlayBackTimeMinutesSeconds, setSongPlayBackTimeMinutesSeconds] =
     useState('0.0');
 
-  const handleplaybacktime = (event: Event, value: number | number[]) => {
+  const handlePlaybackTime = (event: Event, value: number | number[]) => {
     if (typeof value === 'number') {
       setSongPlayBackTime(value);
       changePlayBackTime(value);
@@ -68,7 +68,7 @@ export default function TimeSlider({
         defaultValue={0}
         aria-label="Medium"
         valueLabelDisplay="off"
-        onChange={handleplaybacktime}
+        onChange={handlePlaybackTime}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         value={songPlayBackTime === undefined ? 0 : songPlayBackTime}

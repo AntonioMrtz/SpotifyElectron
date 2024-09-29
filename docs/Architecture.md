@@ -10,26 +10,26 @@ and playing.
 ## BLOB
 
 Songs are stored using a MongoDB database using the BLOB data type and streamed directly by backend.
-
 Songs storage is based on [GridFS specification](https://www.mongodb.com/docs/manual/core/gridfs/). Two collections are used:
 
-* **data.files**: stores song metadata, such as the first data chunk of content and other data that
-eases handling songs without needing to get the full song data.
-* **data.chunks**: linked list of BLOB data that stores the song content.
+* **data.files**, which stores song metadata, like the first data chunk of content and other data that
+makes easier to handle songs without needing to get the full song data.
+* **data.chunks**, a linked list of BLOB data that stores the song content.
 
-Frontend has to set the following config in `global.ts` file:
+Frontend has to set the following configuration in `global.ts` file:
 
-```
+```ts
 export const songArchitecture: SongArchitecture = SongArchitecture.BLOB_ARCHITECTURE;
 ```
 
-Backend has to use the following config in `.env`:
+Backend has to use the following configuration in `.env`:
 
-```
+```console
 ARCH=BLOB
 ```
 
-### App architecture
+With this configuration, frontend will load the `BLOB` architecture music player that manages the incoming
+encoded base64 bytes of the song data and injects it into the music player.
 
 ![BLOB ARCHITECTURE](assets/architecture/app_architecture_blob.png)
 
@@ -45,13 +45,13 @@ a URL that is injected into the music player for streaming the song data. Song m
 
 Frontend has to set the following config in `global.ts` file:
 
-```
+```ts
 export const songArchitecture: SongArchitecture = SongArchitecture.SERVERLESS_ARCHITECTURE;
 ```
 
 Backend has to use the following config in `.env`:
 
-```
+```console
 ARCH=SERVERLESS
 ```
 

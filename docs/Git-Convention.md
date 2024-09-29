@@ -4,17 +4,17 @@ In this document we will cover the convention applied to git usage in the projec
 
 ## Branches
 
-- The main branch of the project is `master`. All pull request will be created towards `master` branch.
-- `gh-pages` branch whill host the documentation for the project and will only update using CI. This CI will be trigger when a pull request is merged into `master`.
+- The main branch of the project is `master`. All pull requests will be created towards `master` branch.
+- `gh-pages` branch will host the documentation for the project and will only update using CI. This CI will be triggered when a pull request is merged into `master`.
 
 ## Branch convention
 
-For naming branch we will use the next convention:
+We will use the next convention for branch names:
 
 `prefix/IssueNumber-IssueTitle`
 
 - Prefix: select one of the prefixes listed below.
-- IssueNumber: the issue number associated to the branch.
+- IssueNumber: the issue number associated with the branch.
 - IssueTitle: the title of the issue.
 
 Examples:
@@ -30,7 +30,7 @@ issue-number: #7777
 
 ## Commit convention
 
-For commiting into the repository the next convention has to be applied:
+In order to commit into the repository the next convention has to be applied:
 
 `prefix: changeMade`
 

@@ -10,7 +10,7 @@ In this section we will cover:
 
 ### 1. Enter backend directory
 
-```
+```console
 cd Backend
 ```
 
@@ -27,13 +27,12 @@ The enviroment variables are the following:
 * SERVERLESS_FUNCTION_URL= (optional) URL of Serverless/Lambda API for accesing AWS services and managing song (only needed in SERVERLESS architecture)
 * ARCH= song architecture (BLOB | SERVERLESS)
 * ENV_VALUE= prod or development (PROD | DEV)
-
 ```
 
 ### 3. Install the virtual enviroment and dependencies
 
 🪟 **Windows**
-```
+```console
 python -m venv venv;
 venv/Scripts/activate;
 pip install -r requirements.txt;
@@ -43,7 +42,7 @@ pip install -r requirements-test.txt;
 ```
 
 🐧 **Linux**
-```
+```console
 python3.11 -m venv venv &&
 source venv/bin/activate &&
 pip install -r requirements.txt &&
@@ -55,7 +54,7 @@ There's included a script `install-all-requirements.sh` that install all depende
 
 ### 4. Run the app in hot reload debug mode, launch the provided vscode script [**DEBUG Backend app**] or run:
 
-```
+```console
 python -m app
 ```
 
@@ -67,7 +66,7 @@ In this section we will cover how to use Docker for local development or for pro
 
 1. Go to docker folder
 
-```
+```console
 cd docker/
 ```
 
@@ -83,7 +82,7 @@ For development it is recommended to deploy the dev enviroment containers that p
 
 Run this command to build and up the development containers
 
-```
+```console
 ./build_and_up_dev.sh
 ```
 
@@ -93,6 +92,6 @@ In production it is recommended to connect to a remote database, the prod enviro
 
 - Backend Server
 
-```
+```console
 ./build_and_up_prod.sh
 ```

@@ -10,31 +10,31 @@ In this section we will cover:
 
 ### 1. Enter frontend folder
 
-```
+```console
 cd Electron
 ```
 
 ### 2. Install dependencies
 
-```
+```console
 npm install
 ```
 
 ### 3. Select architecture in global.ts
 
-```
+```ts
 export const songArchitecture: SongArchitecture = SongArchitecture.BLOB_ARCHITECTURE;
 ```
 
 ### 4. Build main and renderer process
 
-```
+```console
 npm run build
 ```
 
 ### 5. Run the project
 
-```
+```console
 npm start
 ```
 
@@ -54,13 +54,13 @@ We have to selected if we want. Backend should also have the same architecture s
 
 Blob (PRODUCTION and DEVELOPMENT)
 
-```
+```ts
 export const songArchitecture: SongArchitecture = SongArchitecture.BLOB_ARCHITECTURE
 ```
 
 Streaming (deprecated)
 
-```
+```ts
 export const songArchitecture: SongArchitecture = SongArchitecture.SERVERLESS_ARCHITECTURE
 ```
 
@@ -68,6 +68,6 @@ export const songArchitecture: SongArchitecture = SongArchitecture.SERVERLESS_AR
 
 1. Run the app in hot reload debug mode
 
-```
+```console
 npm start
 ```

@@ -1,12 +1,14 @@
 {
   "name": "spotify-electron",
   "version": "1.0.0",
-  "description": "A Spotify clone made with Electron",
-  "license": "MIT",
+  "description": "Spotify Electron is a cross-platform music streaming desktop app made with Electron-React frontend and Python-FastAPI-AWS Backend. The goal is to reproduce the original Spotify functionality while adding new ones like uploading songs",
   "author": {
     "name": "Antonio Martinez Fernandez",
-    "url": "https://github.com/AntonioMrtz"
+    "email": "antoniomartinezfernandez17@gmail.com",
+    "url": "https://github.com/AntonioMrtz/"
   },
+  "homepage": "https://github.com/AntonioMrtz/SpotifyElectron",
+  "license": "Attribution-NonCommercial-ShareAlike 4.0 International",
   "main": "./dist/main/main.js",
   "scripts": {
     "rebuild": "node -r ts-node/register ../../.erb/scripts/electron-rebuild.js",

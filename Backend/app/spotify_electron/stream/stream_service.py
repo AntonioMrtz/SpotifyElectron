@@ -1,4 +1,7 @@
-"""Stream service for handling business logic"""
+"""Stream service for handling business logic
+
+Based on: https://github.com/fastapi/fastapi/issues/1240#issuecomment-1312294359
+"""
 
 from collections.abc import AsyncGenerator
 

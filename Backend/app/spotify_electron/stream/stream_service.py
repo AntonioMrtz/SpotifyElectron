@@ -70,7 +70,8 @@ def get_stream_audio_data(range_header: str | None, name: str) -> StreamAudioCon
     """Gets stream audio data
 
     Args:
-        range_header (str | None): range content header [bytes 1000-1499/1500]
+        range_header (str | None): range content header [bytes 1000-1499/1500]\
+         https://developer.mozilla.org/en-US/docs/Web/HTTP/Range_requests
         name (str): song name
 
     Raises:

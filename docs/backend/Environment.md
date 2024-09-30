@@ -74,7 +74,7 @@ ARCH=BLOB
 
 The following file can be used out of the box for development purpouse. It contains the following characteristics:
 
-- **Remote MongoDB database**. Use a remote mongodb production ready database.
+- **Remote MongoDB database**. Use a remote MongoDB production ready database.
 - **Ready to use secret key**. Generate it using `openssl rand -hex 16`.
 - **BLOB architecture selected**. Use streaming architecture using BLOB files.
 - **PROD** mode. It will disable hot reload for FastAPI.

@@ -48,7 +48,7 @@ You can select a custom music player dependending if the song architecture is ma
 cd Electron/src/global/global.ts
 ```
 
-### 2. Select the music player architecture
+### 2. Select the music player streaming architecture
 
 We have to selected if we want. Backend should also have the same architecture selected in order for songs to be played correctly.
 
@@ -58,7 +58,7 @@ Blob (PRODUCTION and DEVELOPMENT)
 export const songArchitecture: SongArchitecture = SongArchitecture.BLOB_ARCHITECTURE
 ```
 
-Streaming (deprecated)
+Serverless (deprecated)
 
 ```ts
 export const songArchitecture: SongArchitecture = SongArchitecture.SERVERLESS_ARCHITECTURE

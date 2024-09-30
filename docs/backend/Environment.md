@@ -54,14 +54,12 @@ ENV_VALUE=DEV
 ARCH=SERVERLESS
 ```
 
----
-
-## ✅ DEVELOPMENT READY ENVIRONMENT
+## ⚒️ DEVELOPMENT ENVIRONMENT
 
 The following file can be used out of the box for development purpouse. It contains the following characteristics:
 
 - **Local MongoDB database**. Use local MongoDB database, you can deploy one using our Docker stack as described [here](Docker.md).
-- **Ready to use secret key**
+- **Ready to use secret key**.
 - **BLOB architecture selected**. This will only make necessary a MongoDB database because no cloud services are used in this architecture.
 - **DEV** mode. It will enable hot reload for FastAPI.
 
@@ -72,7 +70,21 @@ ENV_VALUE=DEV
 ARCH=BLOB
 ```
 
----
+## ✅ PRODUCTION ENVIRONMENT
+
+The following file can be used out of the box for development purpouse. It contains the following characteristics:
+
+- **Remote MongoDB database**. Use a remote mongodb production ready database.
+- **Ready to use secret key**. Generate it using `openssl rand -hex 16`.
+- **BLOB architecture selected**. Use streaming architecture using BLOB files.
+- **PROD** mode. It will disable hot reload for FastAPI.
+
+```
+MONGO_URI=mongodb://root:root@remote:27017/
+SECRET_KEY_SIGN=generated-key
+ENV_VALUE=PROD
+ARCH=BLOB
+```
 
 ## 🪨 ALL ROUND ENVIRONMENT
 

@@ -1,14 +1,16 @@
 # Testing
 
-In this section we will cover how to run tests and develop them.
+In this section we will cover how to run tests and develop them. See more on testing principles [here](../utils/Testing-Principles.md).
 
 ## 🧪 Run tests
 
-Standard run
+### Standard run
 
 ```console
 npm run test
 ```
+
+### Coverage run
 
 Run test and generate coverage, there will be a coverage folder under `Electron/`. Open `index.html` file to get an UI for visualizing coverage.
 
@@ -16,15 +18,22 @@ Run test and generate coverage, there will be a coverage folder under `Electron/
 npm run test:coverage
 ```
 
-### Run only one test
+### Standalone test run
 
-1. Go to the test folder. (The cwd has to be the same as the test file)
-2. Run `npx jest filename.test.tsx`
+Go to the test file folder. (The cwd has to be the same as the test file)
+
+```ts
+npx jest filename.test.tsx
+```
+
+### Debug run VSCODE
+
+In debug section launch `Debug Jest Tests`. This will run all the tests and will stop the execution on any provided breakpoints
 
 ## 👷‍♂️ Develop tests
 
 
-### Test debugging
+### Test interface result
 
 For debugging the state of the interface we'll be using [Jest Preview](https://www.jest-preview.com/docs/api/debug/). This package will help us preview the state of the interface in certain point after the test finished running.
 

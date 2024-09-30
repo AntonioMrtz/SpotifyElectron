@@ -20,25 +20,29 @@ cd Electron
 npm install
 ```
 
-### 3. Select architecture in global.ts
-
-```ts
-export const songArchitecture: SongArchitecture = SongArchitecture.BLOB_ARCHITECTURE;
-```
-
-### 4. Build main and renderer process
+### 3. Build main and renderer process
 
 ```console
 npm run build
 ```
 
-### 5. Run the project
+### 4. Run the app
+
+#### Standar
 
 ```console
 npm start
 ```
 
-## ▶ Select Music Player depending on Song Architecture backend ( optional )
+#### Debug (**Chromium based browser is needed**)
+
+1. Launch VSCODE debug script `Electron: All`
+2. Launch browser: `chromium --remote-debugging-port=9223 --user-data-dir=remote-debug-profile`. Replace `chromium` with the path of your browser executable
+3. Go to `localhost:1212` on the launched chromium based browser
+4. Refresh using F5 until the program stops at the selected breakpoint (this may require multiple refreshes).
+
+
+## ▶ Select Music Player based on Song Architecture backend (optional)
 
 You can select a custom music player dependending if the song architecture is managed by regular or serverless streaming. By default `BLOB` architecture service is selected.
 
@@ -52,22 +56,14 @@ cd Electron/src/global/global.ts
 
 We have to selected if we want. Backend should also have the same architecture selected in order for songs to be played correctly.
 
-Blob (PRODUCTION and DEVELOPMENT)
+#### BLOB (PRODUCTION and DEVELOPMENT)
 
 ```ts
 export const songArchitecture: SongArchitecture = SongArchitecture.BLOB_ARCHITECTURE
 ```
 
-Serverless (deprecated)
+#### Serverless (deprecated)
 
 ```ts
 export const songArchitecture: SongArchitecture = SongArchitecture.SERVERLESS_ARCHITECTURE
-```
-
-## ▶ Run the app in development mode
-
-1. Run the app in hot reload debug mode
-
-```console
-npm start
 ```

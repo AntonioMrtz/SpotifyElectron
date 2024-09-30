@@ -35,7 +35,7 @@ class AppInfo:
 * Link code commit with release tag
 
 
-## 3. Packaged app
+## 3. Package app
 
 * Follow [packaging guide](../frontend/Package-app.md) using production backend URL and architecture.
 * Upload exectuables to [Github releases](https://github.com/AntonioMrtz/SpotifyElectron/releases)
@@ -48,6 +48,7 @@ class AppInfo:
 ## 5. Deploy backend cloud service
 
 * Select commit to deploy on cloud
+* Check environment values are consistent with [PRODUCTION ENVIRONMENT](../backend/Environment.md)
 
 ## 6. Misc updates
 

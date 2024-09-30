@@ -59,7 +59,7 @@ ARCH=SERVERLESS
 The following file can be used out of the box for development purpouse. It contains the following characteristics:
 
 - **Local MongoDB database**. Use local MongoDB database, you can deploy one using our Docker stack as described [here](Docker.md).
-- **Ready to use secret key**.
+- **Ready to use secret key**
 - **BLOB architecture selected**. This will only make necessary a MongoDB database because no cloud services are used in this architecture.
 - **DEV** mode. It will enable hot reload for FastAPI.
 

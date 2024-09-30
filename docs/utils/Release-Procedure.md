@@ -28,29 +28,29 @@ class AppInfo:
     ...
 ```
 
-## 4. Generate release Github
+## 2. Generate release Github
 
 * Generate release in [Github releases](https://github.com/AntonioMrtz/SpotifyElectron/releases/new)
 * Create tag
 * Link code commit with release tag
 
 
-## 5. Package app
+## 3. Package app
 
 * Follow [packaging guide](../frontend/Package-app.md) using production backend URL and architecture.
 * Upload exectuables to [Github releases](https://github.com/AntonioMrtz/SpotifyElectron/releases)
 
-## 6. Prepare database
+## 4. Prepare database
 
 * Prepare data sets
 * Delete non compatible data with new version in database
 
-## 7. Deploy backend cloud service
+## 5. Deploy backend cloud service
 
 * Select commit to deploy on cloud
 * Check environment values are consistent with [PRODUCTION ENVIRONMENT](../backend/Environment.md)
 
-## 7. Misc updates
+## 6. Misc updates
 
 * [Website](https://github.com/AntonioMrtz/SpotifyElectron_Web)
 * Linkedin

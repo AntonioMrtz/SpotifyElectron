@@ -112,7 +112,6 @@ export default function AddSongPlayListAccordion({
 
   const handleChangeFile = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target && event.target.files) {
-      setSongFile(event.target.files[0]);
       const file = event.target.files[0];
 
       if (file) {

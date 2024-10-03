@@ -148,38 +148,6 @@ def get_artists(
         )
 
 
-@router.get("/{name}/streams")
-def get_artist_streams(
-    name: str,
-    token: Annotated[TokenData | None, Depends(JWTBearer())],
-) -> Response:
-    """Get artist total streams of his songs
-
-    Args:
-        name (str): artist name
-    """
-    try:
-        total_streams = artist_service.get_streams_artist(artist_name=name)
-
-        total_streams_json = json_converter_utils.get_json_with_iterable_field_from_model(
-            total_streams, "streams"
-        )
-
-        return Response(
-            total_streams_json, media_type="application/json", status_code=HTTP_200_OK
-        )
-    except JsonEncodeException:
-        return Response(
-            status_code=HTTP_500_INTERNAL_SERVER_ERROR,
-            content=PropertiesMessagesManager.commonEncodingError,
-        )
-    except (Exception, UserServiceException):
-        return Response(
-            status_code=HTTP_500_INTERNAL_SERVER_ERROR,
-            content=PropertiesMessagesManager.commonInternalServerError,
-        )
-
-
 @router.get("/{name}/songs")
 def get_artist_songs(
     name: str,

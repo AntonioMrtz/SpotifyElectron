@@ -188,10 +188,15 @@ test('AddSongPlaylistAccordion submit song correct', async () => {
   const dropdown = component.getByTestId('select-genre');
 
   // Find the file input element by it's name or other suitable selector
-  const fileInputElement = component.getByTestId('sidebar-file-input');
+  const fileInputElement = component.getByTestId(
+    'sidebar-file-input',
+  ) as HTMLInputElement;
 
-  // Create a sample file
-  const file = new File(['(⌐□_□)'], 'sample.mp3', { type: 'audio/mp3' });
+  // Create a sample files
+  const mp3File = new File(['(⌐□_□)'], 'sample.mp3', { type: 'audio/mp3' });
+  const wavFile = new File(['(⌐□_□)'], 'sample.wav', { type: 'audio/wav' });
+  const flacFile = new File(['(⌐□_□)'], 'sample.wav', { type: 'audio/wav' });
+  const invalidFile = new File(['a'], 'sample.txt', { type: 'text/plain' });
 
   await act(async () => {
     fireEvent.change(inputName, {
@@ -207,8 +212,29 @@ test('AddSongPlaylistAccordion submit song correct', async () => {
       target: { value: 'Rock' },
     });
     fireEvent.change(dropdown, { target: { value: 'Rock' } });
-    fireEvent.change(fileInputElement, { target: { files: [file] } });
   });
+
+  // Valid files
+  await act(async () => {
+    fireEvent.change(fileInputElement, { target: { files: [mp3File] } });
+  });
+  expect(fileInputElement.files?.[0]).toBe(mp3File);
+
+  await act(async () => {
+    fireEvent.change(fileInputElement, { target: { files: [wavFile] } });
+  });
+  expect(fileInputElement.files?.[0]).toBe(wavFile);
+
+  await act(async () => {
+    fireEvent.change(fileInputElement, { target: { files: [flacFile] } });
+  });
+  expect(fileInputElement.files?.[0]).toBe(flacFile);
+
+  // Invalid file
+  await act(async () => {
+    fireEvent.change(fileInputElement, { target: { files: [invalidFile] } });
+  });
+  expect(fileInputElement.value).toBe('');
 
   const submitSongButton = component.getByTestId(
     'sidebar-addsongplaylistaccordion-submit-song',

@@ -71,7 +71,7 @@ test('renders the component and displays title and form', async () => {
     debug() // ---> Add this statement, the browser will reflect the state of the UI in this point
   });
 ```
-Go to the previously opened browser instance and check the state of the UI in the last `debug` statement.
+Run tests and go to the previously opened browser instance and check the state of the UI in the last `debug` statement.
 
 
 ### Mock Fetch

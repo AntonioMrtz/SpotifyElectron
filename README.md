@@ -159,5 +159,12 @@ Check our [project goals and vision](docs/VISION.md).
                 <sub><b>aarshgupta24</b></sub>
             </a>
         </td>
+        <td align="center">
+            <a href="https://github.com/ErikMisencik">
+                <img src="https://avatars.githubusercontent.com/u/108632576?v=4" width="90;" alt="ErikMisencik"/>
+                <br />
+                <sub><b>ErikMisencik</b></sub>
+            </a>
+        </td>
     </tr>
 </table>

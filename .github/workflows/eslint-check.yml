@@ -1,4 +1,4 @@
-name: Eslintrc Check
+name: ESlint Check
 
 on:
   pull_request:

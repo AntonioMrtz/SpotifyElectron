@@ -2,6 +2,15 @@
 
 ![Spotify Electron Media Preview](docs/assets/videos/SpotifyElectronReadmePreview.gif)
 
+![backend-tests](https://github.com/AntonioMrtz/SpotifyElectron/actions/workflows/backend-tests-database-blob.yml/badge.svg)
+![backend-build](https://github.com/AntonioMrtz/SpotifyElectron/actions/workflows/backend-build.yml/badge.svg)
+![ruff-lint-check](https://github.com/AntonioMrtz/SpotifyElectron/actions/workflows/ruff-lint-check.yml/badge.svg)
+![ruff-format-check](https://github.com/AntonioMrtz/SpotifyElectron/actions/workflows/ruff-format-check.yml/badge.svg)
+
+![frontend-tests](https://github.com/AntonioMrtz/SpotifyElectron/actions/workflows/frontend-tests.yml/badge.svg)
+![eslint-check](https://github.com/AntonioMrtz/SpotifyElectron/actions/workflows/eslint-check.yml/badge.svg)
+![frontend-style-prettier](https://github.com/AntonioMrtz/SpotifyElectron/actions/workflows/frontend-style-prettier.yml/badge.svg)
+
 ## Overview
 
 [Spotify Electron](https://antoniomrtz.github.io/SpotifyElectron_Web/) is a cross-platform music streaming desktop app made with Electron-React frontend and Python-FastAPI-MongoDB. The main goal is to reproduce the original Spotify functionality while adding new ones like uploading songs.

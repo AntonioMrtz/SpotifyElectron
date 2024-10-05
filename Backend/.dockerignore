@@ -16,6 +16,8 @@ __pycache__
 .env.local
 .env.example
 .env
+prod.env
+dev.env
 
 # Exclude any local development settings
 *.log

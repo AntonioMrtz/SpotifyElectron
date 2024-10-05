@@ -62,7 +62,7 @@ python -m app
 
 #### Debug
 
-Launch the app in **debug mode** using `DEBUG Backend app` at VSCODE debug section. Breakpoints selected in code will be triggered. 
+Launch the app in **debug mode** using `DEBUG Backend app` at VSCODE debug section. Breakpoints selected in code will be triggered.
 
 ### 5. The app will be deploy at **[http://127.0.0.1:8000/](http://127.0.0.1:8000/)**. API docs will be placed at **[http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)**
 

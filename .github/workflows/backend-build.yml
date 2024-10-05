@@ -25,8 +25,8 @@ jobs:
       - name: Start services
         working-directory: Backend/docker/
         run: |
-          chmod +x build_and_up_dev.sh
-          ./build_and_up_dev.sh
+          docker-compose -f docker-compose-prod.yml build
+          docker-compose -f docker-compose-prod.yml up -d
 
       - name: Run health check
         run: |

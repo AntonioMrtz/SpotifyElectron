@@ -4,34 +4,100 @@ I would like to express my heartfelt gratitude to the following individuals for 
 
 Me gustaría expresar mi más sincero agradecimiento a las siguientes personas por sus invaluables contribuciones a Spotify Electron. Sus esfuerzos son inmensamente apreciados y tienen una gran importancia para mí y para el proyecto.
 
-## Code Contributors
+## Contributors
 
-- [Ferbo12](https://github.com/contributor1)
-- [Ercamarero](https://github.com/Ercamarero)
-- [KarlosM2](https://github.com/KarlosM2)
-- [mariete1223](https://github.com/mariete1223)
-- [Javiks-P](https://github.com/Javiks-P)
-- [raulZC ](https://github.com/raulZC)
-- [TalhaBinNasir](https://github.com/TalhaBinNasir)
-- [xiomaraR](https://github.com/xiomaraR)
-- [aarshgupta24](https://github.com/aarshgupta24)
-- [ErikMisencik](https://github.com/ErikMisencik)
-
-## Bug Reporters
-
-## Feature Requesters
-
-## Translators
-
-- [ariceron5](https://github.com/ariceron5)
-
-## Documentation Contributors
-
-- [ariceron5](https://github.com/ariceron5)
-
-## Other Contributions
-
-- [ariceron5](https://github.com/ariceron5)
+<table>
+    <tr>
+        <td align="center">
+            <a href="https://github.com/Ferbo12">
+                <img src="https://avatars.githubusercontent.com/u/58307213?v=4" width="90;" alt="Ferbo12"/>
+                <br />
+                <sub><b>Ferbo12</b></sub>
+            </a>
+        </td>
+        <td align="center">
+            <a href="https://github.com/Ercamarero">
+                <img src="https://avatars.githubusercontent.com/u/91611871?v=4" width="90;" alt="Ercamarero"/>
+                <br />
+                <sub><b>Ercamarero</b></sub>
+            </a>
+        </td>
+        <td align="center">
+            <a href="https://github.com/KarlosM2">
+                <img src="https://avatars.githubusercontent.com/u/140536436?v=4" width="90;" alt="KarlosM2"/>
+                <br />
+                <sub><b>KarlosM2</b></sub>
+            </a>
+        </td>
+        <td align="center">
+            <a href="https://github.com/mariete1223">
+                <img src="https://avatars.githubusercontent.com/u/71662461?v=4" width="90;" alt="mariete1223"/>
+                <br />
+                <sub><b>mariete1223</b></sub>
+            </a>
+        </td>
+    </tr>
+    <tr>
+        <td align="center">
+            <a href="https://github.com/Javiks-P">
+                <img src="https://avatars.githubusercontent.com/u/72615168?v=4" width="90;" alt="Javiks-P"/>
+                <br />
+                <sub><b>Javiks-P</b></sub>
+            </a>
+        </td>
+        <td align="center">
+            <a href="https://github.com/raulZC">
+                <img src="https://avatars.githubusercontent.com/u/78484498?v=4" width="90;" alt="raulZC"/>
+                <br />
+                <sub><b>raulZC</b></sub>
+            </a>
+        </td>
+        <td align="center">
+            <a href="https://github.com/TalhaBinNasir">
+                <img src="https://avatars.githubusercontent.com/u/72547924?v=4" width="90;" alt="TalhaBinNasir"/>
+                <br />
+                <sub><b>TalhaBinNasir</b></sub>
+            </a>
+        </td>
+        <td align="center">
+            <a href="https://github.com/ariceron5">
+                <img src="https://avatars.githubusercontent.com/u/103110478?v=4" width="90;" alt="ariceron5"/>
+                <br />
+                <sub><b>ariceron5</b></sub>
+            </a>
+        </td>
+    </tr>
+    <tr>
+        <td align="center">
+            <a href="https://github.com/xiomaraR">
+                <img src="https://avatars.githubusercontent.com/u/81057963?v=4" width="90;" alt="xiomaraR"/>
+                <br />
+                <sub><b>xiomaraR</b></sub>
+            </a>
+        </td>
+        <td align="center">
+            <a href="https://github.com/aarshgupta24">
+                <img src="https://avatars.githubusercontent.com/u/122194522?v=4" width="90;" alt="aarshgupta24"/>
+                <br />
+                <sub><b>aarshgupta24</b></sub>
+            </a>
+        </td>
+        <td align="center">
+            <a href="https://github.com/ErikMisencik">
+                <img src="https://avatars.githubusercontent.com/u/108632576?v=4" width="90;" alt="ErikMisencik"/>
+                <br />
+                <sub><b>ErikMisencik</b></sub>
+            </a>
+        </td>
+                <td align="center">
+            <a href="https://github.com/perig99">
+                <img src="https://avatars.githubusercontent.com/u/104552862?v=4" width="90;" alt="ErikMisencik"/>
+                <br />
+                <sub><b>perig99</b></sub>
+            </a>
+        </td>
+    </tr>
+</table>
 
 If you have contributed to this project and your name is not listed here, please accept our apologies and let us know so we can add you!
 

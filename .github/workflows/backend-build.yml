@@ -25,14 +25,15 @@ jobs:
       - name: Start services
         working-directory: Backend/docker/
         run: |
-          docker-compose -f docker-compose-prod.yml build
-          docker-compose -f docker-compose-prod.yml up -d
+          chmod +x build_and_up_dev.sh
+          ./build_and_up_dev.sh
 
       - name: Run health check
         run: |
-          sleep 40
+          sleep 20
           curl -f localhost:8000/health/
 
       - name: Shutdown services
+        working-directory: Backend/docker/
         run: |
-          docker-compose -f Backend/docker/docker-compose.yml down
+          docker-compose -f docker-compose.yml down

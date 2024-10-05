@@ -2,8 +2,7 @@ name: Generate OpenAPI Schema and Frontend Client
 
 on:
   pull_request:
-    branches:
-      - closed
+    types: [closed]
 
 jobs:
   generate-openapi-schema-generate-frontend-client:

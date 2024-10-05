@@ -889,6 +889,11 @@
         "summary": "Get User Playback History",
         "description": "Get user song playback history\n\nArgs:\n    name (str): user name",
         "operationId": "get_user_playback_history_users__name__playback_history_get",
+        "security": [
+          {
+            "JWTBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "name",
@@ -1038,6 +1043,11 @@
         "summary": "Get User Relevant Playlists",
         "description": "Get relevant playlists for user\n\nArgs:\n    name (str): user name",
         "operationId": "get_user_relevant_playlists_users__name__relevant_playlists_get",
+        "security": [
+          {
+            "JWTBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "name",
@@ -1079,6 +1089,11 @@
         "summary": "Get User Playlists",
         "description": "Get playlists created by the user\n\nArgs:\n    name (str): user name",
         "operationId": "get_user_playlists_users__name__playlists_get",
+        "security": [
+          {
+            "JWTBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "name",
@@ -1120,6 +1135,11 @@
         "summary": "Get User Playlists Names",
         "description": "Get playlist names created by user\n\nArgs:\n    name (str): user name",
         "operationId": "get_user_playlists_names_users__name__playlist_names_get",
+        "security": [
+          {
+            "JWTBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "name",
@@ -1462,6 +1482,11 @@
         "summary": "Stream Song",
         "description": "Streams song audio\n\nArgs:\n    name (str): song name\n    request (Request): incoming request",
         "operationId": "stream_song_stream__name__get",
+        "security": [
+          {
+            "JWTBearer": []
+          }
+        ],
         "parameters": [
           {
             "name": "name",

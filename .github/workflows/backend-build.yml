@@ -30,7 +30,7 @@ jobs:
 
       - name: Run health check
         run: |
-          sleep 20
+          sleep 40
           curl -f localhost:8000/health/
 
       - name: Shutdown services

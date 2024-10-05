@@ -175,5 +175,12 @@ Check our [project goals and vision](docs/VISION.md).
                 <sub><b>ErikMisencik</b></sub>
             </a>
         </td>
+                <td align="center">
+            <a href="https://github.com/perig99">
+                <img src="https://avatars.githubusercontent.com/u/104552862?v=4" width="90;" alt="ErikMisencik"/>
+                <br />
+                <sub><b>perig99</b></sub>
+            </a>
+        </td>
     </tr>
 </table>

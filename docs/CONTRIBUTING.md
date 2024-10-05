@@ -8,7 +8,7 @@ improve your coding skills, and enhance your communication abilities.
 
 ## 🖐️ Steps to Contribute
 
-1. Select an [issue](https://github.com/AntonioMrtz/SpotifyElectron/issues) and **ask to work on it by leaving a comment in the same link (Not Trello)**.
+1. Select an [issue](https://github.com/AntonioMrtz/SpotifyElectron/issues) and **ask to work on it by leaving a comment in the issue page(Not in Trello)**.
 2. Create a new branch with the feature you're implementing using the [branch naming convention](Git-Convention.md).
 3. Push your changes to the new branch using the [commit naming convention](Git-Convention.md).
 4. Add tests for every functionality changed or added.

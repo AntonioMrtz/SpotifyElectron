@@ -6,7 +6,6 @@ Redirects to the specific architecture service in case the method is not common
 """
 
 import app.spotify_electron.song.base_song_repository as base_song_repository
-import app.spotify_electron.user.validations.base_user_service_validations as base_user_service_validations  # noqa: E501
 from app.logging.logging_constants import LOGGING_BASE_SONG_SERVICE
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.genre.genre_schema import Genre, GenreNotValidException
@@ -23,7 +22,6 @@ from app.spotify_electron.song.validations.base_song_service_validations import 
     validate_song_name_parameter,
     validate_song_should_exists,
 )
-from app.spotify_electron.user.user.user_schema import UserNotFoundException
 
 base_song_service_logger = SpotifyElectronLogger(LOGGING_BASE_SONG_SERVICE).getLogger()
 
@@ -157,39 +155,6 @@ def search_by_name(name: str) -> list[SongMetadataDTO]:
     song_names = base_song_repository.get_song_names_search_by_name(name)
 
     return get_songs_metadata(song_names)
-
-
-def get_artist_streams(artist_name: str) -> int:
-    """Get artist songs total streams
-
-    Args:
-        artist_name (str): artist name
-
-    Raises:
-        UserNotFoundException: artist doesn't exists
-        SongServiceException: unexpected error getting artist songs total streams
-
-    Returns:
-        int: the number of streams for the artists songs
-    """
-    try:
-        base_user_service_validations.validate_user_should_exists(artist_name)
-        return base_song_repository.get_artist_total_streams(artist_name)
-    except UserNotFoundException as exception:
-        base_song_service_logger.exception(f"User not found: {artist_name}")
-        raise UserNotFoundException from exception
-    except SongRepositoryException as exception:
-        base_song_service_logger.exception(
-            f"Unexpected error in Song Repository while getting "
-            f"total artist {artist_name} streams"
-        )
-        raise SongServiceException from exception
-    except Exception as exception:
-        base_song_service_logger.exception(
-            f"Unexpected error in Song Service while getting "
-            f"total artist {artist_name} streams"
-        )
-        raise SongServiceException from exception
 
 
 def get_songs_by_genre(genre: Genre) -> list[SongMetadataDTO]:

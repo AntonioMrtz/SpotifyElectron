@@ -167,7 +167,7 @@ htmlcov
 .coverage
 
 
-*.env
+.env
 
 
 # Documentation

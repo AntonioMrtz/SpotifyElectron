@@ -14,15 +14,14 @@ In this section we will cover:
 cd Backend
 ```
 
-### 2. Rename `.env.local` to `.env` for development or create an enviroment file in root path
+### 2. Copy and rename `docker/env/dev.env` to `.env` and move it to `Backend/` for development or create an enviroment file in `Backend` root path
 
 * More on enviroments [here](Environment.md).
-* A development-ready `.env` file is also provided in the document.
 
 The enviroment variables are the following:
 
 ```
-* MONGO_URI= uri for connecting into a MongoDB database (example: mongodb://root:root@localhost:27017/)
+* MONGO_URI= uri for connecting into a MongoDB database (example: mongodb://root:root@mongodb:27017/)
 * SECRET_KEY_SIGN= 32 byte key for signing tokens in backend
 * SERVERLESS_FUNCTION_URL= (optional) URL of Serverless/Lambda API for accesing AWS services and managing song (only needed in SERVERLESS architecture)
 * ARCH= song architecture (BLOB | SERVERLESS)
@@ -52,11 +51,17 @@ pip install -r requirements-test.txt
 There's included a script `install-all-requirements.sh` that install all dependencies from a given directory in an already create virtual enviroment (Folder has to be named `venv`). Works both for Windows and Linux.
 
 
-### 4. Run the app in hot reload debug mode, launch the provided vscode script [**DEBUG Backend app**] or run:
+### 4. Run the app:
+
+#### Standar
 
 ```console
 python -m app
 ```
+
+#### Debug
+
+Launch the app in **debug mode** using `DEBUG Backend app` at VSCODE debug section. Breakpoints selected in code will be triggered.
 
 ### 5. The app will be deploy at **[http://127.0.0.1:8000/](http://127.0.0.1:8000/)**. API docs will be placed at **[http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)**
 

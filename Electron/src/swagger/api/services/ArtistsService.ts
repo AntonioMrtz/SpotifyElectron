@@ -75,30 +75,6 @@ export class ArtistsService {
         });
     }
     /**
-     * Get Artist Streams
-     * Get artist total streams of his songs
-     *
-     * Args:
-     * name (str): artist name
-     * @param name
-     * @returns any Successful Response
-     * @throws ApiError
-     */
-    public static getArtistStreamsArtistsNameStreamsGet(
-        name: string,
-    ): CancelablePromise<any> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/artists/{name}/streams',
-            path: {
-                'name': name,
-            },
-            errors: {
-                422: `Validation Error`,
-            },
-        });
-    }
-    /**
      * Get Artist Songs
      * Get artist songs
      * @param name

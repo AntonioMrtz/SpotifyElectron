@@ -34,16 +34,6 @@ export default function UserProfile({
   const { playlists } = useFetchGetUserPlaylists(id);
 
   useEffect(() => {
-    const loadArtistsStreams = async (userName: string) => {
-      try {
-        const artistData =
-          await ArtistsService.getArtistStreamsArtistsNameStreamsGet(userName);
-        setArtistStreams(artistData.streams);
-      } catch (error) {
-        setArtistStreams(0);
-        console.log(`Unable to get streams from artist ${id}`);
-      }
-    };
     const loadPlaybackHistory = async (userName: string) => {
       try {
         const playbackHistoryData =
@@ -75,8 +65,8 @@ export default function UserProfile({
       if (userType === UserType.USER) {
         loadPlaybackHistory(userName);
       } else if (userType === UserType.ARTIST) {
+        setArtistStreams(userData.total_streams);
         loadSongsFromArtist(userName);
-        loadArtistsStreams(userName);
       }
     };
     if (!id) return;

@@ -47,7 +47,7 @@ In this folder we can find the Backend global configuration files. It includes:
 - ⚙️ Ruff linter and formatter configuration file.
 - ⚙️ Dependencies for base, dev and test mode. This follow the format `requirements-[type].txt`.
 - 🏗️ Deploy configuration files such as Procfile and Dockerfile.
-- ⚙️ Enviroment variables files. `.env.local` is used as an example, the app will only recognize `.env` files. More on [enviroments](Environment.md).
+- ⚙️ Enviroment variables files. Production and development environments are provided in `Backend/docker/env`. `dev.env` is used as an example, the app will only recognize a `.env` file under `Backend/` folder. More on [enviroments](Environment.md).
 
 ## ⚙️ .vscode
 

@@ -251,53 +251,6 @@ def get_all_artists() -> list[ArtistDTO]:
         return artists_dto
 
 
-# TODO make it a dynamic property
-def get_streams_artist(artist_name: str) -> int:
-    """Get artist songs total streams
-
-    Args:
-        user_name (str): artist name
-
-    Raises:
-        UserNotFoundException: artist doesn't exists
-        UserBadNameException: artist bad name
-        UserUnauthorizedException: user is not artist
-        UserServiceException: unexpected error getting artist total streams
-
-    Returns:
-        int: the total for all artist songs
-    """
-    try:
-        base_user_service_validations.validate_user_name_parameter(artist_name)
-        artist_service_validations.validate_user_should_be_artist(artist_name)
-
-        return base_song_service.get_artist_streams(artist_name)
-    except UserNotFoundException as exception:
-        artist_service_logger.exception(f"Artist not found: {artist_name}")
-        raise UserNotFoundException from exception
-    except UserBadNameException as exception:
-        artist_service_logger.exception(f"Bad Artist Name Parameter: {artist_name}")
-        raise UserBadNameException from exception
-    except UserUnauthorizedException as exception:
-        artist_service_logger.exception(f"User {artist_name} is not Artist")
-        raise UserUnauthorizedException from exception
-    except UserRepositoryException as exception:
-        artist_service_logger.exception(
-            f"Unexpected error in Artist Repository getting artist: {artist_name}"
-        )
-        raise UserServiceException from exception
-    except SongServiceException as exception:
-        artist_service_logger.exception(
-            f"Unexpected error in Song Service getting artist: {artist_name}"
-        )
-        raise UserServiceException from exception
-    except Exception as exception:
-        artist_service_logger.exception(
-            f"Unexpected error in Artist Service getting artist: {artist_name}"
-        )
-        raise UserServiceException from exception
-
-
 # TODO obtain all users in same query
 def get_artists(user_names: list[str]) -> list[ArtistDTO]:
     """Get artists from a list of names

@@ -1,4 +1,4 @@
-name: Backend Build
+name: Backend Build with MongoDB
 
 on:
   pull_request:
@@ -9,6 +9,7 @@ on:
 jobs:
   backend-build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -21,24 +22,18 @@ jobs:
           sudo apt-get update
           sudo apt-get install docker-compose -y
 
-      - name: Prepare environment
-        working-directory: Backend/
-        run: |
-          echo -e "MONGO_URI=${{ secrets.MONGO_URI }}\nSECRET_KEY_SIGN=f24e2f3ac557d487b6d879fb2d86f2b2\nARCH=BLOB\nENV_VALUE=PROD" > .env
-
-      - name: Build Docker Compose
+      - name: Start services
         working-directory: Backend/docker/
         run: |
-          docker-compose -f docker-compose-prod.yml build
-          docker-compose -f docker-compose-prod.yml up -d
+          chmod +x build_and_up_dev.sh
+          ./build_and_up_dev.sh
 
       - name: Run health check
-        run: | # wait until container starts and internal health check is made, see healthcheck on docker compose
+        run: |
           sleep 20
           curl -f localhost:8000/health/
 
-
-      - name: Shutdown Docker Compose
+      - name: Shutdown services
         working-directory: Backend/docker/
         run: |
-          docker-compose -f docker-compose-prod.yml down
+          docker-compose -f docker-compose-dev.yml down

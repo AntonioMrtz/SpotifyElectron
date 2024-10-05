@@ -14,15 +14,14 @@ In this section we will cover:
 cd Backend
 ```
 
-### 2. Rename `.env.local` to `.env` for development or create an enviroment file in root path
+### 2. Copy and rename `docker/env/dev.env` to `.env` and move it to `Backend/` for development or create an enviroment file in `Backend` root path
 
 * More on enviroments [here](Environment.md).
-* A development-ready `.env` file is also provided in the document.
 
 The enviroment variables are the following:
 
 ```
-* MONGO_URI= uri for connecting into a MongoDB database (example: mongodb://root:root@localhost:27017/)
+* MONGO_URI= uri for connecting into a MongoDB database (example: mongodb://root:root@mongodb:27017/)
 * SECRET_KEY_SIGN= 32 byte key for signing tokens in backend
 * SERVERLESS_FUNCTION_URL= (optional) URL of Serverless/Lambda API for accesing AWS services and managing song (only needed in SERVERLESS architecture)
 * ARCH= song architecture (BLOB | SERVERLESS)

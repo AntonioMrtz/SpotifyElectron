@@ -3,3 +3,5 @@ services:
     extends:
       file: docker-compose-base.yml
       service: backend
+    env_file:
+      - ./env/prod.env

@@ -6,8 +6,8 @@ services:
     depends_on:
       mongo:
         condition: service_healthy
-    environment:
-      MONGO_URI: mongodb://root:root@mongo:27017/
+    env_file:
+      - ./env/dev.env
 
   mongo:
     image: mongo

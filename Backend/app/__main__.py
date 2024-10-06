@@ -53,7 +53,7 @@ async def lifespan_handler(app: FastAPI) -> AsyncGenerator[None, Any]:
 
     environment = PropertiesManager.get_environment()
 
-    sentry_dns = getattr(PropertiesManager, AppEnvironment.SENTRY_DSN_ENV_NAME)
+    sentry_dns = getattr(PropertiesManager, AppEnvironment.SENTRY_DSN_ENV_NAME, None)
     init_sentry(environment, sentry_dns)
 
     connection_uri = getattr(PropertiesManager, AppEnvironment.MONGO_URI_ENV_NAME)

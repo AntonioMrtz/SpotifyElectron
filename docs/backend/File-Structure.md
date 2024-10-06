@@ -13,6 +13,7 @@ In this document we will cover the file structure of the Backend for Spotify Ele
 - 📁 Middleware. Stores the middlewares used in the app and its logic.
 - 📁 Patterns. Desing patterns schemas.
 - 📁 Resources. Common configuration `.ini`.
+- 📁 Sentry. Sentry monitoring configuration.
 - 📁 Spotify_electron: main folder for our bussiness logic.
   - 📁 Playlist. We will use playlist as an example but this apply to the whole domain model.
     - 📄 Controller. Router used by FastAPI, it handles the incoming HTTP Requests. Upon recieving HTTP Request it delegates into the service layer.

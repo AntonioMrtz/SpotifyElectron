@@ -34,6 +34,7 @@ class _PropertiesManager:
             AppEnvironment.SECRET_KEY_SIGN_ENV_NAME,
             AppEnvironment.SERVERLESS_URL_ENV_NAME,
             AppEnvironment.ENV_VALUE_ENV_NAME,
+            AppEnvironment.SENTRY_DSN_ENV_NAME,
         ]
         self._load_env_variables(self.env_variables)
         self._load_architecture()

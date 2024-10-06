@@ -27,6 +27,7 @@ from app.middleware.cors_middleware_config import (
     allowed_origins,
     max_age,
 )
+from app.sentry.sentry import init_sentry
 from app.spotify_electron.genre import genre_controller
 from app.spotify_electron.health import health_controller
 from app.spotify_electron.login import login_controller
@@ -51,11 +52,15 @@ async def lifespan_handler(app: FastAPI) -> AsyncGenerator[None, Any]:
     main_logger.info("Spotify Electron Backend Started")
 
     environment = PropertiesManager.get_environment()
-    connection_uri = getattr(PropertiesManager, AppEnvironment.MONGO_URI_ENV_NAME)
 
+    sentry_dns = getattr(PropertiesManager, AppEnvironment.SENTRY_DSN_ENV_NAME)
+    init_sentry(environment, sentry_dns)
+
+    connection_uri = getattr(PropertiesManager, AppEnvironment.MONGO_URI_ENV_NAME)
     DatabaseConnectionManager.init_database_connection(
         environment=environment, connection_uri=connection_uri
     )
+
     SongServiceProvider.init_service()
 
     app.include_router(playlist_controller.router)

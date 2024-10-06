@@ -44,6 +44,7 @@ In this section we will explain the meaning and the usage of the environment var
 - **ARCH**: the song architecture selected, it can be one of the following [architectures](../Architecture.md):
   - `BLOB(Recommended for production and development)`: song architecture that stores songs in database and streams them using an endpoint.
   - `SERVERLESS`: (deprecated) song architecture using AWS Serverless Function with streaming.
+- **SENTRY_DNS(optional)**: URL for Sentry monitoring service.
 
 ### ➡️ Streaming using AWS Serverless Functions (`SERVERLESS`)(deprecated)
 
@@ -73,5 +74,7 @@ The following file can be used out of the box for development purpouse. It conta
 - **Ready to use secret key**. Generate it using `openssl rand -hex 16`.
 - **BLOB architecture selected**. Use streaming architecture using BLOB files.
 - **PROD** mode. It will disable hot reload for FastAPI.
+- **Sentry monitoring DSN**. Use sentry service for monitoring app errors.
 
-[Development enviroment file](https://github.com/AntonioMrtz/SpotifyElectron/blob/master/Backend/docker/env/prod.env)
+
+[Production enviroment file](https://github.com/AntonioMrtz/SpotifyElectron/blob/master/Backend/docker/env/prod.env)

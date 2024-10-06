@@ -10,3 +10,4 @@ httpx==0.24.1
 uvicorn==0.22.0
 numpy==1.26.4
 setuptools==72.1.0
+sentry-sdk==2.15.0

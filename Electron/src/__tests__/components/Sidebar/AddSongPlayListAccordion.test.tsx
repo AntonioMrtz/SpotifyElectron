@@ -348,6 +348,7 @@ test('AddSongPlaylistAccordion disables the upload button while song is uploadin
   const refreshSidebarDataMock = jest.fn();
   const setIsCloseAllowed = jest.fn();
 
+   // Mocking the fetch API globally
   global.fetch = jest.fn(async (url: string) => {
       if (url === `${Global.backendBaseUrl}/genres/`) {
           return Promise.resolve({
@@ -358,9 +359,10 @@ test('AddSongPlaylistAccordion disables the upload button while song is uploadin
           });
       }
 
-      // Затримка для симуляції завантаження
+      // Delay for loading simulation
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
+      // Mock response for song upload request
       return Promise.resolve({
           json: () => {},
           status: 201,
@@ -408,6 +410,7 @@ test('AddSongPlaylistAccordion disables the upload button while song is uploadin
 
   const uploadSongButton = component.getByTestId('sidebar-addsongplaylistaccordion-submit-song');
 
+  // Verify that the upload button is enabled
   await waitFor(() => {
       expect(uploadSongButton).toBeEnabled();
   });
@@ -416,6 +419,7 @@ test('AddSongPlaylistAccordion disables the upload button while song is uploadin
       fireEvent.click(uploadSongButton);
   });
 
+  // Verify that the upload button is disabled while uploading
   await waitFor(() => {
       expect(uploadSongButton).toBeDisabled();
   });

@@ -415,6 +415,7 @@ export default function AddSongPlayListAccordion({
                 onClick={handleSubmitSong}
                 className={`btn btn-lg ${styles.btnSend} d-flex flex-row justify-content-center`}
                 data-testid="sidebar-addsongplaylistaccordion-submit-song"
+                disabled={loadingUploadSong}
               >
                 Subir {loadingUploadSong && <LoadingCircleSmall />}
               </button>

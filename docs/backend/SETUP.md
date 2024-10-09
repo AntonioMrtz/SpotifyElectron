@@ -3,7 +3,6 @@
 In this section we will cover:
 
 - How to set up the proyect
-- Run the proyect and debug
 - Deploy docker containers for development and production
 
 ## 🛠 Set up the proyect
@@ -11,27 +10,40 @@ In this section we will cover:
 ### 1. Enter backend directory
 
 ```console
-cd Backend
+cd Backend/
 ```
 
-### 2. Copy and rename `docker/env/dev.env` to `.env` and move it to `Backend/` for development or create an enviroment file in `Backend` root path
+### 2. Launch Backend dependencies using Docker
 
-* More on enviroments [here](Environment.md).
+This will launch all required dependencies such as MongoDB database for local development
 
-The enviroment variables are the following:
-
-```
-* MONGO_URI= uri for connecting into a MongoDB database (example: mongodb://root:root@mongodb:27017/)
-* SECRET_KEY_SIGN= 32 byte key for signing tokens in backend
-* SERVERLESS_FUNCTION_URL= (optional) URL of Serverless/Lambda API for accesing AWS services and managing song (only needed in SERVERLESS architecture)
-* ARCH= song architecture (BLOB | SERVERLESS)
-* ENV_VALUE= prod or development (PROD | DEV)
+```console
+cd Backend/docker/;
+./build_and_up_dev_backend.sh;
 ```
 
-### 3. Install the virtual enviroment and dependencies
+* More on Docker in [Docker docs](Docker.md).
+
+
+### 3. Get or create `.env` file under `Backend/
+
+Development ready enviroment is provided at `Backend/docker/`. Copy and rename it to `.env` using the following command:
+
+```console
+cd Backend/docker/;
+cp env/dev.env ../.env;
+```
+
+* Check upstream [development environment file](https://github.com/AntonioMrtz/SpotifyElectron/blob/master/Backend/docker/env/dev.env)
+
+* More on environments in [environment docs](Environment.md).
+
+
+### 4. Install the virtual environment and dependencies
 
 🪟 **Windows**
 ```console
+cd Backend/;
 python -m venv venv;
 venv/Scripts/activate;
 pip install -r requirements.txt;
@@ -42,18 +54,24 @@ pip install -r requirements-test.txt;
 
 🐧 **Linux**
 ```console
+cd Backend/ &&
 python3.11 -m venv venv &&
 source venv/bin/activate &&
 pip install -r requirements.txt &&
 pip install -r requirements-dev.txt &&
 pip install -r requirements-test.txt
 ```
-There's included a script `install-all-requirements.sh` that install all dependencies from a given directory in an already create virtual enviroment (Folder has to be named `venv`). Works both for Windows and Linux.
+There's included a script `install-all-requirements.sh` that install all dependencies from a given directory in an already create virtual environment (Folder has to be named `venv`). Works both for Windows and Linux.
 
 
-### 4. Run the app:
+### 5. Run the app:
 
-#### Standar
+* App will be launched at [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
+* Swagger docs will be launched at [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+
+
+#### Standar with hot reload
+This will automatically reload the app if changes are made.
 
 ```console
 python -m app
@@ -62,41 +80,3 @@ python -m app
 #### Debug
 
 Launch the app in **debug mode** using `DEBUG Backend app` at VSCODE debug section. Breakpoints selected in code will be triggered.
-
-### 5. The app will be deploy at **[http://127.0.0.1:8000/](http://127.0.0.1:8000/)**. API docs will be placed at **[http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)**
-
-## 🐳 Docker deployment
-
-In this section we will cover how to use Docker for local development or for production deployment. All the necessary tools for development such as a mongoDB database is provided with the dev enviroment script described below. For more info check the [extended docker documentation](Docker.md).
-
-1. Go to docker folder
-
-```console
-cd docker/
-```
-
-### Development Enviroment
-
-For development it is recommended to deploy the dev enviroment containers that provide:
-
-- Local MongoDB Database
-- Mongo Express administration dashboard
-  - Connect [http://localhost:8081/](http://localhost:8081/)
-  - Use user : admin and password : pass
-- Backend Server ( stop this container if backend server is running locally already )
-
-Run this command to build and up the development containers
-
-```console
-./build_and_up_dev.sh
-```
-
-### Production Enviroment
-
-In production it is recommended to connect to a remote database, the prod enviroment provide:
-
-- Backend Server
-
-```console
-./build_and_up_prod.sh
-```

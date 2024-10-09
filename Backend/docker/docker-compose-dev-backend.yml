@@ -1,14 +1,4 @@
 services:
-  backend:
-    extends:
-      file: docker-compose-base.yml
-      service: backend
-    depends_on:
-      mongo:
-        condition: service_healthy
-    env_file:
-      - ./env/dev.env
-
   mongo:
     image: mongo
     container_name: mongodb

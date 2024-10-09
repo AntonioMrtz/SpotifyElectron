@@ -21,11 +21,11 @@ Check out our [website](https://antoniomrtz.github.io/SpotifyElectron_Web/). Con
 
 ## 📚 Docs
 
-Check the project documentation [here](https://antoniomrtz.github.io/SpotifyElectron/).
+Check the [project documentation](https://antoniomrtz.github.io/SpotifyElectron/).
 
 ## 🔽 Download Installer
 
-Donwload the installer [here](https://github.com/AntonioMrtz/SpotifyElectron/releases).
+Donwload the [installer](https://github.com/AntonioMrtz/SpotifyElectron/releases).
 
 ## 🔧 Set up and run
 
@@ -46,7 +46,7 @@ git clone https://github.com/AntonioMrtz/SpotifyElectron.git
 ## 🖐 How to Contribute to the project
 
 Are you interested in contributing to the project? Check our contributing rules and methodologies in
-[CONTRIBUTING readme](docs/CONTRIBUTING.md). Also you can check all the contributors to the project [here](docs/CONTRIBUTORS.md).
+[CONTRIBUTING readme](docs/CONTRIBUTING.md). Also you can check [all the contributors](docs/CONTRIBUTORS.md) to the project.
 
 ## 🎯 Project's goals
 

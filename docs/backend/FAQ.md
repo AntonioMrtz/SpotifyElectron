@@ -36,3 +36,7 @@ The environments are not being passed correctly to the app. Ensure you follow th
 ## ◾ I can't authenticate in backend Swagger docs
 
 There's a detailed guide about login and authentication [here](../Auth-Login.md).
+
+## Docker-compose: command not found
+
+Depending on your host device OS you would need to replace `docker-compose` with `docker compose` or vice-versa in the build scripts provided at `Backend/docker/*.sh`

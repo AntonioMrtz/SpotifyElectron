@@ -7,7 +7,7 @@ MkDocs is a static site generator specifically designed for creating project doc
 ## 🔨 Set up
 
 1. Go to root folder of the project
-2. Create virtual enviroment and install dependencies
+2. Create virtual environment and install dependencies
 
 🪟 **Windows**
 ```console

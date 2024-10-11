@@ -18,8 +18,7 @@ KEY1=value1
 
 Backend app will look for `.env` file under `Backend/` folder
 
-* Place `.env` file under `Backend/`
-* Copy `docker/env/dev.env` to `Backend` and rename it to `.env`
+* Copy `docker/env/dev.env` to `Backend/` and rename it to `.env`
 
 _Note that file has to be named `.env` not `dev.env` or similars, having a different name will not make its variables part of the environment variables_ recognized by the backend.
 
@@ -62,16 +61,30 @@ The following file can be used out of the box for development purpouse. It conta
 - **BLOB architecture selected**. This will only make necessary a MongoDB database because no cloud services are used in this architecture.
 - **DEV** mode. It will enable hot reload for FastAPI.
 
-[Development enviroment file](https://github.com/AntonioMrtz/SpotifyElectron/blob/master/Backend/docker/env/dev.env)
+[Development environment file](https://github.com/AntonioMrtz/SpotifyElectron/blob/master/Backend/docker/env/dev.env)
 
 
 ## ✅ PRODUCTION ENVIRONMENT
 
 The following file can be used out of the box for development purpouse. It contains the following characteristics:
 
-- **Remote MongoDB database**. Use a remote MongoDB production ready database.
+- **Remote MongoDB database**. Use a remote MongoDB production ready database. Replace both `root` in `mongodb://root:root@mongodb:27017/` with MongoDB instance user and password respectively.
 - **Ready to use secret key**. Generate it using `openssl rand -hex 16`.
 - **BLOB architecture selected**. Use streaming architecture using BLOB files.
 - **PROD** mode. It will disable hot reload for FastAPI.
 
-[Development enviroment file](https://github.com/AntonioMrtz/SpotifyElectron/blob/master/Backend/docker/env/prod.env)
+Production introduces two new environment values for configuring MongoDB database:
+
+- **MONGO_INITDB_ROOT_USERNAME**: MongoDB user, must match the one provided in MONGO_URI
+- **MONGO_INITDB_ROOT_PASSWORD**: MongoDB password, must match the one provided in MONGO_URI
+
+If I have an user `user` with password `password` I have to set the following environments:
+
+```
+MONGO_INITDB_ROOT_USERNAME=user
+MONGO_INITDB_ROOT_PASSWORD=password
+MONGO_URI=mongodb://user:password@mongodb:27017/
+```
+
+
+[Development environment file](https://github.com/AntonioMrtz/SpotifyElectron/blob/master/Backend/docker/env/prod.env)

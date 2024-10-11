@@ -5,15 +5,15 @@ In this section we will cover how to run tests and develop them. Make sure `Back
 
 ## ⚙ Previous configuration
 
-❗ Enviroment variables defined in `.env` file will affect the execution of tests. See [enviroments](Environment.md) for more info.
+❗ Environment variables defined in `.env` file will affect the execution of tests. See [environments](Environment.md) for more info.
 
 Default configuration will only need a serverless function path if using `SERVERLESS` for executing tests. If another architecture is selected you can run tests out of the box locally.
 
-If the app is being executed for running test the file `pytest.ini` will override `ENV_VALUE` enviroment variable with `TEST` mode. This behaviour triggers the app to load an in-memory database instead of a real one. This can be side stepped by changing the `TEST` env value in `pytest.ini` to something like `PROD` or `DEV` **if you need a real database for testing**.
+If the app is being executed for running test the file `pytest.ini` will override `ENV_VALUE` environment variable with `TEST` mode. This behaviour triggers the app to load an in-memory database instead of a real one. This can be side stepped by changing the `TEST` env value in `pytest.ini` to something like `PROD` or `DEV` **if you need a real database for testing**.
 
 ### SERVERLESS(deprecated)
 
-A valid path for a serverless function `SERVERLESS_FUNCTION_URL` is needed in enviroment variables for proper functioning.
+A valid path for a serverless function `SERVERLESS_FUNCTION_URL` is needed in environment variables for proper functioning.
 
 
 
@@ -32,7 +32,7 @@ Test run and generate code coverage in folder `htmlcov/index.html`.
 ```console
 python -m pytest tests/ --cov=app/ --cov-report=html
 ```
-_If your browser is in a sandbox enviroment use `python -m http.server [port]` inside `htmlcov/` folder to serve an HTTP Server._
+_If your browser is in a sandbox environment use `python -m http.server [port]` inside `htmlcov/` folder to serve an HTTP Server._
 
 ### Debug run VSCODE
 

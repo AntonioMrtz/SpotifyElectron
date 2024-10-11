@@ -350,26 +350,25 @@ test('AddSongPlaylistAccordion disables the upload button while song is uploadin
 
    // Mocking the fetch API globally
   global.fetch = jest.fn(async (url: string) => {
-      if (url === `${Global.backendBaseUrl}/genres/`) {
-          return Promise.resolve({
-              json: () => JSON.stringify({ Rock: 'Rock', Pop: 'Pop' }),
-              status: 200,
-              ok: true,
-              headers: getMockHeaders(),
-          });
-      }
+    if (url === `${Global.backendBaseUrl}/genres/`) {
+        return {
+            json: () => Promise.resolve({ Rock: 'Rock', Pop: 'Pop' }),
+            status: 200,
+            ok: true,
+            headers: getMockHeaders(),
+        };
+    }
+    // Delay for loading simulation
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      // Delay for loading simulation
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // Mock response for song upload request
-      return Promise.resolve({
-          json: () => {},
-          status: 201,
-          ok: true,
-          headers: getMockHeaders(),
-      });
-  }) as jest.Mock;
+    // Mock response for song upload request
+    return {
+        json: () => Promise.resolve(),
+        status: 201,
+        ok: true,
+        headers: getMockHeaders(),
+    };
+}) as jest.Mock;
 
   const component = await act(async () => {
       return render(

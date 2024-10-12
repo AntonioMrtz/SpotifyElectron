@@ -4,7 +4,7 @@ Playlist controller for handling incoming HTTP Requests
 
 from typing import Annotated
 
-from fastapi import APIRouter, Body, Depends
+from fastapi import APIRouter, Body, Depends, Query
 from fastapi.responses import Response
 from starlette.status import (
     HTTP_200_OK,
@@ -279,7 +279,7 @@ def get_selected_playlists(
         )
 
 
-@router.patch("/{name}/songs")
+@router.patch("/{name}/songs/")
 def add_songs_to_playlist(name: str, song_names: list[str]) -> Response:
     """Add songs to playlist
 
@@ -317,7 +317,7 @@ def add_songs_to_playlist(name: str, song_names: list[str]) -> Response:
 
 
 @router.delete("/{name}/songs/")
-def remove_songs_from_playlist(name: str, song_names: list[str]) -> Response:
+def remove_songs_from_playlist(name: str, song_names: list[str] = Query(...)) -> Response:
     """Remove songs from playlist
 
     Args:

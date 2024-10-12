@@ -401,10 +401,10 @@ def add_songs_to_playlist(playlist_name: str, song_names: list[str]) -> None:
             base_song_service_validations.validate_song_should_exists(name)
         playlist_repository.add_songs_to_playlist(playlist_name, song_names)
     except PlaylistBadNameException as exception:
-        playlist_service_logger.exception(f"Bad Playlist Name Parameter: {name}")
+        playlist_service_logger.exception(f"Bad Playlist Name Parameter: {playlist_name}")
         raise PlaylistBadNameException from exception
     except PlaylistNotFoundException as exception:
-        playlist_service_logger.exception(f"Playlist not found: {name}")
+        playlist_service_logger.exception(f"Playlist not found: {playlist_name}")
         raise PlaylistNotFoundException from exception
     except SongBadNameException as exception:
         playlist_service_logger.exception(f"Not all the songs have valid names: {song_names}")
@@ -449,6 +449,12 @@ def remove_songs_from_playlist(playlist_name: str, song_names: list[str]) -> Non
             base_song_service_validations.validate_song_name_parameter(name)
             base_song_service_validations.validate_song_should_exists(name)
         playlist_repository.remove_songs_from_playlist(playlist_name, song_names)
+    except PlaylistBadNameException as exception:
+        playlist_service_logger.exception(f"Bad Playlist Name Parameter: {playlist_name}")
+        raise PlaylistBadNameException from exception
+    except PlaylistNotFoundException as exception:
+        playlist_service_logger.exception(f"Playlist not found: {playlist_name}")
+        raise PlaylistNotFoundException from exception
     except SongBadNameException as exception:
         playlist_service_logger.exception(f"Not all the songs have valid names: {song_names}")
         raise SongBadNameException from exception

@@ -67,5 +67,6 @@ def remove_song_from_playlist(
     song_names: list[str],
     headers: dict[str, str],
 ) -> Response:
-    # ! cant body params for delete????
-    return client.delete(f"/playlists/{name}/songs", headers=headers)
+    return client.delete(
+        f"/playlists/{name}/songs/", params={"song_names": song_names}, headers=headers
+    )

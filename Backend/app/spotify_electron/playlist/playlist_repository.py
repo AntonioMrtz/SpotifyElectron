@@ -349,7 +349,7 @@ def add_songs_to_playlist(name: str, song_names: list[str]) -> None:
     try:
         collection = get_playlist_collection()
         result_update = collection.update_one(
-            {"name": name}, {"$addToSet": {"song_names": song_names}}
+            {"name": name}, {"$addToSet": {"song_names": {"$each": song_names}}}
         )
         validate_playlist_update(result_update)
     except PlaylistUpdateException as exception:

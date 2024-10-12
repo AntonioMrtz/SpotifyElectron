@@ -11,6 +11,12 @@
 ![eslint-check](https://github.com/AntonioMrtz/SpotifyElectron/actions/workflows/eslint-check.yml/badge.svg)
 ![frontend-style-prettier](https://github.com/AntonioMrtz/SpotifyElectron/actions/workflows/frontend-style-prettier.yml/badge.svg)
 
+
+
+https://github.com/user-attachments/assets/9a711ebd-3059-43df-a7ac-a94000699812
+
+
+
 ## Overview
 
 [Spotify Electron](https://antoniomrtz.github.io/SpotifyElectron_Web/) is a cross-platform music streaming desktop app made with Electron-React frontend and Python-FastAPI-MongoDB. The main goal is to reproduce the original Spotify functionality while adding new ones like uploading songs.

@@ -187,7 +187,7 @@ export class PlaylistsService {
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'PATCH',
-            url: '/playlists/{name}/songs',
+            url: '/playlists/{name}/songs/',
             path: {
                 'name': name,
             },
@@ -206,13 +206,13 @@ export class PlaylistsService {
      * name (str): playlist name
      * song_names (list[str]): song names
      * @param name
-     * @param requestBody
+     * @param songNames
      * @returns any Successful Response
      * @throws ApiError
      */
     public static removeSongsFromPlaylistPlaylistsNameSongsDelete(
         name: string,
-        requestBody: Array<string>,
+        songNames: Array<string>,
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'DELETE',
@@ -220,8 +220,9 @@ export class PlaylistsService {
             path: {
                 'name': name,
             },
-            body: requestBody,
-            mediaType: 'application/json',
+            query: {
+                'song_names': songNames,
+            },
             errors: {
                 422: `Validation Error`,
             },

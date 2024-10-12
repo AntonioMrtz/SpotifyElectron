@@ -68,34 +68,6 @@ Check our [project goals and vision](docs/VISION.md).
 
 ![Spotify_Electron_Software_Song_Diagram](docs/assets/architecture/song-architecture-blob.png)
 
----
-
-## 🚶 Walkthrough
-
-### Home
-
-![Home](docs/frontend/assets/walkthrough/Home.png)
-
-### Playlist
-
-![Home](docs/frontend/assets/walkthrough/Playlist.png)
-
-### Upload Song
-
-![Home](docs/frontend/assets/walkthrough/UploadSong.png)
-
-### Explore users, artist, songs and playlists
-
-![Explorar](docs/frontend/assets/walkthrough/Explorar.png)
-
-### Login
-
-![Login](docs/frontend/assets/walkthrough/Login.png)
-
-### Update Playlist
-
-![Home](docs/frontend/assets/walkthrough/UpdatePlaylist.png)
-
 ## 🤵🏼 Contributors
 
 <table>

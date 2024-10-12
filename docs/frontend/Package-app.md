@@ -17,8 +17,8 @@ export const backendBaseUrl: string = 'http://127.0.0.1:8000';
 ```
 
 ## 2. Build the app
-console
-```
+
+```console
 npm run build
 ```
 

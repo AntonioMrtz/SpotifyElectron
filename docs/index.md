@@ -5,3 +5,5 @@ Spotify Electron is a cross-platform music streaming desktop app made with Elect
 This guide is designed to provide developers with all the necessary information to install, configure, use and extend the Spotify Electron application.
 
 ![SpotifyPreview](assets/videos/SpotifyElectronReadmePreview.gif)
+
+![type:video](assets/videos/app-walkthrough.mp4)

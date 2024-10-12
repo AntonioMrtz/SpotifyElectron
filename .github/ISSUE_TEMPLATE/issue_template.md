@@ -1,24 +1,26 @@
-## Descripción del Problema
+### Description
+<!-- Provide a clear and concise description of the issue or feature -->
 
-[Descripción detallada del problema o solicitud]
+### Steps to Reproduce (for bugs)
+1. Go to '...'
+2. Click on '...'
+3. Scroll down to '...'
+4. See error
 
-## Pasos para Reproducir
+### Expected Behavior
+<!-- A clear and concise description of what you expected to happen -->
 
-1. [Primer paso]
-2. [Segundo paso]
-3. [Tercer paso]
-   - [Subpaso]
+### Actual Behavior
+<!-- A clear and concise description of what actually happens -->
 
-## Comportamiento Esperado
+### Screenshots or Logs
+<!-- If applicable, add screenshots, logs, or any other details to help explain the problem -->
 
-[Descripción del comportamiento esperado]
+### Environment
+- **Version**: [e.g., 1.0]
 
-## Capturas de Pantalla
+### Possible Solution
+<!-- If you have any idea how to resolve the issue, let us know -->
 
-[Si es aplicable, incluye capturas de pantalla]
-
-## Información Adicional
-
-- **Sistema Operativo:**
-- **Rama**
-- **Otra información relevante:**
+### Additional Context
+<!-- Add any other context about the issue here -->

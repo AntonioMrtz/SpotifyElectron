@@ -5,7 +5,7 @@ In this document we will cover the file structure of the Backend for Spotify Ele
 ## 🈴 App
 
 - 📁 Common. Handles common logic for all app.
-  - 📄 PropertiesManager: loads enviroment variables and its associated logic and stores global app states.
+  - 📄 PropertiesManager: loads environment variables and its associated logic and stores global app states.
   - 📄 PropertiesMessageManager: loads and store common response messages.
 - 📁 Database. Handles database connection.
 - 📁 Exceptions. Custom base exceptions for our app.
@@ -38,7 +38,7 @@ Here we can find stuff related to testing our backend:
 - 📄 Test files. Test files are grouped by entities such as songs, database, playlist etc. Named with `test__testname` convention.
 - 📁 `test_API`. Folder that stores shared logic between tests, such as HTTP requests.
 - 📄 `conftest.py`. File that exposes fixtures to all test files.
-- ⚙ `pytest.ini`. Config file for provided enviroment values on text execution.
+- ⚙ `pytest.ini`. Config file for provided environment values on text execution.
 
 ## 🌳 Root Folder
 
@@ -47,7 +47,7 @@ In this folder we can find the Backend global configuration files. It includes:
 - ⚙️ Ruff linter and formatter configuration file.
 - ⚙️ Dependencies for base, dev and test mode. This follow the format `requirements-[type].txt`.
 - 🏗️ Deploy configuration files such as Procfile and Dockerfile.
-- ⚙️ Enviroment variables files. `.env.local` is used as an example, the app will only recognize `.env` files. More on [enviroments](Environment.md).
+- ⚙️ Environment variables files. Production and development environments are provided in `Backend/docker/env`. `dev.env` is used as an example, the app will only recognize a `.env` file under `Backend/` folder. More on [environments](Environment.md).
 
 ## ⚙️ .vscode
 

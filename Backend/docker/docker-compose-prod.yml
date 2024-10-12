@@ -3,3 +3,23 @@ services:
     extends:
       file: docker-compose-base.yml
       service: backend
+    depends_on:
+      mongo:
+        condition: service_healthy
+    env_file:
+      - ./env/prod.env
+
+  mongo:
+    image: mongo
+    container_name: mongodb
+    restart: always
+    ports:
+      - 27017:27017
+    env_file:
+      - ./env/prod.env
+    healthcheck:
+      test: ["CMD","mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+      start_period: 5s

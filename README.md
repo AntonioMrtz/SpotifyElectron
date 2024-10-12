@@ -2,6 +2,15 @@
 
 ![Spotify Electron Media Preview](docs/assets/videos/SpotifyElectronReadmePreview.gif)
 
+![backend-tests](https://github.com/AntonioMrtz/SpotifyElectron/actions/workflows/backend-tests-database-blob.yml/badge.svg)
+![backend-build](https://github.com/AntonioMrtz/SpotifyElectron/actions/workflows/backend-build.yml/badge.svg)
+![ruff-lint-check](https://github.com/AntonioMrtz/SpotifyElectron/actions/workflows/ruff-lint-check.yml/badge.svg)
+![ruff-format-check](https://github.com/AntonioMrtz/SpotifyElectron/actions/workflows/ruff-format-check.yml/badge.svg)
+
+![frontend-tests](https://github.com/AntonioMrtz/SpotifyElectron/actions/workflows/frontend-tests.yml/badge.svg)
+![eslint-check](https://github.com/AntonioMrtz/SpotifyElectron/actions/workflows/eslint-check.yml/badge.svg)
+![frontend-style-prettier](https://github.com/AntonioMrtz/SpotifyElectron/actions/workflows/frontend-style-prettier.yml/badge.svg)
+
 ## Overview
 
 [Spotify Electron](https://antoniomrtz.github.io/SpotifyElectron_Web/) is a cross-platform music streaming desktop app made with Electron-React frontend and Python-FastAPI-MongoDB. The main goal is to reproduce the original Spotify functionality while adding new ones like uploading songs.
@@ -12,11 +21,11 @@ Check out our [website](https://antoniomrtz.github.io/SpotifyElectron_Web/). Con
 
 ## 📚 Docs
 
-Check the project documentation [here](https://antoniomrtz.github.io/SpotifyElectron/).
+Check the [project documentation](https://antoniomrtz.github.io/SpotifyElectron/).
 
 ## 🔽 Download Installer
 
-Donwload the installer [here](https://github.com/AntonioMrtz/SpotifyElectron/releases).
+Donwload the [installer](https://github.com/AntonioMrtz/SpotifyElectron/releases).
 
 ## 🔧 Set up and run
 
@@ -37,7 +46,7 @@ git clone https://github.com/AntonioMrtz/SpotifyElectron.git
 ## 🖐 How to Contribute to the project
 
 Are you interested in contributing to the project? Check our contributing rules and methodologies in
-[CONTRIBUTING readme](docs/CONTRIBUTING.md). Also you can check all the contributors to the project [here](docs/CONTRIBUTORS.md).
+[CONTRIBUTING readme](docs/CONTRIBUTING.md). Also you can check [all the contributors](docs/CONTRIBUTORS.md) to the project.
 
 ## 🎯 Project's goals
 
@@ -157,6 +166,20 @@ Check our [project goals and vision](docs/VISION.md).
                 <img src="https://avatars.githubusercontent.com/u/122194522?v=4" width="90;" alt="aarshgupta24"/>
                 <br />
                 <sub><b>aarshgupta24</b></sub>
+            </a>
+        </td>
+        <td align="center">
+            <a href="https://github.com/ErikMisencik">
+                <img src="https://avatars.githubusercontent.com/u/108632576?v=4" width="90;" alt="ErikMisencik"/>
+                <br />
+                <sub><b>ErikMisencik</b></sub>
+            </a>
+        </td>
+                <td align="center">
+            <a href="https://github.com/perig99">
+                <img src="https://avatars.githubusercontent.com/u/104552862?v=4" width="90;" alt="ErikMisencik"/>
+                <br />
+                <sub><b>perig99</b></sub>
             </a>
         </td>
     </tr>

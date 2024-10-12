@@ -6,7 +6,6 @@ from starlette.status import (
     HTTP_200_OK,
     HTTP_201_CREATED,
     HTTP_202_ACCEPTED,
-    HTTP_204_NO_CONTENT,
     HTTP_403_FORBIDDEN,
     HTTP_404_NOT_FOUND,
     HTTP_405_METHOD_NOT_ALLOWED,
@@ -15,7 +14,6 @@ from test_API.api_test_artist import (
     create_artist,
     get_artist,
     get_artist_songs,
-    get_artist_streams,
     get_artists,
 )
 
@@ -125,56 +123,55 @@ def test_get_artists_correct():
 
 
 def test_get_total_streams_artist_correct(clear_test_data_db):
-    song_name = "8232392323623823723989"
+    song_name_1 = "8232392323623823723989"
     song_name_2 = "82323923236238237239892"
     file_path = "tests/assets/song.mp3"
-    artista = "8232392323623823723"
+    artist_name = "8232392323623823723"
     genre = "Pop"
     photo = "https://photo"
     password = "hola"
 
-    res_create_artist = create_artist(name=artista, password=password, photo=photo)
+    res_create_artist = create_artist(name=artist_name, password=password, photo=photo)
     assert res_create_artist.status_code == HTTP_201_CREATED
 
-    jwt_headers = get_user_jwt_header(username=artista, password=password)
+    jwt_headers = get_user_jwt_header(username=artist_name, password=password)
 
-    res_create_song = create_song(
-        name=song_name,
+    res_create_song_1 = create_song(
+        name=song_name_1,
         file_path=file_path,
         genre=genre,
         photo=photo,
         headers=jwt_headers,
     )
-    assert res_create_song.status_code == HTTP_201_CREATED
+    assert res_create_song_1.status_code == HTTP_201_CREATED
 
-    res_create_song = create_song(
+    res_create_song_2 = create_song(
         name=song_name_2,
         file_path=file_path,
         genre=genre,
         photo=photo,
         headers=jwt_headers,
     )
-    assert res_create_song.status_code == HTTP_201_CREATED
+    assert res_create_song_2.status_code == HTTP_201_CREATED
 
-    expected_artist_total_streams = 2
+    increase_song_streams(name=song_name_1, headers=jwt_headers)
+    increase_song_streams(name=song_name_2, headers=jwt_headers)
 
-    res_increase_streams_song = increase_song_streams(name=song_name, headers=jwt_headers)
-    assert res_increase_streams_song.status_code == HTTP_204_NO_CONTENT
+    res_get_artist = get_artist(name=artist_name, headers=jwt_headers)
+    assert res_get_artist.status_code == HTTP_200_OK
 
-    res_increase_streams_song = increase_song_streams(name=song_name_2, headers=jwt_headers)
-    assert res_increase_streams_song.status_code == HTTP_204_NO_CONTENT
+    artist_data = res_get_artist.json()
+    expected_total_streams = 2
+    assert "total_streams" in artist_data
+    assert artist_data["total_streams"] == expected_total_streams
 
-    res_get_total_streams_artist = get_artist_streams(artista, headers=jwt_headers)
-    assert res_get_total_streams_artist.status_code == HTTP_200_OK
-    assert res_get_total_streams_artist.json()["streams"] == expected_artist_total_streams
+    res_delete_song_1 = delete_song(song_name_1)
+    assert res_delete_song_1.status_code == HTTP_202_ACCEPTED
 
-    res_delete_song = delete_song(song_name)
-    assert res_delete_song.status_code == HTTP_202_ACCEPTED
+    res_delete_song_2 = delete_song(song_name_2)
+    assert res_delete_song_2.status_code == HTTP_202_ACCEPTED
 
-    res_delete_song = delete_song(song_name_2)
-    assert res_delete_song.status_code == HTTP_202_ACCEPTED
-
-    res_delete_artist = delete_user(artista)
+    res_delete_artist = delete_user(artist_name)
     assert res_delete_artist.status_code == HTTP_202_ACCEPTED
 
 

@@ -316,7 +316,9 @@ def delete_saved_playlists(
 
 
 @router.get("/{name}/relevant_playlists")
-def get_user_relevant_playlists(name: str) -> Response:
+def get_user_relevant_playlists(
+    name: str, token: Annotated[TokenData, Depends(JWTBearer())]
+) -> Response:
     """Get relevant playlists for user
 
     Args:
@@ -349,7 +351,9 @@ def get_user_relevant_playlists(name: str) -> Response:
 
 
 @router.get("/{name}/playlists")
-def get_user_playlists(name: str) -> Response:
+def get_user_playlists(
+    name: str, token: Annotated[TokenData, Depends(JWTBearer())]
+) -> Response:
     """Get playlists created by the user
 
     Args:
@@ -382,7 +386,9 @@ def get_user_playlists(name: str) -> Response:
 
 
 @router.get("/{name}/playlist_names")
-def get_user_playlists_names(name: str) -> Response:
+def get_user_playlists_names(
+    name: str, token: Annotated[TokenData, Depends(JWTBearer())]
+) -> Response:
     """Get playlist names created by user
 
     Args:
@@ -417,7 +423,9 @@ def get_user_playlists_names(name: str) -> Response:
 
 
 @router.get("/{name}/playback_history")
-def get_user_playback_history(name: str) -> Response:
+def get_user_playback_history(
+    name: str, token: Annotated[TokenData, Depends(JWTBearer())]
+) -> Response:
     """Get user song playback history
 
     Args:

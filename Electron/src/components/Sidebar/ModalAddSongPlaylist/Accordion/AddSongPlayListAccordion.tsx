@@ -112,7 +112,17 @@ export default function AddSongPlayListAccordion({
 
   const handleChangeFile = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target && event.target.files) {
-      setSongFile(event.target.files[0]);
+      const file = event.target.files[0];
+
+      if (file) {
+        if (file.type.startsWith('audio/')) {
+          setSongFile(file);
+        } else {
+          event.target.value = '';
+        }
+      } else {
+        event.target.value = '';
+      }
     }
   };
 
@@ -393,7 +403,7 @@ export default function AddSongPlayListAccordion({
                     id="file"
                     name="file"
                     onChange={handleChangeFile}
-                    accept="audio/mp3"
+                    accept="audio/*"
                     required
                     data-testid="sidebar-file-input"
                   />

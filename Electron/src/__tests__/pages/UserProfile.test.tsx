@@ -143,6 +143,7 @@ test('UserProfile Artist load Songs and total streams', async () => {
     playlists: [playlistName],
     saved_playlists: [playlistName],
     uploaded_songs: [songName],
+    total_streams: 190,
   };
 
   const playlistDTOMockFetch = {
@@ -160,7 +161,7 @@ test('UserProfile Artist load Songs and total streams', async () => {
     photo: 'photo',
     seconds_duration: '3',
     genre: 'Rock',
-    streams: 2,
+    streams: artistMockFetch.total_streams,
   };
 
   jest.mock('react-router-dom', () => ({
@@ -174,20 +175,6 @@ test('UserProfile Artist load Songs and total streams', async () => {
     if (url === `${Global.backendBaseUrl}/users/${artistMockFetch.name}`) {
       return Promise.resolve({
         json: () => artistMockFetch,
-        status: 200,
-        ok: true,
-        headers: getMockHeaders(),
-      }).catch((error) => {
-        console.log(error);
-      });
-    }
-    if (
-      url === `${Global.backendBaseUrl}/artists/${artistMockFetch.name}/streams`
-    ) {
-      return Promise.resolve({
-        json: () => ({
-          streams: songMockFetch.streams,
-        }),
         status: 200,
         ok: true,
         headers: getMockHeaders(),

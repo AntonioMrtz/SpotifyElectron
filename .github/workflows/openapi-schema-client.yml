@@ -2,8 +2,7 @@ name: Generate OpenAPI Schema and Frontend Client
 
 on:
   pull_request:
-    branches:
-      - closed
+    types: [closed]
 
 jobs:
   generate-openapi-schema-generate-frontend-client:
@@ -12,7 +11,7 @@ jobs:
 
     steps:
       - name: Checkout del repositorio
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           persist-credentials: false
           token: ${{ secrets.PAT }}

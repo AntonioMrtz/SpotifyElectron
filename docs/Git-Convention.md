@@ -74,3 +74,4 @@ issue-number: #7777
 - `build`: update building scripts or Docker Images.
 - `perf`: update code for performance improvement.
 - `revert`: revert changes.
+- `release`: only for release versions.

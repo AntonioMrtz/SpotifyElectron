@@ -2,6 +2,9 @@
 
 ## 1. Update release version info on codebase
 
+Create a branch named `release/v{version}` and push the changes there. For `v1.00`
+the branch will be named `release/v1.00`.
+
 ### Frontend
 
 Update `package.json` version in:

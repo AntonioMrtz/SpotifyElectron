@@ -60,16 +60,18 @@ export default function Home({ refreshSidebarData }: PropsHome) {
           {loadingPlaylists && <LoadingCircle />}
           {!loadingPlaylists &&
             playlists &&
-            playlists.map((playlist) => (
-              <PlaylistCard
-                name={playlist.name}
-                photo={playlist.photo}
-                description={playlist.description}
-                owner={playlist.owner}
-                key={playlist.name + playlist.description}
-                refreshSidebarData={refreshSidebarData}
-              />
-            ))}
+            playlists
+              .slice(0, 5)
+              .map((playlist) => (
+                <PlaylistCard
+                  name={playlist.name}
+                  photo={playlist.photo}
+                  description={playlist.description}
+                  owner={playlist.owner}
+                  key={playlist.name + playlist.description}
+                  refreshSidebarData={refreshSidebarData}
+                />
+              ))}
         </ul>
       </div>
 
@@ -111,13 +113,15 @@ export default function Home({ refreshSidebarData }: PropsHome) {
           {loadingArtists && <LoadingCircle />}
           {!loadingArtists &&
             artists &&
-            artists.map((artist) => (
-              <ArtistCard
-                name={artist.name}
-                photo={artist.photo}
-                key={artist.name}
-              />
-            ))}
+            artists
+              .slice(0, 5)
+              .map((artist) => (
+                <ArtistCard
+                  name={artist.name}
+                  photo={artist.photo}
+                  key={artist.name}
+                />
+              ))}
         </section>
       </div>
     </div>

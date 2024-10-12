@@ -343,7 +343,12 @@ test('AddSongPlaylistAccordion rejects invalid song files', async () => {
   expect(component.queryByText('Canción Añadida')).not.toBeInTheDocument();
 });
 
-// Mocking the fetch API globally
+test('AddSongPlaylistAccordion disables the upload button while song is uploading', async () => {
+  const handleCloseMock = jest.fn();
+  const refreshSidebarDataMock = jest.fn();
+  const setIsCloseAllowed = jest.fn();
+
+  // Mocking the fetch API globally
   global.fetch = jest.fn((url: string) => {
     return new Promise((resolve) => {
       if (url === `${Global.backendBaseUrl}/genres/`) {
@@ -365,3 +370,68 @@ test('AddSongPlaylistAccordion rejects invalid song files', async () => {
       }
     });
   }) as jest.Mock;
+
+  const component = await act(async () => {
+    return render(
+      <BrowserRouter>
+        <AddSongPlayListAccordion
+          handleClose={handleCloseMock}
+          refreshSidebarData={refreshSidebarDataMock}
+          setIsCloseAllowed={setIsCloseAllowed}
+        />
+      </BrowserRouter>,
+    );
+  });
+
+  const accordionExpandSong = component.getByTestId(
+    'accordion-expand-submit-song',
+  );
+
+  await act(async () => {
+    fireEvent.click(accordionExpandSong);
+  });
+
+  expect(component.getByText('Subir canción')).toBeInTheDocument();
+
+  const inputName = component.getByPlaceholderText('Nombre de la canción');
+  const inputPhoto = component.getByPlaceholderText(
+    'URL de la miniatura de la canción',
+  );
+  const selectGenreOption = component.getByText('❗ Elige un género');
+  const dropdown = component.getByTestId('select-genre');
+
+  const fileInputElement = component.getByTestId(
+    'sidebar-file-input',
+  ) as HTMLInputElement;
+
+  const validFile = new File([''], 'test.mp3', { type: 'audio/mpeg' });
+
+  await act(async () => {
+    fireEvent.change(inputName, { target: { value: 'Test Song' } });
+    fireEvent.change(inputPhoto, {
+      target: { value: 'http://example.com/image.jpg' },
+    });
+    fireEvent.change(selectGenreOption, { target: { value: 'Rock' } });
+    fireEvent.change(dropdown, { target: { value: 'Rock' } });
+    fireEvent.change(fileInputElement, { target: { files: [validFile] } });
+  });
+
+  const uploadSongButton = component.getByTestId(
+    'sidebar-addsongplaylistaccordion-submit-song',
+  );
+
+  // Verify that the upload button is enabled
+  await waitFor(() => {
+    expect(uploadSongButton).toBeEnabled();
+  });
+
+  await act(async () => {
+    fireEvent.click(uploadSongButton);
+  });
+
+  // Verify that the upload button is disabled while uploading
+  await waitFor(() => {
+    expect(uploadSongButton).toBeDisabled();
+  });
+});
+

@@ -43,16 +43,16 @@ git clone https://github.com/AntonioMrtz/SpotifyElectron.git
 
 ### 2. Set up and run
 
-[⚙️ GLOBAL](docs//SETUP.md)
+[⚙️ GLOBAL](docs/developer/SETUP.md)
 
-[🖥 BACKEND](docs/backend//SETUP.md)
+[🖥 BACKEND](docs/developer/backend/SETUP.md)
 
-[💻 FRONTEND](docs/frontend//SETUP.md)
+[💻 FRONTEND](docs/developer/frontend/SETUP.md)
 
 ## 🖐 How to Contribute to the project
 
 Are you interested in contributing to the project? Check our contributing rules and methodologies in
-[CONTRIBUTING readme](docs/CONTRIBUTING.md). Also you can check [all the contributors](docs/CONTRIBUTORS.md) to the project.
+[CONTRIBUTING readme](docs/developer/CONTRIBUTING.md). Also you can check [all the contributors](docs/CONTRIBUTORS.md) to the project.
 
 ## 🎯 Project's goals
 

@@ -1,6 +1,6 @@
 # 🖐️ How to contribute
 
-In this document we will cover how contribute to the project and the rules associated to the process. We gladly accept all kinds of contributions, from writing new features and fixing bugs to improve the existing documentation. When contributing to the project the [code of conduct](CODE_OF_CONDUCT.md) must be followed.
+In this document we will cover how contribute to the project and the rules associated to the process. We gladly accept all kinds of contributions, from writing new features and fixing bugs to improve the existing documentation. When contributing to the project the [code of conduct](../CODE_OF_CONDUCT.md) must be followed.
 
 We welcome any help you can offer and are eagerly waiting for your contributions.
 Feel free to ask for assistance or guidance at any time. We encourage you to get involved because contributing to open source projects allows you to collaborate with other members,
@@ -19,7 +19,7 @@ _It's important to leave a comment about working on an issue so the maintainer c
 _Trello links are used to synchronize Github issues with board tasks, we're not accepting new members due to free tier limitation until you have contributed at least twice_.
 ## 🙍‍♂️ Contributors list
 
-Once you contribute to the project, your name and GitHub profile will be added into the [CONTRIBUTORS list](CONTRIBUTORS.md) as an acknowledgement for your work and in order to thank you.
+Once you contribute to the project, your name and GitHub profile will be added into the [CONTRIBUTORS list](../CONTRIBUTORS.md) as an acknowledgement for your work and in order to thank you.
 
 ## 📦 Required Software
 

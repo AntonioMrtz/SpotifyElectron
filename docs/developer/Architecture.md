@@ -31,11 +31,11 @@ ARCH=BLOB
 With this configuration, frontend will load the `BLOB` architecture music player that manages the incoming
 encoded base64 bytes of the song data and injects it into the music player.
 
-![BLOB ARCHITECTURE](assets/architecture/app_architecture_blob.png)
+![BLOB ARCHITECTURE](../assets/architecture/app_architecture_blob.png)
 
 ### Song architecture
 
-![SONG ARCHITECTURE](assets/architecture/song-architecture-blob.png)
+![SONG ARCHITECTURE](../assets/architecture/song-architecture-blob.png)
 
 ## SERVERLESS (deprecated)
 
@@ -56,7 +56,7 @@ ARCH=SERVERLESS
 ```
 
 ### App architecture
-![STREAMING SERVERLESS ARCHITECTURE](assets/architecture/app_architecture_serverless.png)
+![STREAMING SERVERLESS ARCHITECTURE](../assets/architecture/app_architecture_serverless.png)
 
 ### Song architecture
-![STREAMING SONG ARCHITECTURE](assets/architecture/song_architecture_serverless.png)
+![STREAMING SONG ARCHITECTURE](../assets/architecture/song_architecture_serverless.png)

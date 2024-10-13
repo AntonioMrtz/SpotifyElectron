@@ -1,4 +1,4 @@
-# Setup and run FRONTEND
+# ⚙️ Setup and run FRONTEND
 
 ## 🛠 Setup the proyect
 

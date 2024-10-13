@@ -1,4 +1,4 @@
-# Testing
+# 🧪 Testing
 
 In this section we will cover how to run tests and develop them. Make sure `Backend/` folder is the root directory when launching the tests. See more on testing principles [here](../utils/Testing-Principles.md)
 

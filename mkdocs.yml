@@ -6,34 +6,37 @@ remote_branch: gh-pages
 
 nav:
   - Home: index.md
-  - Vision: VISION.md
-  - How to contribute: CONTRIBUTING.md
-  - Git convention: Git-Convention.md
-  - Global Set up: SETUP.md
-  - Architecture: Architecture.md
-  - Authentication & Login: Auth-Login.md
-  - Backend:
-      - Set up: backend/SETUP.md
-      - Environment: backend/Environment.md
-      - File Structure: backend/File-Structure.md
-      - Cloud: backend/Cloud.md
-      - Docker: backend/Docker.md
-      - Linting & Formatting: backend/Linting-&-Formatting.md
-      - Testing: backend/Testing.md
-      - FAQ: backend/FAQ.md
-  - Frontend:
-      - Set up: frontend/SETUP.md
-      - File Structure: frontend/File-Structure.md
-      - Linting & Formatting: frontend/Linting-&-Formatting.md
-      - Testing: frontend/Testing.md
-      - Package app: frontend/Package-app.md
-      - FAQ: frontend/FAQ.md
-  - Utils:
-    - Release procedure: utils/Release-Procedure.md
-    - OpenAPI schema generation & usage: utils/OpenAPI.md
-    - Mkdocs development & usage: utils/Mkdocs.md
-    - Generate Mock data: utils/Generate-Mock-Data.md
-    - Testing principles: utils/Testing-Principles.md
+  - Project Vision: VISION.md
+  - Developer guides:
+    - How to contribute: CONTRIBUTING.md
+    - Git convention: Git-Convention.md
+    - Architecture: Architecture.md
+    - Global Set up: SETUP.md
+    - Authentication & Login: Auth-Login.md
+    - Backend:
+        - Set up: backend/SETUP.md
+        - Environment: backend/Environment.md
+        - File Structure: backend/File-Structure.md
+        - Docker: backend/Docker.md
+        - Linting & Formatting: backend/Linting-&-Formatting.md
+        - Cloud: backend/Cloud.md
+        - Testing: backend/Testing.md
+        - FAQ: backend/FAQ.md
+    - Frontend:
+        - Set up: frontend/SETUP.md
+        - File Structure: frontend/File-Structure.md
+        - Linting & Formatting: frontend/Linting-&-Formatting.md
+        - Testing: frontend/Testing.md
+        - Package app: frontend/Package-app.md
+        - FAQ: frontend/FAQ.md
+    - Utils:
+      - Release procedure: utils/Release-Procedure.md
+      - OpenAPI schema generation & usage: utils/OpenAPI.md
+      - Mkdocs development & usage: utils/Mkdocs.md
+      - Generate Mock data: utils/Generate-Mock-Data.md
+      - Testing principles: utils/Testing-Principles.md
+  - User guides:
+    - Installation guide: user-guides/Installation-Guide.md
   - Code of conduct: CODE_OF_CONDUCT.md
   - Contributors: CONTRIBUTORS.md
 

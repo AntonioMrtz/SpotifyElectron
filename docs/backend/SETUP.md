@@ -1,4 +1,4 @@
-# Set up and run BACKEND
+# ⚙️ Set up and run BACKEND
 
 In this section we will cover:
 

@@ -170,7 +170,7 @@
   "build": {
     "productName": "SpotifyElectron",
     "appId": "org.AntonioMrtz.SpotifyElectron",
-    "artifactName": "SpotifyElectron-${version}.${ext}",
+    "artifactName": "SpotifyElectron.${ext}",
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
     "files": [

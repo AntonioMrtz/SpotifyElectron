@@ -44,15 +44,6 @@ npm run package
 npm run package:linux:appimage
 ```
 
-An `.AppImage` file will be generated. If there's any error while trying to open the app try this:
-
-```console
-sudo apt install libfuse2 &&
-cd release/build/ &&
-chmod 777 {generated-app-name}.AppImage &&
-./{generated-app-name}.AppImage --no-sandbox
-```
-
 #### Windows
 
 An `.exe` will be generated

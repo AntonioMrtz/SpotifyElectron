@@ -1,4 +1,4 @@
-# Architecture
+# 🏗️ Architecture
 
 The app has two different architectures. These architectures only differ on song store, managment, serving
 and playing.

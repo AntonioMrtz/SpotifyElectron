@@ -1,4 +1,4 @@
-# Linting and formatting
+# ✅🎨 Linting and formatting
 
 ## ✅ Linting
 

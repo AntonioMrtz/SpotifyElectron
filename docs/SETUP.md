@@ -1,4 +1,4 @@
-# Global Set up
+# ⚙️ Global Set up
 
 In this section we will cover how to set up common tools for the whole project.
 

@@ -1,4 +1,4 @@
-# Git Convention
+# 🌳 Git Convention
 
 In this document we will cover the convention applied to git usage in the project.
 

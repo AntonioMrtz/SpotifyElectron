@@ -1,4 +1,4 @@
-# How to contribute
+# 🖐️ How to contribute
 
 In this document we will cover how contribute to the project and the rules associated to the process. We gladly accept all kinds of contributions, from writing new features and fixing bugs to improve the existing documentation. When contributing to the project the [code of conduct](CODE_OF_CONDUCT.md) must be followed.
 

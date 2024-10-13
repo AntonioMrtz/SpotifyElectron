@@ -434,4 +434,3 @@ test('AddSongPlaylistAccordion disables the upload button while song is uploadin
     expect(uploadSongButton).toBeDisabled();
   });
 });
-

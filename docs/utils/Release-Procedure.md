@@ -1,4 +1,4 @@
-# Release procedure
+# ✅📦 Release procedure
 
 ## 1. Update release version info on codebase
 
@@ -41,7 +41,11 @@ class AppInfo:
 ## 3. Package app
 
 * Follow [packaging guide](../frontend/Package-app.md) using production backend URL and architecture.
-* Upload exectuables to [Github releases](https://github.com/AntonioMrtz/SpotifyElectron/releases)
+* Upload the following to [Github releases](https://github.com/AntonioMrtz/SpotifyElectron/releases):
+  * `.exe` Windows executable
+  * `AppImage` file
+  * `spotify-electron.desktop`
+  * `logo.png`
 
 ## 4. Prepare database
 

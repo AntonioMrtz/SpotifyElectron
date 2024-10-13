@@ -1,4 +1,4 @@
-# Generate Mock data
+# 🗃️ Generate Mock data
 
 Somethis is useful to have fake/mock data to test the behaviour of the app under different loads of data. With this script you can generate small, medium or large amounts of data.
 

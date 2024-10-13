@@ -1,4 +1,4 @@
-# Docker
+# 🐋 Docker
 
 Docker is used primarily in the project for:
 

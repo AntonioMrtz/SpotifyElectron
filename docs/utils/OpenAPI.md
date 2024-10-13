@@ -1,4 +1,4 @@
-# OpenAPI schema generation & usage
+# 🗳️ OpenAPI schema generation & usage
 
 The generated OpenAPI schema from Backend endpoints is used in Frontend for code auto-generation that enables for code reutilization and having an up-to-date status of the endpoints. OpenAPI schema is also used in a client that encapsulates all requests on frontend and makes use of the auto-generated code.
 

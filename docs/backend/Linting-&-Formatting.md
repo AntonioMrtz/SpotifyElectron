@@ -1,4 +1,4 @@
-# Linting & Formatting
+# ✅🎨 Linting & Formatting
 
 ### ✅ Run linting
 

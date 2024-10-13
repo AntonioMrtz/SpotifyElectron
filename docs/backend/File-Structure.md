@@ -1,4 +1,4 @@
-# File Structure
+# 📁 File Structure
 
 In this document we will cover the file structure of the Backend for Spotify Electron.
 

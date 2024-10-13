@@ -1,4 +1,4 @@
-# Mkdocs development & usage
+# 🗐 Mkdocs development & usage
 
 Project documentation will be deployed at `https://antoniomrtz.github.io/SpotifyElectron/`.
 

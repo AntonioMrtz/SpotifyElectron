@@ -1,4 +1,4 @@
-# FAQ
+# ❓ FAQ
 
 ## ◾ Unresponsive app while using the installed client
 

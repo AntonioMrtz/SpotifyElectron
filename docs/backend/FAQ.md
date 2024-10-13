@@ -1,4 +1,4 @@
-# FAQ
+# ❓ FAQ
 
 ## ◾ Database connection failed, stopping server
 

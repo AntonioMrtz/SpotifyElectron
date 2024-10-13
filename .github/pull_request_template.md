@@ -8,18 +8,18 @@
 
 !!CHECK ONLY ONE!!
 
-  - `feat`: indicates the addition of a new feature or functionality to the project.
-  - `fix`: used when fixing a bug or error in the code.
-  - `docs`: changes to the documentation
-  - `style`: formatting, missing semi colons, etc; no production code change
-  - `refactor`: refactoring production code, eg. renaming a variable
-  - `test`: adding missing tests, refactoring tests; no production code change
-  - `chore`: updating grunt tasks etc; no production code change
-  - `ci`: updating scripts for continuous integration
-  - `build`: update building scripts or Docker Images
-  - `perf`: update code for performance improvement
-  - `revert`: revert changes
-  - `docs`: Used when making changes or improvements to the project's documentation.
+- `feat`: indicates the addition of a new feature or functionality to the project.
+- `fix`: used when fixing a bug or error in the code.
+- `docs`: changes to the documentation.
+- `style`: formatting, missing semi colons, etc; no production code change.
+- `refactor`: refactoring production code, eg. renaming a variable.
+- `test`: adding missing tests, refactoring tests; no production code change.
+- `chore`: updating grunt tasks etc; no production code change.
+- `ci`: updating scripts for continuous integration.
+- `build`: update building scripts or Docker Images.
+- `perf`: update code for performance improvement.
+- `revert`: revert changes.
+- `release`: only for release versions.
 -->
 
 ## Issue

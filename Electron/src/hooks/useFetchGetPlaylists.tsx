@@ -18,24 +18,22 @@ const useFetchGetPlaylists = (refreshSidebarData: () => void) => {
         if (data.playlists) {
           const propsPlaylists: PropsPlaylistCard[] = [];
 
-          data.playlists
-            .slice(0, 5) // TODO get only a portion of total playlists in the query
-            .forEach((playlist: any) => {
-              const propsPlaylist: PropsPlaylistCard = {
-                name: playlist.name,
-                photo:
-                  playlist.photo === ''
-                    ? defaultThumbnailPlaylist
-                    : playlist.photo,
-                description: playlist.description,
-                refreshSidebarData,
-                owner: playlist.owner,
-              };
+          data.playlists.forEach((playlist: any) => {
+            const propsPlaylist: PropsPlaylistCard = {
+              name: playlist.name,
+              photo:
+                playlist.photo === ''
+                  ? defaultThumbnailPlaylist
+                  : playlist.photo,
+              description: playlist.description,
+              refreshSidebarData,
+              owner: playlist.owner,
+            };
 
-              propsPlaylists.push(propsPlaylist);
+            propsPlaylists.push(propsPlaylist);
 
-              setPlaylists(propsPlaylists);
-            });
+            setPlaylists(propsPlaylists);
+          });
         }
       } catch (err) {
         console.log(err);

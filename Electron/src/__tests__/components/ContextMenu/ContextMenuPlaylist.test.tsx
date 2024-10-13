@@ -87,7 +87,16 @@ global.fetch = jest.fn((url: string, options: any) => {
         console.log(error);
       });
     }
-
+    if (options.method === 'PATCH') {
+      return Promise.resolve({
+        json: () => {},
+        status: 204,
+        ok: true,
+        headers: getMockHeaders(),
+      }).catch((error) => {
+        console.log(error);
+      });
+    }
     if (options.method === 'POST') {
       return Promise.resolve({
         json: () => artistMockFetch,

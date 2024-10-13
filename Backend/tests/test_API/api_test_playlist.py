@@ -52,3 +52,21 @@ def delete_playlist(name: str) -> Response:
 
 def get_all_playlists(headers: dict[str, str]) -> Response:
     return client.get("/playlists/", headers=headers)
+
+
+def add_songs_to_playlist(
+    name: str,
+    song_names: list[str],
+    headers: dict[str, str],
+) -> Response:
+    return client.patch(f"/playlists/{name}/songs", headers=headers, json=song_names)
+
+
+def remove_song_from_playlist(
+    name: str,
+    song_names: list[str],
+    headers: dict[str, str],
+) -> Response:
+    return client.delete(
+        f"/playlists/{name}/songs/", params={"song_names": song_names}, headers=headers
+    )

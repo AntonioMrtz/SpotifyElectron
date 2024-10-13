@@ -168,8 +168,9 @@
     "webpack-merge": "^5.9.0"
   },
   "build": {
-    "productName": "Spotify Electron",
-    "appId": "org.erb.SpotifyElectron",
+    "productName": "SpotifyElectron",
+    "appId": "org.AntonioMrtz.SpotifyElectron",
+    "artifactName": "SpotifyElectron-${version}.${ext}",
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
     "files": [
@@ -227,12 +228,12 @@
     ],
     "publish": {
       "provider": "github",
-      "owner": "electron-react-boilerplate",
-      "repo": "electron-react-boilerplate"
+      "owner": "AntonioMrtz",
+      "repo": "SpotifyElectron"
     }
   },
   "collective": {
-    "url": "https://opencollective.com/electron-react-boilerplate-594"
+    "url": "https://github.com/AntonioMrtz/SpotifyElectron"
   },
   "devEngines": {
     "node": ">=14.x",

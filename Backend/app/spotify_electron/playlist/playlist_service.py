@@ -4,6 +4,7 @@ Playlist service for handling business logic
 
 import app.auth.auth_service as auth_service
 import app.spotify_electron.playlist.playlist_repository as playlist_repository
+import app.spotify_electron.song.validations.base_song_service_validations as base_song_service_validations  # noqa: E501
 import app.spotify_electron.user.base_user_service as base_user_service
 import app.spotify_electron.user.validations.base_user_service_validations as base_user_service_validations  # noqa: E501
 from app.auth.auth_schema import (
@@ -25,6 +26,11 @@ from app.spotify_electron.playlist.validations.playlist_service_validations impo
     validate_playlist_name_parameter,
     validate_playlist_should_exists,
     validate_playlist_should_not_exists,
+)
+from app.spotify_electron.song.base_song_schema import (
+    SongBadNameException,
+    SongNotFoundException,
+    SongRepositoryException,
 )
 from app.spotify_electron.user.user.user_schema import UserNotFoundException
 from app.spotify_electron.utils.date.date_utils import get_current_iso8601_date
@@ -371,3 +377,108 @@ def search_by_name(name: str) -> list[PlaylistDTO]:
             f"Playlists searched by name {name} retrieved successfully"
         )
         return playlists_dto
+
+
+def add_songs_to_playlist(playlist_name: str, song_names: list[str]) -> None:
+    """Add songs to playlist
+
+    Args:
+        playlist_name (str): playlist name
+        song_names (list[str]): song names
+
+    Raises:
+        PlaylistBadNameException: invalid playlist name
+        PlaylistNotFoundException: playlist doesn't exists
+        SongBadNameException: invalid song name
+        SongNotFoundException: song not found
+        PlaylistServiceException: unexpected error adding songs to playlist
+    """
+    try:
+        validate_playlist_name_parameter(playlist_name)
+        validate_playlist_should_exists(playlist_name)
+        for name in song_names:
+            base_song_service_validations.validate_song_name_parameter(name)
+            base_song_service_validations.validate_song_should_exists(name)
+        playlist_repository.add_songs_to_playlist(playlist_name, song_names)
+    except PlaylistBadNameException as exception:
+        playlist_service_logger.exception(f"Bad Playlist Name Parameter: {playlist_name}")
+        raise PlaylistBadNameException from exception
+    except PlaylistNotFoundException as exception:
+        playlist_service_logger.exception(f"Playlist not found: {playlist_name}")
+        raise PlaylistNotFoundException from exception
+    except SongBadNameException as exception:
+        playlist_service_logger.exception(f"Not all the songs have valid names: {song_names}")
+        raise SongBadNameException from exception
+    except SongNotFoundException as exception:
+        playlist_service_logger.exception(f"Not all the songs were found: {song_names}")
+        raise SongNotFoundException from exception
+    except PlaylistRepositoryException as exception:
+        playlist_service_logger.exception(
+            f"Unexpected error in Playlist Repository "
+            f"adding songs to playlist {playlist_name}: {song_names}"
+        )
+        raise PlaylistServiceException from exception
+    except Exception as exception:
+        playlist_service_logger.exception(
+            f"Unexpected error in Playlist Service "
+            f"adding songs to playlist {playlist_name}: {song_names}"
+        )
+        raise PlaylistServiceException from exception
+    else:
+        playlist_service_logger.info(f"Songs added to playlist {playlist_name}: {song_names}")
+
+
+def remove_songs_from_playlist(playlist_name: str, song_names: list[str]) -> None:
+    """Remove songs from playlist
+
+    Args:
+        playlist_name (str): playlist name
+        song_names (list[str]): song names
+
+    Raises:
+        PlaylistBadNameException: invalid playlist name
+        PlaylistNotFoundException: playlist doesn't exists
+        SongBadNameException: invalid song name
+        SongNotFoundException: song not found
+        PlaylistServiceException: unexpected error removing songs from playlist
+    """
+    try:
+        validate_playlist_name_parameter(playlist_name)
+        validate_playlist_should_exists(playlist_name)
+        for name in song_names:
+            base_song_service_validations.validate_song_name_parameter(name)
+            base_song_service_validations.validate_song_should_exists(name)
+        playlist_repository.remove_songs_from_playlist(playlist_name, song_names)
+    except PlaylistBadNameException as exception:
+        playlist_service_logger.exception(f"Bad Playlist Name Parameter: {playlist_name}")
+        raise PlaylistBadNameException from exception
+    except PlaylistNotFoundException as exception:
+        playlist_service_logger.exception(f"Playlist not found: {playlist_name}")
+        raise PlaylistNotFoundException from exception
+    except SongBadNameException as exception:
+        playlist_service_logger.exception(f"Not all the songs have valid names: {song_names}")
+        raise SongBadNameException from exception
+    except SongNotFoundException as exception:
+        playlist_service_logger.exception(f"Not all the songs were found: {song_names}")
+        raise SongNotFoundException from exception
+    except SongRepositoryException as exception:
+        playlist_service_logger.exception(
+            f"Unexpected error in Song Repository checking if songs exist: {song_names}"
+        )
+        raise PlaylistServiceException from exception
+    except PlaylistRepositoryException as exception:
+        playlist_service_logger.exception(
+            f"Unexpected error in Playlist Repository "
+            f"removing songs from playlist {playlist_name}: {song_names}"
+        )
+        raise PlaylistServiceException from exception
+    except Exception as exception:
+        playlist_service_logger.exception(
+            f"Unexpected error in Playlist Service "
+            f"removing songs from playlist {playlist_name}: {song_names}"
+        )
+        raise PlaylistServiceException from exception
+    else:
+        playlist_service_logger.info(
+            f"Songs removed from playlist {playlist_name}: {song_names}"
+        )

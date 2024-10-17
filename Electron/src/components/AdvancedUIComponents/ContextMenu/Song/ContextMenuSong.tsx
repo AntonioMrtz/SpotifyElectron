@@ -72,23 +72,9 @@ export default function ContextMenuSong({
 
   const handleAddSongToPlaylist = async (selectedPlaylistName: string) => {
     try {
-      const playlistData =
-        await PlaylistsService.getPlaylistPlaylistsNameGet(
-          selectedPlaylistName,
-        );
-
-      const { photo, description } = playlistData;
-
-      const newSongsPutPlaylist: string[] = [
-        songName,
-        ...playlistData.song_names,
-      ];
-
-      await PlaylistsService.updatePlaylistPlaylistsNamePut(
+      await PlaylistsService.addSongsToPlaylistPlaylistsNameSongsPatch(
         selectedPlaylistName,
-        photo,
-        description,
-        newSongsPutPlaylist,
+        [songName],
       );
       handleClose();
     } catch (err) {
@@ -100,21 +86,10 @@ export default function ContextMenuSong({
   };
 
   const handleDeleteSongFromPlaylist = async () => {
-    // TODO replace multiple calls with method for removing song from playlist
     try {
-      const playlistData =
-        await PlaylistsService.getPlaylistPlaylistsNameGet(playlistName);
-
-      const { photo, description } = playlistData;
-
-      const newSongsPutPlaylist = playlistData.song_names.filter(
-        (songNameFetch: any) => songNameFetch !== songName,
-      );
-      await PlaylistsService.updatePlaylistPlaylistsNamePut(
+      await PlaylistsService.removeSongsFromPlaylistPlaylistsNameSongsDelete(
         playlistName,
-        photo,
-        description,
-        newSongsPutPlaylist,
+        [songName],
       );
       refreshPlaylistData();
       handleClose();

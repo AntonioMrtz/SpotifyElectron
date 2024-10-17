@@ -4,7 +4,7 @@ Playlist controller for handling incoming HTTP Requests
 
 from typing import Annotated
 
-from fastapi import APIRouter, Body, Depends
+from fastapi import APIRouter, Body, Depends, Query
 from fastapi.responses import Response
 from starlette.status import (
     HTTP_200_OK,
@@ -34,6 +34,10 @@ from app.spotify_electron.playlist.playlist_schema import (
     PlaylistBadNameException,
     PlaylistNotFoundException,
     PlaylistServiceException,
+)
+from app.spotify_electron.song.base_song_schema import (
+    SongBadNameException,
+    SongNotFoundException,
 )
 
 router = APIRouter(
@@ -267,6 +271,80 @@ def get_selected_playlists(
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonEncodingError,
+        )
+    except (Exception, PlaylistServiceException):
+        return Response(
+            status_code=HTTP_500_INTERNAL_SERVER_ERROR,
+            content=PropertiesMessagesManager.commonInternalServerError,
+        )
+
+
+@router.patch("/{name}/songs/")
+def add_songs_to_playlist(name: str, song_names: list[str]) -> Response:
+    """Add songs to playlist
+
+    Args:
+        name (str): playlist name
+        song_names (list[str]): song names
+    """
+    try:
+        playlist_service.add_songs_to_playlist(name, song_names)
+        return Response(None, HTTP_204_NO_CONTENT)
+    except PlaylistBadNameException:
+        return Response(
+            status_code=HTTP_400_BAD_REQUEST,
+            content=PropertiesMessagesManager.playlistBadName,
+        )
+    except PlaylistNotFoundException:
+        return Response(
+            status_code=HTTP_404_NOT_FOUND,
+        )
+    except SongBadNameException:
+        return Response(
+            status_code=HTTP_400_BAD_REQUEST,
+            content=PropertiesMessagesManager.songBadName,
+        )
+    except SongNotFoundException:
+        return Response(
+            status_code=HTTP_404_NOT_FOUND,
+            content=PropertiesMessagesManager.songNotFound,
+        )
+    except (Exception, PlaylistServiceException):
+        return Response(
+            status_code=HTTP_500_INTERNAL_SERVER_ERROR,
+            content=PropertiesMessagesManager.commonInternalServerError,
+        )
+
+
+@router.delete("/{name}/songs/")
+def remove_songs_from_playlist(name: str, song_names: list[str] = Query(...)) -> Response:
+    """Remove songs from playlist
+
+    Args:
+        name (str): playlist name
+        song_names (list[str]): song names
+    """
+    try:
+        playlist_service.remove_songs_from_playlist(name, song_names)
+        return Response(None, HTTP_202_ACCEPTED)
+    except PlaylistBadNameException:
+        return Response(
+            status_code=HTTP_400_BAD_REQUEST,
+            content=PropertiesMessagesManager.playlistBadName,
+        )
+    except PlaylistNotFoundException:
+        return Response(
+            status_code=HTTP_404_NOT_FOUND,
+        )
+    except SongBadNameException:
+        return Response(
+            status_code=HTTP_400_BAD_REQUEST,
+            content=PropertiesMessagesManager.songBadName,
+        )
+    except SongNotFoundException:
+        return Response(
+            status_code=HTTP_404_NOT_FOUND,
+            content=PropertiesMessagesManager.songNotFound,
         )
     except (Exception, PlaylistServiceException):
         return Response(

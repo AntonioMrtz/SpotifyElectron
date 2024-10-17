@@ -6,34 +6,37 @@ remote_branch: gh-pages
 
 nav:
   - Home: index.md
-  - Vision: VISION.md
-  - How to contribute: CONTRIBUTING.md
-  - Git convention: Git-Convention.md
-  - Global Set up: SETUP.md
-  - Architecture: Architecture.md
-  - Authentication & Login: Auth-Login.md
-  - Backend:
-      - Set up: backend/SETUP.md
-      - Environment: backend/Environment.md
-      - File Structure: backend/File-Structure.md
-      - Cloud: backend/Cloud.md
-      - Docker: backend/Docker.md
-      - Linting & Formatting: backend/Linting-&-Formatting.md
-      - Testing: backend/Testing.md
-      - FAQ: backend/FAQ.md
-  - Frontend:
-      - Set up: frontend/SETUP.md
-      - File Structure: frontend/File-Structure.md
-      - Linting & Formatting: frontend/Linting-&-Formatting.md
-      - Testing: frontend/Testing.md
-      - Package app: frontend/Package-app.md
-      - FAQ: frontend/FAQ.md
-  - Utils:
-    - Release procedure: utils/Release-Procedure.md
-    - OpenAPI schema generation & usage: utils/OpenAPI.md
-    - Mkdocs development & usage: utils/Mkdocs.md
-    - Generate Mock data: utils/Generate-Mock-Data.md
-    - Testing principles: utils/Testing-Principles.md
+  - Project Vision: VISION.md
+  - Developer guides:
+    - How to contribute: developer/CONTRIBUTING.md
+    - Git convention: developer/Git-Convention.md
+    - Architecture: developer/Architecture.md
+    - Global Set up: developer/SETUP.md
+    - Authentication & Login: developer/Auth-Login.md
+    - Backend:
+        - Set up: developer/backend/SETUP.md
+        - Environment: developer/backend/Environment.md
+        - File Structure: developer/backend/File-Structure.md
+        - Docker: developer/backend/Docker.md
+        - Linting & Formatting: developer/backend/Linting-&-Formatting.md
+        - Cloud: developer/backend/Cloud.md
+        - Testing: developer/backend/Testing.md
+        - FAQ: developer/backend/FAQ.md
+    - Frontend:
+        - Set up: developer/frontend/SETUP.md
+        - File Structure: developer/frontend/File-Structure.md
+        - Linting & Formatting: developer/frontend/Linting-&-Formatting.md
+        - Testing: developer/frontend/Testing.md
+        - Package app: developer/frontend/Package-app.md
+        - FAQ: developer/frontend/FAQ.md
+    - Utils:
+      - Release procedure: developer/utils/Release-Procedure.md
+      - OpenAPI schema generation & usage: developer/utils/OpenAPI.md
+      - Mkdocs development & usage: developer/utils/Mkdocs.md
+      - Generate Mock data: developer/utils/Generate-Mock-Data.md
+      - Testing principles: developer/utils/Testing-Principles.md
+  - User guides:
+    - Installation guide: user/user-guides/Installation-Guide.md
   - Code of conduct: CODE_OF_CONDUCT.md
   - Contributors: CONTRIBUTORS.md
 
@@ -59,6 +62,7 @@ theme:
 plugins:
   - mkdocstrings
   - search
+  - mkdocs-video
 
 markdown_extensions:
   - mdx_truly_sane_lists

@@ -25,8 +25,8 @@ jobs:
       - name: Start services
         working-directory: Backend/docker/
         run: |
-          chmod +x build_and_up_dev.sh
-          ./build_and_up_dev.sh
+          chmod +x build_and_up_dev_standalone.sh
+          ./build_and_up_dev_standalone.sh
 
       - name: Run health check
         run: |
@@ -36,4 +36,4 @@ jobs:
       - name: Shutdown services
         working-directory: Backend/docker/
         run: |
-          docker-compose -f docker-compose-dev.yml down
+          docker-compose -f docker-compose-dev-standalone.yml down

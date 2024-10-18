@@ -11,6 +11,7 @@ import timeout from 'utils/timeout';
 import LoadingCircle from 'components/AdvancedUIComponents/LoadingCircle/LoadingCircle';
 import Global from 'global/global';
 import { CancelablePromise } from 'swagger/api';
+import LoadingCircleSmall from 'components/AdvancedUIComponents/LoadingCircle/LoadingCircleSmall';
 import styles from './startMenu.module.css';
 import SpotifyElectronLogo from '../../assets/imgs/SpotifyElectronLogo.png';
 import { LoginService } from '../../swagger/api/services/LoginService';
@@ -150,11 +151,7 @@ export default function StartMenu({
 
   return (
     <div className={`${styles.mainModalContainer}`}>
-      {(autoLoginLoading || loginLoading) && (
-        <div className={`${styles.loadingCircleWrapper}`}>
-          <LoadingCircle />
-        </div>
-      )}
+      {autoLoginLoading && <LoadingCircle />}
       {!autoLoginLoading && (
         <div className={`${styles.contentWrapper}`}>
           <div className={`d-flex flex-row ${styles.titleContainer}`}>
@@ -210,6 +207,7 @@ export default function StartMenu({
               disabled={loginLoading}
             >
               Iniciar sesión
+              {loginLoading && <LoadingCircleSmall />}
             </button>
           </form>
 

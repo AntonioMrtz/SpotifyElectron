@@ -122,7 +122,7 @@ export default function StartMenu({
       let autoLoginPromise: CancelablePromise<any> | null = null;
       try {
         setAutoLoginLoading(true);
-        const token = 'a';
+        const token = getToken();
         if (!token) return;
         autoLoginPromise =
           LoginService.loginUserWithJwtLoginTokenTokenPost(token);

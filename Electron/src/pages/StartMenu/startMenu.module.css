@@ -14,6 +14,15 @@
   z-index: 9999;
 }
 
+.loadingCircleWrapper {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
 .contentWrapper {
   background-color: black;
   border-radius: 8px;
@@ -84,6 +93,10 @@
   box-shadow: inset 0 0 0 3px var(--pure-white, #000000);
 }
 
+.formWrapper input:disabled {
+  opacity: 50%;
+}
+
 .loginButton {
   border-radius: 999px;
   background-color: var(--app-logo-color-darker);
@@ -120,6 +133,10 @@
 
 .wrapperRegisterText button:hover {
   color: var(--app-logo-color-darker) !important;
+}
+
+.wrapperRegisterText button:disabled {
+  opacity: 50%;
 }
 
 @media (max-width: 1336px) {

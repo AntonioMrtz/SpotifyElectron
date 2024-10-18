@@ -6,7 +6,7 @@ import {
 } from 'components/AdvancedUIComponents/InfoPopOver/types/InfoPopover';
 import timeout from 'utils/timeout';
 import Global from 'global/global';
-import LoadingCircle from 'components/AdvancedUIComponents/LoadingCircle/LoadingCircle';
+import LoadingCircleSmall from 'components/AdvancedUIComponents/LoadingCircle/LoadingCircleSmall';
 import { CancelablePromise } from 'swagger/api';
 import styles from './startMenu.module.css';
 import SpotifyElectronLogo from '../../assets/imgs/SpotifyElectronLogo.png';
@@ -145,11 +145,6 @@ export default function RegisterMenu({ setIsSigningUp }: PropsRegisterMenu) {
 
   return (
     <div className={`${styles.mainModalContainer}`}>
-      {loading && (
-        <div className={`${styles.loadingCircleWrapper}`}>
-          <LoadingCircle />
-        </div>
-      )}
       <div className={`${styles.contentWrapper}`}>
         <div className={`d-flex flex-row ${styles.titleContainer}`}>
           <img
@@ -242,7 +237,7 @@ export default function RegisterMenu({ setIsSigningUp }: PropsRegisterMenu) {
             disabled={loading}
             onClick={handleRegister}
           >
-            Registrar
+            Registrar {loading && <LoadingCircleSmall />}
           </button>
         </form>
 

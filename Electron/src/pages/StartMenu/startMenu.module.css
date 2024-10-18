@@ -106,10 +106,16 @@
   padding: 8px;
   margin-top: 16px;
   font-weight: 700;
+  display: flex;
+  justify-content: center;
 }
 
 .loginButton:hover {
   transform: scale(1.08);
+}
+
+.loginButton:disabled {
+  transform: none;
 }
 
 .registerButton {
@@ -121,10 +127,16 @@
   padding: 8px;
   margin-top: 16px;
   font-weight: 700;
+  display: flex;
+  justify-content: center;
 }
 
 .registerButton:hover {
   transform: scale(1.04);
+}
+
+.registerButton:disabled {
+  transform: none;
 }
 
 .wrapperRegisterText {

@@ -7,6 +7,7 @@ import {
 import timeout from 'utils/timeout';
 import Global from 'global/global';
 import LoadingCircle from 'components/AdvancedUIComponents/LoadingCircle/LoadingCircle';
+import { CancelablePromise } from 'swagger/api';
 import styles from './startMenu.module.css';
 import SpotifyElectronLogo from '../../assets/imgs/SpotifyElectronLogo.png';
 import { UsersService } from '../../swagger/api/services/UsersService';
@@ -81,10 +82,11 @@ export default function RegisterMenu({ setIsSigningUp }: PropsRegisterMenu) {
       return;
     }
 
+    let createUserPromise: CancelablePromise<any> | null = null;
     try {
       setLoading(true);
 
-      const createUserPromise = UsersService.createUserUsersPost(
+      createUserPromise = UsersService.createUserUsersPost(
         formData.name,
         formData.photo,
         formData.password,
@@ -114,6 +116,8 @@ export default function RegisterMenu({ setIsSigningUp }: PropsRegisterMenu) {
       let description: string;
 
       if (error instanceof Error && error.message === 'Timeout') {
+        createUserPromise?.cancel();
+
         title = 'El servidor esta iniciándose';
         description =
           'El servidor esta iniciándose (cold-start), inténtelo de nuevo en 1 minuto';

@@ -10,6 +10,7 @@ import { Body_login_user_login__post } from 'swagger/api/models/Body_login_user_
 import timeout from 'utils/timeout';
 import LoadingCircle from 'components/AdvancedUIComponents/LoadingCircle/LoadingCircle';
 import Global from 'global/global';
+import { CancelablePromise } from 'swagger/api';
 import styles from './startMenu.module.css';
 import SpotifyElectronLogo from '../../assets/imgs/SpotifyElectronLogo.png';
 import { LoginService } from '../../swagger/api/services/LoginService';
@@ -69,6 +70,8 @@ export default function StartMenu({
 
   const handleLogin = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+
+    let loginUserPromise: CancelablePromise<any> | null = null;
     try {
       setLoginLoading(true);
       if (!formData.nombre || !formData.password) {
@@ -80,7 +83,7 @@ export default function StartMenu({
         password: formData.password,
       };
 
-      const loginUserPromise = LoginService.loginUserLoginPost(loginData);
+      loginUserPromise = LoginService.loginUserLoginPost(loginData);
       const loginResponse = await Promise.race([
         loginUserPromise,
         timeout(Global.coldStartRequestTimeout),
@@ -95,6 +98,8 @@ export default function StartMenu({
       let description: string;
 
       if (error instanceof Error && error.message === 'Timeout') {
+        loginUserPromise?.cancel();
+
         title = coldStartTimeoutErrorTitle;
         description = coldStartTimeoutErrorDescription;
       } else {
@@ -114,11 +119,12 @@ export default function StartMenu({
 
   useEffect(() => {
     const handleAutoLogin = async () => {
+      let autoLoginPromise: CancelablePromise<any> | null = null;
       try {
         setAutoLoginLoading(true);
-        const token = getToken();
+        const token = 'a';
         if (!token) return;
-        const autoLoginPromise =
+        autoLoginPromise =
           LoginService.loginUserWithJwtLoginTokenTokenPost(token);
         await Promise.race([
           autoLoginPromise,
@@ -127,6 +133,7 @@ export default function StartMenu({
         setIsLogged(true);
       } catch (error) {
         if (error instanceof Error && error.message === 'Timeout') {
+          autoLoginPromise?.cancel();
           showErrorPopover({
             title: coldStartTimeoutErrorTitle,
             description: coldStartTimeoutErrorDescription,

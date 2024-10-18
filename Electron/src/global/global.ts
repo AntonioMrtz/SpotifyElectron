@@ -10,6 +10,8 @@ namespace Global {
   export const songArchitecture: SongArchitecture =
     SongArchitecture.BLOB_ARCHITECTURE;
 
+  export const coldStartRequestTimeout = 5000;
+
   export interface HandleUrlChangeResponse {
     canGoBack: boolean | undefined;
     canGoForward: boolean | undefined;

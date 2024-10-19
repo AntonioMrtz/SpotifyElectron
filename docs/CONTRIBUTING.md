@@ -30,5 +30,6 @@ Once you contribute to the project, your name and GitHub profile will be added i
 
 ## ⚙ Set up development environment
 
+- [Global](developer/SETUP.md)
 - [Backend](developer/backend/SETUP.md)
 - [Frontend](developer/frontend/SETUP.md)

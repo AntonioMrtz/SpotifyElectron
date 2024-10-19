@@ -27,8 +27,7 @@
 
 ---
 
-__🖐️ Learn [how to CONTRIBUTE](../../docs/CONTRIBUTING.md), all help is welcomed :)__
-
+__🖐️ Learn [how to CONTRIBUTE](https://antoniomrtz.github.io/SpotifyElectron/developer/CONTRIBUTING/), all help is welcomed :)__
 
 __📚 Check out the [project documentation](https://antoniomrtz.github.io/SpotifyElectron/) for more info__
 

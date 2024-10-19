@@ -19,15 +19,24 @@ jobs:
         with:
           python-version: 3.11
 
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Install Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install docker-compose -y
+
+      - name: Start dependencies
+        working-directory: Backend/docker/
+        run: |
+          chmod +x build_and_up_dev_backend.sh
+          ./build_and_up_dev_backend.sh
+
       - name: Rename already existing OpenAPI Schema
         working-directory: Electron/src/swagger/
         run: |
           mv openapi.json openapi-old.json
-        env:
-          MONGO_URI: ${{ secrets.MONGO_URI }}
-          SECRET_KEY_SIGN: none
-          ARCH: BLOB
-          ENV_VALUE: PROD
 
       - name: Install dependencies and run OpenAPI Schema Generator
         working-directory: Backend/
@@ -37,12 +46,17 @@ jobs:
           pip install -r requirements.txt
           python -m app.tools.generate_openapi
         env:
-          MONGO_URI: ${{ secrets.MONGO_URI }}
-          SECRET_KEY_SIGN: none
-          ARCH: BLOB
-          ENV_VALUE: PROD
+          MONGO_URI: mongodb://root:root@localhost:27017/
+          SECRET_KEY_SIGN: "f24e2f3ac557d487b6d879fb2d86f2b2"
+          ARCH: "BLOB"
+          ENV_VALUE: "PROD"
 
       - name: Compare new and existing OpenAPI Schema
         working-directory: Electron/src/swagger/
         run: |
           python compare_openapi_schema.py openapi-old.json openapi.json
+
+      - name: Shutdown dependencies
+        working-directory: Backend/docker/
+        run: |
+          docker-compose -f docker-compose-dev-backend.yml down

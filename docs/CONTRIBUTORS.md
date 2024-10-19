@@ -111,4 +111,4 @@ We're currently looking for contributions for the following:
   - Improve the project
 - Docs Writing
 
-For more information, please refer to our [CONTRIBUTING guide](developer/CONTRIBUTING.md).
+For more information, please refer to our [CONTRIBUTING guide](CONTRIBUTING.md).

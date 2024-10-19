@@ -7,8 +7,8 @@ remote_branch: gh-pages
 nav:
   - Home: index.md
   - Project Vision: VISION.md
+  - How to contribute: CONTRIBUTING.md
   - Developer guides:
-    - How to contribute: developer/CONTRIBUTING.md
     - Git convention: developer/Git-Convention.md
     - Architecture: developer/Architecture.md
     - Global Set up: developer/SETUP.md

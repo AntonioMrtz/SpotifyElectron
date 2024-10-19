@@ -1,0 +1,49 @@
+name: Check OpenAPI schema is updated
+
+on:
+  pull_request:
+    branches:
+      - "master"
+      - "master-*"
+
+jobs:
+  check-openapi-schema-is-updated:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      - name: Configure Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.11
+
+      - name: Rename already existing OpenAPI Schema
+        working-directory: Electron/src/swagger/
+        run: |
+          mv openapi.json openapi-old.json
+        env:
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+          SECRET_KEY_SIGN: none
+          ARCH: BLOB
+          ENV_VALUE: PROD
+
+      - name: Install dependencies and run OpenAPI Schema Generator
+        working-directory: Backend/
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          pip install -r requirements.txt
+          python -m app.tools.generate_openapi
+        env:
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+          SECRET_KEY_SIGN: none
+          ARCH: BLOB
+          ENV_VALUE: PROD
+
+      - name: Compare new and existing OpenAPI Schema
+        working-directory: Electron/src/swagger/
+        run: |
+          python compare_openapi_schema.py openapi-old.json openapi.json

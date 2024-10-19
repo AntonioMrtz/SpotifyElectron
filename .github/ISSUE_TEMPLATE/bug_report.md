@@ -28,7 +28,7 @@ Add any other context about the problem here.
 
 ---
 
-__🖐️ Learn [how to CONTRIBUTE](https://antoniomrtz.github.io/SpotifyElectron/developer/CONTRIBUTING/), all help is welcomed :)__
+__🖐️ Learn [how to CONTRIBUTE](https://antoniomrtz.github.io/SpotifyElectron/CONTRIBUTING), all help is welcomed :)__
 
 __📚 Check out the [project documentation](https://antoniomrtz.github.io/SpotifyElectron/) for more info__
 

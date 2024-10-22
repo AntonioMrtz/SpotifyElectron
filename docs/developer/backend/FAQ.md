@@ -14,10 +14,6 @@ Both errors indicate a failure to connect to the database. To diagnose the issue
 then the database is running correctly.
 3. If nothing appears, revisit the Docker deployment steps to ensure everything was completed properly.
 
-`It looks like you are trying to access MongoDB over HTTP on the native driver port.`
-
-If nothing appears, check that the steps provided in [Docker deployment](Docker.md) were completed correctly.
-
 ## ◾ Docker build scripts cannot be run
 
 If you cannot run Docker scripts or they fail while executing:

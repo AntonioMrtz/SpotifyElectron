@@ -18,7 +18,7 @@ KEY1=value1
 
 Backend app will look for `.env` file under `Backend/` folder
 
-* Copy `docker/env/dev.env` to `Backend/` and rename it to `.env`
+- Copy `docker/env/dev.env` to `Backend/` and rename it to `.env`
 
 _Note that file has to be named `.env` not `dev.env` or similars, having a different name will not make its variables part of the environment variables_ recognized by the backend.
 
@@ -26,8 +26,8 @@ _Note that file has to be named `.env` not `dev.env` or similars, having a diffe
 
 Backend app will look for `[dev|prod].env` file under `Backend/docker/env` folder
 
-* `dev.env` for development
-* `prod.env` for production
+- `dev.env` for development
+- `prod.env` for production
 
 ## 📄 Environments variables
 
@@ -63,7 +63,6 @@ The following file can be used out of the box for development purpouse. It conta
 
 [Development environment file](https://github.com/AntonioMrtz/SpotifyElectron/blob/master/Backend/docker/env/dev.env)
 
-
 ## ✅ PRODUCTION ENVIRONMENT
 
 The following file can be used out of the box for development purpouse. It contains the following characteristics:
@@ -85,6 +84,5 @@ MONGO_INITDB_ROOT_USERNAME=user
 MONGO_INITDB_ROOT_PASSWORD=password
 MONGO_URI=mongodb://user:password@mongodb:27017/
 ```
-
 
 [Development environment file](https://github.com/AntonioMrtz/SpotifyElectron/blob/master/Backend/docker/env/prod.env)

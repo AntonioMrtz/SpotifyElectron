@@ -16,12 +16,12 @@ In this document we will cover the file structure of the Backend for Spotify Ele
 - 📁 Spotify_electron: main folder for our bussiness logic.
   - 📁 Playlist. We will use playlist as an example but this apply to the whole domain model.
     - 📄 Controller. Router used by FastAPI, it handles the incoming HTTP Requests. Upon recieving HTTP Request it delegates into the service layer.
-    -  Service. Handles the bussiness logic for our domain model. It communicates with the repository layer for dasta persistence.
+    - Service. Handles the bussiness logic for our domain model. It communicates with the repository layer for dasta persistence.
     - 📄 Repository. Manages the persistence layer and communicates directly with the database.
     - 📄Schema. Stores the entity related model such as classes or exceptions.
-    - 📁 Providers. Services responsible for loading or supplying services depending and database collections  multiple conditions.
+    - 📁 Providers. Services responsible for loading or supplying services depending and database collections multiple conditions.
     - 📁 Validations. Common validations for repository and service layer. This include among others checks for
-    database responses.
+      database responses.
   - 📁 Utils. Auxiliar functions for common operations such as date formatting, json validation...
 - 📄`main`. Entrypoint of the app. Loads middlewares, routers and global configurations.
 

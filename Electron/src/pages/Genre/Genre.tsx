@@ -4,11 +4,10 @@ import useFetchSongsByGenre from 'hooks/useFetchGetSongsbyGenre';
 import styles from './genre.module.css';
 import SongCard from '../../components/Cards/SongCard/SongCard';
 
-interface PropsGenre {
+export interface PropsGenre {
   refreshSidebarData: () => void;
   changeSongName: (songName: string) => void;
 }
-
 export default function Genre({
   refreshSidebarData,
   changeSongName,

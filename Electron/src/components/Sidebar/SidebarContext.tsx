@@ -1,35 +1,63 @@
-// SidebarContext.tsx
-import React, { createContext, useContext, useCallback, useState } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useCallback,
+  useMemo,
+  ReactNode,
+} from 'react';
 
-// Define the context type
-interface SidebarContextType {
+// Define the shape of the context
+interface SidebarContextProps {
   refreshSidebarData: () => void;
-  refreshCounter: number; // State variable to track refreshes
+  sidebarData: any; // You can replace 'any' with a more specific type if you know the shape of the data
 }
 
-// Create the context with a default value
-const SidebarContext = createContext<SidebarContextType | undefined>(undefined);
+// Define the props for SidebarProvider, which includes 'children'
+interface SidebarProviderProps {
+  children: ReactNode; // ReactNode is the correct type for children in React components
+}
 
-// Create a provider component
-export const SidebarProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  // State for the refresh counter
-  const [refreshCounter, setRefreshCounter] = useState(0);
+// Create the context with an empty default value
+const SidebarContext = createContext<SidebarContextProps | undefined>(
+  undefined,
+);
 
-  // Method to refresh sidebar data
+// SidebarProvider component that wraps around the application or components that need sidebar data
+export function SidebarProvider({ children }: SidebarProviderProps) {
+  // Changed to function declaration
+  const [sidebarData, setSidebarData] = useState<any>(null);
+
+  // A function to refresh the sidebar data
   const refreshSidebarData = useCallback(() => {
+    // Here you would add your logic to refresh the sidebar data
     console.log('Sidebar data refreshed');
-    // Update the counter which can be used to trigger updates
-    setRefreshCounter((prev) => prev + 1);
+
+    // Dummy data for demonstration purposes. Replace this with actual data-fetching logic.
+    const newData = {
+      playlists: ['Playlist 1', 'Playlist 2', 'Playlist 3'],
+      userInfo: {
+        username: 'user123',
+        email: 'user123@example.com',
+      },
+    };
+
+    // Update the state with the new data
+    setSidebarData(newData);
   }, []);
 
-  return (
-    <SidebarContext.Provider value={{ refreshSidebarData, refreshCounter }}>
-      {children}
-    </SidebarContext.Provider>
+  // Memoize the value object
+  const value = useMemo(
+    () => ({ refreshSidebarData, sidebarData }),
+    [refreshSidebarData, sidebarData],
   );
-};
 
-// Create a custom hook for using the SidebarContext
+  return (
+    <SidebarContext.Provider value={value}>{children}</SidebarContext.Provider>
+  );
+}
+
+// Hook to access the sidebar context
 export const useSidebar = () => {
   const context = useContext(SidebarContext);
   if (!context) {

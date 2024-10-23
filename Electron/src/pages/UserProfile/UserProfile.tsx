@@ -10,7 +10,7 @@ import useFetchGetUserPlaylists from 'hooks/useFetchGetUserPlaylists';
 import styles from './userProfile.module.css';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 
-interface PropsUserProfile {
+export interface PropsUserProfile {
   userType: UserType;
   refreshSidebarData: () => void;
   changeSongName: (songName: string) => void;

@@ -1,5 +1,5 @@
+import React, { useEffect, useState } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
-import { useState, useEffect } from 'react';
 import Playlist from 'pages/Playlist/Playlist';
 import StickyHeader from 'components/StickyHeader/StickyHeader';
 import Global from 'global/global';
@@ -11,38 +11,35 @@ import UserProfile from 'pages/UserProfile/UserProfile';
 import UserType from 'utils/role';
 import RegisterMenu from 'pages/StartMenu/RegisterMenu';
 import { deleteToken } from 'utils/token';
+import Sidebar from 'components/Sidebar/Sidebar';
+import Home from 'pages/Home/Home';
+import Explorar from 'pages/Explorar/Explorar';
+import Footer from 'components/footer/Footer';
+import { SidebarProvider, useSidebar } from 'components/Sidebar/SidebarContext';
 import styles from './AppCss.module.css';
-import Sidebar from '../components/Sidebar/Sidebar';
-import Home from '../pages/Home/Home';
-import Explorar from '../pages/Explorar/Explorar';
-import Footer from '../components/footer/Footer';
-import { SidebarProvider } from '../components/Sidebar/SidebarContext'; // Import the SidebarProvider
 
 function App() {
-  /* Scroll to the top if path is changed */
   const location = useLocation();
+  const [songName, setSongName] = useState<string>(Global.noSongPlaying);
+  const [isLogged, setIsLogged] = useState<boolean>(false);
+  const [isSigningUp, setIsSigningUp] = useState<boolean>(false);
+
+  // Call useSidebar here, outside of conditional rendering
+  const { refreshSidebarData } = useSidebar();
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location]);
 
-  // Handle change song name
-  const [songName, setSongName] = useState(Global.noSongPlaying);
   const changeSongName = (songNameInput: string): void => {
     setSongName(songNameInput);
   };
 
-  // Handle login status
-  const [isLogged, setIsLogged] = useState(false);
-
-  const handleLogout = () => {
+  const handleLogout = (): void => {
     changeSongName(Global.noSongPlaying);
     deleteToken();
     setIsLogged(false);
   };
-
-  // Handle register status
-  const [isSigningUp, setIsSigningUp] = useState(false);
 
   return (
     <>
@@ -51,58 +48,111 @@ function App() {
         <StartMenu setIsLogged={setIsLogged} setIsSigningUp={setIsSigningUp} />
       )}
       {isLogged && (
-        <SidebarProvider> {/* Wrap the sidebar and main content in SidebarProvider */}
+        <SidebarProvider>
           <div className={`App d-flex flex-column ${styles.appBackground}`}>
             <StickyHeader handleLogout={handleLogout} />
-
             <div className="d-flex">
-              <Sidebar /> {/* Remove refreshSidebarTriggerValue and refreshSidebarData props */}
-              <div className={`App d-flex container-fluid ${styles.mainContentWrapper}`}>
+              <Sidebar />
+              <div
+                className={`App d-flex container-fluid ${styles.mainContentWrapper}`}
+              >
                 <Routes>
                   <Route
                     path="/playlist/:id"
-                    element={<Playlist changeSongName={changeSongName} />}
+                    element={
+                      <Playlist
+                        changeSongName={changeSongName}
+                        refreshSidebarData={refreshSidebarData}
+                      />
+                    }
                   />
                   <Route
                     path="/explorar"
-                    element={<Explorar changeSongName={changeSongName} />}
+                    element={
+                      <Explorar
+                        changeSongName={changeSongName}
+                        refreshSidebarData={refreshSidebarData} // Pass the missing prop here
+                      />
+                    }
                   />
                   <Route
                     path="/explorar/genre/:id"
-                    element={<Genre changeSongName={changeSongName} />}
+                    element={
+                      <Genre
+                        changeSongName={changeSongName}
+                        refreshSidebarData={refreshSidebarData} // Pass the missing prop here
+                      />
+                    }
                   />
                   <Route
                     path="/user/:id"
-                    element={<UserProfile changeSongName={changeSongName} userType={UserType.USER} />}
+                    element={
+                      <UserProfile
+                        changeSongName={changeSongName}
+                        userType={UserType.USER}
+                        refreshSidebarData={refreshSidebarData} // Pass the missing prop here
+                      />
+                    }
                   />
                   <Route
                     path="/artist/:id"
-                    element={<UserProfile changeSongName={changeSongName} userType={UserType.ARTIST} />}
+                    element={
+                      <UserProfile
+                        changeSongName={changeSongName}
+                        userType={UserType.ARTIST}
+                        refreshSidebarData={refreshSidebarData} // Pass the missing prop here
+                      />
+                    }
                   />
                   <Route
                     path="/showAllItemsPlaylist/:id"
-                    element={<ShowAllItems type={ShowAllItemsTypes.ALL_PLAYLISTS} changeSongName={changeSongName} />}
+                    element={
+                      <ShowAllItems
+                        type={ShowAllItemsTypes.ALL_PLAYLISTS}
+                        changeSongName={changeSongName}
+                        refreshSidebarData={refreshSidebarData} // Pass the missing prop here
+                      />
+                    }
                   />
                   <Route
                     path="/showAllItemsArtist/:id"
-                    element={<ShowAllItems type={ShowAllItemsTypes.ALL_ARTISTS} changeSongName={changeSongName} />}
+                    element={
+                      <ShowAllItems
+                        type={ShowAllItemsTypes.ALL_ARTISTS}
+                        changeSongName={changeSongName}
+                        refreshSidebarData={refreshSidebarData} // Pass the missing prop here
+                      />
+                    }
                   />
                   <Route
                     path="/showAllPlaylistFromUser/:id/:user/:usertype"
-                    element={<ShowAllItems type={ShowAllItemsTypes.ALL_PLAYLIST_FROM_USER} changeSongName={changeSongName} />}
+                    element={
+                      <ShowAllItems
+                        type={ShowAllItemsTypes.ALL_PLAYLIST_FROM_USER}
+                        changeSongName={changeSongName}
+                        refreshSidebarData={refreshSidebarData} // Pass the missing prop here
+                      />
+                    }
                   />
                   <Route
                     path="/showAllSongsFromArtist/:id/:artist"
-                    element={<ShowAllItems type={ShowAllItemsTypes.ALL_SONGS_FROM_ARTIST} changeSongName={changeSongName} />}
+                    element={
+                      <ShowAllItems
+                        type={ShowAllItemsTypes.ALL_SONGS_FROM_ARTIST}
+                        changeSongName={changeSongName}
+                        refreshSidebarData={refreshSidebarData} // Pass the missing prop here
+                      />
+                    }
                   />
                   <Route
                     path="/"
-                    element={<Home />}
+                    element={<Home refreshSidebarData={refreshSidebarData} />} // Pass the missing prop here
                   />
                   <Route
                     path="*"
-                    element={<Home />}
-                  />
+                    element={<Home refreshSidebarData={refreshSidebarData} />}
+                  />{' '}
+                  {/* Pass the missing prop here */}
                 </Routes>
               </div>
             </div>

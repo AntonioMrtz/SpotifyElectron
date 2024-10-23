@@ -3,8 +3,8 @@ name: Backend Tests - Streaming Serverless
 on:
   pull_request:
     branches:
-      - 'master'
-      - 'master-*'
+      - "master"
+      - "master-*"
 
 jobs:
   run_tests_serverless:

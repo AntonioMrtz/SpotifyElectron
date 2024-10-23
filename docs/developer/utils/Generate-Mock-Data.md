@@ -4,8 +4,8 @@ Somethis is useful to have fake/mock data to test the behaviour of the app under
 
 ## Command options
 
-* `help`: for seeing the script usage in the terminal
-* `small` | `medium` | `large`: the amount of data you want to generate
+- `help`: for seeing the script usage in the terminal
+- `small` | `medium` | `large`: the amount of data you want to generate
 
 ## Usage
 

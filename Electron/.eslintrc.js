@@ -1,10 +1,9 @@
 module.exports = {
-  extends: 'erb',
-  plugins: ['@typescript-eslint'],
+  extends: 'erb', // Ensure this matches your current setup
+  plugins: ['@typescript-eslint', 'react', 'jsx-a11y', 'import'],
   rules: {
-    // A temporary hack related to IDE not resolving correct package.json
     'import/no-extraneous-dependencies': 'off',
-    'react/react-in-jsx-scope': 'off',
+    'react/react-in-jsx-scope': 'off', // Disable since new JSX transform doesn't require React in scope
     'react/jsx-filename-extension': 'off',
     'import/extensions': 'off',
     'import/no-unresolved': 'off',
@@ -15,6 +14,13 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': 'error',
     'jsx-a11y/control-has-associated-label': 'off',
     'no-console': 'off',
+    'react/function-component-definition': [
+      2,
+      {
+        namedComponents: 'function-declaration',
+        unnamedComponents: 'arrow-function',
+      },
+    ],
     'prettier/prettier': [
       'error',
       {
@@ -22,16 +28,19 @@ module.exports = {
       },
     ],
   },
+  parser: '@typescript-eslint/parser', // Use the TypeScript parser
   parserOptions: {
     ecmaVersion: 2020,
     sourceType: 'module',
     project: './tsconfig.json',
     tsconfigRootDir: __dirname,
     createDefaultProgram: true,
+    ecmaFeatures: {
+      jsx: true, // Enable JSX support
+    },
   },
   settings: {
     'import/resolver': {
-      // See https://github.com/benmosher/eslint-plugin-import/issues/1396#issuecomment-575727774 for line below
       node: {},
       webpack: {
         config: require.resolve('./.erb/configs/webpack.config.eslint.ts'),
@@ -40,6 +49,9 @@ module.exports = {
     },
     'import/parsers': {
       '@typescript-eslint/parser': ['.ts', '.tsx'],
+    },
+    react: {
+      version: 'detect', // Automatically detect the React version
     },
   },
 };

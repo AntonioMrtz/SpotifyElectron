@@ -67,11 +67,13 @@ We have to selected if we want. Backend should also have the same architecture s
 The app ships with this architecture as the default
 
 ```ts
-export const songArchitecture: SongArchitecture = SongArchitecture.BLOB_ARCHITECTURE
+export const songArchitecture: SongArchitecture =
+  SongArchitecture.BLOB_ARCHITECTURE;
 ```
 
 #### Serverless (deprecated)
 
 ```ts
-export const songArchitecture: SongArchitecture = SongArchitecture.SERVERLESS_ARCHITECTURE
+export const songArchitecture: SongArchitecture =
+  SongArchitecture.SERVERLESS_ARCHITECTURE;
 ```

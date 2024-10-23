@@ -8,18 +8,17 @@ import ModalAddSongPlaylist from './ModalAddSongPlaylist/ModalAddSongPlaylist';
 import useFetchGetUserRelevantPlaylists from '../../hooks/useFetchGetUserRelevantPlaylists';
 import { useSidebar } from './SidebarContext'; // Import the useSidebar hook
 
-// Removed the PropsSidebar interface and its usage
 export default function Sidebar() {
-  const [selectedID, setSelectedID] = useState<string>();
-  const [selectedPlaylist, setSelectedPlaylist] = useState<string>('');
-  
-  const { refreshSidebarData } = useSidebar(); // Get refreshSidebarData from context
+  const [selectedID, setSelectedID] = useState<string>(''); // Track selected menu item
+  const [selectedPlaylist, setSelectedPlaylist] = useState<string>(''); // Track selected playlist
+  const { refreshSidebarData } = useSidebar(); // Get the refreshSidebarData from context
+  const location = useLocation(); // Access the current location
 
+  // Handling the selected class for menu items
   const getSelectedClass = (id: string) =>
     selectedID === id ? styles.linksubtleClicked : '';
 
-  const location = useLocation();
-
+  // Update selectedID based on URL
   useEffect(() => {
     if (location.pathname === '/') {
       setSelectedID('li-inicio');
@@ -30,83 +29,55 @@ export default function Sidebar() {
     }
   }, [location]);
 
-  //* MENU HOVER
-  const [listItemInicio, setHoverInicio] = useState('');
-  const [listItemBuscar, setHoverBuscar] = useState('');
+  //* MENU HOVER STATE HANDLERS
   const [isHoveredInicio, setIsHoveredInicio] = useState(false);
   const [isHoveredBuscar, setIsHoveredBuscar] = useState(false);
 
-  const handleMouseOverInicio = () => {
-    setIsHoveredInicio(true);
-  };
+  const handleMouseOverInicio = () => setIsHoveredInicio(true);
+  const handleMouseOutInicio = () => setIsHoveredInicio(false);
+  const handleMouseOverBuscar = () => setIsHoveredBuscar(true);
+  const handleMouseOutBuscar = () => setIsHoveredBuscar(false);
 
-  const handleMouseOutInicio = () => {
-    setIsHoveredInicio(false);
-  };
+  // Playlist click handlers
+  const handleUrlInicioClicked = () => setSelectedPlaylist('');
+  const handleUrlBuscarClicked = () => setSelectedPlaylist('');
+  const handleUrlPlaylistClicked = (name: string) => setSelectedPlaylist(name);
 
-  const handleMouseOverBuscar = () => {
-    setIsHoveredBuscar(true);
-  };
-
-  const handleMouseOutBuscar = () => {
-    setIsHoveredBuscar(false);
-  };
-
-  useEffect(() => {
-    setHoverInicio(isHoveredInicio ? styles.linksubtle : '');
-    setHoverBuscar(isHoveredBuscar ? styles.linksubtle : '');
-  }, [isHoveredBuscar, isHoveredInicio]);
-
-  const handleUrlInicioClicked = () => {
-    setSelectedPlaylist('');
-  };
-
-  const handleUrlBuscarClicked = () => {
-    setSelectedPlaylist('');
-  };
-
-  const handleUrlPlaylistClicked = (name: string) => {
-    setSelectedPlaylist(name); // Update the state when a playlist is clicked
-  };
-
+  // Get the user's relevant playlists using the custom hook
   const userName = getTokenUsername();
   const { playlists, loading } = useFetchGetUserRelevantPlaylists(
     userName,
-    // Now we don't use refreshSidebarTriggerValue, use context approach
+    false,
   );
 
   return (
     <div className={`container-fluid ${styles.wrapperNavbar}`}>
-      <header className={`${styles.header}`}>
-        <ul className={`${styles.ulNavigation}`}>
+      <header className={styles.header}>
+        <ul className={styles.ulNavigation}>
           <li>
             <Link to="/">
               <button
                 type="button"
                 onFocus={handleMouseOverInicio}
                 onBlur={handleMouseOutInicio}
-                className={`${
-                  styles.headerLi
-                } ${listItemInicio} ${getSelectedClass('li-inicio')} `}
+                className={`${styles.headerLi} ${isHoveredInicio ? styles.linksubtle : ''} ${getSelectedClass('li-inicio')}`}
                 onMouseOver={handleMouseOverInicio}
                 onMouseOut={handleMouseOutInicio}
                 onClick={handleUrlInicioClicked}
                 id="li-inicio"
               >
                 <i className={`fa-solid fa-house fa-fw ${styles.headerI}`} />
-                <span className={`${styles.headerI}`}>Inicio</span>
+                <span className={styles.headerI}>Inicio</span>
               </button>
             </Link>
           </li>
           <li>
-            <Link to="/explorar" className={`${styles.aHeader}`}>
+            <Link to="/explorar" className={styles.aHeader}>
               <button
                 type="button"
                 onFocus={handleMouseOverBuscar}
                 onBlur={handleMouseOutBuscar}
-                className={`${
-                  styles.headerLi
-                } ${listItemBuscar} ${getSelectedClass('li-buscar')}`}
+                className={`${styles.headerLi} ${isHoveredBuscar ? styles.linksubtle : ''} ${getSelectedClass('li-buscar')}`}
                 onMouseOver={handleMouseOverBuscar}
                 onMouseOut={handleMouseOutBuscar}
                 onClick={handleUrlBuscarClicked}
@@ -115,7 +86,7 @@ export default function Sidebar() {
                 <i
                   className={`fa-solid fa-magnifying-glass fa-fw ${styles.headerI}`}
                 />
-                <span className={`${styles.headerI}`}>Buscar</span>
+                <span className={styles.headerI}>Buscar</span>
               </button>
             </Link>
           </li>
@@ -145,16 +116,16 @@ export default function Sidebar() {
               <ModalAddSongPlaylist refreshSidebarData={refreshSidebarData} />
             </div>
           </header>
+
           <ul
             className={`container-fluid d-flex flex-column ${styles.ulPlaylist}`}
           >
-            {loading && <LoadingCircle />}
-
+            {loading && <LoadingCircle />}{' '}
+            {/* Show loading spinner while loading */}
             {!loading &&
               playlists &&
               playlists.map((playlist) => {
                 const urlPlaylist = `/playlist/${playlist.name}`;
-
                 const playlistStyle =
                   playlist.name === selectedPlaylist
                     ? styles.selectedPlaylist
@@ -168,7 +139,7 @@ export default function Sidebar() {
                       photo={playlist.photo}
                       owner={playlist.owner}
                       playlistStyle={playlistStyle}
-                      refreshSidebarData={refreshSidebarData} // Keep this prop if needed for nested components
+                      refreshSidebarData={refreshSidebarData}
                     />
                   </Link>
                 );

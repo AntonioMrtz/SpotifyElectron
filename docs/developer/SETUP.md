@@ -2,9 +2,7 @@
 
 In this section we will cover how to set up common tools for the whole project.
 
-
 ## ⚒️ Set up common project tools
-
 
 ### ⚓ Pre-commit
 

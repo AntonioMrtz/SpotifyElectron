@@ -1,9 +1,11 @@
+// Import React if you're using JSX syntax
+
 export enum ShowAllItemsTypes {
-  ALL_PLAYLISTS = 'all-playlists',
-  ALL_ARTISTS = 'all-artists',
-  ALL_PLAYLIST_FROM_USER = 'all-playlists-from-user',
-  ALL_SONGS_FROM_ARTIST = 'all-songs-from-artist',
-  SONG = 'song',
+  ALL_PLAYLISTS = 'ALL_PLAYLISTS',
+  ALL_ARTISTS = 'ALL_ARTISTS',
+  ALL_PLAYLIST_FROM_USER = 'ALL_PLAYLIST_FROM_USER',
+  ALL_SONGS_FROM_ARTIST = 'ALL_SONGS_FROM_ARTIST',
+  SONG = 'SONG', // Added SONG type
 }
 
 export interface PropsAllItems {

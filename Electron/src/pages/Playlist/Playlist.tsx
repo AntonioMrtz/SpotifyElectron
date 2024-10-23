@@ -17,10 +17,10 @@ import { UsersService } from '../../swagger/api/services/UsersService';
 import { PlaylistsService } from '../../swagger/api/services/PlaylistsService';
 import { SongsService } from '../../swagger/api/services/SongsService';
 
-interface PropsPlaylist {
+type PropsPlaylist = {
   changeSongName: (songName: string) => void;
-  refreshSidebarData: () => void;
-}
+  refreshSidebarData: () => void; // Ensure this is included
+};
 
 export default function Playlist({
   changeSongName,

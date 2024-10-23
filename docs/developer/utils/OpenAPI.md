@@ -4,7 +4,6 @@ The generated OpenAPI schema from Backend endpoints is used in Frontend for code
 
 OpenAPI is a standard for describing and documenting APIs. It uses schemas to define API endpoints, including data types, request formats, authentication methods, and more. This allows for automatic generation of interactive documentation, facilitates API testing with mock servers, and simplifies client code generation in multiple programming languages, promoting consistency and interoperability in API development. More info on [OpenAPI docs](https://swagger.io/specification/)
 
-
 ## Generate OpenAPI Schema (Backend)
 
 1. Go to `Backend/`

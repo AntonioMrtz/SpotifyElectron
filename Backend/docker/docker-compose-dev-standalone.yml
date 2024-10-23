@@ -1,5 +1,4 @@
 services:
-
   backend:
     extends:
       file: docker-compose-base.yml
@@ -20,7 +19,7 @@ services:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: root
     healthcheck:
-      test: ["CMD","mongosh", "--eval", "db.adminCommand('ping')"]
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
       interval: 5s
       timeout: 5s
       retries: 3

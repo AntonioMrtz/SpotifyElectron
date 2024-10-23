@@ -22,8 +22,7 @@ cd Backend/docker/;
 ./build_and_up_dev_backend.sh;
 ```
 
-* More on Docker in [Docker docs](Docker.md).
-
+- More on Docker in [Docker docs](Docker.md).
 
 ### 3. Get or create `.env` file under `Backend/
 
@@ -34,14 +33,14 @@ cd Backend/docker/;
 cp env/dev.env ../.env;
 ```
 
-* Check upstream [development environment file](https://github.com/AntonioMrtz/SpotifyElectron/blob/master/Backend/docker/env/dev.env)
+- Check upstream [development environment file](https://github.com/AntonioMrtz/SpotifyElectron/blob/master/Backend/docker/env/dev.env)
 
-* More on environments in [environment docs](Environment.md).
-
+- More on environments in [environment docs](Environment.md).
 
 ### 4. Install the virtual environment and dependencies
 
 🪟 **Windows**
+
 ```console
 cd Backend/;
 python -m venv venv;
@@ -53,6 +52,7 @@ pip install -r requirements-test.txt;
 ```
 
 🐧 **Linux**
+
 ```console
 cd Backend/ &&
 python3.11 -m venv venv &&
@@ -61,16 +61,16 @@ pip install -r requirements.txt &&
 pip install -r requirements-dev.txt &&
 pip install -r requirements-test.txt
 ```
-There's included a script `install-all-requirements.sh` that install all dependencies from a given directory in an already create virtual environment (Folder has to be named `venv`). Works both for Windows and Linux.
 
+There's included a script `install-all-requirements.sh` that install all dependencies from a given directory in an already create virtual environment (Folder has to be named `venv`). Works both for Windows and Linux.
 
 ### 5. Run the app:
 
-* App will be launched at [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
-* Swagger docs will be launched at [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
-
+- App will be launched at [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
+- Swagger docs will be launched at [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
 
 #### Standar with hot reload
+
 This will automatically reload the app if changes are made.
 
 ```console

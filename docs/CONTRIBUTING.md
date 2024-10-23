@@ -17,6 +17,7 @@ improve your coding skills, and enhance your communication abilities.
 _It's important to leave a comment about working on an issue so the maintainer can add you as an assignee and avoid two people working on the same issue_.
 
 _Trello links are used to synchronize Github issues with board tasks, we're not accepting new members due to free tier limitation until you have contributed at least twice_.
+
 ## 🙍‍♂️ Contributors list
 
 Once you contribute to the project, your name and GitHub profile will be added into the [CONTRIBUTORS list](CONTRIBUTORS.md) as an acknowledgement for your work and in order to thank you.

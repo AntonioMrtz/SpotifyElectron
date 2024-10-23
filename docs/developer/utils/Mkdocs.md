@@ -10,6 +10,7 @@ MkDocs is a static site generator specifically designed for creating project doc
 2. Create virtual environment and install dependencies
 
 🪟 **Windows**
+
 ```console
 python -m venv venv;
 venv/Scripts/activate;
@@ -17,6 +18,7 @@ pip install -r requirements-docs.txt
 ```
 
 🐧 **Linux**
+
 ```console
 python3.11 -m venv venv &&
 source venv/bin/activate &&

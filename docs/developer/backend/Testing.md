@@ -2,7 +2,6 @@
 
 In this section we will cover how to run tests and develop them. Make sure `Backend/` folder is the root directory when launching the tests. See more on testing principles [here](../utils/Testing-Principles.md)
 
-
 ## ⚙ Previous configuration
 
 ❗ Environment variables defined in `.env` file will affect the execution of tests. See [environments](Environment.md) for more info.
@@ -14,8 +13,6 @@ If the app is being executed for running test the file `pytest.ini` will overrid
 ### SERVERLESS(deprecated)
 
 A valid path for a serverless function `SERVERLESS_FUNCTION_URL` is needed in environment variables for proper functioning.
-
-
 
 ## 🧪 Run tests
 
@@ -32,6 +29,7 @@ Test run and generate code coverage in folder `htmlcov/index.html`.
 ```console
 python -m pytest tests/ --cov=app/ --cov-report=html
 ```
+
 _If your browser is in a sandbox environment use `python -m http.server [port]` inside `htmlcov/` folder to serve an HTTP Server._
 
 ### Debug run VSCODE

@@ -3,8 +3,8 @@ name: Backend Tests - Database Blob
 on:
   pull_request:
     branches:
-      - 'master'
-      - 'master-*'
+      - "master"
+      - "master-*"
 
 jobs:
   run_tests_blob_architecture:

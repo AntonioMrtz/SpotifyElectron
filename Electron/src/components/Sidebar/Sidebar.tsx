@@ -6,19 +6,14 @@ import styles from './sideBarCss.module.css';
 import PlaylistSidebar from './Playlist/PlaylistSidebar';
 import ModalAddSongPlaylist from './ModalAddSongPlaylist/ModalAddSongPlaylist';
 import useFetchGetUserRelevantPlaylists from '../../hooks/useFetchGetUserRelevantPlaylists';
+import { useSidebar } from './SidebarContext'; // Import the useSidebar hook
 
-interface PropsSidebar {
-  refreshSidebarTriggerValue: boolean;
-  refreshSidebarData: () => void;
-}
-
-//* HIGHLIGHT CURRENT SECTION LI
-export default function Sidebar({
-  refreshSidebarTriggerValue,
-  refreshSidebarData,
-}: PropsSidebar) {
+// Removed the PropsSidebar interface and its usage
+export default function Sidebar() {
   const [selectedID, setSelectedID] = useState<string>();
   const [selectedPlaylist, setSelectedPlaylist] = useState<string>('');
+  
+  const { refreshSidebarData } = useSidebar(); // Get refreshSidebarData from context
 
   const getSelectedClass = (id: string) =>
     selectedID === id ? styles.linksubtleClicked : '';
@@ -36,10 +31,8 @@ export default function Sidebar({
   }, [location]);
 
   //* MENU HOVER
-
   const [listItemInicio, setHoverInicio] = useState('');
   const [listItemBuscar, setHoverBuscar] = useState('');
-
   const [isHoveredInicio, setIsHoveredInicio] = useState(false);
   const [isHoveredBuscar, setIsHoveredBuscar] = useState(false);
 
@@ -73,14 +66,13 @@ export default function Sidebar({
   };
 
   const handleUrlPlaylistClicked = (name: string) => {
-    setSelectedPlaylist(name); // Actualizar el estado cuando se hace clic en una playlist
+    setSelectedPlaylist(name); // Update the state when a playlist is clicked
   };
 
   const userName = getTokenUsername();
-
   const { playlists, loading } = useFetchGetUserRelevantPlaylists(
     userName,
-    refreshSidebarTriggerValue,
+    // Now we don't use refreshSidebarTriggerValue, use context approach
   );
 
   return (
@@ -176,7 +168,7 @@ export default function Sidebar({
                       photo={playlist.photo}
                       owner={playlist.owner}
                       playlistStyle={playlistStyle}
-                      refreshSidebarData={refreshSidebarData}
+                      refreshSidebarData={refreshSidebarData} // Keep this prop if needed for nested components
                     />
                   </Link>
                 );

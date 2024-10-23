@@ -17,7 +17,9 @@
   "paths": {
     "/playlists/{name}": {
       "get": {
-        "tags": ["Playlists"],
+        "tags": [
+          "Playlists"
+        ],
         "summary": "Get Playlist",
         "description": "Get playlist\n\nArgs:\n    name (str): playlist name",
         "operationId": "get_playlist_playlists__name__get",
@@ -59,7 +61,9 @@
         }
       },
       "put": {
-        "tags": ["Playlists"],
+        "tags": [
+          "Playlists"
+        ],
         "summary": "Update Playlist",
         "description": "Update playlist\n\nArgs:\n    photo (str): playlist new photo\n    description (str): playlist new description\n    song_names (list[str], optional): playlist new song names. Defaults to Body(...).\n    new_name (str | None, optional): playlist new name. Defaults to None.",
         "operationId": "update_playlist_playlists__name__put",
@@ -149,7 +153,9 @@
         }
       },
       "delete": {
-        "tags": ["Playlists"],
+        "tags": [
+          "Playlists"
+        ],
         "summary": "Delete Playlist",
         "description": "Delete playlsit\n\nArgs:\n    name (str): playlist name",
         "operationId": "delete_playlist_playlists__name__delete",
@@ -188,7 +194,9 @@
     },
     "/playlists/": {
       "post": {
-        "tags": ["Playlists"],
+        "tags": [
+          "Playlists"
+        ],
         "summary": "Create Playlist",
         "description": "Create playlist\n\nArgs:\n    name (str): playlist name\n    photo (str): playlist photo\n    description (str): playlist description\n    song_names (list[str]): list of song names included in playlist.",
         "operationId": "create_playlist_playlists__post",
@@ -262,7 +270,9 @@
         }
       },
       "get": {
-        "tags": ["Playlists"],
+        "tags": [
+          "Playlists"
+        ],
         "summary": "Get Playlists",
         "description": "Get all playlists",
         "operationId": "get_playlists_playlists__get",
@@ -285,7 +295,9 @@
     },
     "/playlists/selected/{names}": {
       "get": {
-        "tags": ["Playlists"],
+        "tags": [
+          "Playlists"
+        ],
         "summary": "Get Selected Playlists",
         "description": "Get selected playlists\n\nArgs:\n    names (str): playlist names",
         "operationId": "get_selected_playlists_playlists_selected__names__get",
@@ -329,7 +341,9 @@
     },
     "/playlists/{name}/songs/": {
       "patch": {
-        "tags": ["Playlists"],
+        "tags": [
+          "Playlists"
+        ],
         "summary": "Add Songs To Playlist",
         "description": "Add songs to playlist\n\nArgs:\n    name (str): playlist name\n    song_names (list[str]): song names",
         "operationId": "add_songs_to_playlist_playlists__name__songs__patch",
@@ -380,7 +394,9 @@
         }
       },
       "delete": {
-        "tags": ["Playlists"],
+        "tags": [
+          "Playlists"
+        ],
         "summary": "Remove Songs From Playlist",
         "description": "Remove songs from playlist\n\nArgs:\n    name (str): playlist name\n    song_names (list[str]): song names",
         "operationId": "remove_songs_from_playlist_playlists__name__songs__delete",
@@ -431,7 +447,9 @@
     },
     "/songs/{name}": {
       "get": {
-        "tags": ["Songs"],
+        "tags": [
+          "Songs"
+        ],
         "summary": "Get Song",
         "description": "Get song\n\nArgs:\n    name (str): song name",
         "operationId": "get_song_songs__name__get",
@@ -473,7 +491,9 @@
         }
       },
       "delete": {
-        "tags": ["Songs"],
+        "tags": [
+          "Songs"
+        ],
         "summary": "Delete Song",
         "description": "Delete song\n\nArgs:\n    name (str): song name",
         "operationId": "delete_song_songs__name__delete",
@@ -512,7 +532,9 @@
     },
     "/songs/": {
       "post": {
-        "tags": ["Songs"],
+        "tags": [
+          "Songs"
+        ],
         "summary": "Create Song",
         "description": "Create song\n\nArgs:\n    name (str): song name\n    genre (Genre): genre\n    photo (str): photo\n    file (UploadFile): song file",
         "operationId": "create_song_songs__post",
@@ -583,7 +605,9 @@
     },
     "/songs/metadata/{name}": {
       "get": {
-        "tags": ["Songs"],
+        "tags": [
+          "Songs"
+        ],
         "summary": "Get Song Metadata",
         "description": "Get song metadata\n\nArgs:\n    name (str): the song name",
         "operationId": "get_song_metadata_songs_metadata__name__get",
@@ -627,7 +651,9 @@
     },
     "/songs/{name}/streams": {
       "patch": {
-        "tags": ["Songs"],
+        "tags": [
+          "Songs"
+        ],
         "summary": "Increase Song Streams",
         "description": "Increase total streams of a song\n\nArgs:\n    name (str): song name",
         "operationId": "increase_song_streams_songs__name__streams_patch",
@@ -671,7 +697,9 @@
     },
     "/songs/genres/{genre}": {
       "get": {
-        "tags": ["Songs"],
+        "tags": [
+          "Songs"
+        ],
         "summary": "Get Songs By Genre",
         "description": "Get songs by genre\n\nArgs:\n    genre (Genre): the genre to match",
         "operationId": "get_songs_by_genre_songs_genres__genre__get",
@@ -714,7 +742,9 @@
     },
     "/genres/": {
       "get": {
-        "tags": ["Genres"],
+        "tags": [
+          "Genres"
+        ],
         "summary": "Get Genres",
         "description": "Get all genres and their string representation",
         "operationId": "get_genres_genres__get",
@@ -737,7 +767,9 @@
     },
     "/users/whoami": {
       "get": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Get Who Am I",
         "description": "Returns token info from JWT\n\nArgs:\n    token (TokenData): the jwt token. Defaults to None.",
         "operationId": "get_who_am_i_users_whoami_get",
@@ -760,7 +792,9 @@
     },
     "/users/{name}": {
       "get": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Get User",
         "description": "Get user by name\n\nArgs:\n    name (str): user name",
         "operationId": "get_user_users__name__get",
@@ -802,7 +836,9 @@
         }
       },
       "delete": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Delete User",
         "description": "Delete user\n\nArgs:\n    name (str): user name",
         "operationId": "delete_user_users__name__delete",
@@ -841,7 +877,9 @@
     },
     "/users/": {
       "post": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Create User",
         "description": "Create user\n\nArgs:\n    name (str): user name\n    photo (str): user photo\n    password (str): user password",
         "operationId": "create_user_users__post",
@@ -898,7 +936,9 @@
     },
     "/users/{name}/playback_history": {
       "patch": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Patch Playback History",
         "description": "Add song to playback history\n\nArgs:\n    name (str): user name\n    song_name (str): song name",
         "operationId": "patch_playback_history_users__name__playback_history_patch",
@@ -949,7 +989,9 @@
         }
       },
       "get": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Get User Playback History",
         "description": "Get user song playback history\n\nArgs:\n    name (str): user name",
         "operationId": "get_user_playback_history_users__name__playback_history_get",
@@ -993,7 +1035,9 @@
     },
     "/users/{name}/saved_playlists": {
       "patch": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Patch Saved Playlists",
         "description": "Add playlist to saved list\n\nArgs:\n    name (str): user name\n    playlist_name (str): saved playlist",
         "operationId": "patch_saved_playlists_users__name__saved_playlists_patch",
@@ -1044,7 +1088,9 @@
         }
       },
       "delete": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Delete Saved Playlists",
         "description": "Delete playlist from saved list of user\n\nArgs:\n    name (str): user name\n    playlist_name (str): playlist name",
         "operationId": "delete_saved_playlists_users__name__saved_playlists_delete",
@@ -1097,7 +1143,9 @@
     },
     "/users/{name}/relevant_playlists": {
       "get": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Get User Relevant Playlists",
         "description": "Get relevant playlists for user\n\nArgs:\n    name (str): user name",
         "operationId": "get_user_relevant_playlists_users__name__relevant_playlists_get",
@@ -1141,7 +1189,9 @@
     },
     "/users/{name}/playlists": {
       "get": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Get User Playlists",
         "description": "Get playlists created by the user\n\nArgs:\n    name (str): user name",
         "operationId": "get_user_playlists_users__name__playlists_get",
@@ -1185,7 +1235,9 @@
     },
     "/users/{name}/playlist_names": {
       "get": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Get User Playlists Names",
         "description": "Get playlist names created by user\n\nArgs:\n    name (str): user name",
         "operationId": "get_user_playlists_names_users__name__playlist_names_get",
@@ -1229,7 +1281,9 @@
     },
     "/artists/{name}": {
       "get": {
-        "tags": ["Artists"],
+        "tags": [
+          "Artists"
+        ],
         "summary": "Get Artist",
         "description": "Get artist by name\n\nArgs:\n    name (str): artist name",
         "operationId": "get_artist_artists__name__get",
@@ -1273,7 +1327,9 @@
     },
     "/artists/": {
       "post": {
-        "tags": ["Artists"],
+        "tags": [
+          "Artists"
+        ],
         "summary": "Create Artist",
         "description": "Create artist\n\nArgs:\n    name (str): artist name\n    photo (str): artist photo\n    password (str): artist password",
         "operationId": "create_artist_artists__post",
@@ -1328,7 +1384,9 @@
         }
       },
       "get": {
-        "tags": ["Artists"],
+        "tags": [
+          "Artists"
+        ],
         "summary": "Get Artists",
         "description": "Get all artists",
         "operationId": "get_artists_artists__get",
@@ -1351,7 +1409,9 @@
     },
     "/artists/{name}/songs": {
       "get": {
-        "tags": ["Artists"],
+        "tags": [
+          "Artists"
+        ],
         "summary": "Get Artist Songs",
         "description": "Get artist songs",
         "operationId": "get_artist_songs_artists__name__songs_get",
@@ -1395,7 +1455,9 @@
     },
     "/login/": {
       "post": {
-        "tags": ["Login"],
+        "tags": [
+          "Login"
+        ],
         "summary": "Login User",
         "description": "Login user\n\nArgs:\n----\n    form_data (Annotated[OAuth2PasswordRequestForm, Depends): user and password",
         "operationId": "login_user_login__post",
@@ -1433,7 +1495,9 @@
     },
     "/login/token/{token}": {
       "post": {
-        "tags": ["Login"],
+        "tags": [
+          "Login"
+        ],
         "summary": "Login User With Jwt",
         "description": "Login user with token\n\nArgs:\n    token (str): the user token",
         "operationId": "login_user_with_jwt_login_token__token__post",
@@ -1472,7 +1536,9 @@
     },
     "/search/": {
       "get": {
-        "tags": ["Search"],
+        "tags": [
+          "Search"
+        ],
         "summary": "Get Search Name",
         "description": "Search for items that partially match name\n\nArgs:\n----\n    name (str): name to match",
         "operationId": "get_search_name_search__get",
@@ -1516,7 +1582,9 @@
     },
     "/stream/{name}": {
       "get": {
-        "tags": ["stream"],
+        "tags": [
+          "stream"
+        ],
         "summary": "Stream Song",
         "description": "Streams song audio\n\nArgs:\n    name (str): song name\n    request (Request): incoming request",
         "operationId": "stream_song_stream__name__get",
@@ -1560,7 +1628,9 @@
     },
     "/health/": {
       "get": {
-        "tags": ["health"],
+        "tags": [
+          "health"
+        ],
         "summary": "Health Check Endpoint",
         "description": "Validates if the app has launched correctly\n\nReturns\n-------\n    Response 200 OK",
         "operationId": "get_health_health__get",
@@ -1588,7 +1658,9 @@
           }
         },
         "type": "object",
-        "required": ["file"],
+        "required": [
+          "file"
+        ],
         "title": "Body_create_song_songs__post"
       },
       "Body_login_user_login__post": {
@@ -1642,7 +1714,10 @@
           }
         },
         "type": "object",
-        "required": ["username", "password"],
+        "required": [
+          "username",
+          "password"
+        ],
         "title": "Body_login_user_login__post"
       },
       "Genre": {
@@ -1721,7 +1796,11 @@
           }
         },
         "type": "object",
-        "required": ["loc", "msg", "type"],
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
         "title": "ValidationError"
       }
     },

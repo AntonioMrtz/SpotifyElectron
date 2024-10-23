@@ -4,9 +4,7 @@
 
 ## Commit type
 
-<!--
-
-!!CHECK ONLY ONE!!
+<!-- Select only one commit type that describes the main changes done in this Pull Request
 
 - `feat`: indicates the addition of a new feature or functionality to the project.
 - `fix`: used when fixing a bug or error in the code.
@@ -24,7 +22,7 @@
 
 ## Issue
 
-<!-- Provide a description of the problem or need that this pull request addresses. -->
+<!-- Add issue number: #issue-number
 
 ## Solution
 

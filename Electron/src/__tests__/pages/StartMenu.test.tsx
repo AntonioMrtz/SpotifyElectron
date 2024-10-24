@@ -8,10 +8,13 @@ import {
 import '@testing-library/jest-dom';
 import StartMenu from 'pages/StartMenu/StartMenu';
 import { getToken } from 'utils/token';
+import timeout from 'utils/timeout';
+import { CancelablePromise } from 'swagger/api';
 import { LoginService } from '../../swagger/api/services/LoginService';
 
 jest.mock('../../swagger/api/services/LoginService');
 jest.mock('utils/token');
+jest.mock('utils/timeout');
 
 describe('StartMenu Component', () => {
   const setIsLoggedMock = jest.fn();
@@ -19,6 +22,7 @@ describe('StartMenu Component', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    jest.resetAllMocks();
   });
 
   test('renders the component and displays title and form', async () => {
@@ -80,8 +84,6 @@ describe('StartMenu Component', () => {
     ).mockResolvedValue(undefined);
     (getToken as jest.Mock).mockReturnValue('mock-jwt-token');
 
-    (getToken as jest.Mock).mockReturnValue('mock-jwt-token');
-
     await act(async () => {
       render(
         <StartMenu
@@ -92,6 +94,29 @@ describe('StartMenu Component', () => {
     });
 
     expect(setIsLoggedMock).toHaveBeenCalledWith(true);
+  });
+
+  test('handles auto-login timeout on component mount and displays error popover', async () => {
+    (getToken as jest.Mock).mockReturnValue('mock-jwt-token');
+    const mockLoginPromise = new CancelablePromise(() => {});
+    (
+      LoginService.loginUserWithJwtLoginTokenTokenPost as jest.Mock
+    ).mockImplementationOnce(() => mockLoginPromise);
+    (timeout as jest.Mock).mockRejectedValueOnce(new Error('Timeout'));
+
+    await act(async () => {
+      render(
+        <StartMenu
+          setIsLogged={setIsLoggedMock}
+          setIsSigningUp={setIsSigningUpMock}
+        />,
+      );
+    });
+
+    expect(mockLoginPromise.isCancelled).toBe(true);
+    expect(
+      screen.getByText('El servidor esta iniciándose'),
+    ).toBeInTheDocument();
   });
 
   test('handles login error and displays error popover', async () => {
@@ -121,6 +146,39 @@ describe('StartMenu Component', () => {
     expect(setIsLoggedMock).toHaveBeenCalledWith(false);
     expect(
       screen.getByText('Los credenciales introducidos no son válidos'),
+    ).toBeInTheDocument();
+  });
+
+  test('handles login timeout and displays error popover', async () => {
+    const mockLoginPromise = new CancelablePromise(() => {});
+    (LoginService.loginUserLoginPost as jest.Mock).mockImplementationOnce(
+      () => mockLoginPromise,
+    );
+    (timeout as jest.Mock).mockRejectedValueOnce(new Error('Timeout'));
+
+    await act(async () => {
+      render(
+        <StartMenu
+          setIsLogged={setIsLoggedMock}
+          setIsSigningUp={setIsSigningUpMock}
+        />,
+      );
+    });
+
+    fireEvent.change(screen.getByPlaceholderText('Nombre de usuario'), {
+      target: { value: 'user123' },
+    });
+    fireEvent.change(screen.getByPlaceholderText('Contraseña'), {
+      target: { value: 'password123' },
+    });
+    await act(async () => {
+      fireEvent.click(screen.getByText('Iniciar sesión'));
+    });
+
+    expect(mockLoginPromise.isCancelled).toBe(true);
+    expect(setIsLoggedMock).toHaveBeenCalledWith(false);
+    expect(
+      screen.getByText('El servidor esta iniciándose'),
     ).toBeInTheDocument();
   });
 

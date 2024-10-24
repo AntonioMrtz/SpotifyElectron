@@ -5,6 +5,9 @@ import {
   PropsInfoPopover,
 } from 'components/AdvancedUIComponents/InfoPopOver/types/InfoPopover';
 import timeout from 'utils/timeout';
+import Global from 'global/global';
+import LoadingCircleSmall from 'components/AdvancedUIComponents/LoadingCircle/LoadingCircleSmall';
+import { CancelablePromise } from 'swagger/api';
 import styles from './startMenu.module.css';
 import SpotifyElectronLogo from '../../assets/imgs/SpotifyElectronLogo.png';
 import { UsersService } from '../../swagger/api/services/UsersService';
@@ -38,6 +41,9 @@ export default function RegisterMenu({ setIsSigningUp }: PropsRegisterMenu) {
   const [propsPopOver, setPropsPopOver] = useState<PropsInfoPopover | null>(
     null,
   );
+
+  /* Loading state */
+  const [loading, setLoading] = useState(false);
 
   const handleRegister = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -76,16 +82,22 @@ export default function RegisterMenu({ setIsSigningUp }: PropsRegisterMenu) {
       return;
     }
 
+    let createUserPromise: CancelablePromise<any> | null = null;
     try {
-      const createUserPromise = UsersService.createUserUsersPost(
+      setLoading(true);
+
+      createUserPromise = UsersService.createUserUsersPost(
         formData.name,
         formData.photo,
         formData.password,
       );
 
-      await Promise.race([createUserPromise, timeout(3000)]);
-      setisOpenPopover(true);
+      await Promise.race([
+        createUserPromise,
+        timeout(Global.coldStartRequestTimeout),
+      ]);
 
+      setisOpenPopover(true);
       setPropsPopOver({
         title: 'Usuario registrado',
         description: 'El usuario ha sido registrado con éxito',
@@ -97,12 +109,15 @@ export default function RegisterMenu({ setIsSigningUp }: PropsRegisterMenu) {
         },
       });
     } catch (error: unknown) {
+      setLoading(false);
       console.log('Unable to register');
 
       let title: string;
       let description: string;
 
       if (error instanceof Error && error.message === 'Timeout') {
+        createUserPromise?.cancel();
+
         title = 'El servidor esta iniciándose';
         description =
           'El servidor esta iniciándose (cold-start), inténtelo de nuevo en 1 minuto';
@@ -155,6 +170,7 @@ export default function RegisterMenu({ setIsSigningUp }: PropsRegisterMenu) {
               id="name"
               placeholder="Nombre de usuario"
               onChange={handleChange}
+              disabled={loading}
               spellCheck={false}
               required
             />
@@ -170,6 +186,7 @@ export default function RegisterMenu({ setIsSigningUp }: PropsRegisterMenu) {
               id="photo"
               placeholder="Foto de perfil"
               onChange={handleChange}
+              disabled={loading}
               spellCheck={false}
               required
             />
@@ -187,6 +204,7 @@ export default function RegisterMenu({ setIsSigningUp }: PropsRegisterMenu) {
                 id="password"
                 placeholder="Contraseña"
                 onChange={handleChange}
+                disabled={loading}
                 spellCheck={false}
                 required
               />
@@ -203,6 +221,7 @@ export default function RegisterMenu({ setIsSigningUp }: PropsRegisterMenu) {
                 id="confirmpassword"
                 placeholder="Confirma tu contraseña"
                 onChange={handleChange}
+                disabled={loading}
                 spellCheck={false}
                 required
               />
@@ -215,9 +234,10 @@ export default function RegisterMenu({ setIsSigningUp }: PropsRegisterMenu) {
               backgroundColor: 'var(--app-logo-color)',
             }}
             className={`${styles.registerButton}`}
+            disabled={loading}
             onClick={handleRegister}
           >
-            Registrar
+            Registrar {loading && <LoadingCircleSmall />}
           </button>
         </form>
 
@@ -231,6 +251,7 @@ export default function RegisterMenu({ setIsSigningUp }: PropsRegisterMenu) {
           </p>
           <button
             onClick={handleClickLogin}
+            disabled={loading}
             type="button"
             style={{
               color: 'var(--pure-white)',

@@ -8,6 +8,10 @@ import { getToken } from 'utils/token';
 // eslint-disable-next-line camelcase
 import { Body_login_user_login__post } from 'swagger/api/models/Body_login_user_login__post';
 import timeout from 'utils/timeout';
+import LoadingCircle from 'components/AdvancedUIComponents/LoadingCircle/LoadingCircle';
+import Global from 'global/global';
+import { CancelablePromise } from 'swagger/api';
+import LoadingCircleSmall from 'components/AdvancedUIComponents/LoadingCircle/LoadingCircleSmall';
 import styles from './startMenu.module.css';
 import SpotifyElectronLogo from '../../assets/imgs/SpotifyElectronLogo.png';
 import { LoginService } from '../../swagger/api/services/LoginService';
@@ -16,6 +20,10 @@ interface PropsStartMenu {
   setIsLogged: Function;
   setIsSigningUp: Function;
 }
+
+const coldStartTimeoutErrorTitle = 'El servidor esta iniciándose';
+const coldStartTimeoutErrorDescription =
+  'El servidor esta iniciándose (cold-start), inténtelo de nuevo en 1 minuto';
 
 export default function StartMenu({
   setIsLogged,
@@ -37,6 +45,22 @@ export default function StartMenu({
     password: '',
   });
 
+  const showErrorPopover = ({
+    title,
+    description,
+  }: Pick<PropsInfoPopover, 'title' | 'description'>) => {
+    setPropsPopOver({
+      title,
+      description,
+      type: InfoPopoverType.ERROR,
+      triggerOpenConfirmationModal: false,
+      handleClose: () => {
+        setisOpenPopover(false);
+      },
+    });
+    setisOpenPopover(true);
+  };
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({
@@ -47,6 +71,8 @@ export default function StartMenu({
 
   const handleLogin = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+
+    let loginUserPromise: CancelablePromise<any> | null = null;
     try {
       setLoginLoading(true);
       if (!formData.nombre || !formData.password) {
@@ -58,10 +84,10 @@ export default function StartMenu({
         password: formData.password,
       };
 
-      const loginUserPromise = LoginService.loginUserLoginPost(loginData);
+      loginUserPromise = LoginService.loginUserLoginPost(loginData);
       const loginResponse = await Promise.race([
         loginUserPromise,
-        timeout(5000),
+        timeout(Global.coldStartRequestTimeout),
       ]);
       localStorage.setItem('jwt', loginResponse);
       setIsLogged(true);
@@ -73,24 +99,16 @@ export default function StartMenu({
       let description: string;
 
       if (error instanceof Error && error.message === 'Timeout') {
-        title = 'El servidor esta iniciándose';
-        description =
-          'El servidor esta iniciándose (cold-start), inténtelo de nuevo en 1 minuto';
+        loginUserPromise?.cancel();
+
+        title = coldStartTimeoutErrorTitle;
+        description = coldStartTimeoutErrorDescription;
       } else {
         title = 'Los credenciales introducidos no son válidos';
         description = 'No se ha podido iniciar sesión';
       }
 
-      setPropsPopOver({
-        title,
-        description,
-        type: InfoPopoverType.ERROR,
-        triggerOpenConfirmationModal: false,
-        handleClose: () => {
-          setisOpenPopover(false);
-        },
-      });
-      setisOpenPopover(true);
+      showErrorPopover({ title, description });
     } finally {
       setLoginLoading(false);
     }
@@ -102,14 +120,28 @@ export default function StartMenu({
 
   useEffect(() => {
     const handleAutoLogin = async () => {
+      let autoLoginPromise: CancelablePromise<any> | null = null;
       try {
         setAutoLoginLoading(true);
         const token = getToken();
         if (!token) return;
-        await LoginService.loginUserWithJwtLoginTokenTokenPost(token);
+        autoLoginPromise =
+          LoginService.loginUserWithJwtLoginTokenTokenPost(token);
+        await Promise.race([
+          autoLoginPromise,
+          timeout(Global.coldStartRequestTimeout),
+        ]);
         setIsLogged(true);
       } catch (error) {
-        console.log(`User invalid credentials for auto login with JWT token`);
+        if (error instanceof Error && error.message === 'Timeout') {
+          autoLoginPromise?.cancel();
+          showErrorPopover({
+            title: coldStartTimeoutErrorTitle,
+            description: coldStartTimeoutErrorDescription,
+          });
+        } else {
+          console.log(`User invalid credentials for auto login with JWT token`);
+        }
       } finally {
         setAutoLoginLoading(false);
       }
@@ -119,6 +151,7 @@ export default function StartMenu({
 
   return (
     <div className={`${styles.mainModalContainer}`}>
+      {autoLoginLoading && <LoadingCircle />}
       {!autoLoginLoading && (
         <div className={`${styles.contentWrapper}`}>
           <div className={`d-flex flex-row ${styles.titleContainer}`}>
@@ -145,6 +178,7 @@ export default function StartMenu({
                 id="nombre"
                 placeholder="Nombre de usuario"
                 onChange={handleChange}
+                disabled={loginLoading}
                 spellCheck={false}
                 required
               />
@@ -160,6 +194,7 @@ export default function StartMenu({
                 id="password"
                 placeholder="Contraseña"
                 onChange={handleChange}
+                disabled={loginLoading}
                 spellCheck={false}
                 required
               />
@@ -172,6 +207,7 @@ export default function StartMenu({
               disabled={loginLoading}
             >
               Iniciar sesión
+              {loginLoading && <LoadingCircleSmall />}
             </button>
           </form>
 
@@ -185,6 +221,7 @@ export default function StartMenu({
             </p>
             <button
               onClick={handleClickRegister}
+              disabled={loginLoading}
               type="button"
               style={{
                 color: 'var(--pure-white)',

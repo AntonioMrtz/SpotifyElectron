@@ -13,6 +13,7 @@ improve your coding skills, and enhance your communication abilities.
 3. Push your changes to the new branch using the [commit naming convention](developer/Git-Convention.md).
 4. Add tests for every functionality changed or added.
 5. Go to your branch in Github, then select Pull Request and fill the fields indicated in the template. Remember to rename the Pull Request using our [convention](developer/Git-Convention.md).
+6. Add yourself in `README.md` and [CONTRIBUTORS](CONTRIBUTORS.md) if this is the your first time contributing to the project.
 
 _It's important to leave a comment about working on an issue so the maintainer can add you as an assignee and avoid two people working on the same issue_.
 

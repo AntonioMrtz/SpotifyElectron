@@ -14,15 +14,6 @@
   z-index: 9999;
 }
 
-.loadingCircleWrapper {
-  position: absolute;
-  z-index: 1;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
 .contentWrapper {
   background-color: black;
   border-radius: 8px;
@@ -110,12 +101,8 @@
   justify-content: center;
 }
 
-.loginButton:hover {
+.loginButton:hover:enabled {
   transform: scale(1.08);
-}
-
-.loginButton:disabled {
-  transform: none;
 }
 
 .registerButton {
@@ -131,12 +118,8 @@
   justify-content: center;
 }
 
-.registerButton:hover {
+.registerButton:hover:enabled {
   transform: scale(1.04);
-}
-
-.registerButton:disabled {
-  transform: none;
 }
 
 .wrapperRegisterText {

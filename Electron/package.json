@@ -33,20 +33,6 @@
     "test:coverage": "jest --coverage"
   },
   "browserslist": [],
-  "prettier": {
-    "singleQuote": true,
-    "overrides": [
-      {
-        "files": [
-          ".prettierrc",
-          ".eslintrc"
-        ],
-        "options": {
-          "parser": "json"
-        }
-      }
-    ]
-  },
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",

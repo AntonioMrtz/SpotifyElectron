@@ -5,7 +5,6 @@
 - Implement features in a way that they can be testable.
 - Try to use as few mocks as possible, it will help us test the actual behaviour of all the app components.
 
-
 ## Testing Principles
 
 These are the principles that our tests have to follow:
@@ -19,6 +18,7 @@ These are the principles that our tests have to follow:
 ## Testing Methodology
 
 ### ·Setup·
+
 - **Purpose:** This phase involves setting up the necessary preconditions and state before executing the actual test.
 - **Actions:**
   - Initialize any objects or resources required for the test.
@@ -27,6 +27,7 @@ These are the principles that our tests have to follow:
 - **Example:** Before testing a function that calculates a result based on input data, you might initialize the function parameters and set up any mock objects or fixtures necessary for the test.
 
 ### ·Execution·
+
 - **Purpose:** This phase involves the actual execution of the test case.
 - **Actions:**
   - Invoke the code or function under test with the prepared input.
@@ -34,6 +35,7 @@ These are the principles that our tests have to follow:
 - **Example:** Execute the function with the initialized parameters and capture the output or behavior that the test is evaluating.
 
 ### ·Assertion·
+
 - **Purpose:** This phase verifies whether the behavior or output of the executed code matches the expected result.
 - **Actions:**
   - Compare the actual output or behavior of the executed code against the expected outcome.
@@ -42,6 +44,7 @@ These are the principles that our tests have to follow:
 - **Example:** Check that the result returned by the function matches the expected output based on the input parameters.
 
 ### ·Teardown·
+
 - **Purpose:** This phase cleans up resources or state after the test has been executed, ensuring a clean environment for subsequent tests.
 - **Actions:**
   - Release any resources acquired during the setup phase.

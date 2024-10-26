@@ -11,11 +11,7 @@
 ![eslint-check](https://github.com/AntonioMrtz/SpotifyElectron/actions/workflows/eslint-check.yml/badge.svg)
 ![frontend-style-prettier](https://github.com/AntonioMrtz/SpotifyElectron/actions/workflows/frontend-style-prettier.yml/badge.svg)
 
-
-
 https://github.com/user-attachments/assets/9a711ebd-3059-43df-a7ac-a94000699812
-
-
 
 ## Overview
 

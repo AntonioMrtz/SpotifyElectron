@@ -5,7 +5,8 @@ In this section we will cover how to package app for production. After following
 ## 1. Update `global.ts` client data
 
 ```ts
-export const songArchitecture: SongArchitecture = SongArchitecture.BLOB_ARCHITECTURE;
+export const songArchitecture: SongArchitecture =
+  SongArchitecture.BLOB_ARCHITECTURE;
 ```
 
 ### Update production backend url
@@ -13,7 +14,7 @@ export const songArchitecture: SongArchitecture = SongArchitecture.BLOB_ARCHITEC
 ❗ Set backend url path without trailing `/`
 
 ```ts
-export const backendBaseUrl: string = 'http://127.0.0.1:8000';
+export const backendBaseUrl: string = "http://127.0.0.1:8000";
 ```
 
 ## 2. Build the app
@@ -24,9 +25,8 @@ npm run build
 
 ## 3. Package the app
 
-* Packaging for MacOS can be only done from a native system
-* From linux you can package the app for `AppImage` and `deb` format, and Windows if `wine` is installed
-
+- Packaging for MacOS can be only done from a native system
+- From linux you can package the app for `AppImage` and `deb` format, and Windows if `wine` is installed
 
 ### Native host
 

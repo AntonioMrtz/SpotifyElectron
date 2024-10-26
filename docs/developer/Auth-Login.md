@@ -36,6 +36,7 @@ Protected backend endpoints use the following structure for authentication:
 ```python
 token: Annotated[TokenData, Depends(JWTBearer())]
 ```
+
 This parameter relies on the `JWTBearer` class to handle authentication. The `JWTBearer` class:
 
 - **Validates the JWT**: Ensures the token is signed by the backend and has not expired.

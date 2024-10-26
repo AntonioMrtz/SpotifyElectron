@@ -1,3 +1,4 @@
+import React from 'react';
 import { useParams } from 'react-router-dom';
 import styles from './showAllItems.module.css';
 import ItemsPlaylist from './Items/ItemsAllPlaylists';
@@ -17,13 +18,12 @@ export default function ShowAllItems({
 
   // Reverse mapping object
   const itemsDisplayed: {
-    [key in ShowAllItemsTypes]: typeof ItemsPlaylist | any;
+    [key in ShowAllItemsTypes]: React.JSX.Element | null;
   } = {
     [ShowAllItemsTypes.ALL_PLAYLISTS]: (
       <ItemsPlaylist id={id} refreshSidebarData={refreshSidebarData} />
     ),
     [ShowAllItemsTypes.ALL_ARTISTS]: <ItemsArtist />,
-    [ShowAllItemsTypes.SONG]: 'Rejected',
     [ShowAllItemsTypes.ALL_PLAYLIST_FROM_USER]: (
       <ItemsAllPlaylistsFromUser
         userName={user || 'NoUser'}
@@ -39,6 +39,7 @@ export default function ShowAllItems({
         changeSongName={changeSongName}
       />
     ),
+    [ShowAllItemsTypes.SONG]: null, // Or handle as needed
   };
 
   return (
@@ -46,7 +47,6 @@ export default function ShowAllItems({
       className={`container-fluid d-flex flex-column ${styles.categoryTitle}`}
     >
       <h1>{id}</h1>
-
       <div
         className={`d-flex container-fluid flex-wrap ${styles.wrapperPlaylists} p-0`}
       >

@@ -6,8 +6,8 @@ import Global from 'global/global';
 import Sidebar from 'components/Sidebar/Sidebar';
 import UserType from 'utils/role';
 import getMockHeaders from 'utils/mockHeaders';
-
 import * as TokenModule from 'utils/token';
+import { SidebarProvider } from 'components/Sidebar/SidebarContext'; // Adjust the path as necessary
 
 const playlistName = 'playlisttest';
 const songName = 'songName';
@@ -34,6 +34,7 @@ const playlistDTOMockFetch = {
   song_names: [],
 };
 
+// Mocking Token Module
 jest.spyOn(TokenModule, 'getTokenUsername').mockReturnValue(userName);
 jest.spyOn(TokenModule, 'getTokenRole').mockReturnValue(roleUser);
 
@@ -45,8 +46,6 @@ test('render Sidebar', async () => {
         status: 200,
         ok: true,
         headers: getMockHeaders(),
-      }).catch((error) => {
-        console.log(error);
       });
     }
     if (
@@ -57,8 +56,6 @@ test('render Sidebar', async () => {
         status: 200,
         ok: true,
         headers: getMockHeaders(),
-      }).catch((error) => {
-        console.log(error);
       });
     }
 
@@ -69,7 +66,11 @@ test('render Sidebar', async () => {
   const component = await act(() => {
     return render(
       <BrowserRouter>
-        <Sidebar refreshSidebarData={jest.fn()} refreshSidebarTriggerValue />
+        <SidebarProvider>
+          {' '}
+          {/* Wrap Sidebar in SidebarProvider */}
+          <Sidebar />
+        </SidebarProvider>
       </BrowserRouter>,
     );
   });

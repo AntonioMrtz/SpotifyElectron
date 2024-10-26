@@ -4,14 +4,14 @@
 
 When launching the backend app, the following errors may appear 5 seconds after the application starts:
 
-* `SystemExit: Database connection failed, stopping server`
-* `CRITICAL - Error establishing connection with database: Ping to the database failed`
+- `SystemExit: Database connection failed, stopping server`
+- `CRITICAL - Error establishing connection with database: Ping to the database failed`
 
 Both errors indicate a failure to connect to the database. To diagnose the issue:
 
 1. Verify if your database is active by navigating to `localhost:27017` in your browser (the address might vary based on your database setup; `localhost:27017` is typical for development).
 2. If a blank page appears with the message: `It looks like you are trying to access MongoDB over HTTP on the native driver port.`
-then the database is running correctly.
+   then the database is running correctly.
 3. If nothing appears, revisit the Docker deployment steps to ensure everything was completed properly.
 
 ## ◾ Docker build scripts cannot be run
@@ -21,7 +21,7 @@ If you cannot run Docker scripts or they fail while executing:
 1. Ensure you have a valid `.env` file by following the guidelines provided in the [Environment guide](Environment.md).
 2. `/bin/bash^M: bad interpreter: No such file or directory`. This indicates a problem with return carriages; Linux represents them differently. Try running `sed -i -e 's/\r$//' script-name.sh` to convert Windows format to Linux.
 
-## ◾ '_PropertiesManager' object has no attribute 'ENV_VALUE'
+## ◾ '\_PropertiesManager' object has no attribute 'ENV_VALUE'
 
 If you encounter an error similar to:
 

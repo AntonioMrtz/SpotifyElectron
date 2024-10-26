@@ -183,7 +183,11 @@ export default function StartMenu({
               id="language-select"
               value={language}
               onChange={handleLanguageChange}
-              inputProps={{ 'aria-label': 'Without label' }}
+              inputProps={{
+                // need `data-testid` as prop for tests
+                'aria-label': 'Without label',
+                'data-testid': 'language-select',
+              }}
               sx={{
                 color: 'var(--secondary-white)',
                 backgroundColor: 'transparent',

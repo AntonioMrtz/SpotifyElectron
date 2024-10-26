@@ -11,6 +11,8 @@ import { getToken } from 'utils/token';
 import timeout from 'utils/timeout';
 import { CancelablePromise } from 'swagger/api';
 import { t } from 'i18next';
+import { getLanguageFromStorage, setLanguageStorage } from 'utils/language';
+import Language from 'i18n/languages';
 import { LoginService } from '../../swagger/api/services/LoginService';
 
 jest.mock('../../swagger/api/services/LoginService');
@@ -216,5 +218,40 @@ describe('StartMenu Component', () => {
     });
 
     expect(setIsSigningUpMock).toHaveBeenCalledWith(true);
+  });
+
+  test('change language from english to spanish', async () => {
+    await act(async () => {
+      render(
+        <StartMenu
+          setIsLogged={setIsLoggedMock}
+          setIsSigningUp={setIsSigningUpMock}
+        />,
+      );
+    });
+    const dropdown = screen.getByTestId('language-select');
+    fireEvent.change(dropdown, { target: { value: Language.SPANISH } });
+
+    await act(async () => {
+      fireEvent.click(dropdown);
+    });
+
+    const spanishFlagOption = screen.getByAltText('spanish flag');
+    expect(spanishFlagOption).toBeInTheDocument();
+  });
+
+  test('start up language matches localStorage one', async () => {
+    setLanguageStorage(Language.SPANISH);
+    await act(async () => {
+      render(
+        <StartMenu
+          setIsLogged={setIsLoggedMock}
+          setIsSigningUp={setIsSigningUpMock}
+        />,
+      );
+    });
+    expect(getLanguageFromStorage()).toBe(Language.SPANISH);
+    expect(screen.getByAltText('spanish flag')).toBeInTheDocument();
+    expect(screen.queryByAltText('english flag')).not.toBeInTheDocument();
   });
 });

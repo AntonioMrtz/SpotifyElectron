@@ -10,6 +10,7 @@ import StartMenu from 'pages/StartMenu/StartMenu';
 import { getToken } from 'utils/token';
 import timeout from 'utils/timeout';
 import { CancelablePromise } from 'swagger/api';
+import { t } from 'i18next';
 import { LoginService } from '../../swagger/api/services/LoginService';
 
 jest.mock('../../swagger/api/services/LoginService');
@@ -37,10 +38,10 @@ describe('StartMenu Component', () => {
 
     expect(screen.getByText('Spotify Electron')).toBeInTheDocument();
     expect(
-      screen.getByText('Inicia sesión en Spotify Electron'),
+      screen.getByText(t('startMenu.form-login-title')),
     ).toBeInTheDocument();
-    expect(screen.getByText('Nombre de usuario')).toBeInTheDocument();
-    expect(screen.getByText('Contraseña')).toBeInTheDocument();
+    expect(screen.getByText(t('startMenu.form-username'))).toBeInTheDocument();
+    expect(screen.getByText(t('startMenu.form-password'))).toBeInTheDocument();
   });
 
   test('handles input changes and form submission', async () => {
@@ -64,13 +65,19 @@ describe('StartMenu Component', () => {
     });
 
     await act(async () => {
-      fireEvent.change(screen.getByPlaceholderText('Nombre de usuario'), {
-        target: { value: 'user123' },
-      });
-      fireEvent.change(screen.getByPlaceholderText('Contraseña'), {
-        target: { value: 'password123' },
-      });
-      fireEvent.click(screen.getByText('Iniciar sesión'));
+      fireEvent.change(
+        screen.getByPlaceholderText(t('startMenu.form-username')),
+        {
+          target: { value: 'user123' },
+        },
+      );
+      fireEvent.change(
+        screen.getByPlaceholderText(t('startMenu.form-password')),
+        {
+          target: { value: 'password123' },
+        },
+      );
+      fireEvent.click(screen.getByText(t('startMenu.form-login-button')));
 
       await waitFor(() => {
         expect(setIsLoggedMock).toHaveBeenCalledWith(true);
@@ -115,7 +122,7 @@ describe('StartMenu Component', () => {
 
     expect(mockLoginPromise.isCancelled).toBe(true);
     expect(
-      screen.getByText('El servidor esta iniciándose'),
+      screen.getByText(t('commonPopover.cold-start-title')),
     ).toBeInTheDocument();
   });
 
@@ -133,19 +140,25 @@ describe('StartMenu Component', () => {
       );
     });
 
-    fireEvent.change(screen.getByPlaceholderText('Nombre de usuario'), {
-      target: { value: 'user123' },
-    });
-    fireEvent.change(screen.getByPlaceholderText('Contraseña'), {
-      target: { value: 'password123' },
-    });
+    fireEvent.change(
+      screen.getByPlaceholderText(t('startMenu.form-username')),
+      {
+        target: { value: 'user123' },
+      },
+    );
+    fireEvent.change(
+      screen.getByPlaceholderText(t('startMenu.form-password')),
+      {
+        target: { value: 'password123' },
+      },
+    );
     await act(async () => {
-      fireEvent.click(screen.getByText('Iniciar sesión'));
+      fireEvent.click(screen.getByText(t('startMenu.form-login-button')));
     });
 
     expect(setIsLoggedMock).toHaveBeenCalledWith(false);
     expect(
-      screen.getByText('Los credenciales introducidos no son válidos'),
+      screen.getByText(t('startMenu.cant-login-title')),
     ).toBeInTheDocument();
   });
 
@@ -165,20 +178,26 @@ describe('StartMenu Component', () => {
       );
     });
 
-    fireEvent.change(screen.getByPlaceholderText('Nombre de usuario'), {
-      target: { value: 'user123' },
-    });
-    fireEvent.change(screen.getByPlaceholderText('Contraseña'), {
-      target: { value: 'password123' },
-    });
+    fireEvent.change(
+      screen.getByPlaceholderText(t('startMenu.form-username')),
+      {
+        target: { value: 'user123' },
+      },
+    );
+    fireEvent.change(
+      screen.getByPlaceholderText(t('startMenu.form-password')),
+      {
+        target: { value: 'password123' },
+      },
+    );
     await act(async () => {
-      fireEvent.click(screen.getByText('Iniciar sesión'));
+      fireEvent.click(screen.getByText(t('startMenu.form-login-button')));
     });
 
     expect(mockLoginPromise.isCancelled).toBe(true);
     expect(setIsLoggedMock).toHaveBeenCalledWith(false);
     expect(
-      screen.getByText('El servidor esta iniciándose'),
+      screen.getByText(t('commonPopover.cold-start-title')),
     ).toBeInTheDocument();
   });
 
@@ -193,7 +212,7 @@ describe('StartMenu Component', () => {
     });
 
     act(() => {
-      fireEvent.click(screen.getByText('Regístrate en Spotify Electron'));
+      fireEvent.click(screen.getByText(t('startMenu.go-to-register-button')));
     });
 
     expect(setIsSigningUpMock).toHaveBeenCalledWith(true);

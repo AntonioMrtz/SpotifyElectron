@@ -34,5 +34,8 @@
   "jest.runMode": {
     "runAllTestsOnStartup": false,
     "type": "on-demand"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
 }

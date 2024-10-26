@@ -166,13 +166,8 @@ venv
 htmlcov
 .coverage
 
-
-.env
-
-
 # Documentation
 **/site/
 
-# Remote debug profile
-
-**/remote-debug-profile
+# Frontend debug
+**/remote-debug-profile/**

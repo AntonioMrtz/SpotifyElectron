@@ -1,0 +1,18 @@
+{
+  "form-register-title": "Register for Spotify Electron",
+  "form-username": "Username",
+  "form-password": "Password",
+  "form-password-repeat": "Confirm your password",
+  "form-thumbnail": "Profile picture",
+  "form-register-button": "Register",
+  "go-to-login-button": "Log in to Spotify Electron",
+  "already-have-account": "Already have an account?",
+  "cant-register-title": "The credentials provided are invalid",
+  "cant-register-description": "Unable to register the user",
+  "cant-register-missing-fields-title": "Not all required registration data has been entered",
+  "cant-register-missing-fields-description": "Please enter the remaining data",
+  "cant-register-password-dont-match-title": "Passwords do not match",
+  "cant-register-password-dont-match-description": "Make sure the passwords are the same",
+  "register-success-title": "User Registered",
+  "register-success-description": "The user has been registered successfully"
+}

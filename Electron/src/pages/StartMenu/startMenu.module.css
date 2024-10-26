@@ -11,11 +11,19 @@
   padding: 2rem;
   background-color: rgba(0, 0, 0, 1);
   background: linear-gradient(rgba(81, 81, 81, 1) 0%, rgb(0, 0, 0) 100%);
-  z-index: 9999;
+  z-index: 100;
+}
+
+.languageContainer {
+  z-index: 101;
+  position: absolute;
+  right: 0;
+  top: 0;
+  margin: 40px 5% 40px 40px;
 }
 
 .contentWrapper {
-  background-color: black;
+  background-color: var(--primary-black);
   border-radius: 8px;
   padding: 2rem;
   width: 100%;

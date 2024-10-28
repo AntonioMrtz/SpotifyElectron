@@ -6,13 +6,9 @@ import SongCard from '../../components/Cards/SongCard/SongCard';
 
 interface PropsGenre {
   refreshSidebarData: () => void;
-  changeSongName: (songName: string) => void;
 }
 
-export default function Genre({
-  refreshSidebarData,
-  changeSongName,
-}: PropsGenre) {
+export default function Genre({ refreshSidebarData }: PropsGenre) {
   /* Get current Playlist Name */
   const location = useLocation();
   const genreName = decodeURIComponent(
@@ -50,7 +46,6 @@ export default function Genre({
                 name={song.name}
                 artist={song.artist}
                 photo={song.photo}
-                changeSongName={changeSongName}
                 refreshSidebarData={refreshSidebarData}
               />
             );

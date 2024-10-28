@@ -5,6 +5,7 @@ import { getTokenUsername } from 'utils/token';
 import Popover, { PopoverPosition } from '@mui/material/Popover';
 import ContextMenuProfile from 'components/AdvancedUIComponents/ContextMenu/Profile/ContextMenuProfile';
 import useFetchGetUser from 'hooks/useFetchGetUser';
+import { useSongNameChangeContext } from 'hooks/useSongChangeContextApi';
 import styles from './stickyHeader.module.css';
 import groupIcon from '../../assets/imgs/groupIcon.png';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
@@ -14,6 +15,8 @@ interface PropsStickyHeader {
 }
 
 export default function StickyHeader({ handleLogout }: PropsStickyHeader) {
+  const { changeSongName } = useSongNameChangeContext();
+
   const username = getTokenUsername();
   const { user } = useFetchGetUser(username);
   const [profileIcon, setProfileIcon] = useState(defaultThumbnailPlaylist);
@@ -129,6 +132,11 @@ export default function StickyHeader({ handleLogout }: PropsStickyHeader) {
     handleOpenContextMenu(e);
   };
 
+  const logOut = (args: any) => {
+    changeSongName(Global.noSongPlaying);
+    handleLogout(args);
+  };
+
   return (
     <header
       style={visibleBackground}
@@ -182,7 +190,7 @@ export default function StickyHeader({ handleLogout }: PropsStickyHeader) {
           }}
         >
           <ContextMenuProfile
-            handleLogout={handleLogout}
+            handleLogout={logOut}
             handleClose={handleCloseContextMenu}
           />
         </Popover>

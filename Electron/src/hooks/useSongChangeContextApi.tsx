@@ -13,11 +13,11 @@ const SongNameContext = createContext<SongNameContextType | undefined>(
 );
 
 // Define the provider component
-export const SongNameChangeContextProvider = ({
+export function SongNameChangeContextProvider({
   children,
 }: {
   children: ReactNode;
-}) => {
+}) {
   const [songName, setSongName] = useState<string>(Global.noSongPlaying);
 
   const changeSongName = (newSongName: string) => {
@@ -29,9 +29,17 @@ export const SongNameChangeContextProvider = ({
       {children}
     </SongNameContext.Provider>
   );
-};
+}
 
 // A custom hook for easy access for song
 export const useSongNameChangeContext = () => {
-  return useContext(SongNameContext);
+  const context = useContext(SongNameContext);
+
+  if (!context) {
+    throw new Error(
+      'useSongNameChangeContext must be used within a SongNameProvider',
+    );
+  }
+
+  return context;
 };

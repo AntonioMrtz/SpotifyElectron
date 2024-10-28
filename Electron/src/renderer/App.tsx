@@ -2,7 +2,6 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import Playlist from 'pages/Playlist/Playlist';
 import StickyHeader from 'components/StickyHeader/StickyHeader';
-import Global from 'global/global';
 import Genre from 'pages/Genre/Genre';
 import ShowAllItems from 'components/ShowAllItems/ShowAllItems';
 import StartMenu from 'pages/StartMenu/StartMenu';
@@ -11,12 +10,12 @@ import UserProfile from 'pages/UserProfile/UserProfile';
 import UserType from 'utils/role';
 import RegisterMenu from 'pages/StartMenu/RegisterMenu';
 import { deleteToken } from 'utils/token';
+import { SongNameChangeContextProvider } from 'hooks/useSongChangeContextApi';
 import styles from './AppCss.module.css';
 import Sidebar from '../components/Sidebar/Sidebar';
 import Home from '../pages/Home/Home';
 import Explorar from '../pages/Explorar/Explorar';
 import Footer from '../components/footer/Footer';
-import { SongNameChangeContextProvider } from 'hooks/useSongChangeContextApi';
 
 function App() {
   /* Scroll to the top if path is changed */
@@ -37,19 +36,11 @@ function App() {
     }, 500);
   };
 
-  /* Handle change song name */
-
-  const [songName, setSongName] = useState(Global.noSongPlaying);
-  const changeSongName = (songNameInput: string): void => {
-    setSongName(songNameInput);
-  };
-
   /* Handle login status */
 
   const [isLogged, setIsLogged] = useState(false);
 
   const handleLogout = () => {
-    changeSongName(Global.noSongPlaying);
     deleteToken();
     setIsLogged(false);
   };
@@ -80,31 +71,21 @@ function App() {
                 <Routes>
                   <Route
                     path="/playlist/:id"
-                    element=<Playlist
-                      changeSongName={changeSongName}
-                      refreshSidebarData={refreshSidebarData}
-                    />
+                    element=<Playlist refreshSidebarData={refreshSidebarData} />
                   />
                   <Route
                     path="/explorar"
-                    element=<Explorar
-                      changeSongName={changeSongName}
-                      refreshSidebarData={refreshSidebarData}
-                    />
+                    element=<Explorar refreshSidebarData={refreshSidebarData} />
                   />
                   <Route
                     path="/explorar/genre/:id"
-                    element=<Genre
-                      changeSongName={changeSongName}
-                      refreshSidebarData={refreshSidebarData}
-                    />
+                    element=<Genre refreshSidebarData={refreshSidebarData} />
                   />
 
                   <Route
                     path="/user/:id"
                     element=<UserProfile
                       refreshSidebarData={refreshSidebarData}
-                      changeSongName={changeSongName}
                       userType={UserType.USER}
                     />
                   />
@@ -113,7 +94,6 @@ function App() {
                     path="/artist/:id"
                     element=<UserProfile
                       refreshSidebarData={refreshSidebarData}
-                      changeSongName={changeSongName}
                       userType={UserType.ARTIST}
                     />
                   />
@@ -123,7 +103,6 @@ function App() {
                     element=<ShowAllItems
                       refreshSidebarData={refreshSidebarData}
                       type={ShowAllItemsTypes.ALL_PLAYLISTS}
-                      changeSongName={changeSongName}
                     />
                   />
                   <Route
@@ -131,7 +110,6 @@ function App() {
                     element=<ShowAllItems
                       refreshSidebarData={refreshSidebarData}
                       type={ShowAllItemsTypes.ALL_ARTISTS}
-                      changeSongName={changeSongName}
                     />
                   />
                   <Route
@@ -139,7 +117,6 @@ function App() {
                     element=<ShowAllItems
                       refreshSidebarData={refreshSidebarData}
                       type={ShowAllItemsTypes.ALL_PLAYLIST_FROM_USER}
-                      changeSongName={changeSongName}
                     />
                   />
                   <Route
@@ -147,7 +124,6 @@ function App() {
                     element=<ShowAllItems
                       refreshSidebarData={refreshSidebarData}
                       type={ShowAllItemsTypes.ALL_SONGS_FROM_ARTIST}
-                      changeSongName={changeSongName}
                     />
                   />
                   <Route
@@ -162,7 +138,7 @@ function App() {
                 </Routes>
               </div>
             </div>
-            <Footer songName={songName} />
+            <Footer />
           </div>
         )}
       </SongNameChangeContextProvider>

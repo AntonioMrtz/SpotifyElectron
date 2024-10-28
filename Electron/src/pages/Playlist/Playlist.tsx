@@ -10,6 +10,7 @@ import Box from '@mui/material/Box';
 import ContextMenuPlaylist from 'components/AdvancedUIComponents/ContextMenu/Playlist/ContextMenuPlaylist';
 import Popover, { PopoverPosition } from '@mui/material/Popover/';
 import { secondsToHoursAndMinutesFormatted } from 'utils/date';
+import { useSongNameChangeContext } from 'hooks/useSongChangeContextApi';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 import Song from '../../components/Song/Song';
 import styles from './playlist.module.css';
@@ -18,14 +19,12 @@ import { PlaylistsService } from '../../swagger/api/services/PlaylistsService';
 import { SongsService } from '../../swagger/api/services/SongsService';
 
 interface PropsPlaylist {
-  changeSongName: (songName: string) => void;
   refreshSidebarData: () => void;
 }
 
-export default function Playlist({
-  changeSongName,
-  refreshSidebarData,
-}: PropsPlaylist) {
+export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
+  const { changeSongName } = useSongNameChangeContext();
+
   const [mainColorThumbnail, setMainColorThumbnail] = useState('');
 
   /* Get current Playlist Name */

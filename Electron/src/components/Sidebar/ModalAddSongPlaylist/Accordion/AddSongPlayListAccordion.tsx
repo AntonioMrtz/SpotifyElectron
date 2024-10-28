@@ -131,7 +131,7 @@ export default function AddSongPlayListAccordion({
     setLoadingUploadSong(true);
     setIsCloseAllowed(false);
 
-    if (!formDataSong || !songFile) {
+    if (!songFile) {
       return;
     }
 
@@ -193,10 +193,6 @@ export default function AddSongPlayListAccordion({
     setIsCloseAllowed(false);
 
     event.preventDefault();
-
-    if (!formDataPlaylist) {
-      return;
-    }
 
     try {
       await PlaylistsService.createPlaylistPlaylistsPost(

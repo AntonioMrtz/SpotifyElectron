@@ -254,7 +254,7 @@ export default function AddSongPlayListAccordion({
           <form
             className={`container-fluid d-flex flex-column p-0 ${styles.formAddSong}`}
           >
-            <div className="container-fluid d-flex flex-column p-0">
+            <div className="container-fluid d-flex flex-column p-0 mb-3">
               <div className="d-flex flex-row">
                 <div className="p-0 mb-3 me-3 container-fluid d-flex">
                   <p className="text-danger">*</p>
@@ -280,7 +280,8 @@ export default function AddSongPlayListAccordion({
                   />
                 </div>
               </div>
-              <div className="container-fluid p-0">
+              <div className="container-fluid p-0 d-flex">
+                <p className="invisible">*</p>
                 <textarea
                   id="description"
                   name="description"
@@ -292,9 +293,12 @@ export default function AddSongPlayListAccordion({
                 />
               </div>
             </div>
-            <p className="text-danger mt-2">
-              Los campos marcados con * son obligatorios.
-            </p>
+            <div className="d-flex flex-row">
+              <p className="invisible">*</p>
+              <p className="text-danger">
+                Los campos marcados con * son obligatorios.
+              </p>
+            </div>
 
             <button
               type="button"
@@ -342,21 +346,20 @@ export default function AddSongPlayListAccordion({
             <form
               className={`container-fluid d-flex flex-column p-0 ${styles.formAddSong}`}
             >
-              <div className="container-fluid d-flex flex-row p-0">
-                <div className="p-0 mb-3 w-100 d-flex">
-                  <p className="text-danger">*</p>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    placeholder="Nombre de la canción"
-                    className={` ${styles.input}`}
-                    onChange={handleChangeSong}
-                    required
-                  />
-                </div>
+              <div className="container-fluid d-flex flex-row p-0 mb-3 w-100">
+                <p className="text-danger">*</p>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  placeholder="Nombre de la canción"
+                  className={` ${styles.input}`}
+                  onChange={handleChangeSong}
+                  required
+                />
               </div>
-              <div className="p-0 mb-3 me-2">
+              <div className="p-0 mb-3 me-2 d-flex flex-row w-100 ">
+                <p className="invisible">*</p>
                 <input
                   type="text"
                   id="photo"
@@ -415,7 +418,6 @@ export default function AddSongPlayListAccordion({
                     required
                     data-testid="sidebar-file-input"
                   />
-                  <p className="ml-1">*</p>
                 </div>
               </div>
               <p className="text-danger mt-2">

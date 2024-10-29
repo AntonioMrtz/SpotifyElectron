@@ -111,12 +111,7 @@ test('Playlist user role get all info', async () => {
         <Routes>
           <Route
             path="/playlist/:id"
-            element={
-              <Playlist
-                changeSongName={jest.fn()}
-                refreshSidebarData={jest.fn()}
-              />
-            }
+            element={<Playlist refreshSidebarData={jest.fn()} />}
           />
         </Routes>
       </MemoryRouter>,
@@ -224,12 +219,7 @@ test('Playlist user role hit like button', async () => {
         <Routes>
           <Route
             path="/playlist/:id"
-            element={
-              <Playlist
-                changeSongName={jest.fn()}
-                refreshSidebarData={jest.fn()}
-              />
-            }
+            element={<Playlist refreshSidebarData={jest.fn()} />}
           />
         </Routes>
       </MemoryRouter>,
@@ -346,12 +336,7 @@ test('Playlist user role get unlike button', async () => {
         <Routes>
           <Route
             path="/playlist/:id"
-            element={
-              <Playlist
-                changeSongName={jest.fn()}
-                refreshSidebarData={jest.fn()}
-              />
-            }
+            element={<Playlist refreshSidebarData={jest.fn()} />}
           />
         </Routes>
       </MemoryRouter>,
@@ -482,12 +467,7 @@ test('Playlist user role update playlist', async () => {
         <Routes>
           <Route
             path="/playlist/:id"
-            element={
-              <Playlist
-                changeSongName={jest.fn()}
-                refreshSidebarData={refreshSidebarData}
-              />
-            }
+            element={<Playlist refreshSidebarData={refreshSidebarData} />}
           />
         </Routes>
       </MemoryRouter>,

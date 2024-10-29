@@ -112,7 +112,6 @@ test('UserProfile User load Playback history and his Playlists', async () => {
             element={
               <UserProfile
                 refreshSidebarData={jest.fn()}
-                changeSongName={jest.fn()}
                 userType={UserType.USER}
               />
             }
@@ -220,7 +219,6 @@ test('UserProfile Artist load Songs and total streams', async () => {
             element={
               <UserProfile
                 refreshSidebarData={jest.fn()}
-                changeSongName={jest.fn()}
                 userType={UserType.ARTIST}
               />
             }

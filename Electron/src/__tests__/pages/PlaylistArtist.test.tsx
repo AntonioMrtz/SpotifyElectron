@@ -92,12 +92,7 @@ test('Playlist artist role get all info', async () => {
         <Routes>
           <Route
             path="/playlist/:id"
-            element={
-              <Playlist
-                changeSongName={jest.fn()}
-                refreshSidebarData={jest.fn()}
-              />
-            }
+            element={<Playlist refreshSidebarData={jest.fn()} />}
           />
         </Routes>
       </MemoryRouter>,

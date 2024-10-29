@@ -7,7 +7,7 @@ import { BrowserRouter } from 'react-router-dom';
 test('Render footer', () => {
   const component = render(
     <BrowserRouter>
-      <Footer songName="" />
+      <Footer />
     </BrowserRouter>,
   );
   expect(component).toBeTruthy();

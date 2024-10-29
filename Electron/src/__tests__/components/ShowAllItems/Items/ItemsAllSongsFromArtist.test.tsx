@@ -54,7 +54,6 @@ test('Render items All Songs from Artist', async () => {
         <ItemsAllSongsFromArtist
           artistName={artistMockFetch.name}
           refreshSidebarData={jest.fn()}
-          changeSongName={jest.fn()}
           id={artistMockFetch.name}
         />
       </BrowserRouter>,

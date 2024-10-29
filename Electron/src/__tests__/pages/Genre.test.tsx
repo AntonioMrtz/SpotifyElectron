@@ -33,12 +33,7 @@ test('Render Genre with one song', async () => {
         <Routes>
           <Route
             path="/artist/:id"
-            element={
-              <Genre
-                refreshSidebarData={jest.fn()}
-                changeSongName={jest.fn()}
-              />
-            }
+            element={<Genre refreshSidebarData={jest.fn()} />}
           />
         </Routes>
       </MemoryRouter>,

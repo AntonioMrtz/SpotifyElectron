@@ -204,7 +204,6 @@ export default function UserProfile({
                     name={songItem.name}
                     photo={songItem.photo}
                     artist={songItem.artist}
-                    changeSongName={changeSongName}
                     refreshSidebarData={refreshSidebarData}
                   />
                 );
@@ -288,7 +287,6 @@ export default function UserProfile({
                     name={songItem.name}
                     photo={songItem.photo}
                     artist={songItem.artist}
-                    changeSongName={changeSongName}
                     refreshSidebarData={refreshSidebarData}
                   />
                 );

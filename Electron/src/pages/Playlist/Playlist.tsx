@@ -605,7 +605,6 @@ export default function Playlist({
                         name="name"
                         type="text"
                         defaultValue={playlistName}
-                        className="form-control"
                         id="name"
                         placeholder="Añade un nombre"
                         onChange={handleChangeForm}
@@ -619,7 +618,6 @@ export default function Playlist({
                       <div className="form-floating">
                         <textarea
                           name="description"
-                          className="form-control"
                           defaultValue={description}
                           placeholder="Añade una descripción"
                           id="description"
@@ -641,7 +639,6 @@ export default function Playlist({
                   <input
                     name="photo"
                     type="text"
-                    className="form-control"
                     id="photo"
                     defaultValue={
                       thumbnail === defaultThumbnailPlaylist ? '' : thumbnail

@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useState, ReactNode, useMemo } from 'react';
 import Global from 'global/global';
 
 // type of context state
@@ -24,8 +24,12 @@ export function SongNameChangeContextProvider({
     setSongName(newSongName);
   };
 
+  const value = useMemo<SongNameContextType>(() => {
+    return { songName, changeSongName };
+  }, [songName]);
+
   return (
-    <SongNameContext.Provider value={{ songName, changeSongName }}>
+    <SongNameContext.Provider value={value}>
       {children}
     </SongNameContext.Provider>
   );

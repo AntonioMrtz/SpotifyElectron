@@ -5,7 +5,6 @@ import PlaylistCard from 'components/Cards/PlaylistCard/PlaylistCard';
 import ArtistCard from 'components/Cards/ArtistCard/ArtistCard';
 import UserCard from 'components/Cards/UserCard/UserCard';
 import useFetchSearchItemsByName from 'hooks/useFetchGetSearchItemsByName';
-import { useSongNameChangeContext } from 'hooks/useSongChangeContextApi';
 import useFetchGetGenres from '../../hooks/useFetchGetGenres';
 import styles from './explorar.module.css';
 import GenreCard from '../../components/Cards/GenreCard/GenreCard';
@@ -15,12 +14,10 @@ interface PropsExplorar {
 }
 
 export default function Explorar({ refreshSidebarData }: PropsExplorar) {
-  const { changeSongName } = useSongNameChangeContext();
-
   const [filterName, setFilterName] = useState('');
 
   const { filteredPlaylists, filteredArtists, filteredSongs, filteredUsers } =
-    useFetchSearchItemsByName(filterName, refreshSidebarData, changeSongName);
+    useFetchSearchItemsByName(filterName, refreshSidebarData);
 
   const handleChangeSearchBar = (event: ChangeEvent<HTMLInputElement>) => {
     setFilterName(event.target.value?.trim());
@@ -68,7 +65,6 @@ export default function Explorar({ refreshSidebarData }: PropsExplorar) {
                       artist={song.artist}
                       photo={song.photo}
                       refreshSidebarData={song.refreshSidebarData}
-                      changeSongName={changeSongName}
                       key={`${song.name}${song.artist}`}
                     />
                   ))}

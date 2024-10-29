@@ -8,6 +8,7 @@ import UserType from 'utils/role';
 import getMockHeaders from 'utils/mockHeaders';
 
 import * as TokenModule from 'utils/token';
+import { SongNameChangeContextProvider } from 'hooks/useSongChangeContextApi';
 
 const userName = 'prueba';
 const roleArtist = UserType.ARTIST;
@@ -89,12 +90,14 @@ test('Playlist artist role get all info', async () => {
   const component = await act(() => {
     return render(
       <MemoryRouter initialEntries={[`/playlist/${playlistDTOMockFetch.name}`]}>
-        <Routes>
-          <Route
-            path="/playlist/:id"
-            element={<Playlist refreshSidebarData={jest.fn()} />}
-          />
-        </Routes>
+        <SongNameChangeContextProvider>
+          <Routes>
+            <Route
+              path="/playlist/:id"
+              element={<Playlist refreshSidebarData={jest.fn()} />}
+            />
+          </Routes>
+        </SongNameChangeContextProvider>
       </MemoryRouter>,
     );
   });

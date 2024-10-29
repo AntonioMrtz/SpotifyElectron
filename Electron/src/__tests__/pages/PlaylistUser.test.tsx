@@ -7,6 +7,7 @@ import Global from 'global/global';
 import UserType from 'utils/role';
 import getMockHeaders from 'utils/mockHeaders';
 import * as TokenModule from 'utils/token';
+import { SongNameChangeContextProvider } from 'hooks/useSongChangeContextApi';
 
 const userName = 'prueba';
 const roleUser = UserType.USER;
@@ -108,12 +109,14 @@ test('Playlist user role get all info', async () => {
   const component = await act(() => {
     return render(
       <MemoryRouter initialEntries={[`/playlist/${playlistDTOMockFetch.name}`]}>
-        <Routes>
-          <Route
-            path="/playlist/:id"
-            element={<Playlist refreshSidebarData={jest.fn()} />}
-          />
-        </Routes>
+        <SongNameChangeContextProvider>
+          <Routes>
+            <Route
+              path="/playlist/:id"
+              element={<Playlist refreshSidebarData={jest.fn()} />}
+            />
+          </Routes>
+        </SongNameChangeContextProvider>
       </MemoryRouter>,
     );
   });
@@ -216,12 +219,14 @@ test('Playlist user role hit like button', async () => {
   const component = await act(() => {
     return render(
       <MemoryRouter initialEntries={[`/playlist/${playlistDTOMockFetch.name}`]}>
-        <Routes>
-          <Route
-            path="/playlist/:id"
-            element={<Playlist refreshSidebarData={jest.fn()} />}
-          />
-        </Routes>
+        <SongNameChangeContextProvider>
+          <Routes>
+            <Route
+              path="/playlist/:id"
+              element={<Playlist refreshSidebarData={jest.fn()} />}
+            />
+          </Routes>
+        </SongNameChangeContextProvider>
       </MemoryRouter>,
     );
   });
@@ -333,12 +338,14 @@ test('Playlist user role get unlike button', async () => {
   const component = await act(() => {
     return render(
       <MemoryRouter initialEntries={[`/playlist/${playlistDTOMockFetch.name}`]}>
-        <Routes>
-          <Route
-            path="/playlist/:id"
-            element={<Playlist refreshSidebarData={jest.fn()} />}
-          />
-        </Routes>
+        <SongNameChangeContextProvider>
+          <Routes>
+            <Route
+              path="/playlist/:id"
+              element={<Playlist refreshSidebarData={jest.fn()} />}
+            />
+          </Routes>
+        </SongNameChangeContextProvider>
       </MemoryRouter>,
     );
   });
@@ -464,12 +471,14 @@ test('Playlist user role update playlist', async () => {
   const component = await act(() => {
     return render(
       <MemoryRouter initialEntries={[`/playlist/${playlistDTOMockFetch.name}`]}>
-        <Routes>
-          <Route
-            path="/playlist/:id"
-            element={<Playlist refreshSidebarData={refreshSidebarData} />}
-          />
-        </Routes>
+        <SongNameChangeContextProvider>
+          <Routes>
+            <Route
+              path="/playlist/:id"
+              element={<Playlist refreshSidebarData={refreshSidebarData} />}
+            />
+          </Routes>
+        </SongNameChangeContextProvider>
       </MemoryRouter>,
     );
   });

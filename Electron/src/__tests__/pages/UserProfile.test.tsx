@@ -7,6 +7,7 @@ import UserType from 'utils/role';
 import Global from 'global/global';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import getMockHeaders from 'utils/mockHeaders';
+import { SongNameChangeContextProvider } from 'hooks/useSongChangeContextApi';
 
 /* afterEach(() => {
   jest.clearAllMocks();
@@ -106,17 +107,19 @@ test('UserProfile User load Playback history and his Playlists', async () => {
   const component = await act(() => {
     return render(
       <MemoryRouter initialEntries={[`/user/${userMockFetch.name}`]}>
-        <Routes>
-          <Route
-            path="/user/:id"
-            element={
-              <UserProfile
-                refreshSidebarData={jest.fn()}
-                userType={UserType.USER}
-              />
-            }
-          />
-        </Routes>
+        <SongNameChangeContextProvider>
+          <Routes>
+            <Route
+              path="/user/:id"
+              element={
+                <UserProfile
+                  refreshSidebarData={jest.fn()}
+                  userType={UserType.USER}
+                />
+              }
+            />
+          </Routes>
+        </SongNameChangeContextProvider>
       </MemoryRouter>,
     );
   });
@@ -213,17 +216,19 @@ test('UserProfile Artist load Songs and total streams', async () => {
   const component = await act(() => {
     return render(
       <MemoryRouter initialEntries={[`/artist/${artistMockFetch.name}`]}>
-        <Routes>
-          <Route
-            path="/artist/:id"
-            element={
-              <UserProfile
-                refreshSidebarData={jest.fn()}
-                userType={UserType.ARTIST}
-              />
-            }
-          />
-        </Routes>
+        <SongNameChangeContextProvider>
+          <Routes>
+            <Route
+              path="/artist/:id"
+              element={
+                <UserProfile
+                  refreshSidebarData={jest.fn()}
+                  userType={UserType.ARTIST}
+                />
+              }
+            />
+          </Routes>
+        </SongNameChangeContextProvider>
       </MemoryRouter>,
     );
   });

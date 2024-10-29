@@ -7,7 +7,6 @@ import UserType from 'utils/role';
 import { PropsSongCard } from 'types/song';
 import { ArtistsService, UsersService } from 'swagger/api';
 import useFetchGetUserPlaylists from 'hooks/useFetchGetUserPlaylists';
-import { useSongNameChangeContext } from 'hooks/useSongChangeContextApi';
 import styles from './userProfile.module.css';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 
@@ -21,8 +20,6 @@ export default function UserProfile({
   userType,
   refreshSidebarData,
 }: PropsUserProfile) {
-  const { changeSongName } = useSongNameChangeContext();
-
   const { id } = useParams();
   const navigate = useNavigate();
 

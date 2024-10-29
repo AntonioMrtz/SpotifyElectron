@@ -5,6 +5,7 @@ import Explorar from 'pages/Explorar/Explorar';
 import { BrowserRouter } from 'react-router-dom';
 import Global from 'global/global';
 import getMockHeaders from 'utils/mockHeaders';
+import { SongNameChangeContextProvider } from 'hooks/useSongChangeContextApi';
 
 const playlistName = 'playlisttest';
 const songName = 'songName';
@@ -83,7 +84,9 @@ test('Render Explorar and get Genres', async () => {
   const component = await act(() => {
     return render(
       <BrowserRouter>
-        <Explorar refreshSidebarData={jest.fn()} />
+        <SongNameChangeContextProvider>
+          <Explorar refreshSidebarData={jest.fn()} />
+        </SongNameChangeContextProvider>
       </BrowserRouter>,
     );
   });
@@ -94,7 +97,9 @@ test('Explorar filter by name', async () => {
   const component = await act(() => {
     return render(
       <BrowserRouter>
-        <Explorar refreshSidebarData={jest.fn()} />
+        <SongNameChangeContextProvider>
+          <Explorar refreshSidebarData={jest.fn()} />
+        </SongNameChangeContextProvider>
       </BrowserRouter>,
     );
   });

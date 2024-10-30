@@ -426,7 +426,10 @@ export default function AddSongPlayListAccordion({
                 className={`btn btn-lg ${styles.btnSend} d-flex flex-row justify-content-center`}
                 data-testid="sidebar-addsongplaylistaccordion-submit-song"
                 disabled={
-                  !formDataSong.name || !formDataSong.genre || !songFile
+                  !formDataSong.name ||
+                  !formDataSong.genre ||
+                  !songFile ||
+                  loadingUploadSong
                 }
               >
                 Subir {loadingUploadSong && <LoadingCircleSmall />}

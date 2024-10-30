@@ -368,7 +368,7 @@ export default function AddSongPlayListAccordion({
               </div>
 
               <div
-                className={`d-flex flex-row overflow-hidden align-items-center ${styles.containerSelectAndFileSelector}`}
+                className={`d-flex flex-row overflow-hidden align-items-center justify-content-between ${styles.containerSelectAndFileSelector}`}
               >
                 <div className="me-5 d-flex">
                   <p className="text-danger me-2">*</p>

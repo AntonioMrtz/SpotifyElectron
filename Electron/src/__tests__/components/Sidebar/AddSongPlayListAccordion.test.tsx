@@ -403,7 +403,7 @@ test('AddSongPlaylistAccordion disables the upload button while song is uploadin
 
   const validFile = new File([''], 'test.mp3', { type: 'audio/mpeg' });
 
-  //upload button for song
+  // upload button for song
   const uploadSongButton = component.getByTestId(
     'sidebar-addsongplaylistaccordion-submit-song',
   );

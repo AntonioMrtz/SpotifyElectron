@@ -394,6 +394,9 @@ test('AddSongPlaylistAccordion disables the upload button while song is uploadin
   expect(component.getByText('Subir canción')).toBeInTheDocument();
 
   const inputName = component.getByPlaceholderText('Nombre de la canción');
+  const inputPhoto = component.getByPlaceholderText(
+    'URL de la miniatura de la canción',
+  );
   const selectGenreOption = component.getByText('❗ Elige un género');
   const dropdown = component.getByTestId('select-genre');
 
@@ -403,20 +406,19 @@ test('AddSongPlaylistAccordion disables the upload button while song is uploadin
 
   const validFile = new File([''], 'test.mp3', { type: 'audio/mpeg' });
 
-  // upload button for song
-  const uploadSongButton = component.getByTestId(
-    'sidebar-addsongplaylistaccordion-submit-song',
-  );
-
-  // Verify that the upload button is initially disabled
-  expect(uploadSongButton).toBeDisabled();
-
   await act(async () => {
     fireEvent.change(inputName, { target: { value: 'Test Song' } });
+    fireEvent.change(inputPhoto, {
+      target: { value: 'http://example.com/image.jpg' },
+    });
     fireEvent.change(selectGenreOption, { target: { value: 'Rock' } });
     fireEvent.change(dropdown, { target: { value: 'Rock' } });
     fireEvent.change(fileInputElement, { target: { files: [validFile] } });
   });
+
+  const uploadSongButton = component.getByTestId(
+    'sidebar-addsongplaylistaccordion-submit-song',
+  );
 
   // Verify that the upload button is enabled
   await waitFor(() => {
@@ -430,5 +432,81 @@ test('AddSongPlaylistAccordion disables the upload button while song is uploadin
   // Verify that the upload button is disabled while uploading
   await waitFor(() => {
     expect(uploadSongButton).toBeDisabled();
+  });
+});
+
+test('AddSongPlaylistAccordion disables the upload button when required field are missing', async () => {
+  const handleCloseMock = jest.fn();
+  const refreshSidebarDataMock = jest.fn();
+  const setIsCloseAllowed = jest.fn();
+
+  // Mocking the fetch API globally
+  global.fetch = jest.fn((url: string) => {
+    return new Promise((resolve) => {
+      if (url === `${Global.backendBaseUrl}/genres/`) {
+        resolve({
+          json: async () => ({ Rock: 'Rock', Pop: 'Pop' }),
+          status: 200,
+          ok: true,
+          headers: getMockHeaders(),
+        });
+      } else {
+        setTimeout(() => {
+          resolve({
+            json: async () => ({}),
+            status: 201,
+            ok: true,
+            headers: getMockHeaders(),
+          });
+        }, 1000);
+      }
+    });
+  }) as jest.Mock;
+
+  const component = await act(async () => {
+    return render(
+      <BrowserRouter>
+        <AddSongPlayListAccordion
+          handleClose={handleCloseMock}
+          refreshSidebarData={refreshSidebarDataMock}
+          setIsCloseAllowed={setIsCloseAllowed}
+        />
+      </BrowserRouter>,
+    );
+  });
+
+  const accordionExpandSong = component.getByTestId(
+    'accordion-expand-submit-song',
+  );
+
+  await act(async () => {
+    fireEvent.click(accordionExpandSong);
+  });
+  // Find elements
+  const inputName = component.getByPlaceholderText('Nombre de la canción');
+  const dropdown = component.getByTestId('select-genre');
+  const fileInputElement = component.getByTestId(
+    'sidebar-file-input',
+  ) as HTMLInputElement;
+
+  const validFile = new File([''], 'test.mp3', { type: 'audio/mpeg' });
+
+  const submitButton = component.getByTestId(
+    'sidebar-addsongplaylistaccordion-submit-song',
+  ); // Submit button
+
+  // Initially, the submit button should be disabled
+  expect(submitButton).toBeDisabled();
+
+  // Fill in all required fields
+  await act(async () => {
+    fireEvent.change(inputName, { target: { value: 'Test Song' } });
+    fireEvent.change(dropdown, { target: { value: 'Rock' } });
+    fireEvent.change(fileInputElement, { target: { files: [validFile] } });
+  });
+
+  // Verify submit button is enabled after filling all required fields
+  await waitFor(() => {
+    expect(submitButton).toBeEnabled();
   });
 });

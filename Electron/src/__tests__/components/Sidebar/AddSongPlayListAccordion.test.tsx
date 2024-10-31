@@ -394,9 +394,6 @@ test('AddSongPlaylistAccordion disables the upload button while song is uploadin
   expect(component.getByText('Subir canción')).toBeInTheDocument();
 
   const inputName = component.getByPlaceholderText('Nombre de la canción');
-  const inputPhoto = component.getByPlaceholderText(
-    'URL de la miniatura de la canción',
-  );
   const selectGenreOption = component.getByText('❗ Elige un género');
   const dropdown = component.getByTestId('select-genre');
 
@@ -406,19 +403,20 @@ test('AddSongPlaylistAccordion disables the upload button while song is uploadin
 
   const validFile = new File([''], 'test.mp3', { type: 'audio/mpeg' });
 
+  //upload button for song
+  const uploadSongButton = component.getByTestId(
+    'sidebar-addsongplaylistaccordion-submit-song',
+  );
+
+  // Verify that the upload button is initially disabled
+  expect(uploadSongButton).toBeDisabled();
+
   await act(async () => {
     fireEvent.change(inputName, { target: { value: 'Test Song' } });
-    fireEvent.change(inputPhoto, {
-      target: { value: 'http://example.com/image.jpg' },
-    });
     fireEvent.change(selectGenreOption, { target: { value: 'Rock' } });
     fireEvent.change(dropdown, { target: { value: 'Rock' } });
     fireEvent.change(fileInputElement, { target: { files: [validFile] } });
   });
-
-  const uploadSongButton = component.getByTestId(
-    'sidebar-addsongplaylistaccordion-submit-song',
-  );
 
   // Verify that the upload button is enabled
   await waitFor(() => {

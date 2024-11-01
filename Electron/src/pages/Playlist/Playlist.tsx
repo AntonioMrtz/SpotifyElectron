@@ -10,6 +10,8 @@ import Box from '@mui/material/Box';
 import ContextMenuPlaylist from 'components/AdvancedUIComponents/ContextMenu/Playlist/ContextMenuPlaylist';
 import Popover, { PopoverPosition } from '@mui/material/Popover/';
 import { secondsToHoursAndMinutesFormatted } from 'utils/date';
+import { TextField } from '@mui/material/';
+import { inputStyle } from 'styles/mui5/styles';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 import Song from '../../components/Song/Song';
 import styles from './playlist.module.css';
@@ -169,19 +171,19 @@ export default function Playlist({
   });
 
   const handleChangeForm = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
-    if (e.target.name === 'photo') {
+    if (event.target.name === 'photo') {
       setThumbnailUpdatePlaylist(
-        e.target.value.includes('http')
-          ? e.target.value
+        event.target.value.includes('http')
+          ? event.target.value
           : defaultThumbnailPlaylist,
       );
     }
 
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [event.target.name]: event.target.value,
     });
   };
 
@@ -589,7 +591,7 @@ export default function Playlist({
             </header>
 
             <form>
-              <div className="d-flex flex-column p-0">
+              <div className="d-flex flex-column p-0 mb-3">
                 <div className="d-flex flex-row container-fluid p-0">
                   <div className={` ${styles.wrapperUpdateThumbnail}`}>
                     <img src={`${thumbnailUpdatePlaylist}`} alt="" />
@@ -598,34 +600,43 @@ export default function Playlist({
                   <div
                     className={`container-fluid pe-0 ${styles.wrapperUpdateTextData}`}
                   >
-                    <div
-                      className={`form-floating mb-3 ${styles.inputPlaylist}`}
-                    >
-                      <input
+                    <div className={`mb-3 ${styles.inputPlaylist}`}>
+                      <TextField
+                        id="name-input"
+                        label="Nombre"
                         name="name"
+                        variant="outlined"
                         type="text"
-                        defaultValue={playlistName}
-                        id="name"
                         placeholder="Añade un nombre"
+                        defaultValue={playlistName}
                         onChange={handleChangeForm}
+                        sx={inputStyle}
                       />
-                      <label htmlFor="floatingInput">Nombre</label>
                     </div>
 
-                    <div
-                      className={`form-floating mb-3 ${styles.inputPlaylist}`}
-                    >
-                      <div className="form-floating">
-                        <textarea
-                          name="description"
-                          defaultValue={description}
-                          placeholder="Añade una descripción"
-                          id="description"
-                          style={{ height: ' 100px' }}
-                          onChange={handleChangeForm}
-                        />
-                        <label htmlFor="floatingTextarea2">Descripción</label>
-                      </div>
+                    <div className={`${styles.inputPlaylist}`}>
+                      <TextField
+                        id="description-input"
+                        label="Descripción"
+                        variant="outlined"
+                        type="text"
+                        multiline // Enable multiline to create a textarea-like effect
+                        minRows={3} // Minimum number of rows
+                        maxRows={3} // Allow it to grow indefinitely
+                        sx={{
+                          ...inputStyle,
+                          '& .MuiInputBase-input': {
+                            height: '100px', // Set the height of the input
+                            width: '100%',
+                            boxSizing: 'border-box', // Ensure padding is included in the height
+                            color: 'var(--primary-white)', // keep same color
+                          },
+                        }}
+                        name="description"
+                        defaultValue={description}
+                        placeholder="Añade opcionalmente una descripción"
+                        onChange={handleChangeForm}
+                      />
                     </div>
                   </div>
                 </div>
@@ -633,20 +644,22 @@ export default function Playlist({
               <div
                 className={`container-fluid d-flex p-0 ${styles.wrapperUpdateTextData}`}
               >
-                <div
-                  className={`form-floating container-fluid p-0 ${styles.inputPlaylist}`}
-                >
-                  <input
-                    name="photo"
-                    type="text"
-                    id="photo"
-                    defaultValue={
-                      thumbnail === defaultThumbnailPlaylist ? '' : thumbnail
-                    }
-                    placeholder="Url de la nueva foto"
-                    onChange={handleChangeForm}
-                  />
-                  <label htmlFor="photo">Url de la miniatura</label>
+                <div className={` container-fluid p-0 ${styles.inputPlaylist}`}>
+                  <div className={`mb-3 ${styles.inputPlaylist}`}>
+                    <TextField
+                      id="photo-input"
+                      label="URL de la miniatura"
+                      name="name"
+                      variant="outlined"
+                      type="text"
+                      placeholder="Añade una nueva URL para la miniatura"
+                      defaultValue={
+                        thumbnail === defaultThumbnailPlaylist ? '' : thumbnail
+                      }
+                      onChange={handleChangeForm}
+                      sx={inputStyle}
+                    />
+                  </div>
                 </div>
               </div>
 

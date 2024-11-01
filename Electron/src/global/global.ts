@@ -1,7 +1,7 @@
 import SongArchitecture from './SongArchitecture';
 
 namespace Global {
-  export const backendBaseUrl: string = 'https://backend-api-qsyq.onrender.com';
+  export const backendBaseUrl: string = 'http://127.0.0.1:8000';
 
   export const repositoryUrl: string =
     'https://github.com/AntonioMrtz/SpotifyElectron/';

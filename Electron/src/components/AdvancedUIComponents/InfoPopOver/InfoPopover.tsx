@@ -26,8 +26,6 @@ export default function InfoPopover({
     p: 2,
   };
 
-  /* CONFIRMATION MODAL */
-
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
 
   const handleCloseConfirmationModal = () => {
@@ -38,15 +36,14 @@ export default function InfoPopover({
   };
 
   useEffect(() => {
-    if (triggerOpenConfirmationModal === true) {
-      setOpenConfirmationModal((state) => !state);
+    if (triggerOpenConfirmationModal) {
+      setOpenConfirmationModal(true);
     }
   }, [triggerOpenConfirmationModal]);
 
   return (
     <div>
       <Modal
-        className=""
         open={openConfirmationModal}
         onClose={handleCloseConfirmationModal}
         aria-labelledby="modal-modal-confirmation"
@@ -54,7 +51,6 @@ export default function InfoPopover({
         style={{ zIndex: '99999' }}
       >
         <Box sx={style} className={`${styles.wrapperConfirmationModal}`}>
-          {' '}
           <div className={`${styles.wrapperConfirmationModalHeader}`}>
             <div className={`${styles.wrapperConfirmationModalText}`}>
               <span>{title}</span>
@@ -91,7 +87,7 @@ export default function InfoPopover({
             </div>
           </div>
           <div
-            className={`container-fluid d-flex flex-column justify-content-flex-end mt-4 ${styles.wrapperButton} `}
+            className={`container-fluid d-flex flex-column justify-content-flex-end mt-4 ${styles.wrapperButton}`}
           >
             <button
               type="button"

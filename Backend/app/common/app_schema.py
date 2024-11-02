@@ -49,11 +49,19 @@ class AppEnvironmentMode(StrEnum):
     TEST = "TEST"
 
 
-class AppArchitecture:
+class AppArchitecture(StrEnum):
     """App architecture constants"""
 
     ARCH_BLOB = "BLOB"
     ARCH_SERVERLESS = "SERVERLESS"
+
+
+class AppAuthConfig:
+    """App authentication configuration"""
+
+    VERTIFICATION_ALGORITHM = "HS256"
+    ACCESS_TOKEN_EXPIRE_MINUTES = 10080  # 7 days
+    DAYS_TO_EXPIRE_COOKIE = 7
 
 
 class AppEnvironment:
@@ -62,7 +70,6 @@ class AppEnvironment:
     ARCHITECTURE_ENV_NAME = "ARCH"
 
     DEFAULT_ARCHITECTURE = AppArchitecture.ARCH_BLOB
-    SECRET_KEY_SIGN_ENV_NAME = "SECRET_KEY_SIGN"
     MONGO_URI_ENV_NAME = "MONGO_URI"
     SERVERLESS_URL_ENV_NAME = "SERVERLESS_FUNCTION_URL"
     ENV_VALUE_ENV_NAME = "ENV_VALUE"

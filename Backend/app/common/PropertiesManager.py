@@ -31,7 +31,6 @@ class _PropertiesManager:
         self.config_sections = [AppConfig.APP_INI_SECTION]
         self.env_variables = [
             AppEnvironment.MONGO_URI_ENV_NAME,
-            AppEnvironment.SECRET_KEY_SIGN_ENV_NAME,
             AppEnvironment.SERVERLESS_URL_ENV_NAME,
             AppEnvironment.ENV_VALUE_ENV_NAME,
         ]

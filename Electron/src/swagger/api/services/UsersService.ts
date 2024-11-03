@@ -119,7 +119,7 @@ export class UsersService {
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'PATCH',
-            url: '/users/{name}/playback_history',
+            url: '/users/{name}/stream_history',
             path: {
                 'name': name,
             },
@@ -146,7 +146,7 @@ export class UsersService {
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/users/{name}/playback_history',
+            url: '/users/{name}/stream_history',
             path: {
                 'name': name,
             },

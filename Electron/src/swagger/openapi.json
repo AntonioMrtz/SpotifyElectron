@@ -934,14 +934,14 @@
         }
       }
     },
-    "/users/{name}/playback_history": {
+    "/users/{name}/stream_history": {
       "patch": {
         "tags": [
           "Users"
         ],
         "summary": "Patch Playback History",
         "description": "Add song to playback history\n\nArgs:\n    name (str): user name\n    song_name (str): song name",
-        "operationId": "patch_playback_history_users__name__playback_history_patch",
+        "operationId": "patch_stream_history_users__name__stream_history_patch",
         "security": [
           {
             "JWTBearer": []
@@ -994,7 +994,7 @@
         ],
         "summary": "Get User Playback History",
         "description": "Get user song playback history\n\nArgs:\n    name (str): user name",
-        "operationId": "get_user_playback_history_users__name__playback_history_get",
+        "operationId": "get_user_stream_history_users__name__stream_history_get",
         "security": [
           {
             "JWTBearer": []

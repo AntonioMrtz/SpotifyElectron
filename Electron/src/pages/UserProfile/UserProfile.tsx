@@ -28,6 +28,7 @@ export default function UserProfile({
   const [thumbnail, setThumbnail] = useState<string>(defaultThumbnailPlaylist);
   const [mainColorThumbnail, setMainColorThumbnail] = useState('');
   const [playbackHistory, setPlaybackHistory] = useState<PropsSongCard[]>([]);
+  const [showAllSongs, setShowAllSongs] = useState(false); // State for showing all songs
   const [uploadedSongs, setUploadedSongs] = useState<PropsSongCard[]>([]);
   const [artistStreams, setArtistStreams] = useState(0);
 
@@ -94,6 +95,11 @@ export default function UserProfile({
 
     fac.destroy();
   }, [thumbnail]);
+
+  const toggleShowAllSongs = () => {
+    setShowAllSongs((prev) => !prev);
+    console.log(showAllSongs);
+  };
 
   /* Show all redirects */
 
@@ -266,32 +272,47 @@ export default function UserProfile({
 
       {userType === UserType.USER && (
         <div className="p-4">
-          <h2
-            style={{
-              color: 'var(--pure-white)',
-              fontWeight: '700',
-              fontSize: '1.5rem',
-              marginTop: '1rem',
-              marginBottom: '1.5rem',
-            }}
-          >
-            Historial de reproducción
-          </h2>
+          <div className="d-flex">
+            <div className={`w-100 d-flex ${styles.categoryTitleContainer}`}>
+              <h2
+                style={{
+                  color: 'var(--pure-white)',
+                  fontWeight: '700',
+                  fontSize: '1.5rem',
+                  marginTop: '1rem',
+                  marginBottom: '1.5rem',
+                }}
+              >
+                Historial de reproducción
+              </h2>
+            </div>
+            <div
+              className={`container-fluid d-flex ${styles.mostrarTodoContainer}`}
+            >
+              <button
+                type="button"
+                className={`${styles.mostrarTodo}`}
+                onClick={() => {
+                  toggleShowAllSongs();
+                }}
+              >
+                Mostrar todos
+              </button>
+            </div>
+          </div>
           <div className="d-flex flex-row flex-wrap " style={{ gap: '14px' }}>
-            {playbackHistory &&
-              playbackHistory.map((songItem, index) => {
-                return (
-                  <SongCard
-                    // eslint-disable-next-line react/no-array-index-key
-                    key={`${songItem.name}-${index}`}
-                    name={songItem.name}
-                    photo={songItem.photo}
-                    artist={songItem.artist}
-                    changeSongName={changeSongName}
-                    refreshSidebarData={refreshSidebarData}
-                  />
-                );
-              })}
+            {(showAllSongs ? playbackHistory : playbackHistory.slice(0, 5)).map(
+              (songItem, index) => (
+                <SongCard
+                  key={`${songItem.name}-${index}`}
+                  name={songItem.name}
+                  photo={songItem.photo}
+                  artist={songItem.artist}
+                  changeSongName={changeSongName}
+                  refreshSidebarData={refreshSidebarData}
+                />
+              ),
+            )}
           </div>
         </div>
       )}

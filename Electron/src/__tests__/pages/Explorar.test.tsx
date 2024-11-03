@@ -16,7 +16,7 @@ const artistMockFetch = {
   photo: 'photo',
   register_date: 'date',
   password: 'hashpassword',
-  playback_history: [songName],
+  stream_history: [songName],
   playlists: [playlistName],
   saved_playlists: [playlistName],
   uploaded_songs: [songName],
@@ -27,7 +27,7 @@ const userMockFetch = {
   photo: 'photo',
   register_date: 'date',
   password: 'hashpassword',
-  playback_history: [songName],
+  stream_history: [songName],
   playlists: [playlistName],
   saved_playlists: [playlistName],
 };

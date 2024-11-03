@@ -50,7 +50,7 @@ base_users_service_logger = SpotifyElectronLogger(LOGGING_BASE_USERS_SERVICE).ge
 
 
 # TODO not hardcoded
-MAX_NUMBER_PLAYBACK_HISTORY_SONGS = 5
+MAX_NUMBER_PLAYBACK_HISTORY_SONGS = 50
 
 
 def get_user_type(user_name: str) -> UserType:
@@ -148,7 +148,7 @@ def get_user_password(user_name: str) -> bytes:
         return password
 
 
-def add_playback_history(user_name: str, song_name: str, token: TokenData) -> None:
+def add_stream_history(user_name: str, song_name: str, token: TokenData) -> None:
     """Add playback history to user
 
     Args:
@@ -173,10 +173,10 @@ def add_playback_history(user_name: str, song_name: str, token: TokenData) -> No
         base_user_service_validations.validate_user_should_exists(user_name)
         validate_song_should_exists(song_name)
 
-        base_user_repository.add_playback_history(
+        base_user_repository.add_stream_history(
             user_name=user_name,
             song=song_name,
-            max_number_playback_history_songs=MAX_NUMBER_PLAYBACK_HISTORY_SONGS,
+            max_number_stream_history_songs=MAX_NUMBER_PLAYBACK_HISTORY_SONGS,
             collection=user_collection_provider.get_user_associated_collection(user_name),
         )
     except UserBadNameException as exception:
@@ -577,7 +577,7 @@ def get_user_playlist_names(user_name: str) -> list[str]:
         return user_playlist_names
 
 
-def get_user_playback_history(user_name: str) -> list[SongMetadataDTO]:
+def get_user_stream_history(user_name: str) -> list[SongMetadataDTO]:
     """Get user song playback history
 
     Args:
@@ -595,10 +595,10 @@ def get_user_playback_history(user_name: str) -> list[SongMetadataDTO]:
         base_user_service_validations.validate_user_name_parameter(user_name)
         base_user_service_validations.validate_user_should_exists(user_name)
         collection = user_collection_provider.get_user_associated_collection(user_name)
-        playback_history_names = base_user_repository.get_user_playback_history_names(
+        stream_history_names = base_user_repository.get_user_stream_history_names(
             user_name=user_name, collection=collection
         )
-        songs_metadata = base_song_service.get_songs_metadata(playback_history_names)
+        songs_metadata = base_song_service.get_songs_metadata(stream_history_names)
 
     except UserBadNameException as exception:
         base_users_service_logger.exception(f"Bad user Parameter: {user_name}")

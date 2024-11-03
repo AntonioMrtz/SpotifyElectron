@@ -165,8 +165,8 @@ def delete_user(name: str) -> Response:
         )
 
 
-@router.patch("/{name}/playback_history")
-def patch_playback_history(
+@router.patch("/{name}/stream_history")
+def patch_stream_history(
     name: str, song_name: str, token: Annotated[TokenData, Depends(JWTBearer())]
 ) -> Response:
     """Add song to playback history
@@ -176,9 +176,7 @@ def patch_playback_history(
         song_name (str): song name
     """
     try:
-        base_user_service.add_playback_history(
-            user_name=name, song_name=song_name, token=token
-        )
+        base_user_service.add_stream_history(user_name=name, song_name=song_name, token=token)
         return Response(None, HTTP_204_NO_CONTENT)
     except UserBadNameException:
         return Response(
@@ -422,8 +420,8 @@ def get_user_playlists_names(
         )
 
 
-@router.get("/{name}/playback_history")
-def get_user_playback_history(
+@router.get("/{name}/stream_history")
+def get_user_stream_history(
     name: str, token: Annotated[TokenData, Depends(JWTBearer())]
 ) -> Response:
     """Get user song playback history
@@ -432,10 +430,10 @@ def get_user_playback_history(
         name (str): user name
     """
     try:
-        playback_history = base_user_service.get_user_playback_history(name)
-        playback_history_json = json_converter_utils.get_json_from_model(playback_history)
+        stream_history = base_user_service.get_user_stream_history(name)
+        stream_history_json = json_converter_utils.get_json_from_model(stream_history)
         return Response(
-            playback_history_json, media_type="application/json", status_code=HTTP_200_OK
+            stream_history_json, media_type="application/json", status_code=HTTP_200_OK
         )
     except UserBadNameException:
         return Response(

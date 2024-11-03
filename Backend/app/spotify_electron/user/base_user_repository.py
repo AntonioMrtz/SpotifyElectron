@@ -129,10 +129,10 @@ def search_by_name(name: str, collection: Collection) -> list[str]:
         raise UserRepositoryException from exception
 
 
-def add_playback_history(
+def add_stream_history(
     user_name: str,
     song: str,
-    max_number_playback_history_songs: int,
+    max_number_stream_history_songs: int,
     collection: Collection,
 ) -> None:
     """Add song playback history to user
@@ -140,7 +140,7 @@ def add_playback_history(
     Args:
         user_name (str): user name
         song (str): song name
-        max_number_playback_history_songs (int): max number of songs stored in playback history
+        max_number_stream_history_songs (int): max number of songs stored in playback history
         collection (Collection): the user collection
 
     Raises:
@@ -149,15 +149,15 @@ def add_playback_history(
     try:
         user_data = collection.find_one({"name": user_name})
 
-        playback_history = user_data["playback_history"]  # type: ignore
+        stream_history = user_data["stream_history"]  # type: ignore
 
-        if len(playback_history) == max_number_playback_history_songs:
-            playback_history.pop(0)
+        if len(stream_history) == max_number_stream_history_songs:
+            stream_history.pop(0)
 
-        playback_history.append(song)
+        stream_history.append(song)
 
         collection.update_one(
-            {"name": user_name}, {"$set": {"playback_history": playback_history}}
+            {"name": user_name}, {"$set": {"stream_history": stream_history}}
         )
     except Exception as exception:
         base_user_repository_logger.exception(
@@ -350,7 +350,7 @@ def get_user_playlist_names(user_name: str, collection: Collection) -> list[str]
     return user_data["playlists"]  # type: ignore
 
 
-def get_user_playback_history_names(user_name: str, collection: Collection) -> list[str]:
+def get_user_stream_history_names(user_name: str, collection: Collection) -> list[str]:
     """Get user playback history song names
 
     Args:
@@ -360,6 +360,6 @@ def get_user_playback_history_names(user_name: str, collection: Collection) -> l
     Returns:
         list[str]: the user playback history
     """
-    user_data = collection.find_one({"name": user_name}, {"playback_history": 1, "_id": 0})
+    user_data = collection.find_one({"name": user_name}, {"stream_history": 1, "_id": 0})
 
-    return user_data["playback_history"]  # type: ignore
+    return user_data["stream_history"]  # type: ignore

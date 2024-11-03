@@ -65,6 +65,7 @@ export default function SongCard({
         className={`rounded ${styles.card}`}
         onDoubleClick={handleClickSong}
         onContextMenu={handleRightClick}
+        data-testid="song-card"
       >
         <div className={`${styles.imgContainer}`}>
           <img

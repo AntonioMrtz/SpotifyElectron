@@ -53,7 +53,11 @@ export default function SongInfo({ songInfo }: PropsSongInfo | any) {
         <>
           <img src={thumbnail} alt="" />
           <div className={`d-flex flex-column ${styles.infoCancionContainer}`}>
-            <button type="button" onClick={() => {}}>
+            <button
+              data-testid="songinfo-name"
+              type="button"
+              onClick={() => {}}
+            >
               {name}
             </button>
             <button type="button" onClick={handleClickArtist}>

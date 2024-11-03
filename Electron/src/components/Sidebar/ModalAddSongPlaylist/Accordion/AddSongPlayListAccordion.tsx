@@ -282,7 +282,6 @@ export default function AddSongPlayListAccordion({
                   id="description"
                   name="description"
                   placeholder="Descripción de la playlist"
-                  className={`${styles.input}`}
                   onChange={handleChangePlaylist}
                   style={{ height: ' 50px', width: '100%' }}
                   required
@@ -360,7 +359,6 @@ export default function AddSongPlayListAccordion({
                   type="text"
                   id="photo"
                   placeholder="URL de la miniatura de la canción"
-                  className={` form-control ${styles.input}`}
                   onChange={handleChangeSong}
                   name="photo"
                   required
@@ -405,7 +403,6 @@ export default function AddSongPlayListAccordion({
                 <div className="mb-3 d-flex">
                   <p className="text-danger me-1">*</p>
                   <input
-                    className={`form-control-md ${styles.input}`}
                     type="file"
                     id="file"
                     name="file"

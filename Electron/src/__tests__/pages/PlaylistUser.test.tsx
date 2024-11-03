@@ -501,7 +501,9 @@ test('Playlist user role update playlist', async () => {
     }
   });
 
-  const inputName = component.getByPlaceholderText('Añade una descripción');
+  const inputName = component.getByPlaceholderText(
+    'Añade opcionalmente una descripción',
+  );
 
   await act(async () => {
     fireEvent.change(inputName, {

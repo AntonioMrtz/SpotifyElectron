@@ -18,7 +18,7 @@ def get_song_collection() -> Collection:
     Returns:
         Collection: the song collection depending on architecture
     """
-    repository_map = {
+    repository_map: dict[AppArchitecture, Collection] = {
         AppArchitecture.ARCH_BLOB: DatabaseConnectionManager.get_collection_connection(
             DatabaseCollection.SONG_BLOB_FILE
         ),

@@ -30,7 +30,6 @@ jobs:
           python -m app.tools.generate_openapi
         env:
           MONGO_URI: ${{ secrets.MONGO_URI }}
-          SECRET_KEY_SIGN: none
           ARCH: BLOB
           ENV_VALUE: PROD
 

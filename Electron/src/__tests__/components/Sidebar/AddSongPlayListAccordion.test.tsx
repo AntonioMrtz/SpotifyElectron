@@ -435,7 +435,7 @@ test('AddSongPlaylistAccordion disables the upload button while song is uploadin
   });
 });
 
-test('AddSongPlaylistAccordion disables the upload button when required field are missing', async () => {
+test('Upload song form button disabled and enabled depending on filled fields', async () => {
   const handleCloseMock = jest.fn();
   const refreshSidebarDataMock = jest.fn();
   const setIsCloseAllowed = jest.fn();
@@ -503,6 +503,74 @@ test('AddSongPlaylistAccordion disables the upload button when required field ar
     fireEvent.change(inputName, { target: { value: 'Test Song' } });
     fireEvent.change(dropdown, { target: { value: 'Rock' } });
     fireEvent.change(fileInputElement, { target: { files: [validFile] } });
+  });
+
+  // Verify submit button is enabled after filling all required fields
+  await waitFor(() => {
+    expect(submitButton).toBeEnabled();
+  });
+});
+
+test('Add playlist form button disabled and enabled depending on filled fields', async () => {
+  const handleCloseMock = jest.fn();
+  const refreshSidebarDataMock = jest.fn();
+  const setIsCloseAllowed = jest.fn();
+
+  // Mocking the fetch API globally
+  global.fetch = jest.fn((url: string) => {
+    return new Promise((resolve) => {
+      if (url === `${Global.backendBaseUrl}/genres/`) {
+        resolve({
+          json: async () => ({ Rock: 'Rock', Pop: 'Pop' }),
+          status: 200,
+          ok: true,
+          headers: getMockHeaders(),
+        });
+      } else {
+        setTimeout(() => {
+          resolve({
+            json: async () => ({}),
+            status: 201,
+            ok: true,
+            headers: getMockHeaders(),
+          });
+        }, 1000);
+      }
+    });
+  }) as jest.Mock;
+
+  const component = await act(async () => {
+    return render(
+      <BrowserRouter>
+        <AddSongPlayListAccordion
+          handleClose={handleCloseMock}
+          refreshSidebarData={refreshSidebarDataMock}
+          setIsCloseAllowed={setIsCloseAllowed}
+        />
+      </BrowserRouter>,
+    );
+  });
+
+  const accordionExpandSong = component.getByTestId(
+    'accordion-expand-submit-song',
+  );
+
+  await act(async () => {
+    fireEvent.click(accordionExpandSong);
+  });
+  // Find elements
+  const inputName = component.getByPlaceholderText('Nombre de la playlist');
+
+  const submitButton = component.getByTestId(
+    'sidebar-addsongplaylistaccordion-submit-playlist',
+  ); // Submit button
+
+  // Initially, the submit button should be disabled
+  expect(submitButton).toBeDisabled();
+
+  // Fill in all required fields
+  await act(async () => {
+    fireEvent.change(inputName, { target: { value: 'Test Song' } });
   });
 
   // Verify submit button is enabled after filling all required fields

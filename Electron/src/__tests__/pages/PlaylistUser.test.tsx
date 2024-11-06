@@ -577,7 +577,7 @@ test('Playlist updates song name in context when a song is clicked', async () =>
     );
   });
 
-  const songCard = await screen.findByTestId('song-card');
+  const songCard = await screen.findByTestId(`song-card-${songMockFetch.name}`);
   await act(async () => {
     fireEvent.dblClick(songCard);
   });

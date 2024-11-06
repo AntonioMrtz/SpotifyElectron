@@ -102,10 +102,3 @@ textarea:focus-visible {
     --font-size-artist-footer: 0.65rem !important;
   }
 }
-
-.btn.disabled,
-.btn:disabled,
-fieldset:disabled .btn {
-  border-color: var(--secondary-green);
-  color: var(--primary-white);
-}

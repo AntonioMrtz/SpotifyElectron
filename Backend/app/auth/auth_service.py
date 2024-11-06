@@ -6,12 +6,12 @@ from datetime import UTC, datetime, timedelta, timezone
 from typing import Any
 
 import bcrypt
-from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 
 import app.spotify_electron.user.base_user_service as base_user_service
 import app.spotify_electron.user.validations.base_user_service_validations as base_user_service_validations  # noqa: E501
 from app.auth.auth_schema import (
+    AuthConfig,
     BadJWTTokenProvidedException,
     CreateJWTException,
     JWTExpiredException,
@@ -24,8 +24,6 @@ from app.auth.auth_schema import (
     UserUnauthorizedException,
     VerifyPasswordException,
 )
-from app.common.app_schema import AppEnvironment
-from app.common.PropertiesManager import PropertiesManager
 from app.exceptions.base_exceptions_schema import BadParameterException
 from app.logging.logging_constants import LOGGING_AUTH_SERVICE
 from app.logging.logging_schema import SpotifyElectronLogger
@@ -40,9 +38,6 @@ from app.spotify_electron.utils.validations.validation_utils import validate_par
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 10080  # 7 days
 DAYS_TO_EXPIRE_COOKIE = 7
-
-
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="users/whoami/")
 
 auth_service_logger = SpotifyElectronLogger(LOGGING_AUTH_SERVICE).getLogger()
 
@@ -73,7 +68,7 @@ def create_access_token(data: dict[str, str], expires_delta: timedelta | None = 
         to_encode.update({"exp": expire})  # type: ignore
         encoded_jwt = jwt.encode(
             to_encode,
-            getattr(PropertiesManager, AppEnvironment.SECRET_KEY_SIGN_ENV_NAME),
+            AuthConfig.SIGNING_SECRET_KEY,
             algorithm=ALGORITHM,
         )
     except Exception as exception:
@@ -105,7 +100,7 @@ def get_jwt_token_data(
     try:
         payload = jwt.decode(
             token_raw_data,  # type: ignore
-            getattr(PropertiesManager, AppEnvironment.SECRET_KEY_SIGN_ENV_NAME),
+            AuthConfig.SIGNING_SECRET_KEY,
             algorithms=[ALGORITHM],
         )
         username = payload.get("access_token")
@@ -323,7 +318,7 @@ def validate_jwt(token: str) -> None:
     try:
         decoded_token = jwt.decode(
             token,
-            getattr(PropertiesManager, AppEnvironment.SECRET_KEY_SIGN_ENV_NAME),
+            AuthConfig.SIGNING_SECRET_KEY,
             ALGORITHM,
         )
         validate_token_is_expired(decoded_token)

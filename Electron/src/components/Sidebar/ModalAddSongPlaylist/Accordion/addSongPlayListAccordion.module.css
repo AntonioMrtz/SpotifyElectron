@@ -103,3 +103,10 @@
   transform: translate(-50%, -50%);
   z-index: 2999;
 }
+
+.btn.disabled,
+.btn:disabled,
+fieldset:disabled .btn {
+  border-color: var(--secondary-green) !important;
+  color: var(--primary-white) !important;
+}

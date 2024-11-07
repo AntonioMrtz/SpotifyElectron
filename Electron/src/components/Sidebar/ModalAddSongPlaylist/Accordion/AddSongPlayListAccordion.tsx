@@ -301,14 +301,6 @@ export default function AddSongPlayListAccordion({
               className={`btn btn-lg ${styles.btnSend}`}
               data-testid="sidebar-addsongplaylistaccordion-submit-playlist"
               disabled={!formDataPlaylist.name}
-              style={{
-                borderColor: !formDataPlaylist.name
-                  ? 'var(--secondary-green)'
-                  : undefined,
-                color: !formDataPlaylist.name
-                  ? 'var(--primary-white)'
-                  : undefined,
-              }}
             >
               Subir
             </button>
@@ -435,17 +427,6 @@ export default function AddSongPlayListAccordion({
                   !formDataSong.genre ||
                   !songFile ||
                   loadingUploadSong
-                }
-                style={
-                  !formDataSong.name ||
-                  !formDataSong.genre ||
-                  !songFile ||
-                  loadingUploadSong
-                    ? {
-                        borderColor: 'var(--secondary-green)',
-                        color: 'var(--primary-white)',
-                      }
-                    : undefined
                 }
               >
                 Subir {loadingUploadSong && <LoadingCircleSmall />}

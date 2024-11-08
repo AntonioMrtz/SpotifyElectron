@@ -3,17 +3,17 @@
 Docker is used primarily in the project for:
 
 - **Easing development** automating the set up process for infrastructure like databases and other utilities. The aim was to give a simple script so the developers can focus on getting the work done and to trying to deploy the project or messing installing and configuring different services.
-- **Easing the production development**. When it comes to deploying the app into production is handy to have a script that allows the app to run in every system containerized with a single command. When deploying multiple instances of the backend the deployment time will be cut significantly.
+- **Easing the production deployment**. When it comes to deploying the app into production is handy to have a script that allows the app to run in every system containerized with a single command. When deploying multiple instances of the backend the deployment time will be cut significantly.
 
-it's recommended to have [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed but only having `docker` and `docker compose` will work.
+it's recommended to have [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed but only having [Docker](https://docs.docker.com/compose/install/) and [Docker Compose](https://docs.docker.com/compose/install/) will work.
 
 ## Stacks
 
-Currently the app has two types of stack, one for development and one for deploying into production. All Docker related scripts and configuration is donde under the `docker/` folder.
+Currently the app has two types of stack, one for development and one for deploying into production. All Docker related scripts and configuration is placed under `Backend/docker/` folder.
 
 ### Development
 
-This stack uses `docker/env/dev.env`.
+This stack uses `docker/env/dev.env` as environment.
 
 Mongo Express administration dashboard is also shipped using this stack. This service wil let you administrate the items in the Database graphically. More info on the [official image](https://hub.docker.com/_/mongo-express).
 

@@ -167,5 +167,12 @@ Check our [project goals and vision](docs/VISION.md).
                 <sub><b>gigigimay</b></sub>
             </a>
         </td>
+        <td align="center">
+            <a href="SaurabhGurde">
+                <img src="https://avatars.githubusercontent.com/u/128987288?v=4" width="90" alt="SaurabhGurde" />
+                <br />
+                <sub><b>SaurabhGurde</b></sub>
+            </a>
+        </td>
     </tr>
 </table>

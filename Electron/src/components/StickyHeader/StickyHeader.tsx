@@ -5,7 +5,7 @@ import { getTokenUsername } from 'utils/token';
 import Popover, { PopoverPosition } from '@mui/material/Popover';
 import ContextMenuProfile from 'components/AdvancedUIComponents/ContextMenu/Profile/ContextMenuProfile';
 import useFetchGetUser from 'hooks/useFetchGetUser';
-import { useSongNameChangeContext } from 'hooks/useSongChangeContextApi';
+import { useNowPlayingContext } from 'hooks/useNowPlayingContext';
 import styles from './stickyHeader.module.css';
 import groupIcon from '../../assets/imgs/groupIcon.png';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
@@ -15,7 +15,7 @@ interface PropsStickyHeader {
 }
 
 export default function StickyHeader({ handleLogout }: PropsStickyHeader) {
-  const { changeSongName } = useSongNameChangeContext();
+  const { changeSongName } = useNowPlayingContext();
 
   const username = getTokenUsername();
   const { user } = useFetchGetUser(username);

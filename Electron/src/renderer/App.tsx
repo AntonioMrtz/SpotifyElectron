@@ -10,7 +10,7 @@ import UserProfile from 'pages/UserProfile/UserProfile';
 import UserType from 'utils/role';
 import RegisterMenu from 'pages/StartMenu/RegisterMenu';
 import { deleteToken } from 'utils/token';
-import { SongNameChangeContextProvider } from 'hooks/useSongChangeContextApi';
+import { NowPlayingContextProvider } from 'providers/NowPlayingProvider';
 import styles from './AppCss.module.css';
 import Sidebar from '../components/Sidebar/Sidebar';
 import Home from '../pages/Home/Home';
@@ -55,7 +55,7 @@ function App() {
       {!isLogged && !isSigningUp && (
         <StartMenu setIsLogged={setIsLogged} setIsSigningUp={setIsSigningUp} />
       )}
-      <SongNameChangeContextProvider>
+      <NowPlayingContextProvider>
         {isLogged && (
           <div className={`App d-flex flex-column ${styles.appBackground}`}>
             <StickyHeader handleLogout={handleLogout} />
@@ -141,7 +141,7 @@ function App() {
             <Footer />
           </div>
         )}
-      </SongNameChangeContextProvider>
+      </NowPlayingContextProvider>
     </>
   );
 }

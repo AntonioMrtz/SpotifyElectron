@@ -2,15 +2,15 @@ import '@testing-library/jest-dom';
 import '@testing-library/jest-dom/extend-expect';
 import { render } from '@testing-library/react';
 import Footer from 'components/footer/Footer';
-import { SongNameChangeContextProvider } from 'hooks/useSongChangeContextApi';
+import { NowPlayingContextProvider } from 'providers/NowPlayingProvider';
 import { BrowserRouter } from 'react-router-dom';
 
 test('Render footer', () => {
   const component = render(
     <BrowserRouter>
-      <SongNameChangeContextProvider>
+      <NowPlayingContextProvider>
         <Footer />
-      </SongNameChangeContextProvider>
+      </NowPlayingContextProvider>
     </BrowserRouter>,
   );
   expect(component).toBeTruthy();

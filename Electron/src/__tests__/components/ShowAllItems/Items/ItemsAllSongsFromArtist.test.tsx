@@ -5,7 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import Global from 'global/global';
 import ItemsAllSongsFromArtist from 'components/ShowAllItems/Items/ItemsAllSongsFromArtist';
 import getMockHeaders from 'utils/mockHeaders';
-import { SongNameChangeContextProvider } from 'hooks/useSongChangeContextApi';
+import { NowPlayingContextProvider } from 'providers/NowPlayingProvider';
 
 const playlistName = 'playlisttest';
 const songName = 'songName';
@@ -52,13 +52,13 @@ test('Render items All Songs from Artist', async () => {
   const component = await act(() => {
     return render(
       <BrowserRouter>
-        <SongNameChangeContextProvider>
+        <NowPlayingContextProvider>
           <ItemsAllSongsFromArtist
             artistName={artistMockFetch.name}
             refreshSidebarData={jest.fn()}
             id={artistMockFetch.name}
           />
-        </SongNameChangeContextProvider>
+        </NowPlayingContextProvider>
       </BrowserRouter>,
     );
   });

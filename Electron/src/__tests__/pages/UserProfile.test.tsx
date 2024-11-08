@@ -7,7 +7,7 @@ import UserType from 'utils/role';
 import Global from 'global/global';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import getMockHeaders from 'utils/mockHeaders';
-import { SongNameChangeContextProvider } from 'hooks/useSongChangeContextApi';
+import { NowPlayingContextProvider } from 'providers/NowPlayingProvider';
 
 /* afterEach(() => {
   jest.clearAllMocks();
@@ -107,7 +107,7 @@ test('UserProfile User load Playback history and his Playlists', async () => {
   const component = await act(() => {
     return render(
       <MemoryRouter initialEntries={[`/user/${userMockFetch.name}`]}>
-        <SongNameChangeContextProvider>
+        <NowPlayingContextProvider>
           <Routes>
             <Route
               path="/user/:id"
@@ -119,7 +119,7 @@ test('UserProfile User load Playback history and his Playlists', async () => {
               }
             />
           </Routes>
-        </SongNameChangeContextProvider>
+        </NowPlayingContextProvider>
       </MemoryRouter>,
     );
   });
@@ -216,7 +216,7 @@ test('UserProfile Artist load Songs and total streams', async () => {
   const component = await act(() => {
     return render(
       <MemoryRouter initialEntries={[`/artist/${artistMockFetch.name}`]}>
-        <SongNameChangeContextProvider>
+        <NowPlayingContextProvider>
           <Routes>
             <Route
               path="/artist/:id"
@@ -228,7 +228,7 @@ test('UserProfile Artist load Songs and total streams', async () => {
               }
             />
           </Routes>
-        </SongNameChangeContextProvider>
+        </NowPlayingContextProvider>
       </MemoryRouter>,
     );
   });

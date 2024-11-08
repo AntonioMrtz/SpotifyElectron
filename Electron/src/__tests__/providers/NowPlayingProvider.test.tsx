@@ -7,7 +7,7 @@ import Global from 'global/global';
 import UserType from 'utils/role';
 import getMockHeaders from 'utils/mockHeaders';
 import * as TokenModule from 'utils/token';
-import { SongNameChangeContextProvider } from 'hooks/useSongChangeContextApi';
+import { NowPlayingContextProvider } from 'providers/NowPlayingProvider';
 import Footer from 'components/footer/Footer';
 
 const userName = 'prueba';
@@ -177,7 +177,7 @@ test('Playlist updates song name in context when a song is clicked', async () =>
   const component = await act(() => {
     return render(
       <MemoryRouter initialEntries={[`/playlist/${playlistDTOMockFetch.name}`]}>
-        <SongNameChangeContextProvider>
+        <NowPlayingContextProvider>
           <Routes>
             <Route
               path="/playlist/:id"
@@ -185,7 +185,7 @@ test('Playlist updates song name in context when a song is clicked', async () =>
             />
           </Routes>
           <Footer />
-        </SongNameChangeContextProvider>
+        </NowPlayingContextProvider>
       </MemoryRouter>,
     );
   });

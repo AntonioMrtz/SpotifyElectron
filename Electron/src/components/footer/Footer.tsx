@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import SongArchitecture from 'global/SongArchitecture';
 import Global from 'global/global';
-import { useSongNameChangeContext } from 'hooks/useSongChangeContextApi';
+import { useNowPlayingContext } from 'hooks/useNowPlayingContext';
 import styles from './footer.module.css';
 import SongInfo from './SongInfo/SongInfo';
 import SongConfig from './SongConfig/SongConfig';
@@ -10,7 +10,7 @@ import PlayerBlob from './Player/PlayerBlob';
 import { PropsSongInfo } from './SongInfo/types/propsSongInfo';
 
 export default function Footer() {
-  const { songName } = useSongNameChangeContext();
+  const { songName } = useNowPlayingContext();
 
   const [volume, setVolume] = useState<number>(50);
   const [songInfo, setSongInfo] = useState<PropsSongInfo>({

@@ -7,7 +7,7 @@ import * as TokenModule from 'utils/token';
 import UserType from 'utils/role';
 import Global from 'global/global';
 import getMockHeaders from 'utils/mockHeaders';
-import { SongNameChangeContextProvider } from 'hooks/useSongChangeContextApi';
+import { NowPlayingContextProvider } from 'providers/NowPlayingProvider';
 
 const userName = 'prueba';
 const roleUser = UserType.USER;
@@ -45,14 +45,14 @@ test('Render StickyHeader and get User data', async () => {
   const component = await act(() => {
     return render(
       <MemoryRouter initialEntries={[`/location`]}>
-        <SongNameChangeContextProvider>
+        <NowPlayingContextProvider>
           <Routes>
             <Route
               path="/location"
               element={<StickyHeader handleLogout={jest.fn()} />}
             />
           </Routes>
-        </SongNameChangeContextProvider>
+        </NowPlayingContextProvider>
       </MemoryRouter>,
     );
   });
@@ -64,14 +64,14 @@ test('StickyHeader open ContextMenuProfile', async () => {
   const component = await act(() => {
     return render(
       <MemoryRouter initialEntries={[`/location`]}>
-        <SongNameChangeContextProvider>
+        <NowPlayingContextProvider>
           <Routes>
             <Route
               path="/location"
               element={<StickyHeader handleLogout={jest.fn()} />}
             />
           </Routes>
-        </SongNameChangeContextProvider>
+        </NowPlayingContextProvider>
       </MemoryRouter>,
     );
   });

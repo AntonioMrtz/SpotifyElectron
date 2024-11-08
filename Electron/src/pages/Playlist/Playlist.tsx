@@ -12,7 +12,7 @@ import Popover, { PopoverPosition } from '@mui/material/Popover/';
 import { secondsToHoursAndMinutesFormatted } from 'utils/date';
 import { TextField } from '@mui/material/';
 import { inputStyle } from 'styles/mui5/styles';
-import { useSongNameChangeContext } from 'hooks/useSongChangeContextApi';
+import { useNowPlayingContext } from 'hooks/useNowPlayingContext';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 import Song from '../../components/Song/Song';
 import styles from './playlist.module.css';
@@ -25,7 +25,7 @@ interface PropsPlaylist {
 }
 
 export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
-  const { changeSongName } = useSongNameChangeContext();
+  const { changeSongName } = useNowPlayingContext();
 
   const [mainColorThumbnail, setMainColorThumbnail] = useState('');
 

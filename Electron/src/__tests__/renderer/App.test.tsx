@@ -2,7 +2,7 @@ import '@testing-library/jest-dom';
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { BrowserRouter } from 'react-router-dom';
-import { SongNameChangeContextProvider } from 'hooks/useSongChangeContextApi';
+import { NowPlayingContextProvider } from 'providers/NowPlayingProvider';
 import App from '../../renderer/App';
 
 const scrollToMock = jest.fn();
@@ -13,9 +13,9 @@ describe('App', () => {
     expect(
       render(
         <BrowserRouter>
-          <SongNameChangeContextProvider>
+          <NowPlayingContextProvider>
             <App />
-          </SongNameChangeContextProvider>
+          </NowPlayingContextProvider>
         </BrowserRouter>,
       ),
     ).toBeTruthy();

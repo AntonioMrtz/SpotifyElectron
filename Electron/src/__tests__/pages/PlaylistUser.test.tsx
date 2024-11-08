@@ -1,11 +1,5 @@
 import '@testing-library/jest-dom';
-import {
-  act,
-  findByTestId,
-  fireEvent,
-  render,
-  screen,
-} from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import Playlist from 'pages/Playlist/Playlist';
@@ -522,7 +516,9 @@ test('Playlist user role update playlist', async () => {
 
 test('Playlist updates song name in context when a song is clicked', async () => {
   global.fetch = jest.fn((url: string) => {
-    if (url === `${Global.backendBaseUrl}/artists/${artistMockFetch.name}/songs`) {
+    if (
+      url === `${Global.backendBaseUrl}/artists/${artistMockFetch.name}/songs`
+    ) {
       return Promise.resolve({
         json: () => artistMockFetch,
         status: 200,
@@ -532,7 +528,10 @@ test('Playlist updates song name in context when a song is clicked', async () =>
         console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}/users/${userMockFetch.name}/playback_history`) {
+    if (
+      url ===
+      `${Global.backendBaseUrl}/users/${userMockFetch.name}/playback_history`
+    ) {
       return Promise.resolve({
         json: () => userMockFetch,
         status: 200,

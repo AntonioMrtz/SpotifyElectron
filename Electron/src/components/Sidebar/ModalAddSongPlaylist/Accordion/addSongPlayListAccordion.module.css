@@ -104,9 +104,9 @@
   z-index: 2999;
 }
 
- .btnSend.disabled,
- .btnSend:disabled,
- fieldset:disabled .btnSend {
+.btnSend.disabled,
+.btnSend:disabled,
+fieldset:disabled .btnSend {
   border-color: var(--secondary-green) !important;
   color: var(--primary-white) !important;
 }

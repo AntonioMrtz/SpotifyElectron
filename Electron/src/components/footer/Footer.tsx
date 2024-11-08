@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import SongArchitecture from 'global/SongArchitecture';
 import Global from 'global/global';
 import { useSongNameChangeContext } from 'hooks/useSongChangeContextApi';

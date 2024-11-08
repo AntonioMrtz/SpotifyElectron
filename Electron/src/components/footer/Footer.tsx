@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
 import SongArchitecture from 'global/SongArchitecture';
 import Global from 'global/global';
 import { useSongNameChangeContext } from 'hooks/useSongChangeContextApi';
@@ -13,13 +13,21 @@ export default function Footer() {
   const { songName } = useSongNameChangeContext();
 
   const [volume, setVolume] = useState<number>(50);
-  const [songInfo, setSongInfo] = useState<PropsSongInfo | undefined>();
+  const [songInfo, setSongInfo] = useState<PropsSongInfo>({
+    name: '',
+    artist: '',
+    thumbnail: '',
+  });
 
   return (
     <div
       className={`container-fluid d-flex flex-row space-evenly ${styles.wrapperFooter}`}
     >
-      <SongInfo songInfo={songInfo} />
+      <SongInfo
+        name={songInfo.name}
+        artist={songInfo.artist}
+        thumbnail={songInfo.thumbnail}
+      />
 
       {Global.songArchitecture === SongArchitecture.SERVERLESS_ARCHITECTURE ? (
         <PlayerServerless

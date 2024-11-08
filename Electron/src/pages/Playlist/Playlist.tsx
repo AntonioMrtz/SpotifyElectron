@@ -235,8 +235,9 @@ export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
                   resolve(propsSong);
                   return propsSong;
                 })
-                .catch(() => {
+                .catch((err) => {
                   console.log('Unable to get Song Data');
+                  console.error(err);
                 });
             }),
           );
@@ -251,8 +252,9 @@ export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
             console.log('Unable to get Songs Data');
           });
       }
-    } catch {
-      console.log('Unable to get playlist');
+    } catch (err) {
+      console.log(`Unable to get playlist ${playlistName}`);
+      console.log(err);
     }
   };
 

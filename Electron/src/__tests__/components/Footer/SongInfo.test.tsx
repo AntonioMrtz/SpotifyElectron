@@ -7,7 +7,7 @@ import { BrowserRouter } from 'react-router-dom';
 test('Render Song info', () => {
   const component = render(
     <BrowserRouter>
-      <SongInfo />
+      <SongInfo name="" thumbnail="" artist="" />
     </BrowserRouter>,
   );
   expect(component).toBeTruthy();
@@ -16,7 +16,7 @@ test('Render Song info', () => {
 test('Song info click like', async () => {
   const component = render(
     <BrowserRouter>
-      <SongInfo />
+      <SongInfo name="" thumbnail="" artist="" />
     </BrowserRouter>,
   );
 
@@ -36,7 +36,7 @@ test('Song info click like', async () => {
 test('Song info click unlike', async () => {
   const component = render(
     <BrowserRouter>
-      <SongInfo />
+      <SongInfo name="" thumbnail="" artist="" />
     </BrowserRouter>,
   );
 

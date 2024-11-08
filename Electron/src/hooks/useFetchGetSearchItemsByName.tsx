@@ -8,7 +8,6 @@ import { SearchService } from '../swagger/api/services/SearchService';
 const useFetchSearchItemsByName = (
   name: string,
   refreshSidebarData: () => void,
-  changeSongName: (name: string) => void,
 ) => {
   const [filteredSongs, setFilteredSongs] = useState<PropsSongCard[]>([]);
   const [filteredPlaylists, setFilteredPlaylists] = useState<
@@ -37,7 +36,6 @@ const useFetchSearchItemsByName = (
               artist: song.artist,
               photo: song.photo,
               refreshSidebarData,
-              changeSongName,
             });
           });
 
@@ -105,7 +103,7 @@ const useFetchSearchItemsByName = (
 
     // Clear the timeout if the component unmounts or if the query changes before the timeout completes
     return () => clearTimeout(debounceTimeout);
-  }, [name, changeSongName, refreshSidebarData]);
+  }, [name, refreshSidebarData]);
 
   return {
     filteredUsers,

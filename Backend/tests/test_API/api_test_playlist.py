@@ -26,24 +26,33 @@ def get_playlists(song_names: str, headers: dict[str, str]):
     return client.get(f"/playlists/selected/{song_names}", headers=headers)
 
 
-def update_playlist(
+def update_playlist_metadata(
     name: str,
-    descripcion: str,
-    photo: str,
     headers: dict[str, str],
-    nuevo_nombre: str = "",
+    description: str = None,
+    photo: str = None,
+    new_name: str = None,
 ) -> Response:
-    if nuevo_nombre == "":
-        url = f"/playlists/{name}/?photo={photo}&description={descripcion}"
+    # Build URL with optional query parameters
+    url = f"/playlists/{name}"
+    query_params = []
 
-    else:
-        url = f"/playlists/{name}/?photo={photo}&description={descripcion}&new_name={nuevo_nombre}"  # noqa: E501
+    if photo:
+        query_params.append(f"photo={photo}")
+    if description:
+        query_params.append(f"description={description}")
+    if new_name:
+        query_params.append(f"new_name={new_name}")
 
-    payload = []
+    if query_params:
+        url += "?" + "&".join(query_params)
+
+    payload = {}
 
     file_type_header = {"Content-Type": "application/json"}
 
     return client.put(url, json=payload, headers={**file_type_header, **headers})
+
 
 
 def delete_playlist(name: str) -> Response:

@@ -272,68 +272,47 @@ def get_playlist_search_by_name(
         return playlists
 
 
-def update_playlist(
+def update_playlist_metadata(
     name: str,
-    new_name: str,
-    photo: str,
-    description: str,
-    song_names: list[str],
+    new_name: str | None = None,
+    photo: str | None = None,
+    description: str | None = None,
 ) -> None:
-    """Update playlist
+    """Update only specified fields of a playlist's metadata.
 
     Args:
         name (str): playlist name
-        new_name (str): new name
-        photo (str): new photo
-        description (str): new description
-        song_names (list[str]): new song names
+        new_name (str | None): new name
+        photo (str | None): new photo
+        description (str | None): new description
 
     Raises:
         PlaylistRepositoryException: unexpected error updating playlist
     """
+    update_data = {}
     try:
-        collection = get_playlist_collection()
-        result_update = collection.update_one(
-            {"name": name},
-            {
-                "$set": {
-                    "name": new_name,
-                    "description": description,
-                    "photo": photo,
-                    "song_names": list(set(song_names)),
-                }
-            },
-        )
-        validate_playlist_update(result_update)
+        if new_name:
+            update_data["name"] = new_name
+        if photo:
+            update_data["photo"] = photo
+        if description:
+            update_data["description"] = description
 
-    except PlaylistUpdateException as exception:
-        playlist_repository_logger.exception(
-            f"Error updating playlist {name}:\n"
-            f"new_name = {new_name},\n"
-            f"photo = {photo},\n"
-            f"description = {description},\n"
-            f"song_names = {song_names}"
-        )
-        raise PlaylistRepositoryException from exception
+        if update_data:
+            collection = get_playlist_collection()
+            result_update = collection.update_one({"name": name}, {"$set": update_data})
+            validate_playlist_update(result_update)
+        else:
+            return
 
-    except Exception as exception:
-        playlist_repository_logger.exception(
-            f"Unexpected error updating playlist {name}:\n"
-            f"new_name = {new_name},\n"
-            f"photo = {photo},\n"
-            f"description = {description},\n"
-            f"song_names = {song_names}"
-        )
-        raise PlaylistRepositoryException from exception
-
+    except PlaylistUpdateException as e:
+        playlist_repository_logger.exception(f"Error during playlist update for: {name}, fields: {update_data}")
+        raise PlaylistRepositoryException from e
+    except Exception as e:
+        playlist_repository_logger.exception(f"Unexpected error during playlist update for: {name}, fields: {update_data}")
+        raise PlaylistRepositoryException from e
     else:
-        playlist_repository_logger.info(
-            f"Playlist {name} updated:\n"
-            f"new_name = {new_name},\n"
-            f"photo = {photo},\n"
-            f"description = {description},\n"
-            f"song_names = {song_names}"
-        )
+        playlist_repository_logger.info(f"Playlist {name} updated successfully with fields: {update_data}")
 
 
 def add_songs_to_playlist(name: str, song_names: list[str]) -> None:

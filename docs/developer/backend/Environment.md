@@ -35,8 +35,7 @@ In this section we will explain the meaning and the usage of the environment var
 
 ### ➡️ Commons
 
-- **MONGO_URI**: the database connection URI such as `mongodb://root:root@mongodb:27017/`, this will connect backend into the selected database for storing all persistent data.
-- **SECRET_KEY_SIGN**: 32 byte key(16 characters) for signing JWT Tokens that will authenticate the user. You can use `f24e2f3ac557d487b6d879fb2d86f2b2` as an example. This key will make sure the JWT Tokens are provided by our backend and not someone else's. For generating a new secret use `openssl rand -hex 16`.
+- **MONGO_URI**: the database connection URI such as `mongodb://root:root@127.0.0.1:27017/`, this will connect backend into the selected database for storing all persistent data.
 - **ENV_VALUE**: determines the current environment of the app, it can be:
   - `PROD`: production environment.
   - `DEV`: development environment. Enables hot reload.
@@ -57,7 +56,6 @@ ARCH=SERVERLESS
 The following file can be used out of the box for development purpouse. It contains the following characteristics:
 
 - **Local MongoDB database**. Use local MongoDB database, you can deploy one using our Docker stack as described [here](Docker.md).
-- **Ready to use secret key**
 - **BLOB architecture selected**. This will only make necessary a MongoDB database because no cloud services are used in this architecture.
 - **DEV** mode. It will enable hot reload for FastAPI.
 
@@ -68,8 +66,7 @@ The following file can be used out of the box for development purpouse. It conta
 
 The following file can be used out of the box for development purpouse. It contains the following characteristics:
 
-- **Remote MongoDB database**. Use a remote MongoDB production ready database. Replace both `root` in `mongodb://root:root@mongodb:27017/` with MongoDB instance user and password respectively.
-- **Ready to use secret key**. Generate it using `openssl rand -hex 16`.
+- **Remote MongoDB database**. Use a remote MongoDB production ready database. Replace both `root` in `mongodb://root:root@127.0.0.1:27017/` with MongoDB instance user and password respectively.
 - **BLOB architecture selected**. Use streaming architecture using BLOB files.
 - **PROD** mode. It will disable hot reload for FastAPI.
 
@@ -83,7 +80,7 @@ If I have an user `user` with password `password` I have to set the following en
 ```
 MONGO_INITDB_ROOT_USERNAME=user
 MONGO_INITDB_ROOT_PASSWORD=password
-MONGO_URI=mongodb://user:password@mongodb:27017/
+MONGO_URI=mongodb://user:password@127.0.0.1:27017/
 ```
 
 

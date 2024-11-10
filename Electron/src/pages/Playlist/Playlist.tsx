@@ -12,6 +12,7 @@ import Popover, { PopoverPosition } from '@mui/material/Popover/';
 import { secondsToHoursAndMinutesFormatted } from 'utils/date';
 import { TextField } from '@mui/material/';
 import { inputStyle } from 'styles/mui5/styles';
+import { useNowPlayingContext } from 'hooks/useNowPlayingContext';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 import Song from '../../components/Song/Song';
 import styles from './playlist.module.css';
@@ -20,14 +21,12 @@ import { PlaylistsService } from '../../swagger/api/services/PlaylistsService';
 import { SongsService } from '../../swagger/api/services/SongsService';
 
 interface PropsPlaylist {
-  changeSongName: (songName: string) => void;
   refreshSidebarData: () => void;
 }
 
-export default function Playlist({
-  changeSongName,
-  refreshSidebarData,
-}: PropsPlaylist) {
+export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
+  const { changeSongName } = useNowPlayingContext();
+
   const [mainColorThumbnail, setMainColorThumbnail] = useState('');
 
   /* Get current Playlist Name */
@@ -236,8 +235,9 @@ export default function Playlist({
                   resolve(propsSong);
                   return propsSong;
                 })
-                .catch(() => {
+                .catch((err) => {
                   console.log('Unable to get Song Data');
+                  console.error(err);
                 });
             }),
           );
@@ -252,8 +252,9 @@ export default function Playlist({
             console.log('Unable to get Songs Data');
           });
       }
-    } catch {
-      console.log('Unable to get playlist');
+    } catch (err) {
+      console.log(`Unable to get playlist ${playlistName}`);
+      console.log(err);
     }
   };
 

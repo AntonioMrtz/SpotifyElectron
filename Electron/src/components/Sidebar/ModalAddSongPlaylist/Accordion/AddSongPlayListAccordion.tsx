@@ -131,7 +131,7 @@ export default function AddSongPlayListAccordion({
     setLoadingUploadSong(true);
     setIsCloseAllowed(false);
 
-    if (!formDataSong || !songFile) {
+    if (!songFile) {
       return;
     }
 
@@ -194,10 +194,6 @@ export default function AddSongPlayListAccordion({
 
     event.preventDefault();
 
-    if (!formDataPlaylist) {
-      return;
-    }
-
     try {
       await PlaylistsService.createPlaylistPlaylistsPost(
         formDataPlaylist.name,
@@ -254,9 +250,10 @@ export default function AddSongPlayListAccordion({
           <form
             className={`container-fluid d-flex flex-column p-0 ${styles.formAddSong}`}
           >
-            <div className="container-fluid d-flex flex-column p-0">
+            <div className="container-fluid d-flex flex-column p-0 mb-3">
               <div className="d-flex flex-row">
-                <div className="p-0 mb-3 me-3 container-fluid">
+                <div className="p-0 mb-3 me-3 container-fluid d-flex">
+                  <p className="text-danger">*</p>
                   <input
                     type="text"
                     id="name"
@@ -279,7 +276,8 @@ export default function AddSongPlayListAccordion({
                   />
                 </div>
               </div>
-              <div className="container-fluid p-0">
+              <div className="container-fluid p-0 d-flex">
+                <p className="invisible">*</p>
                 <textarea
                   id="description"
                   name="description"
@@ -290,12 +288,19 @@ export default function AddSongPlayListAccordion({
                 />
               </div>
             </div>
+            <div className="d-flex flex-row">
+              <p className="invisible">*</p>
+              <p className="text-danger">
+                Los campos marcados con * son obligatorios.
+              </p>
+            </div>
 
             <button
               type="button"
               onClick={handleSubmitPlaylist}
               className={`btn btn-lg ${styles.btnSend}`}
               data-testid="sidebar-addsongplaylistaccordion-submit-playlist"
+              disabled={!formDataPlaylist.name}
             >
               Subir
             </button>
@@ -336,19 +341,20 @@ export default function AddSongPlayListAccordion({
             <form
               className={`container-fluid d-flex flex-column p-0 ${styles.formAddSong}`}
             >
-              <div className="container-fluid d-flex flex-row p-0">
-                <div className="p-0 mb-3 w-100">
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    placeholder="Nombre de la canción"
-                    onChange={handleChangeSong}
-                    required
-                  />
-                </div>
+              <div className="container-fluid d-flex flex-row p-0 mb-3 w-100">
+                <p className="text-danger">*</p>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  placeholder="Nombre de la canción"
+                  className={` ${styles.input}`}
+                  onChange={handleChangeSong}
+                  required
+                />
               </div>
-              <div className="p-0 mb-3 w-1000">
+              <div className="p-0 mb-3 me-2 d-flex flex-row w-100 ">
+                <p className="invisible">*</p>
                 <input
                   type="text"
                   id="photo"
@@ -360,9 +366,10 @@ export default function AddSongPlayListAccordion({
               </div>
 
               <div
-                className={`d-flex flex-row overflow-hidden align-items-center ${styles.containerSelectAndFileSelector}`}
+                className={`d-flex flex-row overflow-hidden align-items-center justify-content-between ${styles.containerSelectAndFileSelector}`}
               >
-                <div className="me-5">
+                <div className="me-5 d-flex">
+                  <p className="text-danger me-2">*</p>
                   <select
                     className="form-select-sm mb-3"
                     aria-label="Default select example"
@@ -393,7 +400,8 @@ export default function AddSongPlayListAccordion({
                       })}
                   </select>
                 </div>
-                <div className="mb-3">
+                <div className="mb-3 d-flex">
+                  <p className="text-danger me-1">*</p>
                   <input
                     type="file"
                     id="file"
@@ -405,13 +413,21 @@ export default function AddSongPlayListAccordion({
                   />
                 </div>
               </div>
+              <p className="text-danger mt-2">
+                Los campos marcados con * son obligatorios.
+              </p>
 
               <button
                 type="button"
                 onClick={handleSubmitSong}
                 className={`btn btn-lg ${styles.btnSend} d-flex flex-row justify-content-center`}
                 data-testid="sidebar-addsongplaylistaccordion-submit-song"
-                disabled={loadingUploadSong}
+                disabled={
+                  !formDataSong.name ||
+                  !formDataSong.genre ||
+                  !songFile ||
+                  loadingUploadSong
+                }
               >
                 Subir {loadingUploadSong && <LoadingCircleSmall />}
               </button>

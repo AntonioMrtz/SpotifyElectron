@@ -20,7 +20,7 @@ interface ConfirmationMenuData {
 enum ConfirmationMenuActionKind {
   ADD_SUCCESS = 'ADD_SUCCESS',
   ADD_ERROR = 'ADD_ERROR',
-  DELETE_SUCESS = 'DELETE_SUCCESS',
+  DELETE_SUCCESS = 'DELETE_SUCCESS',
   DELETE_ERROR = 'DELETE_ERROR',
   CLIPBOARD = 'CLIPBOARD',
 }
@@ -58,7 +58,7 @@ const reducerConfirmationMenu = (
         },
       };
 
-    case ConfirmationMenuActionKind.DELETE_SUCESS:
+    case ConfirmationMenuActionKind.DELETE_SUCCESS:
       return {
         payload: {
           type: InfoPopoverType.SUCCESS,

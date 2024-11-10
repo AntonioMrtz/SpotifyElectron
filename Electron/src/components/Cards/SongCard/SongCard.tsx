@@ -3,6 +3,7 @@ import ContextMenuSong from 'components/AdvancedUIComponents/ContextMenu/Song/Co
 import Popover, { PopoverPosition } from '@mui/material/Popover';
 import { useNavigate } from 'react-router-dom';
 import { PropsSongCard } from 'types/song';
+import { useNowPlayingContext } from 'hooks/useNowPlayingContext';
 import styles from '../cards.module.css';
 import defaultThumbnailPlaylist from '../../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 
@@ -11,8 +12,9 @@ export default function SongCard({
   artist,
   photo,
   refreshSidebarData,
-  changeSongName,
 }: PropsSongCard) {
+  const { changeSongName } = useNowPlayingContext();
+
   const navigate = useNavigate();
 
   const handleClickArtist = () => {

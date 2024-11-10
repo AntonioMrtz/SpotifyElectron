@@ -6,29 +6,24 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Any
 
+from app.spotify_electron.user.base_user_schema import BaseUserDAO, BaseUserDTO
 from app.exceptions.base_exceptions_schema import SpotifyElectronException
 
 
+
 @dataclass
-class UserDAO:
+class UserDAO(BaseUserDAO):
     """Represents  user data in the persistence layer"""
 
-    name: str
-    photo: str
-    register_date: str
-    password: bytes
     playback_history: list[str]
     playlists: list[str]
     saved_playlists: list[str]
 
 
 @dataclass
-class UserDTO:
+class UserDTO(BaseUserDTO):
     """Represents user data in the endpoints transfer layer"""
 
-    name: str
-    photo: str
-    register_date: str
     playback_history: list[str]
     playlists: list[str]
     saved_playlists: list[str]
@@ -42,48 +37,43 @@ class UserType(Enum):
 
 
 def get_user_dao_from_document(document: dict[str, Any]) -> UserDAO:
-    """Get UserDAO from document
+    """Get UserDAO from document by extracting all required fields.
 
     Args:
-    ----
-        document (dict): user document
+        document (dict): The user document.
 
     Returns:
-    -------
-        UserDAO: UserDAO Object
-
+        UserDAO: A fully populated UserDAO object.
     """
     return UserDAO(
         name=document["name"],
         photo=document["photo"],
-        register_date=document["register_date"][:-1],
+        register_date=document["register_date"],
         password=document["password"],
-        playback_history=document["playback_history"],
-        playlists=document["playlists"],
-        saved_playlists=document["saved_playlists"],
+        playback_history=document.get("playback_history", []),
+        playlists=document.get("playlists", []),
+        saved_playlists=document.get("saved_playlists", []),
     )
 
 
 def get_user_dto_from_dao(user_dao: UserDAO) -> UserDTO:
-    """Get UserDTO from UserDAO
+    """Convert UserDAO to UserDTO for data transfer.
 
     Args:
-    ----
-        user_dao (UserDAO): UserDAO object
+        user_dao (UserDAO): UserDAO object to convert.
 
     Returns:
-    -------
-        UserDTO: UserDTO object
-
+        UserDTO: Converted UserDTO object.
     """
     return UserDTO(
         name=user_dao.name,
         photo=user_dao.photo,
+        register_date=user_dao.register_date,
         playback_history=user_dao.playback_history,
         playlists=user_dao.playlists,
-        register_date=user_dao.register_date,
         saved_playlists=user_dao.saved_playlists,
     )
+
 
 
 class UserRepositoryException(SpotifyElectronException):

@@ -21,7 +21,6 @@
     "format:check": "prettier src/ --check --ignore-path .prettierignore",
     "package": "ts-node ./.erb/scripts/clean.js dist && npm run build && electron-builder build --publish never",
     "package:win": "ts-node ./.erb/scripts/clean.js dist && npm run build && electron-builder build --publish never --win",
-    "package:linux:deb": "ts-node ./.erb/scripts/clean.js dist && npm run build && electron-builder build --publish never --linux deb",
     "package:linux:appimage": "ts-node ./.erb/scripts/clean.js dist && npm run build && electron-builder build --publish never --linux appimage",
     "rebuild": "electron-rebuild --parallel --types prod,dev,optional --module-dir release/app",
     "start": "ts-node ./.erb/scripts/check-port-in-use.js && npm run start:renderer",

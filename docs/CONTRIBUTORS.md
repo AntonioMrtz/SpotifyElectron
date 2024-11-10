@@ -97,6 +97,13 @@ Me gustaría expresar mi más sincero agradecimiento a las siguientes personas p
             </a>
         </td>
         <td align="center">
+            <a href="https://github.com/ObuMan">
+                <img src="https://avatars.githubusercontent.com/u/111461001?v=4" width="90" alt="ObuMan" />
+                <br />
+                <sub><b>ObuMan</b></sub>
+            </a>
+        </td>
+        <td align="center">
             <a href="https://github.com/gigigimay">
                 <img src="https://avatars.githubusercontent.com/u/51327193?v=4" width="90" alt="gigigimay" />
                 <br />

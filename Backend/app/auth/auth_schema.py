@@ -2,6 +2,8 @@
 Authentication schema for domain model
 """
 
+import binascii
+import os
 from dataclasses import dataclass
 
 from app.exceptions.base_exceptions_schema import SpotifyElectronException
@@ -28,6 +30,38 @@ class FakeRequest:
 
     def __init__(self, auth_value: str) -> None:
         self.headers[TOKEN_HEADER_FIELD_NAME] = auth_value
+
+
+class AuthConfig:
+    """Stores application authentication config"""
+
+    VERTIFICATION_ALGORITHM: str
+    ACCESS_TOKEN_EXPIRE_MINUTES: int
+    DAYS_TO_EXPIRE_COOKIE: int
+    SIGNING_SECRET_KEY: str
+    """Key for signing JWT, generated using `openssl rand -hex 16`"""
+
+    @classmethod
+    def init_auth_config(
+        cls,
+        verification_algorithm: str,
+        access_token_expire_minutes: int,
+        days_to_expire_cookie: int,
+    ) -> None:
+        """Init authentication configuration, required to start the app successfully
+
+        Args:
+            verification_algorithm (str): JWT verification algorithm
+            access_token_expire_minutes (int): minutes until the JWT expires
+            days_to_expire_cookie (int): days until cookies expire
+        """
+        random_bytes = os.urandom(16)
+        hex_string = binascii.hexlify(random_bytes).decode("utf-8")
+        cls.SIGNING_SECRET_KEY = hex_string
+
+        cls.VERTIFICATION_ALGORITHM = verification_algorithm
+        cls.ACCESS_TOKEN_EXPIRE_MINUTES = access_token_expire_minutes
+        cls.DAYS_TO_EXPIRE_COOKIE = days_to_expire_cookie
 
 
 class BadJWTTokenProvidedException(SpotifyElectronException):

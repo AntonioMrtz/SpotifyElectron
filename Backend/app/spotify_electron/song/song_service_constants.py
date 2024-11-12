@@ -2,6 +2,12 @@
 Constants for Song services
 """
 
-MODULE_PREFIX_NAME = "app.spotify_electron.song."
-SONG_SERVICE_SERVERLESS_MODULE_NAME = "serverless.song_service"
-SONG_SERVICE_BLOB_MODULE_NAME = "blob.song_service"
+from enum import StrEnum
+
+
+class SongServicePath(StrEnum):
+    """Song service file paths"""
+
+    MODULE_PREFIX = "app.spotify_electron.song."
+    SERVERLESS_MODULE_NAME = f"{MODULE_PREFIX}serverless.song_service"
+    BLOB_MODULE_NAME = f"{MODULE_PREFIX}blob.song_service"

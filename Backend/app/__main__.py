@@ -15,7 +15,8 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.common.app_schema import AppConfig, AppEnvironment, AppInfo
+from app.auth.auth_schema import AuthConfig
+from app.common.app_schema import AppAuthConfig, AppConfig, AppEnvironment, AppInfo
 from app.common.PropertiesManager import PropertiesManager
 from app.database.DatabaseConnectionManager import DatabaseConnectionManager
 from app.logging.logging_constants import LOGGING_MAIN
@@ -52,6 +53,12 @@ async def lifespan_handler(app: FastAPI) -> AsyncGenerator[None, Any]:
 
     environment = PropertiesManager.get_environment()
     connection_uri = getattr(PropertiesManager, AppEnvironment.MONGO_URI_ENV_NAME)
+
+    AuthConfig.init_auth_config(
+        access_token_expire_minutes=AppAuthConfig.ACCESS_TOKEN_EXPIRE_MINUTES,
+        verification_algorithm=AppAuthConfig.VERTIFICATION_ALGORITHM,
+        days_to_expire_cookie=AppAuthConfig.DAYS_TO_EXPIRE_COOKIE,
+    )
 
     DatabaseConnectionManager.init_database_connection(
         environment=environment, connection_uri=connection_uri

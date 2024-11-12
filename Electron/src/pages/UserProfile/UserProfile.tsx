@@ -27,24 +27,23 @@ export default function UserProfile({
 
   const [thumbnail, setThumbnail] = useState<string>(defaultThumbnailPlaylist);
   const [mainColorThumbnail, setMainColorThumbnail] = useState('');
-  const [playbackHistory, setPlaybackHistory] = useState<PropsSongCard[]>([]);
-  const [showAllSongs, setShowAllSongs] = useState(false); // State for showing all songs
+  const [streamHistory, setStreamHistory] = useState<PropsSongCard[]>([]);
   const [uploadedSongs, setUploadedSongs] = useState<PropsSongCard[]>([]);
   const [artistStreams, setArtistStreams] = useState(0);
 
   const { playlists } = useFetchGetUserPlaylists(id);
 
   useEffect(() => {
-    const loadPlaybackHistory = async (userName: string) => {
+    const loadStreamHistory = async (userName: string) => {
       try {
-        const playbackHistoryData =
-          await UsersService.getUserPlaybackHistoryUsersNamePlaybackHistoryGet(
+        const streamHistoryData =
+          await UsersService.getUserStreamHistoryUsersNameStreamHistoryGet(
             userName,
           );
-        setPlaybackHistory(playbackHistoryData);
+        setStreamHistory(streamHistoryData);
       } catch (error) {
-        setPlaybackHistory([]);
-        console.log(`Unable to get playback history from user ${id}`);
+        setStreamHistory([]);
+        console.log(`Unable to get stream history from user ${id}`);
       }
     };
     const loadSongsFromArtist = async (artistName: string) => {
@@ -54,8 +53,8 @@ export default function UserProfile({
 
         setUploadedSongs(artistSongsData);
       } catch (error) {
-        setPlaybackHistory([]);
-        console.log(`Unable to get playback history from user ${id}`);
+        setStreamHistory([]);
+        console.log(`Unable to get stream history from user ${id}`);
       }
     };
     const handleLoadProfile = async (userName: string) => {
@@ -64,7 +63,7 @@ export default function UserProfile({
       setThumbnail(userData.photo);
 
       if (userType === UserType.USER) {
-        loadPlaybackHistory(userName);
+        loadStreamHistory(userName);
       } else if (userType === UserType.ARTIST) {
         setArtistStreams(userData.total_streams);
         loadSongsFromArtist(userName);
@@ -96,16 +95,17 @@ export default function UserProfile({
     fac.destroy();
   }, [thumbnail]);
 
-  const toggleShowAllSongs = () => {
-    setShowAllSongs((prev) => !prev);
-    console.log(showAllSongs);
-  };
-
   /* Show all redirects */
 
   const handleShowAllUserPlaylists = (userTypeRedirect: UserType) => {
     navigate(
       `/showAllPlaylistFromUser/Playlists del usuario/${id}/${userTypeRedirect}`,
+    );
+  };
+
+  const handleShowAllUserStreamHistory = (userTypeRedirect: UserType) => {
+    navigate(
+      `/showAllStreamHistoryFromUser/Historial de reproducción/${id}/${userTypeRedirect}`,
     );
   };
 
@@ -217,6 +217,7 @@ export default function UserProfile({
           </div>
         </div>
       )}
+
       <div className="p-4">
         <div className="d-flex">
           <div className={`w-100 d-flex ${styles.categoryTitleContainer}`}>
@@ -274,17 +275,24 @@ export default function UserProfile({
         <div className="p-4">
           <div className="d-flex">
             <div className={`w-100 d-flex ${styles.categoryTitleContainer}`}>
-              <h2
+              <button
+                type="button"
+                className={`${styles.categoryTitle}`}
                 style={{
+                  border: 'none',
+                  backgroundColor: 'transparent',
                   color: 'var(--pure-white)',
                   fontWeight: '700',
                   fontSize: '1.5rem',
                   marginTop: '1rem',
                   marginBottom: '1.5rem',
                 }}
+                onClick={() => {
+                  handleShowAllUserStreamHistory(userType);
+                }}
               >
                 Historial de reproducción
-              </h2>
+              </button>
             </div>
             <div
               className={`container-fluid d-flex ${styles.mostrarTodoContainer}`}
@@ -293,26 +301,12 @@ export default function UserProfile({
                 type="button"
                 className={`${styles.mostrarTodo}`}
                 onClick={() => {
-                  toggleShowAllSongs();
+                  handleShowAllUserStreamHistory(userType);
                 }}
               >
                 Mostrar todos
               </button>
             </div>
-          </div>
-          <div className="d-flex flex-row flex-wrap " style={{ gap: '14px' }}>
-            {(showAllSongs ? playbackHistory : playbackHistory.slice(0, 5)).map(
-              (songItem, index) => (
-                <SongCard
-                  key={`${songItem.name}-${index}`}
-                  name={songItem.name}
-                  photo={songItem.photo}
-                  artist={songItem.artist}
-                  changeSongName={changeSongName}
-                  refreshSidebarData={refreshSidebarData}
-                />
-              ),
-            )}
           </div>
         </div>
       )}

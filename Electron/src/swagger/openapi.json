@@ -939,8 +939,8 @@
         "tags": [
           "Users"
         ],
-        "summary": "Patch Playback History",
-        "description": "Add song to playback history\n\nArgs:\n    name (str): user name\n    song_name (str): song name",
+        "summary": "Patch Stream History",
+        "description": "Add song to stream history\n\nArgs:\n    name (str): user name\n    song_name (str): song name",
         "operationId": "patch_stream_history_users__name__stream_history_patch",
         "security": [
           {
@@ -992,8 +992,8 @@
         "tags": [
           "Users"
         ],
-        "summary": "Get User Playback History",
-        "description": "Get user song playback history\n\nArgs:\n    name (str): user name",
+        "summary": "Get User Stream History",
+        "description": "Get user song stream history\n\nArgs:\n    name (str): user name",
         "operationId": "get_user_stream_history_users__name__stream_history_get",
         "security": [
           {

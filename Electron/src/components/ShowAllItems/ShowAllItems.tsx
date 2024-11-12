@@ -5,6 +5,7 @@ import { PropsAllItems, ShowAllItemsTypes } from './types/PropsShowAllItems';
 import ItemsArtist from './Items/ItemsAllArtist';
 import ItemsAllPlaylistsFromUser from './Items/ItemsAllPlaylistFromUser';
 import ItemsAllSongsFromArtist from './Items/ItemsAllSongsFromArtist';
+import ItemsAllSongsFromStreamHistory from './Items/ItemsAllSongsFromStreamHistory';
 
 export default function ShowAllItems({
   refreshSidebarData,
@@ -27,6 +28,14 @@ export default function ShowAllItems({
     [ShowAllItemsTypes.ALL_PLAYLIST_FROM_USER]: (
       <ItemsAllPlaylistsFromUser
         userName={user || 'NoUser'}
+        refreshSidebarData={refreshSidebarData}
+        id={id}
+      />
+    ),
+    [ShowAllItemsTypes.ALL_STREAM_HISTORY_FROM_USER]: (
+      <ItemsAllSongsFromStreamHistory
+        userName={user || 'NoUser'}
+        changeSongName={changeSongName}
         refreshSidebarData={refreshSidebarData}
         id={id}
       />

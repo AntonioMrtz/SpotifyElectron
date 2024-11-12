@@ -6,9 +6,7 @@ from app.__main__ import app
 client = TestClient(app)
 
 
-def patch_history_playback(
-    user_name: str, song_name: str, headers: dict[str, str]
-) -> Response:
+def patch_history_stream(user_name: str, song_name: str, headers: dict[str, str]) -> Response:
     return client.patch(
         f"/users/{user_name}/stream_history/?song_name={song_name}", headers=headers
     )

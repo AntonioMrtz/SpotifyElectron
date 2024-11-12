@@ -135,16 +135,16 @@ def add_stream_history(
     max_number_stream_history_songs: int,
     collection: Collection,
 ) -> None:
-    """Add song playback history to user
+    """Add song stream history to user
 
     Args:
         user_name (str): user name
         song (str): song name
-        max_number_stream_history_songs (int): max number of songs stored in playback history
+        max_number_stream_history_songs (int): max number of songs stored in stream history
         collection (Collection): the user collection
 
     Raises:
-        UserRepositoryException: unexpected error adding song to user playback history
+        UserRepositoryException: unexpected error adding song to user stream history
     """
     try:
         user_data = collection.find_one({"name": user_name})
@@ -161,7 +161,7 @@ def add_stream_history(
         )
     except Exception as exception:
         base_user_repository_logger.exception(
-            f"Error adding playback history of song {song} to user {user_name} in database"
+            f"Error adding stream history of song {song} to user {user_name} in database"
         )
         raise UserRepositoryException from exception
 
@@ -351,14 +351,14 @@ def get_user_playlist_names(user_name: str, collection: Collection) -> list[str]
 
 
 def get_user_stream_history_names(user_name: str, collection: Collection) -> list[str]:
-    """Get user playback history song names
+    """Get user stream history song names
 
     Args:
         user_name (str): user name
         collection (Collection): user collection
 
     Returns:
-        list[str]: the user playback history
+        list[str]: the user stream history
     """
     user_data = collection.find_one({"name": user_name}, {"stream_history": 1, "_id": 0})
 

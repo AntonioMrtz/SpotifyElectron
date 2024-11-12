@@ -102,8 +102,8 @@ export class UsersService {
         });
     }
     /**
-     * Patch Playback History
-     * Add song to playback history
+     * Patch Stream History
+     * Add song to stream history
      *
      * Args:
      * name (str): user name
@@ -113,7 +113,7 @@ export class UsersService {
      * @returns any Successful Response
      * @throws ApiError
      */
-    public static patchPlaybackHistoryUsersNamePlaybackHistoryPatch(
+    public static patchStreamHistoryUsersNameStreamHistoryPatch(
         name: string,
         songName: string,
     ): CancelablePromise<any> {
@@ -132,8 +132,8 @@ export class UsersService {
         });
     }
     /**
-     * Get User Playback History
-     * Get user song playback history
+     * Get User Stream History
+     * Get user song stream history
      *
      * Args:
      * name (str): user name
@@ -141,7 +141,7 @@ export class UsersService {
      * @returns any Successful Response
      * @throws ApiError
      */
-    public static getUserPlaybackHistoryUsersNamePlaybackHistoryGet(
+    public static getUserStreamHistoryUsersNameStreamHistoryGet(
         name: string,
     ): CancelablePromise<any> {
         return __request(OpenAPI, {

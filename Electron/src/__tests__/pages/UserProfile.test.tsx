@@ -23,7 +23,7 @@ beforeEach(() => {
   useNavigate: jest.fn(),
 })); */
 
-test('UserProfile User load Playback history and his Playlists', async () => {
+test('UserProfile User load Stream history and his Playlists', async () => {
   const playlistName = 'playlisttest';
   const songName = 'songName';
 

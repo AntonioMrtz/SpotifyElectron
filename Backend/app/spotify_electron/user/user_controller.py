@@ -169,7 +169,7 @@ def delete_user(name: str) -> Response:
 def patch_stream_history(
     name: str, song_name: str, token: Annotated[TokenData, Depends(JWTBearer())]
 ) -> Response:
-    """Add song to playback history
+    """Add song to stream history
 
     Args:
         name (str): user name
@@ -424,7 +424,7 @@ def get_user_playlists_names(
 def get_user_stream_history(
     name: str, token: Annotated[TokenData, Depends(JWTBearer())]
 ) -> Response:
-    """Get user song playback history
+    """Get user song stream history
 
     Args:
         name (str): user name

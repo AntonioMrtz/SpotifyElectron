@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { UsersService } from 'swagger/api/services/UsersService';
 import { PropsSongCard } from 'types/song';
 
-const useFetchGetUserPlaybackHistory = (userName: string | undefined) => {
-  const [playbackHistory, setPlaybackHistory] = useState<PropsSongCard[]>();
+const useFetchGetUserStreamHistory = (userName: string | undefined) => {
+  const [streamHistory, setStreamHistory] = useState<PropsSongCard[]>();
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -13,15 +13,15 @@ const useFetchGetUserPlaybackHistory = (userName: string | undefined) => {
       setLoading(true);
 
       try {
-        const playbackHistoryData =
-          await UsersService.getUserPlaybackHistoryUsersNamePlaybackHistoryGet(
+        const streamHistoryData =
+          await UsersService.getUserStreamHistoryUsersNameStreamHistoryGet(
             userName,
           );
-        setPlaybackHistory(playbackHistoryData);
+        setStreamHistory(streamHistoryData);
       } catch (err) {
         console.log(err);
-        setError(`Unable to get playback history from user ${userName}`);
-        setPlaybackHistory([]);
+        setError(`Unable to get stream history from user ${userName}`);
+        setStreamHistory([]);
       } finally {
         setLoading(false);
       }
@@ -30,7 +30,7 @@ const useFetchGetUserPlaybackHistory = (userName: string | undefined) => {
     fetchData();
   }, [userName]);
 
-  return { playbackHistory, loading, error };
+  return { streamHistory: streamHistory, loading, error };
 };
 
-export default useFetchGetUserPlaybackHistory;
+export default useFetchGetUserStreamHistory;

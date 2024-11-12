@@ -149,7 +149,7 @@ def get_user_password(user_name: str) -> bytes:
 
 
 def add_stream_history(user_name: str, song_name: str, token: TokenData) -> None:
-    """Add playback history to user
+    """Add stream history to user
 
     Args:
         user_name (str): user name
@@ -160,10 +160,10 @@ def add_stream_history(user_name: str, song_name: str, token: TokenData) -> None
         UserBadNameException: invalid user name
         UserNotFoundException: user doesn't exists
         SongBadNameException: invalid song name
-        UserUnauthorizedException: user cannot modify playback history that \
+        UserUnauthorizedException: user cannot modify stream history that \
             is not created by him
         SongNotFoundException: song doesn't exists
-        UserServiceException: unexpected error adding playback history to user
+        UserServiceException: unexpected error adding stream history to user
     """
     try:
         base_user_service_validations.validate_user_name_parameter(user_name)
@@ -578,7 +578,7 @@ def get_user_playlist_names(user_name: str) -> list[str]:
 
 
 def get_user_stream_history(user_name: str) -> list[SongMetadataDTO]:
-    """Get user song playback history
+    """Get user song stream history
 
     Args:
         user_name (str): user name
@@ -586,10 +586,10 @@ def get_user_stream_history(user_name: str) -> list[SongMetadataDTO]:
     Raises:
         UserBadNameException: invalid user name
         UserNotFoundException: user not found
-        UserServiceException: unexpected error getting playback history from user
+        UserServiceException: unexpected error getting stream history from user
 
     Returns:
-        list[str]: the song playback history from user
+        list[str]: the song stream history from user
     """
     try:
         base_user_service_validations.validate_user_name_parameter(user_name)
@@ -608,13 +608,13 @@ def get_user_stream_history(user_name: str) -> list[SongMetadataDTO]:
         raise UserNotFoundException from exception
     except UserRepositoryException as exception:
         base_users_service_logger.exception(
-            f"Unexpected error in User Repository getting playback history "
+            f"Unexpected error in User Repository getting stream history "
             f"from owner {user_name}"
         )
         raise UserServiceException from exception
     except Exception as exception:
         base_users_service_logger.exception(
-            f"Unexpected error in User Service getting getting playback history "
+            f"Unexpected error in User Service getting getting stream history "
             f"from owner {user_name}"
         )
         raise UserServiceException from exception

@@ -20,7 +20,7 @@ from tests.test_API.api_base_users import (
     get_user_playlists,
     get_user_relevant_playlists,
     get_user_stream_history,
-    patch_history_playback,
+    patch_history_stream,
     patch_playlist_saved,
     whoami,
 )
@@ -66,7 +66,7 @@ def test_patch_stream_history_user_correct(clear_test_data_db):
     )
     assert res_create_song.status_code == HTTP_201_CREATED
 
-    res_patch_user = patch_history_playback(
+    res_patch_user = patch_history_stream(
         user_name=name, song_name=song_name, headers=jwt_headers_user
     )
     assert res_patch_user.status_code == HTTP_204_NO_CONTENT
@@ -112,7 +112,7 @@ def test_patch_stream_history_artist_correct(clear_test_data_db):
     )
     assert res_create_song.status_code == HTTP_201_CREATED
 
-    res_patch_user = patch_history_playback(artista, song_name, headers=jwt_headers_artist)
+    res_patch_user = patch_history_stream(artista, song_name, headers=jwt_headers_artist)
     assert res_patch_user.status_code == HTTP_204_NO_CONTENT
 
     res_get_artist = get_artist(name=artista, headers=jwt_headers_artist)
@@ -127,7 +127,7 @@ def test_patch_stream_history_artist_correct(clear_test_data_db):
     assert res_delete_artist.status_code == HTTP_202_ACCEPTED
 
 
-def test_patch_stream_history_invalid_bad_user():
+def test_patch_stream_history_bad_user():
     photo = "https://photo"
     password = "hola"
     artista = "artista"
@@ -139,7 +139,7 @@ def test_patch_stream_history_invalid_bad_user():
 
     jwt_headers_artist = get_user_jwt_header(username=artista, password=password)
 
-    res_patch_user = patch_history_playback("", "", headers=jwt_headers_artist)
+    res_patch_user = patch_history_stream("", "", headers=jwt_headers_artist)
     assert res_patch_user.status_code == HTTP_404_NOT_FOUND
 
     res_delete_artist = delete_user(artista)
@@ -147,11 +147,11 @@ def test_patch_stream_history_invalid_bad_user():
 
 
 def test_patch_stream_history_non_existing_user():
-    res_patch_user = patch_history_playback("usuario1", "cancion1", {})
+    res_patch_user = patch_history_stream("usuario1", "cancion1", {})
     assert res_patch_user.status_code == HTTP_403_FORBIDDEN
 
 
-def test_patch_stream_history_user_correct_insert_6_songs(clear_test_data_db):
+def test_patch_stream_history_user_correct_insert_50_songs(clear_test_data_db):
     name = "8232392323623823723"
     photo = "https://photo"
     password = "hola"
@@ -191,10 +191,10 @@ def test_patch_stream_history_user_correct_insert_6_songs(clear_test_data_db):
     assert res_create_song.status_code == HTTP_201_CREATED
 
     for i in range(0, 49):
-        res_patch_user = patch_history_playback(name, song_name, headers=jwt_headers_user)
+        res_patch_user = patch_history_stream(name, song_name, headers=jwt_headers_user)
         assert res_patch_user.status_code == HTTP_204_NO_CONTENT
 
-    res_patch_user = patch_history_playback(name, new_song_name, headers=jwt_headers_user)
+    res_patch_user = patch_history_stream(name, new_song_name, headers=jwt_headers_user)
     assert res_patch_user.status_code == HTTP_204_NO_CONTENT
 
     res_get_user = get_user(name=name, headers=jwt_headers_user)
@@ -971,12 +971,12 @@ def test_get_user_stream_history_correct():
     )
     assert res_create_song.status_code == HTTP_201_CREATED
 
-    res_patch_user = patch_history_playback(
+    res_patch_user = patch_history_stream(
         user_name=artist_name, song_name=song_name, headers=jwt_headers_artist
     )
     assert res_patch_user.status_code == HTTP_204_NO_CONTENT
 
-    res_patch_user = patch_history_playback(
+    res_patch_user = patch_history_stream(
         user_name=artist_name, song_name=song_name_2, headers=jwt_headers_artist
     )
     assert res_patch_user.status_code == HTTP_204_NO_CONTENT

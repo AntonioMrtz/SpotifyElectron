@@ -52,14 +52,14 @@ export default function PlayerBlob({
     setDisplayNonePause(styles.displayNonePause);
   };
 
-  //* PLAYBACK TIME MANAGING
+  //* STREAM TIME MANAGING
 
   /* Hooks for updating the children Playbar */
-  const [playBackTime, setPlayBackTime] = useState(0);
+  const [streamTime, setStreamTime] = useState(0);
   const [songDuration, setSongDuration] = useState(0);
 
-  /* Update playback time  */
-  const changePlayBackTime = (value: number) => {
+  /* Update stream time  */
+  const changeStreamTime = (value: number) => {
     if (audio.current && audio.current.currentTime) {
       audio.current.currentTime = value;
     }
@@ -134,7 +134,7 @@ export default function PlayerBlob({
       }
 
       if (!audio.current) return;
-      // Listener that handles the time update of playbacktime
+      // Listener that handles the time update of streamtime
       audio.current.addEventListener('timeupdate', () => {
         if (
           audio.current &&
@@ -142,7 +142,7 @@ export default function PlayerBlob({
           audio.current.duration
         ) {
           const time = audio.current.currentTime;
-          setPlayBackTime(+time.toFixed(2));
+          setStreamTime(+time.toFixed(2));
 
           if (audio.current.currentTime === audio.current.duration) {
             handlePause();
@@ -155,7 +155,7 @@ export default function PlayerBlob({
         if (audio.current) {
           audio.current.play();
           handlePlay();
-          setSongDuration(audio.current.duration); // not updating every 0.5s as playback time
+          setSongDuration(audio.current.duration); // not updating every 0.5s as stream time
           setVolume();
         }
       });
@@ -167,7 +167,7 @@ export default function PlayerBlob({
           if (audio.current) {
             audio.current.play();
             handlePlay();
-            setSongDuration(audio.current.duration); // not updating every 0.5s as playback time
+            setSongDuration(audio.current.duration); // not updating every 0.5s as stream time
 
             if (audio.current.currentTime === 0) {
               handleIncreaseSongStreams();
@@ -247,9 +247,9 @@ export default function PlayerBlob({
       </div>
 
       <TimeSlider
-        playBackTime={playBackTime}
+        streamTime={streamTime}
         initialSongDuration={songDuration}
-        changePlayBackTime={changePlayBackTime}
+        changeStreamTime={changeStreamTime}
       />
     </div>
   );

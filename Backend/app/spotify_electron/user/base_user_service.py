@@ -50,7 +50,7 @@ base_users_service_logger = SpotifyElectronLogger(LOGGING_BASE_USERS_SERVICE).ge
 
 
 # TODO not hardcoded
-MAX_NUMBER_PLAYBACK_HISTORY_SONGS = 50
+MAX_NUMBER_STREAM_HISTORY_SONGS = 50
 
 
 def get_user_type(user_name: str) -> UserType:
@@ -176,7 +176,7 @@ def add_stream_history(user_name: str, song_name: str, token: TokenData) -> None
         base_user_repository.add_stream_history(
             user_name=user_name,
             song=song_name,
-            max_number_stream_history_songs=MAX_NUMBER_PLAYBACK_HISTORY_SONGS,
+            max_number_stream_history_songs=MAX_NUMBER_STREAM_HISTORY_SONGS,
             collection=user_collection_provider.get_user_associated_collection(user_name),
         )
     except UserBadNameException as exception:
@@ -190,7 +190,7 @@ def add_stream_history(user_name: str, song_name: str, token: TokenData) -> None
         raise SongBadNameException from exception
     except UserUnauthorizedException as exception:
         base_users_service_logger.exception(
-            f"Unathorized user {user_name} for adding playback songs"
+            f"Unathorized user {user_name} for adding stream songs"
         )
         raise UserUnauthorizedException from exception
     except SongNotFoundException as exception:
@@ -199,18 +199,18 @@ def add_stream_history(user_name: str, song_name: str, token: TokenData) -> None
     except UserRepositoryException as exception:
         base_users_service_logger.exception(
             f"Unexpected error in User Repository adding song {song_name} "
-            f"to user {user_name} playback history"
+            f"to user {user_name} stream history"
         )
         raise UserServiceException from exception
     except Exception as exception:
         base_users_service_logger.exception(
             f"Unexpected error in User Service adding song {song_name} "
-            f"to user {user_name} playback history"
+            f"to user {user_name} stream history"
         )
         raise UserServiceException from exception
     else:
         base_users_service_logger.info(
-            f"Song {song_name} added to User {user_name} playback history"
+            f"Song {song_name} added to User {user_name} stream history"
         )
 
 

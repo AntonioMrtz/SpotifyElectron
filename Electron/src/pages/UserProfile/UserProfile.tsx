@@ -307,6 +307,22 @@ export default function UserProfile({
                 Mostrar todos
               </button>
             </div>
+            <div className="d-flex flex-row flex-wrap " style={{ gap: '14px' }}>
+              {streamHistory &&
+                streamHistory.slice(0, 5).map((songItem) => {
+                  return (
+                    <SongCard
+                      // eslint-disable-next-line react/no-array-index-key
+                      key={songItem.name}
+                      name={songItem.name}
+                      photo={songItem.photo}
+                      artist={songItem.artist}
+                      changeSongName={changeSongName}
+                      refreshSidebarData={refreshSidebarData}
+                    />
+                  );
+                })}
+            </div>
           </div>
         </div>
       )}

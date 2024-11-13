@@ -11,7 +11,7 @@ from starlette.status import (
 
 from app.auth.auth_schema import BadJWTTokenProvidedException
 from app.spotify_electron.user.base_user_service import (
-    MAX_NUMBER_PLAYBACK_HISTORY_SONGS,
+    MAX_NUMBER_STREAM_HISTORY_SONGS,
 )
 from app.spotify_electron.user.user.user_schema import UserType
 from tests.test_API.api_base_users import (
@@ -199,7 +199,7 @@ def test_patch_stream_history_user_correct_insert_50_songs(clear_test_data_db):
 
     res_get_user = get_user(name=name, headers=jwt_headers_user)
     assert res_get_user.status_code == HTTP_200_OK
-    assert len(res_get_user.json()["stream_history"]) == MAX_NUMBER_PLAYBACK_HISTORY_SONGS
+    assert len(res_get_user.json()["stream_history"]) == MAX_NUMBER_STREAM_HISTORY_SONGS
     assert res_get_user.json()["stream_history"][49] == new_song_name
 
     res_delete_user = delete_user(name=name)
@@ -944,7 +944,7 @@ def test_get_user_stream_history_correct():
     photo = "https://photo"
     song_name = "8232392323623823723989"
     song_name_2 = "8232392323623823723988"
-    EXPECTED_PLAYBACK_HISTORY_SONGS = [song_name, song_name_2]
+    EXPECTED_STREAM_HISTORY_SONGS = [song_name, song_name_2]
     file_path = "tests/assets/song.mp3"
     genre = "Pop"
 
@@ -985,7 +985,7 @@ def test_get_user_stream_history_correct():
         artist_name, headers=jwt_headers_artist
     )
     assert res_get_user_stream_history.status_code == HTTP_200_OK
-    assert set(EXPECTED_PLAYBACK_HISTORY_SONGS) == set(
+    assert set(EXPECTED_STREAM_HISTORY_SONGS) == set(
         [song["name"] for song in res_get_user_stream_history.json()]
     )
 

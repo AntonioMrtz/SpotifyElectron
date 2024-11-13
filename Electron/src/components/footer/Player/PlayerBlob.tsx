@@ -123,7 +123,7 @@ export default function PlayerBlob({
 
       changeSongInfo({
         name: songData.name,
-        thumbnail: songData.thumbnail,
+        thumbnail: songData.photo,
         artist: songData.artist,
       });
 

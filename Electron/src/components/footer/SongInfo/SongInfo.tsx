@@ -5,12 +5,12 @@ import styles from './songInfo.module.css';
 import { PropsSongInfo } from './types/propsSongInfo';
 import defaultThumbnailPlaylist from '../../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 
-export default function SongInfo({ songInfo }: PropsSongInfo | any) {
+export default function SongInfo({ name, artist, thumbnail }: PropsSongInfo) {
   const navigate = useNavigate();
 
-  const [name, setName] = useState<string>();
-  const [thumbnail, setThumbnail] = useState<string>();
-  const [artist, setArtist] = useState<string>();
+  const [songName, setSongName] = useState<string>();
+  const [songThumbnail, setSongThumbnail] = useState<string>();
+  const [songArtist, setSongArtist] = useState<string>();
   const [liked, setLiked] = useState(false);
   const [displaylike, setdisplaylike] = useState('');
   const [displaydislike, setdisplaydislike] = useState(styles.displayNoneLike);
@@ -33,31 +33,33 @@ export default function SongInfo({ songInfo }: PropsSongInfo | any) {
 
   useEffect(() => {
     const updateSongInfo = () => {
-      if (songInfo) {
-        setName(songInfo.name);
-        setThumbnail(
-          songInfo.photo ? songInfo.photo : defaultThumbnailPlaylist,
-        );
-        setArtist(songInfo.artist);
+      if (name && artist) {
+        setSongName(name);
+        setSongThumbnail(thumbnail || defaultThumbnailPlaylist);
+        setSongArtist(artist);
         setLiked(false);
       }
     };
     updateSongInfo();
-  }, [songInfo]);
+  }, [artist, name, thumbnail]);
 
   return (
     <div
       className={`d-flex flex-row justify-content-start container-fluid ${styles.songInfoContainer}`}
     >
-      {name && (
+      {songName && (
         <>
-          <img src={thumbnail} alt="" />
+          <img src={songThumbnail} alt="song thumbnail" />
           <div className={`d-flex flex-column ${styles.infoCancionContainer}`}>
-            <button type="button" onClick={() => {}}>
-              {name}
+            <button
+              data-testid="songinfo-name"
+              type="button"
+              onClick={() => {}}
+            >
+              {songName}
             </button>
             <button type="button" onClick={handleClickArtist}>
-              {artist}
+              {songArtist}
             </button>
           </div>
           <div className={`d-flex flex-column ${styles.likeContainer}`}>

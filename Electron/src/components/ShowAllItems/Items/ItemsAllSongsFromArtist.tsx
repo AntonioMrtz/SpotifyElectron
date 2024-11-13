@@ -5,7 +5,6 @@ import { PropsItemsSongsFromArtist } from '../types/PropsItems';
 
 export default function ItemsAllSongsFromArtist({
   artistName,
-  changeSongName,
   refreshSidebarData,
 }: PropsItemsSongsFromArtist) {
   const { songs } = useFetchGetArtistSongs(saniticeUserName(artistName));
@@ -22,7 +21,6 @@ export default function ItemsAllSongsFromArtist({
               name={songItem.name}
               photo={songItem.photo}
               artist={songItem.artist}
-              changeSongName={changeSongName}
               refreshSidebarData={refreshSidebarData}
             />
           );

@@ -13,13 +13,11 @@ import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist
 interface PropsUserProfile {
   userType: UserType;
   refreshSidebarData: () => void;
-  changeSongName: (songName: string) => void;
 }
 
 // TODO refactor component?
 export default function UserProfile({
   userType,
-  changeSongName,
   refreshSidebarData,
 }: PropsUserProfile) {
   const { id } = useParams();
@@ -209,7 +207,6 @@ export default function UserProfile({
                     name={songItem.name}
                     photo={songItem.photo}
                     artist={songItem.artist}
-                    changeSongName={changeSongName}
                     refreshSidebarData={refreshSidebarData}
                   />
                 );
@@ -317,7 +314,6 @@ export default function UserProfile({
                       name={songItem.name}
                       photo={songItem.photo}
                       artist={songItem.artist}
-                      changeSongName={changeSongName}
                       refreshSidebarData={refreshSidebarData}
                     />
                   );

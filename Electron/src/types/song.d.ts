@@ -3,7 +3,6 @@ export interface PropsSongCard {
   artist: string;
   photo: string;
   refreshSidebarData: () => void;
-  changeSongName: (songName: string) => void;
 }
 
 interface SongMetadata {

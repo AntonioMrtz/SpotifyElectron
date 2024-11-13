@@ -51,9 +51,3 @@ An `.exe` will be generated
 ```console
 npm run package:win
 ```
-
-##### Deb (not working)
-
-```console
-npm run package:linux:deb
-```

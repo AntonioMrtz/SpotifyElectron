@@ -9,7 +9,6 @@ import ItemsAllSongsFromStreamHistory from './Items/ItemsAllSongsFromStreamHisto
 
 export default function ShowAllItems({
   refreshSidebarData,
-  changeSongName,
   type,
 }: PropsAllItems) {
   const { id } = useParams();
@@ -45,7 +44,6 @@ export default function ShowAllItems({
         artistName={artist || 'NoArtist'}
         id={id}
         refreshSidebarData={refreshSidebarData}
-        changeSongName={changeSongName}
       />
     ),
   };

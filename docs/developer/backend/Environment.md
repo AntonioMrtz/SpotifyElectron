@@ -35,7 +35,7 @@ In this section we will explain the meaning and the usage of the environment var
 
 ### ➡️ Commons
 
-- **MONGO_URI**: the database connection URI such as `mongodb://root:root@mongodb:27017/`, this will connect backend into the selected database for storing all persistent data.
+- **MONGO_URI**: the database connection URI such as `mongodb://root:root@127.0.0.1:27017/`, this will connect backend into the selected database for storing all persistent data.
 - **ENV_VALUE**: determines the current environment of the app, it can be:
   - `PROD`: production environment.
   - `DEV`: development environment. Enables hot reload.
@@ -66,7 +66,7 @@ The following file can be used out of the box for development purpouse. It conta
 
 The following file can be used out of the box for development purpouse. It contains the following characteristics:
 
-- **Remote MongoDB database**. Use a remote MongoDB production ready database. Replace both `root` in `mongodb://root:root@mongodb:27017/` with MongoDB instance user and password respectively.
+- **Remote MongoDB database**. Use a remote MongoDB production ready database. Replace both `root` in `mongodb://root:root@127.0.0.1:27017/` with MongoDB instance user and password respectively.
 - **BLOB architecture selected**. Use streaming architecture using BLOB files.
 - **PROD** mode. It will disable hot reload for FastAPI.
 
@@ -80,7 +80,7 @@ If I have an user `user` with password `password` I have to set the following en
 ```
 MONGO_INITDB_ROOT_USERNAME=user
 MONGO_INITDB_ROOT_PASSWORD=password
-MONGO_URI=mongodb://user:password@mongodb:27017/
+MONGO_URI=mongodb://user:password@127.0.0.1:27017/
 ```
 
 

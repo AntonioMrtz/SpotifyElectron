@@ -24,7 +24,6 @@ export default function ItemsAllSongsFromStreamHistory({
               name={songItem.name}
               photo={songItem.photo}
               artist={songItem.artist}
-              changeSongName={changeSongName}
               refreshSidebarData={refreshSidebarData}
             />
           );

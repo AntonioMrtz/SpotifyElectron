@@ -2,7 +2,6 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import Playlist from 'pages/Playlist/Playlist';
 import StickyHeader from 'components/StickyHeader/StickyHeader';
-import Global from 'global/global';
 import Genre from 'pages/Genre/Genre';
 import ShowAllItems from 'components/ShowAllItems/ShowAllItems';
 import StartMenu from 'pages/StartMenu/StartMenu';
@@ -11,6 +10,7 @@ import UserProfile from 'pages/UserProfile/UserProfile';
 import UserType from 'utils/role';
 import RegisterMenu from 'pages/StartMenu/RegisterMenu';
 import { deleteToken } from 'utils/token';
+import { NowPlayingContextProvider } from 'providers/NowPlayingProvider';
 import styles from './AppCss.module.css';
 import Sidebar from '../components/Sidebar/Sidebar';
 import Home from '../pages/Home/Home';
@@ -36,19 +36,11 @@ function App() {
     }, 500);
   };
 
-  /* Handle change song name */
-
-  const [songName, setSongName] = useState(Global.noSongPlaying);
-  const changeSongName = (songNameInput: string): void => {
-    setSongName(songNameInput);
-  };
-
   /* Handle login status */
 
   const [isLogged, setIsLogged] = useState(false);
 
   const handleLogout = () => {
-    changeSongName(Global.noSongPlaying);
     deleteToken();
     setIsLogged(false);
   };
@@ -63,114 +55,100 @@ function App() {
       {!isLogged && !isSigningUp && (
         <StartMenu setIsLogged={setIsLogged} setIsSigningUp={setIsSigningUp} />
       )}
-      {isLogged && (
-        <div className={`App d-flex flex-column ${styles.appBackground}`}>
-          <StickyHeader handleLogout={handleLogout} />
+      <NowPlayingContextProvider>
+        {isLogged && (
+          <div className={`App d-flex flex-column ${styles.appBackground}`}>
+            <StickyHeader handleLogout={handleLogout} />
 
-          <div className="d-flex">
-            <Sidebar
-              refreshSidebarTriggerValue={refreshSidebarTriggerValue}
-              refreshSidebarData={refreshSidebarData}
-            />
-            <div
-              className={`App d-flex container-fluid ${styles.mainContentWrapper}`}
-            >
-              <Routes>
-                <Route
-                  path="/playlist/:id"
-                  element=<Playlist
-                    changeSongName={changeSongName}
-                    refreshSidebarData={refreshSidebarData}
+            <div className="d-flex">
+              <Sidebar
+                refreshSidebarTriggerValue={refreshSidebarTriggerValue}
+                refreshSidebarData={refreshSidebarData}
+              />
+              <div
+                className={`App d-flex container-fluid ${styles.mainContentWrapper}`}
+              >
+                <Routes>
+                  <Route
+                    path="/playlist/:id"
+                    element=<Playlist refreshSidebarData={refreshSidebarData} />
                   />
-                />
-                <Route
-                  path="/explorar"
-                  element=<Explorar
-                    changeSongName={changeSongName}
-                    refreshSidebarData={refreshSidebarData}
+                  <Route
+                    path="/explorar"
+                    element=<Explorar refreshSidebarData={refreshSidebarData} />
                   />
-                />
-                <Route
-                  path="/explorar/genre/:id"
-                  element=<Genre
-                    changeSongName={changeSongName}
-                    refreshSidebarData={refreshSidebarData}
+                  <Route
+                    path="/explorar/genre/:id"
+                    element=<Genre refreshSidebarData={refreshSidebarData} />
                   />
-                />
 
-                <Route
-                  path="/user/:id"
-                  element=<UserProfile
-                    refreshSidebarData={refreshSidebarData}
-                    changeSongName={changeSongName}
-                    userType={UserType.USER}
+                  <Route
+                    path="/user/:id"
+                    element=<UserProfile
+                      refreshSidebarData={refreshSidebarData}
+                      userType={UserType.USER}
+                    />
                   />
-                />
 
-                <Route
-                  path="/artist/:id"
-                  element=<UserProfile
-                    refreshSidebarData={refreshSidebarData}
-                    changeSongName={changeSongName}
-                    userType={UserType.ARTIST}
+                  <Route
+                    path="/artist/:id"
+                    element=<UserProfile
+                      refreshSidebarData={refreshSidebarData}
+                      userType={UserType.ARTIST}
+                    />
                   />
-                />
 
-                <Route
-                  path="/showAllItemsPlaylist/:id"
-                  element=<ShowAllItems
-                    refreshSidebarData={refreshSidebarData}
-                    type={ShowAllItemsTypes.ALL_PLAYLISTS}
-                    changeSongName={changeSongName}
+                  <Route
+                    path="/showAllItemsPlaylist/:id"
+                    element=<ShowAllItems
+                      refreshSidebarData={refreshSidebarData}
+                      type={ShowAllItemsTypes.ALL_PLAYLISTS}
+                    />
                   />
-                />
-                <Route
-                  path="/showAllItemsArtist/:id"
-                  element=<ShowAllItems
-                    refreshSidebarData={refreshSidebarData}
-                    type={ShowAllItemsTypes.ALL_ARTISTS}
-                    changeSongName={changeSongName}
+                  <Route
+                    path="/showAllItemsArtist/:id"
+                    element=<ShowAllItems
+                      refreshSidebarData={refreshSidebarData}
+                      type={ShowAllItemsTypes.ALL_ARTISTS}
+                    />
                   />
-                />
-                <Route
-                  path="/showAllPlaylistFromUser/:id/:user/:usertype"
-                  element=<ShowAllItems
-                    refreshSidebarData={refreshSidebarData}
-                    type={ShowAllItemsTypes.ALL_PLAYLIST_FROM_USER}
-                    changeSongName={changeSongName}
+                  <Route
+                    path="/showAllPlaylistFromUser/:id/:user/:usertype"
+                    element=<ShowAllItems
+                      refreshSidebarData={refreshSidebarData}
+                      type={ShowAllItemsTypes.ALL_PLAYLIST_FROM_USER}
+                    />
                   />
-                />
-                <Route
-                  path="/showAllStreamHistoryFromUser/:id/:user/:usertype"
-                  element=<ShowAllItems
-                    refreshSidebarData={refreshSidebarData}
-                    type={ShowAllItemsTypes.ALL_STREAM_HISTORY_FROM_USER}
-                    changeSongName={changeSongName}
+                  <Route
+                    path="/showAllStreamHistoryFromUser/:id/:user/:usertype"
+                    element=<ShowAllItems
+                      refreshSidebarData={refreshSidebarData}
+                      type={ShowAllItemsTypes.ALL_STREAM_HISTORY_FROM_USER}
+                    />
                   />
-                />
-                <Route
-                  path="/showAllSongsFromArtist/:id/:artist"
-                  element=<ShowAllItems
-                    refreshSidebarData={refreshSidebarData}
-                    type={ShowAllItemsTypes.ALL_SONGS_FROM_ARTIST}
-                    changeSongName={changeSongName}
+                  <Route
+                    path="/showAllSongsFromArtist/:id/:artist"
+                    element=<ShowAllItems
+                      refreshSidebarData={refreshSidebarData}
+                      type={ShowAllItemsTypes.ALL_SONGS_FROM_ARTIST}
+                    />
                   />
-                />
-                <Route
-                  path="/"
-                  element=<Home refreshSidebarData={refreshSidebarData} />
-                />
+                  <Route
+                    path="/"
+                    element=<Home refreshSidebarData={refreshSidebarData} />
+                  />
 
-                <Route
-                  path="*"
-                  element=<Home refreshSidebarData={refreshSidebarData} />
-                />
-              </Routes>
+                  <Route
+                    path="*"
+                    element=<Home refreshSidebarData={refreshSidebarData} />
+                  />
+                </Routes>
+              </div>
             </div>
+            <Footer />
           </div>
-          <Footer songName={songName} />
-        </div>
-      )}
+        )}
+      </NowPlayingContextProvider>
     </>
   );
 }

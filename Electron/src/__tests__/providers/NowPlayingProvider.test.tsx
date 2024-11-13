@@ -21,7 +21,7 @@ const artistMockFetch = {
   photo: 'photo',
   register_date: 'date',
   password: 'hashpassword',
-  playback_history: [songName],
+  stream_history: [songName],
   playlists: [playlistName],
   saved_playlists: [playlistName],
   uploaded_songs: [songName],
@@ -50,7 +50,7 @@ const userMockFetch = {
   photo: 'photo',
   register_date: 'date',
   password: 'hashpassword',
-  playback_history: [songName],
+  stream_history: [songName],
   playlists: [playlistName],
   saved_playlists: [playlistName],
 };
@@ -74,7 +74,7 @@ test('Playlist updates song name in context when a song is clicked', async () =>
     }
     if (
       url ===
-      `${Global.backendBaseUrl}/users/${userMockFetch.name}/playback_history`
+      `${Global.backendBaseUrl}/users/${userMockFetch.name}/stream_history`
     ) {
       return Promise.resolve({
         json: () => userMockFetch,
@@ -151,7 +151,7 @@ test('Playlist updates song name in context when a song is clicked', async () =>
     }
     if (
       url ===
-      `${Global.backendBaseUrl}/users/${userName}/playback_history?song_name=${songName}`
+      `${Global.backendBaseUrl}/users/${userName}/stream_history?song_name=${songName}`
     ) {
       return Promise.resolve({
         json: () => {},

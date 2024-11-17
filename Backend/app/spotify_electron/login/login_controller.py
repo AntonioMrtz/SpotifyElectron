@@ -25,7 +25,7 @@ from app.auth.auth_schema import (
 )
 from app.common.PropertiesMessagesManager import PropertiesMessagesManager
 from app.spotify_electron.login.login_schema import InvalidCredentialsLoginException
-from app.spotify_electron.user.user.user_schema import UserNotFoundException
+from app.spotify_electron.user.base_user_schema import BaseUserNotFoundException
 
 router = APIRouter(
     prefix="/login",
@@ -60,7 +60,7 @@ def login_user(
             status_code=HTTP_403_FORBIDDEN,
             content=PropertiesMessagesManager.loginVerifyPassword,
         )
-    except UserNotFoundException:
+    except BaseUserNotFoundException:
         return Response(
             status_code=HTTP_404_NOT_FOUND,
             content=PropertiesMessagesManager.userNotFound,
@@ -100,7 +100,7 @@ def login_user_with_jwt(token: str) -> Response:
             status_code=HTTP_403_FORBIDDEN,
             content=PropertiesMessagesManager.tokenInvalidCredentialsAutoLogin,
         )
-    except UserNotFoundException:
+    except BaseUserNotFoundException:
         return Response(
             status_code=HTTP_404_NOT_FOUND,
             content=PropertiesMessagesManager.userNotFound,

@@ -7,6 +7,7 @@ from typing import Any
 
 from app.exceptions.base_exceptions_schema import SpotifyElectronException
 
+
 @dataclass
 class BaseUserDAO:
     """Represents base user data in the persistence layer"""
@@ -45,6 +46,7 @@ def get_user_dao_from_document(document: dict[str, Any]) -> BaseUserDAO:
         password=document["password"],
     )
 
+
 def get_user_dto_from_dao(user_dao: BaseUserDAO) -> BaseUserDTO:
     """Get BaseUserDTO from BaseUserDAO
 
@@ -81,6 +83,7 @@ class BaseUserNotFoundException(SpotifyElectronException):
     def __init__(self):
         super().__init__(self.ERROR)
 
+
 class BaseUserBadNameException(SpotifyElectronException):
     """Bad name"""
 
@@ -98,6 +101,7 @@ class BaseUserAlreadyExistsException(SpotifyElectronException):
     def __init__(self):
         super().__init__(self.ERROR)
 
+
 class BaseUserDeleteException(SpotifyElectronException):
     """Exception raised when there is an error deleting a BaseUser"""
 
@@ -114,6 +118,7 @@ class BaseUserCreateException(SpotifyElectronException):
 
     def __init__(self):
         super().__init__(self.ERROR)
+
 
 class BaseUserUpdateException(SpotifyElectronException):
     """Exception raised when there is an error updating a BaseUser"""

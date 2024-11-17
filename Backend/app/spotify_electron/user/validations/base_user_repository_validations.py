@@ -1,4 +1,3 @@
-
 """
 Validations for Common user repositories
 """
@@ -6,12 +5,12 @@ Validations for Common user repositories
 from pymongo.results import DeleteResult, InsertOneResult, UpdateResult
 
 from app.spotify_electron.user.base_user_schema import (
-    BaseUserGetPasswordException,
+    BaseUserCreateException,
     BaseUserDAO,
+    BaseUserDeleteException,
+    BaseUserGetPasswordException,
     BaseUserNotFoundException,
     BaseUserUpdateException,
-    BaseUserDeleteException,
-    BaseUserCreateException
 )
 
 

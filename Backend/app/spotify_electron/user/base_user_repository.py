@@ -10,7 +10,7 @@ from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.user.base_user_schema import (
     BaseUserDeleteException,
     BaseUserGetPasswordException,
-    BaseUserRepositoryException
+    BaseUserRepositoryException,
 )
 from app.spotify_electron.user.validations.base_user_repository_validations import (
     validate_password_exists,
@@ -29,7 +29,8 @@ def check_user_exists(name: str, collection: Collection) -> bool:
 
     Raises:
     ------
-        BaseUserRepositoryException: an error occurred while getting user from database
+        BaseUserRepositoryException:
+            an error occurred while getting user from database
 
     Returns:
     -------
@@ -56,7 +57,8 @@ def delete_user(name: str, collection: Collection) -> None:
         name (str): user name
 
     Raises:
-        BaseUserRepositoryException: an error occurred while deleting user from database
+        BaseUserRepositoryException:
+            an error occurred while deleting user from database
     """
     try:
         result = collection.delete_one({"name": name})
@@ -80,7 +82,8 @@ def get_user_password(name: str, collection: Collection) -> bytes:
         collection (Collection): the database collection
 
     Raises:
-        BaseUserRepositoryException: an error occurred while getting user password from database
+        BaseUserRepositoryException:
+            an error occurred while getting user password from database
 
     Returns:
         bytes: the user password

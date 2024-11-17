@@ -36,16 +36,14 @@ from app.spotify_electron.song.validations.base_song_service_validations import 
     validate_song_name_parameter,
     validate_song_should_exists,
 )
-from app.spotify_electron.user.user.user_schema import (
-    UserType
-)
 from app.spotify_electron.user.base_user_schema import (
     BaseUserBadNameException,
     BaseUserDTO,
     BaseUserNotFoundException,
     BaseUserRepositoryException,
-    BaseUserServiceException
+    BaseUserServiceException,
 )
+from app.spotify_electron.user.user.user_schema import UserType
 from app.spotify_electron.utils.validations.validation_utils import validate_parameter
 
 base_users_service_logger = SpotifyElectronLogger(LOGGING_BASE_USERS_SERVICE).getLogger()

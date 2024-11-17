@@ -6,9 +6,8 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Any
 
-from app.spotify_electron.user.base_user_schema import BaseUserDAO, BaseUserDTO
 from app.exceptions.base_exceptions_schema import SpotifyElectronException
-
+from app.spotify_electron.user.base_user_schema import BaseUserDAO, BaseUserDTO
 
 
 @dataclass
@@ -73,7 +72,6 @@ def get_user_dto_from_dao(user_dao: UserDAO) -> UserDTO:
         playlists=user_dao.playlists,
         saved_playlists=user_dao.saved_playlists,
     )
-
 
 
 class UserRepositoryException(SpotifyElectronException):

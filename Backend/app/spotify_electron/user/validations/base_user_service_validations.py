@@ -6,8 +6,9 @@ import app.spotify_electron.user.artist.artist_service as artist_service
 import app.spotify_electron.user.user.user_service as user_service
 from app.exceptions.base_exceptions_schema import BadParameterException
 from app.spotify_electron.user.base_user_schema import (
+    BaseUserAlreadyExistsException,
     BaseUserBadNameException,
-    BaseUserNotFoundException
+    BaseUserNotFoundException,
 )
 from app.spotify_electron.utils.validations.validation_utils import validate_parameter
 

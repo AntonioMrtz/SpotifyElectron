@@ -7,6 +7,7 @@ import Global from 'global/global';
 import UserType from 'utils/role';
 import getMockHeaders from 'utils/mockHeaders';
 import * as TokenModule from 'utils/token';
+import { NowPlayingContextProvider } from 'providers/NowPlayingProvider';
 
 const userName = 'prueba';
 const roleUser = UserType.USER;
@@ -41,6 +42,7 @@ const songMockFetch = {
   seconds_duration: '180',
   genre: 'Rock',
   streams: 2,
+  file: '',
 };
 
 const userMockFetch = {
@@ -108,17 +110,14 @@ test('Playlist user role get all info', async () => {
   const component = await act(() => {
     return render(
       <MemoryRouter initialEntries={[`/playlist/${playlistDTOMockFetch.name}`]}>
-        <Routes>
-          <Route
-            path="/playlist/:id"
-            element={
-              <Playlist
-                changeSongName={jest.fn()}
-                refreshSidebarData={jest.fn()}
-              />
-            }
-          />
-        </Routes>
+        <NowPlayingContextProvider>
+          <Routes>
+            <Route
+              path="/playlist/:id"
+              element={<Playlist refreshSidebarData={jest.fn()} />}
+            />
+          </Routes>
+        </NowPlayingContextProvider>
       </MemoryRouter>,
     );
   });
@@ -221,17 +220,14 @@ test('Playlist user role hit like button', async () => {
   const component = await act(() => {
     return render(
       <MemoryRouter initialEntries={[`/playlist/${playlistDTOMockFetch.name}`]}>
-        <Routes>
-          <Route
-            path="/playlist/:id"
-            element={
-              <Playlist
-                changeSongName={jest.fn()}
-                refreshSidebarData={jest.fn()}
-              />
-            }
-          />
-        </Routes>
+        <NowPlayingContextProvider>
+          <Routes>
+            <Route
+              path="/playlist/:id"
+              element={<Playlist refreshSidebarData={jest.fn()} />}
+            />
+          </Routes>
+        </NowPlayingContextProvider>
       </MemoryRouter>,
     );
   });
@@ -343,17 +339,14 @@ test('Playlist user role get unlike button', async () => {
   const component = await act(() => {
     return render(
       <MemoryRouter initialEntries={[`/playlist/${playlistDTOMockFetch.name}`]}>
-        <Routes>
-          <Route
-            path="/playlist/:id"
-            element={
-              <Playlist
-                changeSongName={jest.fn()}
-                refreshSidebarData={jest.fn()}
-              />
-            }
-          />
-        </Routes>
+        <NowPlayingContextProvider>
+          <Routes>
+            <Route
+              path="/playlist/:id"
+              element={<Playlist refreshSidebarData={jest.fn()} />}
+            />
+          </Routes>
+        </NowPlayingContextProvider>
       </MemoryRouter>,
     );
   });
@@ -479,17 +472,14 @@ test('Playlist user role update playlist', async () => {
   const component = await act(() => {
     return render(
       <MemoryRouter initialEntries={[`/playlist/${playlistDTOMockFetch.name}`]}>
-        <Routes>
-          <Route
-            path="/playlist/:id"
-            element={
-              <Playlist
-                changeSongName={jest.fn()}
-                refreshSidebarData={refreshSidebarData}
-              />
-            }
-          />
-        </Routes>
+        <NowPlayingContextProvider>
+          <Routes>
+            <Route
+              path="/playlist/:id"
+              element={<Playlist refreshSidebarData={refreshSidebarData} />}
+            />
+          </Routes>
+        </NowPlayingContextProvider>
       </MemoryRouter>,
     );
   });

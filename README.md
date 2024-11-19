@@ -161,10 +161,24 @@ Check our [project goals and vision](docs/VISION.md).
             </a>
         </td>
         <td align="center">
+            <a href="https://github.com/ObuMan">
+                <img src="https://avatars.githubusercontent.com/u/111461001?v=4" width="90" alt="ObuMan" />
+                <br />
+                <sub><b>ObuMan</b></sub>
+            </a>
+        </td>
+        <td align="center">
             <a href="https://github.com/gigigimay">
                 <img src="https://avatars.githubusercontent.com/u/51327193?v=4" width="90" alt="gigigimay" />
                 <br />
                 <sub><b>gigigimay</b></sub>
+            </a>
+        </td>
+        <td align="center">
+            <a href="SaurabhGurde">
+                <img src="https://avatars.githubusercontent.com/u/128987288?v=4" width="90" alt="SaurabhGurde" />
+                <br />
+                <sub><b>SaurabhGurde</b></sub>
             </a>
         </td>
     </tr>

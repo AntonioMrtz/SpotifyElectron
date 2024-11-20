@@ -17,24 +17,23 @@ from app.spotify_electron.user.validations.base_user_repository_validations impo
     validate_user_delete_count,
 )
 
-base_user_repository_logger = SpotifyElectronLogger(LOGGING_BASE_USERS_REPOSITORY).getLogger()
+base_user_repository_logger = SpotifyElectronLogger(
+    LOGGING_BASE_USERS_REPOSITORY
+).getLogger()
 
 
 def check_user_exists(name: str, collection: Collection) -> bool:
-    """Checks if user exists
+    """Checks if a user exists in the given collection.
 
     Args:
-    ----
-        name (str): name of the user
-
-    Raises:
-    ------
-        UserRepositoryException: an error occurred while getting user from database
+       name: Name of the user to check.
+       collection: Database collection to search in.
 
     Returns:
-    -------
-        bool: if the user exsists
+       True if the user exists, False otherwise.
 
+    Raises:
+       UserRepositoryException: If an error occurs while checking the database.
     """
     try:
         user = collection.find_one({"name": name}, {"_id": 0, "name": 1})
@@ -63,7 +62,9 @@ def delete_user(name: str, collection: Collection) -> None:
         validate_user_delete_count(result)
         base_user_repository_logger.info(f"User {name} Deleted")
     except UserDeleteException as exception:
-        base_user_repository_logger.exception(f"Error deleting User {name} from database")
+        base_user_repository_logger.exception(
+            f"Error deleting User {name} from database"
+        )
         raise UserRepositoryException from exception
     except (UserRepositoryException, Exception) as exception:
         base_user_repository_logger.exception(
@@ -166,7 +167,9 @@ def add_playback_history(
         raise UserRepositoryException from exception
 
 
-def add_saved_playlist(user_name: str, playlist_name: str, collection: Collection) -> None:
+def add_saved_playlist(
+    user_name: str, playlist_name: str, collection: Collection
+) -> None:
     """Add saved playlist to user
 
     Args:
@@ -196,7 +199,9 @@ def add_saved_playlist(user_name: str, playlist_name: str, collection: Collectio
         raise UserRepositoryException from exception
 
 
-def delete_saved_playlist(user_name: str, playlist_name: str, collection: Collection) -> None:
+def delete_saved_playlist(
+    user_name: str, playlist_name: str, collection: Collection
+) -> None:
     """Deletes a saved playlist from a user
 
     Args:
@@ -225,7 +230,9 @@ def delete_saved_playlist(user_name: str, playlist_name: str, collection: Collec
         raise UserRepositoryException from exception
 
 
-def add_playlist_to_owner(user_name: str, playlist_name: str, collection: Collection) -> None:
+def add_playlist_to_owner(
+    user_name: str, playlist_name: str, collection: Collection
+) -> None:
     """Adds a playlist to his ownwer
 
     Args:
@@ -275,7 +282,9 @@ def delete_playlist_from_owner(
         if playlist_name in playlists:
             playlists.remove(playlist_name)
 
-            collection.update_one({"name": user_name}, {"$set": {"playlists": playlists}})
+            collection.update_one(
+                {"name": user_name}, {"$set": {"playlists": playlists}}
+            )
     except Exception as exception:
         base_user_repository_logger.exception(
             f"Error deleting playlist {playlist_name} from owner {user_name} in database"
@@ -315,7 +324,9 @@ def update_playlist_name(
         raise UserRepositoryException from exception
 
 
-def get_user_relevant_playlist_names(user_name: str, collection: Collection) -> list[str]:
+def get_user_relevant_playlist_names(
+    user_name: str, collection: Collection
+) -> list[str]:
     """Get user relevant playlist names
 
     Args:
@@ -350,7 +361,9 @@ def get_user_playlist_names(user_name: str, collection: Collection) -> list[str]
     return user_data["playlists"]  # type: ignore
 
 
-def get_user_playback_history_names(user_name: str, collection: Collection) -> list[str]:
+def get_user_playback_history_names(
+    user_name: str, collection: Collection
+) -> list[str]:
     """Get user playback history song names
 
     Args:
@@ -360,6 +373,8 @@ def get_user_playback_history_names(user_name: str, collection: Collection) -> l
     Returns:
         list[str]: the user playback history
     """
-    user_data = collection.find_one({"name": user_name}, {"playback_history": 1, "_id": 0})
+    user_data = collection.find_one(
+        {"name": user_name}, {"playback_history": 1, "_id": 0}
+    )
 
     return user_data["playback_history"]  # type: ignore

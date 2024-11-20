@@ -24,16 +24,13 @@ user_service_logger = SpotifyElectronLogger(LOGGING_USER_SERVICE).getLogger()
 
 
 def does_user_exists(user_name: str) -> bool:
-    """Returns if user exists
+    """Returns whether a user exists.
 
     Args:
-    ----
-        user_name (str): user name
+       user_name: Name of the user to check.
 
     Returns:
-    -------
-        bool: if the user exists
-
+       True if the user exists, False otherwise.
     """
     return base_user_repository.check_user_exists(
         user_name, user_collection_provider.get_user_collection()

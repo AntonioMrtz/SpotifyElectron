@@ -14,16 +14,13 @@ from app.spotify_electron.utils.validations.validation_utils import validate_par
 
 
 def validate_user_name_parameter(name: str) -> None:
-    """Raises an exception if name parameter is invalid
+    """Validates a user name parameter.
 
     Args:
-    ----
-        name (str): name
+       name: The name to validate.
 
     Raises:
-    ------
-        UserBadNameException: if name parameter is invalid
-
+       UserBadNameException: If the name parameter is invalid.
     """
     try:
         validate_parameter(name)

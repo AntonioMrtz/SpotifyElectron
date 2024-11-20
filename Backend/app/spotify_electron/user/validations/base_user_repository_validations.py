@@ -28,16 +28,13 @@ def validate_password_exists(password: bytes) -> None:
 
 
 def validate_user_exists(user: UserDAO | None) -> None:
-    """Raises an exception if user doesn't exists
+    """Validates that a user exists.
 
     Args:
-    ----
-        user (UserDAO | None): the user
+       user: The user to validate.
 
     Raises:
-    ------
-        UserNotFoundException: if the user doesn't exists
-
+       UserNotFoundException: If the user is None.
     """
     if user is None:
         raise UserNotFoundException
@@ -57,32 +54,26 @@ def validate_user_update(result: UpdateResult) -> None:
 
 
 def validate_user_delete_count(result: DeleteResult) -> None:
-    """Raises an exception if user deletion count was 0
+    """Validates that a user was successfully deleted.
 
     Args:
-    ----
-        result (DeleteResult): the result from the deletion
+       result: Result from the database deletion operation.
 
     Raises:
-    ------
-        UserDeleteException: if the deletion was not done
-
+       UserDeleteException: If no user was deleted.
     """
     if result.deleted_count == 0:
         raise UserDeleteException
 
 
 def validate_user_create(result: InsertOneResult) -> None:
-    """Raises an exception if user insertion was not done
+    """Validates that a user was successfully created.
 
     Args:
-    ----
-        result (InsertOneResult): the result from the insertior
+       result: Result from the database insertion operation.
 
     Raises:
-    ------
-        UserCreateException: if the insetion was not done
-
+       UserCreateException: If the user insertion was not acknowledged.
     """
     if not result.acknowledged:
         raise UserCreateException

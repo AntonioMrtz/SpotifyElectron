@@ -42,16 +42,13 @@ class UserType(Enum):
 
 
 def get_user_dao_from_document(document: dict[str, Any]) -> UserDAO:
-    """Get UserDAO from document
+    """Creates a UserDAO object from a document dictionary.
 
     Args:
-    ----
-        document (dict): user document
+       document: Dictionary containing user data.
 
     Returns:
-    -------
-        UserDAO: UserDAO Object
-
+       A UserDAO object populated with the document data.
     """
     return UserDAO(
         name=document["name"],
@@ -65,16 +62,13 @@ def get_user_dao_from_document(document: dict[str, Any]) -> UserDAO:
 
 
 def get_user_dto_from_dao(user_dao: UserDAO) -> UserDTO:
-    """Get UserDTO from UserDAO
+    """Converts a UserDAO object to a UserDTO object.
 
     Args:
-    ----
-        user_dao (UserDAO): UserDAO object
+       user_dao: The UserDAO object to convert.
 
     Returns:
-    -------
-        UserDTO: UserDTO object
-
+       A UserDTO object containing the user data.
     """
     return UserDTO(
         name=user_dao.name,

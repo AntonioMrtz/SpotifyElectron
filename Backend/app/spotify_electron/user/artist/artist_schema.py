@@ -26,16 +26,13 @@ class ArtistDTO(UserDTO):
 
 
 def get_artist_dao_from_document(document: dict[str, Any]) -> ArtistDAO:
-    """Get ArtistDAO from document
+    """Creates an ArtistDAO object from a document dictionary.
 
     Args:
-    ----
-        document (dict): user document
+       document: Dictionary containing artist data.
 
     Returns:
-    -------
-        ArtistDAO: ArtistDAO Object
-
+       An ArtistDAO object populated with the document data.
     """
     return ArtistDAO(
         name=document["name"],
@@ -51,16 +48,13 @@ def get_artist_dao_from_document(document: dict[str, Any]) -> ArtistDAO:
 
 
 def get_artist_dto_from_dao(artist_dao: ArtistDAO) -> ArtistDTO:
-    """Get ArtistDTO from ArtistDAO
+    """Converts an ArtistDAO object to an ArtistDTO object.
 
     Args:
-    ----
-        artist_dao (ArtistDAO): ArtistDAO object
+       artist_dao: The ArtistDAO object to convert.
 
     Returns:
-    -------
-        ArtistDTO: ArtistDTO object
-
+       An ArtistDTO object containing the artist data.
     """
     return ArtistDTO(
         name=artist_dao.name,

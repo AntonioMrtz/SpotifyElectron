@@ -18,7 +18,9 @@ from app.common.app_schema import (
 from app.logging.logging_constants import LOGGING_PROPERTIES_MANAGER
 from app.logging.logging_schema import SpotifyElectronLogger
 
-properties_manager_logger = SpotifyElectronLogger(LOGGING_PROPERTIES_MANAGER).getLogger()
+properties_manager_logger = SpotifyElectronLogger(
+    LOGGING_PROPERTIES_MANAGER
+).getLogger()
 
 
 class _PropertiesManager:
@@ -40,13 +42,11 @@ class _PropertiesManager:
             self._load_config_variables(AppConfig.CONFIG_FILENAME, config_section)
 
     def _load_config_variables(self, config_filename: str, config_section: str) -> None:
-        """Loads attributes from .ini file and stores them as class attributes
+        """Loads config (ini) file  values into class attributes.
 
         Args:
-        ----
-            config_filename (str): the name of the config file
-            config_section (str): the section inside of the config file
-
+            config_filename: Name of the configuration file to load.
+            config_section: Section within the config file to process.
         """
         self.config_file = os.path.join(
             self.current_directory,
@@ -59,18 +59,17 @@ class _PropertiesManager:
         self._set_attributes(config_section)
 
     def _set_attributes(self, config_section: str) -> None:
-        """Sets app atributes from .ini file into class attributes,\
-            if value it's empty string it will load None
+        """Sets config (ini) file values as class attributes or None if no attribute found.
 
         Args:
-        ----
-            config_section (str): the config file section to load
-
+            config_section: The section name in the config file to load.
         """
         for key, value in self.config.items(config_section):
             if value == "":
                 value = None
-                properties_manager_logger.warning(f"Using None for {key} in {config_section}")
+                properties_manager_logger.warning(
+                    f"Using None for {key} in {config_section}"
+                )
             setattr(self, key, value)
 
     def _load_architecture(self) -> None:
@@ -87,12 +86,10 @@ class _PropertiesManager:
         properties_manager_logger.info(f"Architecture selected: {architecture_type}")
 
     def _load_env_variables(self, env_names: list[str]) -> None:
-        """Load environment variables into class attributes
+        """Loads environment variables as class attributes.
 
         Args:
-        ----
-            env_names (List[str]): environment variables names
-
+            env_names: List of environment variable names to load.
         """
         loaded_envs = []
         for env_name in env_names:
@@ -115,48 +112,43 @@ class _PropertiesManager:
         return self.__getattribute__(AppEnvironment.ENV_VALUE_ENV_NAME)
 
     def is_production_environment(self) -> bool:
-        """Checks if the environment is production
+        """Checks if running in a production environment.
 
-        Returns
-        -------
-            bool: Returns if it's production environment
-
+        Returns:
+            True if in production environment, False otherwise.
         """
         return (
-            self.__getattribute__(AppEnvironment.ENV_VALUE_ENV_NAME) == AppEnvironmentMode.PROD
+            self.__getattribute__(AppEnvironment.ENV_VALUE_ENV_NAME)
+            == AppEnvironmentMode.PROD
         )
 
     def is_development_environment(self) -> bool:
-        """Checks if the environment is development
+        """Checks if running in a development environment.
 
-        Returns
-        -------
-            bool: Returns if it's development environment
-
+        Returns:
+            True if in development environment, False otherwise.
         """
         return (
-            self.__getattribute__(AppEnvironment.ENV_VALUE_ENV_NAME) == AppEnvironmentMode.DEV
+            self.__getattribute__(AppEnvironment.ENV_VALUE_ENV_NAME)
+            == AppEnvironmentMode.DEV
         )
 
     def is_testing_environment(self) -> bool:
-        """Checks if the environment is testing
+        """Checks if running in a testing environment.
 
-        Returns
-        -------
-            bool: Returns if it's testing environment
-
+        Returns:
+            True if in testing environment, False otherwise.
         """
         return (
-            self.__getattribute__(AppEnvironment.ENV_VALUE_ENV_NAME) == AppEnvironmentMode.TEST
+            self.__getattribute__(AppEnvironment.ENV_VALUE_ENV_NAME)
+            == AppEnvironmentMode.TEST
         )
 
     def is_log_file_provided(self) -> bool:
-        """Checks if there's a valid log file provided
+        """Checks if a valid log file exists.
 
-        Returns
-        -------
-            bool: Returns if there's a valid log provided
-
+        Returns:
+            True if a valid log file is provided, False otherwise.
         """
         return self.__getattribute__(AppConfig.LOG_INI_FILE) is not None
 

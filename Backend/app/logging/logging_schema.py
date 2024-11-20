@@ -97,12 +97,10 @@ class SpotifyElectronLogger:
     def _add_handler(
         self, handler: logging.StreamHandler | logging.handlers.RotatingFileHandler
     ) -> None:
-        """Add handler to logger
+        """Adds a handler to the logger.
 
         Args:
-        ----
-            handler (Union[StreamHandler, RotatingFileHandler]): the handler to add
-
+            handler: The logging handler to add, either StreamHandler or RotatingFileHandler.
         """
         handler.setLevel(self._get_log_level())
         formatter = SpotifyElectronFormatter()
@@ -111,7 +109,9 @@ class SpotifyElectronLogger:
 
     def _get_log_level(self) -> int:
         try:
-            log_level = self.log_properties_manager.__getattribute__(AppConfig.LOG_INI_LEVEL)
+            log_level = self.log_properties_manager.__getattribute__(
+                AppConfig.LOG_INI_LEVEL
+            )
             if log_level is None:
                 return logging.INFO
             mapped_log_level = self._log_level_mapping[log_level]

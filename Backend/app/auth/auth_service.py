@@ -42,29 +42,30 @@ DAYS_TO_EXPIRE_COOKIE = 7
 auth_service_logger = SpotifyElectronLogger(LOGGING_AUTH_SERVICE).getLogger()
 
 
-def create_access_token(data: dict[str, str], expires_delta: timedelta | None = None) -> str:
-    """Create a jwt token from data with a expire date
+def create_access_token(
+    data: dict[str, str], expires_delta: timedelta | None = None
+) -> str:
+    """Creates a JWT access token with given data and expiration.
 
     Args:
-    ----
-        data (dict): Info to be stored in the token
-        expires_delta (timedelta | None, optional): Expire date of the token
-
-    Raises:
-    ------
-        CreateJWTException: if an error ocurred creating JWT Token
+       data: Dictionary of data to encode in the token.
+       expires_delta: Optional custom expiration time delta. If not provided,
+           default expiration time will be used.
 
     Returns:
-    -------
-        str: the JWT Token created
+       JWT token string containing the encoded data.
 
+    Raises:
+       CreateJWTException: If an error occurs while creating the token.
     """
     try:
         to_encode = data.copy()
         if expires_delta:
             expire = datetime.now(timezone.utc) + expires_delta  # noqa: UP017 TODO
         else:
-            expire = datetime.now(UTC) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)  # noqa: UP017 TODO
+            expire = datetime.now(UTC) + timedelta(
+                minutes=ACCESS_TOKEN_EXPIRE_MINUTES
+            )  # noqa: UP017 TODO
         to_encode.update({"exp": expire})  # type: ignore
         encoded_jwt = jwt.encode(
             to_encode,
@@ -81,20 +82,17 @@ def create_access_token(data: dict[str, str], expires_delta: timedelta | None = 
 def get_jwt_token_data(
     token_raw_data: str,
 ) -> TokenData:
-    """Decrypt jwt data and returns data from it
+    """Decodes a JWT token and extracts the user data.
 
     Args:
-    ----
-        token_raw_data (TokenData): JWT Token
-
-    Raises:
-    ------
-        BadJWTTokenProvidedException: invalid token provided
+       token_raw_data: Raw JWT token string to decode.
 
     Returns:
-    -------
-        TokenData: the data provided by the JWT Token
+       TokenData object containing the decoded user information.
 
+    Raises:
+       BadJWTTokenProvidedException: If the token is invalid, missing required data,
+           or cannot be decoded.
     """
     validate_token_exists(token_raw_data)
     try:
@@ -133,19 +131,17 @@ def get_jwt_token_data(
 def get_current_user(
     token: TokenData,
 ) -> UserDTO:
-    """Get current user from JWT Token
+    """Retrieves the current user based on JWT token data.
 
     Args:
-    ----
-        token (TokenData): the token
+       token: TokenData object containing user information.
+
+    Returns:
+       UserDTO object for the authenticated user.
 
     Raises:
-    ------
-        UserNotFoundException: token user not found
-        JWTGetUserException: if error while retrieving user from token
-    Returns:
-        Artist | User: the user or artist associated with the JWT Token
-
+       UserNotFoundException: If the user from the token does not exist.
+       JWTGetUserException: If an error occurs while retrieving the user.
     """
     try:
         jwt_username = token.username
@@ -155,7 +151,9 @@ def get_current_user(
         auth_service_logger.exception(f"User {jwt_username} not found")
         raise UserNotFoundException from exception
     except Exception as exception:
-        auth_service_logger.exception(f"Unexpected exception getting user from token {token}")
+        auth_service_logger.exception(
+            f"Unexpected exception getting user from token {token}"
+        )
         raise JWTGetUserException from exception
     else:
         auth_service_logger.info(f"Get Current User successful: {jwt_username}")
@@ -163,68 +161,58 @@ def get_current_user(
 
 
 def hash_password(plain_password: str) -> bytes:
-    """Hash a password with a randomly-generated salt
+    """Hashes a password using bcrypt with a random salt.
 
     Args:
-    ----
-        plain_password (str): plain text password
+       plain_password: Password in plaintext to hash.
 
     Returns:
-    -------
-        bytes: the hashed password
-
+       Bytes containing the hashed password.
     """
     return bcrypt.hashpw(plain_password.encode(), bcrypt.gensalt())
 
 
 def verify_password(plain_password: str, hashed_password: bytes) -> None:
-    """Verifies if plan text password is the same as a hashed password
+    """Verifies if a plaintext password matches its hashed version.
 
     Args:
-    ----
-        plain_password (str): plain text password
-        hashed_password (bytes): hashed password
+       plain_password: Password in plaintext.
+       hashed_password: Encrypted password bytes to compare against.
 
     Raises:
-    ------
-        VerifyPasswordException: if passwords don't match
-
+       VerifyPasswordException: If the passwords do not match.
     """
     if not bcrypt.checkpw(plain_password.encode(), hashed_password):
         raise VerifyPasswordException
 
 
 def get_token_expire_date() -> datetime:
-    """Returns expire date for new token
+    """Calculates the expiration date for a new token.
 
-    Returns
-    -------
-        datetime: the expire date for the token
-
+    Returns:
+       Datetime object representing when the token will expire.
     """
-    current_utc_datetime = datetime.now(timezone.utc).replace(tzinfo=timezone.utc)  # noqa: UP017 TODO
+    current_utc_datetime = datetime.now(timezone.utc).replace(
+        tzinfo=timezone.utc
+    )  # noqa: UP017 TODO
     return current_utc_datetime + timedelta(days=DAYS_TO_EXPIRE_COOKIE)
 
 
 def login_user(name: str, password: str) -> str:
-    """Checks user credentials and return a jwt token
+    """Authenticates a user and generates a JWT token.
 
     Args:
-    ----
-        name (str): Users's name
-        password (str): Users's password
-
-    Raises:
-    ------
-        InvalidCredentialsLoginException: bad user credentials
-        VerifyPasswordException: failing authenticating user and password
-        UserNotFoundException: user doesn't exists
-        UnexpectedLoginUserException: unexpected error during user login
+       name: Username to authenticate.
+       password: User's password.
 
     Returns:
-    -------
-        str: the JWT Token
+       JWT token string for the authenticated user.
 
+    Raises:
+       InvalidCredentialsLoginException: If the login credentials are invalid.
+       VerifyPasswordException: If password verification fails.
+       UserNotFoundException: If the user does not exist.
+       UnexpectedLoginUserException: If an unexpected error occurs during login.
     """
     try:
         validate_parameter(name)
@@ -247,7 +235,9 @@ def login_user(name: str, password: str) -> str:
         auth_service_logger.exception("Invalid login credentials")
         raise InvalidCredentialsLoginException from exception
     except VerifyPasswordException as exception:
-        auth_service_logger.exception("Passwords Validation failed: passwords don't match")
+        auth_service_logger.exception(
+            "Passwords Validation failed: passwords don't match"
+        )
         raise VerifyPasswordException from exception
     except CreateJWTException as exception:
         auth_service_logger.exception(f"Error creating JWT Token from data: {jwt_data}")
@@ -304,16 +294,13 @@ def login_user_with_token(raw_token: str) -> None:
 
 
 def validate_jwt(token: str) -> None:
-    """Check if JWT token is valid
+    """Validates a JWT token's authenticity and expiration.
 
     Args:
-    ----
-        token (str): the token to validate
+       token: The JWT token string to validate.
 
     Raises:
-    ------
-        JWTValidationException: if the validation was not succesfull
-
+       JWTValidationException: If the token is invalid, expired, or validation fails.
     """
     try:
         decoded_token = jwt.decode(
@@ -337,63 +324,56 @@ def validate_jwt(token: str) -> None:
 
 
 def validate_jwt_user_matches_user(token: TokenData, user_name: str) -> None:
-    """Validates if user matches the jwt user
+    """Validates that the token belongs to the specified user.
 
     Args:
-        token (TokenData): jwt token
-        user_name (str): user
+       token: JWT token containing user data.
+       user_name: Username to validate against token.
 
     Raises:
-        UserUnauthorizedException: if the user didn't match the jwt user
+       UserUnauthorizedException: If the username doesn't match the token's user.
     """
     if not token.username == user_name:
         raise UserUnauthorizedException
 
 
 def validate_token_is_expired(token: dict[str, Any]) -> None:
-    """Checks if token is expired comparing current date with expiration date
+    """Validates that a JWT token has not expired.
 
     Args:
-    ----
-        token (dict): token to check
+       token: The token to validate.
 
     Raises:
-    ------
-        JWTExpiredException: if token is expired
-
+       JWTExpiredException: If the token expiration date has passed.
     """
-    expiration_time = datetime.fromtimestamp(token["exp"], timezone.utc)  # noqa: UP017 TODO
+    expiration_time = datetime.fromtimestamp(
+        token["exp"], timezone.utc
+    )  # noqa: UP017 TODO
     if expiration_time < datetime.now(timezone.utc):  # noqa: UP017 TODO
         raise JWTExpiredException
 
 
 def validate_token_exists(token: Any) -> None:
-    """Check whether jwt token is None or not
+    """Validates that a JWT token exists.
 
     Args:
-    ----
-        token (Any): the incoming token
+       token: The token to validate.
 
     Raises:
-    ------
-        JWTNotProvidedException: if the token is None
-
+       JWTNotProvidedException: If the token is None.
     """
     if token is None:
         raise JWTNotProvidedException
 
 
 def validate_jwt_credentials_missing(credentials: list[Any]) -> None:
-    """Check if any jwt credentials are missing
+    """Validates that all JWT credentials are present.
 
     Args:
-    ----
-        credentials (list[str]): list with the obtained credentials
+       credentials: List of credentials to validate.
 
     Raises:
-    ------
-        JWTMissingCredentialsException: if a credential is missing
-
+       JWTMissingCredentialsException: If any credential is missing.
     """
     for credential in credentials:
         if credential is None:

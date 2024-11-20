@@ -11,11 +11,9 @@ router = APIRouter(prefix="/health", tags=["health"])
 
 @router.get("/", summary="Health Check Endpoint")
 def get_health() -> Response:
-    """Validates if the app has launched correctly
+    """Checks if the application launched successfully.
 
-    Returns
-    -------
-        Response 200 OK
-
+    Returns:
+       200 OK response if health check passes.
     """
     return Response(status_code=HTTP_200_OK, content="OK", media_type="text/plain")

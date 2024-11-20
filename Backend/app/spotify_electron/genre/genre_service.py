@@ -12,16 +12,13 @@ genre_service_logger = SpotifyElectronLogger(LOGGING_GENRE_SERVICE).getLogger()
 
 
 def get_genres() -> str:
-    """Returns a json with all the available genres
+    """Returns all available genres as a JSON string.
 
-    Raises
-    ------
-        UnexpectedGenreServiceError: if an unexpected error occurred
+    Returns:
+        A JSON string containing all genre names and values.
 
-    Returns
-    -------
-        str: genres json as str
-
+    Raises:
+        UnexpectedGenreServiceError: If an error occurs while getting genres.
     """
     try:
         genre_dict = {}

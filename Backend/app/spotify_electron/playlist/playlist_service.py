@@ -39,37 +39,30 @@ playlist_service_logger = SpotifyElectronLogger(LOGGING_PLAYLIST_SERVICE).getLog
 
 
 def check_playlist_exists(name: str) -> bool:
-    """Returns if playlist exists
+    """Returns whether a playlist exists.
 
     Args:
-    ----
-        name (str): playlist name
+       name: Name of the playlist to check.
 
     Returns:
-    -------
-        bool: if the playlist exists
-
+       True if the playlist exists, False otherwise.
     """
     return playlist_repository.check_playlist_exists(name)
 
 
 def get_playlist(name: str) -> PlaylistDTO:
-    """Returns the playlist
+    """Retrieves a playlist by name.
 
     Args:
-    ----
-        name (str): name of the playlist
-
-    Raises:
-    ------
-        PlaylistBadNameException: invalid playlist name
-        PlaylistNotFoundException: playlist not found
-        PlaylistServiceException: unexpected error while getting playlist
+       name: Name of the playlist to retrieve.
 
     Returns:
-    -------
-        PlaylistDTO: the playlist
+       A PlaylistDTO object containing the playlist data.
 
+    Raises:
+       PlaylistBadNameException: If the playlist name is invalid.
+       PlaylistNotFoundException: If the playlist does not exist.
+       PlaylistServiceException: If an error occurs while retrieving the playlist.
     """
     try:
         validate_playlist_name_parameter(name)
@@ -99,23 +92,20 @@ def get_playlist(name: str) -> PlaylistDTO:
 def create_playlist(
     name: str, photo: str, description: str, song_names: list[str], token: TokenData
 ) -> None:
-    """Creates a playlist
+    """Creates a new playlist.
 
     Args:
-    ----
-        name (str): name
-        photo (str): thumbnail photo
-        description (str): description
-        song_names (list): list of song names
-        token (TokenData): token user info
+       name: Name of the playlist.
+       photo: URL of the playlist thumbnail.
+       description: Description of the playlist.
+       song_names: List of songs to include in the playlist.
+       token: Authentication token containing user info.
 
     Raises:
-    ------
-        PlaylistBadNameException: invalid playlist name
-        PlaylistAlreadyExistsException: playlist already exists
-        UserNotFoundException: user doesn't exists
-        PlaylistServiceException: unexpected error while creating playlist
-
+       PlaylistBadNameException: If the playlist name is invalid.
+       PlaylistAlreadyExistsException: If a playlist with the name already exists.
+       UserNotFoundException: If the playlist owner does not exist.
+       PlaylistServiceException: If an error occurs while creating the playlist.
     """
     try:
         owner = token.username
@@ -168,23 +158,21 @@ def update_playlist(  # noqa: PLR0913
     song_names: list[str],
     token: TokenData,
 ) -> None:
-    """Updates a playlist
+    """Updates a playlist's details.
 
     Args:
-    ----
-        name (str): name
-        new_name (str | None): new playlist name, optional
-        photo (str): thumbnail photo
-        description (str): description
-        song_names (list): list of song names
-        token (TokenData): token user info
+       name: Current name of the playlist.
+       new_name: Optional new name for the playlist.
+       photo: URL of the playlist thumbnail.
+       description: New playlist description.
+       song_names: List of songs in the playlist.
+       token: Authentication token containing user info.
 
     Raises:
-    ------
-        PlaylistBadNameException: invalid playlist name
-        PlaylistNotFoundException: playlist doesn't exists
-        PlaylistServiceException: unexpected error while updating playlist
-
+       PlaylistBadNameException: If the playlist name is invalid.
+       PlaylistNotFoundException: If the playlist does not exist.
+       UserUnauthorizedException: If the user is not the playlist owner.
+       PlaylistServiceException: If an error occurs while updating the playlist.
     """
     try:
         validate_playlist_name_parameter(name)
@@ -234,18 +222,16 @@ def update_playlist(  # noqa: PLR0913
 
 
 def delete_playlist(name: str) -> None:
-    """Delete a playlist
+    """Deletes a playlist.
 
     Args:
-    ----
-        name (str): playlist name
+       name: Name of the playlist to delete.
 
     Raises:
-    ------
-        PlaylistBadNameException: invalid playlist name
-        PlaylistNotFoundException: playlist doesn't exists
-        PlaylistServiceException: unexpected error while deleting playlist
-
+       PlaylistBadNameException: If the playlist name is invalid.
+       PlaylistNotFoundException: If the playlist does not exist.
+       UserNotFoundException: If the playlist owner does not exist.
+       PlaylistServiceException: If an error occurs while deleting the playlist.
     """
     try:
         validate_playlist_name_parameter(name)
@@ -259,7 +245,9 @@ def delete_playlist(name: str) -> None:
         playlist_service_logger.exception(f"Playlist not found: {name}")
         raise PlaylistNotFoundException from exception
     except UserNotFoundException as exception:
-        playlist_service_logger.exception(f"User owner of the playlist {name} not found")
+        playlist_service_logger.exception(
+            f"User owner of the playlist {name} not found"
+        )
         raise UserNotFoundException from exception
     except PlaylistRepositoryException as exception:
         playlist_service_logger.exception(
@@ -276,16 +264,13 @@ def delete_playlist(name: str) -> None:
 
 
 def get_all_playlist() -> list[PlaylistDTO]:
-    """Gets all playlists
+    """Retrieves all available playlists.
 
-    Raises
-    ------
-        PlaylistServiceException: unexpected error while getting all playlists
+    Returns:
+       List of all PlaylistDTO objects.
 
-    Returns
-    -------
-        list[PlaylistDTO]: the list of playlists
-
+    Raises:
+       PlaylistServiceException: If an error occurs while retrieving the playlists.
     """
     try:
         playlists = playlist_repository.get_all_playlists()
@@ -306,20 +291,16 @@ def get_all_playlist() -> list[PlaylistDTO]:
 
 
 def get_selected_playlists(playlist_names: list[str]) -> list[PlaylistDTO]:
-    """Get selected playlist
+    """Retrieves multiple playlists by their names.
 
     Args:
-    ----
-        playlist_names (list[str]): list with playlists names
-
-    Raises:
-    ------
-        PlaylistServiceException: unexpected error while getting selected playlist
+       playlist_names: List of playlist names to retrieve.
 
     Returns:
-    -------
-        list[PlaylistDTO]: the list of selected playlists
+       List of PlaylistDTO objects for the requested playlists.
 
+    Raises:
+       PlaylistServiceException: If an error occurs while retrieving the playlists.
     """
     try:
         playlists = playlist_repository.get_selected_playlists(playlist_names)
@@ -344,20 +325,16 @@ def get_selected_playlists(playlist_names: list[str]) -> list[PlaylistDTO]:
 
 
 def search_by_name(name: str) -> list[PlaylistDTO]:
-    """Gets playlists with partially matching name
+    """Searches for playlists with names that partially match the query.
 
     Args:
-    ----
-        name (str): name to match
-
-    Raises:
-    ------
-        PlaylistServiceException: unexpected error while getting playlist that matches a name
+       name: Search query to match against playlist names.
 
     Returns:
-    -------
-        list[PlaylistDTO]: a list with playlists that matches the name
+       List of PlaylistDTO objects matching the search query.
 
+    Raises:
+       PlaylistServiceException: If an error occurs while searching for playlists.
     """
     try:
         playlists = playlist_repository.get_playlist_search_by_name(name)
@@ -401,13 +378,17 @@ def add_songs_to_playlist(playlist_name: str, song_names: list[str]) -> None:
             base_song_service_validations.validate_song_should_exists(name)
         playlist_repository.add_songs_to_playlist(playlist_name, song_names)
     except PlaylistBadNameException as exception:
-        playlist_service_logger.exception(f"Bad Playlist Name Parameter: {playlist_name}")
+        playlist_service_logger.exception(
+            f"Bad Playlist Name Parameter: {playlist_name}"
+        )
         raise PlaylistBadNameException from exception
     except PlaylistNotFoundException as exception:
         playlist_service_logger.exception(f"Playlist not found: {playlist_name}")
         raise PlaylistNotFoundException from exception
     except SongBadNameException as exception:
-        playlist_service_logger.exception(f"Not all the songs have valid names: {song_names}")
+        playlist_service_logger.exception(
+            f"Not all the songs have valid names: {song_names}"
+        )
         raise SongBadNameException from exception
     except SongNotFoundException as exception:
         playlist_service_logger.exception(f"Not all the songs were found: {song_names}")
@@ -425,7 +406,9 @@ def add_songs_to_playlist(playlist_name: str, song_names: list[str]) -> None:
         )
         raise PlaylistServiceException from exception
     else:
-        playlist_service_logger.info(f"Songs added to playlist {playlist_name}: {song_names}")
+        playlist_service_logger.info(
+            f"Songs added to playlist {playlist_name}: {song_names}"
+        )
 
 
 def remove_songs_from_playlist(playlist_name: str, song_names: list[str]) -> None:
@@ -450,13 +433,17 @@ def remove_songs_from_playlist(playlist_name: str, song_names: list[str]) -> Non
             base_song_service_validations.validate_song_should_exists(name)
         playlist_repository.remove_songs_from_playlist(playlist_name, song_names)
     except PlaylistBadNameException as exception:
-        playlist_service_logger.exception(f"Bad Playlist Name Parameter: {playlist_name}")
+        playlist_service_logger.exception(
+            f"Bad Playlist Name Parameter: {playlist_name}"
+        )
         raise PlaylistBadNameException from exception
     except PlaylistNotFoundException as exception:
         playlist_service_logger.exception(f"Playlist not found: {playlist_name}")
         raise PlaylistNotFoundException from exception
     except SongBadNameException as exception:
-        playlist_service_logger.exception(f"Not all the songs have valid names: {song_names}")
+        playlist_service_logger.exception(
+            f"Not all the songs have valid names: {song_names}"
+        )
         raise SongBadNameException from exception
     except SongNotFoundException as exception:
         playlist_service_logger.exception(f"Not all the songs were found: {song_names}")

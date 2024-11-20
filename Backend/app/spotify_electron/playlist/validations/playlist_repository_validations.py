@@ -14,32 +14,26 @@ from app.spotify_electron.playlist.playlist_schema import (
 
 
 def validate_playlist_exists(playlist: PlaylistDAO | None) -> None:
-    """Raises an exception if playlist doesn't exists
+    """Validates that a playlist exists.
 
     Args:
-    ----
-        playlist (PlaylistDAO | None): the playlist
+       playlist: The playlist to validate.
 
     Raises:
-    ------
-        PlaylistNotFoundException: if the playlists doesn't exists
-
+       PlaylistNotFoundException: If the playlist is None.
     """
     if playlist is None:
         raise PlaylistNotFoundException
 
 
 def validate_playlist_delete_count(result: DeleteResult) -> None:
-    """Raises an exception if playlist deletion count was 0
+    """Validates that a playlist was successfully deleted.
 
     Args:
-    ----
-        result (DeleteResult): the result from the deletion
+       result: Result from the database deletion operation.
 
     Raises:
-    ------
-        PlaylistDeleteException: if the deletion was not done
-
+       PlaylistDeleteException: If no playlist was deleted.
     """
     if result.deleted_count == 0:
         raise PlaylistDeleteException
@@ -59,16 +53,13 @@ def validate_playlist_update(result: UpdateResult) -> None:
 
 
 def validate_playlist_create(result: InsertOneResult) -> None:
-    """Raises an exception if playlist insertion was not done
+    """Validates that a playlist was successfully created.
 
     Args:
-    ----
-        result (InsertOneResult): the result from the insertion
+       result: Result from the database insertion operation.
 
     Raises:
-    ------
-        PlaylistInsertException: if the insertion was not done
-
+       PlaylistCreateException: If the playlist insertion was not acknowledged.
     """
     if not result.acknowledged:
         raise PlaylistCreateException

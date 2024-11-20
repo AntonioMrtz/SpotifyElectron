@@ -13,48 +13,39 @@ from app.spotify_electron.song.base_song_schema import (
 
 
 def validate_song_exists(song: BaseSongDAO | None) -> None:
-    """Raises an exception if song doesn't exists
+    """Validates that a song exists.
 
     Args:
-    ----
-        song (BaseSongDAO | None): the song
+       song: The song to validate.
 
     Raises:
-    ------
-        SongNotFoundException: if the song doesn't exists
-
+       SongNotFoundException: If the song is None.
     """
     if song is None:
         raise SongNotFoundException
 
 
 def validate_base_song_create(result: InsertOneResult) -> None:
-    """Raises an exception if song insertion was not done
+    """Validates that a song was successfully created.
 
     Args:
-    ----
-        result (InsertOneResult): the result from the insertion
+       result: Result from the database insertion operation.
 
     Raises:
-    ------
-        SongCreateException: if the insertion was not done
-
+       SongCreateException: If the song insertion was not acknowledged.
     """
     if not result.acknowledged:
         raise SongCreateException
 
 
 def validate_song_delete_count(result: DeleteResult) -> None:
-    """Raises an exception if song deletion count was 0
+    """Validates that a song was successfully deleted.
 
     Args:
-    ----
-        result (DeleteResult): the result from the deletion
+       result: Result from the database deletion operation.
 
     Raises:
-    ------
-        SongDeleteException: if the deletion was not done
-
+       SongDeleteException: If no song was deleted.
     """
     if result.deleted_count == 0:
         raise SongDeleteException

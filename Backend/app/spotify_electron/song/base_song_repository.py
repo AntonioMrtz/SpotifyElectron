@@ -43,7 +43,9 @@ def check_song_exists(name: str) -> bool:
         collection = song_collection_provider.get_song_collection()
         song = collection.find_one({"name": name}, {"_id": 1})
     except Exception as exception:
-        song_repository_logger.exception(f"Error checking if Song {name} exists in database")
+        song_repository_logger.exception(
+            f"Error checking if Song {name} exists in database"
+        )
         raise SongRepositoryException from exception
     else:
         result = song is not None
@@ -74,7 +76,9 @@ def get_song_metadata(name: str) -> SongMetadataDAO:
         raise SongNotFoundException from exception
 
     except Exception as exception:
-        song_repository_logger.exception(f"Error getting Song metadata {name} from database")
+        song_repository_logger.exception(
+            f"Error getting Song metadata {name} from database"
+        )
         raise SongRepositoryException from exception
     else:
         song_repository_logger.info(f"Get Song metadata by name returned {song_dao}")
@@ -82,16 +86,13 @@ def get_song_metadata(name: str) -> SongMetadataDAO:
 
 
 def delete_song(name: str) -> None:
-    """Deletes a song
+    """Deletes a song from the database.
 
     Args:
-    ----
-        name (str): song name
+       name: Name of the song to delete.
 
     Raises:
-    ------
-        SongRepositoryException: an error occurred while deleting song from database
-
+       SongRepositoryException: If an error occurs while deleting the song.
     """
     try:
         collection = song_collection_provider.get_song_collection()
@@ -102,7 +103,9 @@ def delete_song(name: str) -> None:
         song_repository_logger.exception(f"Error deleting song {name} from database")
         raise SongRepositoryException from exception
     except SongRepositoryException as exception:
-        song_repository_logger.exception(f"Unexpected error deleting song {name} in database")
+        song_repository_logger.exception(
+            f"Unexpected error deleting song {name} in database"
+        )
         raise SongRepositoryException from exception
 
 

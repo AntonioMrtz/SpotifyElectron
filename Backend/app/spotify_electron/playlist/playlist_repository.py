@@ -23,26 +23,24 @@ from app.spotify_electron.playlist.validations.playlist_repository_validations i
     validate_playlist_update,
 )
 
-playlist_repository_logger = SpotifyElectronLogger(LOGGING_PLAYLIST_REPOSITORY).getLogger()
+playlist_repository_logger = SpotifyElectronLogger(
+    LOGGING_PLAYLIST_REPOSITORY
+).getLogger()
 
 
 def check_playlist_exists(
     name: str,
 ) -> bool:
-    """Checks if playlist exists
+    """Checks if a playlist exists in the database.
 
     Args:
-    ----
-        name (str): name of the playlist
-
-    Raises:
-    ------
-        PlaylistRepositoryException: an error occurred while getting playlist from database
+       name: Name of the playlist to check.
 
     Returns:
-    -------
-        bool: if the playlist exsists
+       True if the playlist exists, False otherwise.
 
+    Raises:
+       PlaylistRepositoryException: If an error occurs while checking the database.
     """
     try:
         collection = get_playlist_collection()
@@ -61,22 +59,17 @@ def check_playlist_exists(
 def get_playlist(
     name: str,
 ) -> PlaylistDAO:
-    """Get a playlist by name
+    """Retrieves a playlist by its name.
 
     Args:
-    ----
-        name (str): name of the playlist
-
-
-    Raises:
-    ------
-        PlaylistNotFoundException: playlists doesn't exists on database
-        PlaylistRepositoryException: an error occurred while getting playlist from database
+       name: Name of the playlist to retrieve.
 
     Returns:
-    -------
-        PlaylistDAO: the playlist with the name parameter
+       A PlaylistDAO object containing the playlist data.
 
+    Raises:
+       PlaylistNotFoundException: If the playlist does not exist.
+       PlaylistRepositoryException: If an error occurs while retrieving from the database.
     """
     try:
         collection = get_playlist_collection()
@@ -88,7 +81,9 @@ def get_playlist(
         raise PlaylistNotFoundException from exception
 
     except Exception as exception:
-        playlist_repository_logger.exception(f"Error getting Playlist {name} from database")
+        playlist_repository_logger.exception(
+            f"Error getting Playlist {name} from database"
+        )
         raise PlaylistRepositoryException from exception
     else:
         playlist_repository_logger.info(f"Get Playlist by name returned {playlist_dao}")
@@ -103,22 +98,18 @@ def create_playlist(  # noqa: PLR0913
     owner: str,
     song_names: list[str],
 ) -> None:
-    """Creates a playlist
+    """Creates a new playlist in the database.
 
     Args:
-    ----
-        name (str): name
-        photo (str): thumbnail photo
-        upload_date (str): upload date
-        description (str): description
-        owner (str): playlist's owner
-        song_names (list[str]): song names
-
+       name: Name of the playlist.
+       photo: URL of the playlist thumbnail.
+       upload_date: Date when the playlist was created.
+       description: Description of the playlist.
+       owner: Username of the playlist owner.
+       song_names: List of songs in the playlist.
 
     Raises:
-    ------
-        PlaylistRepositoryException: an error occurred while inserting playlist in database
-
+       PlaylistRepositoryException: If an error occurs while creating the playlist in the database.
     """
     try:
         collection = get_playlist_collection()
@@ -149,17 +140,13 @@ def create_playlist(  # noqa: PLR0913
 def delete_playlist(
     name: str,
 ) -> None:
-    """Deletes a playlist
+    """Deletes a playlist from the database.
 
     Args:
-    ----
-        name (str): plalists name
-
+       name: Name of the playlist to delete.
 
     Raises:
-    ------
-        PlaylistRepositoryException: an error occurred while deleting playlist from database
-
+       PlaylistRepositoryException: If an error occurs while deleting the playlist from the database.
     """
     try:
         collection = get_playlist_collection()
@@ -167,7 +154,9 @@ def delete_playlist(
         validate_playlist_delete_count(result)
         playlist_repository_logger.info(f"Playlist {name} Deleted")
     except PlaylistDeleteException as exception:
-        playlist_repository_logger.exception(f"Error deleting Playlist {name} from database")
+        playlist_repository_logger.exception(
+            f"Error deleting Playlist {name} from database"
+        )
         raise PlaylistRepositoryException from exception
     except PlaylistRepositoryException as exception:
         playlist_repository_logger.exception(
@@ -177,27 +166,25 @@ def delete_playlist(
 
 
 def get_all_playlists() -> list[PlaylistDAO]:
-    """Get all playlist
+    """Retrieves all playlists from the database.
 
+    Returns:
+       List of all PlaylistDAO objects in the database.
 
-    Raises
-    ------
-        PlaylistRepositoryException: an error occurred while\
-              getting all playlists from database
-
-    Returns
-    -------
-        list[PlaylistDAO]: the list whith all the playlists
-
+    Raises:
+       PlaylistRepositoryException: If an error occurs while retrieving playlists from the database.
     """
     try:
         collection = get_playlist_collection()
         playlists_files = collection.find()
         playlists = [
-            get_playlist_dao_from_document(playlist_file) for playlist_file in playlists_files
+            get_playlist_dao_from_document(playlist_file)
+            for playlist_file in playlists_files
         ]
     except Exception as exception:
-        playlist_repository_logger.exception("Error getting all Playlists from database")
+        playlist_repository_logger.exception(
+            "Error getting all Playlists from database"
+        )
         raise PlaylistRepositoryException from exception
     else:
         playlist_repository_logger.info(f"All playlists obtained: {playlists}")
@@ -207,21 +194,16 @@ def get_all_playlists() -> list[PlaylistDAO]:
 def get_selected_playlists(
     names: list[str],
 ) -> list[PlaylistDAO]:
-    """Get selected playlists
+    """Retrieves multiple playlists by their names.
 
     Args:
-    ----
-        names (list[str]): list with the names of the playlists
-
-
-    Raises:
-    ------
-        PlaylistRepositoryException: an error occurred while getting playlists from database
+       names: List of playlist names to retrieve.
 
     Returns:
-    -------
-        list[PlaylistDAO]: the list of playlists
+       List of PlaylistDAO objects for the requested playlists.
 
+    Raises:
+       PlaylistRepositoryException: If an error occurs while retrieving from the database.
     """
     try:
         collection = get_playlist_collection()
@@ -229,7 +211,9 @@ def get_selected_playlists(
         documents = collection.find(query)
         playlists = [get_playlist_dao_from_document(document) for document in documents]
     except Exception as exception:
-        playlist_repository_logger.exception(f"Error getting {names} Playlists from database")
+        playlist_repository_logger.exception(
+            f"Error getting {names} Playlists from database"
+        )
         raise PlaylistRepositoryException from exception
     else:
         playlist_repository_logger.info(
@@ -241,22 +225,16 @@ def get_selected_playlists(
 def get_playlist_search_by_name(
     name: str,
 ) -> list[PlaylistDAO]:
-    """Gets the playlist with similar name
+    """Searches for playlists with names matching a pattern.
 
     Args:
-    ----
-        name (str): the matching name
-
-
-    Raises:
-    ------
-        PlaylistRepositoryException: an error occurred while getting playlist from database\
-              with simimilar name
+       name: Search pattern to match against playlist names.
 
     Returns:
-    -------
-        list[PlaylistDAO]: the list of playlists with similar name
+       List of PlaylistDAO objects with names matching the pattern.
 
+    Raises:
+       PlaylistRepositoryException: If an error occurs while searching the database.
     """
     try:
         collection = get_playlist_collection()
@@ -268,7 +246,9 @@ def get_playlist_search_by_name(
         )
         raise PlaylistRepositoryException from exception
     else:
-        playlist_repository_logger.info(f"Playlist searched by name {name}: {playlists}")
+        playlist_repository_logger.info(
+            f"Playlist searched by name {name}: {playlists}"
+        )
         return playlists
 
 
@@ -353,7 +333,9 @@ def add_songs_to_playlist(name: str, song_names: list[str]) -> None:
         )
         validate_playlist_update(result_update)
     except PlaylistUpdateException as exception:
-        playlist_repository_logger.info(f"Error adding songs to playlist {name}: {song_names}")
+        playlist_repository_logger.info(
+            f"Error adding songs to playlist {name}: {song_names}"
+        )
         raise PlaylistRepositoryException from exception
     except Exception as exception:
         playlist_repository_logger.info(
@@ -392,4 +374,6 @@ def remove_songs_from_playlist(name: str, song_names: list[str]) -> None:
         )
         raise PlaylistRepositoryException from exception
     else:
-        playlist_repository_logger.info(f"Songs removed from playlist {name}: {song_names}")
+        playlist_repository_logger.info(
+            f"Songs removed from playlist {name}: {song_names}"
+        )

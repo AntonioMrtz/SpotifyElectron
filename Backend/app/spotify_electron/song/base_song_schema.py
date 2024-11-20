@@ -47,16 +47,13 @@ class SongMetadataDTO(BaseSongDTO):
 
 
 def get_song_metadata_dao_from_document(document: dict[str, Any]) -> SongMetadataDAO:
-    """Get SongMetadataDAO from document
+    """Creates a SongMetadataDAO object from a document dictionary.
 
     Args:
-    ----
-        document (dict): song document
+       document: Dictionary containing song metadata.
 
     Returns:
-    -------
-        SongMetadataDAO: SongMetadataDAO Object
-
+       A SongMetadataDAO object populated with the document data.
     """
     return SongMetadataDAO(
         name=document["name"],

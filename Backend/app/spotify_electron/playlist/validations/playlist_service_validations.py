@@ -13,16 +13,13 @@ from app.spotify_electron.utils.validations.validation_utils import validate_par
 
 
 def validate_playlist_name_parameter(name: str) -> None:
-    """Raises an exception if playlist name parameter is invalid
+    """Validates a playlist name parameter.
 
     Args:
-    ----
-        name (str): name
+       name: The name to validate.
 
     Raises:
-    ------
-        PlaylistBadNameException: if name parameter is invalid
-
+       PlaylistBadNameException: If the name parameter is invalid.
     """
     try:
         validate_parameter(name)
@@ -31,32 +28,26 @@ def validate_playlist_name_parameter(name: str) -> None:
 
 
 def validate_playlist_should_exists(name: str) -> None:
-    """Raises an exception if playlist doesn't exists
+    """Validates that a playlist exists.
 
     Args:
-    ----
-        name (str): playlist name
+       name: Name of the playlist to check.
 
     Raises:
-    ------
-        PlaylistNotFoundException: if playlist doesn't exists
-
+       PlaylistNotFoundException: If a playlist with the given name does not exist.
     """
     if not check_playlist_exists(name):
         raise PlaylistNotFoundException
 
 
 def validate_playlist_should_not_exists(name: str) -> None:
-    """Raises an exception if playlist does exists
+    """Validates that a playlist does not already exist.
 
     Args:
-    ----
-        name (str): playlist name
+       name: Name of the playlist to check.
 
     Raises:
-    ------
-        PlaylistNotFoundException: if playlist exists
-
+       PlaylistAlreadyExistsException: If a playlist with the given name exists.
     """
     if check_playlist_exists(name):
         raise PlaylistAlreadyExistsException

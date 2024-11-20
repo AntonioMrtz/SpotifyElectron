@@ -24,16 +24,13 @@ class SongDTO(BaseSongDTO):
 
 
 def get_song_dao_from_document(document: dict[str, Any]) -> SongDAO:
-    """Get SongDAO from document
+    """Creates a SongDAO object from a document dictionary.
 
     Args:
-    ----
-        document (dict): song document
+       document: Dictionary containing song data.
 
     Returns:
-    -------
-        SongDAO: SongDAO Object
-
+       A SongDAO object populated with the document data.
     """
     return SongDAO(
         name=document["name"],
@@ -46,17 +43,14 @@ def get_song_dao_from_document(document: dict[str, Any]) -> SongDAO:
 
 
 def get_song_dto_from_dao(song_dao: SongDAO, url: str) -> SongDTO:
-    """Get SongDTO from SongDAO
+    """Converts a SongDAO object to a SongDTO object.
 
     Args:
-    ----
-        song_dao (SongDAO): SongDAO object
-        url (str): song streaming url
+       song_dao: The SongDAO object to convert.
+       url: The song's streaming URL.
 
     Returns:
-    -------
-        SongDTO: SongDTO object
-
+       A SongDTO object containing the song data.
     """
     return SongDTO(
         name=song_dao.name,

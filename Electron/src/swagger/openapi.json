@@ -1459,7 +1459,7 @@
           "Login"
         ],
         "summary": "Login User",
-        "description": "Login user\n\nArgs:\n----\n    form_data (Annotated[OAuth2PasswordRequestForm, Depends): user and password",
+        "description": "Authenticates a user and creates a session.\n\nArgs:\n   form_data: User credentials including username and password.",
         "operationId": "login_user_login__post",
         "requestBody": {
           "content": {
@@ -1540,7 +1540,7 @@
           "Search"
         ],
         "summary": "Get Search Name",
-        "description": "Search for items that partially match name\n\nArgs:\n----\n    name (str): name to match",
+        "description": "Searches for items with names that partially match the query.\n\nArgs:\n   name: Search query to match against item names.\n   token: Optional authentication token data.",
         "operationId": "get_search_name_search__get",
         "security": [
           {
@@ -1632,7 +1632,7 @@
           "health"
         ],
         "summary": "Health Check Endpoint",
-        "description": "Validates if the app has launched correctly\n\nReturns\n-------\n    Response 200 OK",
+        "description": "Checks if the application launched successfully.\n\nReturns:\n   200 OK response if health check passes.",
         "operationId": "get_health_health__get",
         "responses": {
           "200": {

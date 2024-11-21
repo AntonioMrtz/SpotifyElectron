@@ -18,9 +18,7 @@ from app.common.app_schema import (
 from app.logging.logging_constants import LOGGING_PROPERTIES_MANAGER
 from app.logging.logging_schema import SpotifyElectronLogger
 
-properties_manager_logger = SpotifyElectronLogger(
-    LOGGING_PROPERTIES_MANAGER
-).getLogger()
+properties_manager_logger = SpotifyElectronLogger(LOGGING_PROPERTIES_MANAGER).getLogger()
 
 
 class _PropertiesManager:
@@ -67,9 +65,7 @@ class _PropertiesManager:
         for key, value in self.config.items(config_section):
             if value == "":
                 value = None
-                properties_manager_logger.warning(
-                    f"Using None for {key} in {config_section}"
-                )
+                properties_manager_logger.warning(f"Using None for {key} in {config_section}")
             setattr(self, key, value)
 
     def _load_architecture(self) -> None:
@@ -118,8 +114,7 @@ class _PropertiesManager:
             True if in production environment, False otherwise.
         """
         return (
-            self.__getattribute__(AppEnvironment.ENV_VALUE_ENV_NAME)
-            == AppEnvironmentMode.PROD
+            self.__getattribute__(AppEnvironment.ENV_VALUE_ENV_NAME) == AppEnvironmentMode.PROD
         )
 
     def is_development_environment(self) -> bool:
@@ -129,8 +124,7 @@ class _PropertiesManager:
             True if in development environment, False otherwise.
         """
         return (
-            self.__getattribute__(AppEnvironment.ENV_VALUE_ENV_NAME)
-            == AppEnvironmentMode.DEV
+            self.__getattribute__(AppEnvironment.ENV_VALUE_ENV_NAME) == AppEnvironmentMode.DEV
         )
 
     def is_testing_environment(self) -> bool:
@@ -140,8 +134,7 @@ class _PropertiesManager:
             True if in testing environment, False otherwise.
         """
         return (
-            self.__getattribute__(AppEnvironment.ENV_VALUE_ENV_NAME)
-            == AppEnvironmentMode.TEST
+            self.__getattribute__(AppEnvironment.ENV_VALUE_ENV_NAME) == AppEnvironmentMode.TEST
         )
 
     def is_log_file_provided(self) -> bool:

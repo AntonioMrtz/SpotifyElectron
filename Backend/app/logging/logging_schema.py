@@ -109,9 +109,7 @@ class SpotifyElectronLogger:
 
     def _get_log_level(self) -> int:
         try:
-            log_level = self.log_properties_manager.__getattribute__(
-                AppConfig.LOG_INI_LEVEL
-            )
+            log_level = self.log_properties_manager.__getattribute__(AppConfig.LOG_INI_LEVEL)
             if log_level is None:
                 return logging.INFO
             mapped_log_level = self._log_level_mapping[log_level]

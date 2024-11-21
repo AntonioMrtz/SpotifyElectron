@@ -235,9 +235,7 @@ def get_all_artists() -> list[ArtistDTO]:
     """
     try:
         artists_dao = artist_repository.get_all_artists()
-        artists_dto = [
-            get_artist_dto_from_dao(artist_dao) for artist_dao in artists_dao
-        ]
+        artists_dto = [get_artist_dto_from_dao(artist_dao) for artist_dao in artists_dao]
     except UserRepositoryException as exception:
         artist_service_logger.exception(
             "Unexpected error in Artist Repository getting all artists"
@@ -350,9 +348,7 @@ def get_artists_songs(artist_name: str) -> list[SongMetadataDTO]:
         artist_song_names = artist_repository.get_artist_song_names(artist_name)
         artist_songs = base_song_service.get_songs_metadata(artist_song_names)
     except SongBadNameException as exception:
-        artist_service_logger.exception(
-            f"Bad Song name parameter in: {artist_song_names}"
-        )
+        artist_service_logger.exception(f"Bad Song name parameter in: {artist_song_names}")
         raise SongBadNameException from exception
     except UserUnauthorizedException as exception:
         artist_service_logger.exception(f"User {artist_name} is not Artist")

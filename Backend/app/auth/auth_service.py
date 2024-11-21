@@ -42,9 +42,7 @@ DAYS_TO_EXPIRE_COOKIE = 7
 auth_service_logger = SpotifyElectronLogger(LOGGING_AUTH_SERVICE).getLogger()
 
 
-def create_access_token(
-    data: dict[str, str], expires_delta: timedelta | None = None
-) -> str:
+def create_access_token(data: dict[str, str], expires_delta: timedelta | None = None) -> str:
     """Creates a JWT access token with given data and expiration.
 
     Args:
@@ -63,9 +61,7 @@ def create_access_token(
         if expires_delta:
             expire = datetime.now(timezone.utc) + expires_delta  # noqa: UP017 TODO
         else:
-            expire = datetime.now(UTC) + timedelta(
-                minutes=ACCESS_TOKEN_EXPIRE_MINUTES
-            )  # noqa: UP017 TODO
+            expire = datetime.now(UTC) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)  # noqa: UP017 TODO
         to_encode.update({"exp": expire})  # type: ignore
         encoded_jwt = jwt.encode(
             to_encode,
@@ -151,9 +147,7 @@ def get_current_user(
         auth_service_logger.exception(f"User {jwt_username} not found")
         raise UserNotFoundException from exception
     except Exception as exception:
-        auth_service_logger.exception(
-            f"Unexpected exception getting user from token {token}"
-        )
+        auth_service_logger.exception(f"Unexpected exception getting user from token {token}")
         raise JWTGetUserException from exception
     else:
         auth_service_logger.info(f"Get Current User successful: {jwt_username}")
@@ -192,9 +186,7 @@ def get_token_expire_date() -> datetime:
     Returns:
        Datetime object representing when the token will expire.
     """
-    current_utc_datetime = datetime.now(timezone.utc).replace(
-        tzinfo=timezone.utc
-    )  # noqa: UP017 TODO
+    current_utc_datetime = datetime.now(UTC).replace(tzinfo=UTC)  # noqa: UP017 TODO
     return current_utc_datetime + timedelta(days=DAYS_TO_EXPIRE_COOKIE)
 
 
@@ -235,9 +227,7 @@ def login_user(name: str, password: str) -> str:
         auth_service_logger.exception("Invalid login credentials")
         raise InvalidCredentialsLoginException from exception
     except VerifyPasswordException as exception:
-        auth_service_logger.exception(
-            "Passwords Validation failed: passwords don't match"
-        )
+        auth_service_logger.exception("Passwords Validation failed: passwords don't match")
         raise VerifyPasswordException from exception
     except CreateJWTException as exception:
         auth_service_logger.exception(f"Error creating JWT Token from data: {jwt_data}")
@@ -346,9 +336,7 @@ def validate_token_is_expired(token: dict[str, Any]) -> None:
     Raises:
        JWTExpiredException: If the token expiration date has passed.
     """
-    expiration_time = datetime.fromtimestamp(
-        token["exp"], timezone.utc
-    )  # noqa: UP017 TODO
+    expiration_time = datetime.fromtimestamp(token["exp"], UTC)  # noqa: UP017 TODO
     if expiration_time < datetime.now(timezone.utc):  # noqa: UP017 TODO
         raise JWTExpiredException
 

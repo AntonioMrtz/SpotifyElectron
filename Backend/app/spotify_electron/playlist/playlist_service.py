@@ -245,9 +245,7 @@ def delete_playlist(name: str) -> None:
         playlist_service_logger.exception(f"Playlist not found: {name}")
         raise PlaylistNotFoundException from exception
     except UserNotFoundException as exception:
-        playlist_service_logger.exception(
-            f"User owner of the playlist {name} not found"
-        )
+        playlist_service_logger.exception(f"User owner of the playlist {name} not found")
         raise UserNotFoundException from exception
     except PlaylistRepositoryException as exception:
         playlist_service_logger.exception(
@@ -378,17 +376,13 @@ def add_songs_to_playlist(playlist_name: str, song_names: list[str]) -> None:
             base_song_service_validations.validate_song_should_exists(name)
         playlist_repository.add_songs_to_playlist(playlist_name, song_names)
     except PlaylistBadNameException as exception:
-        playlist_service_logger.exception(
-            f"Bad Playlist Name Parameter: {playlist_name}"
-        )
+        playlist_service_logger.exception(f"Bad Playlist Name Parameter: {playlist_name}")
         raise PlaylistBadNameException from exception
     except PlaylistNotFoundException as exception:
         playlist_service_logger.exception(f"Playlist not found: {playlist_name}")
         raise PlaylistNotFoundException from exception
     except SongBadNameException as exception:
-        playlist_service_logger.exception(
-            f"Not all the songs have valid names: {song_names}"
-        )
+        playlist_service_logger.exception(f"Not all the songs have valid names: {song_names}")
         raise SongBadNameException from exception
     except SongNotFoundException as exception:
         playlist_service_logger.exception(f"Not all the songs were found: {song_names}")
@@ -406,9 +400,7 @@ def add_songs_to_playlist(playlist_name: str, song_names: list[str]) -> None:
         )
         raise PlaylistServiceException from exception
     else:
-        playlist_service_logger.info(
-            f"Songs added to playlist {playlist_name}: {song_names}"
-        )
+        playlist_service_logger.info(f"Songs added to playlist {playlist_name}: {song_names}")
 
 
 def remove_songs_from_playlist(playlist_name: str, song_names: list[str]) -> None:
@@ -433,17 +425,13 @@ def remove_songs_from_playlist(playlist_name: str, song_names: list[str]) -> Non
             base_song_service_validations.validate_song_should_exists(name)
         playlist_repository.remove_songs_from_playlist(playlist_name, song_names)
     except PlaylistBadNameException as exception:
-        playlist_service_logger.exception(
-            f"Bad Playlist Name Parameter: {playlist_name}"
-        )
+        playlist_service_logger.exception(f"Bad Playlist Name Parameter: {playlist_name}")
         raise PlaylistBadNameException from exception
     except PlaylistNotFoundException as exception:
         playlist_service_logger.exception(f"Playlist not found: {playlist_name}")
         raise PlaylistNotFoundException from exception
     except SongBadNameException as exception:
-        playlist_service_logger.exception(
-            f"Not all the songs have valid names: {song_names}"
-        )
+        playlist_service_logger.exception(f"Not all the songs have valid names: {song_names}")
         raise SongBadNameException from exception
     except SongNotFoundException as exception:
         playlist_service_logger.exception(f"Not all the songs were found: {song_names}")

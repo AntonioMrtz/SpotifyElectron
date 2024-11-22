@@ -17,7 +17,7 @@ def validate_user_name_parameter(name: str) -> None:
     """Validates a user name parameter.
 
     Args:
-       name: The name to validate.
+       name (str): The name to validate.
 
     Raises:
        UserBadNameException: If the name parameter is invalid.

@@ -100,7 +100,8 @@ class SpotifyElectronLogger:
         """Adds a handler to the logger.
 
         Args:
-            handler: The logging handler to add, either StreamHandler or RotatingFileHandler.
+            handler (Union[StreamHandler, RotatingFileHandler]):
+            The logging handler to add, either StreamHandler or RotatingFileHandler.
         """
         handler.setLevel(self._get_log_level())
         formatter = SpotifyElectronFormatter()

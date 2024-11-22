@@ -15,7 +15,7 @@ def get_genres() -> str:
     """Returns all available genres as a JSON string.
 
     Returns:
-        A JSON string containing all genre names and values.
+        str: A JSON string containing all genre names and values.
 
     Raises:
         UnexpectedGenreServiceError: If an error occurs while getting genres.

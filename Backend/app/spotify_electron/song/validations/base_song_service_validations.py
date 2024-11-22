@@ -31,7 +31,7 @@ def validate_song_should_exists(name: str) -> None:
     """Validates that a song exists.
 
     Args:
-       name: Name of the song to check.
+       name (str): Name of the song to check.
 
     Raises:
        SongNotFoundException: If a song with the given name does not exist.
@@ -44,7 +44,7 @@ def validate_song_should_not_exists(name: str) -> None:
     """Validates that a song does not already exist.
 
     Args:
-       name: Name of the song to check.
+       name (str): Name of the song to check.
 
     Raises:
        SongAlreadyExistsException: If a song with the given name exists.

@@ -31,7 +31,7 @@ def validate_user_exists(user: UserDAO | None) -> None:
     """Validates that a user exists.
 
     Args:
-       user: The user to validate.
+       user (UserDAO | None): The user to validate.
 
     Raises:
        UserNotFoundException: If the user is None.
@@ -57,7 +57,7 @@ def validate_user_delete_count(result: DeleteResult) -> None:
     """Validates that a user was successfully deleted.
 
     Args:
-       result: Result from the database deletion operation.
+       result (DeleteResult): Result from the database deletion operation.
 
     Raises:
        UserDeleteException: If no user was deleted.
@@ -70,7 +70,7 @@ def validate_user_create(result: InsertOneResult) -> None:
     """Validates that a user was successfully created.
 
     Args:
-       result: Result from the database insertion operation.
+       result (InsertOneResult): Result from the database insertion operation.
 
     Raises:
        UserCreateException: If the user insertion was not acknowledged.

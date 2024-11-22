@@ -42,10 +42,10 @@ def check_playlist_exists(name: str) -> bool:
     """Returns whether a playlist exists.
 
     Args:
-       name: Name of the playlist to check.
+       name (str): Name of the playlist to check.
 
     Returns:
-       True if the playlist exists, False otherwise.
+       bool: True if the playlist exists, False otherwise.
     """
     return playlist_repository.check_playlist_exists(name)
 
@@ -54,10 +54,10 @@ def get_playlist(name: str) -> PlaylistDTO:
     """Retrieves a playlist by name.
 
     Args:
-       name: Name of the playlist to retrieve.
+       name (str) : Name of the playlist to retrieve.
 
     Returns:
-       A PlaylistDTO object containing the playlist data.
+       PlaylistDTO: A PlaylistDTO object containing the playlist data.
 
     Raises:
        PlaylistBadNameException: If the playlist name is invalid.
@@ -95,11 +95,11 @@ def create_playlist(
     """Creates a new playlist.
 
     Args:
-       name: Name of the playlist.
-       photo: URL of the playlist thumbnail.
-       description: Description of the playlist.
-       song_names: List of songs to include in the playlist.
-       token: Authentication token containing user info.
+       name (str): Name of the playlist.
+       photo (str): URL of the playlist thumbnail.
+       description (str): Description of the playlist.
+       song_names (list): List of songs to include in the playlist.
+       token (TokenData): Authentication token containing user info.
 
     Raises:
        PlaylistBadNameException: If the playlist name is invalid.
@@ -161,12 +161,12 @@ def update_playlist(  # noqa: PLR0913
     """Updates a playlist's details.
 
     Args:
-       name: Current name of the playlist.
-       new_name: Optional new name for the playlist.
-       photo: URL of the playlist thumbnail.
-       description: New playlist description.
-       song_names: List of songs in the playlist.
-       token: Authentication token containing user info.
+       name (str): Current name of the playlist.
+       new_name  (str | None): Optional new name for the playlist.
+       photo  (str): URL of the playlist thumbnail.
+       description (str): New playlist description.
+       song_names (list): List of songs in the playlist.
+       token (TokenData): Authentication token containing user info.
 
     Raises:
        PlaylistBadNameException: If the playlist name is invalid.
@@ -225,7 +225,7 @@ def delete_playlist(name: str) -> None:
     """Deletes a playlist.
 
     Args:
-       name: Name of the playlist to delete.
+       name (str): Name of the playlist to delete.
 
     Raises:
        PlaylistBadNameException: If the playlist name is invalid.
@@ -265,7 +265,7 @@ def get_all_playlist() -> list[PlaylistDTO]:
     """Retrieves all available playlists.
 
     Returns:
-       List of all PlaylistDTO objects.
+       list[PlaylistDTO]: List of all PlaylistDTO objects.
 
     Raises:
        PlaylistServiceException: If an error occurs while retrieving the playlists.
@@ -292,10 +292,10 @@ def get_selected_playlists(playlist_names: list[str]) -> list[PlaylistDTO]:
     """Retrieves multiple playlists by their names.
 
     Args:
-       playlist_names: List of playlist names to retrieve.
+       playlist_names (list[str]): List of playlist names to retrieve.
 
     Returns:
-       List of PlaylistDTO objects for the requested playlists.
+       list[PlaylistDTO]: List of PlaylistDTO objects for the requested playlists.
 
     Raises:
        PlaylistServiceException: If an error occurs while retrieving the playlists.
@@ -326,10 +326,10 @@ def search_by_name(name: str) -> list[PlaylistDTO]:
     """Searches for playlists with names that partially match the query.
 
     Args:
-       name: Search query to match against playlist names.
+       name (str): Search query to match against playlist names.
 
     Returns:
-       List of PlaylistDTO objects matching the search query.
+       list[PlaylistDTO]: List of PlaylistDTO objects matching the search query.
 
     Raises:
        PlaylistServiceException: If an error occurs while searching for playlists.

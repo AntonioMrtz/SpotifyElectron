@@ -318,10 +318,10 @@ def does_artist_exists(user_name: str) -> bool:
     """Returns whether an artist exists.
 
     Args:
-       user_name: Name of the artist to check.
+       user_name (str): Name of the artist to check.
 
     Returns:
-       True if the artist exists, False otherwise.
+       bool: True if the artist exists, False otherwise.
     """
     return base_user_repository.check_user_exists(
         user_name, user_collection_provider.get_artist_collection()

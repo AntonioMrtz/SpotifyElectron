@@ -41,7 +41,7 @@ async def get_search_name(
     """Searches for items with names that partially match the query.
 
     Args:
-       name: Search query to match against item names.
+       name (str): Search query to match against item names.
        token: Optional authentication token data.
     """
     try:

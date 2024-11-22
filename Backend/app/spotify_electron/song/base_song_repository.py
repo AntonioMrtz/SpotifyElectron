@@ -85,7 +85,7 @@ def delete_song(name: str) -> None:
     """Deletes a song from the database.
 
     Args:
-       name: Name of the song to delete.
+       name (str): Name of the song to delete.
 
     Raises:
        SongRepositoryException: If an error occurs while deleting the song.

@@ -32,10 +32,10 @@ def check_playlist_exists(
     """Checks if a playlist exists in the database.
 
     Args:
-       name: Name of the playlist to check.
+       name (str): Name of the playlist to check.
 
     Returns:
-       True if the playlist exists, False otherwise.
+       bool: True if the playlist exists, False otherwise.
 
     Raises:
        PlaylistRepositoryException: If an error occurs while checking the database.
@@ -60,10 +60,10 @@ def get_playlist(
     """Retrieves a playlist by its name.
 
     Args:
-       name: Name of the playlist to retrieve.
+       name (str): Name of the playlist to retrieve.
 
     Returns:
-       A PlaylistDAO object containing the playlist data.
+       PlaylistDAO: A PlaylistDAO object containing the playlist data.
 
     Raises:
        PlaylistNotFoundException: If the playlist does not exist.
@@ -97,12 +97,12 @@ def create_playlist(  # noqa: PLR0913
     """Creates a new playlist in the database.
 
     Args:
-       name: Name of the playlist.
-       photo: URL of the playlist thumbnail.
-       upload_date: Date when the playlist was created.
-       description: Description of the playlist.
-       owner: Username of the playlist owner.
-       song_names: List of songs in the playlist.
+       name (str): Name of the playlist.
+       photo (str): URL of the playlist thumbnail.
+       upload_date (str): Date when the playlist was created.
+       description (str): Description of the playlist.
+       owner (str): Username of the playlist owner.
+       song_names (list[str]): List of songs in the playlist.
 
     Raises:
        PlaylistRepositoryException: If an error occurs while creating the playlist.
@@ -139,7 +139,7 @@ def delete_playlist(
     """Deletes a playlist from the database.
 
     Args:
-       name: Name of the playlist to delete.
+       name (str): Name of the playlist to delete.
 
     Raises:
        PlaylistRepositoryException: If an error occurs while deleting the playlist.
@@ -163,7 +163,7 @@ def get_all_playlists() -> list[PlaylistDAO]:
     """Retrieves all playlists from the database.
 
     Returns:
-       List of all PlaylistDAO objects in the database.
+       list[PlaylistDAO]: List of all PlaylistDAO objects in the database.
 
     Raises:
        PlaylistRepositoryException: If an error occurs while retrieving playlists.
@@ -188,10 +188,10 @@ def get_selected_playlists(
     """Retrieves multiple playlists by their names.
 
     Args:
-       names: List of playlist names to retrieve.
+       names (list[str]): List of playlist names to retrieve.
 
     Returns:
-       List of PlaylistDAO objects for the requested playlists.
+       list[PlaylistDAO]: List of PlaylistDAO objects for the requested playlists.
 
     Raises:
        PlaylistRepositoryException: If an error occurs while retrieving playlists.
@@ -217,10 +217,10 @@ def get_playlist_search_by_name(
     """Searches for playlists with names matching a pattern.
 
     Args:
-       name: Search pattern to match against playlist names.
+       name (str): Search pattern to match against playlist names.
 
     Returns:
-       List of PlaylistDAO objects with names matching the pattern.
+       list[PlaylistDAO]: List of PlaylistDAO objects with names matching the pattern.
 
     Raises:
        PlaylistRepositoryException: If an error occurs while searching the database.

@@ -24,11 +24,11 @@ def check_user_exists(name: str, collection: Collection) -> bool:
     """Checks if a user exists in the given collection.
 
     Args:
-       name: Name of the user to check.
+       name (str): Name of the user to check.
        collection: Database collection to search in.
 
     Returns:
-       True if the user exists, False otherwise.
+       bool: True if the user exists, False otherwise.
 
     Raises:
        UserRepositoryException: If an error occurs while checking the database.

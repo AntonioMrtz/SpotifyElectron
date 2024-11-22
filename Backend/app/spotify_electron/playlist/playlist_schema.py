@@ -36,10 +36,10 @@ def get_playlist_dao_from_document(document: dict[str, Any]) -> PlaylistDAO:
     """Creates a PlaylistDAO object from a document dictionary.
 
     Args:
-        document: Dictionary containing playlist data.
+        document (dict): Dictionary containing playlist data.
 
     Returns:
-        A PlaylistDAO object populated with the document data.
+        PlaylistDAO: A PlaylistDAO object populated with the document data.
     """
     return PlaylistDAO(
         name=document["name"],
@@ -55,10 +55,10 @@ def get_playlist_dto_from_dao(playlist_dao: PlaylistDAO) -> PlaylistDTO:
     """Converts a PlaylistDAO object to a PlaylistDTO object.
 
     Args:
-        playlist_dao: The PlaylistDAO object to convert.
+        playlist_dao (PlaylistDAO): The PlaylistDAO object to convert.
 
     Returns:
-        A PlaylistDTO object containing the playlist data.
+        PlaylistDTO: A PlaylistDTO object containing the playlist data.
     """
     return PlaylistDTO(
         name=playlist_dao.name,

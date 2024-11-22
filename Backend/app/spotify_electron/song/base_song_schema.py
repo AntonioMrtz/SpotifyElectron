@@ -50,10 +50,10 @@ def get_song_metadata_dao_from_document(document: dict[str, Any]) -> SongMetadat
     """Creates a SongMetadataDAO object from a document dictionary.
 
     Args:
-       document: Dictionary containing song metadata.
+       document (dict): Dictionary containing song metadata.
 
     Returns:
-       A SongMetadataDAO object populated with the document data.
+       SongMetadataDAO: A SongMetadataDAO object populated with the document data.
     """
     return SongMetadataDAO(
         name=document["name"],

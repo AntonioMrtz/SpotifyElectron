@@ -16,7 +16,7 @@ def validate_playlist_name_parameter(name: str) -> None:
     """Validates a playlist name parameter.
 
     Args:
-       name: The name to validate.
+       name (str): The name to validate.
 
     Raises:
        PlaylistBadNameException: If the name parameter is invalid.
@@ -31,7 +31,7 @@ def validate_playlist_should_exists(name: str) -> None:
     """Validates that a playlist exists.
 
     Args:
-       name: Name of the playlist to check.
+       name (str): Name of the playlist to check.
 
     Raises:
        PlaylistNotFoundException: If a playlist with the given name does not exist.
@@ -44,7 +44,7 @@ def validate_playlist_should_not_exists(name: str) -> None:
     """Validates that a playlist does not already exist.
 
     Args:
-       name: Name of the playlist to check.
+       name (str): Name of the playlist to check.
 
     Raises:
        PlaylistAlreadyExistsException: If a playlist with the given name exists.

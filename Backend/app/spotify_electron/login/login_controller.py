@@ -40,7 +40,8 @@ def login_user(
     """Authenticates a user and creates a session.
 
     Args:
-       form_data: User credentials including username and password.
+       form_data (Annotated[OAuth2PasswordRequestForm, Depends): User credentials including
+       username and password.
     """
     try:
         jwt = auth_service.login_user(form_data.username, form_data.password)

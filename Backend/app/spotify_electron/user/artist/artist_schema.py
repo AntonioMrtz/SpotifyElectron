@@ -29,10 +29,10 @@ def get_artist_dao_from_document(document: dict[str, Any]) -> ArtistDAO:
     """Creates an ArtistDAO object from a document dictionary.
 
     Args:
-       document: Dictionary containing artist data.
+       document (dict): Dictionary containing artist data.
 
     Returns:
-       An ArtistDAO object populated with the document data.
+       ArtistDAO: An ArtistDAO object populated with the document data.
     """
     return ArtistDAO(
         name=document["name"],
@@ -51,10 +51,10 @@ def get_artist_dto_from_dao(artist_dao: ArtistDAO) -> ArtistDTO:
     """Converts an ArtistDAO object to an ArtistDTO object.
 
     Args:
-       artist_dao: The ArtistDAO object to convert.
+       artist_dao (ArtistDAO): The ArtistDAO object to convert.
 
     Returns:
-       An ArtistDTO object containing the artist data.
+       ArtistDTO: An ArtistDTO object containing the artist data.
     """
     return ArtistDTO(
         name=artist_dao.name,

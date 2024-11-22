@@ -18,10 +18,10 @@ def get_json_from_model(object: Any) -> str:
     """Converts an object to a JSON string.
 
     Args:
-       object: Object to convert to JSON.
+       object (Any): Object to convert to JSON.
 
     Returns:
-       JSON string representation of the object.
+       str: JSON string representation of the object.
 
     Raises:
        JsonEncodeException: If the object cannot be encoded to JSON.
@@ -33,11 +33,11 @@ def get_json_with_iterable_field_from_model(object: Any, field_name: str) -> str
     """Converts an object to a JSON string within a named field.
 
     Args:
-       object: Object to convert to JSON.
+       object (Any): Object to convert to JSON.
        field_name: Name of the field to contain the object.
 
     Returns:
-       JSON string with the object nested under the field name.
+       str: JSON string with the object nested under the field name.
     """
     object_dict = {field_name: object}
     return _get_json_from_model(object_dict)
@@ -47,10 +47,10 @@ def _get_json_from_model(object: Any) -> str:
     """Converts an object to a JSON string.
 
     Args:
-       object: Object to convert to JSON.
+       object (Any): Object to convert to JSON.
 
     Returns:
-       The JSON string representation of the object.
+       str: The JSON string representation of the object.
 
     Raises:
        JsonEncodeException: If the object cannot be encoded to JSON.

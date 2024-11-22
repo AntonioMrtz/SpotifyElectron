@@ -23,11 +23,11 @@ class LogPropertiesManager:
             self._load_config_variables(AppConfig.CONFIG_FILENAME, config_section)
 
     def _load_config_variables(self, config_filename: str, config_section: str) -> None:
-        """Loads config file values into class attributes.
+        """Loads config (.ini) file values into class attributes.
 
         Args:
-           config_filename: Name of the configuration file to load.
-           config_section: Section within the config file to process.
+           config_filename (str): Name of the config file to load.
+           config_section (str): Section within the config file to process.
         """
         self.config_file = os.path.join(
             self.current_directory,
@@ -40,10 +40,10 @@ class LogPropertiesManager:
         self._set_attributes(config_section)
 
     def _set_attributes(self, config_section: str) -> None:
-        """Sets config file values as class attributes or None if no attribute found.
+        """Sets config (.ini) file values as class attributes or None if no attribute found.
 
         Args:
-           config_section: The section of the config file to load into attributes.
+           config_section (str): The section of the config file to load into attributes.
         """
         for key, value in self.config.items(config_section):
             if value == "":
@@ -54,6 +54,6 @@ class LogPropertiesManager:
         """Checks if a valid log file exists.
 
         Returns:
-           True if a valid log file is provided, False otherwise.
+           bool: True if a valid log file is provided, False otherwise.
         """
         return self.__getattribute__(AppConfig.LOG_INI_FILE) is not None

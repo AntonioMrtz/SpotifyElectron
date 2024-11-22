@@ -17,7 +17,7 @@ def validate_playlist_exists(playlist: PlaylistDAO | None) -> None:
     """Validates that a playlist exists.
 
     Args:
-       playlist: The playlist to validate.
+       playlist (PlaylistDAO | None): The playlist to validate.
 
     Raises:
        PlaylistNotFoundException: If the playlist is None.
@@ -30,7 +30,7 @@ def validate_playlist_delete_count(result: DeleteResult) -> None:
     """Validates that a playlist was successfully deleted.
 
     Args:
-       result: Result from the database deletion operation.
+       result (DeleteResult): Result from the database deletion operation.
 
     Raises:
        PlaylistDeleteException: If no playlist was deleted.
@@ -56,7 +56,7 @@ def validate_playlist_create(result: InsertOneResult) -> None:
     """Validates that a playlist was successfully created.
 
     Args:
-       result: Result from the database insertion operation.
+       result (InsertOneResult): Result from the database insertion operation.
 
     Raises:
        PlaylistCreateException: If the playlist insertion was not acknowledged.

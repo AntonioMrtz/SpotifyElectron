@@ -40,11 +40,11 @@ class _PropertiesManager:
             self._load_config_variables(AppConfig.CONFIG_FILENAME, config_section)
 
     def _load_config_variables(self, config_filename: str, config_section: str) -> None:
-        """Loads config (ini) file  values into class attributes.
+        """Loads config (.ini) file  values into class attributes.
 
         Args:
-            config_filename: Name of the configuration file to load.
-            config_section: Section within the config file to process.
+            config_filename (str): Name of the configuration file to load.
+            config_section (str): Section within the config file to process.
         """
         self.config_file = os.path.join(
             self.current_directory,
@@ -57,10 +57,10 @@ class _PropertiesManager:
         self._set_attributes(config_section)
 
     def _set_attributes(self, config_section: str) -> None:
-        """Sets config (ini) file values as class attributes or None if no attribute found.
+        """Sets config (.ini) file values as class attributes or None if no attribute found.
 
         Args:
-            config_section: The section name in the config file to load.
+            config_section (str): The section name in the config file to load.
         """
         for key, value in self.config.items(config_section):
             if value == "":
@@ -85,7 +85,7 @@ class _PropertiesManager:
         """Loads environment variables as class attributes.
 
         Args:
-            env_names: List of environment variable names to load.
+            env_names (List[str]): List of environment variable names to load.
         """
         loaded_envs = []
         for env_name in env_names:
@@ -111,7 +111,7 @@ class _PropertiesManager:
         """Checks if running in a production environment.
 
         Returns:
-            True if in production environment, False otherwise.
+            bool: True if in production environment, False otherwise.
         """
         return (
             self.__getattribute__(AppEnvironment.ENV_VALUE_ENV_NAME) == AppEnvironmentMode.PROD
@@ -121,7 +121,7 @@ class _PropertiesManager:
         """Checks if running in a development environment.
 
         Returns:
-            True if in development environment, False otherwise.
+            bool: True if in development environment, False otherwise.
         """
         return (
             self.__getattribute__(AppEnvironment.ENV_VALUE_ENV_NAME) == AppEnvironmentMode.DEV
@@ -131,7 +131,7 @@ class _PropertiesManager:
         """Checks if running in a testing environment.
 
         Returns:
-            True if in testing environment, False otherwise.
+            bool: True if in testing environment, False otherwise.
         """
         return (
             self.__getattribute__(AppEnvironment.ENV_VALUE_ENV_NAME) == AppEnvironmentMode.TEST
@@ -141,7 +141,7 @@ class _PropertiesManager:
         """Checks if a valid log file exists.
 
         Returns:
-            True if a valid log file is provided, False otherwise.
+            bool: True if a valid log file is provided, False otherwise.
         """
         return self.__getattribute__(AppConfig.LOG_INI_FILE) is not None
 

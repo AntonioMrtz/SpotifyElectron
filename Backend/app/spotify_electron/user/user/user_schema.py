@@ -45,10 +45,10 @@ def get_user_dao_from_document(document: dict[str, Any]) -> UserDAO:
     """Creates a UserDAO object from a document dictionary.
 
     Args:
-       document: Dictionary containing user data.
+       document (dict): Dictionary containing user data.
 
     Returns:
-       A UserDAO object populated with the document data.
+       UserDAO: A UserDAO object populated with the document data.
     """
     return UserDAO(
         name=document["name"],
@@ -65,10 +65,10 @@ def get_user_dto_from_dao(user_dao: UserDAO) -> UserDTO:
     """Converts a UserDAO object to a UserDTO object.
 
     Args:
-       user_dao: The UserDAO object to convert.
+       user_dao (UserDAO): The UserDAO object to convert.
 
     Returns:
-       A UserDTO object containing the user data.
+       UserDTO: A UserDTO object containing the user data.
     """
     return UserDTO(
         name=user_dao.name,

@@ -27,10 +27,10 @@ def does_user_exists(user_name: str) -> bool:
     """Returns whether a user exists.
 
     Args:
-       user_name: Name of the user to check.
+       user_name (str): Name of the user to check.
 
     Returns:
-       True if the user exists, False otherwise.
+       bool: True if the user exists, False otherwise.
     """
     return base_user_repository.check_user_exists(
         user_name, user_collection_provider.get_user_collection()

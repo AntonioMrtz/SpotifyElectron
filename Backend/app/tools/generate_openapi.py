@@ -20,7 +20,7 @@ def check_openapi_folder_exists() -> bool:
     """Checks if the OpenAPI schema output folder exists.
 
     Returns:
-       True if the OpenAPI folder exists, False otherwise.
+       bool: True if the OpenAPI folder exists, False otherwise.
     """
     cwd = os.path.abspath(os.getcwd())
     print(f"> Current Working Directory: {cwd}")

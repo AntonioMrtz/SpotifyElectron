@@ -20,11 +20,11 @@ def get_json_from_model(object: Any) -> str:
     Args:
        object (Any): Object to convert to JSON.
 
-    Raises:
-       JsonEncodeException: If the object cannot be encoded to JSON.
-
     Returns:
        str: JSON string representation of the object.
+
+    Raises:
+       JsonEncodeException: If the object cannot be encoded to JSON.
     """
     return _get_json_from_model(object)
 
@@ -49,11 +49,11 @@ def _get_json_from_model(object: Any) -> str:
     Args:
        object (Any): Object to convert to JSON.
 
-    Raises:
-       JsonEncodeException: If the object cannot be encoded to JSON.
-
     Returns:
        str: The JSON string representation of the object.
+
+    Raises:
+       JsonEncodeException: If the object cannot be encoded to JSON.
     """
     try:
         jsonable_object = jsonable_encoder(object)

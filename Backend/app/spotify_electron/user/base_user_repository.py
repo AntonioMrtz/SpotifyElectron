@@ -27,11 +27,11 @@ def check_user_exists(name: str, collection: Collection) -> bool:
        name (str): Name of the user to check.
        collection: Database collection to search in.
 
-    Returns:
-       bool: True if the user exists, False otherwise.
-
     Raises:
        UserRepositoryException: If an error occurs while checking the database.
+
+    Returns:
+       bool: True if the user exists, False otherwise.
     """
     try:
         user = collection.find_one({"name": name}, {"_id": 0, "name": 1})

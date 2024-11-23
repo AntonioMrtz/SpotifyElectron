@@ -27,12 +27,12 @@ async def search_by_name(name: str) -> SearchResult:
     Args:
         name (str): the name to match
 
-    Returns:
-        SearchResult: the items that partially match the name
-
     Raises:
         BadParameterException: if the name is invalid
         SearchServiceException: unexpected error getting items by name
+
+    Returns:
+        SearchResult: the items that partially match the name
     """
     try:
         validate_parameter(name)

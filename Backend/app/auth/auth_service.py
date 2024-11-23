@@ -50,11 +50,11 @@ def create_access_token(data: dict[str, str], expires_delta: timedelta | None = 
        expires_delta (timedelta | None, optional): Optional custom expiration time delta.
        If not provided, default expiration time will be used.
 
-    Returns:
-       str: JWT token string containing the encoded data.
-
     Raises:
        CreateJWTException: If an error occurs while creating the token.
+
+    Returns:
+       str: JWT token string containing the encoded data.
     """
     try:
         to_encode = data.copy()
@@ -83,12 +83,12 @@ def get_jwt_token_data(
     Args:
        token_raw_data (str): Raw JWT token string to decode.
 
-    Returns:
-        TokenData: object containing the decoded user information.
-
     Raises:
        BadJWTTokenProvidedException: If the token is invalid, missing required data,
            or cannot be decoded.
+
+    Returns:
+        TokenData: object containing the decoded user information.
     """
     validate_token_exists(token_raw_data)
     try:
@@ -132,12 +132,12 @@ def get_current_user(
     Args:
        token (TokenData): TokenData object containing user information.
 
-    Returns:
-       UserDTO: object for the authenticated user.
-
     Raises:
        UserNotFoundException: If the user from the token does not exist.
        JWTGetUserException: If an error occurs while retrieving the user.
+
+    Returns:
+       UserDTO: object for the authenticated user.
     """
     try:
         jwt_username = token.username

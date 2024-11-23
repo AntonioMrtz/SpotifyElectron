@@ -34,11 +34,11 @@ def check_playlist_exists(
     Args:
        name (str): Name of the playlist to check.
 
-    Returns:
-       bool: True if the playlist exists, False otherwise.
-
     Raises:
        PlaylistRepositoryException: If an error occurs while checking the database.
+
+    Returns:
+       bool: True if the playlist exists, False otherwise.
     """
     try:
         collection = get_playlist_collection()
@@ -62,12 +62,12 @@ def get_playlist(
     Args:
        name (str): Name of the playlist to retrieve.
 
-    Returns:
-       PlaylistDAO: A PlaylistDAO object containing the playlist data.
-
     Raises:
        PlaylistNotFoundException: If the playlist does not exist.
        PlaylistRepositoryException: If an error occurs while retrieving playlist.
+
+    Returns:
+       PlaylistDAO: A PlaylistDAO object containing the playlist data.
     """
     try:
         collection = get_playlist_collection()
@@ -162,11 +162,11 @@ def delete_playlist(
 def get_all_playlists() -> list[PlaylistDAO]:
     """Retrieves all playlists from the database.
 
-    Returns:
-       list[PlaylistDAO]: List of all PlaylistDAO objects in the database.
-
     Raises:
        PlaylistRepositoryException: If an error occurs while retrieving playlists.
+
+    Returns:
+       list[PlaylistDAO]: List of all PlaylistDAO objects in the database.
     """
     try:
         collection = get_playlist_collection()
@@ -190,11 +190,11 @@ def get_selected_playlists(
     Args:
        names (list[str]): List of playlist names to retrieve.
 
-    Returns:
-       list[PlaylistDAO]: List of PlaylistDAO objects for the requested playlists.
-
     Raises:
        PlaylistRepositoryException: If an error occurs while retrieving playlists.
+
+    Returns:
+       list[PlaylistDAO]: List of PlaylistDAO objects for the requested playlists.
     """
     try:
         collection = get_playlist_collection()
@@ -219,11 +219,11 @@ def get_playlist_search_by_name(
     Args:
        name (str): Search pattern to match against playlist names.
 
-    Returns:
-       list[PlaylistDAO]: List of PlaylistDAO objects with names matching the pattern.
-
     Raises:
        PlaylistRepositoryException: If an error occurs while searching the database.
+
+    Returns:
+       list[PlaylistDAO]: List of PlaylistDAO objects with names matching the pattern.
     """
     try:
         collection = get_playlist_collection()

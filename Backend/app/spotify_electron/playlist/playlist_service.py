@@ -56,13 +56,13 @@ def get_playlist(name: str) -> PlaylistDTO:
     Args:
        name (str) : Name of the playlist to retrieve.
 
-    Returns:
-       PlaylistDTO: A PlaylistDTO object containing the playlist data.
-
     Raises:
        PlaylistBadNameException: If the playlist name is invalid.
        PlaylistNotFoundException: If the playlist does not exist.
        PlaylistServiceException: If an error occurs while retrieving the playlist.
+
+    Returns:
+       PlaylistDTO: A PlaylistDTO object containing the playlist data.
     """
     try:
         validate_playlist_name_parameter(name)
@@ -264,11 +264,11 @@ def delete_playlist(name: str) -> None:
 def get_all_playlist() -> list[PlaylistDTO]:
     """Retrieves all available playlists.
 
-    Returns:
-       list[PlaylistDTO]: List of all PlaylistDTO objects.
-
     Raises:
        PlaylistServiceException: If an error occurs while retrieving the playlists.
+
+    Returns:
+       list[PlaylistDTO]: List of all PlaylistDTO objects.
     """
     try:
         playlists = playlist_repository.get_all_playlists()
@@ -294,11 +294,11 @@ def get_selected_playlists(playlist_names: list[str]) -> list[PlaylistDTO]:
     Args:
        playlist_names (list[str]): List of playlist names to retrieve.
 
-    Returns:
-       list[PlaylistDTO]: List of PlaylistDTO objects for the requested playlists.
-
     Raises:
        PlaylistServiceException: If an error occurs while retrieving the playlists.
+
+    Returns:
+       list[PlaylistDTO]: List of PlaylistDTO objects for the requested playlists.
     """
     try:
         playlists = playlist_repository.get_selected_playlists(playlist_names)
@@ -328,11 +328,11 @@ def search_by_name(name: str) -> list[PlaylistDTO]:
     Args:
        name (str): Search query to match against playlist names.
 
-    Returns:
-       list[PlaylistDTO]: List of PlaylistDTO objects matching the search query.
-
     Raises:
        PlaylistServiceException: If an error occurs while searching for playlists.
+
+    Returns:
+       list[PlaylistDTO]: List of PlaylistDTO objects matching the search query.
     """
     try:
         playlists = playlist_repository.get_playlist_search_by_name(name)

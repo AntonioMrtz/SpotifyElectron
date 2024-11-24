@@ -66,7 +66,7 @@ def check_auth_config() -> Dict[str, str]:
     summary="Health Check Endpoint",
     description="Validates if the app and its critical components are functioning correctly"
 )
-async def get_health() -> Response:
+async def get_health() -> JSONResponse:
     """Validates if the app has launched correctly and all critical components are healthy
     
     Returns
@@ -97,8 +97,7 @@ async def get_health() -> Response:
     if not is_healthy:
         logger.warning(f"Health check failed: {health_details}")
     
-    return Response(
+    return JSONResponse(
         content=response_data,
-        status_code=status_code,
-        media_type="text/plain"
+        status_code=status_code
     )

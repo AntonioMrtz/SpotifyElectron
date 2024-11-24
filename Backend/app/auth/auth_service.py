@@ -197,14 +197,14 @@ def login_user(name: str, password: str) -> str:
        name (str): Username to authenticate.
        password (str): User's password.
 
-    Returns:
-       str: JWT token string for the authenticated user.
-
     Raises:
        InvalidCredentialsLoginException: If the login credentials are invalid.
        VerifyPasswordException: If password verification fails.
        UserNotFoundException: If the user does not exist.
        UnexpectedLoginUserException: If an unexpected error occurs during login.
+
+    Returns:
+       str: JWT token string for the authenticated user.
     """
     try:
         validate_parameter(name)

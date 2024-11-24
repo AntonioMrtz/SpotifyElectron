@@ -106,19 +106,10 @@ class BaseDatabaseConnection:
         )
 
 
-class DatabasePingFailed(SpotifyElectronException):
+class DatabasePingFailedException(SpotifyElectronException):
     """Database ping failure"""
 
-    ERROR = "Ping to the database failed"
-
-    def __init__(self):
-        super().__init__(self.ERROR)
-
-
-class UnexpectedDatabasePingFailed(SpotifyElectronException):
-    """Unexpected database ping failure"""
-
-    ERROR = "Unexpected error while pinging to the database"
+    ERROR = "Database ping failed"
 
     def __init__(self):
         super().__init__(self.ERROR)

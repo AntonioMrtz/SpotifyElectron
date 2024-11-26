@@ -306,13 +306,19 @@ def update_playlist_metadata(
             return
 
     except PlaylistUpdateException as e:
-        playlist_repository_logger.exception(f"Error during playlist update for: {name}, fields: {update_data}")
+        playlist_repository_logger.exception(
+            f"Error during playlist update for: {name}, fields: {update_data}"
+        )
         raise PlaylistRepositoryException from e
     except Exception as e:
-        playlist_repository_logger.exception(f"Unexpected error during playlist update for: {name}, fields: {update_data}")
+        playlist_repository_logger.exception(
+            f"Unexpected error during playlist update for: {name}, fields: {update_data}"
+        )
         raise PlaylistRepositoryException from e
     else:
-        playlist_repository_logger.info(f"Playlist {name} updated successfully with fields: {update_data}")
+        playlist_repository_logger.info(
+            f"Playlist {name} updated successfully with fields: {update_data}"
+        )
 
 
 def add_songs_to_playlist(name: str, song_names: list[str]) -> None:

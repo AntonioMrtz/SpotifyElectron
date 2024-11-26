@@ -136,11 +136,11 @@ def create_playlist(
 
 @router.put("/{name}")
 def update_playlist_metadata(
-    token: Annotated[TokenData, Depends(JWTBearer())],
     name: str,
     new_name: str | None = None,
     photo: str | None = None,
     description: str | None = None,
+    token: TokenData = Depends(JWTBearer()),
 ) -> Response:
     """Update playlist metadata
 
@@ -149,8 +149,8 @@ def update_playlist_metadata(
         new_name (str | None): new playlist name
         photo (str | None): new photo URL
         description (str | None): new description
+        token (TokenData): User authentication token
     """
-
     try:
         playlist_service.update_playlist_metadata(
             token=token,

@@ -286,14 +286,14 @@ def delete_playlist_from_owner(
 def update_playlist_name(
     old_playlist_name: str,
     new_playlist_name: str,
-    collection,
+    collection: Collection,
 ) -> None:
     """Update the playlist name in the users' playlists
 
     Args:
         old_playlist_name (str): old playlist name
         new_playlist_name (str): new playlist name
-        collection: MongoDB collection to operate on
+        collection (Collection): user collection
 
     Raises:
         UserRepositoryException: unexpected error updating playlist name in database
@@ -311,7 +311,8 @@ def update_playlist_name(
             )
     except Exception as exception:
         base_user_repository_logger.exception(
-            f"Error updating playlist name {old_playlist_name} to {new_playlist_name} in database"
+            f"Error updating playlist name {old_playlist_name} to "
+            f"{new_playlist_name} in database"
         )
         raise UserRepositoryException from exception
 

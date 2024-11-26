@@ -1,6 +1,5 @@
 from datetime import datetime
 
-import pytest
 from pytest import fixture
 from starlette.status import (
     HTTP_200_OK,
@@ -11,7 +10,6 @@ from starlette.status import (
     HTTP_405_METHOD_NOT_ALLOWED,
 )
 
-from tests.test_API.api_base_users import patch_playlist_saved
 from tests.test_API.api_test_artist import create_artist
 from tests.test_API.api_test_playlist import (
     add_songs_to_playlist,
@@ -251,7 +249,11 @@ def test_update_playlist_metadata_multiple_fields():
     new_photo = "https://new_photo_url"
     new_description = "updated_description"
     res_update_playlist = update_playlist_metadata(
-        name=name, new_name=new_name, photo=new_photo, description=new_description, headers=jwt_headers
+        name=name,
+        new_name=new_name,
+        photo=new_photo,
+        description=new_description,
+        headers=jwt_headers,
     )
     assert res_update_playlist.status_code == HTTP_204_NO_CONTENT
 

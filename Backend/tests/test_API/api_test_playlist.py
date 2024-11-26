@@ -29,11 +29,10 @@ def get_playlists(song_names: str, headers: dict[str, str]):
 def update_playlist_metadata(
     name: str,
     headers: dict[str, str],
-    description: str = None,
-    photo: str = None,
-    new_name: str = None,
+    description: str | None = None,
+    photo: str | None = None,
+    new_name: str | None = None,
 ) -> Response:
-    # Build URL with optional query parameters
     url = f"/playlists/{name}"
     query_params = []
 

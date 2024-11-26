@@ -192,7 +192,6 @@ def test_update_playlist_metadata_correct():
     assert res_delete_artist.status_code == HTTP_202_ACCEPTED
 
 
-@pytest.mark.skip(reason="mongomock doesn't support the operator playlists.$")
 def test_update_playlist_metadata_correct_new_name():
     name = "82323923236238237231"
     photo = "photo"
@@ -262,6 +261,115 @@ def test_update_playlist_metadata_multiple_fields():
     assert res_get_playlist.json()["description"] == new_description
 
     res_delete_playlist = delete_playlist(name=new_name)
+    assert res_delete_playlist.status_code == HTTP_202_ACCEPTED
+
+    res_delete_artist = delete_user(owner)
+    assert res_delete_artist.status_code == HTTP_202_ACCEPTED
+
+
+def test_update_playlist_metadata_no_fields():
+    name = "playlist_no_fields"
+    photo = "https://photo_url"
+    description = "description"
+    owner = "user_no_fields"
+    password = "password"
+
+    res_create_artist = create_artist(owner, photo, password)
+    assert res_create_artist.status_code == HTTP_201_CREATED
+
+    jwt_headers = get_user_jwt_header(username=owner, password=password)
+
+    res_create_playlist = create_playlist(
+        name=name, descripcion=description, photo=photo, headers=jwt_headers
+    )
+    assert res_create_playlist.status_code == HTTP_201_CREATED
+
+    res_update_playlist = update_playlist_metadata(
+        name=name, headers=jwt_headers
+    )
+    assert res_update_playlist.status_code == HTTP_204_NO_CONTENT
+
+    res_get_playlist = get_playlist(name=name, headers=jwt_headers)
+    assert res_get_playlist.status_code == HTTP_200_OK
+    assert res_get_playlist.json()["name"] == name
+    assert res_get_playlist.json()["photo"] == photo
+    assert res_get_playlist.json()["description"] == description
+
+    res_delete_playlist = delete_playlist(name=name)
+    assert res_delete_playlist.status_code == HTTP_202_ACCEPTED
+
+    res_delete_artist = delete_user(owner)
+    assert res_delete_artist.status_code == HTTP_202_ACCEPTED
+
+
+def test_update_playlist_metadata_playlist_not_found():
+    name = "nonexistent_playlist"
+    owner = "user_test"
+    password = "password"
+    new_description = "new description"
+
+    res_create_artist = create_artist(owner, "", password)
+    assert res_create_artist.status_code == HTTP_201_CREATED
+
+    jwt_headers = get_user_jwt_header(username=owner, password=password)
+
+    res_update_playlist = update_playlist_metadata(
+        name=name, description=new_description, headers=jwt_headers
+    )
+    assert res_update_playlist.status_code == HTTP_404_NOT_FOUND
+
+    res_delete_artist = delete_user(owner)
+    assert res_delete_artist.status_code == HTTP_202_ACCEPTED
+
+
+def test_update_playlist_metadata_invalid_name():
+    name = ""
+    owner = "user_invalid_name"
+    password = "password"
+    new_description = "new description"
+
+    res_create_artist = create_artist(owner, "", password)
+    assert res_create_artist.status_code == HTTP_201_CREATED
+
+    jwt_headers = get_user_jwt_header(username=owner, password=password)
+
+    res_update_playlist = update_playlist_metadata(
+        name=name, description=new_description, headers=jwt_headers
+    )
+    assert res_update_playlist.status_code == HTTP_405_METHOD_NOT_ALLOWED
+
+    res_delete_artist = delete_user(owner)
+    assert res_delete_artist.status_code == HTTP_202_ACCEPTED
+
+
+def test_update_playlist_metadata_invalid_photo_url():
+    name = "playlist_invalid_photo"
+    photo = "photo"
+    description = "description"
+    owner = "user_invalid_photo"
+    password = "password"
+
+    res_create_artist = create_artist(owner, photo, password)
+    assert res_create_artist.status_code == HTTP_201_CREATED
+
+    jwt_headers = get_user_jwt_header(username=owner, password=password)
+
+    res_create_playlist = create_playlist(
+        name=name, descripcion=description, photo=photo, headers=jwt_headers
+    )
+    assert res_create_playlist.status_code == HTTP_201_CREATED
+
+    invalid_photo_url = "http://invalid_url"
+    res_update_playlist = update_playlist_metadata(
+        name=name, photo=invalid_photo_url, headers=jwt_headers
+    )
+    assert res_update_playlist.status_code == HTTP_204_NO_CONTENT
+
+    res_get_playlist = get_playlist(name=name, headers=jwt_headers)
+    assert res_get_playlist.status_code == HTTP_200_OK
+    assert res_get_playlist.json()["photo"] == invalid_photo_url
+
+    res_delete_playlist = delete_playlist(name=name)
     assert res_delete_playlist.status_code == HTTP_202_ACCEPTED
 
     res_delete_artist = delete_user(owner)

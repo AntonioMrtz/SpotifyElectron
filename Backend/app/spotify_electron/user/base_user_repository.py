@@ -284,33 +284,34 @@ def delete_playlist_from_owner(
 
 
 def update_playlist_name(
-    old_playlist_name: str, new_playlist_name: str, collection: Collection
+    old_playlist_name: str,
+    new_playlist_name: str,
+    collection,
 ) -> None:
-    """Update playlist name with a new one
+    """Update the playlist name in the users' playlists
 
     Args:
-        old_playlist_name (str): old name
-        new_playlist_name (str): new name
-        collection (Collection): user collection
+        old_playlist_name (str): old playlist name
+        new_playlist_name (str): new playlist name
+        collection: MongoDB collection to operate on
 
     Raises:
-        UserRepositoryException: unexpected error updating playlist name
+        UserRepositoryException: unexpected error updating playlist name in database
     """
     try:
-        # has to be done sequentially, pull and push on the same query generates errors
-        collection.update_many(
-            {"saved_playlists": old_playlist_name},
-            {"$set": {"saved_playlists.$": new_playlist_name}},
-        )
-        collection.update_many(
-            {"playlists": old_playlist_name},
-            {"$set": {"playlists.$": new_playlist_name}},
-        )
-
+        users_with_playlist = collection.find({"playlists": old_playlist_name})
+        for user in users_with_playlist:
+            playlists = user.get('playlists', [])
+            updated_playlists = [
+                new_playlist_name if p == old_playlist_name else p for p in playlists
+            ]
+            collection.update_one(
+                {"_id": user["_id"]},
+                {"$set": {"playlists": updated_playlists}},
+            )
     except Exception as exception:
         base_user_repository_logger.exception(
-            f"Error updating playlist name {old_playlist_name} "
-            f"to {new_playlist_name} in database"
+            f"Error updating playlist name {old_playlist_name} to {new_playlist_name} in database"
         )
         raise UserRepositoryException from exception
 

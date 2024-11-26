@@ -183,7 +183,6 @@ def update_playlist_metadata(
         UserUnauthorizedException: Raised if the user is not the owner of the playlist.
         PlaylistServiceException: Raised for unexpected errors during the update.
     """
-
     update_data = {}
 
     try:
@@ -195,35 +194,46 @@ def update_playlist_metadata(
 
         if new_name:
             validate_playlist_name_parameter(new_name)
-            update_data["name"] = new_name
         if photo and "http" in photo:
             update_data["photo"] = photo
         if description:
             update_data["description"] = description
 
-        if update_data:
-            playlist_repository.update_playlist_metadata(name, **update_data)
+        if update_data or new_name:
+            playlist_repository.update_playlist_metadata(
+                name, new_name=new_name, **update_data
+            )
 
             if new_name:
                 base_user_service.update_playlist_name(name, new_name)
 
-    except PlaylistBadNameException as e:
-        playlist_service_logger.exception(f"Invalid playlist name parameter for playlist: {name}")
-        raise e
-    except PlaylistNotFoundException as e:
+    except PlaylistBadNameException:
+        playlist_service_logger.exception(
+            f"Invalid playlist name parameter for playlist: {name}"
+        )
+        raise
+    except PlaylistNotFoundException:
         playlist_service_logger.exception(f"Playlist not found: {name}")
-        raise e
-    except UserUnauthorizedException as e:
-        playlist_service_logger.exception(f"User not authorized to update playlist: {name}")
-        raise e
+        raise
+    except UserUnauthorizedException:
+        playlist_service_logger.exception(
+            f"User not authorized to update playlist: {name}"
+        )
+        raise
     except PlaylistRepositoryException as e:
-        playlist_service_logger.exception(f"Repository error while updating playlist: {name}")
+        playlist_service_logger.exception(
+            f"Repository error while updating playlist: {name}"
+        )
         raise PlaylistServiceException from e
     except Exception as e:
-        playlist_service_logger.exception(f"Unexpected error in Playlist Service while updating playlist: {name}")
+        playlist_service_logger.exception(
+            f"Unexpected error in Playlist Service while updating playlist: {name}"
+        )
         raise PlaylistServiceException from e
     else:
-        playlist_service_logger.info(f"Playlist {name} updated successfully with fields: {update_data}")
+        playlist_service_logger.info(
+            f"Playlist {name} updated successfully with fields: {update_data}"
+        )
 
 
 def delete_playlist(name: str) -> None:

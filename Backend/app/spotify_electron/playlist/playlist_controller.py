@@ -145,7 +145,6 @@ def update_playlist_metadata(
     """Update playlist metadata
 
     Args:
-        token:
         name (str): playlist name
         new_name (str | None): new playlist name
         photo (str | None): new photo URL

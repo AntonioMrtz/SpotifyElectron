@@ -13,20 +13,16 @@ We will use the next convention for branch names:
 
 `prefix/IssueNumber-IssueTitle`
 
-- Prefix: select one of the prefixes listed below.
+- Prefix: select one of the prefixes listed in `Naming convention prefixes` section at the end of this document.
 - IssueNumber: the issue number associated with the branch.
 - IssueTitle: the title of the issue.
 
-Examples:
+Having the following information about the issue:
 
-```
-Issue:
+* Issue title: Add Home Page
+* Issue number: 7777
 
-issue-title: Add Home Page
-issue-number: #7777
-```
-
-- feat/7777-Add-Home-Page
+--> Then the resulting branch name will be: feat/7777-Add-Home-Page
 
 ## Commit convention
 

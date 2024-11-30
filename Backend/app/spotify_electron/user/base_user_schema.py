@@ -27,7 +27,7 @@ class BaseUserDTO:
     register_date: str
 
 
-def get_user_dao_from_document(document: dict[str, Any]) -> BaseUserDAO:
+def get_base_user_dao_from_document(document: dict[str, Any]) -> BaseUserDAO:
     """Get BaseUserDAO from document
 
     Args:
@@ -47,7 +47,7 @@ def get_user_dao_from_document(document: dict[str, Any]) -> BaseUserDAO:
     )
 
 
-def get_user_dto_from_dao(user_dao: BaseUserDAO) -> BaseUserDTO:
+def get_base_user_dto_from_dao(user_dao: BaseUserDAO) -> BaseUserDTO:
     """Get BaseUserDTO from BaseUserDAO
 
     Args:

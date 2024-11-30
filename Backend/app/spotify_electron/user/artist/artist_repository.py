@@ -72,7 +72,7 @@ def create_artist(name: str, photo: str, password: bytes, current_date: str) -> 
             "password": password,
             "saved_playlists": [],
             "playlists": [],
-            "playback_history": [],
+            "stream_history": [],
             "uploaded_songs": [],
         }
         result = user_collection_provider.get_artist_collection().insert_one(artist)

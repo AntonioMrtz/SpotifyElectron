@@ -2,8 +2,18 @@ export interface PropsItems {
   id: string | undefined;
 }
 
+export interface PropsItemsSongs extends PropsItems {
+  refreshSidebarData: () => void;
+}
+
 export interface PropsItemsPlaylist extends PropsItems {
   refreshSidebarData: () => void;
+}
+
+export interface PropsItemsSongsStreamHistory extends PropsItemsSongs {
+  userName: string;
+  refreshSidebarData: () => void;
+  changeSongName: (songName: string) => void;
 }
 
 export interface PropsItemsPlaylistsFromUser extends PropsItemsPlaylist {

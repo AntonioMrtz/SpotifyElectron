@@ -42,7 +42,7 @@ def get_artist_dao_from_document(document: dict[str, Any]) -> ArtistDAO:
         photo=document["photo"],
         register_date=document["register_date"][:-1],
         password=document["password"],
-        playback_history=document["playback_history"],
+        stream_history=document["stream_history"],
         playlists=document["playlists"],
         saved_playlists=document["saved_playlists"],
         uploaded_songs=document["uploaded_songs"],
@@ -65,7 +65,7 @@ def get_artist_dto_from_dao(artist_dao: ArtistDAO) -> ArtistDTO:
     return ArtistDTO(
         name=artist_dao.name,
         photo=artist_dao.photo,
-        playback_history=artist_dao.playback_history,
+        stream_history=artist_dao.stream_history,
         playlists=artist_dao.playlists,
         register_date=artist_dao.register_date,
         saved_playlists=artist_dao.saved_playlists,

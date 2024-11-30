@@ -58,7 +58,7 @@ test('prueba', async () => {
                 photo: 'photo',
                 register_date: 'date',
                 password: 'pass',
-                playback_history: [],
+                stream_history: [],
                 playlists: [],
                 saved_playlists: [],
               },

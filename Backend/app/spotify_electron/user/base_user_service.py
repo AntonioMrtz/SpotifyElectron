@@ -50,7 +50,7 @@ base_users_service_logger = SpotifyElectronLogger(LOGGING_BASE_USERS_SERVICE).ge
 
 
 # TODO not hardcoded
-MAX_NUMBER_PLAYBACK_HISTORY_SONGS = 5
+MAX_NUMBER_STREAM_HISTORY_SONGS = 50
 
 
 def get_user_type(user_name: str) -> UserType:
@@ -148,8 +148,8 @@ def get_user_password(user_name: str) -> bytes:
         return password
 
 
-def add_playback_history(user_name: str, song_name: str, token: TokenData) -> None:
-    """Add playback history to user
+def add_stream_history(user_name: str, song_name: str, token: TokenData) -> None:
+    """Add stream history to user
 
     Args:
         user_name (str): user name
@@ -160,10 +160,10 @@ def add_playback_history(user_name: str, song_name: str, token: TokenData) -> No
         UserBadNameException: invalid user name
         UserNotFoundException: user doesn't exists
         SongBadNameException: invalid song name
-        UserUnauthorizedException: user cannot modify playback history that \
+        UserUnauthorizedException: user cannot modify stream history that \
             is not created by him
         SongNotFoundException: song doesn't exists
-        UserServiceException: unexpected error adding playback history to user
+        UserServiceException: unexpected error adding stream history to user
     """
     try:
         base_user_service_validations.validate_user_name_parameter(user_name)
@@ -173,10 +173,10 @@ def add_playback_history(user_name: str, song_name: str, token: TokenData) -> No
         base_user_service_validations.validate_user_should_exists(user_name)
         validate_song_should_exists(song_name)
 
-        base_user_repository.add_playback_history(
+        base_user_repository.add_stream_history(
             user_name=user_name,
             song=song_name,
-            max_number_playback_history_songs=MAX_NUMBER_PLAYBACK_HISTORY_SONGS,
+            max_number_stream_history_songs=MAX_NUMBER_STREAM_HISTORY_SONGS,
             collection=user_collection_provider.get_user_associated_collection(user_name),
         )
     except UserBadNameException as exception:
@@ -190,7 +190,7 @@ def add_playback_history(user_name: str, song_name: str, token: TokenData) -> No
         raise SongBadNameException from exception
     except UserUnauthorizedException as exception:
         base_users_service_logger.exception(
-            f"Unathorized user {user_name} for adding playback songs"
+            f"Unathorized user {user_name} for adding stream songs"
         )
         raise UserUnauthorizedException from exception
     except SongNotFoundException as exception:
@@ -199,18 +199,18 @@ def add_playback_history(user_name: str, song_name: str, token: TokenData) -> No
     except UserRepositoryException as exception:
         base_users_service_logger.exception(
             f"Unexpected error in User Repository adding song {song_name} "
-            f"to user {user_name} playback history"
+            f"to user {user_name} stream history"
         )
         raise UserServiceException from exception
     except Exception as exception:
         base_users_service_logger.exception(
             f"Unexpected error in User Service adding song {song_name} "
-            f"to user {user_name} playback history"
+            f"to user {user_name} stream history"
         )
         raise UserServiceException from exception
     else:
         base_users_service_logger.info(
-            f"Song {song_name} added to User {user_name} playback history"
+            f"Song {song_name} added to User {user_name} stream history"
         )
 
 
@@ -577,8 +577,8 @@ def get_user_playlist_names(user_name: str) -> list[str]:
         return user_playlist_names
 
 
-def get_user_playback_history(user_name: str) -> list[SongMetadataDTO]:
-    """Get user song playback history
+def get_user_stream_history(user_name: str) -> list[SongMetadataDTO]:
+    """Get user song stream history
 
     Args:
         user_name (str): user name
@@ -586,19 +586,19 @@ def get_user_playback_history(user_name: str) -> list[SongMetadataDTO]:
     Raises:
         UserBadNameException: invalid user name
         UserNotFoundException: user not found
-        UserServiceException: unexpected error getting playback history from user
+        UserServiceException: unexpected error getting stream history from user
 
     Returns:
-        list[str]: the song playback history from user
+        list[str]: the song stream history from user
     """
     try:
         base_user_service_validations.validate_user_name_parameter(user_name)
         base_user_service_validations.validate_user_should_exists(user_name)
         collection = user_collection_provider.get_user_associated_collection(user_name)
-        playback_history_names = base_user_repository.get_user_playback_history_names(
+        stream_history_names = base_user_repository.get_user_stream_history_names(
             user_name=user_name, collection=collection
         )
-        songs_metadata = base_song_service.get_songs_metadata(playback_history_names)
+        songs_metadata = base_song_service.get_songs_metadata(stream_history_names)
 
     except UserBadNameException as exception:
         base_users_service_logger.exception(f"Bad user Parameter: {user_name}")
@@ -608,13 +608,13 @@ def get_user_playback_history(user_name: str) -> list[SongMetadataDTO]:
         raise UserNotFoundException from exception
     except UserRepositoryException as exception:
         base_users_service_logger.exception(
-            f"Unexpected error in User Repository getting playback history "
+            f"Unexpected error in User Repository getting stream history "
             f"from owner {user_name}"
         )
         raise UserServiceException from exception
     except Exception as exception:
         base_users_service_logger.exception(
-            f"Unexpected error in User Service getting getting playback history "
+            f"Unexpected error in User Service getting getting stream history "
             f"from owner {user_name}"
         )
         raise UserServiceException from exception

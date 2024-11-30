@@ -69,7 +69,7 @@ def create_user(name: str, photo: str, password: bytes, current_date: str) -> No
             "password": password,
             "saved_playlists": [],
             "playlists": [],
-            "playback_history": [],
+            "stream_history": [],
         }
         result = user_collection_provider.get_user_collection().insert_one(user)
 

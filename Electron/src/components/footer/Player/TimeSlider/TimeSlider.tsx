@@ -5,33 +5,33 @@ import { secondsToMinutesSeconds } from 'utils/date';
 import styles from './timeSlider.module.css';
 
 interface PropsTimeSlider {
-  playBackTime: number;
+  streamTime: number;
   initialSongDuration: number;
-  changePlayBackTime: (playBackTime: number) => void;
+  changeStreamTime: (streamTime: number) => void;
 }
 
 export default function TimeSlider({
-  playBackTime,
+  streamTime: streamTime,
   initialSongDuration,
-  changePlayBackTime,
+  changeStreamTime: changeStreamTime,
 }: PropsTimeSlider) {
-  /* Song PLAYBACK TIME */
+  /* Song STREAM TIME */
 
-  const [songPlayBackTime, setSongPlayBackTime] = useState(0);
-  const [songPlayBackTimeMinutesSeconds, setSongPlayBackTimeMinutesSeconds] =
+  const [songStreamTime, setSongStreamTime] = useState(0);
+  const [songStreamTimeMinutesSeconds, setSongStreamTimeMinutesSeconds] =
     useState('0.0');
 
-  const handlePlaybackTime = (event: Event, value: number | number[]) => {
+  const handleStreamTime = (event: Event, value: number | number[]) => {
     if (typeof value === 'number') {
-      setSongPlayBackTime(value);
-      changePlayBackTime(value);
+      setSongStreamTime(value);
+      changeStreamTime(value);
     }
   };
 
   useEffect(() => {
-    setSongPlayBackTime(playBackTime);
-    setSongPlayBackTimeMinutesSeconds(secondsToMinutesSeconds(playBackTime));
-  }, [playBackTime]);
+    setSongStreamTime(streamTime);
+    setSongStreamTimeMinutesSeconds(secondsToMinutesSeconds(streamTime));
+  }, [streamTime]);
 
   /* Song DURATION */
 
@@ -58,7 +58,7 @@ export default function TimeSlider({
 
   return (
     <Box width="100%" paddingRight="2%" display="flex" alignItems="center">
-      <p className={styles.pSlider}>{songPlayBackTimeMinutesSeconds}</p>
+      <p className={styles.pSlider}>{songStreamTimeMinutesSeconds}</p>
 
       <Slider
         size="small"
@@ -68,10 +68,10 @@ export default function TimeSlider({
         defaultValue={0}
         aria-label="Medium"
         valueLabelDisplay="off"
-        onChange={handlePlaybackTime}
+        onChange={handleStreamTime}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        value={songPlayBackTime === undefined ? 0 : songPlayBackTime}
+        value={songStreamTime === undefined ? 0 : songStreamTime}
         sx={{
           '& .MuiSlider-track': {
             backgroundColor: isHovered

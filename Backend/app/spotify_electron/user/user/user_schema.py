@@ -17,7 +17,7 @@ class UserDAO:
     photo: str
     register_date: str
     password: bytes
-    playback_history: list[str]
+    stream_history: list[str]
     playlists: list[str]
     saved_playlists: list[str]
 
@@ -29,7 +29,7 @@ class UserDTO:
     name: str
     photo: str
     register_date: str
-    playback_history: list[str]
+    stream_history: list[str]
     playlists: list[str]
     saved_playlists: list[str]
 
@@ -58,7 +58,7 @@ def get_user_dao_from_document(document: dict[str, Any]) -> UserDAO:
         photo=document["photo"],
         register_date=document["register_date"][:-1],
         password=document["password"],
-        playback_history=document["playback_history"],
+        stream_history=document["stream_history"],
         playlists=document["playlists"],
         saved_playlists=document["saved_playlists"],
     )
@@ -79,7 +79,7 @@ def get_user_dto_from_dao(user_dao: UserDAO) -> UserDTO:
     return UserDTO(
         name=user_dao.name,
         photo=user_dao.photo,
-        playback_history=user_dao.playback_history,
+        stream_history=user_dao.stream_history,
         playlists=user_dao.playlists,
         register_date=user_dao.register_date,
         saved_playlists=user_dao.saved_playlists,

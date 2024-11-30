@@ -11,16 +11,16 @@ from starlette.status import (
 
 from app.auth.auth_schema import BadJWTTokenProvidedException
 from app.spotify_electron.user.base_user_service import (
-    MAX_NUMBER_PLAYBACK_HISTORY_SONGS,
+    MAX_NUMBER_STREAM_HISTORY_SONGS,
 )
 from app.spotify_electron.user.user.user_schema import UserType
 from tests.test_API.api_base_users import (
     delete_playlist_saved,
-    get_user_playback_history,
     get_user_playlist_names,
     get_user_playlists,
     get_user_relevant_playlists,
-    patch_history_playback,
+    get_user_stream_history,
+    patch_history_stream,
     patch_playlist_saved,
     whoami,
 )
@@ -37,7 +37,7 @@ def set_up(trigger_app_startup):
     pass
 
 
-def test_patch_playback_history_user_correct(clear_test_data_db):
+def test_patch_stream_history_user_correct(clear_test_data_db):
     name = "8232392323623823723"
     password = "hola"
     artista = "artista"
@@ -66,15 +66,15 @@ def test_patch_playback_history_user_correct(clear_test_data_db):
     )
     assert res_create_song.status_code == HTTP_201_CREATED
 
-    res_patch_user = patch_history_playback(
+    res_patch_user = patch_history_stream(
         user_name=name, song_name=song_name, headers=jwt_headers_user
     )
     assert res_patch_user.status_code == HTTP_204_NO_CONTENT
 
     res_get_user = get_user(name=name, headers=jwt_headers_user)
     assert res_get_user.status_code == HTTP_200_OK
-    assert len(res_get_user.json()["playback_history"]) == 1
-    assert res_get_user.json()["playback_history"][0] == song_name
+    assert len(res_get_user.json()["stream_history"]) == 1
+    assert res_get_user.json()["stream_history"][0] == song_name
 
     res_delete_user = delete_user(name=name)
     assert res_delete_user.status_code == HTTP_202_ACCEPTED
@@ -86,7 +86,7 @@ def test_patch_playback_history_user_correct(clear_test_data_db):
     assert res_delete_artist.status_code == HTTP_202_ACCEPTED
 
 
-def test_patch_playback_history_artist_correct(clear_test_data_db):
+def test_patch_stream_history_artist_correct(clear_test_data_db):
     photo = "https://photo"
     password = "hola"
     artista = "artista"
@@ -112,13 +112,13 @@ def test_patch_playback_history_artist_correct(clear_test_data_db):
     )
     assert res_create_song.status_code == HTTP_201_CREATED
 
-    res_patch_user = patch_history_playback(artista, song_name, headers=jwt_headers_artist)
+    res_patch_user = patch_history_stream(artista, song_name, headers=jwt_headers_artist)
     assert res_patch_user.status_code == HTTP_204_NO_CONTENT
 
     res_get_artist = get_artist(name=artista, headers=jwt_headers_artist)
     assert res_get_artist.status_code == HTTP_200_OK
-    assert len(res_get_artist.json()["playback_history"]) == 1
-    assert res_get_artist.json()["playback_history"][0] == song_name
+    assert len(res_get_artist.json()["stream_history"]) == 1
+    assert res_get_artist.json()["stream_history"][0] == song_name
 
     res_delete_song = delete_song(song_name)
     assert res_delete_song.status_code == HTTP_202_ACCEPTED
@@ -127,7 +127,7 @@ def test_patch_playback_history_artist_correct(clear_test_data_db):
     assert res_delete_artist.status_code == HTTP_202_ACCEPTED
 
 
-def test_patch_playback_history_invalid_bad_user():
+def test_patch_stream_history_bad_user():
     photo = "https://photo"
     password = "hola"
     artista = "artista"
@@ -139,19 +139,19 @@ def test_patch_playback_history_invalid_bad_user():
 
     jwt_headers_artist = get_user_jwt_header(username=artista, password=password)
 
-    res_patch_user = patch_history_playback("", "", headers=jwt_headers_artist)
+    res_patch_user = patch_history_stream("", "", headers=jwt_headers_artist)
     assert res_patch_user.status_code == HTTP_404_NOT_FOUND
 
     res_delete_artist = delete_user(artista)
     assert res_delete_artist.status_code == HTTP_202_ACCEPTED
 
 
-def test_patch_playback_history_non_existing_user():
-    res_patch_user = patch_history_playback("usuario1", "cancion1", {})
+def test_patch_stream_history_non_existing_user():
+    res_patch_user = patch_history_stream("usuario1", "cancion1", {})
     assert res_patch_user.status_code == HTTP_403_FORBIDDEN
 
 
-def test_patch_playback_history_user_correct_insert_6_songs(clear_test_data_db):
+def test_patch_stream_history_user_correct_insert_50_songs(clear_test_data_db):
     name = "8232392323623823723"
     photo = "https://photo"
     password = "hola"
@@ -190,17 +190,17 @@ def test_patch_playback_history_user_correct_insert_6_songs(clear_test_data_db):
     )
     assert res_create_song.status_code == HTTP_201_CREATED
 
-    for i in range(0, 5):
-        res_patch_user = patch_history_playback(name, song_name, headers=jwt_headers_user)
+    for i in range(0, 49):
+        res_patch_user = patch_history_stream(name, song_name, headers=jwt_headers_user)
         assert res_patch_user.status_code == HTTP_204_NO_CONTENT
 
-    res_patch_user = patch_history_playback(name, new_song_name, headers=jwt_headers_user)
+    res_patch_user = patch_history_stream(name, new_song_name, headers=jwt_headers_user)
     assert res_patch_user.status_code == HTTP_204_NO_CONTENT
 
     res_get_user = get_user(name=name, headers=jwt_headers_user)
     assert res_get_user.status_code == HTTP_200_OK
-    assert len(res_get_user.json()["playback_history"]) == MAX_NUMBER_PLAYBACK_HISTORY_SONGS
-    assert res_get_user.json()["playback_history"][4] == new_song_name
+    assert len(res_get_user.json()["stream_history"]) == MAX_NUMBER_STREAM_HISTORY_SONGS
+    assert res_get_user.json()["stream_history"][49] == new_song_name
 
     res_delete_user = delete_user(name=name)
     assert res_delete_user.status_code == HTTP_202_ACCEPTED
@@ -938,13 +938,13 @@ def test_get_user_playlists_user_not_found():
     assert res_delete_artist.status_code == HTTP_202_ACCEPTED
 
 
-def test_get_user_playback_history_correct():
+def test_get_user_stream_history_correct():
     artist_name = "artist-name"
     password = "pass"
     photo = "https://photo"
     song_name = "8232392323623823723989"
     song_name_2 = "8232392323623823723988"
-    EXPECTED_PLAYBACK_HISTORY_SONGS = [song_name, song_name_2]
+    EXPECTED_STREAM_HISTORY_SONGS = [song_name, song_name_2]
     file_path = "tests/assets/song.mp3"
     genre = "Pop"
 
@@ -971,22 +971,22 @@ def test_get_user_playback_history_correct():
     )
     assert res_create_song.status_code == HTTP_201_CREATED
 
-    res_patch_user = patch_history_playback(
+    res_patch_user = patch_history_stream(
         user_name=artist_name, song_name=song_name, headers=jwt_headers_artist
     )
     assert res_patch_user.status_code == HTTP_204_NO_CONTENT
 
-    res_patch_user = patch_history_playback(
+    res_patch_user = patch_history_stream(
         user_name=artist_name, song_name=song_name_2, headers=jwt_headers_artist
     )
     assert res_patch_user.status_code == HTTP_204_NO_CONTENT
 
-    res_get_user_playback_history = get_user_playback_history(
+    res_get_user_stream_history = get_user_stream_history(
         artist_name, headers=jwt_headers_artist
     )
-    assert res_get_user_playback_history.status_code == HTTP_200_OK
-    assert set(EXPECTED_PLAYBACK_HISTORY_SONGS) == set(
-        [song["name"] for song in res_get_user_playback_history.json()]
+    assert res_get_user_stream_history.status_code == HTTP_200_OK
+    assert set(EXPECTED_STREAM_HISTORY_SONGS) == set(
+        [song["name"] for song in res_get_user_stream_history.json()]
     )
 
     delete_song(name=song_name)
@@ -996,7 +996,7 @@ def test_get_user_playback_history_correct():
     assert res_delete_artist.status_code == HTTP_202_ACCEPTED
 
 
-def test_get_user_playback_history_user_not_found():
+def test_get_user_stream_history_user_not_found():
     artist_name = "artist-name"
     password = "pass"
     photo = "https://photo"
@@ -1009,10 +1009,10 @@ def test_get_user_playback_history_user_not_found():
     res_delete_artist = delete_user(artist_name)
     assert res_delete_artist.status_code == HTTP_202_ACCEPTED
 
-    res_get_user_playback_history = get_user_playback_history(
+    res_get_user_stream_history = get_user_stream_history(
         artist_name, headers=jwt_headers_artist
     )
-    assert res_get_user_playback_history.status_code == HTTP_404_NOT_FOUND
+    assert res_get_user_stream_history.status_code == HTTP_404_NOT_FOUND
 
 
 # executes after all tests

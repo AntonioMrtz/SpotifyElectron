@@ -120,6 +120,13 @@ function App() {
                     />
                   />
                   <Route
+                    path="/showAllStreamHistoryFromUser/:id/:user/:usertype"
+                    element=<ShowAllItems
+                      refreshSidebarData={refreshSidebarData}
+                      type={ShowAllItemsTypes.ALL_STREAM_HISTORY_FROM_USER}
+                    />
+                  />
+                  <Route
                     path="/showAllSongsFromArtist/:id/:artist"
                     element=<ShowAllItems
                       refreshSidebarData={refreshSidebarData}

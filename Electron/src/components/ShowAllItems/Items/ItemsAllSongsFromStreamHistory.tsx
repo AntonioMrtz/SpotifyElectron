@@ -19,8 +19,7 @@ export default function ItemsAllSongsFromStreamHistory({
         streamHistory.map((songItem) => {
           return (
             <SongCard
-              // eslint-disable-next-line react/no-array-index-key
-              key={songItem.name}
+              key={songItem.name + '-' + songItem.artist}
               name={songItem.name}
               photo={songItem.photo}
               artist={songItem.artist}

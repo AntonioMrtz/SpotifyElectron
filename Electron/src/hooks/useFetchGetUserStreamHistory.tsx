@@ -30,7 +30,7 @@ const useFetchGetUserStreamHistory = (userName: string | undefined) => {
     fetchData();
   }, [userName]);
 
-  return { streamHistory: streamHistory, loading, error };
+  return { streamHistory, loading, error };
 };
 
 export default useFetchGetUserStreamHistory;

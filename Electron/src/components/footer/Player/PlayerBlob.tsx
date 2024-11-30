@@ -101,7 +101,7 @@ export default function PlayerBlob({
       );
     } catch (err) {
       console.log(
-        `Unable to update User ${userName} stream history with Son ${songName}`,
+        `Unable to update User ${userName} stream history with Song ${songName}`,
       );
       console.log(err);
     }

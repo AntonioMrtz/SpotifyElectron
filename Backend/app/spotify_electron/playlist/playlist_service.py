@@ -160,7 +160,7 @@ def create_playlist(
         playlist_service_logger.info(f"Playlist {name} created successfully")
 
 
-def update_playlist_metadata( # noqa: C901
+def update_playlist_metadata(  # noqa: C901
     name: str,
     new_name: str | None = None,
     photo: str | None = None,
@@ -202,9 +202,7 @@ def update_playlist_metadata( # noqa: C901
         if not update_data and not new_name:
             return
 
-        playlist_repository.update_playlist_metadata(
-            name, new_name=new_name, **update_data
-        )
+        playlist_repository.update_playlist_metadata(name, new_name=new_name, **update_data)
         if new_name:
             base_user_service.update_playlist_name(name, new_name)
 
@@ -217,19 +215,13 @@ def update_playlist_metadata( # noqa: C901
         playlist_service_logger.exception(f"Playlist not found: {name}")
         raise
     except UserUnauthorizedException:
-        playlist_service_logger.exception(
-            f"User unauthorized to update playlist: {name}"
-        )
+        playlist_service_logger.exception(f"User unauthorized to update playlist: {name}")
         raise
     except PlaylistRepositoryException as e:
-        playlist_service_logger.exception(
-            f"Repository error while updating playlist: {name}"
-        )
+        playlist_service_logger.exception(f"Repository error while updating playlist: {name}")
         raise PlaylistServiceException from e
     except Exception as e:
-        playlist_service_logger.exception(
-            f"Unexpected error while updating playlist: {name}"
-        )
+        playlist_service_logger.exception(f"Unexpected error while updating playlist: {name}")
         raise PlaylistServiceException from e
     else:
         updated_fields = update_data.copy()

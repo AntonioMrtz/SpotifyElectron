@@ -53,7 +53,6 @@ def update_playlist_metadata(
     return client.put(url, json=payload, headers={**file_type_header, **headers})
 
 
-
 def delete_playlist(name: str) -> Response:
     return client.delete(f"/playlists/{name}")
 

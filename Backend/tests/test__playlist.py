@@ -286,9 +286,7 @@ def test_update_playlist_metadata_no_fields():
     )
     assert res_create_playlist.status_code == HTTP_201_CREATED
 
-    res_update_playlist = update_playlist_metadata(
-        name=name, headers=jwt_headers
-    )
+    res_update_playlist = update_playlist_metadata(name=name, headers=jwt_headers)
     assert res_update_playlist.status_code == HTTP_204_NO_CONTENT
 
     res_get_playlist = get_playlist(name=name, headers=jwt_headers)

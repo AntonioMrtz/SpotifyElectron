@@ -301,7 +301,7 @@ def update_playlist_name(
     try:
         users_with_playlist = collection.find({"playlists": old_playlist_name})
         for user in users_with_playlist:
-            playlists = user.get('playlists', [])
+            playlists = user.get("playlists", [])
             updated_playlists = [
                 new_playlist_name if p == old_playlist_name else p for p in playlists
             ]

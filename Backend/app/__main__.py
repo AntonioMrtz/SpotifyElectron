@@ -36,7 +36,7 @@ from app.spotify_electron.search import search_controller
 from app.spotify_electron.song import song_controller
 from app.spotify_electron.song.providers.song_service_provider import SongServiceProvider
 from app.spotify_electron.stream import stream_controller
-from app.spotify_electron.user import user_controller
+from app.spotify_electron.user import base_user_controller
 from app.spotify_electron.user.artist import artist_controller
 
 main_logger = SpotifyElectronLogger(LOGGING_MAIN).getLogger()
@@ -68,7 +68,7 @@ async def lifespan_handler(app: FastAPI) -> AsyncGenerator[None, Any]:
     app.include_router(playlist_controller.router)
     app.include_router(song_controller.router)
     app.include_router(genre_controller.router)
-    app.include_router(user_controller.router)
+    app.include_router(base_user_controller.router)
     app.include_router(artist_controller.router)
     app.include_router(login_controller.router)
     app.include_router(search_controller.router)

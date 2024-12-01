@@ -160,33 +160,54 @@ def create_playlist(
         playlist_service_logger.info(f"Playlist {name} created successfully")
 
 
-def update_playlist_metadata(
-    token: TokenData,
+def update_playlist_metadata( # noqa: C901
     name: str,
     new_name: str | None = None,
     photo: str | None = None,
     description: str | None = None,
+    *,
+    token: TokenData,
 ) -> None:
     """
-    Updates only specified fields of a playlist's metadata.
+    Updates specified fields of a playlist's metadata.
 
     Args:
-        token (TokenData): The token containing user information.
-        name (str): The current name of the playlist to identify it.
-        new_name (str | None): The new name of the playlist, if updating the name.
-        photo (str | None): The new thumbnail photo URL for the playlist, if provided.
+        name (str): The current name of the playlist.
+        new_name (str | None): The new name of the playlist, if provided.
+        photo (str | None): The new photo URL for the playlist, if provided.
         description (str | None): The new description for the playlist, if provided.
+        token (TokenData): The token containing user information.
 
     Raises:
-        PlaylistBadNameException: Raised if the playlist name (current or new) is invalid.
-        PlaylistNotFoundException: Raised if the playlist does not exist.
-        UserUnauthorizedException: Raised if the user is not the owner of the playlist.
-        PlaylistServiceException: Raised for unexpected errors during the update.
+        PlaylistBadNameException: If the playlist name (current or new) is invalid.
+        PlaylistNotFoundException: If the playlist does not exist.
+        UserUnauthorizedException: If the user is not authorized to update the playlist.
+        PlaylistServiceException: For unexpected errors during the update.
     """
     try:
-        validate_and_get_playlist(name, token)
-        update_data = collect_update_data(new_name, photo, description)
-        perform_update(name, update_data)
+        validate_playlist_name_parameter(name)
+        validate_playlist_should_exists(name)
+        if new_name:
+            validate_playlist_name_parameter(new_name)
+
+        playlist = playlist_repository.get_playlist(name)
+        auth_service.validate_jwt_user_matches_user(token, playlist.owner)
+
+        update_data = {}
+        if photo and "http" in photo:
+            update_data["photo"] = photo
+        if description:
+            update_data["description"] = description
+
+        if not update_data and not new_name:
+            return
+
+        playlist_repository.update_playlist_metadata(
+            name, new_name=new_name, **update_data
+        )
+        if new_name:
+            base_user_service.update_playlist_name(name, new_name)
+
     except PlaylistBadNameException:
         playlist_service_logger.exception(
             f"Invalid playlist name parameter for playlist: {name}"
@@ -197,7 +218,7 @@ def update_playlist_metadata(
         raise
     except UserUnauthorizedException:
         playlist_service_logger.exception(
-            f"Unexpected error in Playlist Service updating playlist: {name}"
+            f"User unauthorized to update playlist: {name}"
         )
         raise
     except PlaylistRepositoryException as e:
@@ -207,76 +228,16 @@ def update_playlist_metadata(
         raise PlaylistServiceException from e
     except Exception as e:
         playlist_service_logger.exception(
-            f"Unexpected error in Playlist Service while updating playlist: {name}"
+            f"Unexpected error while updating playlist: {name}"
         )
         raise PlaylistServiceException from e
     else:
+        updated_fields = update_data.copy()
+        if new_name:
+            updated_fields["new_name"] = new_name
         playlist_service_logger.info(
-            f"Playlist {name} updated successfully with fields: {update_data}"
+            f"Playlist {name} updated successfully with fields: {updated_fields}"
         )
-
-
-def validate_and_get_playlist(name: str, token: TokenData) -> None:
-    """
-    Validates the playlist name, checks existence, retrieves the playlist,
-    and verifies user authorization.
-
-    Args:
-        name (str): The name of the playlist.
-        token (TokenData): The token containing user information.
-
-    Raises:
-        PlaylistBadNameException: If the playlist name is invalid.
-        PlaylistNotFoundException: If the playlist does not exist.
-        UserUnauthorizedException: If the user is not authorized to update the playlist.
-    """
-    validate_playlist_name_parameter(name)
-    validate_playlist_should_exists(name)
-    playlist_repository.get_playlist(name)
-    auth_service.validate_jwt_user_matches_user(
-        token, playlist_repository.get_playlist(name).owner
-    )
-
-
-def collect_update_data(
-        new_name: str | None,
-        photo: str | None,
-        description: str | None) -> dict:
-    """
-    Collects and validates the update data based on provided parameters.
-
-    Args:
-        new_name (str | None): The new name of the playlist.
-        photo (str | None): The new photo URL for the playlist.
-        description (str | None): The new description for the playlist.
-
-    Returns:
-        dict: A dictionary containing the fields to be updated.
-    """
-    update_data = {}
-    if new_name:
-        validate_playlist_name_parameter(new_name)
-        update_data["new_name"] = new_name
-    if photo and "http" in photo:
-        update_data["photo"] = photo
-    if description:
-        update_data["description"] = description
-    return update_data
-
-
-def perform_update(name: str, update_data: dict) -> None:
-    """
-    Performs the update operation on the playlist repository and updates
-    the playlist name in the user service if a new name is provided.
-
-    Args:
-        name (str): The current name of the playlist.
-        update_data (dict): The data to update in the playlist.
-    """
-    if update_data:
-        playlist_repository.update_playlist_metadata(name, **update_data)
-        if "new_name" in update_data:
-            base_user_service.update_playlist_name(name, update_data["new_name"])
 
 
 def delete_playlist(name: str) -> None:

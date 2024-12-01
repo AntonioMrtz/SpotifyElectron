@@ -64,9 +64,9 @@
         "tags": [
           "Playlists"
         ],
-        "summary": "Update Playlist",
-        "description": "Update playlist\n\nArgs:\n    photo (str): playlist new photo\n    description (str): playlist new description\n    song_names (list[str], optional): playlist new song names. Defaults to Body(...).\n    new_name (str | None, optional): playlist new name. Defaults to None.",
-        "operationId": "update_playlist_playlists__name__put",
+        "summary": "Update Playlist Metadata",
+        "description": "Update playlist metadata\n\nArgs:\n    name (str): playlist name\n    new_name (str | None): new playlist name\n    photo (str | None): new photo URL\n    description (str | None): new description\n    token (TokenData): User authentication token",
+        "operationId": "update_playlist_metadata_playlists__name__put",
         "security": [
           {
             "JWTBearer": []
@@ -80,24 +80,6 @@
             "schema": {
               "type": "string",
               "title": "Name"
-            }
-          },
-          {
-            "name": "photo",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Photo"
-            }
-          },
-          {
-            "name": "description",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Description"
             }
           },
           {
@@ -115,22 +97,40 @@
               ],
               "title": "New Name"
             }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "array",
-                "items": {
+          },
+          {
+            "name": "photo",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
                   "type": "string"
                 },
-                "title": "Song Names"
-              }
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Photo"
+            }
+          },
+          {
+            "name": "description",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Description"
             }
           }
-        },
+        ],
         "responses": {
           "200": {
             "description": "Successful Response",

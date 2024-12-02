@@ -182,4 +182,13 @@ Check our [project goals and vision](docs/VISION.md).
             </a>
         </td>
     </tr>
+    <tr>
+        <td align="center">
+            <a href="AlesSust">
+                <img src="https://avatars.githubusercontent.com/u/59516393?v=4" width="90" alt="AlesSust" />
+                <br />
+                <sub><b>AlesSust</b></sub>
+            </a>
+        </td>
+    </tr>
 </table>

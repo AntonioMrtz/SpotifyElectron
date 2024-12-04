@@ -126,6 +126,13 @@ Me gustaría expresar mi más sincero agradecimiento a las siguientes personas p
                 <sub><b>AlesSust</b></sub>
             </a>
         </td>
+        <td align="center">
+            <a href="https://github.com/PavlisinPhoto">
+                <img src="https://avatars.githubusercontent.com/u/120133160?v=4" width="90" alt="PavlisinPhoto" />
+                <br />
+                <sub><b>PavlisinPhoto</b></sub>
+            </a>
+        </td>
     </tr>
 </table>
 

@@ -35,14 +35,14 @@ def test_health_check_all_healthy(mocker):
     """Test health check endpoint when all components are healthy."""
     # Mock dependencies
     mocker.patch(
-        "app.health_controller.check_database_connection",
+        "app.spotify_electron.health.health_controller.check_database_connection",
         return_value=mock_check_database_connection(),
     )
     mocker.patch(
-        "app.health_controller.check_song_service", return_value=mock_check_song_service()
+        "app.spotify_electron.health.health_controller.check_song_service", return_value=mock_check_song_service()
     )
     mocker.patch(
-        "app.health_controller.check_auth_config", return_value=mock_check_auth_config()
+        "app.spotify_electron.health.health_controller.check_auth_config", return_value=mock_check_auth_config()
     )
 
     response = client.get("/health/")
@@ -59,14 +59,14 @@ def test_health_check_unhealthy_database(mocker):
     """Test health check endpoint when the database connection is unhealthy."""
     # Mock dependencies
     mocker.patch(
-        "app.health_controller.check_database_connection",
+        "app.spotify_electron.health.health_controller.check_database_connection",
         return_value={"status": "unhealthy", "message": "Mocked database connection failed"},
     )
     mocker.patch(
-        "app.health_controller.check_song_service", return_value=mock_check_song_service()
+        "app.spotify_electron.health.health_controller.check_song_service", return_value=mock_check_song_service()
     )
     mocker.patch(
-        "app.health_controller.check_auth_config", return_value=mock_check_auth_config()
+        "app.spotify_electron.health.health_controller.check_auth_config", return_value=mock_check_auth_config()
     )
 
     response = client.get("/health/")
@@ -86,18 +86,18 @@ def test_health_check_unhealthy_song_service(mocker):
     """Test health check endpoint when the SongService is unhealthy."""
     # Mock dependencies
     mocker.patch(
-        "app.health_controller.check_database_connection",
+        "app.spotify_electron.health.health_controller.check_database_connection",
         return_value=mock_check_database_connection(),
     )
     mocker.patch(
-        "app.health_controller.check_song_service",
+        "app.spotify_electron.health.health_controller.check_song_service",
         return_value={
             "status": "unhealthy",
             "message": "Mocked SongService initialization failed",
         },
     )
     mocker.patch(
-        "app.health_controller.check_auth_config", return_value=mock_check_auth_config()
+        "app.spotify_electron.health.health_controller.check_auth_config", return_value=mock_check_auth_config()
     )
 
     response = client.get("/health/")
@@ -118,14 +118,14 @@ def test_health_check_unhealthy_auth_config(mocker):
     """Test health check endpoint when the Auth configuration is unhealthy."""
     # Mock dependencies
     mocker.patch(
-        "app.health_controller.check_database_connection",
+        "app.spotify_electron.health.health_controller.check_database_connection",
         return_value=mock_check_database_connection(),
     )
     mocker.patch(
-        "app.health_controller.check_song_service", return_value=mock_check_song_service()
+        "app.spotify_electron.health.health_controller.check_song_service", return_value=mock_check_song_service()
     )
     mocker.patch(
-        "app.health_controller.check_auth_config",
+        "app.spotify_electron.health.health_controller.check_auth_config",
         return_value={"status": "unhealthy", "message": "Mocked Auth configuration failed"},
     )
 

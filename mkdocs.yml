@@ -43,6 +43,7 @@ nav:
 theme:
   logo: assets/logo.png
   name: material
+  favicon: assets/logo.png
   features:
     - navigation.indexes
   palette:

@@ -52,10 +52,12 @@ async def lifespan_handler(app: FastAPI) -> AsyncGenerator[None, Any]:
     main_logger.info("Spotify Electron Backend Started")
 
     environment = PropertiesManager.get_environment()
+    secret_key_sign = getattr(PropertiesManager, AppEnvironment.SECRET_KEY_SIGN_ENV_NAME)
     connection_uri = getattr(PropertiesManager, AppEnvironment.MONGO_URI_ENV_NAME)
 
     AuthConfig.init_auth_config(
         access_token_expire_minutes=AppAuthConfig.ACCESS_TOKEN_EXPIRE_MINUTES,
+        secret_key_sign=secret_key_sign,
         verification_algorithm=AppAuthConfig.VERTIFICATION_ALGORITHM,
         days_to_expire_cookie=AppAuthConfig.DAYS_TO_EXPIRE_COOKIE,
     )

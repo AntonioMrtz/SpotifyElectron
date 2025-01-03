@@ -4,13 +4,13 @@ Validations for Common user repositories
 
 from pymongo.results import DeleteResult, InsertOneResult, UpdateResult
 
-from app.spotify_electron.user.user.user_schema import (
-    UserCreateException,
-    UserDAO,
-    UserDeleteException,
-    UserGetPasswordException,
-    UserNotFoundException,
-    UserUpdateException,
+from app.spotify_electron.user.base_user_schema import (
+    BaseUserCreateException,
+    BaseUserDAO,
+    BaseUserDeleteException,
+    BaseUserGetPasswordException,
+    BaseUserNotFoundException,
+    BaseUserUpdateException,
 )
 
 
@@ -21,26 +21,26 @@ def validate_password_exists(password: bytes) -> None:
         password (bytes): user password
 
     Raises:
-        UserGetPasswordException: if there's no password retrieved
+        BaseUserGetPasswordException: if there's no password retrieved
     """
     if not password:
-        raise UserGetPasswordException
+        raise BaseUserGetPasswordException
 
 
-def validate_user_exists(user: UserDAO | None) -> None:
+def validate_user_exists(user: BaseUserDAO | None) -> None:
     """Raises an exception if user doesn't exists
 
     Args:
     ----
-        user (UserDAO | None): the user
+        user (BaseUserDAO | None): the user
 
     Raises:
     ------
-        UserNotFoundException: if the user doesn't exists
+        BaseUserNotFoundException: if the user doesn't exists
 
     """
     if user is None:
-        raise UserNotFoundException
+        raise BaseUserNotFoundException
 
 
 def validate_user_update(result: UpdateResult) -> None:
@@ -50,10 +50,10 @@ def validate_user_update(result: UpdateResult) -> None:
         result (UpdateResult): update result
 
     Raises:
-        UserUpdateException: if the update was not done
+        BaseUserUpdateException: if the update was not done
     """
     if not result.acknowledged:
-        raise UserUpdateException
+        raise BaseUserUpdateException
 
 
 def validate_user_delete_count(result: DeleteResult) -> None:
@@ -65,11 +65,11 @@ def validate_user_delete_count(result: DeleteResult) -> None:
 
     Raises:
     ------
-        UserDeleteException: if the deletion was not done
+        BaseUserDeleteException: if the deletion was not done
 
     """
     if result.deleted_count == 0:
-        raise UserDeleteException
+        raise BaseUserDeleteException
 
 
 def validate_user_create(result: InsertOneResult) -> None:
@@ -81,8 +81,8 @@ def validate_user_create(result: InsertOneResult) -> None:
 
     Raises:
     ------
-        UserCreateException: if the insetion was not done
+        BaseUserCreateException: if the insetion was not done
 
     """
     if not result.acknowledged:
-        raise UserCreateException
+        raise BaseUserCreateException

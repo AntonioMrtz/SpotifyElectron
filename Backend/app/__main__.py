@@ -36,7 +36,7 @@ from app.spotify_electron.search import search_controller
 from app.spotify_electron.song import song_controller
 from app.spotify_electron.song.providers.song_service_provider import SongServiceProvider
 from app.spotify_electron.stream import stream_controller
-from app.spotify_electron.user import user_controller
+from app.spotify_electron.user import base_user_controller
 from app.spotify_electron.user.artist import artist_controller
 
 main_logger = SpotifyElectronLogger(LOGGING_MAIN).getLogger()
@@ -52,10 +52,12 @@ async def lifespan_handler(app: FastAPI) -> AsyncGenerator[None, Any]:
     main_logger.info("Spotify Electron Backend Started")
 
     environment = PropertiesManager.get_environment()
+    secret_key_sign = getattr(PropertiesManager, AppEnvironment.SECRET_KEY_SIGN_ENV_NAME)
     connection_uri = getattr(PropertiesManager, AppEnvironment.MONGO_URI_ENV_NAME)
 
     AuthConfig.init_auth_config(
         access_token_expire_minutes=AppAuthConfig.ACCESS_TOKEN_EXPIRE_MINUTES,
+        secret_key_sign=secret_key_sign,
         verification_algorithm=AppAuthConfig.VERTIFICATION_ALGORITHM,
         days_to_expire_cookie=AppAuthConfig.DAYS_TO_EXPIRE_COOKIE,
     )
@@ -68,7 +70,7 @@ async def lifespan_handler(app: FastAPI) -> AsyncGenerator[None, Any]:
     app.include_router(playlist_controller.router)
     app.include_router(song_controller.router)
     app.include_router(genre_controller.router)
-    app.include_router(user_controller.router)
+    app.include_router(base_user_controller.router)
     app.include_router(artist_controller.router)
     app.include_router(login_controller.router)
     app.include_router(search_controller.router)

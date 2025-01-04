@@ -269,30 +269,24 @@ export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
     event.preventDefault();
 
     try {
-      // TODO add song to playlist instead of fetching already present songs
-      const playlistData =
-        await PlaylistsService.getPlaylistPlaylistsNameGet(playlistName);
-      const newSongsPutPlaylist = [...playlistData.song_names];
-
       const formPhoto =
         formData.photo && formData.photo.includes('http') ? formData.photo : '';
 
       const formDescription = formData.description;
 
       if (formData.name !== playlistName && formData.name !== '') {
-        PlaylistsService.updatePlaylistPlaylistsNamePut(
+        PlaylistsService.updatePlaylistMetadataPlaylistsNamePut(
           playlistName,
+          formData.name,
           formPhoto,
           formDescription,
-          newSongsPutPlaylist,
-          formData.name,
         );
       } else {
-        PlaylistsService.updatePlaylistPlaylistsNamePut(
+        PlaylistsService.updatePlaylistMetadataPlaylistsNamePut(
           playlistName,
+          null,
           formPhoto,
           formDescription,
-          newSongsPutPlaylist,
         );
       }
 
@@ -304,7 +298,6 @@ export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
           refreshSidebarData();
           navigate(`/playlist/${formData.name}`, { replace: true });
         }, 500);
-        refreshPlaylistData();
         return;
       }
 

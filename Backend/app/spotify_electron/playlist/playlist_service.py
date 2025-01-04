@@ -162,11 +162,10 @@ def create_playlist(
 
 def update_playlist_metadata(  # noqa: C901
     name: str,
+    token: TokenData,
     new_name: str | None = None,
     photo: str | None = None,
     description: str | None = None,
-    *,
-    token: TokenData,
 ) -> None:
     """
     Updates specified fields of a playlist's metadata.

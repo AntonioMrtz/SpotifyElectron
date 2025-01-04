@@ -31,28 +31,27 @@ export class PlaylistsService {
         });
     }
     /**
-     * Update Playlist
-     * Update playlist
+     * Update Playlist Metadata
+     * Update playlist metadata
      *
      * Args:
-     * photo (str): playlist new photo
-     * description (str): playlist new description
-     * song_names (list[str], optional): playlist new song names. Defaults to Body(...).
-     * new_name (str | None, optional): playlist new name. Defaults to None.
+     * name (str): playlist name
+     * new_name (str | None): new playlist name
+     * photo (str | None): new photo URL
+     * description (str | None): new description
+     * token (TokenData): User authentication token
      * @param name
+     * @param newName
      * @param photo
      * @param description
-     * @param requestBody
-     * @param newName
      * @returns any Successful Response
      * @throws ApiError
      */
-    public static updatePlaylistPlaylistsNamePut(
+    public static updatePlaylistMetadataPlaylistsNamePut(
         name: string,
-        photo: string,
-        description: string,
-        requestBody: Array<string>,
         newName?: (string | null),
+        photo?: (string | null),
+        description?: (string | null),
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'PUT',
@@ -61,12 +60,10 @@ export class PlaylistsService {
                 'name': name,
             },
             query: {
+                'new_name': newName,
                 'photo': photo,
                 'description': description,
-                'new_name': newName,
             },
-            body: requestBody,
-            mediaType: 'application/json',
             errors: {
                 422: `Validation Error`,
             },

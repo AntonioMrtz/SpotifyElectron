@@ -11,7 +11,7 @@ class AppInfo:
     TITLE = "Spotify Electron Backend API"
     DESCRIPTION = "API created with Python FastAPI to serve\
           as backend for Spotify Electron music streaming Desktop App"
-    VERSION = "2.0.0"
+    VERSION = "2.0.1"
     CONTACT_NAME = "Antonio Martínez Fernández"
     CONTACT_URL = "https://github.com/AntonioMrtz"
     CONTACT_EMAIL = "antoniomartinezfernandez17@gmail.com"
@@ -70,6 +70,7 @@ class AppEnvironment:
     ARCHITECTURE_ENV_NAME = "ARCH"
 
     DEFAULT_ARCHITECTURE = AppArchitecture.ARCH_BLOB
+    SECRET_KEY_SIGN_ENV_NAME = "SECRET_KEY_SIGN"
     MONGO_URI_ENV_NAME = "MONGO_URI"
     SERVERLESS_URL_ENV_NAME = "SERVERLESS_FUNCTION_URL"
     ENV_VALUE_ENV_NAME = "ENV_VALUE"

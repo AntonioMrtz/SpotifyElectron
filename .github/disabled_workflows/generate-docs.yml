@@ -30,6 +30,7 @@ jobs:
           python generate-docs.py
         env:
             MONGO_URI : ${{ secrets.MONGO_URI }}
+            SECRET_KEY_SIGN : none
             SERVERLESS_FUNCTION_URL : none
             ARCH : BLOB
             ENV_VALUE : TEST

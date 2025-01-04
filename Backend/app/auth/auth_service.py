@@ -28,10 +28,10 @@ from app.exceptions.base_exceptions_schema import BadParameterException
 from app.logging.logging_constants import LOGGING_AUTH_SERVICE
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.login.login_schema import InvalidCredentialsLoginException
-from app.spotify_electron.user.user.user_schema import (
-    UserDTO,
-    UserNotFoundException,
-    UserServiceException,
+from app.spotify_electron.user.base_user_schema import (
+    BaseUserDTO,
+    BaseUserNotFoundException,
+    BaseUserServiceException,
 )
 from app.spotify_electron.utils.validations.validation_utils import validate_parameter
 
@@ -132,7 +132,7 @@ def get_jwt_token_data(
 
 def get_current_user(
     token: TokenData,
-) -> UserDTO:
+) -> BaseUserDTO:
     """Get current user from JWT Token
 
     Args:
@@ -141,7 +141,7 @@ def get_current_user(
 
     Raises:
     ------
-        UserNotFoundException: token user not found
+        BaseUserNotFoundException: token user not found
         JWTGetUserException: if error while retrieving user from token
     Returns:
         Artist | User: the user or artist associated with the JWT Token
@@ -151,9 +151,9 @@ def get_current_user(
         jwt_username = token.username
 
         user = base_user_service.get_user(jwt_username)
-    except UserNotFoundException as exception:
+    except BaseUserNotFoundException as exception:
         auth_service_logger.exception(f"User {jwt_username} not found")
-        raise UserNotFoundException from exception
+        raise BaseUserNotFoundException from exception
     except Exception as exception:
         auth_service_logger.exception(f"Unexpected exception getting user from token {token}")
         raise JWTGetUserException from exception
@@ -218,7 +218,7 @@ def login_user(name: str, password: str) -> str:
     ------
         InvalidCredentialsLoginException: bad user credentials
         VerifyPasswordException: failing authenticating user and password
-        UserNotFoundException: user doesn't exists
+        BaseUserNotFoundException: user doesn't exists
         UnexpectedLoginUserException: unexpected error during user login
 
     Returns:
@@ -252,10 +252,10 @@ def login_user(name: str, password: str) -> str:
     except CreateJWTException as exception:
         auth_service_logger.exception(f"Error creating JWT Token from data: {jwt_data}")
         raise VerifyPasswordException from exception
-    except UserNotFoundException as exception:
+    except BaseUserNotFoundException as exception:
         auth_service_logger.exception(f"User {name} doesn't exists")
-        raise UserNotFoundException from exception
-    except UserServiceException as exception:
+        raise BaseUserNotFoundException from exception
+    except BaseUserServiceException as exception:
         auth_service_logger.exception(
             f"Unexpected error in User service while login user: {name}"
         )
@@ -276,7 +276,7 @@ def login_user_with_token(raw_token: str) -> None:
 
     Raises:
         JWTValidationException: invalid JWT credentials
-        UserNotFoundException: user doesn't exists
+        BaseUserNotFoundException: user doesn't exists
         UnexpectedLoginUserException: unexpected error during user login
     """
     try:
@@ -288,10 +288,10 @@ def login_user_with_token(raw_token: str) -> None:
     except (JWTValidationException, BadJWTTokenProvidedException) as exception:
         auth_service_logger.exception(f"Error validating jwt token data: {raw_token}")
         raise JWTValidationException from exception
-    except UserNotFoundException as exception:
+    except BaseUserNotFoundException as exception:
         auth_service_logger.exception(f"User {token_data.username} not found")
-        raise UserNotFoundException from exception
-    except UserServiceException as exception:
+        raise BaseUserNotFoundException from exception
+    except BaseUserServiceException as exception:
         auth_service_logger.exception(
             f"Unexpected error in User service while auto login user: {token_data.username}"
         )

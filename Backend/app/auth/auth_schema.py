@@ -2,8 +2,6 @@
 Authentication schema for domain model
 """
 
-import binascii
-import os
 from dataclasses import dataclass
 
 from app.exceptions.base_exceptions_schema import SpotifyElectronException
@@ -24,7 +22,9 @@ class TokenData:
 
 
 class FakeRequest:
-    """Fake Request Object for bypassing authentication token HTTP incoming format"""
+    """Fake Request Object for bypassing authentication token HTTP incoming format
+    TODO this must go with https://trello.com/c/rSvoOwPn/452-jwt-auth-backend-performance-improvements
+    """
 
     headers: dict[str, str] = {}
 
@@ -45,6 +45,7 @@ class AuthConfig:
     def init_auth_config(
         cls,
         verification_algorithm: str,
+        secret_key_sign: str,
         access_token_expire_minutes: int,
         days_to_expire_cookie: int,
     ) -> None:
@@ -52,12 +53,12 @@ class AuthConfig:
 
         Args:
             verification_algorithm (str): JWT verification algorithm
+            secret_key_sign (str): 32 byte key(16 characters) for signing JWT Tokens that\
+                  will authenticate the user
             access_token_expire_minutes (int): minutes until the JWT expires
             days_to_expire_cookie (int): days until cookies expire
         """
-        random_bytes = os.urandom(16)
-        hex_string = binascii.hexlify(random_bytes).decode("utf-8")
-        cls.SIGNING_SECRET_KEY = hex_string
+        cls.SIGNING_SECRET_KEY = secret_key_sign
 
         cls.VERTIFICATION_ALGORITHM = verification_algorithm
         cls.ACCESS_TOKEN_EXPIRE_MINUTES = access_token_expire_minutes

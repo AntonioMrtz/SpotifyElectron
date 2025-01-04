@@ -15,5 +15,5 @@ OpenAPI is a standard for describing and documenting APIs. It uses schemas to de
 ## Generate OpenAPI Client (Frontend)
 
 1. Go to `Electron/`
-2. Install app dependencies with `npm run build && npm install`
+2. Install app dependencies with  `npm install && npm run build`
 3. Run `npm run generate-openapi-client` for generating code for backend requests based on its endpoints.

@@ -14,6 +14,22 @@ import app.auth.auth_service as auth_service
 import app.spotify_electron.user.base_user_service as base_user_service
 import app.spotify_electron.user.user.user_service as user_service
 from app.auth.auth_schema import VerifyPasswordException
+from app.spotify_electron.user.user.user_schema import (
+    UserAlreadyExistsException,
+    UserBadNameException,
+    UserBadParametersException,
+    UserCreateException,
+    UserDAO,
+    UserDeleteException,
+    UserDTO,
+    UserGetPasswordException,
+    UserNotFoundException,
+    UserRepositoryException,
+    UserServiceException,
+    UserUpdateException,
+    get_user_dao_from_document,
+    get_user_dto_from_dao,
+)
 from tests.test_API.api_test_user import create_user, delete_user, get_user
 from tests.test_API.api_token import get_user_jwt_header
 
@@ -122,6 +138,111 @@ def test_check_encrypted_password_different():
     with pytest.raises(VerifyPasswordException):
         auth_service.verify_password(password, generated_password)
     base_user_service.delete_user(name)
+
+
+def test_get_user_dao_from_document():
+    document = {
+        "name": "test_user",
+        "photo": "https://photo",
+        "register_date": "2024-11-30T12:00:00",
+        "password": b"securepassword",
+        "playback_history": ["song1", "song2"],
+        "playlists": ["playlist1", "playlist2"],
+        "saved_playlists": ["saved_playlist1"],
+    }
+
+    user_dao = get_user_dao_from_document(document)
+
+    assert isinstance(user_dao, UserDAO)
+    assert user_dao.name == "test_user"
+    assert user_dao.photo == "https://photo"
+    assert user_dao.register_date == "2024-11-30T12:00:00"
+    assert user_dao.password == b"securepassword"
+    assert user_dao.playback_history == ["song1", "song2"]
+    assert user_dao.playlists == ["playlist1", "playlist2"]
+    assert user_dao.saved_playlists == ["saved_playlist1"]
+
+
+def test_get_user_dto_from_dao():
+    user_dao = UserDAO(
+        name="test_user",
+        photo="https://photo",
+        register_date="2024-11-30T12:00:00",
+        password=b"securepassword",
+        playback_history=["song1", "song2"],
+        playlists=["playlist1", "playlist2"],
+        saved_playlists=["saved_playlist1"],
+    )
+
+    user_dto = get_user_dto_from_dao(user_dao)
+
+    assert isinstance(user_dto, UserDTO)
+    assert user_dto.name == "test_user"
+    assert user_dto.photo == "https://photo"
+    assert user_dto.register_date == "2024-11-30T12:00:00"
+    assert user_dto.playback_history == ["song1", "song2"]
+    assert user_dto.playlists == ["playlist1", "playlist2"]
+    assert user_dto.saved_playlists == ["saved_playlist1"]
+
+
+def test_user_repository_exception():
+    with pytest.raises(UserRepositoryException) as exc_info:
+        raise UserRepositoryException()
+    assert str(exc_info.value) == UserRepositoryException.ERROR
+
+
+def test_user_not_found_exception():
+    with pytest.raises(UserNotFoundException) as exc_info:
+        raise UserNotFoundException()
+    assert str(exc_info.value) == UserNotFoundException.ERROR
+
+
+def test_user_already_exists_exception():
+    with pytest.raises(UserAlreadyExistsException) as exc_info:
+        raise UserAlreadyExistsException()
+    assert str(exc_info.value) == UserAlreadyExistsException.ERROR
+
+
+def test_user_bad_name_exception():
+    with pytest.raises(UserBadNameException) as exc_info:
+        raise UserBadNameException()
+    assert str(exc_info.value) == UserBadNameException.ERROR
+
+
+def test_user_create_exception():
+    with pytest.raises(UserCreateException) as exc_info:
+        raise UserCreateException()
+    assert str(exc_info.value) == UserCreateException.ERROR
+
+
+def test_user_delete_exception():
+    with pytest.raises(UserDeleteException) as exc_info:
+        raise UserDeleteException()
+    assert str(exc_info.value) == UserDeleteException.ERROR
+
+
+def test_user_update_exception():
+    with pytest.raises(UserUpdateException) as exc_info:
+        raise UserUpdateException()
+    assert str(exc_info.value) == UserUpdateException.ERROR
+
+
+def test_user_bad_parameters_exception():
+    with pytest.raises(UserBadParametersException) as exc_info:
+        raise UserBadParametersException()
+    assert str(exc_info.value) == UserBadParametersException.ERROR
+
+
+def test_user_get_password_exception():
+    with pytest.raises(UserGetPasswordException) as exc_info:
+        raise UserGetPasswordException()
+    assert str(exc_info.value) == UserGetPasswordException.ERROR
+
+
+def test_user_service_exception():
+    with pytest.raises(UserServiceException) as exc_info:
+        raise UserServiceException()
+    assert str(exc_info.value) == UserServiceException.ERROR
 
 
 # executes after all tests

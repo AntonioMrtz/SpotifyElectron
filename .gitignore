@@ -158,6 +158,7 @@ Electron/.erb/dll/**
 # release
 Electron/release/build/**
 Electron/release/app/dist/**
+release_temp/
 
 
 #python

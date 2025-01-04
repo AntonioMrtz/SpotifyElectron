@@ -4,6 +4,7 @@ In this document we will cover the file structure of the Backend for Spotify Ele
 
 ## 🈴 App
 
+- 📁 Auth related schemas and services.
 - 📁 Common. Handles common logic for all app.
   - 📄 PropertiesManager: loads environment variables and its associated logic and stores global app states.
   - 📄 PropertiesMessageManager: loads and store common response messages.
@@ -11,8 +12,8 @@ In this document we will cover the file structure of the Backend for Spotify Ele
 - 📁 Exceptions. Custom base exceptions for our app.
 - 📁 Logging. Configure and provide logging formatting and handling for all app modules.
 - 📁 Middleware. Stores the middlewares used in the app and its logic.
-- 📁 Patterns. Desing patterns schemas.
 - 📁 Resources. Common configuration `.ini`.
+- 📁 Tools. Backend related tools.
 - 📁 Spotify_electron: main folder for our bussiness logic.
   - 📁 Playlist. We will use playlist as an example but this apply to the whole domain model.
     - 📄 Controller. Router used by FastAPI, it handles the incoming HTTP Requests. Upon recieving HTTP Request it delegates into the service layer.

@@ -1,6 +1,6 @@
 {
   "name": "spotify-electron",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Spotify Electron is a cross-platform music streaming desktop app made with Electron-React frontend and Python-FastAPI-AWS Backend. The goal is to reproduce the original Spotify functionality while adding new ones like uploading songs",
   "author": {
     "name": "Antonio Martinez Fernandez",
@@ -21,7 +21,6 @@
     "format:check": "prettier src/ --check --ignore-path .prettierignore",
     "package": "ts-node ./.erb/scripts/clean.js dist && npm run build && electron-builder build --publish never",
     "package:win": "ts-node ./.erb/scripts/clean.js dist && npm run build && electron-builder build --publish never --win",
-    "package:linux:deb": "ts-node ./.erb/scripts/clean.js dist && npm run build && electron-builder build --publish never --linux deb",
     "package:linux:appimage": "ts-node ./.erb/scripts/clean.js dist && npm run build && electron-builder build --publish never --linux appimage",
     "rebuild": "electron-rebuild --parallel --types prod,dev,optional --module-dir release/app",
     "start": "ts-node ./.erb/scripts/check-port-in-use.js && npm run start:renderer",

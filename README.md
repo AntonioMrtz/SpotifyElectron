@@ -27,7 +27,7 @@ Check out our [website](https://antoniomrtz.github.io/SpotifyElectron_Web/). Con
 
 ## 📚 Docs
 
-Check the [project documentation](https://antoniomrtz.github.io/SpotifyElectron/).
+Check the [project documentation](https://antoniomrtz.github.io/SpotifyElectron_Web/docs/).
 
 ## 🔽 Download Installer
 

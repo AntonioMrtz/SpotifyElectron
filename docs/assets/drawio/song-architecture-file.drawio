@@ -64,7 +64,7 @@
         <mxCell id="1slNe64gq0bpDraKGNJo-20" value="(3) Convert encoded base64 byte song into an actual mp3 file. The file will be stored in the S3 Bucket" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="592.5" y="585" width="170" height="95" as="geometry" />
         </mxCell>
-        <mxCell id="1slNe64gq0bpDraKGNJo-21" value="(5) On incoming user HTTP requests for&lt;br&gt;playing a song backend will retrieve the url asociated to it. This url is embeded into the frontend music player" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+        <mxCell id="1slNe64gq0bpDraKGNJo-21" value="(5) On incoming user HTTP requests for&lt;br&gt;playing a song backend will retrieve the url asociated to it. This url is embedded into the frontend music player" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="39.5" y="570" width="170" height="95" as="geometry" />
         </mxCell>
       </root>

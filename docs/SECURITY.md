@@ -13,7 +13,7 @@
    - Steps to reproduce the issue.
    - Potential impact of the vulnerability.
    - Suggested mitigation (if applicable).
-   
+
 2. Email your report to: **antoniomartinezfernandez17@gmail.com**.
 
 ### What to Expect:

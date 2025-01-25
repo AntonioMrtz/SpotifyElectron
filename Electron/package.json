@@ -232,8 +232,8 @@
     "url": "https://github.com/AntonioMrtz/SpotifyElectron"
   },
   "devEngines": {
-    "node": ">=14.x",
-    "npm": ">=7.x"
+    "node": ">=20.x",
+    "npm": ">=10.x"
   },
   "electronmon": {
     "patterns": [

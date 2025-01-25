@@ -67,6 +67,7 @@ jobs:
         echo "The version being used is: $VERSION"  # Check if VERSION is set correctly
 
     - name: Build Docker Image
+      working-directory: Backend
       run: |
         if [ -z "$VERSION" ]; then
           echo "ERROR: VERSION is empty. Exiting..."

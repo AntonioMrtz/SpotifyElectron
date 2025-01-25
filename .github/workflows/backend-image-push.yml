@@ -18,7 +18,7 @@ on:
         default: 'v0.00'
 
 jobs:
-  build:
+  build-and-push-image:
     runs-on: ubuntu-latest
     if: |
       (startsWith(github.head_ref, 'release/') && github.event.pull_request.merged == true) ||
@@ -39,14 +39,11 @@ jobs:
       id: get_version
       run: |
         if [ -z "${{ github.event.inputs.version }}" ]; then
-          # Extract branch name after "refs/heads/"
-          BRANCH_NAME=${GITHUB_REF##*/}
+          # Get the name of the merged branch (this is the source of the PR)
+          BRANCH_NAME=${{ github.event.pull_request.head.ref }}
 
-          # Remove the "release/" prefix and ensure no trailing 'v'
+          # Remove the "release/" prefix
           VERSION=${BRANCH_NAME#release/}  # Extract version after "release/" prefix
-
-          # Optionally remove 'v' from version if needed (e.g., 'release/v2.01' becomes '2.01')
-          VERSION="${VERSION#v}"
         else
           # Use version from manual input if provided
           VERSION="${{ github.event.inputs.version }}"

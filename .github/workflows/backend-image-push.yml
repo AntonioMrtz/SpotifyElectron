@@ -31,6 +31,13 @@ on:
       - synchronize     # Trigger when a commit is added or pushed to the PR
       - reopened        # Trigger when a previously closed PR is reopened
 
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version for the Docker Image'
+        required: true
+        default: ''
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -50,17 +57,22 @@ jobs:
     - name: Get version number
       id: get_version
       run: |
-        # Check if a manual version is provided from the workflow_dispatch input
         if [ -z "${{ github.event.inputs.version }}" ]; then
-          BRANCH_NAME=${GITHUB_REF##*/}  # Get branch name from GITHUB_REF
+          # Extract branch name after "refs/heads/"
+          BRANCH_NAME=${GITHUB_REF##*/}
+
+          # Remove the "release/" prefix and ensure no trailing 'v'
           VERSION=${BRANCH_NAME#release/}  # Extract version after "release/" prefix
-          VERSION="${VERSION#v}"  # Optionally remove 'v' from version if needed
+
+          # Optionally remove 'v' from version if needed (e.g., 'release/v2.01' becomes '2.01')
+          VERSION="${VERSION#v}"
         else
-          VERSION="${{ github.event.inputs.version }}"  # Use version from workflow_dispatch input
+          # Use version from manual input if provided
+          VERSION="${{ github.event.inputs.version }}"
         fi
 
         echo "Version: $VERSION"
-        echo "VERSION=$VERSION" >> $GITHUB_ENV  # Setting the version for future steps
+        echo "VERSION=$VERSION" >> $GITHUB_ENV  # Set version as environment variable for further use
 
     - name: Verify Version
       run: |

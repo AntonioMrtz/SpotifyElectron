@@ -23,7 +23,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true  # Run job only if the PR is merged
+    if: |
+      github.event.pull_request.merged == true ||
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.version == '')
 
     steps:
 

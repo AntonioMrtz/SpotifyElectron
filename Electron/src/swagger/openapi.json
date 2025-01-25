@@ -12,7 +12,7 @@
       "name": "Attribution-NonCommercial-ShareAlike 4.0 International",
       "url": "https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es"
     },
-    "version": "2.0.1"
+    "version": "2.0.2"
   },
   "paths": {
     "/playlists/{name}": {

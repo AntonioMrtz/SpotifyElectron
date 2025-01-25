@@ -97,8 +97,7 @@ def get_stream_audio_data(range_header: str | None, name: str) -> StreamAudioCon
             "accept-ranges": "bytes",
             "content-encoding": "identity",
             "access-control-expose-headers": (
-                "Content-type, Accept-ranges, Content-length, "
-                "Content-range, Content-encoding"
+                "Content-type, Accept-ranges, Content-length, Content-range, Content-encoding"
             ),
         }
 

@@ -8,7 +8,12 @@ jobs:
   ruff-format-check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: chartboost/ruff-action@v1
+      - name: Repository checkout
+        uses: actions/checkout@v4
+
+      - name: Run ruff format check
+        uses: astral-sh/ruff-action@v3
         with:
+          version: "0.9.3"
+          src: "./Backend"
           args: "format --check"

@@ -526,8 +526,7 @@ def get_user_playlists(user_name: str) -> list[PlaylistDTO]:
         raise BaseUserServiceException from exception
     except Exception as exception:
         base_users_service_logger.exception(
-            f"Unexpected error in User Service getting playlists created "
-            f"by user {user_name}"
+            f"Unexpected error in User Service getting playlists created by user {user_name}"
         )
         raise BaseUserServiceException from exception
     else:

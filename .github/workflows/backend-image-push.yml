@@ -5,7 +5,7 @@ name: Build and Push Backend Docker Image
 # Version is obtained from:
 # - Manually triggered: provided by the user as required input
 # - Obtained from merged release/* branch. Version will be obtained extracting the version
-#   number after release/ sufix. Example: release/2.01 -> version: 2.01
+#   number after release/ sufix. Example: release/v2.01 -> version: v2.01
 
 on:
   pull_request:
@@ -15,7 +15,7 @@ on:
       version:
         description: 'Version for the Docker Image'
         required: true
-        default: ''
+        default: 'v0.00'
 
 jobs:
   build:

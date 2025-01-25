@@ -1,0 +1,71 @@
+name: Build and Push Backend Docker Image
+
+# Build and push docker image with backend with an associated version to Docker Hub.
+# Image name will be: antoniomrtz/spotify-electron:{{version}}
+# Version is obtained from:
+# - Manually triggered: provided by the user as required input
+# - Obtained from merged release/* branch. Version will be obtained extracting the version
+#   number after release/ sufix. Example: release/2.01 -> version: 2.01
+
+# ! TODO
+
+# on:
+#   pull_request:
+#     branches:
+#       - 'release/*'
+#     types:
+#       - closed
+# workflow_dispatch:
+#   inputs:
+#     version:
+#       description: 'Version for the Docker Image'
+#       required: true
+#       default: ''
+
+on:
+  pull_request:
+    branches:
+      - '*'
+    types:
+      - opened          # Trigger when a new PR is opened
+      - synchronize     # Trigger when a commit is added or pushed to the PR
+      - reopened        # Trigger when a previously closed PR is reopened
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    # ! TODO if: github.event.pull_request.merged == true  # Run job only if the PR is merged
+
+    steps:
+
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKER_USER }}
+        password: ${{ secrets.DOCKER_PAT }}
+
+    - name: Get version number
+      id: get_version
+      run: |
+        # Check if a manual version is provided from the workflow_dispatch input
+        if [ -z "${{ github.event.inputs.version }}" ]; then
+          BRANCH_NAME=${GITHUB_REF##*/}  # Get branch name from GITHUB_REF
+          VERSION=${BRANCH_NAME#release/}  # Extract version after "release/" prefix
+          VERSION="${VERSION#v}"  # Optionally remove 'v' from version if needed
+        else
+          VERSION="${{ github.event.inputs.version }}"  # Use version from workflow_dispatch input
+        fi
+
+        echo "Version: $VERSION"
+        echo "::set-output name=version::$VERSION"  # Set version for future steps
+
+    - name: Build Docker Image
+      run: |
+        docker build -t antoniomrtz/spotify-electron:${VERSION} .
+
+    - name: Push Docker Image
+      run: |
+        docker push antoniomrtz/spotify-electron:${VERSION}

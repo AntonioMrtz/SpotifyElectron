@@ -60,12 +60,28 @@ jobs:
         fi
 
         echo "Version: $VERSION"
-        echo "::set-output name=version::$VERSION"  # Set version for future steps
+        echo "VERSION=$VERSION" >> $GITHUB_ENV  # Setting the version for future steps
+
+    - name: Verify Version
+      run: |
+        echo "The version being used is: $VERSION"  # Check if VERSION is set correctly
 
     - name: Build Docker Image
       run: |
-        docker build -t ${{ secrets.DOCKER_USER }}/spotify-electron:${VERSION} .
+        if [ -z "$VERSION" ]; then
+          echo "ERROR: VERSION is empty. Exiting..."
+          exit 1
+        else
+          echo "Building Docker image with version: $VERSION"
+          docker build -t ${{ secrets.DOCKER_USER }}/spotify-electron:$VERSION .
+        fi
 
     - name: Push Docker Image
       run: |
-        docker push ${{ secrets.DOCKER_USER }}/spotify-electron:${VERSION}
+        if [ -z "$VERSION" ]; then
+          echo "ERROR: VERSION is empty. Exiting..."
+          exit 1
+        else
+          echo "Pushing Docker image with version: $VERSION"
+          docker push ${{ secrets.DOCKER_USER }}/spotify-electron:$VERSION
+        fi

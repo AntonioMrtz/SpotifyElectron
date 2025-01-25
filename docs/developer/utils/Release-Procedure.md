@@ -37,7 +37,6 @@ class AppInfo:
 * Create tag
 * Link code commit with release tag
 
-
 ## 3. Package app
 
 * Follow [packaging guide](../frontend/Package-app.md) using production backend URL and architecture.

@@ -135,24 +135,30 @@ def create_playlist(
 
 
 @router.put("/{name}")
-def update_playlist(  # noqa: PLR0913
+def update_playlist_metadata(
     name: str,
-    photo: str,
-    description: str,
-    token: Annotated[TokenData, Depends(JWTBearer())],
-    song_names: list[str] = Body(...),
     new_name: str | None = None,
+    photo: str | None = None,
+    description: str | None = None,
+    token: TokenData = Depends(JWTBearer()),
 ) -> Response:
-    """Update playlist
+    """Update playlist metadata
 
     Args:
-        photo (str): playlist new photo
-        description (str): playlist new description
-        song_names (list[str], optional): playlist new song names. Defaults to Body(...).
-        new_name (str | None, optional): playlist new name. Defaults to None.
+        name (str): playlist name
+        new_name (str | None): new playlist name
+        photo (str | None): new photo URL
+        description (str | None): new description
+        token (TokenData): User authentication token
     """
     try:
-        playlist_service.update_playlist(name, new_name, photo, description, song_names, token)
+        playlist_service.update_playlist_metadata(
+            token=token,
+            name=name,
+            new_name=new_name,
+            photo=photo,
+            description=description,
+        )
         return Response(None, HTTP_204_NO_CONTENT)
     except BadJWTTokenProvidedException:
         return Response(

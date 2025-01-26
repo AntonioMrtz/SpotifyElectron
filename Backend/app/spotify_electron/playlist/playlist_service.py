@@ -160,77 +160,75 @@ def create_playlist(
         playlist_service_logger.info(f"Playlist {name} created successfully")
 
 
-def update_playlist(  # noqa: PLR0913
+def update_playlist_metadata(  # noqa: C901
     name: str,
-    new_name: str | None,
-    photo: str,
-    description: str,
-    song_names: list[str],
     token: TokenData,
+    new_name: str | None = None,
+    photo: str | None = None,
+    description: str | None = None,
 ) -> None:
-    """Updates a playlist
+    """
+    Updates specified fields of a playlist's metadata.
 
     Args:
-    ----
-        name (str): name
-        new_name (str | None): new playlist name, optional
-        photo (str): thumbnail photo
-        description (str): description
-        song_names (list): list of song names
-        token (TokenData): token user info
+        name (str): The current name of the playlist.
+        new_name (str | None): The new name of the playlist, if provided.
+        photo (str | None): The new photo URL for the playlist, if provided.
+        description (str | None): The new description for the playlist, if provided.
+        token (TokenData): The token containing user information.
 
     Raises:
-    ------
-        PlaylistBadNameException: invalid playlist name
-        PlaylistNotFoundException: playlist doesn't exists
-        PlaylistServiceException: unexpected error while updating playlist
-
+        PlaylistBadNameException: If the playlist name (current or new) is invalid.
+        PlaylistNotFoundException: If the playlist does not exist.
+        UserUnauthorizedException: If the user is not authorized to update the playlist.
+        PlaylistServiceException: For unexpected errors during the update.
     """
     try:
         validate_playlist_name_parameter(name)
         validate_playlist_should_exists(name)
+        if new_name:
+            validate_playlist_name_parameter(new_name)
 
         playlist = playlist_repository.get_playlist(name)
-
         auth_service.validate_jwt_user_matches_user(token, playlist.owner)
 
-        if not new_name:
-            playlist_repository.update_playlist(
-                name, name, photo if "http" in photo else "", description, song_names
-            )
+        update_data = {}
+        if photo and "http" in photo:
+            update_data["photo"] = photo
+        if description:
+            update_data["description"] = description
+
+        if not update_data and not new_name:
             return
 
-        validate_playlist_name_parameter(new_name)
-        playlist_repository.update_playlist(
-            name,
-            new_name,
-            photo if "http" in photo else "",
-            description,
-            song_names,
-        )
+        playlist_repository.update_playlist_metadata(name, new_name=new_name, **update_data)
+        if new_name:
+            base_user_service.update_playlist_name(name, new_name)
 
-        base_user_service.update_playlist_name(name, new_name)
-    except PlaylistBadNameException as exception:
-        playlist_service_logger.exception(f"Bad Playlist Name Parameter: {name}")
-        raise PlaylistBadNameException from exception
-    except PlaylistNotFoundException as exception:
+    except PlaylistBadNameException:
+        playlist_service_logger.exception(
+            f"Invalid playlist name parameter for playlist: {name}"
+        )
+        raise
+    except PlaylistNotFoundException:
         playlist_service_logger.exception(f"Playlist not found: {name}")
-        raise PlaylistNotFoundException from exception
-    except UserUnauthorizedException as exception:
-        playlist_service_logger.exception(f"User is not the owner of playlist: {name}")
-        raise UserUnauthorizedException from exception
-    except PlaylistRepositoryException as exception:
-        playlist_service_logger.exception(
-            f"Unexpected error in Playlist Repository updating playlist: {name}"
-        )
-        raise PlaylistServiceException from exception
-    except Exception as exception:
-        playlist_service_logger.exception(
-            f"Unexpected error in Playlist Service updating playlist: {name}"
-        )
-        raise PlaylistServiceException from exception
+        raise
+    except UserUnauthorizedException:
+        playlist_service_logger.exception(f"User unauthorized to update playlist: {name}")
+        raise
+    except PlaylistRepositoryException as e:
+        playlist_service_logger.exception(f"Repository error while updating playlist: {name}")
+        raise PlaylistServiceException from e
+    except Exception as e:
+        playlist_service_logger.exception(f"Unexpected error while updating playlist: {name}")
+        raise PlaylistServiceException from e
     else:
-        playlist_service_logger.info(f"Playlist {name} updated successfully")
+        updated_fields = update_data.copy()
+        if new_name:
+            updated_fields["new_name"] = new_name
+        playlist_service_logger.info(
+            f"Playlist {name} updated successfully with fields: {updated_fields}"
+        )
 
 
 def delete_playlist(name: str) -> None:

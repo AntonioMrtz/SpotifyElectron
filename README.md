@@ -202,6 +202,7 @@ Check our [project goals and vision](docs/VISION.md).
                 <img src="https://avatars.githubusercontent.com/u/31601800?v=4" width="90" alt="berkaykrc" />
                 <br />
                 <sub><b>berkaykrc</b></sub>
+            </a>
         </td>
     </tr>
 </table>

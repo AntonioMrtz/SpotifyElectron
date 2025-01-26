@@ -1632,14 +1632,16 @@
           "health"
         ],
         "summary": "Health Check Endpoint",
-        "description": "Validates if the app has launched correctly\n\nReturns\n-------\n    Response 200 OK",
+        "description": "Validates if the app and its critical components are functioning correctly",
         "operationId": "get_health_health__get",
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "$ref": "#/components/schemas/HealthCheckResponse"
+                }
               }
             }
           }
@@ -1769,6 +1771,31 @@
         },
         "type": "object",
         "title": "HTTPValidationError"
+      },
+      "HealthCheckResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "details": {
+            "additionalProperties": {
+              "additionalProperties": {
+                "type": "string"
+              },
+              "type": "object"
+            },
+            "type": "object",
+            "title": "Details"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "details"
+        ],
+        "title": "HealthCheckResponse",
+        "description": "Class that represents response of health check"
       },
       "ValidationError": {
         "properties": {

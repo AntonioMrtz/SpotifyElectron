@@ -160,7 +160,7 @@ def create_playlist(
         playlist_service_logger.info(f"Playlist {name} created successfully")
 
 
-def update_playlist(  # noqa: PLR0913
+def update_playlist(
     name: str,
     new_name: str | None,
     photo: str,

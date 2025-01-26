@@ -17,9 +17,9 @@ jobs:
           token: ${{ secrets.PAT }}
 
       - name: Configure Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@3
         with:
-          python-version: 3.11
+          python-version: 3.12
 
       - name: Install dependencies and run OpenAPI Schema Generator
         working-directory: Backend/

@@ -1,11 +1,11 @@
-fastapi==0.109.1
+fastapi==0.115.7
 python-dotenv==0.21.0
 python-jose==3.3.0
-python-multipart==0.0.18
+python-multipart==0.0.20
 requests==2.32.0
-librosa==0.10.0.post2
-pymongo==4.8.0
+librosa==0.10.2.post1
+pymongo==4.10.0
 bcrypt==4.0.1
 httpx==0.24.1
-uvicorn==0.22.0
+uvicorn==0.34.0
 setuptools==72.1.0

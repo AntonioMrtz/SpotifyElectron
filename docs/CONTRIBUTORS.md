@@ -133,6 +133,12 @@ Me gustaría expresar mi más sincero agradecimiento a las siguientes personas p
                 <sub><b>PavlisinPhoto</b></sub>
             </a>
         </td>
+        <td align="center">
+            <a href="https://github.com/berkaykrc">
+                <img src="https://avatars.githubusercontent.com/u/31601800?v=4" width="90" alt="berkaykrc" />
+                <br />
+                <sub><b>berkaykrc</b></sub>
+        </td>
     </tr>
 </table>
 

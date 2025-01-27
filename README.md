@@ -197,5 +197,10 @@ Check our [project goals and vision](docs/VISION.md).
                 <sub><b>PavlisinPhoto</b></sub>
             </a>
         </td>
+        <td align="center">
+            <a href="https://github.com/berkaykrc">
+                <img src="https://avatars.githubusercontent.com/u/31601800?v=4" width="90" alt="berkaykrc" />
+                <br />
+                <sub><b>berkaykrc</b></sub>
     </tr>
 </table>

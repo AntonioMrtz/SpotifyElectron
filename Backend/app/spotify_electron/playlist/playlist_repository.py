@@ -95,7 +95,7 @@ def get_playlist(
         return playlist_dao
 
 
-def create_playlist(  # noqa: PLR0913
+def create_playlist(
     name: str,
     photo: str,
     upload_date: str,

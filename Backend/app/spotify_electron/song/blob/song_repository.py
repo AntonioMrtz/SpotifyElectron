@@ -66,7 +66,7 @@ def get_song(name: str) -> SongDAO:
         return song_dao
 
 
-def create_song(  # noqa: PLR0913
+def create_song(
     name: str, artist: str, duration: int, genre: Genre, photo: str, file: bytes
 ) -> None:
     """Create song

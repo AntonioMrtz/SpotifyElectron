@@ -135,7 +135,7 @@ def create_playlist(
 
 
 @router.put("/{name}")
-def update_playlist(  # noqa: PLR0913
+def update_playlist(
     name: str,
     photo: str,
     description: str,

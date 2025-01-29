@@ -16,7 +16,7 @@ def create_artist(name: str, photo: str, password: str) -> Response:
     return client.post(url)
 
 
-def update_artist(  # noqa: PLR0913
+def update_artist(
     name: str,
     photo: str,
     playlists: list[str],

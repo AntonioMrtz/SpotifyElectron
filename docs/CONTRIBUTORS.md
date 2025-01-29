@@ -120,7 +120,7 @@ Me gustaría expresar mi más sincero agradecimiento a las siguientes personas p
     </tr>
     <tr>
         <td align="center">
-            <a href="AlesSust">
+            <a href="https://github.com/AlesSust">
                 <img src="https://avatars.githubusercontent.com/u/59516393?v=4" width="90" alt="AlesSust" />
                 <br />
                 <sub><b>AlesSust</b></sub>

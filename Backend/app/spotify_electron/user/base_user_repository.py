@@ -34,7 +34,7 @@ def check_user_exists(name: str, collection: Collection) -> bool:
 
     Returns:
     -------
-        bool: if the user exsists
+        bool: if the user exists
 
     """
     try:

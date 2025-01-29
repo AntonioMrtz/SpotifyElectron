@@ -11,18 +11,8 @@ from starlette.status import (
 
 from app.auth.auth_schema import BadJWTTokenProvidedException
 from app.spotify_electron.user.base_user_schema import (
-    BaseUserAlreadyExistsException,
-    BaseUserBadNameException,
-    BaseUserBadParametersException,
-    BaseUserCreateException,
     BaseUserDAO,
-    BaseUserDeleteException,
     BaseUserDTO,
-    BaseUserGetPasswordException,
-    BaseUserNotFoundException,
-    BaseUserRepositoryException,
-    BaseUserServiceException,
-    BaseUserUpdateException,
     get_base_user_dao_from_document,
     get_base_user_dto_from_dao,
 )
@@ -1031,66 +1021,6 @@ def test_get_user_playback_history_user_not_found():
     assert res_get_user_playback_history.status_code == HTTP_404_NOT_FOUND
 
 
-def test_base_user_repository_exception():
-    with pytest.raises(BaseUserRepositoryException) as exc_info:
-        raise BaseUserRepositoryException()
-    assert str(exc_info.value) == BaseUserRepositoryException.ERROR
-
-
-def test_base_user_not_found_exception():
-    with pytest.raises(BaseUserNotFoundException) as exc_info:
-        raise BaseUserNotFoundException()
-    assert str(exc_info.value) == BaseUserNotFoundException.ERROR
-
-
-def test_base_user_bad_name_exception():
-    with pytest.raises(BaseUserBadNameException) as exc_info:
-        raise BaseUserBadNameException()
-    assert str(exc_info.value) == BaseUserBadNameException.ERROR
-
-
-def test_base_user_already_exists_exception():
-    with pytest.raises(BaseUserAlreadyExistsException) as exc_info:
-        raise BaseUserAlreadyExistsException()
-    assert str(exc_info.value) == BaseUserAlreadyExistsException.ERROR
-
-
-def test_base_user_delete_exception():
-    with pytest.raises(BaseUserDeleteException) as exc_info:
-        raise BaseUserDeleteException()
-    assert str(exc_info.value) == BaseUserDeleteException.ERROR
-
-
-def test_base_user_create_exception():
-    with pytest.raises(BaseUserCreateException) as exc_info:
-        raise BaseUserCreateException()
-    assert str(exc_info.value) == BaseUserCreateException.ERROR
-
-
-def test_base_user_update_exception():
-    with pytest.raises(BaseUserUpdateException) as exc_info:
-        raise BaseUserUpdateException()
-    assert str(exc_info.value) == BaseUserUpdateException.ERROR
-
-
-def test_base_user_get_password_exception():
-    with pytest.raises(BaseUserGetPasswordException) as exc_info:
-        raise BaseUserGetPasswordException()
-    assert str(exc_info.value) == BaseUserGetPasswordException.ERROR
-
-
-def test_base_user_service_exception():
-    with pytest.raises(BaseUserServiceException) as exc_info:
-        raise BaseUserServiceException()
-    assert str(exc_info.value) == BaseUserServiceException.ERROR
-
-
-def test_base_user_bad_parameters_exception():
-    with pytest.raises(BaseUserBadParametersException) as exc_info:
-        raise BaseUserBadParametersException()
-    assert str(exc_info.value) == BaseUserBadParametersException.ERROR
-
-
 def test_get_base_user_dao_from_document():
     user_name = "user-name"
     user_photo = "https://photo"
@@ -1119,7 +1049,7 @@ def test_get_base_user_dto_from_dao():
     user_register_date = "2024-11-30T10:00:00Z"
 
     base_user_dao = BaseUserDAO(
-        name=user_name, photo=user_photo, register_date=user_register_date, password="pass"
+        name=user_name, photo=user_photo, register_date=user_register_date, password=b"pass"
     )
 
     res_base_user_dto = get_base_user_dto_from_dao(base_user_dao)

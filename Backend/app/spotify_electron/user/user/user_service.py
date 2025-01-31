@@ -9,12 +9,15 @@ import app.spotify_electron.user.user.user_repository as user_repository
 import app.spotify_electron.user.validations.base_user_service_validations as base_user_service_validations  # noqa: E501
 from app.logging.logging_constants import LOGGING_USER_SERVICE
 from app.logging.logging_schema import SpotifyElectronLogger
+from app.spotify_electron.user.base_user_schema import (
+    BaseUserAlreadyExistsException,
+    BaseUserBadNameException,
+)
 from app.spotify_electron.user.user.user_schema import (
-    UserAlreadyExistsException,
+    BaseUserRepositoryException,
     UserBadNameException,
     UserDTO,
     UserNotFoundException,
-    UserRepositoryException,
     UserServiceException,
     get_user_dto_from_dao,
 )
@@ -58,13 +61,13 @@ def get_user(user_name: str) -> UserDTO:
         base_user_service_validations.validate_user_name_parameter(user_name)
         user = user_repository.get_user(user_name)
         user_dto = get_user_dto_from_dao(user)
-    except UserBadNameException as exception:
+    except BaseUserBadNameException as exception:
         user_service_logger.exception(f"Bad User Name Parameter: {user_name}")
         raise UserBadNameException from exception
     except UserNotFoundException as exception:
         user_service_logger.exception(f"User not found: {user_name}")
         raise UserNotFoundException from exception
-    except UserRepositoryException as exception:
+    except BaseUserRepositoryException as exception:
         user_service_logger.exception(
             f"Unexpected error in User Repository getting user: {user_name}"
         )
@@ -88,7 +91,7 @@ def create_user(user_name: str, photo: str, password: str) -> None:
         password (str): user password
 
     Raises:
-        UserAlreadyExistsException: if the user already exists
+        BaseUserAlreadyExistsException: if the user already exists
         UserBadNameException: if the user name is invalid
         UserServiceException: unexpected error while creating user
     """
@@ -107,13 +110,13 @@ def create_user(user_name: str, photo: str, password: str) -> None:
             password=hashed_password,
         )
         user_service_logger.info(f"User {user_name} created successfully")
-    except UserAlreadyExistsException as exception:
+    except BaseUserAlreadyExistsException as exception:
         user_service_logger.exception(f"User already exists: {user_name}")
-        raise UserAlreadyExistsException from exception
-    except UserBadNameException as exception:
+        raise BaseUserAlreadyExistsException from exception
+    except BaseUserBadNameException as exception:
         user_service_logger.exception(f"Bad User Name Parameter: {user_name}")
         raise UserBadNameException from exception
-    except UserRepositoryException as exception:
+    except BaseUserRepositoryException as exception:
         user_service_logger.exception(
             f"Unexpected error in User Repository creating user: {user_name}"
         )
@@ -144,7 +147,7 @@ def get_users(user_names: list[str]) -> list[UserDTO]:
         for user_name in user_names:
             users.append(get_user(user_name))
 
-    except UserRepositoryException as exception:
+    except BaseUserRepositoryException as exception:
         user_service_logger.exception(
             f"Unexpected error in User Repository getting users {user_names}"
         )
@@ -160,7 +163,7 @@ def get_users(user_names: list[str]) -> list[UserDTO]:
 
 
 def search_by_name(name: str) -> list[UserDTO]:
-    """Retrieve the users than match the name
+    """Retrieve the users that matchs the name
 
     Args:
         name (str): name to match
@@ -169,7 +172,7 @@ def search_by_name(name: str) -> list[UserDTO]:
         UserServiceException: unexpected error searching users that match a name
 
     Returns:
-        list[UserDTO]: users that match the name
+        list[UserDTO]: users that matchs the name
     """
     try:
         matched_items_names = base_user_repository.search_by_name(
@@ -177,7 +180,7 @@ def search_by_name(name: str) -> list[UserDTO]:
         )
 
         return get_users(matched_items_names)
-    except UserRepositoryException as exception:
+    except BaseUserRepositoryException as exception:
         user_service_logger.exception(
             f"Unexpected error in User Repository getting items by name {name}"
         )

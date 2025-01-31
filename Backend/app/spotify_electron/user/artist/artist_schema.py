@@ -6,6 +6,15 @@ from dataclasses import dataclass
 from typing import Any
 
 from app.spotify_electron.song.base_song_repository import get_artist_total_streams
+from app.spotify_electron.user.base_user_schema import (
+    BaseUserAlreadyExistsException,
+    BaseUserBadNameException,
+    BaseUserBadParametersException,
+    BaseUserGetPasswordException,
+    BaseUserNotFoundException,
+    BaseUserRepositoryException,
+    BaseUserServiceException,
+)
 from app.spotify_electron.user.user.user_schema import UserDAO, UserDTO
 
 
@@ -72,3 +81,66 @@ def get_artist_dto_from_dao(artist_dao: ArtistDAO) -> ArtistDTO:
         uploaded_songs=artist_dao.uploaded_songs,
         total_streams=artist_dao.total_streams,
     )
+
+
+class ArtistRepositoryException(BaseUserRepositoryException):
+    """Artist Repository Unexpected error"""
+
+    ERROR = "Error accessing Artist REPOSITORY"
+
+    def __init__(self, error: str = ERROR):
+        super().__init__(error)
+
+
+class ArtistNotFoundException(BaseUserNotFoundException):
+    """Artist not found"""
+
+    ERROR = "Artist not found"
+
+    def __init__(self, error: str = ERROR):
+        super().__init__(error)
+
+
+class ArtistBadNameException(BaseUserBadNameException):
+    """Bad name for artist"""
+
+    ERROR = "Bad parameters provided for artist"
+
+    def __init__(self, error: str = ERROR):
+        super().__init__(error)
+
+
+class ArtistAlreadyExistsException(BaseUserAlreadyExistsException):
+    """Exception raised when an Artist already exists"""
+
+    ERROR = "Artist already exists"
+
+    def __init__(self, error: str = ERROR):
+        super().__init__(error)
+
+
+class ArtistGetPasswordException(BaseUserGetPasswordException):
+    """Exception raised when there is an error getting artist password"""
+
+    ERROR = "Error getting Artist password"
+
+    def __init__(self, error: str = ERROR):
+        super().__init__(error)
+
+
+class ArtistServiceException(BaseUserServiceException):
+    """Exception raised when there is an unexpected error in artist service"""
+
+    ERROR = "Error accessing Artist Service"
+
+    def __init__(self, error: str = ERROR):
+        super().__init__(error)
+
+
+class ArtistBadParametersException(BaseUserBadParametersException):
+    """Exception raised when bad parameters are provided for an Artist"""
+
+    ERROR = "Bad parameters provided for Artist"
+
+    def __init__(self, error: str = ERROR):
+        super().__init__(error)

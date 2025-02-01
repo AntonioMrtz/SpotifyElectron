@@ -62,4 +62,4 @@ class LogPropertiesManager:
             bool: Returns if there's a valid log provided
 
         """
-        return self.__getattribute__(AppConfig.LOG_INI_FILE) is not None
+        return getattr(self, AppConfig.LOG_INI_FILE) is not None

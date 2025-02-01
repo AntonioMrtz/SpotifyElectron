@@ -12,7 +12,7 @@ def validate_song_data_exists(song_file: GridOut | None) -> None:
         song_file (GridOut): song data
 
     Raises:
-        SongGetFileException: if the song data doesn't exists
+        SongDataNotFoundException: if the song data doesn't exists
     """
     if song_file is None:
         raise SongDataNotFoundException

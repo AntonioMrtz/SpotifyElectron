@@ -20,7 +20,11 @@ from starlette.status import (
 
 import app.spotify_electron.song.base_song_service as base_song_service
 import app.spotify_electron.utils.json_converter.json_converter_utils as json_converter_utils
-from app.auth.auth_schema import BadJWTTokenProvidedException, TokenData
+from app.auth.auth_schema import (
+    BadJWTTokenProvidedException,
+    TokenData,
+    UserUnauthorizedException,
+)
 from app.auth.JWTBearer import JWTBearer
 from app.common.PropertiesMessagesManager import PropertiesMessagesManager
 from app.exceptions.base_exceptions_schema import JsonEncodeException
@@ -30,7 +34,6 @@ from app.spotify_electron.song.base_song_schema import (
     SongBadNameException,
     SongNotFoundException,
     SongServiceException,
-    SongUnAuthorizedException,
 )
 from app.spotify_electron.song.providers.song_service_provider import get_song_service
 from app.spotify_electron.user.user.user_schema import (
@@ -105,12 +108,6 @@ async def create_song(
     try:
         await get_song_service().create_song(name, genre, photo, readFile, token)
         return Response(None, HTTP_201_CREATED)
-    except BadJWTTokenProvidedException:
-        return Response(
-            status_code=HTTP_403_FORBIDDEN,
-            content=PropertiesMessagesManager.tokenInvalidCredentials,
-            headers={"WWW-Authenticate": "Bearer"},
-        )
     except GenreNotValidException:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
@@ -131,20 +128,26 @@ async def create_song(
             status_code=HTTP_400_BAD_REQUEST,
             content=PropertiesMessagesManager.songAlreadyExists,
         )
-    except UserNotFoundException:
-        return Response(
-            status_code=HTTP_404_NOT_FOUND,
-            content=PropertiesMessagesManager.userNotFound,
-        )
     except EncodingFileException:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
             content=PropertiesMessagesManager.songBadFile,
         )
-    except SongUnAuthorizedException:
+    except BadJWTTokenProvidedException:
+        return Response(
+            status_code=HTTP_403_FORBIDDEN,
+            content=PropertiesMessagesManager.tokenInvalidCredentials,
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    except UserUnauthorizedException:
         return Response(
             status_code=HTTP_403_FORBIDDEN,
             content=PropertiesMessagesManager.songCreateUnauthorizedUser,
+        )
+    except UserNotFoundException:
+        return Response(
+            status_code=HTTP_404_NOT_FOUND,
+            content=PropertiesMessagesManager.userNotFound,
         )
     except (Exception, SongServiceException):
         return Response(

@@ -3,7 +3,6 @@ Base User service for handling bussiness logic
 Redirects to the specific user type service for non common logic
 """
 
-import app.auth.auth_service as auth_service
 import app.spotify_electron.playlist.playlist_service as playlist_service
 import app.spotify_electron.song.base_song_service as base_song_service
 import app.spotify_electron.user.artist.artist_service as artist_service
@@ -15,6 +14,7 @@ from app.auth.auth_schema import (
     TokenData,
     UserUnauthorizedException,
 )
+from app.auth.auth_service_validations import validate_jwt_user_matches_user
 from app.logging.logging_constants import LOGGING_BASE_USERS_SERVICE
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.playlist.playlist_schema import (
@@ -169,7 +169,7 @@ def add_playback_history(user_name: str, song_name: str, token: TokenData) -> No
         base_user_service_validations.validate_user_name_parameter(user_name)
         validate_song_name_parameter(song_name)
         base_user_service_validations.validate_user_should_exists(user_name)
-        auth_service.validate_jwt_user_matches_user(token, user_name)
+        validate_jwt_user_matches_user(token, user_name)
 
         validate_song_should_exists(song_name)
 
@@ -234,7 +234,7 @@ def add_saved_playlist(user_name: str, playlist_name: str, token: TokenData) -> 
         base_user_service_validations.validate_user_name_parameter(user_name)
         validate_playlist_name_parameter(playlist_name)
         base_user_service_validations.validate_user_should_exists(user_name)
-        auth_service.validate_jwt_user_matches_user(token, user_name)
+        validate_jwt_user_matches_user(token, user_name)
         validate_playlist_should_exists(playlist_name)
 
         base_user_repository.add_saved_playlist(
@@ -297,7 +297,7 @@ def delete_saved_playlist(user_name: str, playlist_name: str, token: TokenData) 
         base_user_service_validations.validate_user_name_parameter(user_name)
         playlist_service.validate_playlist_name_parameter(playlist_name)
         base_user_service_validations.validate_user_should_exists(user_name)
-        auth_service.validate_jwt_user_matches_user(token, user_name)
+        validate_jwt_user_matches_user(token, user_name)
         playlist_service.validate_playlist_should_exists(playlist_name)
 
         base_user_repository.delete_saved_playlist(
@@ -355,7 +355,7 @@ def add_playlist_to_owner(user_name: str, playlist_name: str, token: TokenData) 
         base_user_service_validations.validate_user_name_parameter(user_name)
         validate_playlist_name_parameter(playlist_name)
         base_user_service_validations.validate_user_should_exists(user_name)
-        auth_service.validate_jwt_user_matches_user(token, user_name)
+        validate_jwt_user_matches_user(token, user_name)
         validate_playlist_should_exists(playlist_name)
 
         base_user_repository.add_playlist_to_owner(

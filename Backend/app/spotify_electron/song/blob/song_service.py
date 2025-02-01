@@ -19,7 +19,6 @@ from app.spotify_electron.song.base_song_schema import (
     SongNotFoundException,
     SongRepositoryException,
     SongServiceException,
-    SongUnAuthorizedException,
 )
 from app.spotify_electron.song.blob.song_schema import (
     SongDataNotFoundException,
@@ -110,14 +109,16 @@ async def create_song(  # noqa: C901
         UserNotFoundException: user doesn't exists
         EncodingFileException: error encoding file
         SongBadNameException: song bad name
-        SongUnAuthorizedException: song created by unauthorized user
+        UserUnauthorizedException: unauthorized user for creating song
+        SongAlreadyExistsException: song already exists
+        SongServiceException: unexpected error while creating song
     """
     artist = token.username
 
     try:
         validate_song_name_parameter(name)
         base_user_service_validations.validate_user_name_parameter(artist)
-        Genre.check_valid_genre(genre.value)
+        Genre.validate_genre(genre.value)
 
         validate_song_should_not_exists(name)
         validate_user_should_be_artist(artist)
@@ -154,7 +155,7 @@ async def create_song(  # noqa: C901
         song_service_logger.exception(
             f"User {artist} cannot create song {name} because hes not artist"
         )
-        raise SongUnAuthorizedException from exception
+        raise UserUnauthorizedException from exception
     except UserServiceException as exception:
         song_service_logger.exception(
             f"Unexpected error in User Service while creating song: {name}"

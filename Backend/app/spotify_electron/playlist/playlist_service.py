@@ -2,7 +2,6 @@
 Playlist service for handling business logic
 """
 
-import app.auth.auth_service as auth_service
 import app.spotify_electron.playlist.playlist_repository as playlist_repository
 import app.spotify_electron.song.validations.base_song_service_validations as base_song_service_validations  # noqa: E501
 import app.spotify_electron.user.base_user_service as base_user_service
@@ -11,6 +10,7 @@ from app.auth.auth_schema import (
     TokenData,
     UserUnauthorizedException,
 )
+from app.auth.auth_service_validations import validate_jwt_user_matches_user
 from app.logging.logging_constants import LOGGING_PLAYLIST_SERVICE
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.playlist.playlist_schema import (
@@ -160,7 +160,7 @@ def create_playlist(
         playlist_service_logger.info(f"Playlist {name} created successfully")
 
 
-def update_playlist(
+def update_playlist(  # noqa: PLR0917
     name: str,
     new_name: str | None,
     photo: str,
@@ -183,8 +183,8 @@ def update_playlist(
     ------
         PlaylistBadNameException: invalid playlist name
         PlaylistNotFoundException: playlist doesn't exists
+        UserUnauthorizedException: user is not the owner of playlist
         PlaylistServiceException: unexpected error while updating playlist
-
     """
     try:
         validate_playlist_name_parameter(name)
@@ -192,7 +192,7 @@ def update_playlist(
 
         playlist = playlist_repository.get_playlist(name)
 
-        auth_service.validate_jwt_user_matches_user(token, playlist.owner)
+        validate_jwt_user_matches_user(token, playlist.owner)
 
         if not new_name:
             playlist_repository.update_playlist(
@@ -244,8 +244,9 @@ def delete_playlist(name: str) -> None:
     ------
         PlaylistBadNameException: invalid playlist name
         PlaylistNotFoundException: playlist doesn't exists
+        UserUnauthorizedException: user is not the owner of playlist
+        UserNotFoundException: user doesn't exists
         PlaylistServiceException: unexpected error while deleting playlist
-
     """
     try:
         validate_playlist_name_parameter(name)

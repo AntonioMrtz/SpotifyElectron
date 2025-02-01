@@ -40,10 +40,10 @@ def test_get_genres_correct():
 
 def test_check_genre_valid():
     valid_genre = Genre.AMBIENT
-    assert Genre.check_valid_genre(valid_genre.value)
+    assert Genre.validate_genre(valid_genre.value)
 
 
 def test_check_genre_invalid():
     invalid_genre = "invalid_genre"
     with raises(GenreNotValidException):
-        Genre.check_valid_genre(invalid_genre)
+        Genre.validate_genre(invalid_genre)

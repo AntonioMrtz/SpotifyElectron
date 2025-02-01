@@ -46,12 +46,18 @@ class Genre(StrEnum):
     REGGAETON = "Reggaeton"
 
     @staticmethod
-    def check_valid_genre(genre: str) -> bool:
-        """Checks if the genre is valid and raises an exception if not"""
+    def validate_genre(genre: str) -> None:
+        """Checks if the genre is valid and raises an exception if not
+
+        Args:
+            genre (str): genre
+
+        Raises:
+            GenreNotValidException: invalid genre provided
+        """
         if genre not in {member.value for member in Genre}:
             genre_class_logger.exception(f"Genre {genre} is not a valid Genre")
             raise GenreNotValidException
-        return True
 
     @staticmethod
     def get_genre_string_value(genre: StrEnum) -> str:

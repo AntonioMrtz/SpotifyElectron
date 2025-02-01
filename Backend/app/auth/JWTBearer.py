@@ -1,7 +1,5 @@
 """JWT Token authentication and injection for endpoints"""
 
-from typing import Any
-
 from fastapi import Request
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
@@ -14,7 +12,7 @@ from app.auth.auth_schema import (
     JWTValidationException,
     TokenData,
 )
-from app.auth.auth_service import get_jwt_token_data
+from app.auth.auth_service import get_authorization_bearer_from_headers, get_jwt_token_data
 from app.logging.logging_constants import LOGGING_JWT_BEARER_AUTH
 from app.logging.logging_schema import SpotifyElectronLogger
 
@@ -46,7 +44,7 @@ class JWTBearer(HTTPBearer):
             jwt_bearer_logger.warning(
                 f"Request with no cookies {request}, getting JWT from Authentication Header"
             )
-            jwt_raw = self._get_authorization_bearer_from_headers(request.headers.raw)
+            jwt_raw = get_authorization_bearer_from_headers(request.headers.raw)
         else:
             jwt_raw = request.cookies.get(JWT_COOKIE_HEADER_FIELD_NAME)
 
@@ -65,19 +63,3 @@ class JWTBearer(HTTPBearer):
             raise BadJWTTokenProvidedException from exception
         else:
             return jwt_token_data
-
-    def _get_authorization_bearer_from_headers(
-        self, headers: list[tuple[bytes, Any]]
-    ) -> str | None:
-        """Get authorization bearer value from HTTP header 'authorization'
-
-        Args:
-            headers (list[tuple]): headers
-
-        Returns:
-            str | None: the authorization value
-        """
-        for key, value in headers:
-            if key == b"authorization":
-                return value.decode("utf-8")
-        return None

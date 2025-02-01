@@ -28,7 +28,7 @@ async def search_by_name(name: str) -> SearchResult:
         name (str): the name to match
 
     Raises:
-        BadParameterException: if the name is invalid
+        BadSearchParameterException: invalid name for searching
         SearchServiceException: unexpected error getting items by name
 
     Returns:

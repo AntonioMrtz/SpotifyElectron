@@ -97,6 +97,12 @@ def get_user(name: str, token: Annotated[TokenData, Depends(JWTBearer())]) -> Re
             status_code=HTTP_404_NOT_FOUND,
             content=PropertiesMessagesManager.userNotFound,
         )
+    except BadJWTTokenProvidedException:
+        return Response(
+            status_code=HTTP_403_FORBIDDEN,
+            content=PropertiesMessagesManager.tokenInvalidCredentials,
+            headers={"WWW-Authenticate": "Bearer"},
+        )
     except JsonEncodeException:
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
@@ -125,11 +131,6 @@ def create_user(name: str, photo: str, password: str) -> Response:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
             content=PropertiesMessagesManager.userBadName,
-        )
-    except BaseUserNotFoundException:
-        return Response(
-            status_code=HTTP_404_NOT_FOUND,
-            content=PropertiesMessagesManager.userNotFound,
         )
     except (Exception, BaseUserServiceException):
         return Response(

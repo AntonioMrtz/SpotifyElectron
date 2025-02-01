@@ -19,17 +19,21 @@ from starlette.status import (
 
 import app.spotify_electron.user.artist.artist_service as artist_service
 import app.spotify_electron.utils.json_converter.json_converter_utils as json_converter_utils
-from app.auth.auth_schema import TokenData, UserUnauthorizedException
+from app.auth.auth_schema import (
+    BadJWTTokenProvidedException,
+    TokenData,
+    UserUnauthorizedException,
+)
 from app.auth.JWTBearer import JWTBearer
 from app.common.PropertiesMessagesManager import PropertiesMessagesManager
 from app.exceptions.base_exceptions_schema import JsonEncodeException
 from app.spotify_electron.song.base_song_schema import SongBadNameException
-from app.spotify_electron.user.user.user_schema import (
-    UserAlreadyExistsException,
-    UserBadNameException,
-    UserNotFoundException,
-    UserServiceException,
+from app.spotify_electron.user.artist.artist_schema import (
+    ArtistBadNameException,
+    ArtistNotFoundException,
+    ArtistServiceException,
 )
+from app.spotify_electron.user.base_user_schema import BaseUserAlreadyExistsException
 
 router = APIRouter(
     prefix="/artists",
@@ -53,22 +57,28 @@ def get_artist(
 
         return Response(artist_json, media_type="application/json", status_code=HTTP_200_OK)
 
-    except UserBadNameException:
+    except ArtistBadNameException:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
             content=PropertiesMessagesManager.artistBadName,
         )
-    except UserNotFoundException:
+    except ArtistNotFoundException:
         return Response(
             status_code=HTTP_404_NOT_FOUND,
             content=PropertiesMessagesManager.artistNotFound,
+        )
+    except BadJWTTokenProvidedException:
+        return Response(
+            status_code=HTTP_403_FORBIDDEN,
+            content=PropertiesMessagesManager.tokenInvalidCredentials,
+            headers={"WWW-Authenticate": "Bearer"},
         )
     except JsonEncodeException:
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonEncodingError,
         )
-    except (Exception, UserServiceException):
+    except (Exception, ArtistServiceException):
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonInternalServerError,
@@ -91,17 +101,12 @@ def create_artist(
     try:
         artist_service.create_artist(name, photo, password)
         return Response(None, HTTP_201_CREATED)
-    except (UserBadNameException, UserAlreadyExistsException):
+    except (ArtistBadNameException, BaseUserAlreadyExistsException):
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
             content=PropertiesMessagesManager.artistBadName,
         )
-    except UserNotFoundException:
-        return Response(
-            status_code=HTTP_404_NOT_FOUND,
-            content=PropertiesMessagesManager.artistNotFound,
-        )
-    except (Exception, UserServiceException):
+    except (Exception, ArtistServiceException):
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonInternalServerError,
@@ -121,12 +126,12 @@ def get_artists(
         artists_json = json.dumps(artists_dict)
 
         return Response(artists_json, media_type="application/json", status_code=HTTP_200_OK)
-    except UserBadNameException:
+    except ArtistBadNameException:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
             content=PropertiesMessagesManager.artistBadName,
         )
-    except UserNotFoundException:
+    except ArtistNotFoundException:
         return Response(
             status_code=HTTP_404_NOT_FOUND,
             content=PropertiesMessagesManager.artistNotFound,
@@ -136,12 +141,18 @@ def get_artists(
             status_code=HTTP_403_FORBIDDEN,
             content=PropertiesMessagesManager.userUnauthorized,
         )
+    except BadJWTTokenProvidedException:
+        return Response(
+            status_code=HTTP_403_FORBIDDEN,
+            content=PropertiesMessagesManager.tokenInvalidCredentials,
+            headers={"WWW-Authenticate": "Bearer"},
+        )
     except JsonEncodeException:
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonEncodingError,
         )
-    except (Exception, UserServiceException):
+    except (Exception, ArtistServiceException):
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonInternalServerError,
@@ -171,12 +182,18 @@ def get_artist_songs(
             status_code=HTTP_403_FORBIDDEN,
             content=PropertiesMessagesManager.userUnauthorized,
         )
+    except BadJWTTokenProvidedException:
+        return Response(
+            status_code=HTTP_403_FORBIDDEN,
+            content=PropertiesMessagesManager.tokenInvalidCredentials,
+            headers={"WWW-Authenticate": "Bearer"},
+        )
     except JsonEncodeException:
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonEncodingError,
         )
-    except (Exception, UserServiceException):
+    except (Exception, ArtistServiceException):
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonInternalServerError,

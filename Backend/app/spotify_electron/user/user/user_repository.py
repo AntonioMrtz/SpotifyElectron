@@ -5,8 +5,11 @@ User repository for managing persisted data
 import app.spotify_electron.user.providers.user_collection_provider as user_collection_provider
 from app.logging.logging_constants import LOGGING_USER_REPOSITORY
 from app.logging.logging_schema import SpotifyElectronLogger
+from app.spotify_electron.user.base_user_schema import (
+    BaseUserCreateException,
+    BaseUserNotFoundException,
+)
 from app.spotify_electron.user.user.user_schema import (
-    UserCreateException,
     UserDAO,
     UserNotFoundException,
     UserRepositoryException,
@@ -38,7 +41,7 @@ def get_user(name: str) -> UserDAO:
         validate_user_exists(user)
         user_dao = get_user_dao_from_document(user)  # type: ignore
 
-    except UserNotFoundException as exception:
+    except BaseUserNotFoundException as exception:
         raise UserNotFoundException from exception
 
     except Exception as exception:
@@ -74,7 +77,7 @@ def create_user(name: str, photo: str, password: bytes, current_date: str) -> No
         result = user_collection_provider.get_user_collection().insert_one(user)
 
         validate_user_create(result)
-    except UserCreateException as exception:
+    except BaseUserCreateException as exception:
         user_repository_logger.exception(f"Error inserting User {user} in database")
         raise UserRepositoryException from exception
     except (UserRepositoryException, Exception) as exception:

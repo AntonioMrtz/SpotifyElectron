@@ -6,6 +6,7 @@ from starlette.status import (
     HTTP_200_OK,
     HTTP_201_CREATED,
     HTTP_202_ACCEPTED,
+    HTTP_400_BAD_REQUEST,
     HTTP_403_FORBIDDEN,
     HTTP_404_NOT_FOUND,
     HTTP_405_METHOD_NOT_ALLOWED,
@@ -62,9 +63,21 @@ def test_get_artist_correct(clear_test_data_db):
 
 def test_get_artist_not_found():
     name = "8232392323623823723"
+    photo = "https://photo"
+    password = "hola"
+
+    non_existent_artist = "non_existent_artist"
+
+    res_create_artist = create_artist(name=name, password=password, photo=photo)
+    assert res_create_artist.status_code == HTTP_201_CREATED
+
+    jwt_headers = get_user_jwt_header(username=name, password=password)
+
+    res_get_artist = get_artist(name=non_existent_artist, headers=jwt_headers)
+    assert res_get_artist.status_code == HTTP_404_NOT_FOUND
 
     res_delete_artist = delete_user(name=name)
-    assert res_delete_artist.status_code == HTTP_404_NOT_FOUND
+    assert res_delete_artist.status_code == HTTP_202_ACCEPTED
 
 
 def test_post_artist_correct(clear_test_data_db):
@@ -74,6 +87,21 @@ def test_post_artist_correct(clear_test_data_db):
 
     res_create_artist = create_artist(name=name, password=password, photo=photo)
     assert res_create_artist.status_code == HTTP_201_CREATED
+
+    res_delete_artist = delete_user(name=name)
+    assert res_delete_artist.status_code == HTTP_202_ACCEPTED
+
+
+def test_post_artist_already_exists(clear_test_data_db):
+    name = "8232392323623823723"
+    photo = "https://photo"
+    password = "hola"
+
+    res_create_artist = create_artist(name=name, password=password, photo=photo)
+    assert res_create_artist.status_code == HTTP_201_CREATED
+
+    res_create_artist = create_artist(name=name, password=password, photo=photo)
+    assert res_create_artist.status_code == HTTP_400_BAD_REQUEST
 
     res_delete_artist = delete_user(name=name)
     assert res_delete_artist.status_code == HTTP_202_ACCEPTED

@@ -67,90 +67,90 @@ def get_base_user_dto_from_dao(user_dao: BaseUserDAO) -> BaseUserDTO:
 
 
 class BaseUserRepositoryException(SpotifyElectronException):
-    """Repository Unexpected error"""
+    """Base Repository Unexpected error"""
 
-    ERROR = "Error accessing BaseUser REPOSITORY"
+    ERROR = "Error accessing User Repository"
 
-    def __init__(self):
-        super().__init__(self.ERROR)
+    def __init__(self, error: str = ERROR):
+        super().__init__(error)
 
 
 class BaseUserNotFoundException(SpotifyElectronException):
-    """BaseUser not found"""
+    """User not found"""
 
-    ERROR = "BaseUser not found"
+    ERROR = "User not found"
 
-    def __init__(self):
-        super().__init__(self.ERROR)
+    def __init__(self, error: str = ERROR):
+        super().__init__(error)
 
 
 class BaseUserBadNameException(SpotifyElectronException):
-    """Bad name"""
+    """Bad namefor user"""
 
-    ERROR = "Bad parameters provided for BaseUser"
+    ERROR = "Bad parameters provided for User"
 
-    def __init__(self):
-        super().__init__(self.ERROR)
+    def __init__(self, error: str = ERROR):
+        super().__init__(error)
 
 
 class BaseUserAlreadyExistsException(SpotifyElectronException):
-    """Exception raised when a BaseUser already exists"""
+    """Exception raised when user already exists"""
 
-    ERROR = "BaseUser already exists"
+    ERROR = "User already exists"
 
-    def __init__(self):
-        super().__init__(self.ERROR)
+    def __init__(self, error: str = ERROR):
+        super().__init__(error)
 
 
 class BaseUserDeleteException(SpotifyElectronException):
-    """Exception raised when there is an error deleting a BaseUser"""
+    """Exception raised when there is an error deleting a user"""
 
-    ERROR = "Error deleting BaseUser"
+    ERROR = "Error deleting user"
 
-    def __init__(self):
-        super().__init__(self.ERROR)
+    def __init__(self, error: str = ERROR):
+        super().__init__(error)
 
 
 class BaseUserCreateException(SpotifyElectronException):
-    """Exception raised when there is an error inserting a BaseUser"""
+    """Exception raised when there is an error inserting a user"""
 
-    ERROR = "Error inserting BaseUser"
+    ERROR = "Error inserting user"
 
-    def __init__(self):
-        super().__init__(self.ERROR)
+    def __init__(self, error: str = ERROR):
+        super().__init__(error)
 
 
 class BaseUserUpdateException(SpotifyElectronException):
-    """Exception raised when there is an error updating a BaseUser"""
+    """Exception raised when there is an error updating a user"""
 
-    ERROR = "Error updating BaseUser"
+    ERROR = "Error updating user"
 
-    def __init__(self):
-        super().__init__(self.ERROR)
+    def __init__(self, error: str = ERROR):
+        super().__init__(error)
 
 
 class BaseUserGetPasswordException(SpotifyElectronException):
-    """Exception raised when there is an error getting BaseUser password"""
+    """Exception raised when there is an error getting user password"""
 
-    ERROR = "Error getting BaseUser password"
+    ERROR = "Error getting user password"
 
-    def __init__(self):
-        super().__init__(self.ERROR)
+    def __init__(self, error: str = ERROR):
+        super().__init__(error)
 
 
 class BaseUserServiceException(SpotifyElectronException):
-    """Exception raised when there is an unexpected error in BaseUserService"""
+    """Exception raised when there is an unexpected error in user service"""
 
-    ERROR = "Error accessing BaseUser Service"
+    ERROR = "Error accessing base user Service"
 
-    def __init__(self):
-        super().__init__(self.ERROR)
+    def __init__(self, error: str = ERROR):
+        super().__init__(error)
 
 
 class BaseUserBadParametersException(SpotifyElectronException):
-    """Exception raised when bad parameters are provided for a BaseUser"""
+    """Exception raised when bad parameters are provided for a user"""
 
-    ERROR = "Bad parameters provided for BaseUser"
+    ERROR = "Bad parameters provided for user"
 
-    def __init__(self):
-        super().__init__(self.ERROR)
+    def __init__(self, error: str = ERROR):
+        super().__init__(error)

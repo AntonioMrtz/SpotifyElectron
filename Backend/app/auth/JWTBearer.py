@@ -60,9 +60,9 @@ class JWTBearer(HTTPBearer):
             jwt_raw = credentials.credentials
             auth_service.validate_jwt(jwt_raw)
             jwt_token_data = get_jwt_token_data(credentials.credentials)
-        except (JWTValidationException, Exception):
+        except (JWTValidationException, Exception) as exception:
             jwt_bearer_logger.exception(f"Request with invalid JWT {jwt_raw} {request}")
-            raise BadJWTTokenProvidedException
+            raise BadJWTTokenProvidedException from exception
         else:
             return jwt_token_data
 

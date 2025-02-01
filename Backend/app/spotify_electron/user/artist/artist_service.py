@@ -38,97 +38,6 @@ from app.spotify_electron.utils.date.date_utils import get_current_iso8601_date
 artist_service_logger = SpotifyElectronLogger(LOGGING_ARTIST_SERVICE).getLogger()
 
 
-def add_song_to_artist(artist_name: str, song_name: str) -> None:
-    """Add song to artist
-
-    Args:
-        artist_name (str): artist name
-        song_name (str): song name
-
-    Raises:
-        ArtistBadNameException: artist invalid name
-        ArtistNotFoundException: artist doesn't exists
-        SongBadNameException: song invalid name
-        ArtistServiceException: unexpected error adding song to artist
-    """
-    try:
-        base_user_service_validations.validate_user_name_parameter(artist_name)
-        validate_song_name_parameter(song_name)
-
-        artist_service_validations.validate_user_should_be_artist(artist_name)
-
-        artist_repository.add_song_to_artist(artist_name, song_name)
-
-    except BaseUserAlreadyExistsException as exception:
-        artist_service_logger.exception(f"Bad Artist Name Parameter: {artist_name}")
-        raise ArtistBadNameException from exception
-    except ArtistNotFoundException as exception:
-        artist_service_logger.exception(f"Artist not found: {artist_name}")
-        raise ArtistNotFoundException from exception
-    except SongBadNameException as exception:
-        artist_service_logger.exception(f"Bad Song Name Parameter: {song_name}")
-        raise SongBadNameException from exception
-    except UserUnauthorizedException as exception:
-        artist_service_logger.exception(f"User {artist_name} is not Artist")
-        raise UserUnauthorizedException from exception
-    except ArtistRepositoryException as exception:
-        artist_service_logger.exception(
-            f"Unexpected error adding song {song_name} to artist {artist_name}"
-        )
-        raise ArtistServiceException from exception
-    except Exception as exception:
-        artist_service_logger.exception(
-            f"Unexpected error in Artist service adding song {song_name} "
-            f"to artist {artist_name}"
-        )
-        raise ArtistServiceException from exception
-
-
-def delete_song_from_artist(artist_name: str, song_name: str) -> None:
-    """Remove song from artist
-
-    Args:
-        artist_name (str): artist name
-        song_name (str): song name
-
-    Raises:
-        ArtistBadNameException: artist invalid name
-        ArtistNotFoundException: artist doesn't exists
-        SongBadNameException: song invalid name
-        ArtistServiceException: unexpected error removing song from artist
-    """
-    try:
-        base_user_service_validations.validate_user_name_parameter(artist_name)
-        validate_song_name_parameter(song_name)
-
-        artist_service_validations.validate_user_should_be_artist(artist_name)
-
-        artist_repository.delete_song_from_artist(artist_name, song_name)
-    except BaseUserAlreadyExistsException as exception:
-        artist_service_logger.exception(f"Bad Artist Name Parameter: {artist_name}")
-        raise ArtistBadNameException from exception
-    except ArtistNotFoundException as exception:
-        artist_service_logger.exception(f"Artist not found: {artist_name}")
-        raise ArtistNotFoundException from exception
-    except SongBadNameException as exception:
-        artist_service_logger.exception(f"Bad Song Name Parameter: {song_name}")
-        raise SongBadNameException from exception
-    except UserUnauthorizedException as exception:
-        artist_service_logger.exception(f"User {artist_name} is not Artist")
-        raise UserUnauthorizedException from exception
-    except ArtistRepositoryException as exception:  # noqa: F821
-        artist_service_logger.exception(
-            f"Unexpected error removing song {song_name} from artist {artist_name}"
-        )
-        raise ArtistServiceException from exception
-    except Exception as exception:
-        artist_service_logger.exception(
-            f"Unexpected error in Artist service removing song {song_name} "
-            f"from artist {artist_name}"
-        )
-        raise ArtistServiceException from exception
-
-
 def get_user(name: str) -> ArtistDTO:
     """Get artist from name
 
@@ -370,3 +279,96 @@ def get_artists_songs(artist_name: str) -> list[SongMetadataDTO]:
         raise ArtistServiceException from exception
     else:
         return artist_songs
+
+
+def add_song_to_artist(artist_name: str, song_name: str) -> None:
+    """Add song to artist
+
+    Args:
+        artist_name (str): artist name
+        song_name (str): song name
+
+    Raises:
+        ArtistBadNameException: artist invalid name
+        ArtistNotFoundException: artist doesn't exists
+        UserUnauthorizedException: user is not artist
+        SongBadNameException: song invalid name
+        ArtistServiceException: unexpected error adding song to artist
+    """
+    try:
+        base_user_service_validations.validate_user_name_parameter(artist_name)
+        validate_song_name_parameter(song_name)
+
+        artist_service_validations.validate_user_should_be_artist(artist_name)
+
+        artist_repository.add_song_to_artist(artist_name, song_name)
+
+    except BaseUserAlreadyExistsException as exception:
+        artist_service_logger.exception(f"Bad Artist Name Parameter: {artist_name}")
+        raise ArtistBadNameException from exception
+    except ArtistNotFoundException as exception:
+        artist_service_logger.exception(f"Artist not found: {artist_name}")
+        raise ArtistNotFoundException from exception
+    except SongBadNameException as exception:
+        artist_service_logger.exception(f"Bad Song Name Parameter: {song_name}")
+        raise SongBadNameException from exception
+    except UserUnauthorizedException as exception:
+        artist_service_logger.exception(f"User {artist_name} is not Artist")
+        raise UserUnauthorizedException from exception
+    except ArtistRepositoryException as exception:
+        artist_service_logger.exception(
+            f"Unexpected error adding song {song_name} to artist {artist_name}"
+        )
+        raise ArtistServiceException from exception
+    except Exception as exception:
+        artist_service_logger.exception(
+            f"Unexpected error in Artist service adding song {song_name} "
+            f"to artist {artist_name}"
+        )
+        raise ArtistServiceException from exception
+
+
+def delete_song_from_artist(artist_name: str, song_name: str) -> None:
+    """Remove song from artist
+
+    Args:
+        artist_name (str): artist name
+        song_name (str): song name
+
+    Raises:
+        ArtistBadNameException: artist invalid name
+        ArtistNotFoundException: artist doesn't exists
+        SongBadNameException: song invalid name
+        UserUnauthorizedException: user is not artist
+        ArtistServiceException: unexpected error removing song from artist
+    """
+    try:
+        base_user_service_validations.validate_user_name_parameter(artist_name)
+        validate_song_name_parameter(song_name)
+
+        artist_service_validations.validate_user_should_be_artist(artist_name)
+
+        artist_repository.delete_song_from_artist(artist_name, song_name)
+    except BaseUserAlreadyExistsException as exception:
+        artist_service_logger.exception(f"Bad Artist Name Parameter: {artist_name}")
+        raise ArtistBadNameException from exception
+    except ArtistNotFoundException as exception:
+        artist_service_logger.exception(f"Artist not found: {artist_name}")
+        raise ArtistNotFoundException from exception
+    except SongBadNameException as exception:
+        artist_service_logger.exception(f"Bad Song Name Parameter: {song_name}")
+        raise SongBadNameException from exception
+    except UserUnauthorizedException as exception:
+        artist_service_logger.exception(f"User {artist_name} is not Artist")
+        raise UserUnauthorizedException from exception
+    except ArtistRepositoryException as exception:  # noqa: F821
+        artist_service_logger.exception(
+            f"Unexpected error removing song {song_name} from artist {artist_name}"
+        )
+        raise ArtistServiceException from exception
+    except Exception as exception:
+        artist_service_logger.exception(
+            f"Unexpected error in Artist service removing song {song_name} "
+            f"from artist {artist_name}"
+        )
+        raise ArtistServiceException from exception

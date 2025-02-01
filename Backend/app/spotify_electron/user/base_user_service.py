@@ -168,9 +168,9 @@ def add_playback_history(user_name: str, song_name: str, token: TokenData) -> No
     try:
         base_user_service_validations.validate_user_name_parameter(user_name)
         validate_song_name_parameter(song_name)
+        base_user_service_validations.validate_user_should_exists(user_name)
         auth_service.validate_jwt_user_matches_user(token, user_name)
 
-        base_user_service_validations.validate_user_should_exists(user_name)
         validate_song_should_exists(song_name)
 
         base_user_repository.add_playback_history(
@@ -226,14 +226,15 @@ def add_saved_playlist(user_name: str, playlist_name: str, token: TokenData) -> 
         BaseUserBadNameException: invalid user name
         PlaylistBadNameException: invalid playlist name
         UserUnauthorizedException: user cannot access a playlist that is not created by him
+        BaseUserNotFoundException: user doesn't exists
         PlaylistNotFoundException: playlist doesn't exists
         BaseUserServiceException: unexpected error adding saved playlist to user
     """
     try:
         base_user_service_validations.validate_user_name_parameter(user_name)
         validate_playlist_name_parameter(playlist_name)
-        auth_service.validate_jwt_user_matches_user(token, user_name)
         base_user_service_validations.validate_user_should_exists(user_name)
+        auth_service.validate_jwt_user_matches_user(token, user_name)
         validate_playlist_should_exists(playlist_name)
 
         base_user_repository.add_saved_playlist(
@@ -252,6 +253,9 @@ def add_saved_playlist(user_name: str, playlist_name: str, token: TokenData) -> 
             f"Unathorized user {user_name} for adding saved playlists"
         )
         raise UserUnauthorizedException from exception
+    except BaseUserNotFoundException as exception:
+        base_users_service_logger.exception(f"User not found: {user_name}")
+        raise BaseUserNotFoundException from exception
     except PlaylistNotFoundException as exception:
         base_users_service_logger.exception(f"Playlist not found: {playlist_name}")
         raise PlaylistNotFoundException from exception
@@ -285,14 +289,15 @@ def delete_saved_playlist(user_name: str, playlist_name: str, token: TokenData) 
         BaseUserBadNameException: invalid user name
         PlaylistBadNameException: invalid playlist name
         UserUnauthorizedException: user cannot access a playlist that is created by him
+        BaseUserNotFoundException: user doesn't exists
         PlaylistNotFoundException: playlist doesn't exists
         BaseUserServiceException: unexpected error deleting saved playlist from user
     """
     try:
         base_user_service_validations.validate_user_name_parameter(user_name)
         playlist_service.validate_playlist_name_parameter(playlist_name)
-        auth_service.validate_jwt_user_matches_user(token, user_name)
         base_user_service_validations.validate_user_should_exists(user_name)
+        auth_service.validate_jwt_user_matches_user(token, user_name)
         playlist_service.validate_playlist_should_exists(playlist_name)
 
         base_user_repository.delete_saved_playlist(
@@ -311,6 +316,9 @@ def delete_saved_playlist(user_name: str, playlist_name: str, token: TokenData) 
             f"Unathorized user {user_name} for deleting saved playlists"
         )
         raise UserUnauthorizedException from exception
+    except BaseUserNotFoundException as exception:
+        base_users_service_logger.exception(f"User not found: {user_name}")
+        raise BaseUserNotFoundException from exception
     except PlaylistNotFoundException as exception:
         base_users_service_logger.exception(f"Playlist not found: {playlist_name}")
         raise PlaylistNotFoundException from exception
@@ -346,8 +354,8 @@ def add_playlist_to_owner(user_name: str, playlist_name: str, token: TokenData) 
     try:
         base_user_service_validations.validate_user_name_parameter(user_name)
         validate_playlist_name_parameter(playlist_name)
-        auth_service.validate_jwt_user_matches_user(token, user_name)
         base_user_service_validations.validate_user_should_exists(user_name)
+        auth_service.validate_jwt_user_matches_user(token, user_name)
         validate_playlist_should_exists(playlist_name)
 
         base_user_repository.add_playlist_to_owner(

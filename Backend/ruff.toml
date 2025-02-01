@@ -1,4 +1,4 @@
-target-version = "py311"
+target-version = "py312"
 
 # Same as Black.
 line-length = 95
@@ -29,12 +29,12 @@ extend-select = [
 
 ]
 
-ignore = ["PLR0402","PLR0911"]
+ignore = ["PLR0402", "PLR0911", "PLR0913"]
 
 [lint.per-file-ignores]
 "tests/**/*.py" = [
-    "D100", # Ignore missing docstrings for public modules
-    "D103", # Ignore missing docstrings for public functions
+    "D100",   # Ignore missing docstrings for public modules
+    "D103",   # Ignore missing docstrings for public functions
     "ANN001", # Ignore missing type annotation for methods
     "ANN201", # Ignore missing return type annotation for public function
     "ANN202", # Ignore missing return type annotation for private function

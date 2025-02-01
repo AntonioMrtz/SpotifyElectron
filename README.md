@@ -175,7 +175,7 @@ Check our [project goals and vision](docs/VISION.md).
             </a>
         </td>
         <td align="center">
-            <a href="SaurabhGurde">
+            <a href="https://github.com/SaurabhGurde">
                 <img src="https://avatars.githubusercontent.com/u/128987288?v=4" width="90" alt="SaurabhGurde" />
                 <br />
                 <sub><b>SaurabhGurde</b></sub>
@@ -184,7 +184,7 @@ Check our [project goals and vision](docs/VISION.md).
     </tr>
     <tr>
         <td align="center">
-            <a href="AlesSust">
+            <a href="https://github.com/AlesSust">
                 <img src="https://avatars.githubusercontent.com/u/59516393?v=4" width="90" alt="AlesSust" />
                 <br />
                 <sub><b>AlesSust</b></sub>
@@ -195,6 +195,13 @@ Check our [project goals and vision](docs/VISION.md).
                 <img src="https://avatars.githubusercontent.com/u/120133160?v=4" width="90" alt="PavlisinPhoto" />
                 <br />
                 <sub><b>PavlisinPhoto</b></sub>
+            </a>
+        </td>
+        <td align="center">
+            <a href="https://github.com/berkaykrc">
+                <img src="https://avatars.githubusercontent.com/u/31601800?v=4" width="90" alt="berkaykrc" />
+                <br />
+                <sub><b>berkaykrc</b></sub>
             </a>
         </td>
     </tr>

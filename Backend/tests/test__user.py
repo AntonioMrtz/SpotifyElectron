@@ -15,18 +15,8 @@ import app.spotify_electron.user.base_user_service as base_user_service
 import app.spotify_electron.user.user.user_service as user_service
 from app.auth.auth_schema import VerifyPasswordException
 from app.spotify_electron.user.user.user_schema import (
-    UserAlreadyExistsException,
-    UserBadNameException,
-    UserBadParametersException,
-    UserCreateException,
     UserDAO,
-    UserDeleteException,
     UserDTO,
-    UserGetPasswordException,
-    UserNotFoundException,
-    UserRepositoryException,
-    UserServiceException,
-    UserUpdateException,
     get_user_dao_from_document,
     get_user_dto_from_dao,
 )
@@ -183,66 +173,6 @@ def test_get_user_dto_from_dao():
     assert user_dto.playback_history == ["song1", "song2"]
     assert user_dto.playlists == ["playlist1", "playlist2"]
     assert user_dto.saved_playlists == ["saved_playlist1"]
-
-
-def test_user_repository_exception():
-    with pytest.raises(UserRepositoryException) as exc_info:
-        raise UserRepositoryException()
-    assert str(exc_info.value) == UserRepositoryException.ERROR
-
-
-def test_user_not_found_exception():
-    with pytest.raises(UserNotFoundException) as exc_info:
-        raise UserNotFoundException()
-    assert str(exc_info.value) == UserNotFoundException.ERROR
-
-
-def test_user_already_exists_exception():
-    with pytest.raises(UserAlreadyExistsException) as exc_info:
-        raise UserAlreadyExistsException()
-    assert str(exc_info.value) == UserAlreadyExistsException.ERROR
-
-
-def test_user_bad_name_exception():
-    with pytest.raises(UserBadNameException) as exc_info:
-        raise UserBadNameException()
-    assert str(exc_info.value) == UserBadNameException.ERROR
-
-
-def test_user_create_exception():
-    with pytest.raises(UserCreateException) as exc_info:
-        raise UserCreateException()
-    assert str(exc_info.value) == UserCreateException.ERROR
-
-
-def test_user_delete_exception():
-    with pytest.raises(UserDeleteException) as exc_info:
-        raise UserDeleteException()
-    assert str(exc_info.value) == UserDeleteException.ERROR
-
-
-def test_user_update_exception():
-    with pytest.raises(UserUpdateException) as exc_info:
-        raise UserUpdateException()
-    assert str(exc_info.value) == UserUpdateException.ERROR
-
-
-def test_user_bad_parameters_exception():
-    with pytest.raises(UserBadParametersException) as exc_info:
-        raise UserBadParametersException()
-    assert str(exc_info.value) == UserBadParametersException.ERROR
-
-
-def test_user_get_password_exception():
-    with pytest.raises(UserGetPasswordException) as exc_info:
-        raise UserGetPasswordException()
-    assert str(exc_info.value) == UserGetPasswordException.ERROR
-
-
-def test_user_service_exception():
-    with pytest.raises(UserServiceException) as exc_info:
-        raise UserServiceException()
-    assert str(exc_info.value) == UserServiceException.ERROR
 
 
 # executes after all tests

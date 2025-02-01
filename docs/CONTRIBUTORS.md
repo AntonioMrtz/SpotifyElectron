@@ -120,7 +120,7 @@ Me gustaría expresar mi más sincero agradecimiento a las siguientes personas p
     </tr>
     <tr>
         <td align="center">
-            <a href="AlesSust">
+            <a href="https://github.com/AlesSust">
                 <img src="https://avatars.githubusercontent.com/u/59516393?v=4" width="90" alt="AlesSust" />
                 <br />
                 <sub><b>AlesSust</b></sub>
@@ -131,6 +131,13 @@ Me gustaría expresar mi más sincero agradecimiento a las siguientes personas p
                 <img src="https://avatars.githubusercontent.com/u/120133160?v=4" width="90" alt="PavlisinPhoto" />
                 <br />
                 <sub><b>PavlisinPhoto</b></sub>
+            </a>
+        </td>
+        <td align="center">
+            <a href="https://github.com/berkaykrc">
+                <img src="https://avatars.githubusercontent.com/u/31601800?v=4" width="90" alt="berkaykrc" />
+                <br />
+                <sub><b>berkaykrc</b></sub>
             </a>
         </td>
     </tr>

@@ -26,9 +26,7 @@ def get_song_collection() -> Collection:
             DatabaseCollection.SONG_STREAMING
         ),
     }
-    current_architecture = PropertiesManager.__getattribute__(
-        AppEnvironment.ARCHITECTURE_ENV_NAME
-    )
+    current_architecture = getattr(PropertiesManager, AppEnvironment.ARCHITECTURE_ENV_NAME)
     return repository_map.get(current_architecture, repository_map[AppArchitecture.ARCH_BLOB])
 
 

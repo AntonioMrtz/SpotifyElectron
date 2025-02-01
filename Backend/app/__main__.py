@@ -106,10 +106,21 @@ app.add_middleware(
 )
 
 if __name__ == "__main__":
+    properties_manager = PropertiesManager
+
+    is_production = properties_manager.is_production_environment()
+    is_development = properties_manager.is_development_environment()
+
+    app_path = getattr(properties_manager, AppConfig.APP_INI_KEY)
+    host_ip = getattr(properties_manager, AppConfig.HOST_INI_KEY)
+    host_port = int(getattr(properties_manager, AppConfig.PORT_INI_KEY))
+    # force 1 worker if not production mode
+    workers = int(getattr(properties_manager, AppConfig.WORKERS)) if is_production else 1
+
     uvicorn.run(
-        app=PropertiesManager.__getattribute__(AppConfig.APP_INI_KEY),
-        host=PropertiesManager.__getattribute__(AppConfig.HOST_INI_KEY),
-        port=int(PropertiesManager.__getattribute__(AppConfig.PORT_INI_KEY)),
-        reload=PropertiesManager.is_development_environment(),
-        workers=int(PropertiesManager.__getattribute__(AppConfig.WORKERS)),
+        app=app_path,
+        host=host_ip,
+        port=host_port,
+        reload=is_development,
+        workers=workers,
     )

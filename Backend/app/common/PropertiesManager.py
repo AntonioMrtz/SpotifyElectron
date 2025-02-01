@@ -84,7 +84,7 @@ class _PropertiesManager:
             properties_manager_logger.warning(
                 f"No architecture type selected, using {AppEnvironment.DEFAULT_ARCHITECTURE}"
             )
-        self.__setattr__(AppEnvironment.ARCHITECTURE_ENV_NAME, architecture_type)
+        setattr(self, AppEnvironment.ARCHITECTURE_ENV_NAME, architecture_type)
         properties_manager_logger.info(f"Architecture selected: {architecture_type}")
 
     def _load_env_variables(self, env_names: list[str]) -> None:
@@ -103,7 +103,7 @@ class _PropertiesManager:
                     f"No environment variable provided for {env_name}"
                 )
                 continue
-            self.__setattr__(env_name, env_variable_value)
+            setattr(self, env_name, env_variable_value)
             loaded_envs.append(env_name)
         properties_manager_logger.info(f"Environment variables loaded: {loaded_envs}")
 
@@ -113,7 +113,7 @@ class _PropertiesManager:
         Returns:
             environment: the current selected environment
         """
-        return self.__getattribute__(AppEnvironment.ENV_VALUE_ENV_NAME)
+        return getattr(self, AppEnvironment.ENV_VALUE_ENV_NAME)
 
     def is_production_environment(self) -> bool:
         """Checks if the environment is production
@@ -123,9 +123,7 @@ class _PropertiesManager:
             bool: Returns if it's production environment
 
         """
-        return (
-            self.__getattribute__(AppEnvironment.ENV_VALUE_ENV_NAME) == AppEnvironmentMode.PROD
-        )
+        return getattr(self, AppEnvironment.ENV_VALUE_ENV_NAME) == AppEnvironmentMode.PROD
 
     def is_development_environment(self) -> bool:
         """Checks if the environment is development
@@ -135,9 +133,7 @@ class _PropertiesManager:
             bool: Returns if it's development environment
 
         """
-        return (
-            self.__getattribute__(AppEnvironment.ENV_VALUE_ENV_NAME) == AppEnvironmentMode.DEV
-        )
+        return getattr(self, AppEnvironment.ENV_VALUE_ENV_NAME) == AppEnvironmentMode.DEV
 
     def is_testing_environment(self) -> bool:
         """Checks if the environment is testing
@@ -147,9 +143,7 @@ class _PropertiesManager:
             bool: Returns if it's testing environment
 
         """
-        return (
-            self.__getattribute__(AppEnvironment.ENV_VALUE_ENV_NAME) == AppEnvironmentMode.TEST
-        )
+        return getattr(self, AppEnvironment.ENV_VALUE_ENV_NAME) == AppEnvironmentMode.TEST
 
     def is_log_file_provided(self) -> bool:
         """Checks if there's a valid log file provided
@@ -159,7 +153,7 @@ class _PropertiesManager:
             bool: Returns if there's a valid log provided
 
         """
-        return self.__getattribute__(AppConfig.LOG_INI_FILE) is not None
+        return getattr(self, AppConfig.LOG_INI_FILE) is not None
 
 
 PropertiesManager = _PropertiesManager()

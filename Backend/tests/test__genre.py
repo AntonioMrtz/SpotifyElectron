@@ -1,3 +1,4 @@
+import pytest
 from fastapi.testclient import TestClient
 from pytest import fixture, raises
 from starlette.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_202_ACCEPTED
@@ -38,12 +39,15 @@ def test_get_genres_correct():
     assert res_delete_artist.status_code == HTTP_202_ACCEPTED
 
 
-def test_check_genre_valid():
+def test_validate_genre():
     valid_genre = Genre.AMBIENT
-    assert Genre.check_valid_genre(valid_genre.value)
+    try:
+        Genre.validate_genre(valid_genre.value)
+    except Exception as e:
+        pytest.fail(f"Error while validating a valid genre: {e}")
 
 
-def test_check_genre_invalid():
+def test_validate_genre_invalid():
     invalid_genre = "invalid_genre"
     with raises(GenreNotValidException):
-        Genre.check_valid_genre(invalid_genre)
+        Genre.validate_genre(invalid_genre)

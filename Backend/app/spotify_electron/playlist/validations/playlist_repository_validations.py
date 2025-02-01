@@ -67,7 +67,7 @@ def validate_playlist_create(result: InsertOneResult) -> None:
 
     Raises:
     ------
-        PlaylistInsertException: if the insertion was not done
+        PlaylistCreateException: if the insertion was not done
 
     """
     if not result.acknowledged:

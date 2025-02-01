@@ -5,31 +5,39 @@ line-length = 95
 indent-width = 4
 
 [lint]
+
+preview = true
+
 extend-select = [
     "UP",
     "TRY",
     "I",
     "SIM",
     "C90",
-    "D201",
-    "D202",
     "PLR",
+    "D104",
+    "D300",
+    "D419",
     "D100",
     "D101",
     "D102",
     "D103",
-    "D104",
-    "D300",
-    "D419",
+    "D201",
+    "D202",
+    "DOC501",
+    "E",
     "ANN001",
     "ANN201",
     "ANN202",
     "ANN205",
-    "E",
-    "B904"
+    "B904",
 ]
 
-ignore = ["PLR0402", "PLR0911", "PLR0913"]
+ignore = [
+    "PLR0402",
+    "PLR0911",
+    "PLR0913",
+]
 
 [lint.per-file-ignores]
 "tests/**/*.py" = [
@@ -39,6 +47,8 @@ ignore = ["PLR0402", "PLR0911", "PLR0913"]
     "ANN201", # Ignore missing return type annotation for public function
     "ANN202", # Ignore missing return type annotation for private function
     "ANN205", # Ignore missing return type annotation for static function
+    "PLR0914", # Ignore too many local variables
+    "PLR0917" # Ignore too many positional arguments
 ]
 
 [lint.pydocstyle]

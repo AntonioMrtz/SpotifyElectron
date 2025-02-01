@@ -55,7 +55,7 @@ def validate_playlist_should_not_exists(name: str) -> None:
 
     Raises:
     ------
-        PlaylistNotFoundException: if playlist exists
+        PlaylistAlreadyExistsException: if playlist exists
 
     """
     if check_playlist_exists(name):

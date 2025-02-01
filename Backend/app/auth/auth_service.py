@@ -21,8 +21,12 @@ from app.auth.auth_schema import (
     JWTValidationException,
     TokenData,
     UnexpectedLoginUserException,
-    UserUnauthorizedException,
     VerifyPasswordException,
+)
+from app.auth.auth_service_validations import (
+    validate_jwt_credentials_missing,
+    validate_token_exists,
+    validate_token_is_expired,
 )
 from app.exceptions.base_exceptions_schema import BadParameterException
 from app.logging.logging_constants import LOGGING_AUTH_SERVICE
@@ -96,8 +100,8 @@ def get_jwt_token_data(
         TokenData: the data provided by the JWT Token
 
     """
-    validate_token_exists(token_raw_data)
     try:
+        validate_token_exists(token_raw_data)
         payload = jwt.decode(
             token_raw_data,  # type: ignore
             AuthConfig.SIGNING_SECRET_KEY,
@@ -336,65 +340,16 @@ def validate_jwt(token: str) -> None:
         raise JWTValidationException from exception
 
 
-def validate_jwt_user_matches_user(token: TokenData, user_name: str) -> None:
-    """Validates if user matches the jwt user
+def get_authorization_bearer_from_headers(headers: list[tuple[bytes, Any]]) -> str | None:
+    """Get authorization bearer value from HTTP header 'authorization'
 
     Args:
-        token (TokenData): jwt token
-        user_name (str): user
+        headers (list[tuple]): headers
 
-    Raises:
-        UserUnauthorizedException: if the user didn't match the jwt user
+    Returns:
+        str | None: the authorization value
     """
-    if not token.username == user_name:
-        raise UserUnauthorizedException
-
-
-def validate_token_is_expired(token: dict[str, Any]) -> None:
-    """Checks if token is expired comparing current date with expiration date
-
-    Args:
-    ----
-        token (dict): token to check
-
-    Raises:
-    ------
-        JWTExpiredException: if token is expired
-
-    """
-    expiration_time = datetime.fromtimestamp(token["exp"], timezone.utc)  # noqa: UP017 TODO
-    if expiration_time < datetime.now(timezone.utc):  # noqa: UP017 TODO
-        raise JWTExpiredException
-
-
-def validate_token_exists(token: Any) -> None:
-    """Check whether jwt token is None or not
-
-    Args:
-    ----
-        token (Any): the incoming token
-
-    Raises:
-    ------
-        JWTNotProvidedException: if the token is None
-
-    """
-    if token is None:
-        raise JWTNotProvidedException
-
-
-def validate_jwt_credentials_missing(credentials: list[Any]) -> None:
-    """Check if any jwt credentials are missing
-
-    Args:
-    ----
-        credentials (list[str]): list with the obtained credentials
-
-    Raises:
-    ------
-        JWTMissingCredentialsException: if a credential is missing
-
-    """
-    for credential in credentials:
-        if credential is None:
-            raise JWTMissingCredentialsException
+    for key, value in headers:
+        if key == b"authorization":
+            return value.decode("utf-8")
+    return None

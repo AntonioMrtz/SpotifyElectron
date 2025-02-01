@@ -1,2 +1,1 @@
-# bump pipelines to match ruff version if modified
-ruff==0.9.3
+ruff==0.9.4 # bump pipelines to match ruff version if modified

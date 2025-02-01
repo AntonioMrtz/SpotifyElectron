@@ -157,12 +157,3 @@ class SongBadNameException(SpotifyElectronException):
 
     def __init__(self):
         super().__init__(self.ERROR)
-
-
-class SongUnAuthorizedException(SpotifyElectronException):
-    """User accessing unauthorized Song"""
-
-    ERROR = "Unauthorized Song resource for user"
-
-    def __init__(self):
-        super().__init__(self.ERROR)

@@ -32,7 +32,7 @@ def get_user(name: str) -> ArtistDAO:
         name (str): user name
 
     Raises:
-        UserNotFoundException: artist was not found
+        ArtistNotFoundException: artist was not found
         ArtistRepositoryException: unexpected error while getting user
 
     Returns:

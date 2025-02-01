@@ -112,6 +112,9 @@ def get_artist_from_song(name: str) -> str:
     Args:
         name (str): song name
 
+    Raises:
+        SongRepositoryException: unexpected error while getting artist from song
+
     Returns:
         str: the artist name
     """
@@ -132,6 +135,9 @@ def increase_song_streams(name: str) -> None:
 
     Args:
         name (str): song name
+
+    Raises:
+        SongRepositoryException: unexpected error while increasing song streams
     """
     try:
         collection = song_collection_provider.get_song_collection()
@@ -148,6 +154,9 @@ def get_artist_total_streams(artist_name: str) -> int:
 
     Args:
         artist_name (str): artist name
+
+    Raises:
+        SongRepositoryException: unexpected error while getting artist's total streams
 
     Returns:
         int: the number of total streams of artist songs
@@ -177,6 +186,9 @@ def get_song_names_search_by_name(song_name: str) -> list[str]:
 
     Args:
         song_name (str): song name to match
+
+    Raises:
+        SongRepositoryException: unexpected error while getting songs by name
 
     Returns:
         list[str]: list of song names that matched the song name

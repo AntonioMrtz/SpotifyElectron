@@ -92,7 +92,7 @@ def create_playlist(
     photo: str,
     description: str,
     token: Annotated[TokenData, Depends(JWTBearer())],
-    song_names: list[str] = Body(...),
+    song_names: Annotated[list[str], Body(...)],
 ) -> Response:
     """Create playlist
 
@@ -140,7 +140,7 @@ def update_playlist(  # noqa: PLR0917
     photo: str,
     description: str,
     token: Annotated[TokenData, Depends(JWTBearer())],
-    song_names: list[str] = Body(...),
+    song_names: Annotated[list[str], Body(...)],
     new_name: str | None = None,
 ) -> Response:
     """Update playlist
@@ -317,7 +317,9 @@ def add_songs_to_playlist(name: str, song_names: list[str]) -> Response:
 
 
 @router.delete("/{name}/songs/")
-def remove_songs_from_playlist(name: str, song_names: list[str] = Query(...)) -> Response:
+def remove_songs_from_playlist(
+    name: str, song_names: Annotated[list[str], Query(...)]
+) -> Response:
     """Remove songs from playlist
 
     Args:

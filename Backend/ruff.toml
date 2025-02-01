@@ -26,7 +26,7 @@ extend-select = [
     "ANN202",
     "ANN205",
     "E",
-
+    "B904"
 ]
 
 ignore = ["PLR0402", "PLR0911", "PLR0913"]

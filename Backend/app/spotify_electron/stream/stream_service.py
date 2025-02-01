@@ -61,8 +61,8 @@ def _get_range_header(range_header: str | None, file_size: int) -> tuple[int, in
         h = range_header.replace("bytes=", "").split("-")
         start = int(h[0]) if h[0] != "" else 0
         end = int(h[1]) if h[1] != "" else file_size - 1
-    except ValueError:
-        raise InvalidContentRangeStreamException
+    except ValueError as exception:
+        raise InvalidContentRangeStreamException from exception
 
     if start > end or start < 0 or end > file_size - 1:
         raise InvalidContentRangeStreamException

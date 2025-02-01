@@ -57,11 +57,11 @@ def encode_file(name: str, file: bytes) -> str:
     # b'ZGF0YSB0byBiZSBlbmNvZGVk'
     try:
         return str(base64.b64encode(file))
-    except Exception:
+    except Exception as exception:
         audio_management_utils_logger.exception(
             f"Song File with name {name} cannot be encoded"
         )
-        raise EncodingFileException
+        raise EncodingFileException from exception
 
 
 class EncodingFileException(SpotifyElectronException):

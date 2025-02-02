@@ -13,6 +13,7 @@ export class SearchService {
      * Args:
      * ----
      * name (str): name to match
+     * token (Annotated[TokenData, Depends): JWT info
      * @param name
      * @returns any Successful Response
      * @throws ApiError

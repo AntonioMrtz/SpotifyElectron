@@ -12,6 +12,7 @@ export class PlaylistsService {
      *
      * Args:
      * name (str): playlist name
+     * token (Annotated[TokenData, Depends): JWT info
      * @param name
      * @returns any Successful Response
      * @throws ApiError
@@ -35,10 +36,12 @@ export class PlaylistsService {
      * Update playlist
      *
      * Args:
+     * name (str): playlist name
      * photo (str): playlist new photo
      * description (str): playlist new description
      * song_names (list[str], optional): playlist new song names. Defaults to Body(...).
      * new_name (str | None, optional): playlist new name. Defaults to None.
+     * token (Annotated[TokenData, Depends): JWT info
      * @param name
      * @param photo
      * @param description
@@ -105,6 +108,7 @@ export class PlaylistsService {
      * photo (str): playlist photo
      * description (str): playlist description
      * song_names (list[str]): list of song names included in playlist.
+     * token (Annotated[TokenData, Depends): JWT info
      * @param name
      * @param photo
      * @param description
@@ -151,6 +155,7 @@ export class PlaylistsService {
      *
      * Args:
      * names (str): playlist names
+     * token (Annotated[TokenData, Depends): JWT info
      * @param names
      * @returns any Successful Response
      * @throws ApiError

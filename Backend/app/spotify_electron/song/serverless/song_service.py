@@ -67,17 +67,21 @@ def get_song_streaming_url(name: str) -> str:
     Returns:
         str: the streaming url
     """
-    response_get_url_streaming_request = song_serverless_api.get_song(name)
-    validate_get_song_url_streaming_response(
-        name,
-        response_get_url_streaming_request,
-    )
+    try:
+        response_get_url_streaming_request = song_serverless_api.get_song(name)
+        validate_get_song_url_streaming_response(
+            name,
+            response_get_url_streaming_request,
+        )
 
-    response_json = response_get_url_streaming_request.json()
-    streaming_url = response_json["url"]
-
-    song_service_logger.debug(f"Obtained Streaming url for song {name}")
-    return streaming_url
+        response_json = response_get_url_streaming_request.json()
+        streaming_url = response_json["url"]
+    except (SongGetUrlStreamingException, Exception) as exception:
+        song_service_logger.exception(f"Unexpected error getting song {name} streaming url")
+        raise SongGetUrlStreamingException from exception
+    else:
+        song_service_logger.debug(f"Obtained Streaming url for song {name}")
+        return streaming_url
 
 
 def get_song(name: str) -> SongDTO:

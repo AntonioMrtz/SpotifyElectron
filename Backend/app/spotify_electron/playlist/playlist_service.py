@@ -244,7 +244,6 @@ def delete_playlist(name: str) -> None:
     ------
         PlaylistBadNameException: invalid playlist name
         PlaylistNotFoundException: playlist doesn't exists
-        UserUnauthorizedException: user is not the owner of playlist
         UserNotFoundException: user doesn't exists
         PlaylistServiceException: unexpected error while deleting playlist
     """

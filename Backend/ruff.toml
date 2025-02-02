@@ -28,6 +28,7 @@ extend-select = [
     "D417",
     "D419",
     "DOC501",
+    "DOC502",
     "ANN001",
     "ANN201",
     "ANN202",

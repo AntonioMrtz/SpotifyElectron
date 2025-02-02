@@ -147,6 +147,7 @@ def get_current_user(
     ------
         BaseUserNotFoundException: token user not found
         JWTGetUserException: if error while retrieving user from token
+
     Returns:
         Artist | User: the user or artist associated with the JWT Token
 

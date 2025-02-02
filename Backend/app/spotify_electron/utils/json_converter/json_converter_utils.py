@@ -21,11 +21,6 @@ def get_json_from_model(object: Any) -> str:
     ----
         object (Any): the object that's going to be converted into json string
 
-    Raises:
-    ------
-        JsonEncodeException: if an error occurred while encoding the object \
-            into json string
-
     Returns:
     -------
         str: the object converted into json string

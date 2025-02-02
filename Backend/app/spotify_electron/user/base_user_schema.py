@@ -5,7 +5,7 @@ BaseUser schema
 from dataclasses import dataclass
 from typing import Any
 
-from app.exceptions.base_exceptions_schema import SpotifyElectronException
+from app.exceptions.base_exceptions_schema import SpotifyElectronError
 
 
 @dataclass
@@ -66,7 +66,7 @@ def get_base_user_dto_from_dao(user_dao: BaseUserDAO) -> BaseUserDTO:
     )
 
 
-class BaseUserRepositoryException(SpotifyElectronException):
+class BaseUserRepositoryError(SpotifyElectronError):
     """Base Repository Unexpected error"""
 
     ERROR = "Error accessing User Repository"
@@ -75,7 +75,7 @@ class BaseUserRepositoryException(SpotifyElectronException):
         super().__init__(error)
 
 
-class BaseUserNotFoundException(SpotifyElectronException):
+class BaseUserNotFoundError(SpotifyElectronError):
     """User not found"""
 
     ERROR = "User not found"
@@ -84,7 +84,7 @@ class BaseUserNotFoundException(SpotifyElectronException):
         super().__init__(error)
 
 
-class BaseUserBadNameException(SpotifyElectronException):
+class BaseUserBadNameError(SpotifyElectronError):
     """Bad namefor user"""
 
     ERROR = "Bad parameters provided for User"
@@ -93,7 +93,7 @@ class BaseUserBadNameException(SpotifyElectronException):
         super().__init__(error)
 
 
-class BaseUserAlreadyExistsException(SpotifyElectronException):
+class BaseUserAlreadyExistsError(SpotifyElectronError):
     """Exception raised when user already exists"""
 
     ERROR = "User already exists"
@@ -102,7 +102,7 @@ class BaseUserAlreadyExistsException(SpotifyElectronException):
         super().__init__(error)
 
 
-class BaseUserDeleteException(SpotifyElectronException):
+class BaseUserDeleteError(SpotifyElectronError):
     """Exception raised when there is an error deleting a user"""
 
     ERROR = "Error deleting user"
@@ -111,7 +111,7 @@ class BaseUserDeleteException(SpotifyElectronException):
         super().__init__(error)
 
 
-class BaseUserCreateException(SpotifyElectronException):
+class BaseUserCreateError(SpotifyElectronError):
     """Exception raised when there is an error inserting a user"""
 
     ERROR = "Error inserting user"
@@ -120,7 +120,7 @@ class BaseUserCreateException(SpotifyElectronException):
         super().__init__(error)
 
 
-class BaseUserUpdateException(SpotifyElectronException):
+class BaseUserUpdateError(SpotifyElectronError):
     """Exception raised when there is an error updating a user"""
 
     ERROR = "Error updating user"
@@ -129,7 +129,7 @@ class BaseUserUpdateException(SpotifyElectronException):
         super().__init__(error)
 
 
-class BaseUserGetPasswordException(SpotifyElectronException):
+class BaseUserGetPasswordError(SpotifyElectronError):
     """Exception raised when there is an error getting user password"""
 
     ERROR = "Error getting user password"
@@ -138,7 +138,7 @@ class BaseUserGetPasswordException(SpotifyElectronException):
         super().__init__(error)
 
 
-class BaseUserServiceException(SpotifyElectronException):
+class BaseUserServiceError(SpotifyElectronError):
     """Exception raised when there is an unexpected error in user service"""
 
     ERROR = "Error accessing base user Service"
@@ -147,7 +147,7 @@ class BaseUserServiceException(SpotifyElectronException):
         super().__init__(error)
 
 
-class BaseUserBadParametersException(SpotifyElectronException):
+class BaseUserBadParametersError(SpotifyElectronError):
     """Exception raised when bad parameters are provided for a user"""
 
     ERROR = "Bad parameters provided for user"

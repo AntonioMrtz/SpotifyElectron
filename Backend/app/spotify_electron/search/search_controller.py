@@ -17,12 +17,12 @@ import app.spotify_electron.utils.json_converter.json_converter_utils as json_co
 from app.auth.auth_schema import TokenData
 from app.auth.JWTBearer import JWTBearer
 from app.common.PropertiesMessagesManager import PropertiesMessagesManager
-from app.exceptions.base_exceptions_schema import JsonEncodeException
+from app.exceptions.base_exceptions_schema import JsonEncodeError
 from app.logging.logging_constants import LOGGING_SEARCH_CONTROLLER
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.search.search_schema import (
-    BadSearchParameterException,
-    SearchServiceException,
+    BadSearchParameterError,
+    SearchServiceError,
 )
 
 router = APIRouter(
@@ -30,7 +30,7 @@ router = APIRouter(
     tags=["Search"],
 )
 
-search_controller_logger = SpotifyElectronLogger(LOGGING_SEARCH_CONTROLLER).getLogger()
+search_controller_logger = SpotifyElectronLogger(LOGGING_SEARCH_CONTROLLER).get_logger()
 
 
 @router.get("/")
@@ -51,17 +51,17 @@ async def get_search_name(
 
         return Response(items_json, media_type="application/json", status_code=HTTP_200_OK)
 
-    except BadSearchParameterException:
+    except BadSearchParameterError:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
             content=PropertiesMessagesManager.searchBadName,
         )
-    except JsonEncodeException:
+    except JsonEncodeError:
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonEncodingError,
         )
-    except (Exception, SearchServiceException):
+    except (Exception, SearchServiceError):
         search_controller_logger.exception(PropertiesMessagesManager.commonInternalServerError)
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,

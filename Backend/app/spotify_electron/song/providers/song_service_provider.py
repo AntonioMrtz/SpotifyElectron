@@ -20,7 +20,7 @@ class SongServiceProvider:
     @classmethod
     def init_service(cls) -> None:
         """Init song service"""
-        cls.logger = SpotifyElectronLogger(LOGGING_SONG_SERVICE_PROVIDER).getLogger()
+        cls.logger = SpotifyElectronLogger(LOGGING_SONG_SERVICE_PROVIDER).get_logger()
         cls.song_services = {
             AppArchitecture.ARCH_BLOB: SongServicePath.BLOB_MODULE_NAME,
             AppArchitecture.ARCH_SERVERLESS: SongServicePath.SERVERLESS_MODULE_NAME,

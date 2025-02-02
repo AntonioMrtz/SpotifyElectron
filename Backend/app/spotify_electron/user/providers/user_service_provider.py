@@ -20,7 +20,7 @@ services_map = {
 
 users_service_provider_logger = SpotifyElectronLogger(
     LOGGING_USER_SERVICE_PROVIDER
-).getLogger()
+).get_logger()
 
 
 def get_user_service(user_name: str) -> Annotated[Any, "ModuleType"]:

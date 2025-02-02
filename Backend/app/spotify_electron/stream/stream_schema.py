@@ -4,7 +4,7 @@ Stream schema for domain model
 
 from dataclasses import dataclass
 
-from app.exceptions.base_exceptions_schema import SpotifyElectronException
+from app.exceptions.base_exceptions_schema import SpotifyElectronError
 
 
 @dataclass
@@ -21,7 +21,7 @@ class StreamAudioContent:
     """Song data from start-end bytes"""
 
 
-class StreamServiceException(SpotifyElectronException):
+class StreamServiceError(SpotifyElectronError):
     """Exception for Stream Service Unexpected Exceptions"""
 
     ERROR = "Error accessing Stream Service"
@@ -30,7 +30,7 @@ class StreamServiceException(SpotifyElectronException):
         super().__init__(self.ERROR)
 
 
-class InvalidContentRangeStreamException(SpotifyElectronException):
+class InvalidContentRangeStreamError(SpotifyElectronError):
     """Exception for invalid content range provided for streaming"""
 
     ERROR = "Invalid content range for streaming"

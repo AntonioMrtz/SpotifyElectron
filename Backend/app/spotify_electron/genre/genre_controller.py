@@ -14,14 +14,14 @@ from app.auth.JWTBearer import JWTBearer
 from app.common.PropertiesMessagesManager import PropertiesMessagesManager
 from app.logging.logging_constants import LOGGING_GENRE_CONTROLLER
 from app.logging.logging_schema import SpotifyElectronLogger
-from app.spotify_electron.genre.genre_schema import GenreServiceException
+from app.spotify_electron.genre.genre_schema import GenreServiceError
 
 router = APIRouter(
     prefix="/genres",
     tags=["Genres"],
 )
 
-genre_controller_logger = SpotifyElectronLogger(LOGGING_GENRE_CONTROLLER).getLogger()
+genre_controller_logger = SpotifyElectronLogger(LOGGING_GENRE_CONTROLLER).get_logger()
 
 
 @router.get("/")
@@ -31,7 +31,7 @@ def get_genres(token: Annotated[TokenData, Depends(JWTBearer())]) -> Response:
         genres = genre_service.get_genres()
         return Response(genres, media_type="application/json", status_code=HTTP_200_OK)
 
-    except (GenreServiceException, Exception):
+    except (GenreServiceError, Exception):
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonInternalServerError,

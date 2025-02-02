@@ -16,6 +16,7 @@ extend-select = [
     "E",
     "PLR",
     "FAST",
+    "N",
     "C90",
     "D100",
     "D101",

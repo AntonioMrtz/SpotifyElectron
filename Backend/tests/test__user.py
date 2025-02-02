@@ -14,7 +14,7 @@ from starlette.status import (
 import app.auth.auth_service as auth_service
 import app.spotify_electron.user.base_user_service as base_user_service
 import app.spotify_electron.user.user.user_service as user_service
-from app.auth.auth_schema import VerifyPasswordException
+from app.auth.auth_schema import VerifyPasswordError
 from app.spotify_electron.user.user.user_schema import (
     UserDAO,
     UserDTO,
@@ -152,7 +152,7 @@ def test_check_encrypted_password_different():
     user_service.create_user(name, photo, password)
     password = "hola2"
     generated_password = base_user_service.get_user_password(name)
-    with pytest.raises(VerifyPasswordException):
+    with pytest.raises(VerifyPasswordError):
         auth_service.verify_password(password, generated_password)
     base_user_service.delete_user(name)
 

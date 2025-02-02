@@ -7,14 +7,14 @@ from app.logging.logging_constants import LOGGING_ARTIST_REPOSITORY
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.user.artist.artist_schema import (
     ArtistDAO,
-    ArtistNotFoundException,
-    ArtistRepositoryException,
+    ArtistNotFoundError,
+    ArtistRepositoryError,
     get_artist_dao_from_document,
 )
 from app.spotify_electron.user.base_user_schema import (
-    BaseUserCreateException,
-    BaseUserNotFoundException,
-    BaseUserUpdateException,
+    BaseUserCreateError,
+    BaseUserNotFoundError,
+    BaseUserUpdateError,
 )
 from app.spotify_electron.user.validations.base_user_repository_validations import (
     validate_user_create,
@@ -22,7 +22,7 @@ from app.spotify_electron.user.validations.base_user_repository_validations impo
     validate_user_update,
 )
 
-artist_repository_logger = SpotifyElectronLogger(LOGGING_ARTIST_REPOSITORY).getLogger()
+artist_repository_logger = SpotifyElectronLogger(LOGGING_ARTIST_REPOSITORY).get_logger()
 
 
 def get_user(name: str) -> ArtistDAO:
@@ -32,8 +32,8 @@ def get_user(name: str) -> ArtistDAO:
         name (str): user name
 
     Raises:
-        ArtistNotFoundException: artist was not found
-        ArtistRepositoryException: unexpected error while getting user
+        ArtistNotFoundError: artist was not found
+        ArtistRepositoryError: unexpected error while getting user
 
     Returns:
         UserDAO: the user
@@ -43,12 +43,12 @@ def get_user(name: str) -> ArtistDAO:
         validate_user_exists(artist)
         artist_dao = get_artist_dao_from_document(artist)  # type: ignore
 
-    except BaseUserNotFoundException as exception:
-        raise ArtistNotFoundException from exception
+    except BaseUserNotFoundError as exception:
+        raise ArtistNotFoundError from exception
 
     except Exception as exception:
         artist_repository_logger.exception(f"Error getting User {name} from database")
-        raise ArtistRepositoryException from exception
+        raise ArtistRepositoryError from exception
     else:
         artist_repository_logger.info(f"Get Artist by name returned {artist_dao}")
         return artist_dao
@@ -64,7 +64,7 @@ def create_artist(name: str, photo: str, password: bytes, current_date: str) -> 
         current_date (str): formatted creation date
 
     Raises:
-        ArtistRepositoryException: unexpected error while creating user
+        ArtistRepositoryError: unexpected error while creating user
     """
     try:
         artist = {
@@ -80,14 +80,14 @@ def create_artist(name: str, photo: str, password: bytes, current_date: str) -> 
         result = user_collection_provider.get_artist_collection().insert_one(artist)
 
         validate_user_create(result)
-    except BaseUserCreateException as exception:
+    except BaseUserCreateError as exception:
         artist_repository_logger.exception(f"Error inserting Artist {artist} in database")
-        raise ArtistRepositoryException from exception
-    except (ArtistRepositoryException, Exception) as exception:
+        raise ArtistRepositoryError from exception
+    except (ArtistRepositoryError, Exception) as exception:
         artist_repository_logger.exception(
             f"Unexpected error inserting artist {artist} in database"
         )
-        raise ArtistRepositoryException from exception
+        raise ArtistRepositoryError from exception
     else:
         artist_repository_logger.info(f"Artist added to repository: {artist}")
 
@@ -96,7 +96,7 @@ def get_all_artists() -> list[ArtistDAO]:
     """Get all artists
 
     Raises:
-        ArtistRepositoryException: unexpected error getting all artists
+        ArtistRepositoryError: unexpected error getting all artists
 
     Returns:
         list[ArtistDAO]: a list with all artists
@@ -108,7 +108,7 @@ def get_all_artists() -> list[ArtistDAO]:
         ]
     except Exception as exception:
         artist_repository_logger.exception("Error getting all artists names from database")
-        raise ArtistRepositoryException from exception
+        raise ArtistRepositoryError from exception
     else:
         artist_repository_logger.info("All artists names retrieved successfully")
         return artists
@@ -122,23 +122,23 @@ def add_song_to_artist(artist_name: str, song_name: str) -> None:
         song_name (str): song name
 
     Raises:
-        ArtistRepositoryException: unexpected error adding song to artist
+        ArtistRepositoryError: unexpected error adding song to artist
     """
     try:
         result = user_collection_provider.get_artist_collection().update_one(
             {"name": artist_name}, {"$push": {"uploaded_songs": song_name}}
         )
         validate_user_update(result)
-    except BaseUserUpdateException as exception:
+    except BaseUserUpdateError as exception:
         artist_repository_logger.exception(
             f"Error updating artist {artist_name} with song {song_name} in database"
         )
-        raise ArtistRepositoryException from exception
-    except (ArtistRepositoryException, Exception) as exception:
+        raise ArtistRepositoryError from exception
+    except (ArtistRepositoryError, Exception) as exception:
         artist_repository_logger.exception(
             f"Unexpected error adding song {song_name} to artist {artist_name} in database"
         )
-        raise ArtistRepositoryException from exception
+        raise ArtistRepositoryError from exception
 
 
 def delete_song_from_artist(artist_name: str, song_name: str) -> None:
@@ -149,24 +149,24 @@ def delete_song_from_artist(artist_name: str, song_name: str) -> None:
         song_name (str): song name
 
     Raises:
-        ArtistRepositoryException: unexpected error deleting song from artist
+        ArtistRepositoryError: unexpected error deleting song from artist
     """
     try:
         result = user_collection_provider.get_artist_collection().update_one(
             {"name": artist_name}, {"$pull": {"uploaded_songs": song_name}}
         )
         validate_user_update(result)
-    except BaseUserUpdateException as exception:
+    except BaseUserUpdateError as exception:
         artist_repository_logger.exception(
             f"Error updating artist {artist_name} with deletion of "
             f"song {song_name} in database"
         )
-        raise ArtistRepositoryException from exception
-    except (ArtistRepositoryException, Exception) as exception:
+        raise ArtistRepositoryError from exception
+    except (ArtistRepositoryError, Exception) as exception:
         artist_repository_logger.exception(
             f"Unexpected error removing song {song_name} from artist {artist_name} in database"
         )
-        raise ArtistRepositoryException from exception
+        raise ArtistRepositoryError from exception
 
 
 def get_artist_song_names(artist_name: str) -> list[str]:

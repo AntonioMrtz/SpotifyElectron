@@ -10,10 +10,10 @@ from app.logging.logging_constants import (
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.genre.genre_schema import Genre
 from app.spotify_electron.song.base_song_schema import (
-    SongDeleteException,
+    SongDeleteError,
     SongMetadataDAO,
-    SongNotFoundException,
-    SongRepositoryException,
+    SongNotFoundError,
+    SongRepositoryError,
     get_song_metadata_dao_from_document,
 )
 from app.spotify_electron.song.providers.song_collection_provider import (
@@ -24,7 +24,7 @@ from app.spotify_electron.song.validations.base_song_repository_validations impo
     validate_song_exists,
 )
 
-song_repository_logger = SpotifyElectronLogger(LOGGING_BASE_SONG_REPOSITORY).getLogger()
+song_repository_logger = SpotifyElectronLogger(LOGGING_BASE_SONG_REPOSITORY).get_logger()
 
 
 def check_song_exists(name: str) -> bool:
@@ -34,7 +34,7 @@ def check_song_exists(name: str) -> bool:
         name (str): song name
 
     Raises:
-        SongRepositoryException: unexpected error checking if song exists
+        SongRepositoryError: unexpected error checking if song exists
 
     Returns:
         bool: if song exists
@@ -44,7 +44,7 @@ def check_song_exists(name: str) -> bool:
         song = collection.find_one({"name": name}, {"_id": 1})
     except Exception as exception:
         song_repository_logger.exception(f"Error checking if Song {name} exists in database")
-        raise SongRepositoryException from exception
+        raise SongRepositoryError from exception
     else:
         result = song is not None
         song_repository_logger.debug(f"Song with name {name} exists: {result}")
@@ -58,8 +58,8 @@ def get_song_metadata(name: str) -> SongMetadataDAO:
         name (str): song name
 
     Raises:
-        SongNotFoundException: song not found
-        SongRepositoryException: unexpected error getting song metadata
+        SongNotFoundError: song not found
+        SongRepositoryError: unexpected error getting song metadata
 
     Returns:
         SongMetadataDAO: the song
@@ -70,12 +70,12 @@ def get_song_metadata(name: str) -> SongMetadataDAO:
         validate_song_exists(song)
         song_dao = get_song_metadata_dao_from_document(song)  # type: ignore
 
-    except SongNotFoundException as exception:
-        raise SongNotFoundException from exception
+    except SongNotFoundError as exception:
+        raise SongNotFoundError from exception
 
     except Exception as exception:
         song_repository_logger.exception(f"Error getting Song metadata {name} from database")
-        raise SongRepositoryException from exception
+        raise SongRepositoryError from exception
     else:
         song_repository_logger.info(f"Get Song metadata by name returned {song_dao}")
         return song_dao
@@ -90,7 +90,7 @@ def delete_song(name: str) -> None:
 
     Raises:
     ------
-        SongRepositoryException: an error occurred while deleting song from database
+        SongRepositoryError: an error occurred while deleting song from database
 
     """
     try:
@@ -98,12 +98,12 @@ def delete_song(name: str) -> None:
         result = collection.delete_one({"name": name})
         validate_song_delete_count(result)
         song_repository_logger.info(f"Song {name} Deleted")
-    except SongDeleteException as exception:
+    except SongDeleteError as exception:
         song_repository_logger.exception(f"Error deleting song {name} from database")
-        raise SongRepositoryException from exception
-    except SongRepositoryException as exception:
+        raise SongRepositoryError from exception
+    except SongRepositoryError as exception:
         song_repository_logger.exception(f"Unexpected error deleting song {name} in database")
-        raise SongRepositoryException from exception
+        raise SongRepositoryError from exception
 
 
 def get_artist_from_song(name: str) -> str:
@@ -113,7 +113,7 @@ def get_artist_from_song(name: str) -> str:
         name (str): song name
 
     Raises:
-        SongRepositoryException: unexpected error while getting artist from song
+        SongRepositoryError: unexpected error while getting artist from song
 
     Returns:
         str: the artist name
@@ -123,11 +123,11 @@ def get_artist_from_song(name: str) -> str:
         return collection.find_one({"name": name}, {"_id": 0, "artist": 1}).get(  # type: ignore
             "artist"
         )
-    except SongRepositoryException as exception:
+    except SongRepositoryError as exception:
         song_repository_logger.exception(
             f"Unexpected error getting artist from song {name} in database"
         )
-        raise SongRepositoryException from exception
+        raise SongRepositoryError from exception
 
 
 def increase_song_streams(name: str) -> None:
@@ -137,16 +137,16 @@ def increase_song_streams(name: str) -> None:
         name (str): song name
 
     Raises:
-        SongRepositoryException: unexpected error while increasing song streams
+        SongRepositoryError: unexpected error while increasing song streams
     """
     try:
         collection = song_collection_provider.get_song_collection()
         collection.update_one({"name": name}, {"$inc": {"streams": 1}})
-    except SongRepositoryException as exception:
+    except SongRepositoryError as exception:
         song_repository_logger.exception(
             f"Unexpected error increasing stream count for artist {name} in database"
         )
-        raise SongRepositoryException from exception
+        raise SongRepositoryError from exception
 
 
 def get_artist_total_streams(artist_name: str) -> int:
@@ -156,7 +156,7 @@ def get_artist_total_streams(artist_name: str) -> int:
         artist_name (str): artist name
 
     Raises:
-        SongRepositoryException: unexpected error while getting artist's total streams
+        SongRepositoryError: unexpected error while getting artist's total streams
 
     Returns:
         int: the number of total streams of artist songs
@@ -174,11 +174,11 @@ def get_artist_total_streams(artist_name: str) -> int:
         if result_total_streams_query is None:
             return 0
         return result_total_streams_query["total"]
-    except SongRepositoryException as exception:
+    except SongRepositoryError as exception:
         song_repository_logger.exception(
             f"Unexpected error gettig artist {artist_name} total streams in database"
         )
-        raise SongRepositoryException from exception
+        raise SongRepositoryError from exception
 
 
 def get_song_names_search_by_name(song_name: str) -> list[str]:
@@ -188,7 +188,7 @@ def get_song_names_search_by_name(song_name: str) -> list[str]:
         song_name (str): song name to match
 
     Raises:
-        SongRepositoryException: unexpected error while getting songs by name
+        SongRepositoryError: unexpected error while getting songs by name
 
     Returns:
         list[str]: list of song names that matched the song name
@@ -199,11 +199,11 @@ def get_song_names_search_by_name(song_name: str) -> list[str]:
             {"name": {"$regex": song_name, "$options": "i"}}, {"_id": 0, "name": 1}
         )
         return [song["name"] for song in song_names_response]  # type: ignore
-    except SongRepositoryException as exception:
+    except SongRepositoryError as exception:
         song_repository_logger.exception(
             f"Unexpected error getting song names that matched {song_name} in database"
         )
-        raise SongRepositoryException from exception
+        raise SongRepositoryError from exception
 
 
 def get_songs_metadata_by_genre(genre: str) -> list[SongMetadataDAO]:
@@ -213,7 +213,7 @@ def get_songs_metadata_by_genre(genre: str) -> list[SongMetadataDAO]:
         genre (str): genre to match
 
     Raises:
-        SongRepositoryException: unexpected error getting song metadatas from genre
+        SongRepositoryError: unexpected error getting song metadatas from genre
 
     Returns:
         list[SongMetadataDAO]: list of song metadatas with selected genre
@@ -232,8 +232,8 @@ def get_songs_metadata_by_genre(genre: str) -> list[SongMetadataDAO]:
             )
             for song_data in result_get_song_by_genre
         ]
-    except SongRepositoryException as exception:
+    except SongRepositoryError as exception:
         song_repository_logger.exception(
             f"Unexpected error getting songs metadata by genre {genre} in database"
         )
-        raise SongRepositoryException from exception
+        raise SongRepositoryError from exception

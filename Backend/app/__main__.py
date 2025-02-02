@@ -39,7 +39,7 @@ from app.spotify_electron.stream import stream_controller
 from app.spotify_electron.user import base_user_controller
 from app.spotify_electron.user.artist import artist_controller
 
-main_logger = SpotifyElectronLogger(LOGGING_MAIN).getLogger()
+main_logger = SpotifyElectronLogger(LOGGING_MAIN).get_logger()
 
 
 @asynccontextmanager

@@ -5,7 +5,7 @@ Song schema for domain model
 from dataclasses import dataclass
 from typing import Any
 
-from app.exceptions.base_exceptions_schema import SpotifyElectronException
+from app.exceptions.base_exceptions_schema import SpotifyElectronError
 from app.spotify_electron.genre.genre_schema import Genre
 from app.spotify_electron.song.base_song_schema import BaseSongDAO, BaseSongDTO
 
@@ -69,7 +69,7 @@ def get_song_dto_from_dao(song_dao: SongDAO, url: str) -> SongDTO:
     )
 
 
-class SongGetUrlStreamingException(SpotifyElectronException):
+class SongGetUrlStreamingError(SpotifyElectronError):
     """Get Song url for streaming error"""
 
     ERROR = "Unexpected error getting streaming url of Song"
@@ -78,7 +78,7 @@ class SongGetUrlStreamingException(SpotifyElectronException):
         super().__init__(self.ERROR)
 
 
-class SongCreateSongStreamingException(SpotifyElectronException):
+class SongCreateSongStreamingError(SpotifyElectronError):
     """Song creation"""
 
     ERROR = "Unexpected error creating Song"
@@ -87,7 +87,7 @@ class SongCreateSongStreamingException(SpotifyElectronException):
         super().__init__(self.ERROR)
 
 
-class SongDeleteSongStreamingException(SpotifyElectronException):
+class SongDeleteSongStreamingError(SpotifyElectronError):
     """Song deletion"""
 
     ERROR = "Unexpected error deleting Song"

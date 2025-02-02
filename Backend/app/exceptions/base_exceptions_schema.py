@@ -5,17 +5,17 @@ Base common exceptions
 from app.logging.logging_constants import LOGGING_EXCEPTION
 from app.logging.logging_schema import SpotifyElectronLogger
 
-exceptions_logger = SpotifyElectronLogger(LOGGING_EXCEPTION).getLogger()
+exceptions_logger = SpotifyElectronLogger(LOGGING_EXCEPTION).get_logger()
 
 
-class SpotifyElectronException(Exception):
+class SpotifyElectronError(Exception):
     """Base app exception, all exceptions must inherit from it"""
 
     def __init__(self, message: str):
         super().__init__(message)
 
 
-class BadParameterException(SpotifyElectronException):
+class BadParameterError(SpotifyElectronError):
     """Bad parameter"""
 
     def __init__(self, parameter_name: str | None = None):
@@ -26,7 +26,7 @@ class BadParameterException(SpotifyElectronException):
         self.error = f"Bad parameter: {item_name}"
 
 
-class JsonEncodeException(SpotifyElectronException):
+class JsonEncodeError(SpotifyElectronError):
     """Error encoding object into json"""
 
     ERROR = "Error encoding object into json"

@@ -4,7 +4,7 @@ from pytest import fixture, raises
 from starlette.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_202_ACCEPTED
 
 from app.__main__ import app
-from app.spotify_electron.genre.genre_schema import Genre, GenreNotValidException
+from app.spotify_electron.genre.genre_schema import Genre, GenreNotValidError
 from tests.test_API.api_test_artist import create_artist
 from tests.test_API.api_test_user import delete_user
 from tests.test_API.api_token import get_user_jwt_header
@@ -49,5 +49,5 @@ def test_validate_genre():
 
 def test_validate_genre_invalid():
     invalid_genre = "invalid_genre"
-    with raises(GenreNotValidException):
+    with raises(GenreNotValidError):
         Genre.validate_genre(invalid_genre)

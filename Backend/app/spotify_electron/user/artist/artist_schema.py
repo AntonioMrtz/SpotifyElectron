@@ -7,13 +7,13 @@ from typing import Any
 
 from app.spotify_electron.song.base_song_repository import get_artist_total_streams
 from app.spotify_electron.user.base_user_schema import (
-    BaseUserAlreadyExistsException,
-    BaseUserBadNameException,
-    BaseUserBadParametersException,
-    BaseUserGetPasswordException,
-    BaseUserNotFoundException,
-    BaseUserRepositoryException,
-    BaseUserServiceException,
+    BaseUserAlreadyExistsError,
+    BaseUserBadNameError,
+    BaseUserBadParametersError,
+    BaseUserGetPasswordError,
+    BaseUserNotFoundError,
+    BaseUserRepositoryError,
+    BaseUserServiceError,
 )
 from app.spotify_electron.user.user.user_schema import UserDAO, UserDTO
 
@@ -83,7 +83,7 @@ def get_artist_dto_from_dao(artist_dao: ArtistDAO) -> ArtistDTO:
     )
 
 
-class ArtistRepositoryException(BaseUserRepositoryException):
+class ArtistRepositoryError(BaseUserRepositoryError):
     """Artist Repository Unexpected error"""
 
     ERROR = "Error accessing Artist REPOSITORY"
@@ -92,7 +92,7 @@ class ArtistRepositoryException(BaseUserRepositoryException):
         super().__init__(error)
 
 
-class ArtistNotFoundException(BaseUserNotFoundException):
+class ArtistNotFoundError(BaseUserNotFoundError):
     """Artist not found"""
 
     ERROR = "Artist not found"
@@ -101,7 +101,7 @@ class ArtistNotFoundException(BaseUserNotFoundException):
         super().__init__(error)
 
 
-class ArtistBadNameException(BaseUserBadNameException):
+class ArtistBadNameError(BaseUserBadNameError):
     """Bad name for artist"""
 
     ERROR = "Bad parameters provided for artist"
@@ -110,7 +110,7 @@ class ArtistBadNameException(BaseUserBadNameException):
         super().__init__(error)
 
 
-class ArtistAlreadyExistsException(BaseUserAlreadyExistsException):
+class ArtistAlreadyExistsError(BaseUserAlreadyExistsError):
     """Exception raised when an Artist already exists"""
 
     ERROR = "Artist already exists"
@@ -119,7 +119,7 @@ class ArtistAlreadyExistsException(BaseUserAlreadyExistsException):
         super().__init__(error)
 
 
-class ArtistGetPasswordException(BaseUserGetPasswordException):
+class ArtistGetPasswordError(BaseUserGetPasswordError):
     """Exception raised when there is an error getting artist password"""
 
     ERROR = "Error getting Artist password"
@@ -128,7 +128,7 @@ class ArtistGetPasswordException(BaseUserGetPasswordException):
         super().__init__(error)
 
 
-class ArtistServiceException(BaseUserServiceException):
+class ArtistServiceError(BaseUserServiceError):
     """Exception raised when there is an unexpected error in artist service"""
 
     ERROR = "Error accessing Artist Service"
@@ -137,7 +137,7 @@ class ArtistServiceException(BaseUserServiceException):
         super().__init__(error)
 
 
-class ArtistBadParametersException(BaseUserBadParametersException):
+class ArtistBadParametersError(BaseUserBadParametersError):
     """Exception raised when bad parameters are provided for an Artist"""
 
     ERROR = "Bad parameters provided for Artist"

@@ -20,24 +20,24 @@ from starlette.status import (
 import app.spotify_electron.playlist.playlist_service as playlist_service
 import app.spotify_electron.utils.json_converter.json_converter_utils as json_converter_utils
 from app.auth.auth_schema import (
-    BadJWTTokenProvidedException,
+    BadJWTTokenProvidedError,
     TokenData,
-    UserUnauthorizedException,
+    UserUnauthorizedError,
 )
 from app.auth.JWTBearer import JWTBearer
 from app.common.PropertiesMessagesManager import PropertiesMessagesManager
-from app.exceptions.base_exceptions_schema import JsonEncodeException
+from app.exceptions.base_exceptions_schema import JsonEncodeError
 from app.logging.logging_constants import LOGGING_PLAYLIST_CONTROLLER
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.playlist.playlist_schema import (
-    PlaylistAlreadyExistsException,
-    PlaylistBadNameException,
-    PlaylistNotFoundException,
-    PlaylistServiceException,
+    PlaylistAlreadyExistsError,
+    PlaylistBadNameError,
+    PlaylistNotFoundError,
+    PlaylistServiceError,
 )
 from app.spotify_electron.song.base_song_schema import (
-    SongBadNameException,
-    SongNotFoundException,
+    SongBadNameError,
+    SongNotFoundError,
 )
 
 router = APIRouter(
@@ -45,7 +45,7 @@ router = APIRouter(
     tags=["Playlists"],
 )
 
-playlist_controller_logger = SpotifyElectronLogger(LOGGING_PLAYLIST_CONTROLLER).getLogger()
+playlist_controller_logger = SpotifyElectronLogger(LOGGING_PLAYLIST_CONTROLLER).get_logger()
 
 
 @router.get("/{name}")
@@ -65,22 +65,22 @@ def get_playlist(
 
         return Response(playlist_json, media_type="application/json", status_code=HTTP_200_OK)
 
-    except PlaylistBadNameException:
+    except PlaylistBadNameError:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
             content=PropertiesMessagesManager.playlistBadName,
         )
-    except PlaylistNotFoundException:
+    except PlaylistNotFoundError:
         return Response(
             status_code=HTTP_404_NOT_FOUND,
             content=PropertiesMessagesManager.playlistNotFound,
         )
-    except JsonEncodeException:
+    except JsonEncodeError:
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonEncodingError,
         )
-    except (Exception, PlaylistServiceException):
+    except (Exception, PlaylistServiceError):
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonInternalServerError,
@@ -113,23 +113,23 @@ def create_playlist(
             token=token,
         )
         return Response(None, HTTP_201_CREATED)
-    except BadJWTTokenProvidedException:
+    except BadJWTTokenProvidedError:
         return Response(
             status_code=HTTP_403_FORBIDDEN,
             content=PropertiesMessagesManager.tokenInvalidCredentials,
             headers={"WWW-Authenticate": "Bearer"},
         )
-    except (PlaylistBadNameException, PlaylistAlreadyExistsException):
+    except (PlaylistBadNameError, PlaylistAlreadyExistsError):
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
             content=PropertiesMessagesManager.playlistBadName,
         )
-    except PlaylistNotFoundException:
+    except PlaylistNotFoundError:
         return Response(
             status_code=HTTP_404_NOT_FOUND,
             content=PropertiesMessagesManager.playlistNotFound,
         )
-    except (Exception, PlaylistServiceException):
+    except (Exception, PlaylistServiceError):
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonInternalServerError,
@@ -158,28 +158,28 @@ def update_playlist(  # noqa: PLR0917
     try:
         playlist_service.update_playlist(name, new_name, photo, description, song_names, token)
         return Response(None, HTTP_204_NO_CONTENT)
-    except BadJWTTokenProvidedException:
+    except BadJWTTokenProvidedError:
         return Response(
             status_code=HTTP_403_FORBIDDEN,
             content=PropertiesMessagesManager.tokenInvalidCredentials,
             headers={"WWW-Authenticate": "Bearer"},
         )
-    except UserUnauthorizedException:
+    except UserUnauthorizedError:
         return Response(
             status_code=HTTP_403_FORBIDDEN,
             content=PropertiesMessagesManager.userUnauthorized,
         )
-    except PlaylistBadNameException:
+    except PlaylistBadNameError:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
             content=PropertiesMessagesManager.playlistBadName,
         )
-    except PlaylistNotFoundException:
+    except PlaylistNotFoundError:
         return Response(
             status_code=HTTP_404_NOT_FOUND,
             content=PropertiesMessagesManager.playlistNotFound,
         )
-    except (Exception, PlaylistServiceException):
+    except (Exception, PlaylistServiceError):
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonInternalServerError,
@@ -196,17 +196,17 @@ def delete_playlist(name: str) -> Response:
     try:
         playlist_service.delete_playlist(name)
         return Response(status_code=HTTP_202_ACCEPTED)
-    except PlaylistBadNameException:
+    except PlaylistBadNameError:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
             content=PropertiesMessagesManager.playlistBadName,
         )
-    except PlaylistNotFoundException:
+    except PlaylistNotFoundError:
         return Response(
             status_code=HTTP_404_NOT_FOUND,
             content=PropertiesMessagesManager.playlistNotFound,
         )
-    except (Exception, PlaylistServiceException):
+    except (Exception, PlaylistServiceError):
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonInternalServerError,
@@ -223,22 +223,22 @@ def get_playlists(token: Annotated[TokenData, Depends(JWTBearer())]) -> Response
         )
 
         return Response(playlist_json, media_type="application/json", status_code=HTTP_200_OK)
-    except PlaylistBadNameException:
+    except PlaylistBadNameError:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
             content=PropertiesMessagesManager.playlistBadName,
         )
-    except PlaylistNotFoundException:
+    except PlaylistNotFoundError:
         return Response(
             status_code=HTTP_404_NOT_FOUND,
             content=PropertiesMessagesManager.playlistNotFound,
         )
-    except JsonEncodeException:
+    except JsonEncodeError:
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonEncodingError,
         )
-    except (Exception, PlaylistServiceException):
+    except (Exception, PlaylistServiceError):
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonInternalServerError,
@@ -263,21 +263,21 @@ def get_selected_playlists(
         )
 
         return Response(playlist_json, media_type="application/json", status_code=HTTP_200_OK)
-    except PlaylistBadNameException:
+    except PlaylistBadNameError:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
             content=PropertiesMessagesManager.playlistBadName,
         )
-    except PlaylistNotFoundException:
+    except PlaylistNotFoundError:
         return Response(
             status_code=HTTP_404_NOT_FOUND,
         )
-    except JsonEncodeException:
+    except JsonEncodeError:
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonEncodingError,
         )
-    except (Exception, PlaylistServiceException):
+    except (Exception, PlaylistServiceError):
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonInternalServerError,
@@ -295,26 +295,26 @@ def add_songs_to_playlist(name: str, song_names: list[str]) -> Response:
     try:
         playlist_service.add_songs_to_playlist(name, song_names)
         return Response(None, HTTP_204_NO_CONTENT)
-    except PlaylistBadNameException:
+    except PlaylistBadNameError:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
             content=PropertiesMessagesManager.playlistBadName,
         )
-    except PlaylistNotFoundException:
+    except PlaylistNotFoundError:
         return Response(
             status_code=HTTP_404_NOT_FOUND,
         )
-    except SongBadNameException:
+    except SongBadNameError:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
             content=PropertiesMessagesManager.songBadName,
         )
-    except SongNotFoundException:
+    except SongNotFoundError:
         return Response(
             status_code=HTTP_404_NOT_FOUND,
             content=PropertiesMessagesManager.songNotFound,
         )
-    except (Exception, PlaylistServiceException):
+    except (Exception, PlaylistServiceError):
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonInternalServerError,
@@ -334,26 +334,26 @@ def remove_songs_from_playlist(
     try:
         playlist_service.remove_songs_from_playlist(name, song_names)
         return Response(None, HTTP_202_ACCEPTED)
-    except PlaylistBadNameException:
+    except PlaylistBadNameError:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
             content=PropertiesMessagesManager.playlistBadName,
         )
-    except PlaylistNotFoundException:
+    except PlaylistNotFoundError:
         return Response(
             status_code=HTTP_404_NOT_FOUND,
         )
-    except SongBadNameException:
+    except SongBadNameError:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
             content=PropertiesMessagesManager.songBadName,
         )
-    except SongNotFoundException:
+    except SongNotFoundError:
         return Response(
             status_code=HTTP_404_NOT_FOUND,
             content=PropertiesMessagesManager.songNotFound,
         )
-    except (Exception, PlaylistServiceException):
+    except (Exception, PlaylistServiceError):
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonInternalServerError,

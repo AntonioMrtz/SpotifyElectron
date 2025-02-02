@@ -7,16 +7,16 @@ import app.auth.auth_service as auth_service
 from app.auth.auth_schema import (
     BEARER_SCHEME_NAME,
     JWT_COOKIE_HEADER_FIELD_NAME,
-    BadJWTTokenProvidedException,
+    BadJWTTokenProvidedError,
     FakeRequest,
-    JWTValidationException,
+    JWTValidationError,
     TokenData,
 )
 from app.auth.auth_service import get_authorization_bearer_from_headers, get_jwt_token_data
 from app.logging.logging_constants import LOGGING_JWT_BEARER_AUTH
 from app.logging.logging_schema import SpotifyElectronLogger
 
-jwt_bearer_logger = SpotifyElectronLogger(LOGGING_JWT_BEARER_AUTH).getLogger()
+jwt_bearer_logger = SpotifyElectronLogger(LOGGING_JWT_BEARER_AUTH).get_logger()
 
 
 class JWTBearer(HTTPBearer):
@@ -32,7 +32,7 @@ class JWTBearer(HTTPBearer):
             request (Request): the incoming request
 
         Raises:
-            BadJWTTokenProvidedException: invalid credentials
+            BadJWTTokenProvidedError: invalid credentials
 
         Returns:
             TokenData: the token data
@@ -53,13 +53,13 @@ class JWTBearer(HTTPBearer):
             fake_request  # type: ignore
         )
         if not credentials or credentials.scheme != BEARER_SCHEME_NAME:
-            raise BadJWTTokenProvidedException
+            raise BadJWTTokenProvidedError
         try:
             jwt_raw = credentials.credentials
             auth_service.validate_jwt(jwt_raw)
             jwt_token_data = get_jwt_token_data(credentials.credentials)
-        except (JWTValidationException, Exception) as exception:
+        except (JWTValidationError, Exception) as exception:
             jwt_bearer_logger.exception(f"Request with invalid JWT {jwt_raw} {request}")
-            raise BadJWTTokenProvidedException from exception
+            raise BadJWTTokenProvidedError from exception
         else:
             return jwt_token_data

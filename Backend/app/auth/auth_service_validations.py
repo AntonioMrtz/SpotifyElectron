@@ -6,11 +6,11 @@ from datetime import datetime, timezone
 from typing import Any
 
 from app.auth.auth_schema import (
-    JWTExpiredException,
-    JWTMissingCredentialsException,
-    JWTNotProvidedException,
+    JWTExpiredError,
+    JWTMissingCredentialsError,
+    JWTNotProvidedError,
     TokenData,
-    UserUnauthorizedException,
+    UserUnauthorizedError,
 )
 
 
@@ -22,10 +22,10 @@ def validate_jwt_user_matches_user(token: TokenData, user_name: str) -> None:
         user_name (str): user
 
     Raises:
-        UserUnauthorizedException: if the user didn't match the jwt user
+        UserUnauthorizedError: if the user didn't match the jwt user
     """
     if not token.username == user_name:
-        raise UserUnauthorizedException
+        raise UserUnauthorizedError
 
 
 def validate_token_is_expired(token: dict[str, Any]) -> None:
@@ -37,12 +37,12 @@ def validate_token_is_expired(token: dict[str, Any]) -> None:
 
     Raises:
     ------
-        JWTExpiredException: if token is expired
+        JWTExpiredError: if token is expired
 
     """
     expiration_time = datetime.fromtimestamp(token["exp"], timezone.utc)  # noqa: UP017 TODO
     if expiration_time < datetime.now(timezone.utc):  # noqa: UP017 TODO
-        raise JWTExpiredException
+        raise JWTExpiredError
 
 
 def validate_token_exists(token: Any) -> None:
@@ -54,11 +54,11 @@ def validate_token_exists(token: Any) -> None:
 
     Raises:
     ------
-        JWTNotProvidedException: if the token is None
+        JWTNotProvidedError: if the token is None
 
     """
     if token is None:
-        raise JWTNotProvidedException
+        raise JWTNotProvidedError
 
 
 def validate_jwt_credentials_missing(credentials: list[Any]) -> None:
@@ -70,9 +70,9 @@ def validate_jwt_credentials_missing(credentials: list[Any]) -> None:
 
     Raises:
     ------
-        JWTMissingCredentialsException: if a credential is missing
+        JWTMissingCredentialsError: if a credential is missing
 
     """
     for credential in credentials:
         if credential is None:
-            raise JWTMissingCredentialsException
+            raise JWTMissingCredentialsError

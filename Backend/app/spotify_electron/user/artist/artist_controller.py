@@ -44,12 +44,13 @@ router = APIRouter(
 @router.get("/{name}")
 def get_artist(
     name: str,
-    token: Annotated[TokenData | None, Depends(JWTBearer())],
+    token: Annotated[TokenData, Depends(JWTBearer())],
 ) -> Response:
     """Get artist by name
 
     Args:
         name (str): artist name
+        token (Annotated[TokenData, Depends): JWT info
     """
     try:
         artist = artist_service.get_artist(name)
@@ -114,9 +115,7 @@ def create_artist(
 
 
 @router.get("/")
-def get_artists(
-    token: Annotated[TokenData | None, Depends(JWTBearer())],
-) -> Response:
+def get_artists(token: Annotated[TokenData, Depends(JWTBearer())]) -> Response:
     """Get all artists"""
     try:
         artists = artist_service.get_all_artists()
@@ -162,7 +161,7 @@ def get_artists(
 @router.get("/{name}/songs")
 def get_artist_songs(
     name: str,
-    token: Annotated[TokenData | None, Depends(JWTBearer())],
+    token: Annotated[TokenData, Depends(JWTBearer())],
 ) -> Response:
     """Get artist songs"""
     try:

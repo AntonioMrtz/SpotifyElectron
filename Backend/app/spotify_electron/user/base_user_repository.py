@@ -26,6 +26,7 @@ def check_user_exists(name: str, collection: Collection) -> bool:
     Args:
     ----
         name (str): name of the user
+        collection (Collection): user collection
 
     Raises:
     ------
@@ -55,6 +56,7 @@ def delete_user(name: str, collection: Collection) -> None:
 
     Args:
         name (str): user name
+        collection (Collection): user collection
 
     Raises:
         BaseUserRepositoryException:

@@ -53,12 +53,13 @@ router = APIRouter(
 @router.get("/{name}")
 def get_song(
     name: str,
-    token: Annotated[TokenData | None, Depends(JWTBearer())],
+    token: Annotated[TokenData, Depends(JWTBearer())],
 ) -> Response:
     """Get song
 
     Args:
         name (str): song name
+        token (Annotated[TokenData, Depends): JWT info
     """
     try:
         song = get_song_service().get_song(name)
@@ -93,7 +94,7 @@ async def create_song(
     genre: Genre,
     photo: str,
     file: UploadFile,
-    token: Annotated[TokenData | None, Depends(JWTBearer())],
+    token: Annotated[TokenData, Depends(JWTBearer())],
 ) -> Response:
     """Create song
 
@@ -102,6 +103,7 @@ async def create_song(
         genre (Genre): genre
         photo (str): photo
         file (UploadFile): song file
+        token (Annotated[TokenData, Depends): JWT info
     """
     readFile = await file.read()
 
@@ -192,12 +194,13 @@ def delete_song(name: str) -> Response:
 @router.get("/metadata/{name}")
 def get_song_metadata(
     name: str,
-    token: Annotated[TokenData | None, Depends(JWTBearer())],
+    token: Annotated[TokenData, Depends(JWTBearer())],
 ) -> Response:
     """Get song metadata
 
     Args:
         name (str): the song name
+        token (Annotated[TokenData, Depends): JWT info
     """
     try:
         song = base_song_service.get_song_metadata(name)
@@ -219,12 +222,13 @@ def get_song_metadata(
 @router.patch("/{name}/streams")
 def increase_song_streams(
     name: str,
-    token: Annotated[TokenData | None, Depends(JWTBearer())],
+    token: Annotated[TokenData, Depends(JWTBearer())],
 ) -> Response:
     """Increase total streams of a song
 
     Args:
         name (str): song name
+        token (Annotated[TokenData, Depends): JWT info
     """
     try:
         base_song_service.increase_song_streams(name)
@@ -244,12 +248,13 @@ def increase_song_streams(
 @router.get("/genres/{genre}")
 def get_songs_by_genre(
     genre: Genre,
-    token: Annotated[TokenData | None, Depends(JWTBearer())],
+    token: Annotated[TokenData, Depends(JWTBearer())],
 ) -> Response:
     """Get songs by genre
 
     Args:
         genre (Genre): the genre to match
+        token (Annotated[TokenData, Depends): JWT info
     """
     try:
         songs = base_song_service.get_songs_by_genre(genre)

@@ -1,4 +1,4 @@
-FROM python:3.11-slim AS builder
+FROM python:3.12-slim AS builder
 
 WORKDIR /code
 COPY ./requirements.txt /code/requirements.txt
@@ -6,7 +6,7 @@ COPY ./requirements.txt /code/requirements.txt
 RUN python -m pip wheel -r requirements.txt --no-cache-dir --no-deps --wheel-dir /wheels
 
 
-FROM python:3.11-slim AS runner
+FROM python:3.12-slim AS runner
 
 WORKDIR /code
 COPY --from=builder /wheels /wheels

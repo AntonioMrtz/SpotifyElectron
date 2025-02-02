@@ -1,5 +1,6 @@
 site_name: Spotify Electron
 site_author: Antonio Martinez Fernandez
+site_url: https://antoniomrtz.github.io/SpotifyElectron_Web/docs # Website deployment URL
 repo_url: https://github.com/AntonioMrtz/SpotifyElectron
 site_description: Documentation for Spotify Electron, an open-source cross-platform music streaming app
 remote_branch: gh-pages
@@ -38,6 +39,7 @@ nav:
   - User guides:
     - Installation guide: user/user-guides/Installation-Guide.md
   - Code of conduct: CODE_OF_CONDUCT.md
+  - Security: Security.md
   - Contributors: CONTRIBUTORS.md
 
 theme:

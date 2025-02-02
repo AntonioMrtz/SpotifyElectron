@@ -14,13 +14,13 @@ from app.logging.logging_constants import LOGGING_SONG_BLOB_REPOSITORY
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.genre.genre_schema import Genre
 from app.spotify_electron.song.base_song_schema import (
-    SongCreateException,
-    SongNotFoundException,
-    SongRepositoryException,
+    SongCreateError,
+    SongNotFoundError,
+    SongRepositoryError,
 )
 from app.spotify_electron.song.blob.song_schema import (
     SongDAO,
-    SongDataNotFoundException,
+    SongDataNotFoundError,
     get_song_dao_from_document,
 )
 from app.spotify_electron.song.blob.validations.song_repository_validations import (
@@ -33,7 +33,7 @@ from app.spotify_electron.song.validations.base_song_repository_validations impo
     validate_song_exists,
 )
 
-song_repository_logger = SpotifyElectronLogger(LOGGING_SONG_BLOB_REPOSITORY).getLogger()
+song_repository_logger = SpotifyElectronLogger(LOGGING_SONG_BLOB_REPOSITORY).get_logger()
 
 
 def get_song(name: str) -> SongDAO:
@@ -43,8 +43,8 @@ def get_song(name: str) -> SongDAO:
         name (str): song name
 
     Raises:
-        SongNotFoundException: song not found
-        SongRepositoryException: unexpected error getting song
+        SongNotFoundError: song not found
+        SongRepositoryError: unexpected error getting song
 
     Returns:
         SongDAO: the song
@@ -55,18 +55,18 @@ def get_song(name: str) -> SongDAO:
         validate_song_exists(song_metadata)
         song_dao = get_song_dao_from_document(song_metadata)  # type: ignore
 
-    except SongNotFoundException as exception:
+    except SongNotFoundError as exception:
         song_repository_logger.exception(f"Song not found: {name}")
-        raise SongNotFoundException from exception
+        raise SongNotFoundError from exception
     except Exception as exception:
         song_repository_logger.exception(f"Error getting Song {name} from database")
-        raise SongRepositoryException from exception
+        raise SongRepositoryError from exception
     else:
         song_repository_logger.info(f"Get Song by name returned {song_dao}")
         return song_dao
 
 
-def create_song(  # noqa: PLR0913
+def create_song(  # noqa: PLR0917
     name: str, artist: str, duration: int, genre: Genre, photo: str, file: bytes
 ) -> None:
     """Create song
@@ -77,9 +77,10 @@ def create_song(  # noqa: PLR0913
         duration (int): song duration in seconds
         genre (Genre): song genre
         photo (str): song photo
+        file (bytes): song content
 
     Raises:
-        SongRepositoryException: unexpected error creating song
+        SongRepositoryError: unexpected error creating song
     """
     try:
         gridfs_collection = song_collection_provider.get_gridfs_song_collection()
@@ -97,12 +98,12 @@ def create_song(  # noqa: PLR0913
             **song,
         )
         validate_song_create(result)
-    except SongCreateException as exception:
+    except SongCreateError as exception:
         song_repository_logger.exception(f"Error inserting Song {name} in database")
-        raise SongRepositoryException from exception
-    except SongRepositoryException as exception:
+        raise SongRepositoryError from exception
+    except SongRepositoryError as exception:
         song_repository_logger.exception(f"Unexpected error inserting song {song} in database")
-        raise SongRepositoryException from exception
+        raise SongRepositoryError from exception
     else:
         song_repository_logger.info(f"Song added to repository: {song}")
 
@@ -114,8 +115,8 @@ def get_song_data(name: str) -> GridOut:
         name (str): song name
 
     Raises:
-        SongDataNotFoundException: song data doesn't exists
-        SongRepositoryException: unexpected error getting song data
+        SongDataNotFoundError: song data doesn't exists
+        SongRepositoryError: unexpected error getting song data
 
     Returns:
         GridOut: song data
@@ -125,12 +126,12 @@ def get_song_data(name: str) -> GridOut:
         song_data = file_collection.find_one({"name": name})
         validate_song_data_exists(song_data)
 
-    except SongDataNotFoundException as exception:
+    except SongDataNotFoundError as exception:
         song_repository_logger.exception(f"Song data not found: {name}")
-        raise SongDataNotFoundException from exception
+        raise SongDataNotFoundError from exception
     except Exception as exception:
         song_repository_logger.exception(f"Error getting Song {name} from database")
-        raise SongRepositoryException from exception
+        raise SongRepositoryError from exception
     else:
         song_repository_logger.info("Song data obtained")
         return song_data  # type: ignore

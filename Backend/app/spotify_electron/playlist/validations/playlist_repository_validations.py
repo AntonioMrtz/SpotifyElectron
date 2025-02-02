@@ -5,11 +5,11 @@ Validations for Playlist repository
 from pymongo.results import DeleteResult, InsertOneResult, UpdateResult
 
 from app.spotify_electron.playlist.playlist_schema import (
-    PlaylistCreateException,
+    PlaylistCreateError,
     PlaylistDAO,
-    PlaylistDeleteException,
-    PlaylistNotFoundException,
-    PlaylistUpdateException,
+    PlaylistDeleteError,
+    PlaylistNotFoundError,
+    PlaylistUpdateError,
 )
 
 
@@ -22,11 +22,11 @@ def validate_playlist_exists(playlist: PlaylistDAO | None) -> None:
 
     Raises:
     ------
-        PlaylistNotFoundException: if the playlists doesn't exists
+        PlaylistNotFoundError: if the playlists doesn't exists
 
     """
     if playlist is None:
-        raise PlaylistNotFoundException
+        raise PlaylistNotFoundError
 
 
 def validate_playlist_delete_count(result: DeleteResult) -> None:
@@ -38,11 +38,11 @@ def validate_playlist_delete_count(result: DeleteResult) -> None:
 
     Raises:
     ------
-        PlaylistDeleteException: if the deletion was not done
+        PlaylistDeleteError: if the deletion was not done
 
     """
     if result.deleted_count == 0:
-        raise PlaylistDeleteException
+        raise PlaylistDeleteError
 
 
 def validate_playlist_update(result: UpdateResult) -> None:
@@ -52,10 +52,10 @@ def validate_playlist_update(result: UpdateResult) -> None:
         result (UpdateResult): update result
 
     Raises:
-        PlaylistUpdateException: if the update was not done
+        PlaylistUpdateError: if the update was not done
     """
     if not result.acknowledged:
-        raise PlaylistUpdateException
+        raise PlaylistUpdateError
 
 
 def validate_playlist_create(result: InsertOneResult) -> None:
@@ -67,8 +67,8 @@ def validate_playlist_create(result: InsertOneResult) -> None:
 
     Raises:
     ------
-        PlaylistInsertException: if the insertion was not done
+        PlaylistCreateError: if the insertion was not done
 
     """
     if not result.acknowledged:
-        raise PlaylistCreateException
+        raise PlaylistCreateError

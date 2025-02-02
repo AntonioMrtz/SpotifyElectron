@@ -1,6 +1,6 @@
 {
   "name": "spotify-electron",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Spotify Electron is a cross-platform music streaming desktop app made with Electron-React frontend and Python-FastAPI-AWS Backend. The goal is to reproduce the original Spotify functionality while adding new ones like uploading songs",
   "author": {
     "name": "Antonio Martinez Fernandez",
@@ -186,9 +186,9 @@
   "collective": {
     "url": "https://github.com/AntonioMrtz/SpotifyElectron"
   },
-  "devEngines": {
-    "node": ">=14.x",
-    "npm": ">=7.x"
+  "engines" : {
+    "node" : ">=20.x",
+    "npm" : ">=10.x"
   },
   "electronmon": {
     "patterns": [

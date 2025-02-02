@@ -4,11 +4,11 @@ Genre schema for domain model
 
 from enum import StrEnum
 
-from app.exceptions.base_exceptions_schema import SpotifyElectronException
+from app.exceptions.base_exceptions_schema import SpotifyElectronError
 from app.logging.logging_constants import LOGGING_GENRE_CLASS
 from app.logging.logging_schema import SpotifyElectronLogger
 
-genre_class_logger = SpotifyElectronLogger(LOGGING_GENRE_CLASS).getLogger()
+genre_class_logger = SpotifyElectronLogger(LOGGING_GENRE_CLASS).get_logger()
 
 
 class Genre(StrEnum):
@@ -46,12 +46,18 @@ class Genre(StrEnum):
     REGGAETON = "Reggaeton"
 
     @staticmethod
-    def check_valid_genre(genre: str) -> bool:
-        """Checks if the genre is valid and raises an exception if not"""
+    def validate_genre(genre: str) -> None:
+        """Checks if the genre is valid and raises an exception if not
+
+        Args:
+            genre (str): genre
+
+        Raises:
+            GenreNotValidError: invalid genre provided
+        """
         if genre not in {member.value for member in Genre}:
             genre_class_logger.exception(f"Genre {genre} is not a valid Genre")
-            raise GenreNotValidException
-        return True
+            raise GenreNotValidError
 
     @staticmethod
     def get_genre_string_value(genre: StrEnum) -> str:
@@ -61,7 +67,7 @@ class Genre(StrEnum):
             genre (Enum): the genre Enum
 
         Raises:
-            GenreNotValidException: if the genre doesn't match any existing genres
+            GenreNotValidError: if the genre doesn't match any existing genres
 
         Returns:
             str: the string representation of the genre
@@ -70,10 +76,10 @@ class Genre(StrEnum):
             return str(genre.value)
         except Exception as exception:
             genre_class_logger.exception(f"Genre {genre} is not a valid Genre")
-            raise GenreNotValidException from exception
+            raise GenreNotValidError from exception
 
 
-class GenreNotValidException(SpotifyElectronException):
+class GenreNotValidError(SpotifyElectronError):
     """Getting a Genre from an invalid value"""
 
     ERROR = "The genre doesn't exists"
@@ -82,7 +88,7 @@ class GenreNotValidException(SpotifyElectronException):
         super().__init__(self.ERROR)
 
 
-class GenreServiceException(SpotifyElectronException):
+class GenreServiceError(SpotifyElectronError):
     """Unexpected error getting genres"""
 
     ERROR = "Unexpected error while getting genres"

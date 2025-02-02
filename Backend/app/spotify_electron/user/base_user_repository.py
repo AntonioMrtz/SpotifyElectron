@@ -8,16 +8,16 @@ from pymongo.collection import Collection
 from app.logging.logging_constants import LOGGING_BASE_USERS_REPOSITORY
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.user.base_user_schema import (
-    BaseUserDeleteException,
-    BaseUserGetPasswordException,
-    BaseUserRepositoryException,
+    BaseUserDeleteError,
+    BaseUserGetPasswordError,
+    BaseUserRepositoryError,
 )
 from app.spotify_electron.user.validations.base_user_repository_validations import (
     validate_password_exists,
     validate_user_delete_count,
 )
 
-base_user_repository_logger = SpotifyElectronLogger(LOGGING_BASE_USERS_REPOSITORY).getLogger()
+base_user_repository_logger = SpotifyElectronLogger(LOGGING_BASE_USERS_REPOSITORY).get_logger()
 
 
 def check_user_exists(name: str, collection: Collection) -> bool:
@@ -26,15 +26,16 @@ def check_user_exists(name: str, collection: Collection) -> bool:
     Args:
     ----
         name (str): name of the user
+        collection (Collection): user collection
 
     Raises:
     ------
-        BaseUserRepositoryException:
+        BaseUserRepositoryError:
             an error occurred while getting user from database
 
     Returns:
     -------
-        bool: if the user exsists
+        bool: if the user exists
 
     """
     try:
@@ -43,7 +44,7 @@ def check_user_exists(name: str, collection: Collection) -> bool:
         base_user_repository_logger.exception(
             f"Error checking if User {name} exists in database"
         )
-        raise BaseUserRepositoryException from exception
+        raise BaseUserRepositoryError from exception
     else:
         result = user is not None
         base_user_repository_logger.debug(f"User with name {name} exists: {result}")
@@ -55,23 +56,24 @@ def delete_user(name: str, collection: Collection) -> None:
 
     Args:
         name (str): user name
+        collection (Collection): user collection
 
     Raises:
-        BaseUserRepositoryException:
+        BaseUserRepositoryError:
             an error occurred while deleting user from database
     """
     try:
         result = collection.delete_one({"name": name})
         validate_user_delete_count(result)
         base_user_repository_logger.info(f"User {name} Deleted")
-    except BaseUserDeleteException as exception:
+    except BaseUserDeleteError as exception:
         base_user_repository_logger.exception(f"Error deleting User {name} from database")
-        raise BaseUserRepositoryException from exception
-    except (BaseUserRepositoryException, Exception) as exception:
+        raise BaseUserRepositoryError from exception
+    except (BaseUserRepositoryError, Exception) as exception:
         base_user_repository_logger.exception(
             f"Unexpected error deleting User {name} in database"
         )
-        raise BaseUserRepositoryException from exception
+        raise BaseUserRepositoryError from exception
 
 
 def get_user_password(name: str, collection: Collection) -> bytes:
@@ -82,7 +84,7 @@ def get_user_password(name: str, collection: Collection) -> bytes:
         collection (Collection): the database collection
 
     Raises:
-        BaseUserRepositoryException:
+        BaseUserRepositoryError:
             an error occurred while getting user password from database
 
     Returns:
@@ -93,16 +95,16 @@ def get_user_password(name: str, collection: Collection) -> bytes:
             "password"
         ]
         validate_password_exists(password)
-    except BaseUserGetPasswordException as exception:
+    except BaseUserGetPasswordError as exception:
         base_user_repository_logger.exception(
             f"Error getting password from User {name} from database"
         )
-        raise BaseUserRepositoryException from exception
-    except (BaseUserRepositoryException, Exception) as exception:
+        raise BaseUserRepositoryError from exception
+    except (BaseUserRepositoryError, Exception) as exception:
         base_user_repository_logger.exception(
             f"Unexpected error getting password from User {name} in database"
         )
-        raise BaseUserRepositoryException from exception
+        raise BaseUserRepositoryError from exception
     else:
         return password
 
@@ -115,7 +117,7 @@ def search_by_name(name: str, collection: Collection) -> list[str]:
         collection (Collection): user collection
 
     Raises:
-        BaseUserRepositoryException: unexpected error searching items by name
+        BaseUserRepositoryError: unexpected error searching items by name
 
     Returns:
         list[str]: the list of user names that matched the name
@@ -129,7 +131,7 @@ def search_by_name(name: str, collection: Collection) -> list[str]:
         base_user_repository_logger.exception(
             f"Error checking searching items by name {name} in database"
         )
-        raise BaseUserRepositoryException from exception
+        raise BaseUserRepositoryError from exception
 
 
 def add_playback_history(
@@ -147,7 +149,7 @@ def add_playback_history(
         collection (Collection): the user collection
 
     Raises:
-        BaseUserRepositoryException: unexpected error adding song to user playback history
+        BaseUserRepositoryError: unexpected error adding song to user playback history
     """
     try:
         user_data = collection.find_one({"name": user_name})
@@ -166,7 +168,7 @@ def add_playback_history(
         base_user_repository_logger.exception(
             f"Error adding playback history of song {song} to user {user_name} in database"
         )
-        raise BaseUserRepositoryException from exception
+        raise BaseUserRepositoryError from exception
 
 
 def add_saved_playlist(user_name: str, playlist_name: str, collection: Collection) -> None:
@@ -178,7 +180,7 @@ def add_saved_playlist(user_name: str, playlist_name: str, collection: Collectio
         collection (Collection): user collection
 
     Raises:
-        BaseUserRepositoryException: unexpected error adding saved playlist to user
+        BaseUserRepositoryError: unexpected error adding saved playlist to user
     """
     try:
         # TODO make in one query
@@ -196,7 +198,7 @@ def add_saved_playlist(user_name: str, playlist_name: str, collection: Collectio
             f"Error adding playlist {playlist_name} "
             f"to user {user_name} saved playlists in database"
         )
-        raise BaseUserRepositoryException from exception
+        raise BaseUserRepositoryError from exception
 
 
 def delete_saved_playlist(user_name: str, playlist_name: str, collection: Collection) -> None:
@@ -208,7 +210,7 @@ def delete_saved_playlist(user_name: str, playlist_name: str, collection: Collec
         collection (Collection): user collection
 
     Raises:
-        BaseUserRepositoryException: unexpected error deleting saved playlist from user
+        BaseUserRepositoryError: unexpected error deleting saved playlist from user
     """
     try:
         user_data = collection.find_one({"name": user_name})
@@ -225,7 +227,7 @@ def delete_saved_playlist(user_name: str, playlist_name: str, collection: Collec
         base_user_repository_logger.exception(
             f"Error deleting saved playlist {playlist_name} from user {user_name} in database"
         )
-        raise BaseUserRepositoryException from exception
+        raise BaseUserRepositoryError from exception
 
 
 def add_playlist_to_owner(user_name: str, playlist_name: str, collection: Collection) -> None:
@@ -237,7 +239,7 @@ def add_playlist_to_owner(user_name: str, playlist_name: str, collection: Collec
         collection (Collection): user collection
 
     Raises:
-        BaseUserRepositoryException: unexpected error adding playlist to its owner
+        BaseUserRepositoryError: unexpected error adding playlist to its owner
     """
     try:
         user_data = collection.find_one({"name": user_name})
@@ -254,7 +256,7 @@ def add_playlist_to_owner(user_name: str, playlist_name: str, collection: Collec
         base_user_repository_logger.exception(
             f"Error adding playlist {playlist_name} to owner {user_name} in database"
         )
-        raise BaseUserRepositoryException from exception
+        raise BaseUserRepositoryError from exception
 
 
 def delete_playlist_from_owner(
@@ -268,7 +270,7 @@ def delete_playlist_from_owner(
         collection (Collection): user collection
 
     Raises:
-        BaseUserRepositoryException: unexpected error deleting playlist from owner
+        BaseUserRepositoryError: unexpected error deleting playlist from owner
     """
     try:
         user_data = collection.find_one({"name": user_name})
@@ -283,7 +285,7 @@ def delete_playlist_from_owner(
         base_user_repository_logger.exception(
             f"Error deleting playlist {playlist_name} from owner {user_name} in database"
         )
-        raise BaseUserRepositoryException from exception
+        raise BaseUserRepositoryError from exception
 
 
 def update_playlist_name(
@@ -297,7 +299,7 @@ def update_playlist_name(
         collection (Collection): user collection
 
     Raises:
-        BaseUserRepositoryException: unexpected error updating playlist name
+        BaseUserRepositoryError: unexpected error updating playlist name
     """
     try:
         # has to be done sequentially, pull and push on the same query generates errors
@@ -315,7 +317,7 @@ def update_playlist_name(
             f"Error updating playlist name {old_playlist_name} "
             f"to {new_playlist_name} in database"
         )
-        raise BaseUserRepositoryException from exception
+        raise BaseUserRepositoryError from exception
 
 
 def get_user_relevant_playlist_names(user_name: str, collection: Collection) -> list[str]:

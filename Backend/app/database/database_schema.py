@@ -12,7 +12,7 @@ from pymongo.server_api import ServerApi
 
 from app.common.app_schema import AppEnvironment
 from app.common.PropertiesManager import PropertiesManager
-from app.exceptions.base_exceptions_schema import SpotifyElectronException
+from app.exceptions.base_exceptions_schema import SpotifyElectronError
 from app.logging.logging_constants import LOGGING_DATABASE_CONNECTION
 from app.logging.logging_schema import SpotifyElectronLogger
 
@@ -37,7 +37,7 @@ class BaseDatabaseConnection:
     """Database connection"""
     collection_name_prefix: str = ""
     """Database collection prefix applied to all collections"""
-    _logger = SpotifyElectronLogger(LOGGING_DATABASE_CONNECTION).getLogger()
+    _logger = SpotifyElectronLogger(LOGGING_DATABASE_CONNECTION).get_logger()
 
     @classmethod
     def init_connection(cls, uri: str):
@@ -106,7 +106,7 @@ class BaseDatabaseConnection:
         )
 
 
-class DatabasePingFailedException(SpotifyElectronException):
+class DatabasePingFailedError(SpotifyElectronError):
     """Database ping failure"""
 
     ERROR = "Database ping failed"

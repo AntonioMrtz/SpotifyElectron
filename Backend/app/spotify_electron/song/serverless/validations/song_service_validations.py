@@ -10,14 +10,14 @@ from app.logging.logging_constants import (
 )
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.song.serverless.song_schema import (
-    SongCreateSongStreamingException,
-    SongDeleteSongStreamingException,
-    SongGetUrlStreamingException,
+    SongCreateSongStreamingError,
+    SongDeleteSongStreamingError,
+    SongGetUrlStreamingError,
 )
 
 song_service_logger = SpotifyElectronLogger(
     LOGGING_SONG_SERVERLESS_SERVICE_VALIDATIONS
-).getLogger()
+).get_logger()
 
 
 def validate_song_creating_streaming_response(name: str, response: Response) -> None:
@@ -28,14 +28,14 @@ def validate_song_creating_streaming_response(name: str, response: Response) -> 
         response (Response): incoming response
 
     Raises:
-        SongCreateSongStreamingException: if the request failed
+        SongCreateSongStreamingError: if the request failed
     """
     if response.status_code != HTTP_201_CREATED:
         song_service_logger.error(
             f"Error retrieving Streaming url for song {name}\n"
             f"Request Status {response.status_code} with Content {response.content}"
         )
-        raise SongCreateSongStreamingException
+        raise SongCreateSongStreamingError
 
 
 def validate_get_song_url_streaming_response(name: str, response: Response) -> None:
@@ -46,14 +46,14 @@ def validate_get_song_url_streaming_response(name: str, response: Response) -> N
         response (Response): the incoming response
 
     Raises:
-        SongGetUrlStreamingException: if the request failed
+        SongGetUrlStreamingError: if the request failed
     """
     if response.status_code != HTTP_200_OK:
         song_service_logger.error(
             f"Error retrieving Streaming url for song {name}\n"
             f"Request Status {response.status_code} with Content {response.content}"
         )
-        raise SongGetUrlStreamingException
+        raise SongGetUrlStreamingError
 
 
 def validate_song_deleting_streaming_response(name: str, response: Response) -> None:
@@ -64,11 +64,11 @@ def validate_song_deleting_streaming_response(name: str, response: Response) -> 
         response (Response): incoming response
 
     Raises:
-        SongDeleteSongStreamingException: if the request failed
+        SongDeleteSongStreamingError: if the request failed
     """
     if response.status_code != HTTP_202_ACCEPTED:
         song_service_logger.error(
             f"Error retrieving Streaming url for song {name}\n"
             f"Request Status {response.status_code} with Content {response.content}"
         )
-        raise SongDeleteSongStreamingException
+        raise SongDeleteSongStreamingError

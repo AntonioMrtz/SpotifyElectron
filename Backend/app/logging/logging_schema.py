@@ -83,7 +83,7 @@ class SpotifyElectronLogger:
         if not self.log_properties_manager.is_log_file_provided():
             return
         file_log_handler = logging.handlers.RotatingFileHandler(
-            self.log_properties_manager.__getattribute__(AppConfig.LOG_INI_FILE),
+            getattr(self.log_properties_manager, AppConfig.LOG_INI_FILE),
             maxBytes=50000,
             backupCount=5,
         )
@@ -111,7 +111,7 @@ class SpotifyElectronLogger:
 
     def _get_log_level(self) -> int:
         try:
-            log_level = self.log_properties_manager.__getattribute__(AppConfig.LOG_INI_LEVEL)
+            log_level = getattr(self.log_properties_manager, AppConfig.LOG_INI_LEVEL)
             if log_level is None:
                 return logging.INFO
             mapped_log_level = self._log_level_mapping[log_level]
@@ -120,7 +120,7 @@ class SpotifyElectronLogger:
         else:
             return mapped_log_level
 
-    def getLogger(self) -> logging.Logger:
+    def get_logger(self) -> logging.Logger:
         """Returns the global logger
 
         Returns:

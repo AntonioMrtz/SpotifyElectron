@@ -1,0 +1,78 @@
+name: Build and Push Backend Docker Image
+
+# Build and push docker image with backend with an associated version to Docker Hub.
+# Image name will be: antoniomrtz/spotify-electron:{{version}}
+# Version is obtained from:
+# - Manually triggered: provided by the user as required input
+# - Obtained from merged release/* branch. Version will be obtained extracting the version
+#   number after release/ sufix. Example: release/v2.01 -> version: v2.01
+
+on:
+  pull_request:
+    types: [closed]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version for the Docker Image'
+        required: true
+        default: 'v0.00'
+
+jobs:
+  build-and-push-image:
+    runs-on: ubuntu-latest
+    if: |
+      (startsWith(github.head_ref, 'release/') && github.event.pull_request.merged == true) ||
+      github.event_name == 'workflow_dispatch'
+
+    steps:
+
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKER_USER }}
+        password: ${{ secrets.DOCKER_PAT }}
+
+    - name: Get version number
+      id: get_version
+      run: |
+        if [ -z "${{ github.event.inputs.version }}" ]; then
+          # Get the name of the merged branch (this is the source of the PR)
+          BRANCH_NAME=${{ github.event.pull_request.head.ref }}
+
+          # Remove the "release/" prefix
+          VERSION=${BRANCH_NAME#release/}  # Extract version after "release/" prefix
+        else
+          # Use version from manual input if provided
+          VERSION="${{ github.event.inputs.version }}"
+        fi
+
+        echo "Version: $VERSION"
+        echo "VERSION=$VERSION" >> $GITHUB_ENV  # Set version as environment variable for further use
+
+    - name: Verify Version
+      run: |
+        echo "The version being used is: $VERSION"  # Check if VERSION is set correctly
+
+    - name: Build Docker Image
+      working-directory: Backend
+      run: |
+        if [ -z "$VERSION" ]; then
+          echo "ERROR: VERSION is empty. Exiting..."
+          exit 1
+        else
+          echo "Building Docker image with version: $VERSION"
+          docker build -t ${{ secrets.DOCKER_USER }}/spotify-electron:$VERSION .
+        fi
+
+    - name: Push Docker Image
+      run: |
+        if [ -z "$VERSION" ]; then
+          echo "ERROR: VERSION is empty. Exiting..."
+          exit 1
+        else
+          echo "Pushing Docker image with version: $VERSION"
+          docker push ${{ secrets.DOCKER_USER }}/spotify-electron:$VERSION
+        fi

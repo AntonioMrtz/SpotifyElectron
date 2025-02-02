@@ -10,16 +10,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout del repositorio
+      - name: Repository checkout
         uses: actions/checkout@v4
         with:
           persist-credentials: false
           token: ${{ secrets.PAT }}
 
       - name: Configure Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@3
         with:
-          python-version: 3.11
+          python-version: 3.12
 
       - name: Install dependencies and run OpenAPI Schema Generator
         working-directory: Backend/

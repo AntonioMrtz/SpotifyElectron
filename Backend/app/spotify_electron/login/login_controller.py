@@ -18,14 +18,14 @@ from starlette.status import (
 import app.auth.auth_service as auth_service
 import app.spotify_electron.utils.json_converter.json_converter_utils as json_converter_utils
 from app.auth.auth_schema import (
-    CreateJWTException,
-    JWTValidationException,
-    UnexpectedLoginUserException,
-    VerifyPasswordException,
+    CreateJWTError,
+    JWTValidationError,
+    UnexpectedLoginUserError,
+    VerifyPasswordError,
 )
 from app.common.PropertiesMessagesManager import PropertiesMessagesManager
-from app.spotify_electron.login.login_schema import InvalidCredentialsLoginException
-from app.spotify_electron.user.base_user_schema import BaseUserNotFoundException
+from app.spotify_electron.login.login_schema import InvalidCredentialsLoginError
+from app.spotify_electron.user.base_user_schema import BaseUserNotFoundError
 
 router = APIRouter(
     prefix="/login",
@@ -50,22 +50,22 @@ def login_user(
         access_token_json = json_converter_utils.get_json_from_model(jwt)
         expiration_date = auth_service.get_token_expire_date()
 
-    except InvalidCredentialsLoginException:
+    except InvalidCredentialsLoginError:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
             content=PropertiesMessagesManager.loginInvalidCredentials,
         )
-    except (VerifyPasswordException, CreateJWTException):
+    except (VerifyPasswordError, CreateJWTError):
         return Response(
             status_code=HTTP_403_FORBIDDEN,
             content=PropertiesMessagesManager.loginVerifyPassword,
         )
-    except BaseUserNotFoundException:
+    except BaseUserNotFoundError:
         return Response(
             status_code=HTTP_404_NOT_FOUND,
             content=PropertiesMessagesManager.userNotFound,
         )
-    except (UnexpectedLoginUserException, Exception):
+    except (UnexpectedLoginUserError, Exception):
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonInternalServerError,
@@ -95,17 +95,17 @@ def login_user_with_jwt(token: str) -> Response:
     """
     try:
         auth_service.login_user_with_token(token)
-    except JWTValidationException:
+    except JWTValidationError:
         return Response(
             status_code=HTTP_403_FORBIDDEN,
             content=PropertiesMessagesManager.tokenInvalidCredentialsAutoLogin,
         )
-    except BaseUserNotFoundException:
+    except BaseUserNotFoundError:
         return Response(
             status_code=HTTP_404_NOT_FOUND,
             content=PropertiesMessagesManager.userNotFound,
         )
-    except (UnexpectedLoginUserException, Exception):
+    except (UnexpectedLoginUserError, Exception):
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonInternalServerError,

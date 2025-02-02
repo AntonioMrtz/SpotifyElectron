@@ -2,7 +2,7 @@
 
 from gridfs import GridOut
 
-from app.spotify_electron.song.blob.song_schema import SongDataNotFoundException
+from app.spotify_electron.song.blob.song_schema import SongDataNotFoundError
 
 
 def validate_song_data_exists(song_file: GridOut | None) -> None:
@@ -12,7 +12,7 @@ def validate_song_data_exists(song_file: GridOut | None) -> None:
         song_file (GridOut): song data
 
     Raises:
-        SongGetFileException: if the song data doesn't exists
+        SongDataNotFoundError: if the song data doesn't exists
     """
     if song_file is None:
-        raise SongDataNotFoundException
+        raise SongDataNotFoundError

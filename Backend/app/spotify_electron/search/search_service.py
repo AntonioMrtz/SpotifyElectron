@@ -8,17 +8,17 @@ import app.spotify_electron.playlist.playlist_service as playlist_service
 import app.spotify_electron.song.base_song_service as base_song_service
 import app.spotify_electron.user.artist.artist_service as artist_service
 import app.spotify_electron.user.user.user_service as user_service
-from app.exceptions.base_exceptions_schema import BadParameterException
+from app.exceptions.base_exceptions_schema import BadParameterError
 from app.logging.logging_constants import LOGGING_SEARCH_SERVICE
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.search.search_schema import (
-    BadSearchParameterException,
+    BadSearchParameterError,
     SearchResult,
-    SearchServiceException,
+    SearchServiceError,
 )
 from app.spotify_electron.utils.validations.validation_utils import validate_parameter
 
-search_service_logger = SpotifyElectronLogger(LOGGING_SEARCH_SERVICE).getLogger()
+search_service_logger = SpotifyElectronLogger(LOGGING_SEARCH_SERVICE).get_logger()
 
 
 async def search_by_name(name: str) -> SearchResult:
@@ -28,8 +28,8 @@ async def search_by_name(name: str) -> SearchResult:
         name (str): the name to match
 
     Raises:
-        BadParameterException: if the name is invalid
-        SearchServiceException: unexpected error getting items by name
+        BadSearchParameterError: invalid name for searching
+        SearchServiceError: unexpected error getting items by name
 
     Returns:
         SearchResult: the items that partially match the name
@@ -47,14 +47,14 @@ async def search_by_name(name: str) -> SearchResult:
         artists = await artists_future
         users = await users_future
 
-    except BadParameterException as exception:
+    except BadParameterError as exception:
         search_service_logger.exception(f"Bad Search parameter: {name}")
-        raise BadSearchParameterException from exception
+        raise BadSearchParameterError from exception
     except Exception as exception:
         search_service_logger.exception(
             f"Unexpected error in Search Service searching for items with name: {name}"
         )
-        raise SearchServiceException from exception
+        raise SearchServiceError from exception
     else:
         search_results = SearchResult(artists, playlists, users, songs)
         search_service_logger.info(

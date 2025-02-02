@@ -33,7 +33,7 @@ echo "Virtual environment deactivated"
 cd ../Electron/
 
 npm install
-npm build
+npm run build
 # Generate the OpenAPI client
 echo "Generating OpenAPI client..."
 npm run generate-openapi-client || { echo "Error: OpenAPI client generation failed"; exit 1; }

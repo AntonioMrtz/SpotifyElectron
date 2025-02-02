@@ -22,26 +22,26 @@ import app.spotify_electron.user.base_user_service as base_user_service
 import app.spotify_electron.user.user.user_service as user_service
 import app.spotify_electron.utils.json_converter.json_converter_utils as json_converter_utils
 from app.auth.auth_schema import (
-    BadJWTTokenProvidedException,
+    BadJWTTokenProvidedError,
     TokenData,
-    UserUnauthorizedException,
+    UserUnauthorizedError,
 )
 from app.auth.JWTBearer import JWTBearer
 from app.common.PropertiesMessagesManager import PropertiesMessagesManager
-from app.exceptions.base_exceptions_schema import JsonEncodeException
+from app.exceptions.base_exceptions_schema import JsonEncodeError
 from app.spotify_electron.playlist.playlist_schema import (
-    PlaylistBadNameException,
-    PlaylistNotFoundException,
+    PlaylistBadNameError,
+    PlaylistNotFoundError,
 )
 from app.spotify_electron.song.base_song_schema import (
-    SongBadNameException,
-    SongNotFoundException,
+    SongBadNameError,
+    SongNotFoundError,
 )
 from app.spotify_electron.user.base_user_schema import (
-    BaseUserAlreadyExistsException,
-    BaseUserBadNameException,
-    BaseUserNotFoundException,
-    BaseUserServiceException,
+    BaseUserAlreadyExistsError,
+    BaseUserBadNameError,
+    BaseUserNotFoundError,
+    BaseUserServiceError,
 )
 
 router = APIRouter(
@@ -61,7 +61,7 @@ def get_who_am_i(token: Annotated[TokenData, Depends(JWTBearer())]) -> Response:
         jwt_token_json = json_converter_utils.get_json_from_model(token)
 
         return Response(jwt_token_json, media_type="application/json", status_code=200)
-    except BadJWTTokenProvidedException:
+    except BadJWTTokenProvidedError:
         return Response(
             status_code=HTTP_403_FORBIDDEN,
             content=PropertiesMessagesManager.tokenInvalidCredentials,
@@ -80,6 +80,7 @@ def get_user(name: str, token: Annotated[TokenData, Depends(JWTBearer())]) -> Re
 
     Args:
         name (str): user name
+        token (Annotated[TokenData, Depends): JWT info
     """
     try:
         user = base_user_service.get_user(name)
@@ -87,22 +88,28 @@ def get_user(name: str, token: Annotated[TokenData, Depends(JWTBearer())]) -> Re
 
         return Response(user_json, media_type="application/json", status_code=HTTP_200_OK)
 
-    except BaseUserBadNameException:
+    except BaseUserBadNameError:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
             content=PropertiesMessagesManager.userBadName,
         )
-    except BaseUserNotFoundException:
+    except BaseUserNotFoundError:
         return Response(
             status_code=HTTP_404_NOT_FOUND,
             content=PropertiesMessagesManager.userNotFound,
         )
-    except JsonEncodeException:
+    except BadJWTTokenProvidedError:
+        return Response(
+            status_code=HTTP_403_FORBIDDEN,
+            content=PropertiesMessagesManager.tokenInvalidCredentials,
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    except JsonEncodeError:
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonEncodingError,
         )
-    except (Exception, BaseUserServiceException):
+    except (Exception, BaseUserServiceError):
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonInternalServerError,
@@ -121,17 +128,12 @@ def create_user(name: str, photo: str, password: str) -> Response:
     try:
         user_service.create_user(name, photo, password)
         return Response(None, HTTP_201_CREATED)
-    except (BaseUserBadNameException, BaseUserAlreadyExistsException):
+    except (BaseUserBadNameError, BaseUserAlreadyExistsError):
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
             content=PropertiesMessagesManager.userBadName,
         )
-    except BaseUserNotFoundException:
-        return Response(
-            status_code=HTTP_404_NOT_FOUND,
-            content=PropertiesMessagesManager.userNotFound,
-        )
-    except (Exception, BaseUserServiceException):
+    except (Exception, BaseUserServiceError):
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonInternalServerError,
@@ -148,17 +150,17 @@ def delete_user(name: str) -> Response:
     try:
         base_user_service.delete_user(name)
         return Response(status_code=HTTP_202_ACCEPTED)
-    except BaseUserBadNameException:
+    except BaseUserBadNameError:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
             content=PropertiesMessagesManager.userBadName,
         )
-    except BaseUserNotFoundException:
+    except BaseUserNotFoundError:
         return Response(
             status_code=HTTP_404_NOT_FOUND,
             content=PropertiesMessagesManager.userNotFound,
         )
-    except (Exception, BaseUserServiceException):
+    except (Exception, BaseUserServiceError):
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonInternalServerError,
@@ -174,44 +176,45 @@ def patch_playback_history(
     Args:
         name (str): user name
         song_name (str): song name
+        token (Annotated[TokenData, Depends): JWT info
     """
     try:
         base_user_service.add_playback_history(
             user_name=name, song_name=song_name, token=token
         )
         return Response(None, HTTP_204_NO_CONTENT)
-    except BaseUserBadNameException:
+    except BaseUserBadNameError:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
             content=PropertiesMessagesManager.userBadName,
         )
-    except SongBadNameException:
+    except SongBadNameError:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
             content=PropertiesMessagesManager.songBadName,
         )
-    except BadJWTTokenProvidedException:
+    except BadJWTTokenProvidedError:
         return Response(
             status_code=HTTP_403_FORBIDDEN,
             content=PropertiesMessagesManager.tokenInvalidCredentials,
             headers={"WWW-Authenticate": "Bearer"},
         )
-    except UserUnauthorizedException:
+    except UserUnauthorizedError:
         return Response(
             status_code=HTTP_403_FORBIDDEN,
             content=PropertiesMessagesManager.userUnauthorized,
         )
-    except BaseUserNotFoundException:
+    except BaseUserNotFoundError:
         return Response(
             status_code=HTTP_404_NOT_FOUND,
             content=PropertiesMessagesManager.userNotFound,
         )
-    except SongNotFoundException:
+    except SongNotFoundError:
         return Response(
             status_code=HTTP_404_NOT_FOUND,
             content=PropertiesMessagesManager.songNotFound,
         )
-    except (Exception, BaseUserServiceException):
+    except (Exception, BaseUserServiceError):
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonInternalServerError,
@@ -227,37 +230,38 @@ def patch_saved_playlists(
     Args:
         name (str): user name
         playlist_name (str): saved playlist
+        token (Annotated[TokenData, Depends): JWT info
     """
     try:
         base_user_service.add_saved_playlist(name, playlist_name, token=token)
         return Response(None, HTTP_204_NO_CONTENT)
-    except BaseUserBadNameException:
+    except BaseUserBadNameError:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
             content=PropertiesMessagesManager.userBadName,
         )
-    except UserUnauthorizedException:
+    except UserUnauthorizedError:
         return Response(
             status_code=HTTP_403_FORBIDDEN,
             content=PropertiesMessagesManager.userUnauthorized,
         )
-    except PlaylistNotFoundException:
+    except PlaylistNotFoundError:
         return Response(
             status_code=HTTP_404_NOT_FOUND,
             content=PropertiesMessagesManager.playlistNotFound,
         )
-    except BaseUserNotFoundException:
+    except BaseUserNotFoundError:
         return Response(
             status_code=HTTP_404_NOT_FOUND,
             content=PropertiesMessagesManager.userNotFound,
         )
-    except BadJWTTokenProvidedException:
+    except BadJWTTokenProvidedError:
         return Response(
             status_code=HTTP_403_FORBIDDEN,
             content=PropertiesMessagesManager.tokenInvalidCredentials,
             headers={"WWW-Authenticate": "Bearer"},
         )
-    except (Exception, BaseUserServiceException):
+    except (Exception, BaseUserServiceError):
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonInternalServerError,
@@ -273,42 +277,43 @@ def delete_saved_playlists(
     Args:
         name (str): user name
         playlist_name (str): playlist name
+        token (Annotated[TokenData, Depends): JWT info
     """
     try:
         base_user_service.delete_saved_playlist(name, playlist_name, token=token)
         return Response(None, HTTP_202_ACCEPTED)
-    except BaseUserBadNameException:
+    except BaseUserBadNameError:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
             content=PropertiesMessagesManager.userBadName,
         )
-    except PlaylistBadNameException:
+    except PlaylistBadNameError:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
             content=PropertiesMessagesManager.playlistBadName,
         )
-    except UserUnauthorizedException:
+    except UserUnauthorizedError:
         return Response(
             status_code=HTTP_403_FORBIDDEN,
             content=PropertiesMessagesManager.userUnauthorized,
         )
-    except PlaylistNotFoundException:
+    except PlaylistNotFoundError:
         return Response(
             status_code=HTTP_404_NOT_FOUND,
             content=PropertiesMessagesManager.playlistNotFound,
         )
-    except BaseUserNotFoundException:
+    except BaseUserNotFoundError:
         return Response(
             status_code=HTTP_404_NOT_FOUND,
             content=PropertiesMessagesManager.userNotFound,
         )
-    except BadJWTTokenProvidedException:
+    except BadJWTTokenProvidedError:
         return Response(
             status_code=HTTP_403_FORBIDDEN,
             content=PropertiesMessagesManager.tokenInvalidCredentials,
             headers={"WWW-Authenticate": "Bearer"},
         )
-    except (Exception, BaseUserServiceException):
+    except (Exception, BaseUserServiceError):
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonInternalServerError,
@@ -323,27 +328,28 @@ def get_user_relevant_playlists(
 
     Args:
         name (str): user name
+        token (Annotated[TokenData, Depends): JWT info
     """
     try:
         playlists = base_user_service.get_user_relevant_playlists(name)
         playlists_json = json_converter_utils.get_json_from_model(playlists)
         return Response(playlists_json, media_type="application/json", status_code=HTTP_200_OK)
-    except BaseUserBadNameException:
+    except BaseUserBadNameError:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
             content=PropertiesMessagesManager.userBadName,
         )
-    except BaseUserNotFoundException:
+    except BaseUserNotFoundError:
         return Response(
             status_code=HTTP_404_NOT_FOUND,
             content=PropertiesMessagesManager.userNotFound,
         )
-    except JsonEncodeException:
+    except JsonEncodeError:
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonEncodingError,
         )
-    except (Exception, BaseUserServiceException):
+    except (Exception, BaseUserServiceError):
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonInternalServerError,
@@ -358,27 +364,28 @@ def get_user_playlists(
 
     Args:
         name (str): user name
+        token (Annotated[TokenData, Depends): JWT info
     """
     try:
         playlists = base_user_service.get_user_playlists(name)
         playlists_json = json_converter_utils.get_json_from_model(playlists)
         return Response(playlists_json, media_type="application/json", status_code=HTTP_200_OK)
-    except BaseUserBadNameException:
+    except BaseUserBadNameError:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
             content=PropertiesMessagesManager.userBadName,
         )
-    except BaseUserNotFoundException:
+    except BaseUserNotFoundError:
         return Response(
             status_code=HTTP_404_NOT_FOUND,
             content=PropertiesMessagesManager.userNotFound,
         )
-    except JsonEncodeException:
+    except JsonEncodeError:
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonEncodingError,
         )
-    except (Exception, BaseUserServiceException):
+    except (Exception, BaseUserServiceError):
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonInternalServerError,
@@ -393,6 +400,7 @@ def get_user_playlists_names(
 
     Args:
         name (str): user name
+        token (Annotated[TokenData, Depends): JWT info
     """
     try:
         playlist_names = base_user_service.get_user_playlist_names(name)
@@ -400,22 +408,22 @@ def get_user_playlists_names(
         return Response(
             playlist_names_json, media_type="application/json", status_code=HTTP_200_OK
         )
-    except BaseUserBadNameException:
+    except BaseUserBadNameError:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
             content=PropertiesMessagesManager.userBadName,
         )
-    except BaseUserNotFoundException:
+    except BaseUserNotFoundError:
         return Response(
             status_code=HTTP_404_NOT_FOUND,
             content=PropertiesMessagesManager.userNotFound,
         )
-    except JsonEncodeException:
+    except JsonEncodeError:
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonEncodingError,
         )
-    except (Exception, BaseUserServiceException):
+    except (Exception, BaseUserServiceError):
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonInternalServerError,
@@ -430,6 +438,7 @@ def get_user_playback_history(
 
     Args:
         name (str): user name
+        token (Annotated[TokenData, Depends): JWT info
     """
     try:
         playback_history = base_user_service.get_user_playback_history(name)
@@ -437,22 +446,22 @@ def get_user_playback_history(
         return Response(
             playback_history_json, media_type="application/json", status_code=HTTP_200_OK
         )
-    except BaseUserBadNameException:
+    except BaseUserBadNameError:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
             content=PropertiesMessagesManager.userBadName,
         )
-    except BaseUserNotFoundException:
+    except BaseUserNotFoundError:
         return Response(
             status_code=HTTP_404_NOT_FOUND,
             content=PropertiesMessagesManager.userNotFound,
         )
-    except JsonEncodeException:
+    except JsonEncodeError:
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonEncodingError,
         )
-    except (Exception, BaseUserServiceException):
+    except (Exception, BaseUserServiceError):
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonInternalServerError,

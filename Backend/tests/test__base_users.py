@@ -1,4 +1,4 @@
-import pytest
+# TODO, only use user, move user tests here. Move artist tests into its own file
 from pytest import fixture
 from starlette.status import (
     HTTP_200_OK,
@@ -9,20 +9,9 @@ from starlette.status import (
     HTTP_404_NOT_FOUND,
 )
 
-from app.auth.auth_schema import BadJWTTokenProvidedException
 from app.spotify_electron.user.base_user_schema import (
-    BaseUserAlreadyExistsException,
-    BaseUserBadNameException,
-    BaseUserBadParametersException,
-    BaseUserCreateException,
     BaseUserDAO,
-    BaseUserDeleteException,
     BaseUserDTO,
-    BaseUserGetPasswordException,
-    BaseUserNotFoundException,
-    BaseUserRepositoryException,
-    BaseUserServiceException,
-    BaseUserUpdateException,
     get_base_user_dao_from_document,
     get_base_user_dto_from_dao,
 )
@@ -143,7 +132,7 @@ def test_patch_playback_history_artist_correct(clear_test_data_db):
     assert res_delete_artist.status_code == HTTP_202_ACCEPTED
 
 
-def test_patch_playback_history_invalid_bad_user():
+def test_patch_playback_history_non_existing_user():
     photo = "https://photo"
     password = "hola"
     artista = "artista"
@@ -155,16 +144,57 @@ def test_patch_playback_history_invalid_bad_user():
 
     jwt_headers_artist = get_user_jwt_header(username=artista, password=password)
 
-    res_patch_user = patch_history_playback("", "", headers=jwt_headers_artist)
+    res_patch_user = patch_history_playback("usuario1", "cancion1", jwt_headers_artist)
     assert res_patch_user.status_code == HTTP_404_NOT_FOUND
 
     res_delete_artist = delete_user(artista)
     assert res_delete_artist.status_code == HTTP_202_ACCEPTED
 
 
-def test_patch_playback_history_non_existing_user():
-    res_patch_user = patch_history_playback("usuario1", "cancion1", {})
+def test_patch_playback_history_user_modifying_another_user():
+    photo = "https://photo"
+    password = "hola"
+    artista = "artista"
+    artista2 = "artista2"
+    photo = "https://photo"
+    password = "hola"
+
+    res_create_artist = create_artist(name=artista, password=password, photo=photo)
+    assert res_create_artist.status_code == HTTP_201_CREATED
+
+    res_create_artist = create_artist(name=artista2, password=password, photo=photo)
+    assert res_create_artist.status_code == HTTP_201_CREATED
+
+    jwt_headers_artist = get_user_jwt_header(username=artista, password=password)
+
+    res_patch_user = patch_history_playback(artista2, "cancion1", jwt_headers_artist)
     assert res_patch_user.status_code == HTTP_403_FORBIDDEN
+
+    res_delete_artist = delete_user(artista)
+    assert res_delete_artist.status_code == HTTP_202_ACCEPTED
+
+    res_delete_artist = delete_user(artista2)
+    assert res_delete_artist.status_code == HTTP_202_ACCEPTED
+
+
+def test_patch_playback_history_song_not_found():
+    photo = "https://photo"
+    password = "hola"
+    artista = "artista"
+    photo = "https://photo"
+    password = "hola"
+    non_existent_song = "non_existent_song"
+
+    res_create_artist = create_artist(name=artista, password=password, photo=photo)
+    assert res_create_artist.status_code == HTTP_201_CREATED
+
+    jwt_headers_artist = get_user_jwt_header(username=artista, password=password)
+
+    res_patch_user = patch_history_playback(artista, non_existent_song, jwt_headers_artist)
+    assert res_patch_user.status_code == HTTP_404_NOT_FOUND
+
+    res_delete_artist = delete_user(artista)
+    assert res_delete_artist.status_code == HTTP_202_ACCEPTED
 
 
 def test_patch_playback_history_user_correct_insert_6_songs(clear_test_data_db):
@@ -268,9 +298,57 @@ def test_patch_saved_playlist_user_correct(clear_test_data_db):
 # TODO test_patch_saved_playlist_user_correct for updating playlist name
 
 
-def test_patch_saved_playlist_user_not_found():
-    res_patch_user = patch_playlist_saved("", "", {})
-    assert res_patch_user.status_code in (HTTP_404_NOT_FOUND, HTTP_403_FORBIDDEN)
+def test_patch_saved_playlist_user_not_found(clear_test_data_db):
+    playlist_name = "playlist"
+    user_name = "8232392323623823723"
+    description = "descripcion"
+    password = "hola"
+    photo = "https://photo"
+
+    non_existent_user = "non_existent_user"
+
+    res_create_user = create_user(name=user_name, password=password, photo=photo)
+    assert res_create_user.status_code == HTTP_201_CREATED
+
+    jwt_headers_user = get_user_jwt_header(username=user_name, password=password)
+
+    res_create_playlist = create_playlist(
+        name=playlist_name, descripcion=description, photo=photo, headers=jwt_headers_user
+    )
+    assert res_create_playlist.status_code == HTTP_201_CREATED
+
+    res_patch_user = patch_playlist_saved(
+        user_name=non_existent_user, playlist_name=playlist_name, headers=jwt_headers_user
+    )
+    assert res_patch_user.status_code == HTTP_404_NOT_FOUND
+
+    res_delete_playlist = delete_playlist(playlist_name)
+    assert res_delete_playlist.status_code == HTTP_202_ACCEPTED
+
+    res_delete_user = delete_user(user_name)
+    assert res_delete_user.status_code == HTTP_202_ACCEPTED
+
+
+def test_patch_saved_playlist_not_found(clear_test_data_db):
+    non_existent_playlist_name = "playlist"
+    user_name = "8232392323623823723"
+    password = "hola"
+    photo = "https://photo"
+
+    res_create_user = create_user(name=user_name, password=password, photo=photo)
+    assert res_create_user.status_code == HTTP_201_CREATED
+
+    jwt_headers_user = get_user_jwt_header(username=user_name, password=password)
+
+    res_patch_user = patch_playlist_saved(
+        user_name=user_name,
+        playlist_name=non_existent_playlist_name,
+        headers=jwt_headers_user,
+    )
+    assert res_patch_user.status_code == HTTP_404_NOT_FOUND
+
+    res_delete_user = delete_user(user_name)
+    assert res_delete_user.status_code == HTTP_202_ACCEPTED
 
 
 def test_patch_saved_playlist_artist_correct(clear_test_data_db):
@@ -390,6 +468,69 @@ def test_delete_saved_playlist_user_correct(clear_test_data_db):
     assert res_delete_user.status_code == HTTP_202_ACCEPTED
 
 
+def test_delete_saved_playlist_user_not_found(clear_test_data_db):
+    playlist_name = "playlist"
+    user_name = "8232392323623823723"
+    description = "descripcion"
+    password = "hola"
+    photo = "https://photo"
+    non_existent_user_name = "non_existent_user_name"
+
+    res_create_user = create_user(name=user_name, password=password, photo=photo)
+    assert res_create_user.status_code == HTTP_201_CREATED
+
+    jwt_headers_user = get_user_jwt_header(username=user_name, password=password)
+
+    res_create_playlist = create_playlist(playlist_name, description, photo, jwt_headers_user)
+    assert res_create_playlist.status_code == HTTP_201_CREATED
+
+    res_delete_saved_playlist = delete_playlist_saved(
+        user_name=non_existent_user_name, playlist_name=playlist_name, headers=jwt_headers_user
+    )
+    assert res_delete_saved_playlist.status_code == HTTP_404_NOT_FOUND
+
+    res_delete_playlist = delete_playlist(playlist_name)
+    assert res_delete_playlist.status_code == HTTP_202_ACCEPTED
+
+    res_delete_user = delete_user(user_name)
+    assert res_delete_user.status_code == HTTP_202_ACCEPTED
+
+
+def test_delete_saved_playlist_user_modifying_another_user(clear_test_data_db):
+    playlist_name = "playlist"
+    user_name = "8232392323623823723"
+    user_name2 = "user-name2"
+    description = "descripcion"
+    password = "hola"
+    photo = "https://photo"
+
+    res_create_user = create_user(name=user_name, password=password, photo=photo)
+    assert res_create_user.status_code == HTTP_201_CREATED
+
+    res_create_user = create_user(name=user_name2, password=password, photo=photo)
+    assert res_create_user.status_code == HTTP_201_CREATED
+
+    jwt_headers_user = get_user_jwt_header(username=user_name, password=password)
+
+    jwt_headers_user2 = get_user_jwt_header(username=user_name2, password=password)
+
+    res_create_playlist = create_playlist(playlist_name, description, photo, jwt_headers_user)
+    assert res_create_playlist.status_code == HTTP_201_CREATED
+
+    res_delete_saved_playlist = delete_playlist_saved(
+        user_name=user_name,
+        playlist_name=playlist_name,
+        headers=jwt_headers_user2,
+    )
+    assert res_delete_saved_playlist.status_code == HTTP_403_FORBIDDEN
+
+    res_delete_playlist = delete_playlist(playlist_name)
+    assert res_delete_playlist.status_code == HTTP_202_ACCEPTED
+
+    res_delete_user = delete_user(user_name)
+    assert res_delete_user.status_code == HTTP_202_ACCEPTED
+
+
 def test_whoami_artist(clear_test_data_db):
     password = "hola"
     artista = "artista"
@@ -438,9 +579,9 @@ def test_whoami_user(clear_test_data_db):
     assert res_delete_user.status_code == HTTP_202_ACCEPTED
 
 
-def test_whoami_jwt_invalid():
-    with pytest.raises(BadJWTTokenProvidedException):
-        whoami("jwt invalid")
+def test_whoami_invalid_jwt(clear_test_data_db):
+    res_whoami = whoami("")
+    assert res_whoami.status_code == HTTP_403_FORBIDDEN
 
 
 def test_add_playlist_to_owner_user_correct(clear_test_data_db):
@@ -569,7 +710,7 @@ def test_get_user_relevant_playlist_correct():
     password = "pass"
     photo = "https://photo"
 
-    EXPECTED_RELEVANT_PLAYLISTS = 2
+    expected_relevant_playlists = 2
 
     res_create_user = create_user(name=user_name, password=password, photo=photo)
     assert res_create_user.status_code == HTTP_201_CREATED
@@ -599,7 +740,7 @@ def test_get_user_relevant_playlist_correct():
 
     res_get_user_relevant_playlists = get_user_relevant_playlists(user_name, jwt_headers_user)
     assert res_get_user_relevant_playlists.status_code == HTTP_200_OK
-    assert len(res_get_user_relevant_playlists.json()) == EXPECTED_RELEVANT_PLAYLISTS
+    assert len(res_get_user_relevant_playlists.json()) == expected_relevant_playlists
 
     res_delete_playlist = delete_playlist(playlist_name_user)
     assert res_delete_playlist.status_code == HTTP_202_ACCEPTED
@@ -623,7 +764,7 @@ def test_get_artist_relevant_playlist_correct():
     password = "pass"
     photo = "https://photo"
 
-    EXPECTED_RELEVANT_PLAYLISTS = 2
+    expected_relevant_playlists = 2
 
     res_create_user = create_user(name=user_name, password=password, photo=photo)
     assert res_create_user.status_code == HTTP_201_CREATED
@@ -655,7 +796,7 @@ def test_get_artist_relevant_playlist_correct():
         artist_name, jwt_headers_artist
     )
     assert res_get_artist_relevant_playlists.status_code == HTTP_200_OK
-    assert len(res_get_artist_relevant_playlists.json()) == EXPECTED_RELEVANT_PLAYLISTS
+    assert len(res_get_artist_relevant_playlists.json()) == expected_relevant_playlists
 
     res_delete_playlist = delete_playlist(playlist_name_user_saved)
     assert res_delete_playlist.status_code == HTTP_202_ACCEPTED
@@ -699,8 +840,8 @@ def test_get_user_playlist_names_correct():
     password = "pass"
     photo = "https://photo"
 
-    EXPECTED_USER_PLAYLIST_NAMES = [playlist_name_user]
-    EXPECTED_AMOUNT_USER_PLAYLIST_NAMES = len(EXPECTED_USER_PLAYLIST_NAMES)
+    expected_user_playlist_names = [playlist_name_user]
+    expected_amount_user_playlist_names = len(expected_user_playlist_names)
 
     res_create_user = create_user(name=user_name, password=password, photo=photo)
     assert res_create_user.status_code == HTTP_201_CREATED
@@ -730,8 +871,8 @@ def test_get_user_playlist_names_correct():
 
     res_get_user_playlist_names = get_user_playlist_names(user_name, jwt_headers_user)
     assert res_get_user_playlist_names.status_code == HTTP_200_OK
-    assert len(res_get_user_playlist_names.json()) == EXPECTED_AMOUNT_USER_PLAYLIST_NAMES
-    assert set(EXPECTED_USER_PLAYLIST_NAMES) == set(res_get_user_playlist_names.json())
+    assert len(res_get_user_playlist_names.json()) == expected_amount_user_playlist_names
+    assert set(expected_user_playlist_names) == set(res_get_user_playlist_names.json())
 
     res_delete_playlist = delete_playlist(playlist_name_user)
     assert res_delete_playlist.status_code == HTTP_202_ACCEPTED
@@ -755,8 +896,8 @@ def test_get_artist_playlist_names_correct():
     password = "pass"
     photo = "https://photo"
 
-    EXPECTED_USER_PLAYLIST_NAMES = [playlist_name_artist]
-    EXPECTED_AMOUNT_USER_PLAYLIST_NAMES = len(EXPECTED_USER_PLAYLIST_NAMES)
+    expected_user_playlist_names = [playlist_name_artist]
+    expected_amount_user_playlist_names = len(expected_user_playlist_names)
 
     res_create_user = create_user(name=user_name, password=password, photo=photo)
     assert res_create_user.status_code == HTTP_201_CREATED
@@ -786,8 +927,8 @@ def test_get_artist_playlist_names_correct():
 
     res_get_artist_playlist_names = get_user_playlist_names(artist_name, jwt_headers_artist)
     assert res_get_artist_playlist_names.status_code == HTTP_200_OK
-    assert len(res_get_artist_playlist_names.json()) == EXPECTED_AMOUNT_USER_PLAYLIST_NAMES
-    assert set(EXPECTED_USER_PLAYLIST_NAMES) == set(res_get_artist_playlist_names.json())
+    assert len(res_get_artist_playlist_names.json()) == expected_amount_user_playlist_names
+    assert set(expected_user_playlist_names) == set(res_get_artist_playlist_names.json())
 
     res_delete_playlist = delete_playlist(playlist_name_user_saved)
     assert res_delete_playlist.status_code == HTTP_202_ACCEPTED
@@ -829,8 +970,8 @@ def test_get_user_playlists_correct():
     password = "pass"
     photo = "https://photo"
 
-    EXPECTED_USER_PLAYLIST_NAMES = [playlist_name_user]
-    EXPECTED_AMOUNT_USER_PLAYLIST_NAMES = len(EXPECTED_USER_PLAYLIST_NAMES)
+    expected_user_playlist_names = [playlist_name_user]
+    expected_amount_user_playlist_names = len(expected_user_playlist_names)
 
     res_create_user = create_user(name=user_name, password=password, photo=photo)
     assert res_create_user.status_code == HTTP_201_CREATED
@@ -860,8 +1001,8 @@ def test_get_user_playlists_correct():
 
     res_get_user_playlist_names = get_user_playlists(user_name, jwt_headers_user)
     assert res_get_user_playlist_names.status_code == HTTP_200_OK
-    assert len(res_get_user_playlist_names.json()) == EXPECTED_AMOUNT_USER_PLAYLIST_NAMES
-    assert set(EXPECTED_USER_PLAYLIST_NAMES) == set(
+    assert len(res_get_user_playlist_names.json()) == expected_amount_user_playlist_names
+    assert set(expected_user_playlist_names) == set(
         [playlist["name"] for playlist in res_get_user_playlist_names.json()]
     )
 
@@ -887,8 +1028,8 @@ def test_get_artist_playlists_correct():
     password = "pass"
     photo = "https://photo"
 
-    EXPECTED_USER_PLAYLIST_NAMES = [playlist_name_artist]
-    EXPECTED_AMOUNT_USER_PLAYLIST_NAMES = len(EXPECTED_USER_PLAYLIST_NAMES)
+    excepted_playback_history_songs = [playlist_name_artist]
+    expected_amount_user_playlist_names = len(excepted_playback_history_songs)
 
     res_create_user = create_user(name=user_name, password=password, photo=photo)
     assert res_create_user.status_code == HTTP_201_CREATED
@@ -918,8 +1059,8 @@ def test_get_artist_playlists_correct():
 
     res_get_artist_playlist_names = get_user_playlists(artist_name, jwt_headers_artist)
     assert res_get_artist_playlist_names.status_code == HTTP_200_OK
-    assert len(res_get_artist_playlist_names.json()) == EXPECTED_AMOUNT_USER_PLAYLIST_NAMES
-    assert set(EXPECTED_USER_PLAYLIST_NAMES) == set(
+    assert len(res_get_artist_playlist_names.json()) == expected_amount_user_playlist_names
+    assert set(excepted_playback_history_songs) == set(
         [playlist["name"] for playlist in res_get_artist_playlist_names.json()]
     )
 
@@ -960,7 +1101,7 @@ def test_get_user_playback_history_correct():
     photo = "https://photo"
     song_name = "8232392323623823723989"
     song_name_2 = "8232392323623823723988"
-    EXPECTED_PLAYBACK_HISTORY_SONGS = [song_name, song_name_2]
+    excepted_playback_history_songs = [song_name, song_name_2]
     file_path = "tests/assets/song.mp3"
     genre = "Pop"
 
@@ -1001,7 +1142,7 @@ def test_get_user_playback_history_correct():
         artist_name, headers=jwt_headers_artist
     )
     assert res_get_user_playback_history.status_code == HTTP_200_OK
-    assert set(EXPECTED_PLAYBACK_HISTORY_SONGS) == set(
+    assert set(excepted_playback_history_songs) == set(
         [song["name"] for song in res_get_user_playback_history.json()]
     )
 
@@ -1029,66 +1170,6 @@ def test_get_user_playback_history_user_not_found():
         artist_name, headers=jwt_headers_artist
     )
     assert res_get_user_playback_history.status_code == HTTP_404_NOT_FOUND
-
-
-def test_base_user_repository_exception():
-    with pytest.raises(BaseUserRepositoryException) as exc_info:
-        raise BaseUserRepositoryException()
-    assert str(exc_info.value) == BaseUserRepositoryException.ERROR
-
-
-def test_base_user_not_found_exception():
-    with pytest.raises(BaseUserNotFoundException) as exc_info:
-        raise BaseUserNotFoundException()
-    assert str(exc_info.value) == BaseUserNotFoundException.ERROR
-
-
-def test_base_user_bad_name_exception():
-    with pytest.raises(BaseUserBadNameException) as exc_info:
-        raise BaseUserBadNameException()
-    assert str(exc_info.value) == BaseUserBadNameException.ERROR
-
-
-def test_base_user_already_exists_exception():
-    with pytest.raises(BaseUserAlreadyExistsException) as exc_info:
-        raise BaseUserAlreadyExistsException()
-    assert str(exc_info.value) == BaseUserAlreadyExistsException.ERROR
-
-
-def test_base_user_delete_exception():
-    with pytest.raises(BaseUserDeleteException) as exc_info:
-        raise BaseUserDeleteException()
-    assert str(exc_info.value) == BaseUserDeleteException.ERROR
-
-
-def test_base_user_create_exception():
-    with pytest.raises(BaseUserCreateException) as exc_info:
-        raise BaseUserCreateException()
-    assert str(exc_info.value) == BaseUserCreateException.ERROR
-
-
-def test_base_user_update_exception():
-    with pytest.raises(BaseUserUpdateException) as exc_info:
-        raise BaseUserUpdateException()
-    assert str(exc_info.value) == BaseUserUpdateException.ERROR
-
-
-def test_base_user_get_password_exception():
-    with pytest.raises(BaseUserGetPasswordException) as exc_info:
-        raise BaseUserGetPasswordException()
-    assert str(exc_info.value) == BaseUserGetPasswordException.ERROR
-
-
-def test_base_user_service_exception():
-    with pytest.raises(BaseUserServiceException) as exc_info:
-        raise BaseUserServiceException()
-    assert str(exc_info.value) == BaseUserServiceException.ERROR
-
-
-def test_base_user_bad_parameters_exception():
-    with pytest.raises(BaseUserBadParametersException) as exc_info:
-        raise BaseUserBadParametersException()
-    assert str(exc_info.value) == BaseUserBadParametersException.ERROR
 
 
 def test_get_base_user_dao_from_document():
@@ -1119,7 +1200,7 @@ def test_get_base_user_dto_from_dao():
     user_register_date = "2024-11-30T10:00:00Z"
 
     base_user_dao = BaseUserDAO(
-        name=user_name, photo=user_photo, register_date=user_register_date, password="pass"
+        name=user_name, photo=user_photo, register_date=user_register_date, password=b"pass"
     )
 
     res_base_user_dto = get_base_user_dto_from_dao(base_user_dao)

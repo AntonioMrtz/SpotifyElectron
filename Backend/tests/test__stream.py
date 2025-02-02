@@ -77,7 +77,7 @@ def test_stream_controller_song_invalid_range_greater_than_file_size():
     )
     assert res_create_song.status_code == HTTP_201_CREATED
 
-    byte_range_headers = {"Range": f"bytes=0-{SONG_BYTES_SIZE+10}"}
+    byte_range_headers = {"Range": f"bytes=0-{SONG_BYTES_SIZE + 10}"}
 
     res_stream_song = stream_song(song_name, {**jwt_headers, **byte_range_headers})
     assert res_stream_song.status_code == HTTP_416_REQUESTED_RANGE_NOT_SATISFIABLE

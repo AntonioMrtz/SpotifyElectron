@@ -8,13 +8,13 @@ Redirects to the specific architecture service in case the method is not common
 import app.spotify_electron.song.base_song_repository as base_song_repository
 from app.logging.logging_constants import LOGGING_BASE_SONG_SERVICE
 from app.logging.logging_schema import SpotifyElectronLogger
-from app.spotify_electron.genre.genre_schema import Genre, GenreNotValidException
+from app.spotify_electron.genre.genre_schema import Genre, GenreNotValidError
 from app.spotify_electron.song.base_song_schema import (
-    SongBadNameException,
+    SongBadNameError,
     SongMetadataDTO,
-    SongNotFoundException,
-    SongRepositoryException,
-    SongServiceException,
+    SongNotFoundError,
+    SongRepositoryError,
+    SongServiceError,
     get_song_metadata_dto_from_dao,
 )
 from app.spotify_electron.song.providers.song_service_provider import get_song_service
@@ -23,7 +23,7 @@ from app.spotify_electron.song.validations.base_song_service_validations import 
     validate_song_should_exists,
 )
 
-base_song_service_logger = SpotifyElectronLogger(LOGGING_BASE_SONG_SERVICE).getLogger()
+base_song_service_logger = SpotifyElectronLogger(LOGGING_BASE_SONG_SERVICE).get_logger()
 
 
 def check_song_exists(name: str) -> bool:
@@ -45,9 +45,9 @@ def get_song_metadata(name: str) -> SongMetadataDTO:
         name (str): song name
 
     Raises:
-        SongBadNameException: bad song name
-        SongNotFoundException: song doesn't exists
-        SongServiceException: unexpected error getting song metadata
+        SongBadNameError: bad song name
+        SongNotFoundError: song doesn't exists
+        SongServiceError: unexpected error getting song metadata
 
     Returns:
         SongMetadataDTO: song metadata
@@ -58,22 +58,22 @@ def get_song_metadata(name: str) -> SongMetadataDTO:
         song_metadata_dao = base_song_repository.get_song_metadata(name)
         song_dto = get_song_metadata_dto_from_dao(song_metadata_dao)
 
-    except SongBadNameException as exception:
+    except SongBadNameError as exception:
         base_song_service_logger.exception(f"Bad Song Name Parameter: {name}")
-        raise SongBadNameException from exception
-    except SongNotFoundException as exception:
+        raise SongBadNameError from exception
+    except SongNotFoundError as exception:
         base_song_service_logger.exception(f"Song not found: {name}")
-        raise SongNotFoundException from exception
-    except SongRepositoryException as exception:
+        raise SongNotFoundError from exception
+    except SongRepositoryError as exception:
         base_song_service_logger.exception(
             f"Unexpected error in Song Repository getting song metadata: {name}"
         )
-        raise SongServiceException from exception
+        raise SongServiceError from exception
     except Exception as exception:
         base_song_service_logger.exception(
             f"Unexpected error in Song Service getting song metadata: {name}"
         )
-        raise SongServiceException from exception
+        raise SongServiceError from exception
     else:
         base_song_service_logger.info(f"Song metadata {name} retrieved successfully")
         return song_dto
@@ -95,23 +95,23 @@ def get_songs_metadata(song_names: list[str]) -> list[SongMetadataDTO]:
         song_names (list[str]): list of song names
 
     Raises:
-        SongServiceException: unexpected error getting song metadata
+        SongServiceError: unexpected error getting song metadata
 
     Returns:
         list[SongMetadataDTO]: list of songs metadata
     """
     try:
         return [get_song_metadata(song_name) for song_name in song_names]
-    except SongRepositoryException as exception:
+    except SongRepositoryError as exception:
         base_song_service_logger.exception(
             f"Unexpected error in Song Repository getting songs metadata for: {song_names}"
         )
-        raise SongServiceException from exception
+        raise SongServiceError from exception
     except Exception as exception:
         base_song_service_logger.exception(
             f"Unexpected error in Song Service getting songs metadata for: {song_names}"
         )
-        raise SongServiceException from exception
+        raise SongServiceError from exception
 
 
 def increase_song_streams(name: str) -> None:
@@ -121,25 +121,25 @@ def increase_song_streams(name: str) -> None:
         name (str): song name
 
     Raises:
-        SongNotFoundException: song doesn't exists
-        SongServiceException: unexpected error increasing song streams
+        SongNotFoundError: song doesn't exists
+        SongServiceError: unexpected error increasing song streams
     """
     try:
         validate_song_should_exists(name)
         base_song_repository.increase_song_streams(name)
-    except SongNotFoundException as exception:
+    except SongNotFoundError as exception:
         base_song_service_logger.exception(f"Song not found: {name}")
-        raise SongNotFoundException from exception
-    except SongRepositoryException as exception:
+        raise SongNotFoundError from exception
+    except SongRepositoryError as exception:
         base_song_service_logger.exception(
             f"Unexpected error in Song Repository increasing song: {name} streams"
         )
-        raise SongServiceException from exception
+        raise SongServiceError from exception
     except Exception as exception:
         base_song_service_logger.exception(
             f"Unexpected error in Song Service increasing song: {name} streams"
         )
-        raise SongServiceException from exception
+        raise SongServiceError from exception
 
 
 def search_by_name(name: str) -> list[SongMetadataDTO]:
@@ -164,8 +164,8 @@ def get_songs_by_genre(genre: Genre) -> list[SongMetadataDTO]:
         genre (Genre): the genre
 
     Raises:
-        GenreNotValidException: invalid genre
-        SongServiceException: unexpected error getting  songs by genre
+        GenreNotValidError: invalid genre
+        SongServiceError: unexpected error getting  songs by genre
 
     Returns:
         list[SongMetadataDTO]: the list of songs that matched the genre
@@ -174,16 +174,16 @@ def get_songs_by_genre(genre: Genre) -> list[SongMetadataDTO]:
         str_genre = Genre.get_genre_string_value(genre)
         songs_dao = base_song_repository.get_songs_metadata_by_genre(str_genre)
         return [get_song_metadata_dto_from_dao(song_dao) for song_dao in songs_dao]
-    except GenreNotValidException as exception:
+    except GenreNotValidError as exception:
         base_song_service_logger.exception(f"Bad genre provided {genre}")
-        raise GenreNotValidException from exception
-    except SongRepositoryException as exception:
+        raise GenreNotValidError from exception
+    except SongRepositoryError as exception:
         base_song_service_logger.exception(
             f"Unexpected error in Song Repository getting songs by genre: {genre}"
         )
-        raise SongServiceException from exception
+        raise SongServiceError from exception
     except Exception as exception:
         base_song_service_logger.exception(
             f"Unexpected error in Song Service getting songs by genre: {genre}"
         )
-        raise SongServiceException from exception
+        raise SongServiceError from exception

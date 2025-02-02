@@ -12,7 +12,7 @@
       "name": "Attribution-NonCommercial-ShareAlike 4.0 International",
       "url": "https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es"
     },
-    "version": "2.0.1"
+    "version": "2.0.2"
   },
   "paths": {
     "/playlists/{name}": {
@@ -21,7 +21,7 @@
           "Playlists"
         ],
         "summary": "Get Playlist",
-        "description": "Get playlist\n\nArgs:\n    name (str): playlist name",
+        "description": "Get playlist\n\nArgs:\n    name (str): playlist name\n    token (Annotated[TokenData, Depends): JWT info",
         "operationId": "get_playlist_playlists__name__get",
         "security": [
           {
@@ -65,7 +65,7 @@
           "Playlists"
         ],
         "summary": "Update Playlist",
-        "description": "Update playlist\n\nArgs:\n    photo (str): playlist new photo\n    description (str): playlist new description\n    song_names (list[str], optional): playlist new song names. Defaults to Body(...).\n    new_name (str | None, optional): playlist new name. Defaults to None.",
+        "description": "Update playlist\n\nArgs:\n    name (str): playlist name\n    photo (str): playlist new photo\n    description (str): playlist new description\n    song_names (list[str], optional): playlist new song names. Defaults to Body(...).\n    new_name (str | None, optional): playlist new name. Defaults to None.\n    token (Annotated[TokenData, Depends): JWT info",
         "operationId": "update_playlist_playlists__name__put",
         "security": [
           {
@@ -198,7 +198,7 @@
           "Playlists"
         ],
         "summary": "Create Playlist",
-        "description": "Create playlist\n\nArgs:\n    name (str): playlist name\n    photo (str): playlist photo\n    description (str): playlist description\n    song_names (list[str]): list of song names included in playlist.",
+        "description": "Create playlist\n\nArgs:\n    name (str): playlist name\n    photo (str): playlist photo\n    description (str): playlist description\n    song_names (list[str]): list of song names included in playlist.\n    token (Annotated[TokenData, Depends): JWT info",
         "operationId": "create_playlist_playlists__post",
         "security": [
           {
@@ -299,7 +299,7 @@
           "Playlists"
         ],
         "summary": "Get Selected Playlists",
-        "description": "Get selected playlists\n\nArgs:\n    names (str): playlist names",
+        "description": "Get selected playlists\n\nArgs:\n    names (str): playlist names\n    token (Annotated[TokenData, Depends): JWT info",
         "operationId": "get_selected_playlists_playlists_selected__names__get",
         "security": [
           {
@@ -451,7 +451,7 @@
           "Songs"
         ],
         "summary": "Get Song",
-        "description": "Get song\n\nArgs:\n    name (str): song name",
+        "description": "Get song\n\nArgs:\n    name (str): song name\n    token (Annotated[TokenData, Depends): JWT info",
         "operationId": "get_song_songs__name__get",
         "security": [
           {
@@ -536,7 +536,7 @@
           "Songs"
         ],
         "summary": "Create Song",
-        "description": "Create song\n\nArgs:\n    name (str): song name\n    genre (Genre): genre\n    photo (str): photo\n    file (UploadFile): song file",
+        "description": "Create song\n\nArgs:\n    name (str): song name\n    genre (Genre): genre\n    photo (str): photo\n    file (UploadFile): song file\n    token (Annotated[TokenData, Depends): JWT info",
         "operationId": "create_song_songs__post",
         "security": [
           {
@@ -609,7 +609,7 @@
           "Songs"
         ],
         "summary": "Get Song Metadata",
-        "description": "Get song metadata\n\nArgs:\n    name (str): the song name",
+        "description": "Get song metadata\n\nArgs:\n    name (str): the song name\n    token (Annotated[TokenData, Depends): JWT info",
         "operationId": "get_song_metadata_songs_metadata__name__get",
         "security": [
           {
@@ -655,7 +655,7 @@
           "Songs"
         ],
         "summary": "Increase Song Streams",
-        "description": "Increase total streams of a song\n\nArgs:\n    name (str): song name",
+        "description": "Increase total streams of a song\n\nArgs:\n    name (str): song name\n    token (Annotated[TokenData, Depends): JWT info",
         "operationId": "increase_song_streams_songs__name__streams_patch",
         "security": [
           {
@@ -701,7 +701,7 @@
           "Songs"
         ],
         "summary": "Get Songs By Genre",
-        "description": "Get songs by genre\n\nArgs:\n    genre (Genre): the genre to match",
+        "description": "Get songs by genre\n\nArgs:\n    genre (Genre): the genre to match\n    token (Annotated[TokenData, Depends): JWT info",
         "operationId": "get_songs_by_genre_songs_genres__genre__get",
         "security": [
           {
@@ -796,7 +796,7 @@
           "Users"
         ],
         "summary": "Get User",
-        "description": "Get user by name\n\nArgs:\n    name (str): user name",
+        "description": "Get user by name\n\nArgs:\n    name (str): user name\n    token (Annotated[TokenData, Depends): JWT info",
         "operationId": "get_user_users__name__get",
         "security": [
           {
@@ -940,7 +940,7 @@
           "Users"
         ],
         "summary": "Patch Playback History",
-        "description": "Add song to playback history\n\nArgs:\n    name (str): user name\n    song_name (str): song name",
+        "description": "Add song to playback history\n\nArgs:\n    name (str): user name\n    song_name (str): song name\n    token (Annotated[TokenData, Depends): JWT info",
         "operationId": "patch_playback_history_users__name__playback_history_patch",
         "security": [
           {
@@ -993,7 +993,7 @@
           "Users"
         ],
         "summary": "Get User Playback History",
-        "description": "Get user song playback history\n\nArgs:\n    name (str): user name",
+        "description": "Get user song playback history\n\nArgs:\n    name (str): user name\n    token (Annotated[TokenData, Depends): JWT info",
         "operationId": "get_user_playback_history_users__name__playback_history_get",
         "security": [
           {
@@ -1039,7 +1039,7 @@
           "Users"
         ],
         "summary": "Patch Saved Playlists",
-        "description": "Add playlist to saved list\n\nArgs:\n    name (str): user name\n    playlist_name (str): saved playlist",
+        "description": "Add playlist to saved list\n\nArgs:\n    name (str): user name\n    playlist_name (str): saved playlist\n    token (Annotated[TokenData, Depends): JWT info",
         "operationId": "patch_saved_playlists_users__name__saved_playlists_patch",
         "security": [
           {
@@ -1092,7 +1092,7 @@
           "Users"
         ],
         "summary": "Delete Saved Playlists",
-        "description": "Delete playlist from saved list of user\n\nArgs:\n    name (str): user name\n    playlist_name (str): playlist name",
+        "description": "Delete playlist from saved list of user\n\nArgs:\n    name (str): user name\n    playlist_name (str): playlist name\n    token (Annotated[TokenData, Depends): JWT info",
         "operationId": "delete_saved_playlists_users__name__saved_playlists_delete",
         "security": [
           {
@@ -1147,7 +1147,7 @@
           "Users"
         ],
         "summary": "Get User Relevant Playlists",
-        "description": "Get relevant playlists for user\n\nArgs:\n    name (str): user name",
+        "description": "Get relevant playlists for user\n\nArgs:\n    name (str): user name\n    token (Annotated[TokenData, Depends): JWT info",
         "operationId": "get_user_relevant_playlists_users__name__relevant_playlists_get",
         "security": [
           {
@@ -1193,7 +1193,7 @@
           "Users"
         ],
         "summary": "Get User Playlists",
-        "description": "Get playlists created by the user\n\nArgs:\n    name (str): user name",
+        "description": "Get playlists created by the user\n\nArgs:\n    name (str): user name\n    token (Annotated[TokenData, Depends): JWT info",
         "operationId": "get_user_playlists_users__name__playlists_get",
         "security": [
           {
@@ -1239,7 +1239,7 @@
           "Users"
         ],
         "summary": "Get User Playlists Names",
-        "description": "Get playlist names created by user\n\nArgs:\n    name (str): user name",
+        "description": "Get playlist names created by user\n\nArgs:\n    name (str): user name\n    token (Annotated[TokenData, Depends): JWT info",
         "operationId": "get_user_playlists_names_users__name__playlist_names_get",
         "security": [
           {
@@ -1285,7 +1285,7 @@
           "Artists"
         ],
         "summary": "Get Artist",
-        "description": "Get artist by name\n\nArgs:\n    name (str): artist name",
+        "description": "Get artist by name\n\nArgs:\n    name (str): artist name\n    token (Annotated[TokenData, Depends): JWT info",
         "operationId": "get_artist_artists__name__get",
         "security": [
           {
@@ -1540,7 +1540,7 @@
           "Search"
         ],
         "summary": "Get Search Name",
-        "description": "Search for items that partially match name\n\nArgs:\n----\n    name (str): name to match",
+        "description": "Search for items that partially match name\n\nArgs:\n----\n    name (str): name to match\n    token (Annotated[TokenData, Depends): JWT info",
         "operationId": "get_search_name_search__get",
         "security": [
           {
@@ -1586,7 +1586,7 @@
           "stream"
         ],
         "summary": "Stream Song",
-        "description": "Streams song audio\n\nArgs:\n    name (str): song name\n    request (Request): incoming request",
+        "description": "Streams song audio\n\nArgs:\n    name (str): song name\n    request (Request): incoming request\n    token (Annotated[TokenData, Depends): JWT info",
         "operationId": "stream_song_stream__name__get",
         "security": [
           {

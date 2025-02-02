@@ -16,7 +16,7 @@ def create_user(name: str, photo: str, password: str):
     return client.post(url)
 
 
-def update_user(  # noqa: PLR0913
+def update_user(
     name: str,
     photo: str,
     playlists: list[str],

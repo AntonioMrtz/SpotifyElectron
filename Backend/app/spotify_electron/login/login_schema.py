@@ -2,10 +2,10 @@
 Login schema for domain model
 """
 
-from app.exceptions.base_exceptions_schema import SpotifyElectronException
+from app.exceptions.base_exceptions_schema import SpotifyElectronError
 
 
-class InvalidCredentialsLoginException(SpotifyElectronException):
+class InvalidCredentialsLoginError(SpotifyElectronError):
     """Invalid credentials for log in"""
 
     ERROR = "Invalid credentials while logging"

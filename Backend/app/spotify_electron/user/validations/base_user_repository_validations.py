@@ -5,12 +5,12 @@ Validations for Common user repositories
 from pymongo.results import DeleteResult, InsertOneResult, UpdateResult
 
 from app.spotify_electron.user.base_user_schema import (
-    BaseUserCreateException,
+    BaseUserCreateError,
     BaseUserDAO,
-    BaseUserDeleteException,
-    BaseUserGetPasswordException,
-    BaseUserNotFoundException,
-    BaseUserUpdateException,
+    BaseUserDeleteError,
+    BaseUserGetPasswordError,
+    BaseUserNotFoundError,
+    BaseUserUpdateError,
 )
 
 
@@ -21,10 +21,10 @@ def validate_password_exists(password: bytes) -> None:
         password (bytes): user password
 
     Raises:
-        BaseUserGetPasswordException: if there's no password retrieved
+        BaseUserGetPasswordError: if there's no password retrieved
     """
     if not password:
-        raise BaseUserGetPasswordException
+        raise BaseUserGetPasswordError
 
 
 def validate_user_exists(user: BaseUserDAO | None) -> None:
@@ -36,11 +36,11 @@ def validate_user_exists(user: BaseUserDAO | None) -> None:
 
     Raises:
     ------
-        BaseUserNotFoundException: if the user doesn't exists
+        BaseUserNotFoundError: if the user doesn't exists
 
     """
     if user is None:
-        raise BaseUserNotFoundException
+        raise BaseUserNotFoundError
 
 
 def validate_user_update(result: UpdateResult) -> None:
@@ -50,10 +50,10 @@ def validate_user_update(result: UpdateResult) -> None:
         result (UpdateResult): update result
 
     Raises:
-        BaseUserUpdateException: if the update was not done
+        BaseUserUpdateError: if the update was not done
     """
     if not result.acknowledged:
-        raise BaseUserUpdateException
+        raise BaseUserUpdateError
 
 
 def validate_user_delete_count(result: DeleteResult) -> None:
@@ -65,11 +65,11 @@ def validate_user_delete_count(result: DeleteResult) -> None:
 
     Raises:
     ------
-        BaseUserDeleteException: if the deletion was not done
+        BaseUserDeleteError: if the deletion was not done
 
     """
     if result.deleted_count == 0:
-        raise BaseUserDeleteException
+        raise BaseUserDeleteError
 
 
 def validate_user_create(result: InsertOneResult) -> None:
@@ -81,8 +81,8 @@ def validate_user_create(result: InsertOneResult) -> None:
 
     Raises:
     ------
-        BaseUserCreateException: if the insetion was not done
+        BaseUserCreateError: if the insetion was not done
 
     """
     if not result.acknowledged:
-        raise BaseUserCreateException
+        raise BaseUserCreateError

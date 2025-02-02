@@ -4,7 +4,7 @@ Search schema for domain model
 
 from dataclasses import dataclass
 
-from app.exceptions.base_exceptions_schema import SpotifyElectronException
+from app.exceptions.base_exceptions_schema import SpotifyElectronError
 from app.spotify_electron.playlist.playlist_schema import PlaylistDTO
 from app.spotify_electron.song.base_song_schema import SongMetadataDTO
 from app.spotify_electron.user.artist.artist_schema import ArtistDTO
@@ -21,7 +21,7 @@ class SearchResult:
     songs: list[SongMetadataDTO]
 
 
-class BadSearchParameterException(SpotifyElectronException):
+class BadSearchParameterError(SpotifyElectronError):
     """Bad parameter provided for search"""
 
     ERROR = "Bad parameter provided for search"
@@ -30,7 +30,7 @@ class BadSearchParameterException(SpotifyElectronException):
         super().__init__(self.ERROR)
 
 
-class SearchServiceException(SpotifyElectronException):
+class SearchServiceError(SpotifyElectronError):
     """Unexpected error in service"""
 
     ERROR = "Unexpected error in search service"

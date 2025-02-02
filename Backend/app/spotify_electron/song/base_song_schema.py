@@ -8,7 +8,7 @@ from abc import ABC
 from dataclasses import dataclass
 from typing import Any
 
-from app.exceptions.base_exceptions_schema import SpotifyElectronException
+from app.exceptions.base_exceptions_schema import SpotifyElectronError
 from app.spotify_electron.genre.genre_schema import Genre
 
 
@@ -87,7 +87,7 @@ def get_song_metadata_dto_from_dao(song_dao: SongMetadataDAO) -> SongMetadataDTO
     )
 
 
-class SongRepositoryException(SpotifyElectronException):
+class SongRepositoryError(SpotifyElectronError):
     """Repository Unexpected error"""
 
     ERROR = "Error accessing Song Repository"
@@ -96,7 +96,7 @@ class SongRepositoryException(SpotifyElectronException):
         super().__init__(self.ERROR)
 
 
-class SongNotFoundException(SpotifyElectronException):
+class SongNotFoundError(SpotifyElectronError):
     """Song not found"""
 
     ERROR = "Song not found"
@@ -105,7 +105,7 @@ class SongNotFoundException(SpotifyElectronException):
         super().__init__(self.ERROR)
 
 
-class SongAlreadyExistsException(SpotifyElectronException):
+class SongAlreadyExistsError(SpotifyElectronError):
     """Song already exists"""
 
     ERROR = "Song already exists"
@@ -114,7 +114,7 @@ class SongAlreadyExistsException(SpotifyElectronException):
         super().__init__(self.ERROR)
 
 
-class SongDeleteException(SpotifyElectronException):
+class SongDeleteError(SpotifyElectronError):
     """Song deletion error"""
 
     ERROR = "Error deleting Song"
@@ -123,7 +123,7 @@ class SongDeleteException(SpotifyElectronException):
         super().__init__(self.ERROR)
 
 
-class SongCreateException(SpotifyElectronException):
+class SongCreateError(SpotifyElectronError):
     """Song creation error"""
 
     ERROR = "Error creating Song"
@@ -132,7 +132,7 @@ class SongCreateException(SpotifyElectronException):
         super().__init__(self.ERROR)
 
 
-class SongtUpdateException(SpotifyElectronException):
+class SongtUpdateError(SpotifyElectronError):
     """Song update error"""
 
     ERROR = "Error updating Song"
@@ -141,7 +141,7 @@ class SongtUpdateException(SpotifyElectronException):
         super().__init__(self.ERROR)
 
 
-class SongServiceException(SpotifyElectronException):
+class SongServiceError(SpotifyElectronError):
     """Song Service Unexpected error"""
 
     ERROR = "Error accessing Song Service"
@@ -150,7 +150,7 @@ class SongServiceException(SpotifyElectronException):
         super().__init__(self.ERROR)
 
 
-class SongBadNameException(SpotifyElectronException):
+class SongBadNameError(SpotifyElectronError):
     """Bad name"""
 
     ERROR = "Bad parameters provided for Song"

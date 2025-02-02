@@ -2,12 +2,12 @@
 Common validations for all Song respositories, regardless of the current architecture
 """
 
-from app.exceptions.base_exceptions_schema import BadParameterException
+from app.exceptions.base_exceptions_schema import BadParameterError
 from app.spotify_electron.song.base_song_repository import check_song_exists
 from app.spotify_electron.song.base_song_schema import (
-    SongAlreadyExistsException,
-    SongBadNameException,
-    SongNotFoundException,
+    SongAlreadyExistsError,
+    SongBadNameError,
+    SongNotFoundError,
 )
 from app.spotify_electron.utils.validations.validation_utils import validate_parameter
 
@@ -19,12 +19,12 @@ def validate_song_name_parameter(name: str) -> None:
         name (str): song name
 
     Raises:
-        SongBadNameException: if name parameter is invalid
+        SongBadNameError: if name parameter is invalid
     """
     try:
         validate_parameter(name)
-    except BadParameterException:
-        raise SongBadNameException from BadParameterException
+    except BadParameterError:
+        raise SongBadNameError from BadParameterError
 
 
 def validate_song_should_exists(name: str) -> None:
@@ -36,11 +36,11 @@ def validate_song_should_exists(name: str) -> None:
 
     Raises:
     ------
-        SongNotFoundException: if song doesn't exists
+        SongNotFoundError: if song doesn't exists
 
     """
     if not check_song_exists(name):
-        raise SongNotFoundException
+        raise SongNotFoundError
 
 
 def validate_song_should_not_exists(name: str) -> None:
@@ -52,8 +52,8 @@ def validate_song_should_not_exists(name: str) -> None:
 
     Raises:
     ------
-        SongAlreadyExistsException: if song exists
+        SongAlreadyExistsError: if song exists
 
     """
     if check_song_exists(name):
-        raise SongAlreadyExistsException
+        raise SongAlreadyExistsError

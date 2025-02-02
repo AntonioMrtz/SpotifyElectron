@@ -4,7 +4,7 @@ Field common validations utils
 
 from typing import Any
 
-from app.exceptions.base_exceptions_schema import BadParameterException
+from app.exceptions.base_exceptions_schema import BadParameterError
 
 
 def validate_parameter(parameter: Any) -> None:
@@ -14,7 +14,7 @@ def validate_parameter(parameter: Any) -> None:
         parameter (Any): parameter name
 
     Raises:
-        BadParameterException: if the parameter is invalid
+        BadParameterError: if the parameter is invalid
     """
     if parameter is None or parameter == "":
-        raise BadParameterException(parameter)
+        raise BadParameterError(parameter)

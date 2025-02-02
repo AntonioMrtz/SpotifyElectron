@@ -21,7 +21,7 @@ class DatabaseConnectionManager:
         AppEnvironmentMode.TEST: DatabaseTestingConnection,
     }
     """Mapping between environment mode and database connection"""
-    _logger = SpotifyElectronLogger(LOGGING_DATABASE_MANAGER).getLogger()
+    _logger = SpotifyElectronLogger(LOGGING_DATABASE_MANAGER).get_logger()
 
     @classmethod
     def get_collection_connection(cls, collection_name: DatabaseCollection) -> Collection:

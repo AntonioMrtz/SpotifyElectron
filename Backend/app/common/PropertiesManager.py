@@ -18,7 +18,7 @@ from app.common.app_schema import (
 from app.logging.logging_constants import LOGGING_PROPERTIES_MANAGER
 from app.logging.logging_schema import SpotifyElectronLogger
 
-properties_manager_logger = SpotifyElectronLogger(LOGGING_PROPERTIES_MANAGER).getLogger()
+properties_manager_logger = SpotifyElectronLogger(LOGGING_PROPERTIES_MANAGER).get_logger()
 
 
 class _PropertiesManager:

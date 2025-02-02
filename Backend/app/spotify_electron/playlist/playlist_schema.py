@@ -5,7 +5,7 @@ Playlist schema for domain model
 from dataclasses import dataclass
 from typing import Any
 
-from app.exceptions.base_exceptions_schema import SpotifyElectronException
+from app.exceptions.base_exceptions_schema import SpotifyElectronError
 
 
 @dataclass
@@ -74,7 +74,7 @@ def get_playlist_dto_from_dao(playlist_dao: PlaylistDAO) -> PlaylistDTO:
     )
 
 
-class PlaylistRepositoryException(SpotifyElectronException):
+class PlaylistRepositoryError(SpotifyElectronError):
     """Repository Unexpected Exceptions"""
 
     ERROR = "Error accessing Playlist Repository"
@@ -83,7 +83,7 @@ class PlaylistRepositoryException(SpotifyElectronException):
         super().__init__(self.ERROR)
 
 
-class PlaylistNotFoundException(SpotifyElectronException):
+class PlaylistNotFoundError(SpotifyElectronError):
     """Playlist not found"""
 
     ERROR = "Playlist not found"
@@ -92,7 +92,7 @@ class PlaylistNotFoundException(SpotifyElectronException):
         super().__init__(self.ERROR)
 
 
-class PlaylistAlreadyExistsException(SpotifyElectronException):
+class PlaylistAlreadyExistsError(SpotifyElectronError):
     """Playlist to create already exists"""
 
     ERROR = "Playlist already exists"
@@ -101,7 +101,7 @@ class PlaylistAlreadyExistsException(SpotifyElectronException):
         super().__init__(self.ERROR)
 
 
-class PlaylistDeleteException(SpotifyElectronException):
+class PlaylistDeleteError(SpotifyElectronError):
     """Playlist deletion"""
 
     ERROR = "Error deleting Playlist"
@@ -110,7 +110,7 @@ class PlaylistDeleteException(SpotifyElectronException):
         super().__init__(self.ERROR)
 
 
-class PlaylistCreateException(SpotifyElectronException):
+class PlaylistCreateError(SpotifyElectronError):
     """Playlist creation"""
 
     ERROR = "Error creating Playlist"
@@ -119,7 +119,7 @@ class PlaylistCreateException(SpotifyElectronException):
         super().__init__(self.ERROR)
 
 
-class PlaylistUpdateException(SpotifyElectronException):
+class PlaylistUpdateError(SpotifyElectronError):
     """Playlist update"""
 
     ERROR = "Error updating Playlist"
@@ -128,7 +128,7 @@ class PlaylistUpdateException(SpotifyElectronException):
         super().__init__(self.ERROR)
 
 
-class PlaylistServiceException(SpotifyElectronException):
+class PlaylistServiceError(SpotifyElectronError):
     """Service Unexpected Exceptions"""
 
     ERROR = "Error accessing Playlist SERVICE"
@@ -137,7 +137,7 @@ class PlaylistServiceException(SpotifyElectronException):
         super().__init__(self.ERROR)
 
 
-class PlaylistBadNameException(SpotifyElectronException):
+class PlaylistBadNameError(SpotifyElectronError):
     """Bad name"""
 
     ERROR = "Bad parameters provided for playlist"
@@ -146,7 +146,7 @@ class PlaylistBadNameException(SpotifyElectronException):
         super().__init__(self.ERROR)
 
 
-class PlaylistUnAuthorizedException(SpotifyElectronException):
+class PlaylistUnAuthorizedError(SpotifyElectronError):
     """User accessing unauthorized playlist"""
 
     ERROR = "Unauthorized playlist resource for user"

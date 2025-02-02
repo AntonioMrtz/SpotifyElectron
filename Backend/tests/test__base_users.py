@@ -710,7 +710,7 @@ def test_get_user_relevant_playlist_correct():
     password = "pass"
     photo = "https://photo"
 
-    EXPECTED_RELEVANT_PLAYLISTS = 2
+    expected_relevant_playlists = 2
 
     res_create_user = create_user(name=user_name, password=password, photo=photo)
     assert res_create_user.status_code == HTTP_201_CREATED
@@ -740,7 +740,7 @@ def test_get_user_relevant_playlist_correct():
 
     res_get_user_relevant_playlists = get_user_relevant_playlists(user_name, jwt_headers_user)
     assert res_get_user_relevant_playlists.status_code == HTTP_200_OK
-    assert len(res_get_user_relevant_playlists.json()) == EXPECTED_RELEVANT_PLAYLISTS
+    assert len(res_get_user_relevant_playlists.json()) == expected_relevant_playlists
 
     res_delete_playlist = delete_playlist(playlist_name_user)
     assert res_delete_playlist.status_code == HTTP_202_ACCEPTED
@@ -764,7 +764,7 @@ def test_get_artist_relevant_playlist_correct():
     password = "pass"
     photo = "https://photo"
 
-    EXPECTED_RELEVANT_PLAYLISTS = 2
+    expected_relevant_playlists = 2
 
     res_create_user = create_user(name=user_name, password=password, photo=photo)
     assert res_create_user.status_code == HTTP_201_CREATED
@@ -796,7 +796,7 @@ def test_get_artist_relevant_playlist_correct():
         artist_name, jwt_headers_artist
     )
     assert res_get_artist_relevant_playlists.status_code == HTTP_200_OK
-    assert len(res_get_artist_relevant_playlists.json()) == EXPECTED_RELEVANT_PLAYLISTS
+    assert len(res_get_artist_relevant_playlists.json()) == expected_relevant_playlists
 
     res_delete_playlist = delete_playlist(playlist_name_user_saved)
     assert res_delete_playlist.status_code == HTTP_202_ACCEPTED
@@ -840,8 +840,8 @@ def test_get_user_playlist_names_correct():
     password = "pass"
     photo = "https://photo"
 
-    EXPECTED_USER_PLAYLIST_NAMES = [playlist_name_user]
-    EXPECTED_AMOUNT_USER_PLAYLIST_NAMES = len(EXPECTED_USER_PLAYLIST_NAMES)
+    expected_user_playlist_names = [playlist_name_user]
+    expected_amount_user_playlist_names = len(expected_user_playlist_names)
 
     res_create_user = create_user(name=user_name, password=password, photo=photo)
     assert res_create_user.status_code == HTTP_201_CREATED
@@ -871,8 +871,8 @@ def test_get_user_playlist_names_correct():
 
     res_get_user_playlist_names = get_user_playlist_names(user_name, jwt_headers_user)
     assert res_get_user_playlist_names.status_code == HTTP_200_OK
-    assert len(res_get_user_playlist_names.json()) == EXPECTED_AMOUNT_USER_PLAYLIST_NAMES
-    assert set(EXPECTED_USER_PLAYLIST_NAMES) == set(res_get_user_playlist_names.json())
+    assert len(res_get_user_playlist_names.json()) == expected_amount_user_playlist_names
+    assert set(expected_user_playlist_names) == set(res_get_user_playlist_names.json())
 
     res_delete_playlist = delete_playlist(playlist_name_user)
     assert res_delete_playlist.status_code == HTTP_202_ACCEPTED
@@ -896,8 +896,8 @@ def test_get_artist_playlist_names_correct():
     password = "pass"
     photo = "https://photo"
 
-    EXPECTED_USER_PLAYLIST_NAMES = [playlist_name_artist]
-    EXPECTED_AMOUNT_USER_PLAYLIST_NAMES = len(EXPECTED_USER_PLAYLIST_NAMES)
+    expected_user_playlist_names = [playlist_name_artist]
+    expected_amount_user_playlist_names = len(expected_user_playlist_names)
 
     res_create_user = create_user(name=user_name, password=password, photo=photo)
     assert res_create_user.status_code == HTTP_201_CREATED
@@ -927,8 +927,8 @@ def test_get_artist_playlist_names_correct():
 
     res_get_artist_playlist_names = get_user_playlist_names(artist_name, jwt_headers_artist)
     assert res_get_artist_playlist_names.status_code == HTTP_200_OK
-    assert len(res_get_artist_playlist_names.json()) == EXPECTED_AMOUNT_USER_PLAYLIST_NAMES
-    assert set(EXPECTED_USER_PLAYLIST_NAMES) == set(res_get_artist_playlist_names.json())
+    assert len(res_get_artist_playlist_names.json()) == expected_amount_user_playlist_names
+    assert set(expected_user_playlist_names) == set(res_get_artist_playlist_names.json())
 
     res_delete_playlist = delete_playlist(playlist_name_user_saved)
     assert res_delete_playlist.status_code == HTTP_202_ACCEPTED
@@ -970,8 +970,8 @@ def test_get_user_playlists_correct():
     password = "pass"
     photo = "https://photo"
 
-    EXPECTED_USER_PLAYLIST_NAMES = [playlist_name_user]
-    EXPECTED_AMOUNT_USER_PLAYLIST_NAMES = len(EXPECTED_USER_PLAYLIST_NAMES)
+    expected_user_playlist_names = [playlist_name_user]
+    expected_amount_user_playlist_names = len(expected_user_playlist_names)
 
     res_create_user = create_user(name=user_name, password=password, photo=photo)
     assert res_create_user.status_code == HTTP_201_CREATED
@@ -1001,8 +1001,8 @@ def test_get_user_playlists_correct():
 
     res_get_user_playlist_names = get_user_playlists(user_name, jwt_headers_user)
     assert res_get_user_playlist_names.status_code == HTTP_200_OK
-    assert len(res_get_user_playlist_names.json()) == EXPECTED_AMOUNT_USER_PLAYLIST_NAMES
-    assert set(EXPECTED_USER_PLAYLIST_NAMES) == set(
+    assert len(res_get_user_playlist_names.json()) == expected_amount_user_playlist_names
+    assert set(expected_user_playlist_names) == set(
         [playlist["name"] for playlist in res_get_user_playlist_names.json()]
     )
 
@@ -1028,8 +1028,8 @@ def test_get_artist_playlists_correct():
     password = "pass"
     photo = "https://photo"
 
-    EXPECTED_USER_PLAYLIST_NAMES = [playlist_name_artist]
-    EXPECTED_AMOUNT_USER_PLAYLIST_NAMES = len(EXPECTED_USER_PLAYLIST_NAMES)
+    excepted_playback_history_songs = [playlist_name_artist]
+    expected_amount_user_playlist_names = len(excepted_playback_history_songs)
 
     res_create_user = create_user(name=user_name, password=password, photo=photo)
     assert res_create_user.status_code == HTTP_201_CREATED
@@ -1059,8 +1059,8 @@ def test_get_artist_playlists_correct():
 
     res_get_artist_playlist_names = get_user_playlists(artist_name, jwt_headers_artist)
     assert res_get_artist_playlist_names.status_code == HTTP_200_OK
-    assert len(res_get_artist_playlist_names.json()) == EXPECTED_AMOUNT_USER_PLAYLIST_NAMES
-    assert set(EXPECTED_USER_PLAYLIST_NAMES) == set(
+    assert len(res_get_artist_playlist_names.json()) == expected_amount_user_playlist_names
+    assert set(excepted_playback_history_songs) == set(
         [playlist["name"] for playlist in res_get_artist_playlist_names.json()]
     )
 
@@ -1101,7 +1101,7 @@ def test_get_user_playback_history_correct():
     photo = "https://photo"
     song_name = "8232392323623823723989"
     song_name_2 = "8232392323623823723988"
-    EXPECTED_PLAYBACK_HISTORY_SONGS = [song_name, song_name_2]
+    excepted_playback_history_songs = [song_name, song_name_2]
     file_path = "tests/assets/song.mp3"
     genre = "Pop"
 
@@ -1142,7 +1142,7 @@ def test_get_user_playback_history_correct():
         artist_name, headers=jwt_headers_artist
     )
     assert res_get_user_playback_history.status_code == HTTP_200_OK
-    assert set(EXPECTED_PLAYBACK_HISTORY_SONGS) == set(
+    assert set(excepted_playback_history_songs) == set(
         [song["name"] for song in res_get_user_playback_history.json()]
     )
 

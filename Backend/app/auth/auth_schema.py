@@ -4,7 +4,7 @@ Authentication schema for domain model
 
 from dataclasses import dataclass
 
-from app.exceptions.base_exceptions_schema import SpotifyElectronException
+from app.exceptions.base_exceptions_schema import SpotifyElectronError
 from app.spotify_electron.user.user.user_schema import UserType
 
 TOKEN_HEADER_FIELD_NAME = "Authorization"
@@ -65,7 +65,7 @@ class AuthConfig:
         cls.DAYS_TO_EXPIRE_COOKIE = days_to_expire_cookie
 
 
-class BadJWTTokenProvidedException(SpotifyElectronException):
+class BadJWTTokenProvidedError(SpotifyElectronError):
     """Bad JWT Token provided"""
 
     ERROR = "bad JWT Token provided"
@@ -74,7 +74,7 @@ class BadJWTTokenProvidedException(SpotifyElectronException):
         super().__init__(self.ERROR)
 
 
-class JWTNotProvidedException(SpotifyElectronException):
+class JWTNotProvidedError(SpotifyElectronError):
     """JWT Token not provided"""
 
     ERROR = "JWT Token not provided"
@@ -83,7 +83,7 @@ class JWTNotProvidedException(SpotifyElectronException):
         super().__init__(self.ERROR)
 
 
-class JWTMissingCredentialsException(SpotifyElectronException):
+class JWTMissingCredentialsError(SpotifyElectronError):
     """Missing credentials obtained from JWT Token"""
 
     ERROR = "Missing credentials in JWT Token"
@@ -92,7 +92,7 @@ class JWTMissingCredentialsException(SpotifyElectronException):
         super().__init__(self.ERROR)
 
 
-class JWTGetUserException(SpotifyElectronException):
+class JWTGetUserError(SpotifyElectronError):
     """Get user data from JWT Token error"""
 
     ERROR = "Error getting user data from JWT Token"
@@ -101,7 +101,7 @@ class JWTGetUserException(SpotifyElectronException):
         super().__init__(self.ERROR)
 
 
-class CreateJWTException(SpotifyElectronException):
+class CreateJWTError(SpotifyElectronError):
     """JWT Token creation error"""
 
     ERROR = "Error creating JWT Token"
@@ -110,7 +110,7 @@ class CreateJWTException(SpotifyElectronException):
         super().__init__(self.ERROR)
 
 
-class JWTDecodeException(SpotifyElectronException):
+class JWTDecodeError(SpotifyElectronError):
     """Decoding JWT Token error"""
 
     ERROR = "Error decoding JWT Token"
@@ -119,7 +119,7 @@ class JWTDecodeException(SpotifyElectronException):
         super().__init__(self.ERROR)
 
 
-class JWTExpiredException(SpotifyElectronException):
+class JWTExpiredError(SpotifyElectronError):
     """Expired JWT Token"""
 
     ERROR = "JWT token is expired"
@@ -128,7 +128,7 @@ class JWTExpiredException(SpotifyElectronException):
         super().__init__(self.ERROR)
 
 
-class JWTValidationException(SpotifyElectronException):
+class JWTValidationError(SpotifyElectronError):
     """Validating JWT Token error"""
 
     ERROR = "JWT Token validation failure"
@@ -137,7 +137,7 @@ class JWTValidationException(SpotifyElectronException):
         super().__init__(self.ERROR)
 
 
-class VerifyPasswordException(SpotifyElectronException):
+class VerifyPasswordError(SpotifyElectronError):
     """Validating password error"""
 
     ERROR = "Password validation failure"
@@ -146,7 +146,7 @@ class VerifyPasswordException(SpotifyElectronException):
         super().__init__(self.ERROR)
 
 
-class UnexpectedGetJWTTokenException(SpotifyElectronException):
+class UnexpectedGetJWTTokenError(SpotifyElectronError):
     """Unexpected error getting JWT token data"""
 
     ERROR = "Unexpected error getting data from JWT"
@@ -155,7 +155,7 @@ class UnexpectedGetJWTTokenException(SpotifyElectronException):
         super().__init__(self.ERROR)
 
 
-class UnexpectedLoginUserException(SpotifyElectronException):
+class UnexpectedLoginUserError(SpotifyElectronError):
     """Unexpected error during user login"""
 
     ERROR = "Unexpected error during user login"
@@ -164,7 +164,7 @@ class UnexpectedLoginUserException(SpotifyElectronException):
         super().__init__(self.ERROR)
 
 
-class UserUnauthorizedException(SpotifyElectronException):
+class UserUnauthorizedError(SpotifyElectronError):
     """User is unauthorized to access the resource"""
 
     def __init__(self):

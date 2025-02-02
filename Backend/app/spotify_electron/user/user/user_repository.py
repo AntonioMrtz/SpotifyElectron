@@ -6,13 +6,13 @@ import app.spotify_electron.user.providers.user_collection_provider as user_coll
 from app.logging.logging_constants import LOGGING_USER_REPOSITORY
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.user.base_user_schema import (
-    BaseUserCreateException,
-    BaseUserNotFoundException,
+    BaseUserCreateError,
+    BaseUserNotFoundError,
 )
 from app.spotify_electron.user.user.user_schema import (
     UserDAO,
-    UserNotFoundException,
-    UserRepositoryException,
+    UserNotFoundError,
+    UserRepositoryError,
     get_user_dao_from_document,
 )
 from app.spotify_electron.user.validations.base_user_repository_validations import (
@@ -20,7 +20,7 @@ from app.spotify_electron.user.validations.base_user_repository_validations impo
     validate_user_exists,
 )
 
-user_repository_logger = SpotifyElectronLogger(LOGGING_USER_REPOSITORY).getLogger()
+user_repository_logger = SpotifyElectronLogger(LOGGING_USER_REPOSITORY).get_logger()
 
 
 def get_user(name: str) -> UserDAO:
@@ -30,8 +30,8 @@ def get_user(name: str) -> UserDAO:
         name (str): user name
 
     Raises:
-        UserNotFoundException: user was not found
-        UserRepositoryException: unexpected error while getting user
+        UserNotFoundError: user was not found
+        UserRepositoryError: unexpected error while getting user
 
     Returns:
         UserDAO: the user
@@ -41,12 +41,12 @@ def get_user(name: str) -> UserDAO:
         validate_user_exists(user)
         user_dao = get_user_dao_from_document(user)  # type: ignore
 
-    except BaseUserNotFoundException as exception:
-        raise UserNotFoundException from exception
+    except BaseUserNotFoundError as exception:
+        raise UserNotFoundError from exception
 
     except Exception as exception:
         user_repository_logger.exception(f"Error getting User {name} from database")
-        raise UserRepositoryException from exception
+        raise UserRepositoryError from exception
     else:
         user_repository_logger.info(f"Get User by name returned {user_dao}")
         return user_dao
@@ -62,7 +62,7 @@ def create_user(name: str, photo: str, password: bytes, current_date: str) -> No
         current_date (str): formatted creation date
 
     Raises:
-        UserRepositoryException: unexpected error while creating user
+        UserRepositoryError: unexpected error while creating user
     """
     try:
         user = {
@@ -77,11 +77,11 @@ def create_user(name: str, photo: str, password: bytes, current_date: str) -> No
         result = user_collection_provider.get_user_collection().insert_one(user)
 
         validate_user_create(result)
-    except BaseUserCreateException as exception:
+    except BaseUserCreateError as exception:
         user_repository_logger.exception(f"Error inserting User {user} in database")
-        raise UserRepositoryException from exception
-    except (UserRepositoryException, Exception) as exception:
+        raise UserRepositoryError from exception
+    except (UserRepositoryError, Exception) as exception:
         user_repository_logger.exception(f"Unexpected error inserting user {user} in database")
-        raise UserRepositoryException from exception
+        raise UserRepositoryError from exception
     else:
         user_repository_logger.info(f"User added to repository: {user}")

@@ -19,13 +19,13 @@ from app.auth.auth_schema import TokenData
 from app.auth.JWTBearer import JWTBearer
 from app.common.PropertiesMessagesManager import PropertiesMessagesManager
 from app.spotify_electron.song.base_song_schema import (
-    SongBadNameException,
-    SongNotFoundException,
+    SongBadNameError,
+    SongNotFoundError,
 )
-from app.spotify_electron.song.blob.song_schema import SongDataNotFoundException
+from app.spotify_electron.song.blob.song_schema import SongDataNotFoundError
 from app.spotify_electron.stream.stream_schema import (
-    InvalidContentRangeStreamException,
-    StreamServiceException,
+    InvalidContentRangeStreamError,
+    StreamServiceError,
 )
 
 router = APIRouter(
@@ -59,27 +59,27 @@ async def stream_song(
             headers=stream_audio_content.headers,
             status_code=HTTP_206_PARTIAL_CONTENT,
         )
-    except SongBadNameException:
+    except SongBadNameError:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
             content=PropertiesMessagesManager.songBadName,
         )
-    except SongNotFoundException:
+    except SongNotFoundError:
         return Response(
             status_code=HTTP_404_NOT_FOUND,
             content=PropertiesMessagesManager.songNotFound,
         )
-    except SongDataNotFoundException:
+    except SongDataNotFoundError:
         return Response(
             status_code=HTTP_404_NOT_FOUND,
             content=PropertiesMessagesManager.songDataNotFound,
         )
-    except InvalidContentRangeStreamException:
+    except InvalidContentRangeStreamError:
         return Response(
             status_code=HTTP_416_REQUESTED_RANGE_NOT_SATISFIABLE,
             content=PropertiesMessagesManager.streamInvalidRangeHeader,
         )
-    except (Exception, StreamServiceException):
+    except (Exception, StreamServiceError):
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonInternalServerError,

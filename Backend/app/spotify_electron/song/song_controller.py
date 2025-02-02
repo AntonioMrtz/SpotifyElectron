@@ -21,27 +21,27 @@ from starlette.status import (
 import app.spotify_electron.song.base_song_service as base_song_service
 import app.spotify_electron.utils.json_converter.json_converter_utils as json_converter_utils
 from app.auth.auth_schema import (
-    BadJWTTokenProvidedException,
+    BadJWTTokenProvidedError,
     TokenData,
-    UserUnauthorizedException,
+    UserUnauthorizedError,
 )
 from app.auth.JWTBearer import JWTBearer
 from app.common.PropertiesMessagesManager import PropertiesMessagesManager
-from app.exceptions.base_exceptions_schema import JsonEncodeException
-from app.spotify_electron.genre.genre_schema import Genre, GenreNotValidException
+from app.exceptions.base_exceptions_schema import JsonEncodeError
+from app.spotify_electron.genre.genre_schema import Genre, GenreNotValidError
 from app.spotify_electron.song.base_song_schema import (
-    SongAlreadyExistsException,
-    SongBadNameException,
-    SongNotFoundException,
-    SongServiceException,
+    SongAlreadyExistsError,
+    SongBadNameError,
+    SongNotFoundError,
+    SongServiceError,
 )
 from app.spotify_electron.song.providers.song_service_provider import get_song_service
 from app.spotify_electron.user.user.user_schema import (
-    UserBadNameException,
-    UserNotFoundException,
+    UserBadNameError,
+    UserNotFoundError,
 )
 from app.spotify_electron.utils.audio_management.audio_management_utils import (
-    EncodingFileException,
+    EncodingFileError,
 )
 
 router = APIRouter(
@@ -66,22 +66,22 @@ def get_song(
         song_json = json_converter_utils.get_json_from_model(song)
 
         return Response(song_json, media_type="application/json", status_code=HTTP_200_OK)
-    except SongBadNameException:
+    except SongBadNameError:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
             content=PropertiesMessagesManager.songBadName,
         )
-    except SongNotFoundException:
+    except SongNotFoundError:
         return Response(
             status_code=HTTP_404_NOT_FOUND,
             content=PropertiesMessagesManager.songNotFound,
         )
-    except JsonEncodeException:
+    except JsonEncodeError:
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonEncodingError,
         )
-    except (Exception, SongServiceException):
+    except (Exception, SongServiceError):
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonInternalServerError,
@@ -105,53 +105,53 @@ async def create_song(
         file (UploadFile): song file
         token (Annotated[TokenData, Depends): JWT info
     """
-    readFile = await file.read()
+    read_file = await file.read()
 
     try:
-        await get_song_service().create_song(name, genre, photo, readFile, token)
+        await get_song_service().create_song(name, genre, photo, read_file, token)
         return Response(None, HTTP_201_CREATED)
-    except GenreNotValidException:
+    except GenreNotValidError:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
             content=PropertiesMessagesManager.genreNotValid,
         )
-    except UserBadNameException:
+    except UserBadNameError:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
             content=PropertiesMessagesManager.userBadName,
         )
-    except SongBadNameException:
+    except SongBadNameError:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
             content=PropertiesMessagesManager.songBadName,
         )
-    except SongAlreadyExistsException:
+    except SongAlreadyExistsError:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
             content=PropertiesMessagesManager.songAlreadyExists,
         )
-    except EncodingFileException:
+    except EncodingFileError:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
             content=PropertiesMessagesManager.songBadFile,
         )
-    except BadJWTTokenProvidedException:
+    except BadJWTTokenProvidedError:
         return Response(
             status_code=HTTP_403_FORBIDDEN,
             content=PropertiesMessagesManager.tokenInvalidCredentials,
             headers={"WWW-Authenticate": "Bearer"},
         )
-    except UserUnauthorizedException:
+    except UserUnauthorizedError:
         return Response(
             status_code=HTTP_403_FORBIDDEN,
             content=PropertiesMessagesManager.songCreateUnauthorizedUser,
         )
-    except UserNotFoundException:
+    except UserNotFoundError:
         return Response(
             status_code=HTTP_404_NOT_FOUND,
             content=PropertiesMessagesManager.userNotFound,
         )
-    except (Exception, SongServiceException):
+    except (Exception, SongServiceError):
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonInternalServerError,
@@ -169,22 +169,22 @@ def delete_song(name: str) -> Response:
         base_song_service.delete_song(name)
 
         return Response(None, HTTP_202_ACCEPTED)
-    except SongBadNameException:
+    except SongBadNameError:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
             content=PropertiesMessagesManager.songBadName,
         )
-    except UserNotFoundException:
+    except UserNotFoundError:
         return Response(
             status_code=HTTP_404_NOT_FOUND,
             content=PropertiesMessagesManager.userNotFound,
         )
-    except SongNotFoundException:
+    except SongNotFoundError:
         return Response(
             status_code=HTTP_404_NOT_FOUND,
             content=PropertiesMessagesManager.songNotFound,
         )
-    except (Exception, SongServiceException):
+    except (Exception, SongServiceError):
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonInternalServerError,
@@ -205,12 +205,12 @@ def get_song_metadata(
     try:
         song = base_song_service.get_song_metadata(name)
         song_json = json_converter_utils.get_json_from_model(song)
-    except JsonEncodeException:
+    except JsonEncodeError:
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonEncodingError,
         )
-    except (Exception, SongServiceException):
+    except (Exception, SongServiceError):
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonInternalServerError,
@@ -233,12 +233,12 @@ def increase_song_streams(
     try:
         base_song_service.increase_song_streams(name)
         return Response(None, HTTP_204_NO_CONTENT)
-    except SongNotFoundException:
+    except SongNotFoundError:
         return Response(
             status_code=HTTP_404_NOT_FOUND,
             content=PropertiesMessagesManager.songNotFound,
         )
-    except (Exception, SongServiceException):
+    except (Exception, SongServiceError):
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonInternalServerError,
@@ -262,17 +262,17 @@ def get_songs_by_genre(
             songs, "songs"
         )
         return Response(songs_json, media_type="application/json", status_code=HTTP_200_OK)
-    except GenreNotValidException:
+    except GenreNotValidError:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,
             content=PropertiesMessagesManager.genreNotValid,
         )
-    except JsonEncodeException:
+    except JsonEncodeError:
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonEncodingError,
         )
-    except (Exception, SongServiceException):
+    except (Exception, SongServiceError):
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonInternalServerError,

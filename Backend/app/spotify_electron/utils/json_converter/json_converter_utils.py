@@ -7,11 +7,11 @@ from typing import Any
 
 from fastapi.encoders import jsonable_encoder
 
-from app.exceptions.base_exceptions_schema import JsonEncodeException
+from app.exceptions.base_exceptions_schema import JsonEncodeError
 from app.logging.logging_constants import LOGGING_HTTP_ENCODE_SERVICE
 from app.logging.logging_schema import SpotifyElectronLogger
 
-http_encode_service_logger = SpotifyElectronLogger(LOGGING_HTTP_ENCODE_SERVICE).getLogger()
+http_encode_service_logger = SpotifyElectronLogger(LOGGING_HTTP_ENCODE_SERVICE).get_logger()
 
 
 def get_json_from_model(object: Any) -> str:
@@ -55,7 +55,7 @@ def _get_json_from_model(object: Any) -> str:
 
     Raises:
     ------
-        JsonEncodeException: if an error occurred while encoding the object \
+        JsonEncodeError: if an error occurred while encoding the object \
             into json string
 
     Returns:
@@ -69,6 +69,6 @@ def _get_json_from_model(object: Any) -> str:
         http_encode_service_logger.debug(f"Success encoding object into json: {json_object}")
     except Exception as exception:
         http_encode_service_logger.exception(f"Error encoding object {object} into json")
-        raise JsonEncodeException from exception
+        raise JsonEncodeError from exception
     else:
         return json_object

@@ -211,7 +211,7 @@ def test_get_artist_songs_correct():
     genre = "Pop"
     photo = "https://photo"
     password = "hola"
-    EXPECTED_ARTISTS_SONGS = [song_name, song_name_2]
+    exptected_artists_songs = [song_name, song_name_2]
 
     res_create_artist = create_artist(name=artist, password=password, photo=photo)
     assert res_create_artist.status_code == HTTP_201_CREATED
@@ -238,7 +238,7 @@ def test_get_artist_songs_correct():
 
     res_get_artists_songs = get_artist_songs(artist, jwt_headers)
     assert res_get_artists_songs.status_code == HTTP_200_OK
-    assert set(EXPECTED_ARTISTS_SONGS) == set(
+    assert set(exptected_artists_songs) == set(
         [song["name"] for song in res_get_artists_songs.json()]
     )
 

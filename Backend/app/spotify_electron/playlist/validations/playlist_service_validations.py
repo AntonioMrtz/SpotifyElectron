@@ -2,12 +2,12 @@
 Validations for Playlist service
 """
 
-from app.exceptions.base_exceptions_schema import BadParameterException
+from app.exceptions.base_exceptions_schema import BadParameterError
 from app.spotify_electron.playlist.playlist_repository import check_playlist_exists
 from app.spotify_electron.playlist.playlist_schema import (
-    PlaylistAlreadyExistsException,
-    PlaylistBadNameException,
-    PlaylistNotFoundException,
+    PlaylistAlreadyExistsError,
+    PlaylistBadNameError,
+    PlaylistNotFoundError,
 )
 from app.spotify_electron.utils.validations.validation_utils import validate_parameter
 
@@ -21,13 +21,13 @@ def validate_playlist_name_parameter(name: str) -> None:
 
     Raises:
     ------
-        PlaylistBadNameException: if name parameter is invalid
+        PlaylistBadNameError: if name parameter is invalid
 
     """
     try:
         validate_parameter(name)
-    except BadParameterException:
-        raise PlaylistBadNameException from BadParameterException
+    except BadParameterError:
+        raise PlaylistBadNameError from BadParameterError
 
 
 def validate_playlist_should_exists(name: str) -> None:
@@ -39,11 +39,11 @@ def validate_playlist_should_exists(name: str) -> None:
 
     Raises:
     ------
-        PlaylistNotFoundException: if playlist doesn't exists
+        PlaylistNotFoundError: if playlist doesn't exists
 
     """
     if not check_playlist_exists(name):
-        raise PlaylistNotFoundException
+        raise PlaylistNotFoundError
 
 
 def validate_playlist_should_not_exists(name: str) -> None:
@@ -55,8 +55,8 @@ def validate_playlist_should_not_exists(name: str) -> None:
 
     Raises:
     ------
-        PlaylistAlreadyExistsException: if playlist exists
+        PlaylistAlreadyExistsError: if playlist exists
 
     """
     if check_playlist_exists(name):
-        raise PlaylistAlreadyExistsException
+        raise PlaylistAlreadyExistsError

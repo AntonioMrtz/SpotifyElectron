@@ -14,7 +14,7 @@ from app.spotify_electron.user.user.user_schema import UserType
 
 users_collection_provider_logger = SpotifyElectronLogger(
     LOGGING_USER_COLLECTION_PROVIDER
-).getLogger()
+).get_logger()
 
 
 def get_user_associated_collection(user_name: str) -> Collection:

@@ -8,13 +8,13 @@ import configparser
 import os
 import re
 
-from app.exceptions.base_exceptions_schema import SpotifyElectronException
+from app.exceptions.base_exceptions_schema import SpotifyElectronError
 from app.logging.logging_constants import LOGGING_PROPERTIES_MESSAGES_MANAGER
 from app.logging.logging_schema import SpotifyElectronLogger
 
 properties_messages_manager_logger = SpotifyElectronLogger(
     LOGGING_PROPERTIES_MESSAGES_MANAGER
-).getLogger()
+).get_logger()
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROPERTIES_INI_FILE_PATH = os.path.join(CURRENT_DIR, "../resources/messages.ini")
@@ -55,10 +55,10 @@ class _PropertiesMessagesManager:
             properties_messages_manager_logger.exception(
                 f"'{self.__class__.__name__}' object has no attribute '{name}'"
             )
-            raise MessageNotFoundException from exception
+            raise MessageNotFoundError from exception
 
 
-class MessageNotFoundException(SpotifyElectronException):
+class MessageNotFoundError(SpotifyElectronError):
     """Message not found in PropertiesMessagesManager"""
 
     ERROR = "Error getting message from PropertiesMessagesManager, it doesn't exists"

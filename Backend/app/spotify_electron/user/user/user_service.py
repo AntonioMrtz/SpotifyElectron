@@ -10,20 +10,20 @@ import app.spotify_electron.user.validations.base_user_service_validations as ba
 from app.logging.logging_constants import LOGGING_USER_SERVICE
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.user.base_user_schema import (
-    BaseUserAlreadyExistsException,
-    BaseUserBadNameException,
+    BaseUserAlreadyExistsError,
+    BaseUserBadNameError,
 )
 from app.spotify_electron.user.user.user_schema import (
-    BaseUserRepositoryException,
-    UserBadNameException,
+    BaseUserRepositoryError,
+    UserBadNameError,
     UserDTO,
-    UserNotFoundException,
-    UserServiceException,
+    UserNotFoundError,
+    UserServiceError,
     get_user_dto_from_dao,
 )
 from app.spotify_electron.utils.date.date_utils import get_current_iso8601_date
 
-user_service_logger = SpotifyElectronLogger(LOGGING_USER_SERVICE).getLogger()
+user_service_logger = SpotifyElectronLogger(LOGGING_USER_SERVICE).get_logger()
 
 
 def does_user_exists(user_name: str) -> bool:
@@ -50,9 +50,9 @@ def get_user(user_name: str) -> UserDTO:
         user_name (str): the user name
 
     Raises:
-        UserBadNameException: invalid user name
-        UserNotFoundException: user not found
-        UserServiceException: unexpected error while getting user
+        UserBadNameError: invalid user name
+        UserNotFoundError: user not found
+        UserServiceError: unexpected error while getting user
 
     Returns:
         UserDTO: the user
@@ -61,22 +61,22 @@ def get_user(user_name: str) -> UserDTO:
         base_user_service_validations.validate_user_name_parameter(user_name)
         user = user_repository.get_user(user_name)
         user_dto = get_user_dto_from_dao(user)
-    except BaseUserBadNameException as exception:
+    except BaseUserBadNameError as exception:
         user_service_logger.exception(f"Bad User Name Parameter: {user_name}")
-        raise UserBadNameException from exception
-    except UserNotFoundException as exception:
+        raise UserBadNameError from exception
+    except UserNotFoundError as exception:
         user_service_logger.exception(f"User not found: {user_name}")
-        raise UserNotFoundException from exception
-    except BaseUserRepositoryException as exception:
+        raise UserNotFoundError from exception
+    except BaseUserRepositoryError as exception:
         user_service_logger.exception(
             f"Unexpected error in User Repository getting user: {user_name}"
         )
-        raise UserServiceException from exception
+        raise UserServiceError from exception
     except Exception as exception:
         user_service_logger.exception(
             f"Unexpected error in User Service getting user: {user_name}"
         )
-        raise UserServiceException from exception
+        raise UserServiceError from exception
     else:
         user_service_logger.info(f"User {user_name} retrieved successfully")
         return user_dto
@@ -91,9 +91,9 @@ def create_user(user_name: str, photo: str, password: str) -> None:
         password (str): user password
 
     Raises:
-        BaseUserAlreadyExistsException: if the user already exists
-        UserBadNameException: if the user name is invalid
-        UserServiceException: unexpected error while creating user
+        BaseUserAlreadyExistsError: if the user already exists
+        UserBadNameError: if the user name is invalid
+        UserServiceError: unexpected error while creating user
     """
     try:
         base_user_service_validations.validate_user_name_parameter(user_name)
@@ -110,22 +110,22 @@ def create_user(user_name: str, photo: str, password: str) -> None:
             password=hashed_password,
         )
         user_service_logger.info(f"User {user_name} created successfully")
-    except BaseUserAlreadyExistsException as exception:
+    except BaseUserAlreadyExistsError as exception:
         user_service_logger.exception(f"User already exists: {user_name}")
-        raise BaseUserAlreadyExistsException from exception
-    except BaseUserBadNameException as exception:
+        raise BaseUserAlreadyExistsError from exception
+    except BaseUserBadNameError as exception:
         user_service_logger.exception(f"Bad User Name Parameter: {user_name}")
-        raise UserBadNameException from exception
-    except BaseUserRepositoryException as exception:
+        raise UserBadNameError from exception
+    except BaseUserRepositoryError as exception:
         user_service_logger.exception(
             f"Unexpected error in User Repository creating user: {user_name}"
         )
-        raise UserServiceException from exception
+        raise UserServiceError from exception
     except Exception as exception:
         user_service_logger.exception(
             f"Unexpected error in User Service creating user: {user_name}"
         )
-        raise UserServiceException from exception
+        raise UserServiceError from exception
 
 
 # TODO obtain all users in same query
@@ -136,7 +136,7 @@ def get_users(user_names: list[str]) -> list[UserDTO]:
         user_names (list[str]): the list with the user names to retrieve
 
     Raises:
-        UserServiceException: unexpected error while getting users
+        UserServiceError: unexpected error while getting users
 
     Returns:
         list[User]: the selected users
@@ -147,16 +147,16 @@ def get_users(user_names: list[str]) -> list[UserDTO]:
         for user_name in user_names:
             users.append(get_user(user_name))
 
-    except BaseUserRepositoryException as exception:
+    except BaseUserRepositoryError as exception:
         user_service_logger.exception(
             f"Unexpected error in User Repository getting users {user_names}"
         )
-        raise UserServiceException from exception
+        raise UserServiceError from exception
     except Exception as exception:
         user_service_logger.exception(
             f"Unexpected error in User Service getting users {user_names}"
         )
-        raise UserServiceException from exception
+        raise UserServiceError from exception
     else:
         user_service_logger.info(f"Users {user_names} retrieved successfully")
         return users
@@ -169,7 +169,7 @@ def search_by_name(name: str) -> list[UserDTO]:
         name (str): name to match
 
     Raises:
-        UserServiceException: unexpected error searching users that match a name
+        UserServiceError: unexpected error searching users that match a name
 
     Returns:
         list[UserDTO]: users that matchs the name
@@ -180,13 +180,13 @@ def search_by_name(name: str) -> list[UserDTO]:
         )
 
         return get_users(matched_items_names)
-    except BaseUserRepositoryException as exception:
+    except BaseUserRepositoryError as exception:
         user_service_logger.exception(
             f"Unexpected error in User Repository getting items by name {name}"
         )
-        raise UserServiceException from exception
+        raise UserServiceError from exception
     except Exception as exception:
         user_service_logger.exception(
             f"Unexpected error in User Service getting items by name {name}"
         )
-        raise UserServiceException from exception
+        raise UserServiceError from exception

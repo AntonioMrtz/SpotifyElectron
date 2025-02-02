@@ -7,13 +7,13 @@ from enum import Enum
 from typing import Any
 
 from app.spotify_electron.user.base_user_schema import (
-    BaseUserAlreadyExistsException,
-    BaseUserBadNameException,
+    BaseUserAlreadyExistsError,
+    BaseUserBadNameError,
     BaseUserDAO,
     BaseUserDTO,
-    BaseUserNotFoundException,
-    BaseUserRepositoryException,
-    BaseUserServiceException,
+    BaseUserNotFoundError,
+    BaseUserRepositoryError,
+    BaseUserServiceError,
 )
 
 
@@ -81,7 +81,7 @@ def get_user_dto_from_dao(user_dao: UserDAO) -> UserDTO:
     )
 
 
-class UserRepositoryException(BaseUserRepositoryException):
+class UserRepositoryError(BaseUserRepositoryError):
     """Base user Repository Unexpected error"""
 
     ERROR = "Error accessing User REPOSITORY"
@@ -90,7 +90,7 @@ class UserRepositoryException(BaseUserRepositoryException):
         super().__init__(self.ERROR)
 
 
-class UserNotFoundException(BaseUserNotFoundException):
+class UserNotFoundError(BaseUserNotFoundError):
     """User not found"""
 
     ERROR = "User not found"
@@ -99,7 +99,7 @@ class UserNotFoundException(BaseUserNotFoundException):
         super().__init__(self.ERROR)
 
 
-class UserBadNameException(BaseUserBadNameException):
+class UserBadNameError(BaseUserBadNameError):
     """Bad name"""
 
     ERROR = "Bad parameters provided for user"
@@ -108,7 +108,7 @@ class UserBadNameException(BaseUserBadNameException):
         super().__init__(self.ERROR)
 
 
-class UserAlreadyExistsException(BaseUserAlreadyExistsException):
+class UserAlreadyExistsError(BaseUserAlreadyExistsError):
     """Exception raised when a User already exists"""
 
     ERROR = "User already exists"
@@ -117,7 +117,7 @@ class UserAlreadyExistsException(BaseUserAlreadyExistsException):
         super().__init__(self.ERROR)
 
 
-class UserServiceException(BaseUserServiceException):
+class UserServiceError(BaseUserServiceError):
     """Exception raised when there is an unexpected error in user service"""
 
     ERROR = "Error accessing User Service"

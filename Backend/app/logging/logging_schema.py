@@ -120,7 +120,7 @@ class SpotifyElectronLogger:
         else:
             return mapped_log_level
 
-    def getLogger(self) -> logging.Logger:
+    def get_logger(self) -> logging.Logger:
         """Returns the global logger
 
         Returns:

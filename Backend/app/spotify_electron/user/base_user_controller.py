@@ -80,6 +80,7 @@ def get_user(name: str, token: Annotated[TokenData, Depends(JWTBearer())]) -> Re
 
     Args:
         name (str): user name
+        token (Annotated[TokenData, Depends): JWT info
     """
     try:
         user = base_user_service.get_user(name)
@@ -175,6 +176,7 @@ def patch_playback_history(
     Args:
         name (str): user name
         song_name (str): song name
+        token (Annotated[TokenData, Depends): JWT info
     """
     try:
         base_user_service.add_playback_history(
@@ -228,6 +230,7 @@ def patch_saved_playlists(
     Args:
         name (str): user name
         playlist_name (str): saved playlist
+        token (Annotated[TokenData, Depends): JWT info
     """
     try:
         base_user_service.add_saved_playlist(name, playlist_name, token=token)
@@ -274,6 +277,7 @@ def delete_saved_playlists(
     Args:
         name (str): user name
         playlist_name (str): playlist name
+        token (Annotated[TokenData, Depends): JWT info
     """
     try:
         base_user_service.delete_saved_playlist(name, playlist_name, token=token)
@@ -324,6 +328,7 @@ def get_user_relevant_playlists(
 
     Args:
         name (str): user name
+        token (Annotated[TokenData, Depends): JWT info
     """
     try:
         playlists = base_user_service.get_user_relevant_playlists(name)
@@ -359,6 +364,7 @@ def get_user_playlists(
 
     Args:
         name (str): user name
+        token (Annotated[TokenData, Depends): JWT info
     """
     try:
         playlists = base_user_service.get_user_playlists(name)
@@ -394,6 +400,7 @@ def get_user_playlists_names(
 
     Args:
         name (str): user name
+        token (Annotated[TokenData, Depends): JWT info
     """
     try:
         playlist_names = base_user_service.get_user_playlist_names(name)
@@ -431,6 +438,7 @@ def get_user_playback_history(
 
     Args:
         name (str): user name
+        token (Annotated[TokenData, Depends): JWT info
     """
     try:
         playback_history = base_user_service.get_user_playback_history(name)

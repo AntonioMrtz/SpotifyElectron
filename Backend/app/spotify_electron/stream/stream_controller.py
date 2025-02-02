@@ -43,6 +43,7 @@ async def stream_song(
     Args:
         name (str): song name
         request (Request): incoming request
+        token (Annotated[TokenData, Depends): JWT info
     """
     try:
         range_header = request.headers.get("range")

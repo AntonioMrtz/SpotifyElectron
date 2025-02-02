@@ -12,6 +12,7 @@ export class ArtistsService {
      *
      * Args:
      * name (str): artist name
+     * token (Annotated[TokenData, Depends): JWT info
      * @param name
      * @returns any Successful Response
      * @throws ApiError

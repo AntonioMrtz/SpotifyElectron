@@ -57,6 +57,7 @@ def get_playlist(
 
     Args:
         name (str): playlist name
+        token (Annotated[TokenData, Depends): JWT info
     """
     try:
         playlist = playlist_service.get_playlist(name)
@@ -101,6 +102,7 @@ def create_playlist(
         photo (str): playlist photo
         description (str): playlist description
         song_names (list[str]): list of song names included in playlist.
+        token (Annotated[TokenData, Depends): JWT info
     """
     try:
         playlist_service.create_playlist(
@@ -146,10 +148,12 @@ def update_playlist(  # noqa: PLR0917
     """Update playlist
 
     Args:
+        name (str): playlist name
         photo (str): playlist new photo
         description (str): playlist new description
         song_names (list[str], optional): playlist new song names. Defaults to Body(...).
         new_name (str | None, optional): playlist new name. Defaults to None.
+        token (Annotated[TokenData, Depends): JWT info
     """
     try:
         playlist_service.update_playlist(name, new_name, photo, description, song_names, token)
@@ -249,6 +253,7 @@ def get_selected_playlists(
 
     Args:
         names (str): playlist names
+        token (Annotated[TokenData, Depends): JWT info
     """
     try:
         playlists = playlist_service.get_selected_playlists(names.split(","))

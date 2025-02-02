@@ -36,13 +36,14 @@ search_controller_logger = SpotifyElectronLogger(LOGGING_SEARCH_CONTROLLER).getL
 @router.get("/")
 async def get_search_name(
     name: str,
-    token: Annotated[TokenData | None, Depends(JWTBearer())],
+    token: Annotated[TokenData, Depends(JWTBearer())],
 ) -> Response:
     """Search for items that partially match name
 
     Args:
     ----
         name (str): name to match
+        token (Annotated[TokenData, Depends): JWT info
     """
     try:
         items = await search_service.search_by_name(name=name)

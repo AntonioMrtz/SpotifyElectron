@@ -27,6 +27,7 @@ export class UsersService {
      *
      * Args:
      * name (str): user name
+     * token (Annotated[TokenData, Depends): JWT info
      * @param name
      * @returns any Successful Response
      * @throws ApiError
@@ -108,6 +109,7 @@ export class UsersService {
      * Args:
      * name (str): user name
      * song_name (str): song name
+     * token (Annotated[TokenData, Depends): JWT info
      * @param name
      * @param songName
      * @returns any Successful Response
@@ -137,6 +139,7 @@ export class UsersService {
      *
      * Args:
      * name (str): user name
+     * token (Annotated[TokenData, Depends): JWT info
      * @param name
      * @returns any Successful Response
      * @throws ApiError
@@ -162,6 +165,7 @@ export class UsersService {
      * Args:
      * name (str): user name
      * playlist_name (str): saved playlist
+     * token (Annotated[TokenData, Depends): JWT info
      * @param name
      * @param playlistName
      * @returns any Successful Response
@@ -192,6 +196,7 @@ export class UsersService {
      * Args:
      * name (str): user name
      * playlist_name (str): playlist name
+     * token (Annotated[TokenData, Depends): JWT info
      * @param name
      * @param playlistName
      * @returns any Successful Response
@@ -221,6 +226,7 @@ export class UsersService {
      *
      * Args:
      * name (str): user name
+     * token (Annotated[TokenData, Depends): JWT info
      * @param name
      * @returns any Successful Response
      * @throws ApiError
@@ -245,6 +251,7 @@ export class UsersService {
      *
      * Args:
      * name (str): user name
+     * token (Annotated[TokenData, Depends): JWT info
      * @param name
      * @returns any Successful Response
      * @throws ApiError
@@ -269,6 +276,7 @@ export class UsersService {
      *
      * Args:
      * name (str): user name
+     * token (Annotated[TokenData, Depends): JWT info
      * @param name
      * @returns any Successful Response
      * @throws ApiError

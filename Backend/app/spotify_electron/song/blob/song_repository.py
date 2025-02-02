@@ -77,6 +77,7 @@ def create_song(  # noqa: PLR0917
         duration (int): song duration in seconds
         genre (Genre): song genre
         photo (str): song photo
+        file (bytes): song content
 
     Raises:
         SongRepositoryException: unexpected error creating song

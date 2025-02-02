@@ -14,6 +14,7 @@ export class SongsService {
      *
      * Args:
      * name (str): song name
+     * token (Annotated[TokenData, Depends): JWT info
      * @param name
      * @returns any Successful Response
      * @throws ApiError
@@ -65,6 +66,7 @@ export class SongsService {
      * genre (Genre): genre
      * photo (str): photo
      * file (UploadFile): song file
+     * token (Annotated[TokenData, Depends): JWT info
      * @param name
      * @param genre
      * @param photo
@@ -99,6 +101,7 @@ export class SongsService {
      *
      * Args:
      * name (str): the song name
+     * token (Annotated[TokenData, Depends): JWT info
      * @param name
      * @returns any Successful Response
      * @throws ApiError
@@ -123,6 +126,7 @@ export class SongsService {
      *
      * Args:
      * name (str): song name
+     * token (Annotated[TokenData, Depends): JWT info
      * @param name
      * @returns any Successful Response
      * @throws ApiError
@@ -147,6 +151,7 @@ export class SongsService {
      *
      * Args:
      * genre (Genre): the genre to match
+     * token (Annotated[TokenData, Depends): JWT info
      * @param genre
      * @returns any Successful Response
      * @throws ApiError

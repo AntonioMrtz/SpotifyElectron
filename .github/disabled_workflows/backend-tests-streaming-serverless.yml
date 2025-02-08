@@ -1,4 +1,4 @@
-name: Backend Tests - Streaming Serverless
+name: Backend Tests - Streaming Serverless Architecture
 
 on:
   pull_request:

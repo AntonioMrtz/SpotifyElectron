@@ -1,4 +1,4 @@
-name: Deploy Github pages with updated MkDocs on https://github.com/AntonioMrtz/SpotifyElectron_Web
+name: Deploy Github pages with updated MkDocs on Landing page
 
 on:
   pull_request:

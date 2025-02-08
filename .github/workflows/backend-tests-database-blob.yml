@@ -1,4 +1,4 @@
-name: Backend Tests - Database Blob
+name: Backend Tests - BLOB Architecture
 
 on:
   pull_request:

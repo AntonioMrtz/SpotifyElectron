@@ -1,4 +1,4 @@
-name: Frontend Style Prettier
+name: Prettier Check
 
 on:
   pull_request:

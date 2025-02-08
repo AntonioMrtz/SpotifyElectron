@@ -6,6 +6,7 @@ interface Translations {
   startMenu: Record<string, string>;
   registerMenu: Record<string, string>;
   commonPopover: Record<string, string>;
+  contextMenuProfile: Record<string, string>;
 }
 
 const loadTranslationFiles = async (): Promise<

@@ -13,6 +13,7 @@ from starlette.status import (
     HTTP_202_ACCEPTED,
     HTTP_204_NO_CONTENT,
     HTTP_400_BAD_REQUEST,
+    HTTP_401_UNAUTHORIZED,
     HTTP_403_FORBIDDEN,
     HTTP_404_NOT_FOUND,
     HTTP_500_INTERNAL_SERVER_ERROR,
@@ -137,7 +138,7 @@ async def create_song(
         )
     except BadJWTTokenProvidedError:
         return Response(
-            status_code=HTTP_403_FORBIDDEN,
+            status_code=HTTP_401_UNAUTHORIZED,
             content=PropertiesMessagesManager.tokenInvalidCredentials,
             headers={"WWW-Authenticate": "Bearer"},
         )

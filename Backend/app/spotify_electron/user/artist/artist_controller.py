@@ -12,6 +12,7 @@ from starlette.status import (
     HTTP_200_OK,
     HTTP_201_CREATED,
     HTTP_400_BAD_REQUEST,
+    HTTP_401_UNAUTHORIZED,
     HTTP_403_FORBIDDEN,
     HTTP_404_NOT_FOUND,
     HTTP_500_INTERNAL_SERVER_ERROR,
@@ -70,7 +71,7 @@ def get_artist(
         )
     except BadJWTTokenProvidedError:
         return Response(
-            status_code=HTTP_403_FORBIDDEN,
+            status_code=HTTP_401_UNAUTHORIZED,
             content=PropertiesMessagesManager.tokenInvalidCredentials,
             headers={"WWW-Authenticate": "Bearer"},
         )
@@ -142,7 +143,7 @@ def get_artists(token: Annotated[TokenData, Depends(JWTBearer())]) -> Response:
         )
     except BadJWTTokenProvidedError:
         return Response(
-            status_code=HTTP_403_FORBIDDEN,
+            status_code=HTTP_401_UNAUTHORIZED,
             content=PropertiesMessagesManager.tokenInvalidCredentials,
             headers={"WWW-Authenticate": "Bearer"},
         )
@@ -183,7 +184,7 @@ def get_artist_songs(
         )
     except BadJWTTokenProvidedError:
         return Response(
-            status_code=HTTP_403_FORBIDDEN,
+            status_code=HTTP_401_UNAUTHORIZED,
             content=PropertiesMessagesManager.tokenInvalidCredentials,
             headers={"WWW-Authenticate": "Bearer"},
         )

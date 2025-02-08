@@ -12,6 +12,7 @@ from starlette.status import (
     HTTP_202_ACCEPTED,
     HTTP_204_NO_CONTENT,
     HTTP_400_BAD_REQUEST,
+    HTTP_401_UNAUTHORIZED,
     HTTP_403_FORBIDDEN,
     HTTP_404_NOT_FOUND,
     HTTP_500_INTERNAL_SERVER_ERROR,
@@ -115,7 +116,7 @@ def create_playlist(
         return Response(None, HTTP_201_CREATED)
     except BadJWTTokenProvidedError:
         return Response(
-            status_code=HTTP_403_FORBIDDEN,
+            status_code=HTTP_401_UNAUTHORIZED,
             content=PropertiesMessagesManager.tokenInvalidCredentials,
             headers={"WWW-Authenticate": "Bearer"},
         )
@@ -160,7 +161,7 @@ def update_playlist(  # noqa: PLR0917
         return Response(None, HTTP_204_NO_CONTENT)
     except BadJWTTokenProvidedError:
         return Response(
-            status_code=HTTP_403_FORBIDDEN,
+            status_code=HTTP_401_UNAUTHORIZED,
             content=PropertiesMessagesManager.tokenInvalidCredentials,
             headers={"WWW-Authenticate": "Bearer"},
         )

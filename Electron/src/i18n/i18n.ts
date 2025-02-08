@@ -19,6 +19,9 @@ const loadTranslationFiles = async (): Promise<
       startMenu: await import(`./localization/${lang}/start-menu.json`),
       registerMenu: await import(`./localization/${lang}/register-menu.json`),
       commonPopover: await import(`./localization/${lang}/common-popover.json`),
+      contextMenuProfile: await import(
+        `./localization/${lang}/context-menu-profile.json`
+      ),
     };
   });
 

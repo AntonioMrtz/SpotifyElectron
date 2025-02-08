@@ -31,7 +31,7 @@ export default function ContextMenuProfile({
   };
 
   return (
-    <div className={` ${styles.wrapperContextMenu}`}>
+    <div className={styles.wrapperContextMenu}>
       <ul>
         <li>
           <button type="button" onClick={handleClickProfile}>

@@ -8,6 +8,7 @@ import UserType from 'utils/role';
 import Global from 'global/global';
 import getMockHeaders from 'utils/mockHeaders';
 import { NowPlayingContextProvider } from 'providers/NowPlayingProvider';
+import { t } from 'i18next';
 
 const userName = 'prueba';
 const roleUser = UserType.USER;
@@ -82,7 +83,11 @@ test('StickyHeader open ContextMenuProfile', async () => {
     fireEvent.click(imageIconProfile);
   });
 
-  expect(component.queryByText('Cerrar sesión')).toBeInTheDocument();
+  expect(
+    component.queryByText(t('contextMenuProfile.log-out')),
+  ).toBeInTheDocument();
 
-  expect(component.queryByText('Perfil')).toBeInTheDocument();
+  expect(
+    component.queryByText(t('contextMenuProfile.profile')),
+  ).toBeInTheDocument();
 });

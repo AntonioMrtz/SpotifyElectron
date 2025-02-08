@@ -155,15 +155,19 @@ export default function StartMenu({
 
   const [language, setLanguage] = useState<Language>(Language.ENGLISH);
 
-  const handleLanguageChange = (event: SelectChangeEvent<Language>) => {
+  const loadLanguage = (lang: Language) => {
+    setLanguage(lang);
+    changeLanguage(lang);
+    setLanguageStorage(lang);
+  };
+
+  const handleUserLanguageChange = (event: SelectChangeEvent<Language>) => {
     const languageInput = event.target.value as Language;
-    setLanguage(languageInput);
-    changeLanguage(languageInput);
-    setLanguageStorage(languageInput);
+    loadLanguage(languageInput);
   };
 
   useEffect(() => {
-    setLanguage(getLanguageFromStorage());
+    loadLanguage(getLanguageFromStorage());
   }, []);
 
   return (
@@ -182,7 +186,7 @@ export default function StartMenu({
               labelId="language-select-label"
               id="language-select"
               value={language}
-              onChange={handleLanguageChange}
+              onChange={handleUserLanguageChange}
               inputProps={{
                 // need `data-testid` as prop for tests
                 'aria-label': 'Without label',

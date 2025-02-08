@@ -1,4 +1,4 @@
-name: Deploy Github pages with updated MkDocs on https://github.com/AntonioMrtz/SpotifyElectron_Web
+name: Deploy Github pages with updated MkDocs on Landing page
 
 on:
   pull_request:
@@ -8,7 +8,7 @@ on:
 jobs:
   trigger-action:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true  # Check if PR was merged
+    if: github.event.pull_request.merged == true  || github.event_name == 'workflow_dispatch'
     steps:
       - name: Trigger SpotifyElectron website Github pages deploy workflow
         run: |

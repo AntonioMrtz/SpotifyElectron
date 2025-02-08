@@ -1,4 +1,4 @@
-name: Check Ruff format and styling
+name: Ruff format check
 on:
   pull_request:
     branches:

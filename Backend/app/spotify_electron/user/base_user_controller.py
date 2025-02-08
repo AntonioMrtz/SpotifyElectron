@@ -13,6 +13,7 @@ from starlette.status import (
     HTTP_202_ACCEPTED,
     HTTP_204_NO_CONTENT,
     HTTP_400_BAD_REQUEST,
+    HTTP_401_UNAUTHORIZED,
     HTTP_403_FORBIDDEN,
     HTTP_404_NOT_FOUND,
     HTTP_500_INTERNAL_SERVER_ERROR,
@@ -63,7 +64,7 @@ def get_who_am_i(token: Annotated[TokenData, Depends(JWTBearer())]) -> Response:
         return Response(jwt_token_json, media_type="application/json", status_code=200)
     except BadJWTTokenProvidedError:
         return Response(
-            status_code=HTTP_403_FORBIDDEN,
+            status_code=HTTP_401_UNAUTHORIZED,
             content=PropertiesMessagesManager.tokenInvalidCredentials,
             headers={"WWW-Authenticate": "Bearer"},
         )
@@ -100,7 +101,7 @@ def get_user(name: str, token: Annotated[TokenData, Depends(JWTBearer())]) -> Re
         )
     except BadJWTTokenProvidedError:
         return Response(
-            status_code=HTTP_403_FORBIDDEN,
+            status_code=HTTP_401_UNAUTHORIZED,
             content=PropertiesMessagesManager.tokenInvalidCredentials,
             headers={"WWW-Authenticate": "Bearer"},
         )
@@ -195,7 +196,7 @@ def patch_playback_history(
         )
     except BadJWTTokenProvidedError:
         return Response(
-            status_code=HTTP_403_FORBIDDEN,
+            status_code=HTTP_401_UNAUTHORIZED,
             content=PropertiesMessagesManager.tokenInvalidCredentials,
             headers={"WWW-Authenticate": "Bearer"},
         )
@@ -257,7 +258,7 @@ def patch_saved_playlists(
         )
     except BadJWTTokenProvidedError:
         return Response(
-            status_code=HTTP_403_FORBIDDEN,
+            status_code=HTTP_401_UNAUTHORIZED,
             content=PropertiesMessagesManager.tokenInvalidCredentials,
             headers={"WWW-Authenticate": "Bearer"},
         )
@@ -309,7 +310,7 @@ def delete_saved_playlists(
         )
     except BadJWTTokenProvidedError:
         return Response(
-            status_code=HTTP_403_FORBIDDEN,
+            status_code=HTTP_401_UNAUTHORIZED,
             content=PropertiesMessagesManager.tokenInvalidCredentials,
             headers={"WWW-Authenticate": "Bearer"},
         )

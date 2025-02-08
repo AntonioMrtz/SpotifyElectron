@@ -39,7 +39,7 @@ nav:
   - User guides:
     - Installation guide: user/user-guides/Installation-Guide.md
   - Code of conduct: CODE_OF_CONDUCT.md
-  - Security: Security.md
+  - Security: SECURITY.md
   - Contributors: CONTRIBUTORS.md
 
 theme:

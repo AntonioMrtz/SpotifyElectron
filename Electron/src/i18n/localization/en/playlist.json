@@ -1,0 +1,14 @@
+{
+  "album": "Album",
+  "songs": "songs",
+  "title": "Title",
+  "plays": "Plays",
+  "edit-details": "Edit details",
+  "name": "Name",
+  "name-placeholder": "Add a name",
+  "description": "Add an optional description",
+  "description-placeholder": "Add an optional description",
+  "thumbnail": "Thumbnail URL",
+  "thumbnail-placeholder": "Add an optional thumbnail URL",
+  "save": "Save"
+}

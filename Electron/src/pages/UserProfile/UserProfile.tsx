@@ -191,7 +191,7 @@ export default function UserProfile({
                 className={`${styles.mostrarTodo}`}
                 onClick={handleShowAllArtistSongs}
               >
-                {t('userProfile.show-all')}
+                {t('common.show-all')}
               </button>
             </div>
           </div>
@@ -243,7 +243,7 @@ export default function UserProfile({
                 handleShowAllUserPlaylists(userType);
               }}
             >
-              {t('userProfile.show-all')}
+              {t('common.show-all')}
             </button>
           </div>
         </div>

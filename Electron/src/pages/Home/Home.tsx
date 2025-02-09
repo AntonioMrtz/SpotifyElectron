@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import LoadingCircle from 'components/AdvancedUIComponents/LoadingCircle/LoadingCircle';
 import ArtistCard from 'components/Cards/ArtistCard/ArtistCard';
+import { t } from 'i18next';
 import styles from './homeCss.module.css';
 import PlaylistCard from '../../components/Cards/PlaylistCard/PlaylistCard';
 import useFetchGetPlaylists from '../../hooks/useFetchGetPlaylists';
@@ -37,8 +38,7 @@ export default function Home({ refreshSidebarData }: PropsHome) {
                 navigate(`/showAllItemsPlaylist/Especialmente para ti`);
               }}
             >
-              {' '}
-              Especialmente para ti{' '}
+              {t('home.made-for')}
             </button>
           </div>
           <div
@@ -51,7 +51,7 @@ export default function Home({ refreshSidebarData }: PropsHome) {
                 navigate(`/showAllItemsPlaylist/Especialmente para ti`);
               }}
             >
-              Mostrar todos
+              {t('common.show-all')}
             </button>
           </div>
         </header>
@@ -91,7 +91,7 @@ export default function Home({ refreshSidebarData }: PropsHome) {
                 navigate(`/showAllItemsArtist/Artistas recomendados`);
               }}
             >
-              Artistas destacados
+              {t('home.top-artists')}
             </button>
           </div>
           <div
@@ -104,7 +104,7 @@ export default function Home({ refreshSidebarData }: PropsHome) {
                 navigate(`/showAllItemsArtist/Artistas recomendados`);
               }}
             >
-              Mostrar todos
+              {t('common.show-all')}
             </button>
           </div>
         </header>

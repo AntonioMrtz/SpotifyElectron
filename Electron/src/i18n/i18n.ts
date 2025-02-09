@@ -3,11 +3,13 @@ import { initReactI18next } from 'react-i18next';
 import Language from './languages';
 
 interface Translations {
+  common: Record<string, string>;
   startMenu: Record<string, string>;
   registerMenu: Record<string, string>;
   commonPopover: Record<string, string>;
   contextMenuProfile: Record<string, string>;
   userProfile: Record<string, string>;
+  home: Record<string, string>;
 }
 
 const loadTranslationFiles = async (): Promise<
@@ -18,6 +20,7 @@ const loadTranslationFiles = async (): Promise<
 
   const translationPromises = languages.map(async (lang) => {
     translations[lang] = {
+      common: await import(`./localization/${lang}/common.json`),
       startMenu: await import(`./localization/${lang}/start-menu.json`),
       registerMenu: await import(`./localization/${lang}/register-menu.json`),
       commonPopover: await import(`./localization/${lang}/common-popover.json`),
@@ -25,6 +28,7 @@ const loadTranslationFiles = async (): Promise<
         `./localization/${lang}/context-menu-profile.json`
       ),
       userProfile: await import(`./localization/${lang}/user-profile.json`),
+      home: await import(`./localization/${lang}/home.json`),
     };
   });
 

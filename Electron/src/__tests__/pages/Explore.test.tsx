@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
 import { act, fireEvent, render, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import Explore from 'pages/Explore/Explore';
+import Browse from 'pages/Browse/Browse';
 import { BrowserRouter } from 'react-router-dom';
 import Global from 'global/global';
 import getMockHeaders from 'utils/mockHeaders';
@@ -80,12 +80,12 @@ global.fetch = jest.fn((url: string) => {
   return Promise.reject(new Error(`Unhandled URL in fetch mock: ${url}`));
 }) as jest.Mock;
 
-test('Render Explore and get Genres', async () => {
+test('Render Browse and get Genres', async () => {
   const component = await act(() => {
     return render(
       <BrowserRouter>
         <NowPlayingContextProvider>
-          <Explore refreshSidebarData={jest.fn()} />
+          <Browse refreshSidebarData={jest.fn()} />
         </NowPlayingContextProvider>
       </BrowserRouter>,
     );
@@ -93,18 +93,18 @@ test('Render Explore and get Genres', async () => {
   expect(component).toBeTruthy();
 });
 
-test('Explore filter by name', async () => {
+test('Browse filter by name', async () => {
   const component = await act(() => {
     return render(
       <BrowserRouter>
         <NowPlayingContextProvider>
-          <Explore refreshSidebarData={jest.fn()} />
+          <Browse refreshSidebarData={jest.fn()} />
         </NowPlayingContextProvider>
       </BrowserRouter>,
     );
   });
 
-  const inputSearchBar = component.getByTestId('explore-input-searchbar');
+  const inputSearchBar = component.getByTestId('browse-input-searchbar');
   await act(async () => {
     fireEvent.change(inputSearchBar, { target: { value: 'prueba' } });
   });

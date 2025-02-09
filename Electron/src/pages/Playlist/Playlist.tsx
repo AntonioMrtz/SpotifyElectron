@@ -410,7 +410,7 @@ export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
           <div
             className={`d-flex container-fluid flex-column ${styles.headerText}`}
           >
-            <p>{t('playlist.album')}</p>
+            <p>{t('common.album')}</p>
             <h1>{playlistName}</h1>
             <p className={`${styles.descriptionText}`}>{description}</p>
             <div className="d-flex flex-row">

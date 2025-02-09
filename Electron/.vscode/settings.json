@@ -8,7 +8,7 @@
     "javascript",
     "javascriptreact",
     "html",
-    "typescriptreact"
+    "typescriptreact",
   ],
   "javascript.validate.enable": false,
   "javascript.format.enable": false,
@@ -29,7 +29,7 @@
   "editor.formatOnType": false,
   "vs-code-prettier-eslint.prettierLast": false,
   "[typescript]": {
-    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "jest.runMode": {
     "runAllTestsOnStartup": false,

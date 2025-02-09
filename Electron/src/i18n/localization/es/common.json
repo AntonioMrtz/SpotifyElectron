@@ -1,3 +1,9 @@
 {
-  "show-all": "Mostrar todo"
+  "show-all": "Mostrar todo",
+  "playlist": "Lista",
+  "album": "Álbum",
+  "songs": "Canciones",
+  "playlists": "Listas",
+  "users": "Usuarios",
+  "artists": "Artistas"
 }

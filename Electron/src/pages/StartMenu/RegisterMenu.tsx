@@ -238,7 +238,8 @@ export default function RegisterMenu({ setIsSigningUp }: PropsRegisterMenu) {
             disabled={loading}
             onClick={handleRegister}
           >
-            {t('registerMenu.form-register-button')}{' '}
+            {t('registerMenu.form-register-button')}
+
             {loading && <LoadingCircleSmall />}
           </button>
         </form>

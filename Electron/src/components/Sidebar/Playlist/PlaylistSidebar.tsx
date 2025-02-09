@@ -3,6 +3,7 @@ import Popover, { PopoverPosition } from '@mui/material/Popover';
 import { useEffect, useState, MouseEvent } from 'react';
 import ContextMenuPlaylist from 'components/AdvancedUIComponents/ContextMenu/Playlist/ContextMenuPlaylist';
 import { PropsPlaylistCardSidebar } from 'types/playlist';
+import { t } from 'i18next';
 import styles from './playlistSidebar.module.css';
 
 export default function PlaylistSidebar({
@@ -66,7 +67,7 @@ export default function PlaylistSidebar({
         }}
       >
         <label style={{ textAlign: 'start' }}>{name}</label>
-        <p style={{ textAlign: 'start' }}>Lista</p>
+        <p style={{ textAlign: 'start' }}>{t('common.playlist')}</p>
       </div>
       <div>
         <Popover

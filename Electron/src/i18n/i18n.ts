@@ -13,6 +13,7 @@ interface Translations {
   sidebar: Record<string, string>;
   genre: Record<string, string>;
   playlist: Record<string, string>;
+  browse: Record<string, string>;
 }
 
 const loadTranslationFiles = async (): Promise<
@@ -35,6 +36,7 @@ const loadTranslationFiles = async (): Promise<
       sidebar: await import(`./localization/${lang}/sidebar.json`),
       genre: await import(`./localization/${lang}/genre.json`),
       playlist: await import(`./localization/${lang}/playlist.json`),
+      browse: await import(`./localization/${lang}/browse.json`),
     };
   });
 

@@ -29,8 +29,8 @@ export default function Sidebar({
   useEffect(() => {
     if (location.pathname === '/') {
       setSelectedID('li-home');
-    } else if (location.pathname.includes('/explore')) {
-      setSelectedID('li-explore');
+    } else if (location.pathname.includes('/browse')) {
+      setSelectedID('li-browse');
     } else {
       setSelectedID('');
     }
@@ -39,10 +39,10 @@ export default function Sidebar({
   //* MENU HOVER
 
   const [listItemHome, setHoverHome] = useState('');
-  const [listItemExplore, setHoverExplore] = useState('');
+  const [listItemBrowse, setHoverBrowse] = useState('');
 
   const [isHoveredHome, setIsHoveredHome] = useState(false);
-  const [isHoveredExplorar, setIsHoveredExplore] = useState(false);
+  const [isHoveredBrowse, setIsHoveredBrowse] = useState(false);
 
   const handleMouseOverHome = () => {
     setIsHoveredHome(true);
@@ -52,24 +52,24 @@ export default function Sidebar({
     setIsHoveredHome(false);
   };
 
-  const handleMouseOverExplore = () => {
-    setIsHoveredExplore(true);
+  const handleMouseOverBrowse = () => {
+    setIsHoveredBrowse(true);
   };
 
-  const handleMouseOutExplore = () => {
-    setIsHoveredExplore(false);
+  const handleMouseOutBrowse = () => {
+    setIsHoveredBrowse(false);
   };
 
   useEffect(() => {
     setHoverHome(isHoveredHome ? styles.linksubtle : '');
-    setHoverExplore(isHoveredExplorar ? styles.linksubtle : '');
-  }, [isHoveredExplorar, isHoveredHome]);
+    setHoverBrowse(isHoveredBrowse ? styles.linksubtle : '');
+  }, [isHoveredBrowse, isHoveredHome]);
 
   const handleUrlHomeClicked = () => {
     setSelectedPlaylist('');
   };
 
-  const handleUrlOnExploreClicked = () => {
+  const handleUrlOnBrowseClicked = () => {
     setSelectedPlaylist('');
   };
 
@@ -108,24 +108,24 @@ export default function Sidebar({
             </Link>
           </li>
           <li>
-            <Link to="/explore" className={`${styles.aHeader}`}>
+            <Link to="/browse" className={`${styles.aHeader}`}>
               <button
                 type="button"
-                onFocus={handleMouseOverExplore}
-                onBlur={handleMouseOutExplore}
+                onFocus={handleMouseOverBrowse}
+                onBlur={handleMouseOutBrowse}
                 className={`${
                   styles.headerLi
-                } ${listItemExplore} ${getSelectedClass('li-explore')}`}
-                onMouseOver={handleMouseOverExplore}
-                onMouseOut={handleMouseOutExplore}
-                onClick={handleUrlOnExploreClicked}
-                id="li-explore"
+                } ${listItemBrowse} ${getSelectedClass('li-browse')}`}
+                onMouseOver={handleMouseOverBrowse}
+                onMouseOut={handleMouseOutBrowse}
+                onClick={handleUrlOnBrowseClicked}
+                id="li-browse"
               >
                 <i
                   className={`fa-solid fa-magnifying-glass fa-fw ${styles.headerI}`}
                 />
                 <span className={`${styles.headerI}`}>
-                  {t('sidebar.explore')}
+                  {t('sidebar.browse')}
                 </span>
               </button>
             </Link>

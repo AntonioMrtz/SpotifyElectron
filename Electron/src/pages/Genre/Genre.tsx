@@ -1,9 +1,9 @@
 import { useLocation } from 'react-router-dom';
 import { genreColorsMapping } from 'utils/genre';
 import useFetchSongsByGenre from 'hooks/useFetchGetSongsbyGenre';
+import { t } from 'i18next';
 import styles from './genre.module.css';
 import SongCard from '../../components/Cards/SongCard/SongCard';
-import { t } from 'i18next';
 
 interface PropsGenre {
   refreshSidebarData: () => void;

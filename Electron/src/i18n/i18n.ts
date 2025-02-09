@@ -11,6 +11,7 @@ interface Translations {
   userProfile: Record<string, string>;
   home: Record<string, string>;
   sidebar: Record<string, string>;
+  genre: Record<string, string>;
 }
 
 const loadTranslationFiles = async (): Promise<
@@ -31,6 +32,7 @@ const loadTranslationFiles = async (): Promise<
       userProfile: await import(`./localization/${lang}/user-profile.json`),
       home: await import(`./localization/${lang}/home.json`),
       sidebar: await import(`./localization/${lang}/sidebar.json`),
+      genre: await import(`./localization/${lang}/genre.json`),
     };
   });
 

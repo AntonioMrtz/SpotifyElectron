@@ -3,6 +3,7 @@ import { genreColorsMapping } from 'utils/genre';
 import useFetchSongsByGenre from 'hooks/useFetchGetSongsbyGenre';
 import styles from './genre.module.css';
 import SongCard from '../../components/Cards/SongCard/SongCard';
+import { t } from 'i18next';
 
 interface PropsGenre {
   refreshSidebarData: () => void;
@@ -33,7 +34,7 @@ export default function Genre({ refreshSidebarData }: PropsGenre) {
       <div
         className={`d-flex container-fluid flex-column ${styles.subheaderGenre}`}
       >
-        Canciones del género
+        {t('genre.genre-songs')}
       </div>
       <div
         className={`d-flex container-fluid flex-wrap ${styles.songWrapperGenre}`}

@@ -186,9 +186,9 @@
   "collective": {
     "url": "https://github.com/AntonioMrtz/SpotifyElectron"
   },
-  "engines" : {
-    "node" : ">=20.x",
-    "npm" : ">=10.x"
+  "engines": {
+    "node": ">=20.x",
+    "npm": ">=10.x"
   },
   "electronmon": {
     "patterns": [

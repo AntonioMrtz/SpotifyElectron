@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { getTokenUsername } from 'utils/token';
 import LoadingCircle from 'components/AdvancedUIComponents/LoadingCircle/LoadingCircle';
+import { t } from 'i18next';
 import styles from './sideBarCss.module.css';
 import PlaylistSidebar from './Playlist/PlaylistSidebar';
 import ModalAddSongPlaylist from './ModalAddSongPlaylist/ModalAddSongPlaylist';
@@ -27,9 +28,9 @@ export default function Sidebar({
 
   useEffect(() => {
     if (location.pathname === '/') {
-      setSelectedID('li-inicio');
-    } else if (location.pathname.includes('/explorar')) {
-      setSelectedID('li-buscar');
+      setSelectedID('li-home');
+    } else if (location.pathname.includes('/explore')) {
+      setSelectedID('li-explore');
     } else {
       setSelectedID('');
     }
@@ -37,38 +38,38 @@ export default function Sidebar({
 
   //* MENU HOVER
 
-  const [listItemInicio, setHoverInicio] = useState('');
-  const [listItemBuscar, setHoverBuscar] = useState('');
+  const [listItemHome, setHoverHome] = useState('');
+  const [listItemExplore, setHoverExplore] = useState('');
 
-  const [isHoveredInicio, setIsHoveredInicio] = useState(false);
-  const [isHoveredBuscar, setIsHoveredBuscar] = useState(false);
+  const [isHoveredHome, setIsHoveredHome] = useState(false);
+  const [isHoveredExplorar, setIsHoveredExplore] = useState(false);
 
-  const handleMouseOverInicio = () => {
-    setIsHoveredInicio(true);
+  const handleMouseOverHome = () => {
+    setIsHoveredHome(true);
   };
 
-  const handleMouseOutInicio = () => {
-    setIsHoveredInicio(false);
+  const handleMouseOutHome = () => {
+    setIsHoveredHome(false);
   };
 
-  const handleMouseOverBuscar = () => {
-    setIsHoveredBuscar(true);
+  const handleMouseOverExplore = () => {
+    setIsHoveredExplore(true);
   };
 
-  const handleMouseOutBuscar = () => {
-    setIsHoveredBuscar(false);
+  const handleMouseOutExplore = () => {
+    setIsHoveredExplore(false);
   };
 
   useEffect(() => {
-    setHoverInicio(isHoveredInicio ? styles.linksubtle : '');
-    setHoverBuscar(isHoveredBuscar ? styles.linksubtle : '');
-  }, [isHoveredBuscar, isHoveredInicio]);
+    setHoverHome(isHoveredHome ? styles.linksubtle : '');
+    setHoverExplore(isHoveredExplorar ? styles.linksubtle : '');
+  }, [isHoveredExplorar, isHoveredHome]);
 
-  const handleUrlInicioClicked = () => {
+  const handleUrlHomeClicked = () => {
     setSelectedPlaylist('');
   };
 
-  const handleUrlBuscarClicked = () => {
+  const handleUrlOnExploreClicked = () => {
     setSelectedPlaylist('');
   };
 
@@ -91,34 +92,34 @@ export default function Sidebar({
             <Link to="/">
               <button
                 type="button"
-                onFocus={handleMouseOverInicio}
-                onBlur={handleMouseOutInicio}
+                onFocus={handleMouseOverHome}
+                onBlur={handleMouseOutHome}
                 className={`${
                   styles.headerLi
-                } ${listItemInicio} ${getSelectedClass('li-inicio')} `}
-                onMouseOver={handleMouseOverInicio}
-                onMouseOut={handleMouseOutInicio}
-                onClick={handleUrlInicioClicked}
-                id="li-inicio"
+                } ${listItemHome} ${getSelectedClass('li-home')} `}
+                onMouseOver={handleMouseOverHome}
+                onMouseOut={handleMouseOutHome}
+                onClick={handleUrlHomeClicked}
+                id="li-home"
               >
                 <i className={`fa-solid fa-house fa-fw ${styles.headerI}`} />
-                <span className={`${styles.headerI}`}>Inicio</span>
+                <span className={`${styles.headerI}`}>{t('sidebar.home')}</span>
               </button>
             </Link>
           </li>
           <li>
-            <Link to="/explorar" className={`${styles.aHeader}`}>
+            <Link to="/explore" className={`${styles.aHeader}`}>
               <button
                 type="button"
-                onFocus={handleMouseOverBuscar}
-                onBlur={handleMouseOutBuscar}
+                onFocus={handleMouseOverExplore}
+                onBlur={handleMouseOutExplore}
                 className={`${
                   styles.headerLi
-                } ${listItemBuscar} ${getSelectedClass('li-buscar')}`}
-                onMouseOver={handleMouseOverBuscar}
-                onMouseOut={handleMouseOutBuscar}
-                onClick={handleUrlBuscarClicked}
-                id="li-buscar"
+                } ${listItemExplore} ${getSelectedClass('li-explore')}`}
+                onMouseOver={handleMouseOverExplore}
+                onMouseOut={handleMouseOutExplore}
+                onClick={handleUrlOnExploreClicked}
+                id="li-explore"
               >
                 <i
                   className={`fa-solid fa-magnifying-glass fa-fw ${styles.headerI}`}
@@ -142,7 +143,7 @@ export default function Sidebar({
             <div className="container-fluid d-flex justify-content-start p-0">
               <div className="container-fluid ps-0">
                 <i className="fa-solid fa-swatchbook fa-fw" />
-                Tu biblioteca
+                {t('sidebar.your-library')}
               </div>
             </div>
 

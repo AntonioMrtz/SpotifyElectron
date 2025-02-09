@@ -14,7 +14,7 @@ export default function GenreCard({ name, color }: PropsGenreCard) {
   };
 
   const handleClick = () => {
-    navigate(`/explorar/genre/${name}`);
+    navigate(`/explore/genre/${name}`);
   };
 
   return (

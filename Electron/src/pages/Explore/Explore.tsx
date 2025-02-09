@@ -6,14 +6,14 @@ import ArtistCard from 'components/Cards/ArtistCard/ArtistCard';
 import UserCard from 'components/Cards/UserCard/UserCard';
 import useFetchSearchItemsByName from 'hooks/useFetchGetSearchItemsByName';
 import useFetchGetGenres from '../../hooks/useFetchGetGenres';
-import styles from './explorar.module.css';
+import styles from './explore.module.css';
 import GenreCard from '../../components/Cards/GenreCard/GenreCard';
 
-interface PropsExplorar {
+interface PropsExplore {
   refreshSidebarData: () => void;
 }
 
-export default function Explorar({ refreshSidebarData }: PropsExplorar) {
+export default function Explore({ refreshSidebarData }: PropsExplore) {
   const [filterName, setFilterName] = useState('');
 
   const { filteredPlaylists, filteredArtists, filteredSongs, filteredUsers } =
@@ -40,7 +40,7 @@ export default function Explorar({ refreshSidebarData }: PropsExplorar) {
               placeholder="¿Qué te apetece escuchar?"
               className={`${styles.inputSearchBar}`}
               onChange={handleChangeSearchBar}
-              data-testid="explorar-input-searchbar"
+              data-testid="explore-input-searchbar"
             />
           </div>
         </header>

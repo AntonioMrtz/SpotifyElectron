@@ -14,7 +14,7 @@ import { NowPlayingContextProvider } from 'providers/NowPlayingProvider';
 import styles from './AppCss.module.css';
 import Sidebar from '../components/Sidebar/Sidebar';
 import Home from '../pages/Home/Home';
-import Explorar from '../pages/Explorar/Explorar';
+import Explore from '../pages/Explore/Explore';
 import Footer from '../components/footer/Footer';
 
 function App() {
@@ -74,11 +74,11 @@ function App() {
                     element=<Playlist refreshSidebarData={refreshSidebarData} />
                   />
                   <Route
-                    path="/explorar"
-                    element=<Explorar refreshSidebarData={refreshSidebarData} />
+                    path="/explore"
+                    element=<Explore refreshSidebarData={refreshSidebarData} />
                   />
                   <Route
-                    path="/explorar/genre/:id"
+                    path="/explore/genre/:id"
                     element=<Genre refreshSidebarData={refreshSidebarData} />
                   />
 

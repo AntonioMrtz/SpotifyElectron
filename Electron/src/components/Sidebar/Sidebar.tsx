@@ -124,7 +124,9 @@ export default function Sidebar({
                 <i
                   className={`fa-solid fa-magnifying-glass fa-fw ${styles.headerI}`}
                 />
-                <span className={`${styles.headerI}`}>Buscar</span>
+                <span className={`${styles.headerI}`}>
+                  {t('sidebar.explore')}
+                </span>
               </button>
             </Link>
           </li>

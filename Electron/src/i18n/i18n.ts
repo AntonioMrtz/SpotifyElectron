@@ -7,6 +7,7 @@ interface Translations {
   registerMenu: Record<string, string>;
   commonPopover: Record<string, string>;
   contextMenuProfile: Record<string, string>;
+  userProfile: Record<string, string>;
 }
 
 const loadTranslationFiles = async (): Promise<
@@ -23,6 +24,7 @@ const loadTranslationFiles = async (): Promise<
       contextMenuProfile: await import(
         `./localization/${lang}/context-menu-profile.json`
       ),
+      userProfile: await import(`./localization/${lang}/user-profile.json`),
     };
   });
 

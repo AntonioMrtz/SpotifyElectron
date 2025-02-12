@@ -27,6 +27,7 @@ from tests.test_API.api_base_users import (
     get_user_relevant_playlists,
     patch_history_playback,
     patch_playlist_saved,
+    promote_user_to_artist,
     whoami,
 )
 from tests.test_API.api_login import post_login
@@ -1209,6 +1210,33 @@ def test_get_base_user_dto_from_dao():
     assert res_base_user_dto.name == user_name
     assert res_base_user_dto.photo == user_photo
     assert res_base_user_dto.register_date == user_register_date
+
+
+def test_promote_user_to_artist():
+    user_name = "user-to-promote"
+    password = "password"
+    photo = "https://photo"
+
+    # Create a user
+    res_create_user = create_user(name=user_name, password=password, photo=photo)
+    assert res_create_user.status_code == HTTP_201_CREATED
+    jwt_headers_user = get_user_jwt_header(username=user_name, password=password)
+
+    res_get_user = get_user(name=user_name, headers=jwt_headers_user)
+    assert res_get_user.status_code == HTTP_200_OK
+    user_id = res_get_user.json()["id"]
+
+    # Promote the user to artist
+    res_promote_user = promote_user_to_artist(id=user_id, headers=jwt_headers_user)
+    assert res_promote_user.status_code == HTTP_204_NO_CONTENT
+
+    # Verify the user is promoted to artist
+    res_get_artist = get_artist(name=user_name, headers=jwt_headers_user)
+    assert res_get_artist.status_code == HTTP_200_OK
+
+    # Clean up
+    res_delete_artist = delete_user(name=user_name)
+    assert res_delete_artist.status_code == HTTP_202_ACCEPTED
 
 
 # executes after all tests

@@ -144,11 +144,15 @@ def hash_password(plain_password: str) -> bytes:
         bytes: the hashed password
 
     """
-    return bcrypt.hashpw(plain_password.encode(), bcrypt.gensalt())
+    if isinstance(plain_password, str):
+        password_bytes = plain_password.encode()
+    else:
+        password_bytes = plain_password
+    return bcrypt.hashpw(password_bytes, bcrypt.gensalt())
 
 
 def verify_password(plain_password: str, hashed_password: bytes) -> None:
-    """Verifies if plan text password is the same as a hashed password
+    """Verifies if plain text password is the same as a hashed password
 
     Args:
     ----

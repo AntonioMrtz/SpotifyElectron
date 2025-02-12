@@ -3,21 +3,26 @@ User service for handling business logic
 """
 
 import app.auth.auth_service as auth_service
+import app.auth.auth_service_validations as auth_service_validations
+import app.spotify_electron.user.artist.artist_service as artist_service
 import app.spotify_electron.user.base_user_repository as base_user_repository
 import app.spotify_electron.user.providers.user_collection_provider as user_collection_provider
 import app.spotify_electron.user.user.user_repository as user_repository
 import app.spotify_electron.user.validations.base_user_service_validations as base_user_service_validations  # noqa: E501
+from app.auth.auth_schema import TokenData, UserUnauthorizedError
 from app.logging.logging_constants import LOGGING_USER_SERVICE
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.user.base_user_schema import (
     BaseUserAlreadyExistsError,
     BaseUserBadNameError,
+    BaseUserNotFoundError,
+    BaseUserRepositoryError,
 )
 from app.spotify_electron.user.user.user_schema import (
-    BaseUserRepositoryError,
     UserBadNameError,
     UserDTO,
     UserNotFoundError,
+    UserRepositoryError,
     UserServiceError,
     get_user_dto_from_dao,
 )
@@ -30,13 +35,10 @@ def does_user_exists(user_name: str) -> bool:
     """Returns if user exists
 
     Args:
-    ----
         user_name (str): user name
 
     Returns:
-    -------
         bool: if the user exists
-
     """
     return base_user_repository.check_user_exists(
         user_name, user_collection_provider.get_user_collection()
@@ -185,8 +187,50 @@ def search_by_name(name: str) -> list[UserDTO]:
             f"Unexpected error in User Repository getting items by name {name}"
         )
         raise UserServiceError from exception
+
+
+# TODO: Check if user is authorized to promote and consistency with other services validations
+
+
+def promote_user_to_artist(user_id: str, token: TokenData) -> None:
+    """Promote user to artist
+
+    Args:
+        user_id (str): user ID
+        token (TokenData): token data
+
+    Raises:
+        UserNotFoundError: if the user does not exist
+        UserServiceError: unexpected error while promoting user
+        UserRepositoryError: unexpected error while promoting user
+        UserUnauthorizedError: if the user is not authorized to promote the user
+    """
+    try:
+        # TODO: Make this a transaction
+        user = user_repository.get_user_by_id(user_id)
+        base_user_repository.delete_user(
+            user.name, user_collection_provider.get_user_collection()
+        )
+        auth_service_validations.validate_jwt_user_matches_user(token, user.name)
+        artist_service.create_artist(user.name, user.photo, user.password)
+        user_service_logger.info(
+            f"User {user.name} with id: {user_id} promoted to artist successfully"
+        )
+    except BaseUserNotFoundError as exception:
+        user_service_logger.exception(f"User not found: {user_id}")
+        raise UserNotFoundError from exception
+    except BaseUserRepositoryError as exception:
+        user_service_logger.exception(
+            f"Unexpected error in User Repository promoting user: {user_id}"
+        )
+        raise UserRepositoryError from exception
+    except UserUnauthorizedError as exception:
+        user_service_logger.exception(
+            f"Unauthorized user {token.username} trying to promote user {user_id}"
+        )
+        raise UserUnauthorizedError from exception
     except Exception as exception:
         user_service_logger.exception(
-            f"Unexpected error in User Service getting items by name {name}"
+            f"Unexpected error in User Service promoting user: {user_id}"
         )
         raise UserServiceError from exception

@@ -2,6 +2,8 @@
 User repository for managing persisted data
 """
 
+from bson import ObjectId
+
 import app.spotify_electron.user.providers.user_collection_provider as user_collection_provider
 from app.logging.logging_constants import LOGGING_USER_REPOSITORY
 from app.logging.logging_schema import SpotifyElectronLogger
@@ -39,7 +41,7 @@ def get_user(name: str) -> UserDAO:
     try:
         user = user_collection_provider.get_user_collection().find_one({"name": name})
         validate_user_exists(user)
-        user_dao = get_user_dao_from_document(user)  # type: ignore
+        user_dao = get_user_dao_from_document(user)
 
     except BaseUserNotFoundError as exception:
         raise UserNotFoundError from exception
@@ -85,3 +87,33 @@ def create_user(name: str, photo: str, password: bytes, current_date: str) -> No
         raise UserRepositoryError from exception
     else:
         user_repository_logger.info(f"User added to repository: {user}")
+
+
+def get_user_by_id(user_id: str) -> UserDAO:
+    """Get user by id
+
+    Args:
+        user_id (str): user id
+
+    Raises:
+        BaseUserNotFoundError: user was not found
+        UserRepositoryError: unexpected error while getting user
+
+    Returns:
+        UserDAO: the user
+    """
+    try:
+        user = user_collection_provider.get_user_collection().find_one(
+            {"_id": ObjectId(user_id)}
+        )
+        validate_user_exists(user)
+        user_dao = get_user_dao_from_document(user)
+    except BaseUserNotFoundError as exception:
+        user_repository_logger.exception(f"User not found: {user_id}")
+        raise BaseUserNotFoundError from exception
+    except Exception as exception:
+        user_repository_logger.exception(f"Error getting User {user_id} from database")
+        raise UserRepositoryError from exception
+    else:
+        user_repository_logger.info(f"Get User by id returned {user_dao}")
+        return user_dao

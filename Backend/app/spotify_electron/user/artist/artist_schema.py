@@ -22,6 +22,7 @@ from app.spotify_electron.user.user.user_schema import UserDAO, UserDTO
 class ArtistDAO(UserDAO):
     """Represents artist data in the persistence layer"""
 
+    _id: str
     uploaded_songs: list[str]
     total_streams: int = 0
 
@@ -30,6 +31,7 @@ class ArtistDAO(UserDAO):
 class ArtistDTO(UserDTO):
     """Represents artist data in the endpoints transfer layer"""
 
+    id: str
     uploaded_songs: list[str]
     total_streams: int = 0
 
@@ -47,6 +49,7 @@ def get_artist_dao_from_document(document: dict[str, Any]) -> ArtistDAO:
 
     """
     return ArtistDAO(
+        _id=str(document["_id"]),
         name=document["name"],
         photo=document["photo"],
         register_date=document["register_date"][:-1],
@@ -72,6 +75,7 @@ def get_artist_dto_from_dao(artist_dao: ArtistDAO) -> ArtistDTO:
 
     """
     return ArtistDTO(
+        id=str(artist_dao._id),
         name=artist_dao.name,
         photo=artist_dao.photo,
         playback_history=artist_dao.playback_history,

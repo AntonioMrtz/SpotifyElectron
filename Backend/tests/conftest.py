@@ -7,6 +7,11 @@ from pytest import fixture
 @fixture(scope="module")
 def trigger_app_startup():
     """Forces FASTAPI app startup event"""
+    print("\nCurrent environment variables:")
+    for key, value in os.environ.items():
+        if key in {"MONGO_URI", "ENV_VALUE", "ARCH"}:
+            print(f"{key}: {value}")
+
     from app.__main__ import app
 
     with TestClient(app):

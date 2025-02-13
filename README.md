@@ -21,7 +21,7 @@ Check the [project documentation](https://antoniomrtz.github.io/SpotifyElectron_
 
 ## 🔽 Download Installer
 
-Donwload the [installer](https://github.com/AntonioMrtz/SpotifyElectron/releases). Follow the [instalation guide](docs/user/user-guides/Installation-Guide.md) for a more in deep explanation about installing and running the app.
+Download the [installer](https://github.com/AntonioMrtz/SpotifyElectron/releases). Follow the [instalation guide](docs/user/user-guides/Installation-Guide.md) for a more in deep explanation about installing and running the app.
 
 ## 🔧 Set up and run
 

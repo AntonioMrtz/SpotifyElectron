@@ -52,10 +52,10 @@ def get_artist_collection() -> Collection:
 
 
 def get_user_collection() -> Collection:
-    """Get artist collection
+    """Get user collection
 
     Returns:
-        Collection: the artist collection
+        Collection: the user collection
     """
     return DatabaseConnectionManager.get_collection_connection(DatabaseCollection.USER)
 

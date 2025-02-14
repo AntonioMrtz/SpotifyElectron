@@ -89,7 +89,7 @@ def get_artist(artist_name: str) -> ArtistDTO:
         return artist_dto
 
 
-def create_artist(user_name: str, photo: str, password: str) -> None:
+def create_artist(user_name: str, photo: str, password: str | bytes) -> None:
     """Create artist
 
     Args:

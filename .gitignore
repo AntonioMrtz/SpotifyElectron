@@ -50,6 +50,7 @@ web_modules/
 
 # Optional npm cache directory
 .npm
+.nvmrc
 
 # Optional eslint cache
 .eslintcache
@@ -166,10 +167,6 @@ __pycache__
 venv
 htmlcov
 .coverage
-
-
-.env
-
 
 # Documentation
 **/site/

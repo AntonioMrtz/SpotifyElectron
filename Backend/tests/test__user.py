@@ -13,7 +13,6 @@ from starlette.status import (
 
 import app.auth.auth_service as auth_service
 import app.spotify_electron.user.base_user_service as base_user_service
-import app.spotify_electron.user.user.user_repository as user_repository
 import app.spotify_electron.user.user.user_service as user_service
 from app.auth.auth_schema import VerifyPasswordError
 from app.spotify_electron.user.user.user_schema import (
@@ -160,7 +159,6 @@ def test_check_encrypted_password_different():
 
 def test_get_user_dao_from_document():
     document = {
-        "_id": "8232392323623823723",
         "name": "test_user",
         "photo": "https://photo",
         "register_date": "2024-11-30T12:00:00",
@@ -182,29 +180,8 @@ def test_get_user_dao_from_document():
     assert user_dao.saved_playlists == ["saved_playlist1"]
 
 
-def test_get_user_by_id_correct():
-    name = "8232392323623823723"
-    photo = "https://photo"
-    password = "hola"
-
-    res_create_user = create_user(name=name, password=password, photo=photo)
-    assert res_create_user.status_code == HTTP_201_CREATED
-    jwt_headers_user = get_user_jwt_header(username=name, password=password)
-
-    res_get_user = get_user(name=name, headers=jwt_headers_user)
-    assert res_get_user.status_code == HTTP_200_OK
-    user_id = res_get_user.json()["id"]
-
-    user_dao = user_repository.get_user_by_id(user_id)
-    assert user_dao.name == name
-
-    res_delete_user = delete_user(name=name)
-    assert res_delete_user.status_code == HTTP_202_ACCEPTED
-
-
 def test_get_user_dto_from_dao():
     user_dao = UserDAO(
-        _id="8232392323623823723",
         name="test_user",
         photo="https://photo",
         register_date="2024-11-30T12:00:00",

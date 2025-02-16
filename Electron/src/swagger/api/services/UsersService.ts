@@ -295,4 +295,29 @@ export class UsersService {
             },
         });
     }
+    /**
+     * Promote User To Artist
+     * Promote user to artist
+     *
+     * Args:
+     * name (str): user name
+     * token (Annotated[TokenData, Depends): JWT info
+     * @param name
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static promoteUserToArtistUsersNamePromotePatch(
+        name: string,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'PATCH',
+            url: '/users/{name}/promote',
+            path: {
+                'name': name,
+            },
+            errors: {
+                422: `Validation Error`,
+            },
+        });
+    }
 }

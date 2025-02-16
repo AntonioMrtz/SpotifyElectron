@@ -1224,15 +1224,20 @@ def test_promote_user_to_artist():
 
     res_get_user = get_user(name=user_name, headers=jwt_headers_user)
     assert res_get_user.status_code == HTTP_200_OK
-    user_id = res_get_user.json()["id"]
+    assert res_get_user.json()["name"] == user_name
+    assert res_get_user.json()["photo"] == photo
 
     # Promote the user to artist
-    res_promote_user = promote_user_to_artist(id=user_id, headers=jwt_headers_user)
+    res_promote_user = promote_user_to_artist(name=user_name, headers=jwt_headers_user)
     assert res_promote_user.status_code == HTTP_204_NO_CONTENT
 
     # Verify the user is promoted to artist
-    res_get_artist = get_artist(name=user_name, headers=jwt_headers_user)
+    jwt_headers_artist = get_user_jwt_header(username=user_name, password=password)
+
+    res_get_artist = get_artist(name=user_name, headers=jwt_headers_artist)
     assert res_get_artist.status_code == HTTP_200_OK
+    assert res_get_artist.json()["name"] == user_name
+    assert res_get_artist.json()["photo"] == photo
 
     # Clean up
     res_delete_artist = delete_user(name=user_name)

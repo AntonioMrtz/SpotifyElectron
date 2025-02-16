@@ -470,19 +470,24 @@ def get_user_playback_history(
         )
 
 
-@router.patch("/{id}/promote")
+@router.patch("/{name}/promote")
 def promote_user_to_artist(
-    id: str, token: Annotated[TokenData, Depends(JWTBearer())]
+    name: str, token: Annotated[TokenData, Depends(JWTBearer())]
 ) -> Response:
     """Promote user to artist
 
     Args:
-        id (str): user ID
+        name (str): user name
         token (Annotated[TokenData, Depends): JWT info
     """
     try:
-        user_service.promote_user_to_artist(id, token)
+        user_service.promote_user_to_artist(name, token)
         return Response(status_code=HTTP_204_NO_CONTENT)
+    except BaseUserBadNameError:
+        return Response(
+            status_code=HTTP_400_BAD_REQUEST,
+            content=PropertiesMessagesManager.userBadName,
+        )
     except BaseUserNotFoundError:
         return Response(
             status_code=HTTP_404_NOT_FOUND,

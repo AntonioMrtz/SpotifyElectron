@@ -33,6 +33,7 @@ from app.spotify_electron.user.base_user_schema import (
     BaseUserBadNameError,
     BaseUserNotFoundError,
 )
+from app.spotify_electron.user.user.user_schema import UserDAO
 from app.spotify_electron.utils.date.date_utils import get_current_iso8601_date
 
 artist_service_logger = SpotifyElectronLogger(LOGGING_ARTIST_SERVICE).get_logger()
@@ -66,7 +67,7 @@ def get_artist(artist_name: str) -> ArtistDTO:
     """
     try:
         base_user_service_validations.validate_user_name_parameter(artist_name)
-        artist = artist_repository.get_user(artist_name)
+        artist = artist_repository.get_artist(artist_name)
         artist_dto = get_artist_dto_from_dao(artist)
     except BaseUserBadNameError as exception:
         artist_service_logger.exception(f"Bad Artist Name Parameter: {artist_name}")
@@ -89,7 +90,7 @@ def get_artist(artist_name: str) -> ArtistDTO:
         return artist_dto
 
 
-def create_artist(user_name: str, photo: str, password: str | bytes) -> None:
+def create_artist(user_name: str, photo: str, password: str) -> None:
     """Create artist
 
     Args:
@@ -131,6 +132,31 @@ def create_artist(user_name: str, photo: str, password: str | bytes) -> None:
     except Exception as exception:
         artist_service_logger.exception(
             f"Unexpected error in Artist Service creating artist: {user_name}"
+        )
+        raise ArtistServiceError from exception
+
+
+def create_artist_from_user(user: UserDAO) -> None:
+    """
+    Creates an artist from a user object existing data.
+    Args:
+        user (UserDAO): User data access object containing user information
+    Returns:
+        None
+
+    Raises:
+        ArtistServiceError: If creation fails
+    """
+    try:
+        artist_repository.create_artist_from_user_dao(user)
+    except ArtistRepositoryError as exception:
+        artist_service_logger.exception(
+            f"Repository error creating artist from user: {user.name}"
+        )
+        raise ArtistServiceError from exception
+    except Exception as exception:
+        artist_service_logger.exception(
+            f"Unexpected error creating artist from user: {user.name}"
         )
         raise ArtistServiceError from exception
 

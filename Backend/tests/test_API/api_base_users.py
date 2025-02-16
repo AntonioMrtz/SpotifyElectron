@@ -54,5 +54,5 @@ def get_user_playback_history(user_name: str, headers: dict[str, str]) -> Respon
     return client.get(f"/users/{user_name}/playback_history", headers=headers)
 
 
-def promote_user_to_artist(id: str, headers: dict[str, str]) -> Response:
-    return client.patch(f"/users/{id}/promote", headers=headers)
+def promote_user_to_artist(name: str, headers: dict[str, str]) -> Response:
+    return client.patch(f"/users/{name}/promote", headers=headers)

@@ -21,7 +21,6 @@ from app.spotify_electron.user.base_user_schema import (
 class UserDAO(BaseUserDAO):
     """Represents user data in the persistence layer"""
 
-    _id: str
     playback_history: list[str]
     playlists: list[str]
     saved_playlists: list[str]
@@ -31,7 +30,6 @@ class UserDAO(BaseUserDAO):
 class UserDTO(BaseUserDTO):
     """Represents user data in the endpoints transfer layer"""
 
-    id: str
     playback_history: list[str]
     playlists: list[str]
     saved_playlists: list[str]
@@ -54,7 +52,6 @@ def get_user_dao_from_document(document: dict[str, Any]) -> UserDAO:
         UserDAO: A fully populated UserDAO object.
     """
     return UserDAO(
-        _id=str(document["_id"]),
         name=document["name"],
         photo=document["photo"],
         register_date=document["register_date"],
@@ -75,7 +72,6 @@ def get_user_dto_from_dao(user_dao: UserDAO) -> UserDTO:
         UserDTO: Converted UserDTO object.
     """
     return UserDTO(
-        id=str(user_dao._id),
         name=user_dao.name,
         photo=user_dao.photo,
         register_date=user_dao.register_date,

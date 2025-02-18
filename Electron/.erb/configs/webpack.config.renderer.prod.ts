@@ -50,13 +50,14 @@ const configuration: webpack.Configuration = {
               importLoaders: 1,
             },
           },
+
         ],
-        include: /\.module\.css$/,
+        include: /\.module\.s?(c|a)ss$/,
       },
       {
         test: /\.s?(a|c)ss$/,
         use: [MiniCssExtractPlugin.loader, 'css-loader'],
-        exclude: /\.module\.css$/,
+        exclude: /\.module\.s?(c|a)ss$/,
       },
       // Fonts
       {

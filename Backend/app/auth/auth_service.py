@@ -134,39 +134,6 @@ def get_jwt_token_data(
         return token_data
 
 
-def get_current_user(
-    token: TokenData,
-) -> BaseUserDTO:
-    """Get current user from JWT Token
-
-    Args:
-    ----
-        token (TokenData): the token
-
-    Raises:
-    ------
-        BaseUserNotFoundError: token user not found
-        JWTGetUserError: if error while retrieving user from token
-
-    Returns:
-        Artist | User: the user or artist associated with the JWT Token
-
-    """
-    try:
-        jwt_username = token.username
-
-        user = base_user_service.get_user(jwt_username)
-    except BaseUserNotFoundError as exception:
-        auth_service_logger.exception(f"User {jwt_username} not found")
-        raise BaseUserNotFoundError from exception
-    except Exception as exception:
-        auth_service_logger.exception(f"Unexpected exception getting user from token {token}")
-        raise JWTGetUserError from exception
-    else:
-        auth_service_logger.info(f"Get Current User successful: {jwt_username}")
-        return user
-
-
 def hash_password(plain_password: str) -> bytes:
     """Hash a password with a randomly-generated salt
 

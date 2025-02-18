@@ -15,7 +15,6 @@ from app.auth.auth_schema import (
     BadJWTTokenProvidedError,
     CreateJWTError,
     JWTExpiredError,
-    JWTGetUserError,
     JWTMissingCredentialsError,
     JWTNotProvidedError,
     JWTValidationError,
@@ -33,7 +32,6 @@ from app.logging.logging_constants import LOGGING_AUTH_SERVICE
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.login.login_schema import InvalidCredentialsLoginError
 from app.spotify_electron.user.base_user_schema import (
-    BaseUserDTO,
     BaseUserNotFoundError,
     BaseUserServiceError,
 )

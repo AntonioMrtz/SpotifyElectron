@@ -167,10 +167,6 @@ venv
 htmlcov
 .coverage
 
-
-.env
-
-
 # Documentation
 **/site/
 

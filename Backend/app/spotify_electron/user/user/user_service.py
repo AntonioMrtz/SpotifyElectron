@@ -197,11 +197,11 @@ def promote_user_to_artist(name: str, token: TokenData) -> None:
         token (TokenData): token data
 
     Raises:
+        UserBadNameError: if the user name parameter is invalid
+        UserUnauthorizedError: if the user credentials are wrong
         UserNotFoundError: if the user does not exist
-        UserServiceError: unexpected error while promoting user
         UserRepositoryError: unexpected error while promoting user
-        UserUnauthorizedError: if the user is not authorized to promote the user
-        UserBadNameError: if the user name or token parameters are invalid
+        UserServiceError: unexpected error while promoting user
     """
     try:
         # TODO: Make this a transaction. Currently it's transaction-like.
@@ -217,6 +217,12 @@ def promote_user_to_artist(name: str, token: TokenData) -> None:
     except BaseUserBadNameError as exception:
         user_service_logger.exception(f"Bad parameters for user: {name}")
         raise UserBadNameError from exception
+    except UserUnauthorizedError as exception:
+        user_service_logger.exception(
+            f"Unauthorized user {token.username} with role {token.role} "
+            f"trying to promote user {name}"
+        )
+        raise UserUnauthorizedError from exception
     except BaseUserNotFoundError as exception:
         user_service_logger.exception(f"User not found: {name}")
         raise UserNotFoundError from exception
@@ -225,12 +231,6 @@ def promote_user_to_artist(name: str, token: TokenData) -> None:
             f"Unexpected error in User Repository promoting user: {name}"
         )
         raise UserRepositoryError from exception
-    except UserUnauthorizedError as exception:
-        user_service_logger.exception(
-            f"Unauthorized user {token.username} with role {token.role} "
-            f"trying to promote user {name}"
-        )
-        raise UserUnauthorizedError from exception
     except Exception as exception:
         user_service_logger.exception(
             f"Unexpected error in User Service promoting user: {name}"

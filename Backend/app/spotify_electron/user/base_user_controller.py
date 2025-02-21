@@ -42,7 +42,6 @@ from app.spotify_electron.user.base_user_schema import (
     BaseUserAlreadyExistsError,
     BaseUserBadNameError,
     BaseUserNotFoundError,
-    BaseUserRepositoryError,
     BaseUserServiceError,
 )
 
@@ -498,7 +497,7 @@ def promote_user_to_artist(
             status_code=HTTP_403_FORBIDDEN,
             content=PropertiesMessagesManager.userUnauthorized,
         )
-    except (BaseUserRepositoryError, BaseUserServiceError):
+    except (Exception, BaseUserServiceError):
         return Response(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonInternalServerError,

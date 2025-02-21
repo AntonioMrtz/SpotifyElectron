@@ -133,7 +133,6 @@ def get_user_password(user_name: str) -> bytes:
     try:
         collection = user_collection_provider.get_user_associated_collection(user_name)
         password = base_user_repository.get_user_password(user_name, collection)
-        user_type = get_user_type(user_name)
     except BaseUserRepositoryError as exception:
         base_users_service_logger.exception(
             f"Unexpected error in User Repository getting password from user: {user_name}"
@@ -145,7 +144,7 @@ def get_user_password(user_name: str) -> bytes:
         )
         raise BaseUserServiceError from exception
     else:
-        base_users_service_logger.info(f"Password obtained for {user_type.value}: {user_name}")
+        base_users_service_logger.info(f"Password obtained for User: {user_name}")
         return password
 
 

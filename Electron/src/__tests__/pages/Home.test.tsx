@@ -5,6 +5,7 @@ import '@testing-library/jest-dom/extend-expect';
 import Home from 'pages/Home/Home';
 import Global from 'global/global';
 import { BrowserRouter } from 'react-router-dom';
+import { t } from 'i18next';
 
 const navigate = jest.fn();
 
@@ -29,24 +30,6 @@ test('render Home', async () => {
 });
 
 test('Home fields', async () => {
-  global.fetch = jest.fn(() =>
-    Promise.resolve({
-      json: () => Promise.resolve({}),
-      status: 200,
-      ok: true,
-    }),
-  ) as jest.Mock;
-
-  const component = await act(() => {
-    return render(<Home refreshSidebarData={jest.fn()} />);
-  });
-
-  expect(component.queryByText('Especialmente para ti')).toBeInTheDocument();
-
-  expect(component.queryByText('Artistas destacados')).toBeInTheDocument();
-});
-
-test('prueba', async () => {
   global.fetch = jest.fn((url: string) => {
     if (url === `${Global.backendBaseUrl}/artists/`) {
       return Promise.resolve({
@@ -104,6 +87,7 @@ test('prueba', async () => {
     );
   });
 
-  expect(component.queryByText('Especialmente para ti')).toBeInTheDocument();
-  expect(component.queryByText('Artistas destacados')).toBeInTheDocument();
+  expect(component.queryByText(t('home.made-for'))).toBeInTheDocument();
+
+  expect(component.queryByText(t('home.top-artists'))).toBeInTheDocument();
 });

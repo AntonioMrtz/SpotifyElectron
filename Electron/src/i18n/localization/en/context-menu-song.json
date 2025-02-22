@@ -1,0 +1,12 @@
+{
+  "add-to-queue": "Add to queue",
+  "go-to-radio": "Go to song radio",
+  "go-to-artist": "Go to artist",
+  "go-to-album": "Go to album",
+  "remove-from-liked-songs": "Remove from liked songs",
+  "remove-from-playlist": "Remove from this playlist",
+  "add-to-playlist": "Add to playlist",
+  "search-playlist": "Search for a playlist",
+  "create-playlist": "Create playlist",
+  "share": "Share"
+}

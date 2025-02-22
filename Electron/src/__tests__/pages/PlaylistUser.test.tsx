@@ -8,6 +8,7 @@ import UserType from 'utils/role';
 import getMockHeaders from 'utils/mockHeaders';
 import * as TokenModule from 'utils/token';
 import { NowPlayingContextProvider } from 'providers/NowPlayingProvider';
+import { t } from 'i18next';
 
 const userName = 'prueba';
 const roleUser = UserType.USER;
@@ -124,7 +125,7 @@ test('Playlist user role get all info', async () => {
   expect(component).toBeTruthy();
   expect(component.container).toHaveTextContent(userName);
   expect(component.container).toHaveTextContent(playlistName);
-  expect(component.container).toHaveTextContent(`0 h 3 min aproximadamente`);
+  expect(component.container).toHaveTextContent(`0 h 3 min`);
   expect(component.container).toHaveTextContent(songMockFetch.name);
 });
 
@@ -462,8 +463,6 @@ test('Playlist user role update playlist', async () => {
         console.log(error);
       });
     }
-
-    // In case the URL doesn't match, return a rejected promise
     return Promise.reject(new Error(`Unhandled URL in fetch mock: ${url}`));
   }) as jest.Mock;
 
@@ -492,7 +491,7 @@ test('Playlist user role update playlist', async () => {
   });
 
   const inputName = component.getByPlaceholderText(
-    'Añade opcionalmente una descripción',
+    t('playlist.description-placeholder'),
   );
 
   await act(async () => {
@@ -501,10 +500,10 @@ test('Playlist user role update playlist', async () => {
     });
   });
 
-  expect(component.queryByText('Editar información')).toBeInTheDocument();
+  expect(component.queryByText(t('playlist.edit-details'))).toBeInTheDocument();
 
   await act(async () => {
-    const submitUpdateButton = component.queryByText('Guardar');
+    const submitUpdateButton = component.queryByText(t('playlist.save'));
     if (submitUpdateButton) {
       fireEvent.click(submitUpdateButton);
     }

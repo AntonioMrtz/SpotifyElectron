@@ -104,6 +104,6 @@ test('Playlist artist role get all info', async () => {
   expect(component).toBeTruthy();
   expect(component.container).toHaveTextContent(userName);
   expect(component.container).toHaveTextContent(playlistName);
-  expect(component.container).toHaveTextContent(`0 h 3 min aproximadamente`);
+  expect(component.container).toHaveTextContent(`0 h 3 min`);
   expect(component.container).toHaveTextContent(songMockFetch.name);
 });

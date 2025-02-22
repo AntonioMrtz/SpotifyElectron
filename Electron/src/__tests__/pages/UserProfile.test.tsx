@@ -8,6 +8,7 @@ import Global from 'global/global';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import getMockHeaders from 'utils/mockHeaders';
 import { NowPlayingContextProvider } from 'providers/NowPlayingProvider';
+import { t } from 'i18next';
 
 /* afterEach(() => {
   jest.clearAllMocks();
@@ -18,11 +19,6 @@ const navigate = jest.fn();
 beforeEach(() => {
   jest.spyOn(router, 'useNavigate').mockImplementation(() => navigate);
 });
-
-/* jest.mock('react-router', () => ({
-  ...jest.requireActual('react-router'),
-  useNavigate: jest.fn(),
-})); */
 
 test('UserProfile User load Playback history and his Playlists', async () => {
   const playlistName = 'playlisttest';
@@ -100,7 +96,6 @@ test('UserProfile User load Playback history and his Playlists', async () => {
       });
     }
 
-    // In case the URL doesn't match, return a rejected promise
     return Promise.reject(new Error(`Unhandled URL in fetch mock: ${url}`));
   }) as jest.Mock;
 
@@ -209,7 +204,6 @@ test('UserProfile Artist load Songs and total streams', async () => {
       });
     }
 
-    // In case the URL doesn't match, return a rejected promise
     return Promise.reject(new Error(`Unhandled URL in fetch mock: ${url}`));
   }) as jest.Mock;
 
@@ -240,6 +234,8 @@ test('UserProfile Artist load Songs and total streams', async () => {
   expect(component.queryByText(songName)).toBeInTheDocument();
   expect(component.queryByText(playlistName)).toBeInTheDocument();
   expect(
-    component.queryByText(`${songMockFetch.streams} reproducciones totales`),
+    component.queryByText(
+      `${artistMockFetch.total_streams} ${t('userProfile.total-plays')}`,
+    ),
   ).toBeInTheDocument();
 });

@@ -13,6 +13,7 @@ import { secondsToHoursAndMinutesFormatted } from 'utils/date';
 import { TextField } from '@mui/material/';
 import { inputStyle } from 'styles/mui5/styles';
 import { useNowPlayingContext } from 'hooks/useNowPlayingContext';
+import { t } from 'i18next';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 import Song from '../../components/Song/Song';
 import styles from './playlist.module.css';
@@ -409,7 +410,7 @@ export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
           <div
             className={`d-flex container-fluid flex-column ${styles.headerText}`}
           >
-            <p>Álbum</p>
+            <p>{t('common.album')}</p>
             <h1>{playlistName}</h1>
             <p className={`${styles.descriptionText}`}>{description}</p>
             <div className="d-flex flex-row">
@@ -419,11 +420,12 @@ export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
               <p className="me-2 ms-2">•</p>
               <p>{creationDate}</p>
               <p className="me-2 ms-2">•</p>
-              <p>{numberSongs} canciones</p>
+              <p>
+                {numberSongs} {t('playlist.songs')}
+              </p>
               <p className="me-2 ms-2">•</p>
               <p>
-                {secondsToHoursAndMinutesFormatted(getTotalDurationPlaylist())}{' '}
-                aproximadamente
+                {secondsToHoursAndMinutesFormatted(getTotalDurationPlaylist())}
               </p>
             </div>
           </div>
@@ -501,13 +503,13 @@ export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
               className={` ${styles.songTitleTable}`}
               style={{ color: 'var(--secondary-white)' }}
             >
-              Título
+              {t('playlist.title')}
             </span>
             <span
               className={`d-flex justify-content-end ${styles.songTitleTable}`}
               style={{ color: 'var(--secondary-white)', whiteSpace: 'nowrap' }}
             >
-              Número de reproducciones
+              {t('playlist.plays')}
             </span>
             <span className={` d-flex justify-content-end ${styles.gridItem}`}>
               <i className="fa-regular fa-clock" />
@@ -580,7 +582,7 @@ export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
         >
           <Box sx={style} className={`${styles.wrapperUpdatePlaylistModal}`}>
             <header className="d-flex flex-row justify-content-between align-items-center">
-              <h1>Editar información</h1>
+              <h1> {t('playlist.edit-details')}</h1>
               <button
                 type="button"
                 onClick={() => {
@@ -604,11 +606,11 @@ export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
                     <div className={`mb-3 ${styles.inputPlaylist}`}>
                       <TextField
                         id="name-input"
-                        label="Nombre"
+                        label={t('playlist.name')}
                         name="name"
                         variant="outlined"
                         type="text"
-                        placeholder="Añade un nombre"
+                        placeholder={t('playlist.name-placeholder')}
                         defaultValue={playlistName}
                         onChange={handleChangeForm}
                         sx={inputStyle}
@@ -618,7 +620,7 @@ export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
                     <div className={`${styles.inputPlaylist}`}>
                       <TextField
                         id="description-input"
-                        label="Descripción"
+                        label={t('playlist.description')}
                         variant="outlined"
                         type="text"
                         multiline // Enable multiline to create a textarea-like effect
@@ -635,7 +637,7 @@ export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
                         }}
                         name="description"
                         defaultValue={description}
-                        placeholder="Añade opcionalmente una descripción"
+                        placeholder={t('playlist.description-placeholder')}
                         onChange={handleChangeForm}
                       />
                     </div>
@@ -649,11 +651,11 @@ export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
                   <div className={`mb-3 ${styles.inputPlaylist}`}>
                     <TextField
                       id="photo-input"
-                      label="URL de la miniatura"
+                      label={t('playlist.thumbnail')}
                       name="name"
                       variant="outlined"
                       type="text"
-                      placeholder="Añade una nueva URL para la miniatura"
+                      placeholder={t('playlist.thumbnail-placeholder')}
                       defaultValue={
                         thumbnail === defaultThumbnailPlaylist ? '' : thumbnail
                       }
@@ -668,7 +670,7 @@ export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
                 className={`d-flex flex-row justify-content-end pt-2 ${styles.wrapperUpdateButton} ${styles.inputPlaylist}`}
               >
                 <button type="button" onClick={handleUpdatePlaylist}>
-                  Guardar
+                  {t('playlist.save')}
                 </button>
               </div>
             </form>

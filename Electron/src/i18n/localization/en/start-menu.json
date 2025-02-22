@@ -1,0 +1,10 @@
+{
+  "form-login-title": "Log in to Spotify Electron",
+  "form-username": "Username",
+  "form-password": "Password",
+  "form-login-button": "Log in",
+  "go-to-register-button": "Register for Spotify Electron",
+  "no-account": "Don't have an account?",
+  "cant-login-title": "The credentials provided are invalid",
+  "cant-login-description": "Unable to log in"
+}

@@ -1,0 +1,21 @@
+{
+  "create-playlist": "Crear lista de reproducción",
+  "create-song": "Subir canción",
+  "obligatory-fields": "Los campos marcados con * son obligatorios.",
+  "playlist-name": "Nombre de la playlist",
+  "playlist-thumbnail-url": "URL de la miniatura de la playlist",
+  "playlist-description": "Descripción de la playlist",
+  "song-name": "Nombre de la canción",
+  "song-thumbnail-url": "URL de la miniatura de la canción",
+  "choose-genre-default": "❗ Elige un género",
+  "choose-genre": "Elige un género",
+  "upload": "Subir",
+  "song-added-title": "Canción añadida",
+  "song-added-description": "La canción se ha añadido correctamente.",
+  "song-not-added-title": "Error al añadir la canción",
+  "song-not-added-description": "No se ha podido añadir la canción.",
+  "playlist-added-title": "Playlist añadida",
+  "playlist-added-description": "La playlist se ha añadido correctamente.",
+  "playlist-not-added-title": "Error al añadir la playlist",
+  "playlist-not-added-description": "No se ha podido añadir la playlist."
+}

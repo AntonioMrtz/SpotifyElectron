@@ -1,0 +1,37 @@
+{
+  "add-to-queue": "Añadir a la cola",
+  "edit": "Editar datos",
+  "create-similar-playlist": "Crear lista similar",
+  "delete": "Eliminar",
+  "download": "Descargar",
+  "add-to-playlist": "Añadir a otra lista",
+  "search-playlist": "Buscar una lista",
+  "create-playlist": "Crear lista",
+  "share": "Compartir",
+  "confirmationMenu": {
+    "add-success": {
+      "title": "Canciones añadidas",
+      "description": "Las canciones han sido añadidas correctamente"
+    },
+    "add-error": {
+      "title": "Canciones no añadidas",
+      "description": "Las canciones no han sido añadidas"
+    },
+    "delete-success": {
+      "title": "Playlist eliminada",
+      "description": "La playlist ha sido eliminada correctamente"
+    },
+    "delete-error": {
+      "title": "Playlist no eliminada",
+      "description": "La playlist no ha sido eliminada"
+    },
+    "clipboard": {
+      "title": "Enlace copiado al portapapeles",
+      "description": "El enlace del repositorio del proyecto ha sido copiado éxitosamente"
+    },
+    "error": {
+      "title": "Error",
+      "description": "Ha ocurrido un error."
+    }
+  }
+}

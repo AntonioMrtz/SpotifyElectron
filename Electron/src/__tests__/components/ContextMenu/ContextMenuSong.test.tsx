@@ -8,6 +8,7 @@ import * as router from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
 import getMockHeaders from 'utils/mockHeaders';
 import * as TokenModule from 'utils/token';
+import { t } from 'i18next';
 
 const playlistName = 'playlisttest';
 const songName = 'songName';
@@ -120,7 +121,7 @@ test('Render ContextMenuSong', async () => {
   expect(component).toBeTruthy();
 });
 
-test('ContextMenuSong quitar de esta lista', async () => {
+test('ContextMenuSong remove from playlist', async () => {
   const refreshPlaylistDataMock = jest.fn();
 
   const component = await act(() => {
@@ -139,7 +140,9 @@ test('ContextMenuSong quitar de esta lista', async () => {
   });
 
   try {
-    const quitarListaButton = component.getByText('Quitar de esta lista');
+    const quitarListaButton = component.getByText(
+      t('contextMenuSong.remove-from-playlist'),
+    ); // <-- Replaced with i18n key
 
     await act(async () => {
       fireEvent.click(quitarListaButton);
@@ -147,13 +150,12 @@ test('ContextMenuSong quitar de esta lista', async () => {
 
     expect(refreshPlaylistDataMock).toHaveBeenCalled();
   } catch (error) {
-    // If an error occurs during rendering, fail the test
     // eslint-disable-next-line jest/no-conditional-expect
     expect(error).toBeUndefined();
   }
 });
 
-test('ContextMenuSong crear lista', async () => {
+test('ContextMenuSong create playlist', async () => {
   const refreshSidebarMock = jest.fn();
 
   const component = await act(() => {
@@ -172,13 +174,17 @@ test('ContextMenuSong crear lista', async () => {
   });
 
   try {
-    const addToListButton = component.getByText('Añadir a la playlist');
+    const addToListButton = component.getByText(
+      t('contextMenuSong.add-to-playlist'),
+    ); // <-- Replaced with i18n key
 
     await act(async () => {
       fireEvent.click(addToListButton);
     });
 
-    const crearListaButton = component.getByText('Crear lista');
+    const crearListaButton = component.getByText(
+      t('contextMenuSong.create-playlist'),
+    ); // <-- Replaced with i18n key
 
     await act(async () => {
       fireEvent.click(crearListaButton);
@@ -189,7 +195,6 @@ test('ContextMenuSong crear lista', async () => {
     });
     expect(refreshSidebarMock).toHaveBeenCalled();
   } catch (error) {
-    // If an error occurs during rendering, fail the test
     // eslint-disable-next-line jest/no-conditional-expect
     expect(error).toBeUndefined();
   }
@@ -212,7 +217,9 @@ test('ContextMenuSong add to playlist', async () => {
   });
 
   try {
-    const addToListButton = component.getByText('Añadir a la playlist');
+    const addToListButton = component.getByText(
+      t('contextMenuSong.add-to-playlist'),
+    ); // <-- Replaced with i18n key
 
     await act(async () => {
       fireEvent.click(addToListButton);
@@ -224,7 +231,6 @@ test('ContextMenuSong add to playlist', async () => {
       fireEvent.click(playlistButton);
     });
   } catch (error) {
-    // If an error occurs during rendering, fail the test
     // eslint-disable-next-line jest/no-conditional-expect
     expect(error).toBeUndefined();
   }

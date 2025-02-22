@@ -1,6 +1,7 @@
 import { useLocation } from 'react-router-dom';
 import { genreColorsMapping } from 'utils/genre';
 import useFetchSongsByGenre from 'hooks/useFetchGetSongsbyGenre';
+import { t } from 'i18next';
 import styles from './genre.module.css';
 import SongCard from '../../components/Cards/SongCard/SongCard';
 
@@ -33,7 +34,7 @@ export default function Genre({ refreshSidebarData }: PropsGenre) {
       <div
         className={`d-flex container-fluid flex-column ${styles.subheaderGenre}`}
       >
-        Canciones del género
+        {t('genre.genre-songs')}
       </div>
       <div
         className={`d-flex container-fluid flex-wrap ${styles.songWrapperGenre}`}

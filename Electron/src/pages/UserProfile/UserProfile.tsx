@@ -7,6 +7,7 @@ import UserType from 'utils/role';
 import { PropsSongCard } from 'types/song';
 import { ArtistsService, UsersService } from 'swagger/api';
 import useFetchGetUserPlaylists from 'hooks/useFetchGetUserPlaylists';
+import { t } from 'i18next';
 import styles from './userProfile.module.css';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 import verifiedIcon from '../../assets/imgs/verified_icon.png';
@@ -23,6 +24,9 @@ export default function UserProfile({
 }: PropsUserProfile) {
   const { id } = useParams();
   const navigate = useNavigate();
+
+  const userPlaylistsTitle = t('userProfile.user-playlists');
+  const artistSongsTitle = t('userProfile.artist-songs');
 
   const [thumbnail, setThumbnail] = useState<string>(defaultThumbnailPlaylist);
   const [mainColorThumbnail, setMainColorThumbnail] = useState('');
@@ -98,12 +102,12 @@ export default function UserProfile({
 
   const handleShowAllUserPlaylists = (userTypeRedirect: UserType) => {
     navigate(
-      `/showAllPlaylistFromUser/Playlists del usuario/${id}/${userTypeRedirect}`,
+      `/showAllPlaylistFromUser/${userPlaylistsTitle}/${id}/${userTypeRedirect}`,
     );
   };
 
   const handleShowAllArtistSongs = () => {
-    navigate(`/showAllSongsFromArtist/Canciones del artista/${id}}`);
+    navigate(`/showAllSongsFromArtist/${artistSongsTitle}/${id}}`);
   };
 
   return (
@@ -141,7 +145,9 @@ export default function UserProfile({
                 />
               )}
               <p style={{ textTransform: 'capitalize', marginTop: '4px' }}>
-                {userType} {userType === UserType.ARTIST && 'verificado'}
+                {userType === UserType.ARTIST
+                  ? t('userProfile.verified-artist')
+                  : t('userProfile.profile')}
               </p>
             </div>
             <h1>{id}</h1>
@@ -153,7 +159,7 @@ export default function UserProfile({
               }}
             >
               {userType === UserType.ARTIST &&
-                `${artistStreams} reproducciones totales`}
+                `${artistStreams} ${t('userProfile.total-plays')}`}
             </p>
           </div>
         </div>
@@ -177,7 +183,7 @@ export default function UserProfile({
                 }}
                 onClick={handleShowAllArtistSongs}
               >
-                Canciones del artista
+                {t('userProfile.artist-songs')}
               </button>
             </div>
             <div
@@ -188,7 +194,7 @@ export default function UserProfile({
                 className={`${styles.mostrarTodo}`}
                 onClick={handleShowAllArtistSongs}
               >
-                Mostrar todos
+                {t('common.show-all')}
               </button>
             </div>
           </div>
@@ -227,7 +233,7 @@ export default function UserProfile({
                 handleShowAllUserPlaylists(userType);
               }}
             >
-              Playlists del usuario
+              {t('userProfile.user-playlists')}
             </button>
           </div>
           <div
@@ -240,7 +246,7 @@ export default function UserProfile({
                 handleShowAllUserPlaylists(userType);
               }}
             >
-              Mostrar todos
+              {t('common.show-all')}
             </button>
           </div>
         </div>
@@ -272,7 +278,7 @@ export default function UserProfile({
               marginBottom: '1.5rem',
             }}
           >
-            Historial de reproducción
+            {t('userProfile.listening-history')}
           </h2>
           <div className="d-flex flex-row flex-wrap " style={{ gap: '14px' }}>
             {playbackHistory &&

@@ -5,15 +5,16 @@ import PlaylistCard from 'components/Cards/PlaylistCard/PlaylistCard';
 import ArtistCard from 'components/Cards/ArtistCard/ArtistCard';
 import UserCard from 'components/Cards/UserCard/UserCard';
 import useFetchSearchItemsByName from 'hooks/useFetchGetSearchItemsByName';
+import { t } from 'i18next';
 import useFetchGetGenres from '../../hooks/useFetchGetGenres';
-import styles from './explorar.module.css';
+import styles from './browse.module.css';
 import GenreCard from '../../components/Cards/GenreCard/GenreCard';
 
-interface PropsExplorar {
+interface PropsBrowse {
   refreshSidebarData: () => void;
 }
 
-export default function Explorar({ refreshSidebarData }: PropsExplorar) {
+export default function Browse({ refreshSidebarData }: PropsBrowse) {
   const [filterName, setFilterName] = useState('');
 
   const { filteredPlaylists, filteredArtists, filteredSongs, filteredUsers } =
@@ -37,10 +38,10 @@ export default function Explorar({ refreshSidebarData }: PropsExplorar) {
             <i className="me-2 fa-solid fa-magnifying-glass fa-fw" />
             <input
               type="text"
-              placeholder="¿Qué te apetece escuchar?"
+              placeholder={t('browse.what-want-to-play')}
               className={`${styles.inputSearchBar}`}
               onChange={handleChangeSearchBar}
-              data-testid="explorar-input-searchbar"
+              data-testid="browse-input-searchbar"
             />
           </div>
         </header>
@@ -52,7 +53,7 @@ export default function Explorar({ refreshSidebarData }: PropsExplorar) {
                   <div
                     className={`container-fluid d-flex ${styles.columnTitle}`}
                   >
-                    <h4>Canciones</h4>
+                    <h4>{t('common.songs')}</h4>
                   </div>
                 </header>
                 <div
@@ -77,7 +78,7 @@ export default function Explorar({ refreshSidebarData }: PropsExplorar) {
                   <div
                     className={`container-fluid d-flex ${styles.columnTitle}`}
                   >
-                    <h4>Playlists</h4>
+                    <h4>{t('common.playlists')}</h4>
                   </div>
                 </header>
                 <div
@@ -103,7 +104,7 @@ export default function Explorar({ refreshSidebarData }: PropsExplorar) {
                   <div
                     className={`container-fluid d-flex ${styles.columnTitle}`}
                   >
-                    <h4>Artistas</h4>
+                    <h4> {t('common.artists')}</h4>
                   </div>
                 </header>
                 <div
@@ -126,7 +127,7 @@ export default function Explorar({ refreshSidebarData }: PropsExplorar) {
                   <div
                     className={`container-fluid d-flex ${styles.columnTitle}`}
                   >
-                    <h4>Usuarios</h4>
+                    <h4>{t('common.users')}</h4>
                   </div>
                 </header>
                 <div
@@ -149,7 +150,7 @@ export default function Explorar({ refreshSidebarData }: PropsExplorar) {
           <>
             <header className="container-fluid d-flex flex-row">
               <div className={`container-fluid d-flex ${styles.columnTitle}`}>
-                <h4>Explorar Todo</h4>
+                <h4>{t('browse.browse-all')}</h4>
               </div>
             </header>
             <div

@@ -1,0 +1,10 @@
+{
+  "form-login-title": "Inicia sesión en Spotify Electron",
+  "form-username": "Nombre de usuario",
+  "form-password": "Contraseña",
+  "form-login-button": "Iniciar sesión",
+  "go-to-register-button": "Regístrate en Spotify Electron",
+  "no-account": "¿No tienes cuenta?",
+  "cant-login-title": "Los credenciales introducidos no son válidos",
+  "cant-login-description": "No se ha podido iniciar sesión"
+}

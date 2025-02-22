@@ -18,6 +18,9 @@ export default function Home({ refreshSidebarData }: PropsHome) {
     useFetchGetPlaylists(refreshSidebarData);
   const { artists, loading: loadingArtists } = useFetchGetArtists();
 
+  const madeForYouTitle = t('home.made-for');
+  const topArtistsTitle = t('home.top-artists');
+
   return (
     <div
       className={`container-fluid d-flex flex-column ${styles.mainContentContainer}`}
@@ -35,7 +38,7 @@ export default function Home({ refreshSidebarData }: PropsHome) {
               type="button"
               className={`${styles.categoryTitle}`}
               onClick={() => {
-                navigate(`/showAllItemsPlaylist/Especialmente para ti`);
+                navigate(`/showAllItemsPlaylist/${madeForYouTitle}`);
               }}
             >
               {t('home.made-for')}
@@ -48,7 +51,7 @@ export default function Home({ refreshSidebarData }: PropsHome) {
               type="button"
               className={`${styles.mostrarTodo}`}
               onClick={() => {
-                navigate(`/showAllItemsPlaylist/Especialmente para ti`);
+                navigate(`/showAllItemsPlaylist/${madeForYouTitle}`);
               }}
             >
               {t('common.show-all')}
@@ -88,7 +91,7 @@ export default function Home({ refreshSidebarData }: PropsHome) {
               type="button"
               className={`${styles.categoryTitle}`}
               onClick={() => {
-                navigate(`/showAllItemsArtist/Artistas recomendados`);
+                navigate(`/showAllItemsArtist/${topArtistsTitle}`);
               }}
             >
               {t('home.top-artists')}
@@ -101,7 +104,7 @@ export default function Home({ refreshSidebarData }: PropsHome) {
               type="button"
               className={`${styles.mostrarTodo}`}
               onClick={() => {
-                navigate(`/showAllItemsArtist/Artistas recomendados`);
+                navigate(`/showAllItemsArtist/${topArtistsTitle}`);
               }}
             >
               {t('common.show-all')}

@@ -25,6 +25,9 @@ export default function UserProfile({
   const { id } = useParams();
   const navigate = useNavigate();
 
+  const userPlaylistsTitle = t('userProfile.user-playlists');
+  const artistSongsTitle = t('userProfile.artist-songs');
+
   const [thumbnail, setThumbnail] = useState<string>(defaultThumbnailPlaylist);
   const [mainColorThumbnail, setMainColorThumbnail] = useState('');
   const [playbackHistory, setPlaybackHistory] = useState<PropsSongCard[]>([]);
@@ -99,12 +102,12 @@ export default function UserProfile({
 
   const handleShowAllUserPlaylists = (userTypeRedirect: UserType) => {
     navigate(
-      `/showAllPlaylistFromUser/Playlists del usuario/${id}/${userTypeRedirect}`,
+      `/showAllPlaylistFromUser/${userPlaylistsTitle}/${id}/${userTypeRedirect}`,
     );
   };
 
   const handleShowAllArtistSongs = () => {
-    navigate(`/showAllSongsFromArtist/Canciones del artista/${id}}`);
+    navigate(`/showAllSongsFromArtist/${artistSongsTitle}/${id}}`);
   };
 
   return (

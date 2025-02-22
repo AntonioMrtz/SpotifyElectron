@@ -45,19 +45,17 @@ describe('RegisterMenu Component', () => {
     ).toBeInTheDocument();
 
     const popover = document.getElementById('button-info-popover');
-    expect(popover).toBeVisible();
+    expect(popover).toBeInTheDocument();
     if (popover) {
       fireEvent.click(popover);
     }
-
-    fireEvent.click(document.body);
 
     expect(
       component.queryByText(
         'No se han introducido todos los datos de registro obligatorios',
       ),
     ).toBeNull();
-    expect(popover).not.toBeVisible();
+    expect(popover).not.toBeInTheDocument();
   });
 
   test('Register failed bad input', () => {
@@ -77,7 +75,7 @@ describe('RegisterMenu Component', () => {
     ).toBeInTheDocument();
 
     const popover = document.getElementById('button-info-popover');
-    expect(popover).toBeVisible();
+    expect(popover).toBeInTheDocument();
     if (popover) {
       fireEvent.click(popover);
     }
@@ -89,7 +87,7 @@ describe('RegisterMenu Component', () => {
         'No se han introducido todos los datos de registro obligatorios',
       ),
     ).toBeNull();
-    expect(popover).not.toBeVisible();
+    expect(popover).not.toBeInTheDocument();
   });
 
   test('Register failed different password inputs', () => {
@@ -238,7 +236,7 @@ describe('RegisterMenu Component', () => {
     });
 
     const popover = document.getElementById('button-info-popover');
-    expect(popover).toBeVisible();
+    expect(popover).toBeInTheDocument();
     if (popover) {
       fireEvent.click(popover);
     }

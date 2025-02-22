@@ -14,6 +14,7 @@ import { t } from 'i18next';
 import { getLanguageFromStorage, setLanguageStorage } from 'utils/language';
 import Language from 'i18n/languages';
 import { LoginService } from '../../swagger/api/services/LoginService';
+import '@testing-library/jest-dom/extend-expect';
 
 jest.mock('../../swagger/api/services/LoginService');
 jest.mock('utils/token');

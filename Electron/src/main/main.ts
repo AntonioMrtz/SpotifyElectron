@@ -83,10 +83,6 @@ const createWindow = async () => {
     ? path.join(process.resourcesPath, 'assets')
     : path.join(__dirname, '../../assets');
 
-  /* const getAssetPath = (...paths: string[]): string => {
-    return path.join(RESOURCES_PATH, ...paths);
-  }; */
-
   mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
@@ -107,7 +103,6 @@ const createWindow = async () => {
     if (!mainWindow) {
       throw new Error('"mainWindow" is not defined');
     }
-
     if (process.env.START_MINIMIZED) {
       mainWindow.minimize();
     } else {

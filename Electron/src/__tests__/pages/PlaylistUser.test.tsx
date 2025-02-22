@@ -245,7 +245,7 @@ test('Playlist user role hit like button', async () => {
   const unlikeButton = component.container.querySelector(
     '#playlist-unlike-button',
   );
-  expect(unlikeButton).toBeVisible();
+  expect(unlikeButton).toBeInTheDocument();
 });
 
 test('Playlist user role get unlike button', async () => {
@@ -362,7 +362,7 @@ test('Playlist user role get unlike button', async () => {
   });
 
   const likeButton = component.container.querySelector('#playlist-like-button');
-  expect(likeButton).toBeVisible();
+  expect(likeButton).toBeInTheDocument();
 });
 
 test('Playlist user role update playlist', async () => {

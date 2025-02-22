@@ -4,6 +4,7 @@ import Box from '@mui/material/Box';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
 import CheckIcon from '@mui/icons-material/Check';
 import ContentPasteIcon from '@mui/icons-material/ContentPaste';
+import { t } from 'i18next';
 import { PropsInfoPopover, InfoPopoverType } from './types/InfoPopover';
 import styles from './confirmationModal.module.css';
 
@@ -94,7 +95,7 @@ export default function InfoPopover({
               onClick={handleCloseConfirmationModal}
               id="button-info-popover"
             >
-              Confirmar
+              {t('common.confirm')}
             </button>
           </div>
         </Box>

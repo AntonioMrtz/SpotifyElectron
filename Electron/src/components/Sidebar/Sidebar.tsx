@@ -3,9 +3,9 @@ import { Link, useLocation } from 'react-router-dom';
 import { getTokenUsername } from 'utils/token';
 import LoadingCircle from 'components/AdvancedUIComponents/LoadingCircle/LoadingCircle';
 import { t } from 'i18next';
-import styles from './sideBarCss.module.css';
+import styles from './sidebar.module.css';
 import PlaylistSidebar from './Playlist/PlaylistSidebar';
-import ModalAddSongPlaylist from './ModalAddSongPlaylist/ModalAddSongPlaylist';
+import ModalUploadSongPlaylist from './ModalUploadSongPlaylist/ModalUploadSongPlaylist';
 import useFetchGetUserRelevantPlaylists from '../../hooks/useFetchGetUserRelevantPlaylists';
 
 interface PropsSidebar {
@@ -153,7 +153,9 @@ export default function Sidebar({
               className="container-fluid d-flex justify-content-end p-0"
               style={{ width: '25%' }}
             >
-              <ModalAddSongPlaylist refreshSidebarData={refreshSidebarData} />
+              <ModalUploadSongPlaylist
+                refreshSidebarData={refreshSidebarData}
+              />
             </div>
           </header>
           <ul

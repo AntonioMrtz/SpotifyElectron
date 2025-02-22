@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import styles from './modalAddSongPlaylist.module.css';
-import AddSongPlayListAccordion from './Accordion/AddSongPlayListAccordion';
+import styles from './modalUploadSongPlaylist.module.css';
+import UploadSongPlaylistAccordion from './Accordion/UploadSongPlaylistAccordion';
 
 const style = {
   position: 'absolute',
@@ -16,13 +16,13 @@ const style = {
   p: 2,
 };
 
-interface PropsModalAddSongPlaylist {
+interface PropsModalUploadSongPlaylist {
   refreshSidebarData: () => void;
 }
 
-export default function ModalAddSongPlaylist({
+export default function ModalUploadSongPlaylist({
   refreshSidebarData,
-}: PropsModalAddSongPlaylist) {
+}: PropsModalUploadSongPlaylist) {
   /* ADDSONGPLAYLIST MODAL */
 
   const [open, setOpen] = useState(false);
@@ -45,7 +45,7 @@ export default function ModalAddSongPlaylist({
         aria-describedby="modal-modal-description"
       >
         <Box sx={style} className={` ${styles.wrapperAccordion}`}>
-          <AddSongPlayListAccordion
+          <UploadSongPlaylistAccordion
             refreshSidebarData={refreshSidebarData}
             handleClose={handleClose}
             setIsCloseAllowed={setIsCloseAllowed}

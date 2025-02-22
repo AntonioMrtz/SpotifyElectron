@@ -14,6 +14,9 @@ interface Translations {
   genre: Record<string, string>;
   playlist: Record<string, string>;
   browse: Record<string, string>;
+  stickyHeader: Record<string, string>;
+  song: Record<string, string>;
+  uploadSongPlaylistAccordion: Record<string, string>;
 }
 
 const loadTranslationFiles = async (): Promise<
@@ -37,6 +40,11 @@ const loadTranslationFiles = async (): Promise<
       genre: await import(`./localization/${lang}/genre.json`),
       playlist: await import(`./localization/${lang}/playlist.json`),
       browse: await import(`./localization/${lang}/browse.json`),
+      stickyHeader: await import(`./localization/${lang}/sticky-header.json`),
+      song: await import(`./localization/${lang}/song.json`),
+      uploadSongPlaylistAccordion: await import(
+        `./localization/${lang}/upload-song-playlist-accordion.json`
+      ),
     };
   });
 

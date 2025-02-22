@@ -11,7 +11,7 @@ import UserType from 'utils/role';
 import RegisterMenu from 'pages/StartMenu/RegisterMenu';
 import { deleteToken } from 'utils/token';
 import { NowPlayingContextProvider } from 'providers/NowPlayingProvider';
-import styles from './AppCss.module.css';
+import styles from './app.module.css';
 import Sidebar from '../components/Sidebar/Sidebar';
 import Home from '../pages/Home/Home';
 import Browse from '../pages/Browse/Browse';

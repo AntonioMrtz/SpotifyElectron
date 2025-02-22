@@ -15,7 +15,6 @@ from app.auth.auth_schema import (
     BadJWTTokenProvidedError,
     CreateJWTError,
     JWTExpiredError,
-    JWTGetUserError,
     JWTMissingCredentialsError,
     JWTNotProvidedError,
     JWTValidationError,
@@ -33,7 +32,6 @@ from app.logging.logging_constants import LOGGING_AUTH_SERVICE
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.login.login_schema import InvalidCredentialsLoginError
 from app.spotify_electron.user.base_user_schema import (
-    BaseUserDTO,
     BaseUserNotFoundError,
     BaseUserServiceError,
 )
@@ -132,39 +130,6 @@ def get_jwt_token_data(
     else:
         auth_service_logger.info(f"Token data: {token_data}")
         return token_data
-
-
-def get_current_user(
-    token: TokenData,
-) -> BaseUserDTO:
-    """Get current user from JWT Token
-
-    Args:
-    ----
-        token (TokenData): the token
-
-    Raises:
-    ------
-        BaseUserNotFoundError: token user not found
-        JWTGetUserError: if error while retrieving user from token
-
-    Returns:
-        Artist | User: the user or artist associated with the JWT Token
-
-    """
-    try:
-        jwt_username = token.username
-
-        user = base_user_service.get_user(jwt_username)
-    except BaseUserNotFoundError as exception:
-        auth_service_logger.exception(f"User {jwt_username} not found")
-        raise BaseUserNotFoundError from exception
-    except Exception as exception:
-        auth_service_logger.exception(f"Unexpected exception getting user from token {token}")
-        raise JWTGetUserError from exception
-    else:
-        auth_service_logger.info(f"Get Current User successful: {jwt_username}")
-        return user
 
 
 def hash_password(plain_password: str) -> bytes:

@@ -52,12 +52,12 @@ const configuration: webpack.Configuration = {
           },
 
         ],
-        include: /\.module\.s?(c|a)ss$/,
+        include: /\.module\.css$/,
       },
       {
         test: /\.s?(a|c)ss$/,
         use: [MiniCssExtractPlugin.loader, 'css-loader'],
-        exclude: /\.module\.s?(c|a)ss$/,
+        exclude: /\.module\.css$/,
       },
       // Fonts
       {

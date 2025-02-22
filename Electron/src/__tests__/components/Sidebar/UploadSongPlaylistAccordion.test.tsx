@@ -7,8 +7,6 @@ import UserType from 'utils/role';
 import UploadSongPlaylistAccordion from 'components/Sidebar/ModalUploadSongPlaylist/Accordion/UploadSongPlaylistAccordion';
 import getMockHeaders from 'utils/mockHeaders';
 
-import { debug } from 'jest-preview';
-
 import * as TokenModule from 'utils/token';
 import { t } from 'i18next';
 
@@ -355,7 +353,6 @@ test('UploadSongPlaylistAccordion rejects invalid song files', async () => {
     fireEvent.click(submitSongButton);
   });
 
-  debug();
   expect(submitSongButton).toBeDisabled();
 });
 

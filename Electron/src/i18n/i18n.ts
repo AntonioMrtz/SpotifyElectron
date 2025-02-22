@@ -8,6 +8,7 @@ interface Translations {
   registerMenu: Record<string, string>;
   commonPopover: Record<string, string>;
   contextMenuProfile: Record<string, string>;
+  contextMenuSong: Record<string, string>;
   userProfile: Record<string, string>;
   home: Record<string, string>;
   sidebar: Record<string, string>;
@@ -33,6 +34,9 @@ const loadTranslationFiles = async (): Promise<
       commonPopover: await import(`./localization/${lang}/common-popover.json`),
       contextMenuProfile: await import(
         `./localization/${lang}/context-menu-profile.json`
+      ),
+      contextMenuSong: await import(
+        `./localization/${lang}/context-menu-song.json`
       ),
       userProfile: await import(`./localization/${lang}/user-profile.json`),
       home: await import(`./localization/${lang}/home.json`),

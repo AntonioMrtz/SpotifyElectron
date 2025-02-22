@@ -8,6 +8,7 @@ import UserType from 'utils/role';
 import * as router from 'react-router';
 import getMockHeaders from 'utils/mockHeaders';
 import * as TokenModule from 'utils/token';
+import { t } from 'i18next';
 
 const playlistName = 'playlisttest';
 const songName = 'songName';
@@ -145,7 +146,7 @@ test('ContextMenuPlaylist delete Playlist success', async () => {
     );
   });
 
-  const deleteButton = component.getByText('Eliminar');
+  const deleteButton = component.getByText(t('contextMenuPlaylist.delete'));
   if (deleteButton) {
     await act(async () => {
       fireEvent.click(deleteButton);
@@ -172,7 +173,9 @@ test('ContextMenuPlaylist Add Playlist to Playlist', async () => {
     );
   });
 
-  const addToOtherPlaylistButton = component.getByText('Añadir a otra lista');
+  const addToOtherPlaylistButton = component.getByText(
+    t('contextMenuPlaylist.add-to-playlist'),
+  );
   if (addToOtherPlaylistButton) {
     await act(async () => {
       fireEvent.click(addToOtherPlaylistButton);
@@ -186,5 +189,9 @@ test('ContextMenuPlaylist Add Playlist to Playlist', async () => {
     });
   }
 
-  expect(component.queryByText('Canciones añadidas')).toBeInTheDocument();
+  expect(
+    component.queryByText(
+      t('contextMenuPlaylist.confirmationMenu.add-success.title'),
+    ),
+  ).toBeInTheDocument();
 });

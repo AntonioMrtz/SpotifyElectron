@@ -32,53 +32,6 @@
     "test:coverage": "jest --coverage"
   },
   "browserslist": [],
-  "prettier": {
-    "singleQuote": true,
-    "overrides": [
-      {
-        "files": [
-          ".prettierrc",
-          ".eslintrc"
-        ],
-        "options": {
-          "parser": "json"
-        }
-      }
-    ]
-  },
-  "jest": {
-    "moduleDirectories": [
-      "node_modules",
-      "release/app/node_modules",
-      "src"
-    ],
-    "moduleFileExtensions": [
-      "js",
-      "jsx",
-      "ts",
-      "tsx",
-      "json"
-    ],
-    "moduleNameMapper": {
-      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/.erb/mocks/fileMock.js",
-      "\\.(css|less|sass|scss)$": "identity-obj-proxy"
-    },
-    "setupFiles": [
-      "./.erb/scripts/check-build-exists.ts",
-      "./src/utils/loadOpenApiTests.ts"
-    ],
-    "testEnvironment": "jsdom",
-    "testEnvironmentOptions": {
-      "url": "http://localhost/"
-    },
-    "testPathIgnorePatterns": [
-      "release/app/dist",
-      ".erb/dll"
-    ],
-    "transform": {
-      "\\.(ts|tsx|js|jsx)$": "ts-jest"
-    }
-  },
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
@@ -90,10 +43,12 @@
     "electron-updater": "^6.3.0",
     "eslint-plugin-prettier": "^5.1.3",
     "fast-average-color": "^9.3.0",
+    "i18next": "^23.16.0",
     "jwt-decode": "^3.1.2",
     "openapi-typescript-codegen": "^0.29.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-i18next": "^15.0.3",
     "react-icons": "^4.10.1",
     "react-router-dom": "^6.11.2"
   },
@@ -231,9 +186,9 @@
   "collective": {
     "url": "https://github.com/AntonioMrtz/SpotifyElectron"
   },
-  "engines" : {
-    "node" : ">=20.x",
-    "npm" : ">=10.x"
+  "engines": {
+    "node": ">=20.x",
+    "npm": ">=10.x"
   },
   "electronmon": {
     "patterns": [

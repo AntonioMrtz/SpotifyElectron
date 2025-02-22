@@ -1,4 +1,4 @@
-import styles from '../addSongPlayListAccordion.module.css';
+import styles from '../uploadSongPlaylistAccordion.module.css';
 
 interface PropsGenreOption {
   name: string;

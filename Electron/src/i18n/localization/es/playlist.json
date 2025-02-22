@@ -1,0 +1,14 @@
+{
+  "album": "Álbum",
+  "songs": "canciones",
+  "title": "Título",
+  "plays": "Reproducciones",
+  "edit-details": "Editar información",
+  "name": "Nombre",
+  "name-placeholder": "Añade un nombre",
+  "description": "Descripción",
+  "description-placeholder": "Añade una descripción opcional",
+  "thumbnail": "URL de la miniatura",
+  "thumbnail-placeholder": "Añade una nueva URL para la miniatura",
+  "save": "Guardar"
+}

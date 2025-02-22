@@ -1,0 +1,12 @@
+{
+  "add-to-queue": "Añadir a la cola",
+  "go-to-radio": "Ir a radio de la canción",
+  "go-to-artist": "Ir al artista",
+  "go-to-album": "Ir al álbum",
+  "remove-from-liked-songs": "Quitar de canciones que te gustan",
+  "remove-from-playlist": "Quitar de esta lista",
+  "add-to-playlist": "Añadir a la playlist",
+  "search-playlist": "Buscar una lista",
+  "create-playlist": "Crear lista",
+  "share": "Compartir"
+}

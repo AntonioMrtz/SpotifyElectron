@@ -8,6 +8,7 @@ import PlaylistSidebar from 'components/Sidebar/Playlist/PlaylistSidebar';
 import getMockHeaders from 'utils/mockHeaders';
 
 import * as TokenModule from 'utils/token';
+import { t } from 'i18next';
 
 const playlistName = 'playlisttest';
 const songName = 'songName';
@@ -116,7 +117,9 @@ test('Sidebar Playlist handle open context menu', async () => {
     fireEvent.contextMenu(playlistItemClickable);
   });
 
-  expect(component.getByText('Crear lista similar')).toBeInTheDocument();
+  expect(
+    component.getByText(t('contextMenuPlaylist.create-similar-playlist')),
+  ).toBeInTheDocument();
 });
 
 test('Sidebar Playlist left-click', async () => {

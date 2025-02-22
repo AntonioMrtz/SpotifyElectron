@@ -8,6 +8,7 @@ import { InfoPopoverType } from 'components/AdvancedUIComponents/InfoPopOver/typ
 import { getTokenUsername } from 'utils/token';
 import useFetchGetUserPlaylistNames from 'hooks/useFetchGetUserPlaylistNames';
 import { PlaylistsService } from 'swagger/api';
+import { t } from 'i18next';
 import styles from '../contextMenu.module.css';
 import { PropsContextMenuPlaylist } from '../types/propsContextMenu';
 
@@ -44,8 +45,10 @@ const reducerConfirmationMenu = (
       return {
         payload: {
           type: InfoPopoverType.SUCCESS,
-          title: 'Canciones añadidas',
-          description: 'Las canciones han sido añadidas correctamente',
+          title: t('contextMenuPlaylist.confirmationMenu.add-success.title'),
+          description: t(
+            'contextMenuPlaylist.confirmationMenu.add-success.description',
+          ),
         },
       };
 
@@ -53,8 +56,10 @@ const reducerConfirmationMenu = (
       return {
         payload: {
           type: InfoPopoverType.ERROR,
-          title: 'Canciones no añadidas',
-          description: 'Las canciones  no han sido añadidas',
+          title: t('contextMenuPlaylist.confirmationMenu.add-error.title'),
+          description: t(
+            'contextMenuPlaylist.confirmationMenu.add-error.description',
+          ),
         },
       };
 
@@ -62,27 +67,32 @@ const reducerConfirmationMenu = (
       return {
         payload: {
           type: InfoPopoverType.SUCCESS,
-          title: 'Playlist eliminada',
-          description: 'La playlist ha sido eliminada correctamente',
+          title: t('contextMenuPlaylist.confirmationMenu.delete-success.title'),
+          description: t(
+            'contextMenuPlaylist.confirmationMenu.delete-success.description',
+          ),
         },
       };
-    case ConfirmationMenuActionKind.DELETE_ERROR: {
+
+    case ConfirmationMenuActionKind.DELETE_ERROR:
       return {
         payload: {
           type: InfoPopoverType.ERROR,
-          title: 'Playlist no eliminada',
-          description: 'La playlist no ha sido eliminada',
+          title: t('contextMenuPlaylist.confirmationMenu.delete-error.title'),
+          description: t(
+            'contextMenuPlaylist.confirmationMenu.delete-error.description',
+          ),
         },
       };
-    }
 
     case ConfirmationMenuActionKind.CLIPBOARD:
       return {
         payload: {
           type: InfoPopoverType.CLIPBOARD,
-          title: 'Enlace copiado al portapapeles',
-          description:
-            'El enlace del repositorio del proyecto ha sido copiado éxitosamente',
+          title: t('contextMenuPlaylist.confirmationMenu.clipboard.title'),
+          description: t(
+            'contextMenuPlaylist.confirmationMenu.clipboard.description',
+          ),
         },
       };
 
@@ -90,8 +100,10 @@ const reducerConfirmationMenu = (
       return {
         payload: {
           type: InfoPopoverType.ERROR,
-          title: 'Error',
-          description: 'Ha ocurrido un error.',
+          title: t('contextMenuPlaylist.confirmationMenu.error.title'),
+          description: t(
+            'contextMenuPlaylist.confirmationMenu.error.description',
+          ),
         },
       };
   }
@@ -228,22 +240,24 @@ export default function ContextMenuPlaylist({
     <div className={` ${styles.wrapperContextMenu}`}>
       <ul>
         <li>
-          <button type="button">Añadir a la cola</button>
+          <button type="button">{t('contextMenuPlaylist.add-to-queue')}</button>
         </li>
         <li>
           <button type="button" onClick={handleEditPlaylistData}>
-            Editar datos
+            {t('contextMenuPlaylist.edit')}
           </button>
-          <button type="button">Crear lista similar</button>
+          <button type="button">
+            {t('contextMenuPlaylist.create-similar-playlist')}
+          </button>
           <button
             type="button"
             disabled={!isOwnerPlaylist}
             style={disabledButton}
             onClick={() => handleDeletePlaylist(playlistName)}
           >
-            Eliminar
+            {t('contextMenuPlaylist.delete')}
           </button>
-          <button type="button">Descargar</button>
+          <button type="button"> {t('contextMenuPlaylist.download')}</button>
         </li>
         <li>
           <button
@@ -251,7 +265,7 @@ export default function ContextMenuPlaylist({
             className="d-flex justify-content-between align-items-center"
             onClick={handleClick}
           >
-            Añadir a otra lista
+            {t('contextMenuPlaylist.add-to-playlist')}
             <i className="fa-solid fa-chevron-right" />
             <Popover
               id={id}
@@ -277,11 +291,13 @@ export default function ContextMenuPlaylist({
               >
                 <ul style={{ height: '100%' }}>
                   <li>
-                    <button type="button">Buscar una lista</button>
+                    <button type="button">
+                      {t('contextMenuPlaylist.search-playlist')}
+                    </button>
                   </li>
                   <li>
                     <button type="button" onClick={handleCreatePlaylist}>
-                      Crear lista
+                      {t('contextMenuPlaylist.create-playlist')}
                     </button>
                   </li>
 
@@ -313,7 +329,7 @@ export default function ContextMenuPlaylist({
         </li>
         <li>
           <button type="button" onClick={handleCopyToClipboard}>
-            Compartir
+            {t('contextMenuPlaylist.share')}
           </button>
         </li>
       </ul>

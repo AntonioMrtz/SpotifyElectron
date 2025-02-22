@@ -12,18 +12,23 @@ import LoadingCircle from 'components/AdvancedUIComponents/LoadingCircle/Loading
 import Global from 'global/global';
 import { CancelablePromise } from 'swagger/api';
 import LoadingCircleSmall from 'components/AdvancedUIComponents/LoadingCircle/LoadingCircleSmall';
-import styles from './startMenu.module.css';
-import SpotifyElectronLogo from '../../assets/imgs/SpotifyElectronLogo.png';
+import FormControl from '@mui/material/FormControl/';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem/';
+import Language from 'i18n/languages';
+import { changeLanguage } from 'i18n/i18n';
+import { t } from 'i18next';
+import { getLanguageFromStorage, setLanguageStorage } from 'utils/language';
 import { LoginService } from '../../swagger/api/services/LoginService';
+import SpotifyElectronLogo from '../../assets/imgs/SpotifyElectronLogo.png';
+import styles from './startMenu.module.css';
+import englishFlag from '../../assets/flags/en_flag.svg';
+import spanishFlag from '../../assets/flags/es_flag.svg';
 
 interface PropsStartMenu {
   setIsLogged: Function;
   setIsSigningUp: Function;
 }
-
-const coldStartTimeoutErrorTitle = 'El servidor esta iniciándose';
-const coldStartTimeoutErrorDescription =
-  'El servidor esta iniciándose (cold-start), inténtelo de nuevo en 1 minuto';
 
 export default function StartMenu({
   setIsLogged,
@@ -41,7 +46,7 @@ export default function StartMenu({
 
   /* Form data */
   const [formData, setFormData] = useState({
-    nombre: '',
+    name: '',
     password: '',
   });
 
@@ -75,12 +80,12 @@ export default function StartMenu({
     let loginUserPromise: CancelablePromise<any> | null = null;
     try {
       setLoginLoading(true);
-      if (!formData.nombre || !formData.password) {
+      if (!formData.name || !formData.password) {
         throw new Error('Unable to login');
       }
       // eslint-disable-next-line camelcase
       const loginData: Body_login_user_login__post = {
-        username: formData.nombre,
+        username: formData.name,
         password: formData.password,
       };
 
@@ -100,12 +105,11 @@ export default function StartMenu({
 
       if (error instanceof Error && error.message === 'Timeout') {
         loginUserPromise?.cancel();
-
-        title = coldStartTimeoutErrorTitle;
-        description = coldStartTimeoutErrorDescription;
+        title = t('commonPopover.cold-start-title');
+        description = t('commonPopover.cold-start-description');
       } else {
-        title = 'Los credenciales introducidos no son válidos';
-        description = 'No se ha podido iniciar sesión';
+        title = t('startMenu.cant-login-title');
+        description = t('startMenu.cant-login-description');
       }
 
       showErrorPopover({ title, description });
@@ -136,8 +140,8 @@ export default function StartMenu({
         if (error instanceof Error && error.message === 'Timeout') {
           autoLoginPromise?.cancel();
           showErrorPopover({
-            title: coldStartTimeoutErrorTitle,
-            description: coldStartTimeoutErrorDescription,
+            title: t('commonPopover.cold-start-title'),
+            description: t('commonPopover.cold-start-description'),
           });
         } else {
           console.log(`User invalid credentials for auto login with JWT token`);
@@ -149,8 +153,99 @@ export default function StartMenu({
     handleAutoLogin();
   }, [setIsLogged]);
 
+  const [language, setLanguage] = useState<Language>(Language.ENGLISH);
+
+  const loadLanguage = (lang: Language) => {
+    setLanguage(lang);
+    changeLanguage(lang);
+    setLanguageStorage(lang);
+  };
+
+  const handleUserLanguageChange = (event: SelectChangeEvent<Language>) => {
+    const languageInput = event.target.value as Language;
+    loadLanguage(languageInput);
+  };
+
+  useEffect(() => {
+    loadLanguage(getLanguageFromStorage());
+  }, []);
+
   return (
     <div className={`${styles.mainModalContainer}`}>
+      {!autoLoginLoading && (
+        <div className={`${styles.languageContainer}`}>
+          <FormControl
+            sx={{
+              m: 1,
+              '& .Mui-focused .MuiOutlinedInput-notchedOutline': {
+                borderColor: 'var(--app-logo-color) !important',
+              },
+            }}
+          >
+            <Select
+              labelId="language-select-label"
+              id="language-select"
+              value={language}
+              onChange={handleUserLanguageChange}
+              inputProps={{
+                // need `data-testid` as prop for tests
+                'aria-label': 'Without label',
+                'data-testid': 'language-select',
+              }}
+              sx={{
+                color: 'var(--secondary-white)',
+                backgroundColor: 'transparent',
+                '&:hover .MuiOutlinedInput-notchedOutline': {
+                  borderColor: 'var(--app-logo-color) !important',
+                },
+              }}
+              MenuProps={{
+                PaperProps: {
+                  sx: {
+                    backgroundColor: 'rgba(42, 42, 42, 0.5)',
+                  },
+                },
+              }}
+            >
+              <MenuItem
+                value={Language.ENGLISH}
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  backgroundColor: 'transparent',
+                  '&:hover': {
+                    backgroundColor: 'rgba(42, 42, 42, 0.7)',
+                  },
+                }}
+              >
+                <img
+                  src={englishFlag}
+                  alt="english flag"
+                  style={{ width: '32px' }}
+                />
+              </MenuItem>
+
+              <MenuItem
+                value={Language.SPANISH}
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  backgroundColor: 'transparent',
+                  '&:hover': {
+                    backgroundColor: 'rgba(42, 42, 42, 0.7)',
+                  },
+                }}
+              >
+                <img
+                  src={spanishFlag}
+                  alt="spanish flag"
+                  style={{ width: '32px' }}
+                />
+              </MenuItem>
+            </Select>
+          </FormControl>
+        </div>
+      )}
       {autoLoginLoading && <LoadingCircle />}
       {!autoLoginLoading && (
         <div className={`${styles.contentWrapper}`}>
@@ -165,18 +260,18 @@ export default function StartMenu({
 
           <hr />
 
-          <h1>Inicia sesión en Spotify Electron</h1>
+          <h1>{t('startMenu.form-login-title')}</h1>
           <form className={`d-flex flex-column ${styles.formWrapper}`}>
             <label
               htmlFor="username"
               className="d-flex flex-column justify-content-start"
             >
-              Nombre de usuario
+              {t('startMenu.form-username')}
               <input
                 type="text"
-                name="nombre"
-                id="nombre"
-                placeholder="Nombre de usuario"
+                name="name"
+                id="name"
+                placeholder={t('startMenu.form-username')}
                 onChange={handleChange}
                 disabled={loginLoading}
                 spellCheck={false}
@@ -187,12 +282,12 @@ export default function StartMenu({
               htmlFor="password"
               className="d-flex flex-column justify-content-start"
             >
-              Contraseña
+              {t('startMenu.form-password')}
               <input
                 type="password"
                 name="password"
                 id="password"
-                placeholder="Contraseña"
+                placeholder={t('startMenu.form-password')}
                 onChange={handleChange}
                 disabled={loginLoading}
                 spellCheck={false}
@@ -206,7 +301,7 @@ export default function StartMenu({
               onClick={handleLogin}
               disabled={loginLoading}
             >
-              Iniciar sesión
+              {t('startMenu.form-login-button')}
               {loginLoading && <LoadingCircleSmall />}
             </button>
           </form>
@@ -217,7 +312,7 @@ export default function StartMenu({
             className={`d-flex w-100 justify-content-center ${styles.wrapperRegisterText}`}
           >
             <p style={{ color: 'var(--secondary-white)', marginRight: '8px' }}>
-              ¿No tienes cuenta?
+              {t('startMenu.no-account')}
             </p>
             <button
               onClick={handleClickRegister}
@@ -231,7 +326,7 @@ export default function StartMenu({
                 padding: '0px',
               }}
             >
-              Regístrate en Spotify Electron
+              {t('startMenu.go-to-register-button')}
             </button>
           </div>
         </div>

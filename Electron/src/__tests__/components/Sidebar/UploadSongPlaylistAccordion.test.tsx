@@ -4,10 +4,11 @@ import '@testing-library/jest-dom/extend-expect';
 import { BrowserRouter } from 'react-router-dom';
 import Global from 'global/global';
 import UserType from 'utils/role';
-import AddSongPlayListAccordion from 'components/Sidebar/ModalAddSongPlaylist/Accordion/AddSongPlayListAccordion';
+import UploadSongPlaylistAccordion from 'components/Sidebar/ModalUploadSongPlaylist/Accordion/UploadSongPlaylistAccordion';
 import getMockHeaders from 'utils/mockHeaders';
 
 import * as TokenModule from 'utils/token';
+import { t } from 'i18next';
 
 const userName = 'prueba';
 const roleUser = UserType.ARTIST;
@@ -15,7 +16,7 @@ const roleUser = UserType.ARTIST;
 jest.spyOn(TokenModule, 'getTokenUsername').mockReturnValue(userName);
 jest.spyOn(TokenModule, 'getTokenRole').mockReturnValue(roleUser);
 
-test('render AddSongPlaylistAccordion', async () => {
+test('render UploadSongPlaylistAccordion', async () => {
   const handleCloseMock = jest.fn();
   const refreshSidebarDataMock = jest.fn();
   const setIsCloseAllowed = jest.fn();
@@ -39,7 +40,7 @@ test('render AddSongPlaylistAccordion', async () => {
   const component = await act(() => {
     return render(
       <BrowserRouter>
-        <AddSongPlayListAccordion
+        <UploadSongPlaylistAccordion
           handleClose={handleCloseMock}
           refreshSidebarData={refreshSidebarDataMock}
           setIsCloseAllowed={setIsCloseAllowed}
@@ -51,7 +52,7 @@ test('render AddSongPlaylistAccordion', async () => {
   expect(component).toBeTruthy();
 });
 
-test('AddSongPlaylistAccordion submit playlist correct', async () => {
+test('UploadSongPlaylistAccordion submit playlist correct', async () => {
   const handleCloseMock = jest.fn();
   const refreshSidebarDataMock = jest.fn();
   const setIsCloseAllowed = jest.fn();
@@ -81,7 +82,7 @@ test('AddSongPlaylistAccordion submit playlist correct', async () => {
   const component = await act(() => {
     return render(
       <BrowserRouter>
-        <AddSongPlayListAccordion
+        <UploadSongPlaylistAccordion
           handleClose={handleCloseMock}
           refreshSidebarData={refreshSidebarDataMock}
           setIsCloseAllowed={setIsCloseAllowed}
@@ -99,15 +100,17 @@ test('AddSongPlaylistAccordion submit playlist correct', async () => {
   });
 
   expect(
-    component.getByText('Crear lista de reproducción'),
+    component.getByText(t('uploadSongPlaylistAccordion.create-playlist')),
   ).toBeInTheDocument();
 
-  const inputName = component.getByPlaceholderText('Nombre de la playlist');
+  const inputName = component.getByPlaceholderText(
+    t('uploadSongPlaylistAccordion.playlist-name'),
+  );
   const inputPhoto = component.getByPlaceholderText(
-    'URL de la miniatura de la playlist',
+    t('uploadSongPlaylistAccordion.playlist-thumbnail-url'),
   );
   const inputDescripcion = component.getByPlaceholderText(
-    'Descripción de la playlist',
+    t('uploadSongPlaylistAccordion.playlist-description'),
   );
 
   fireEvent.change(inputName, {
@@ -120,18 +123,18 @@ test('AddSongPlaylistAccordion submit playlist correct', async () => {
     target: { value: 'testfoto' },
   });
 
-  const submitPlaylistButton = component.getByTestId(
-    'sidebar-addsongplaylistaccordion-submit-playlist',
-  );
+  const submitPlaylistButton = component.getByTestId('sidebar-submit-playlist');
 
   await act(async () => {
     fireEvent.click(submitPlaylistButton);
   });
 
-  expect(component.getByText('Playlist Añadida')).toBeInTheDocument();
+  expect(
+    component.getByText(t('uploadSongPlaylistAccordion.playlist-added-title')),
+  ).toBeInTheDocument();
 });
 
-test('AddSongPlaylistAccordion submit valid song files', async () => {
+test('UploadSongPlaylistAccordion submit valid song files', async () => {
   const handleCloseMock = jest.fn();
   const refreshSidebarDataMock = jest.fn();
   const setIsCloseAllowed = jest.fn();
@@ -161,7 +164,7 @@ test('AddSongPlaylistAccordion submit valid song files', async () => {
   const component = await act(() => {
     return render(
       <BrowserRouter>
-        <AddSongPlayListAccordion
+        <UploadSongPlaylistAccordion
           handleClose={handleCloseMock}
           refreshSidebarData={refreshSidebarDataMock}
           setIsCloseAllowed={setIsCloseAllowed}
@@ -178,13 +181,19 @@ test('AddSongPlaylistAccordion submit valid song files', async () => {
     fireEvent.click(accordionExpandSong);
   });
 
-  expect(component.getByText('Subir canción')).toBeInTheDocument();
+  expect(
+    component.getByText(t('uploadSongPlaylistAccordion.create-song')),
+  ).toBeInTheDocument();
 
-  const inputName = component.getByPlaceholderText('Nombre de la canción');
-  const inputPhoto = component.getByPlaceholderText(
-    'URL de la miniatura de la canción',
+  const inputName = component.getByPlaceholderText(
+    t('uploadSongPlaylistAccordion.song-name'),
   );
-  const selectGenreOption = component.getByText('❗ Elige un género');
+  const inputPhoto = component.getByPlaceholderText(
+    t('uploadSongPlaylistAccordion.song-thumbnail-url'),
+  );
+  const selectGenreOption = component.getByText(
+    t('uploadSongPlaylistAccordion.choose-genre-default'),
+  );
   const dropdown = component.getByTestId('select-genre');
 
   // Find the file input element by it's name or other suitable selector
@@ -235,18 +244,18 @@ test('AddSongPlaylistAccordion submit valid song files', async () => {
   });
   expect(fileInputElement.files?.[0]).toBe(aacFile);
 
-  const submitSongButton = component.getByTestId(
-    'sidebar-addsongplaylistaccordion-submit-song',
-  );
+  const submitSongButton = component.getByTestId('sidebar-submit-song');
 
   await act(async () => {
     fireEvent.click(submitSongButton);
   });
 
-  expect(component.getByText('Canción Añadida')).toBeInTheDocument();
+  expect(
+    component.getByText(t('uploadSongPlaylistAccordion.song-added-title')),
+  ).toBeInTheDocument();
 });
 
-test('AddSongPlaylistAccordion rejects invalid song files', async () => {
+test('UploadSongPlaylistAccordion rejects invalid song files', async () => {
   const handleCloseMock = jest.fn();
   const refreshSidebarDataMock = jest.fn();
   const setIsCloseAllowed = jest.fn();
@@ -276,7 +285,7 @@ test('AddSongPlaylistAccordion rejects invalid song files', async () => {
   const component = await act(() => {
     return render(
       <BrowserRouter>
-        <AddSongPlayListAccordion
+        <UploadSongPlaylistAccordion
           handleClose={handleCloseMock}
           refreshSidebarData={refreshSidebarDataMock}
           setIsCloseAllowed={setIsCloseAllowed}
@@ -293,13 +302,19 @@ test('AddSongPlaylistAccordion rejects invalid song files', async () => {
     fireEvent.click(accordionExpandSong);
   });
 
-  expect(component.getByText('Subir canción')).toBeInTheDocument();
+  expect(
+    component.getByText(t('uploadSongPlaylistAccordion.create-song')),
+  ).toBeInTheDocument();
 
-  const inputName = component.getByPlaceholderText('Nombre de la canción');
-  const inputPhoto = component.getByPlaceholderText(
-    'URL de la miniatura de la canción',
+  const inputName = component.getByPlaceholderText(
+    t('uploadSongPlaylistAccordion.song-name'),
   );
-  const selectGenreOption = component.getByText('❗ Elige un género');
+  const inputPhoto = component.getByPlaceholderText(
+    t('uploadSongPlaylistAccordion.song-thumbnail-url'),
+  );
+  const selectGenreOption = component.getByText(
+    t('uploadSongPlaylistAccordion.choose-genre-default'),
+  );
   const dropdown = component.getByTestId('select-genre');
 
   // Find the file input element by it's name or other suitable selector
@@ -332,18 +347,16 @@ test('AddSongPlaylistAccordion rejects invalid song files', async () => {
   });
   expect(fileInputElement.value).toBe('');
 
-  const submitSongButton = component.getByTestId(
-    'sidebar-addsongplaylistaccordion-submit-song',
-  );
+  const submitSongButton = component.getByTestId('sidebar-submit-song');
 
   await act(async () => {
     fireEvent.click(submitSongButton);
   });
 
-  expect(component.queryByText('Canción Añadida')).not.toBeInTheDocument();
+  expect(submitSongButton).toBeDisabled();
 });
 
-test('AddSongPlaylistAccordion disables the upload button while song is uploading', async () => {
+test('UploadSongPlaylistAccordion disables the upload button while song is uploading', async () => {
   const handleCloseMock = jest.fn();
   const refreshSidebarDataMock = jest.fn();
   const setIsCloseAllowed = jest.fn();
@@ -374,7 +387,7 @@ test('AddSongPlaylistAccordion disables the upload button while song is uploadin
   const component = await act(async () => {
     return render(
       <BrowserRouter>
-        <AddSongPlayListAccordion
+        <UploadSongPlaylistAccordion
           handleClose={handleCloseMock}
           refreshSidebarData={refreshSidebarDataMock}
           setIsCloseAllowed={setIsCloseAllowed}
@@ -391,13 +404,19 @@ test('AddSongPlaylistAccordion disables the upload button while song is uploadin
     fireEvent.click(accordionExpandSong);
   });
 
-  expect(component.getByText('Subir canción')).toBeInTheDocument();
+  expect(
+    component.getByText(t('uploadSongPlaylistAccordion.create-song')),
+  ).toBeInTheDocument();
 
-  const inputName = component.getByPlaceholderText('Nombre de la canción');
-  const inputPhoto = component.getByPlaceholderText(
-    'URL de la miniatura de la canción',
+  const inputName = component.getByPlaceholderText(
+    t('uploadSongPlaylistAccordion.song-name'),
   );
-  const selectGenreOption = component.getByText('❗ Elige un género');
+  const inputPhoto = component.getByPlaceholderText(
+    t('uploadSongPlaylistAccordion.song-thumbnail-url'),
+  );
+  const selectGenreOption = component.getByText(
+    t('uploadSongPlaylistAccordion.choose-genre-default'),
+  );
   const dropdown = component.getByTestId('select-genre');
 
   const fileInputElement = component.getByTestId(
@@ -416,9 +435,7 @@ test('AddSongPlaylistAccordion disables the upload button while song is uploadin
     fireEvent.change(fileInputElement, { target: { files: [validFile] } });
   });
 
-  const uploadSongButton = component.getByTestId(
-    'sidebar-addsongplaylistaccordion-submit-song',
-  );
+  const uploadSongButton = component.getByTestId('sidebar-submit-song');
 
   // Verify that the upload button is enabled
   await waitFor(() => {
@@ -466,7 +483,7 @@ test('Upload song form button disabled and enabled depending on filled fields', 
   const component = await act(async () => {
     return render(
       <BrowserRouter>
-        <AddSongPlayListAccordion
+        <UploadSongPlaylistAccordion
           handleClose={handleCloseMock}
           refreshSidebarData={refreshSidebarDataMock}
           setIsCloseAllowed={setIsCloseAllowed}
@@ -483,7 +500,14 @@ test('Upload song form button disabled and enabled depending on filled fields', 
     fireEvent.click(accordionExpandSong);
   });
   // Find elements
-  const inputName = component.getByPlaceholderText('Nombre de la canción');
+  expect(
+    component.getByText(t('uploadSongPlaylistAccordion.create-song')),
+  ).toBeInTheDocument();
+
+  const inputName = component.getByPlaceholderText(
+    t('uploadSongPlaylistAccordion.song-name'),
+  );
+
   const dropdown = component.getByTestId('select-genre');
   const fileInputElement = component.getByTestId(
     'sidebar-file-input',
@@ -491,9 +515,7 @@ test('Upload song form button disabled and enabled depending on filled fields', 
 
   const validFile = new File([''], 'test.mp3', { type: 'audio/mpeg' });
 
-  const submitButton = component.getByTestId(
-    'sidebar-addsongplaylistaccordion-submit-song',
-  ); // Submit button
+  const submitButton = component.getByTestId('sidebar-submit-song'); // Submit button
 
   // Initially, the submit button should be disabled
   expect(submitButton).toBeDisabled();
@@ -542,7 +564,7 @@ test('Add playlist form button disabled and enabled depending on filled fields',
   const component = await act(async () => {
     return render(
       <BrowserRouter>
-        <AddSongPlayListAccordion
+        <UploadSongPlaylistAccordion
           handleClose={handleCloseMock}
           refreshSidebarData={refreshSidebarDataMock}
           setIsCloseAllowed={setIsCloseAllowed}
@@ -559,11 +581,11 @@ test('Add playlist form button disabled and enabled depending on filled fields',
     fireEvent.click(accordionExpandSong);
   });
   // Find elements
-  const inputName = component.getByPlaceholderText('Nombre de la playlist');
+  const inputName = component.getByPlaceholderText(
+    t('uploadSongPlaylistAccordion.playlist-name'),
+  );
 
-  const submitButton = component.getByTestId(
-    'sidebar-addsongplaylistaccordion-submit-playlist',
-  ); // Submit button
+  const submitButton = component.getByTestId('sidebar-submit-playlist'); // Submit button
 
   // Initially, the submit button should be disabled
   expect(submitButton).toBeDisabled();

@@ -1,0 +1,37 @@
+{
+  "add-to-queue": "Add to queue",
+  "edit": "Edit details",
+  "create-similar-playlist": "Create similar playlist",
+  "delete": "Delete",
+  "download": "Download",
+  "add-to-playlist": "Add to another playlist",
+  "search-playlist": "Search for a playlist",
+  "create-playlist": "Create playlist",
+  "share": "Share",
+  "confirmationMenu": {
+    "add-success": {
+      "title": "Songs added",
+      "description": "The songs have been successfully added"
+    },
+    "add-error": {
+      "title": "Songs not added",
+      "description": "The songs could not be added"
+    },
+    "delete-success": {
+      "title": "Playlist deleted",
+      "description": "The playlist has been successfully deleted"
+    },
+    "delete-error": {
+      "title": "Playlist not deleted",
+      "description": "The playlist could not be deleted"
+    },
+    "clipboard": {
+      "title": "Link copied to clipboard",
+      "description": "The project repository link has been successfully copied"
+    },
+    "error": {
+      "title": "Error",
+      "description": "An error has occurred."
+    }
+  }
+}

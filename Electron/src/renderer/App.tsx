@@ -11,10 +11,10 @@ import UserType from 'utils/role';
 import RegisterMenu from 'pages/StartMenu/RegisterMenu';
 import { deleteToken } from 'utils/token';
 import { NowPlayingContextProvider } from 'providers/NowPlayingProvider';
-import styles from './AppCss.module.css';
+import styles from './app.module.css';
 import Sidebar from '../components/Sidebar/Sidebar';
 import Home from '../pages/Home/Home';
-import Explorar from '../pages/Explorar/Explorar';
+import Browse from '../pages/Browse/Browse';
 import Footer from '../components/footer/Footer';
 
 function App() {
@@ -74,11 +74,11 @@ function App() {
                     element=<Playlist refreshSidebarData={refreshSidebarData} />
                   />
                   <Route
-                    path="/explorar"
-                    element=<Explorar refreshSidebarData={refreshSidebarData} />
+                    path="/browse"
+                    element=<Browse refreshSidebarData={refreshSidebarData} />
                   />
                   <Route
-                    path="/explorar/genre/:id"
+                    path="/browse/genre/:id"
                     element=<Genre refreshSidebarData={refreshSidebarData} />
                   />
 

@@ -8,6 +8,7 @@ import { getTokenUsername } from 'utils/token';
 import { useNavigate } from 'react-router-dom';
 import useFetchGetUserPlaylistNames from 'hooks/useFetchGetUserPlaylistNames';
 import { PlaylistsService } from 'swagger/api';
+import { t } from 'i18next';
 import styles from '../contextMenu.module.css';
 import { PropsContextMenuSong } from '../types/propsContextMenu';
 
@@ -130,23 +131,25 @@ export default function ContextMenuSong({
     <div className={` ${styles.wrapperContextMenu}`}>
       <ul>
         <li>
-          <button type="button">Añadir a la cola</button>
+          <button type="button">{t('contextMenuSong.add-to-queue')}</button>
         </li>
         <li>
-          <button type="button">Ir a radio de la canción</button>
+          <button type="button">{t('contextMenuSong.go-to-radio')}</button>
           <button type="button" onClick={(e) => handleClickGoToArtist(e)}>
-            Ir al artista
+            {t('contextMenuSong.go-to-artist')}
           </button>
-          <button type="button">Ir al álbum</button>
+          <button type="button">{t('contextMenuSong.go-to-album')}</button>
         </li>
         <li>
-          <button type="button">Quitar de canciones que te gustan</button>
+          <button type="button">
+            {t('contextMenuSong.remove-from-liked-songs')}
+          </button>
           {playlistName !== '' && (
             <button
               type="button"
               onClick={() => handleDeleteSongFromPlaylist()}
             >
-              Quitar de esta lista
+              {t('contextMenuSong.remove-from-playlist')}
             </button>
           )}
           <button
@@ -154,7 +157,8 @@ export default function ContextMenuSong({
             className="d-flex justify-content-between align-items-center"
             onClick={handleClick}
           >
-            Añadir a la playlist <i className="fa-solid fa-chevron-right" />
+            {t('contextMenuSong.add-to-playlist')}{' '}
+            <i className="fa-solid fa-chevron-right" />
             <Popover
               id={id}
               open={open}
@@ -180,14 +184,16 @@ export default function ContextMenuSong({
               >
                 <ul style={{ height: '100%' }}>
                   <li>
-                    <button type="button">Buscar una lista</button>
+                    <button type="button">
+                      {t('contextMenuSong.search-playlist')}
+                    </button>
                   </li>
                   <li>
                     <button
                       type="button"
                       onClick={HandleCreatePlaylistFromSong}
                     >
-                      Crear lista
+                      {t('contextMenuSong.create-playlist')}
                     </button>
                   </li>
 
@@ -218,7 +224,7 @@ export default function ContextMenuSong({
         </li>
         <li>
           <button type="button" onClick={handleCopyToClipboard}>
-            Compartir
+            {t('contextMenuSong.share')}
           </button>
         </li>
       </ul>

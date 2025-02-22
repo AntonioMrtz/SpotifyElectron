@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import LoadingCircle from 'components/AdvancedUIComponents/LoadingCircle/LoadingCircle';
 import ArtistCard from 'components/Cards/ArtistCard/ArtistCard';
+import { t } from 'i18next';
 import styles from './homeCss.module.css';
 import PlaylistCard from '../../components/Cards/PlaylistCard/PlaylistCard';
 import useFetchGetPlaylists from '../../hooks/useFetchGetPlaylists';
@@ -16,6 +17,9 @@ export default function Home({ refreshSidebarData }: PropsHome) {
   const { playlists, loading: loadingPlaylists } =
     useFetchGetPlaylists(refreshSidebarData);
   const { artists, loading: loadingArtists } = useFetchGetArtists();
+
+  const madeForYouTitle = t('home.made-for');
+  const topArtistsTitle = t('home.top-artists');
 
   return (
     <div
@@ -34,11 +38,10 @@ export default function Home({ refreshSidebarData }: PropsHome) {
               type="button"
               className={`${styles.categoryTitle}`}
               onClick={() => {
-                navigate(`/showAllItemsPlaylist/Especialmente para ti`);
+                navigate(`/showAllItemsPlaylist/${madeForYouTitle}`);
               }}
             >
-              {' '}
-              Especialmente para ti{' '}
+              {t('home.made-for')}
             </button>
           </div>
           <div
@@ -48,10 +51,10 @@ export default function Home({ refreshSidebarData }: PropsHome) {
               type="button"
               className={`${styles.mostrarTodo}`}
               onClick={() => {
-                navigate(`/showAllItemsPlaylist/Especialmente para ti`);
+                navigate(`/showAllItemsPlaylist/${madeForYouTitle}`);
               }}
             >
-              Mostrar todos
+              {t('common.show-all')}
             </button>
           </div>
         </header>
@@ -88,10 +91,10 @@ export default function Home({ refreshSidebarData }: PropsHome) {
               type="button"
               className={`${styles.categoryTitle}`}
               onClick={() => {
-                navigate(`/showAllItemsArtist/Artistas recomendados`);
+                navigate(`/showAllItemsArtist/${topArtistsTitle}`);
               }}
             >
-              Artistas destacados
+              {t('home.top-artists')}
             </button>
           </div>
           <div
@@ -101,10 +104,10 @@ export default function Home({ refreshSidebarData }: PropsHome) {
               type="button"
               className={`${styles.mostrarTodo}`}
               onClick={() => {
-                navigate(`/showAllItemsArtist/Artistas recomendados`);
+                navigate(`/showAllItemsArtist/${topArtistsTitle}`);
               }}
             >
-              Mostrar todos
+              {t('common.show-all')}
             </button>
           </div>
         </header>

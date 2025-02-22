@@ -12,35 +12,47 @@ import ConfirmationModal from 'components/AdvancedUIComponents/InfoPopOver/InfoP
 import UserType from 'utils/role';
 import LoadingCircleSmall from 'components/AdvancedUIComponents/LoadingCircle/LoadingCircleSmall';
 import { getGenreFromString } from 'utils/genre';
+import { t } from 'i18next';
 import GenreOption from './GenreOption/GenreOption';
-import styles from './addSongPlayListAccordion.module.css';
+import styles from './uploadSongPlaylistAccordion.module.css';
 import useFetchGetGenres from '../../../../hooks/useFetchGetGenres';
 import { PlaylistsService } from '../../../../swagger/api/services/PlaylistsService';
 import { SongsService } from '../../../../swagger/api/services/SongsService';
 
-interface PropsAddSongPlayListAccordion {
+interface PropsuploadSongPlaylistAccordion {
   handleClose: Function;
   refreshSidebarData: () => void;
   setIsCloseAllowed: Function;
 }
 
-const MessagesInfoPopOver = {
-  PLAYLIST_ADDED_TITLE: 'Playlist Añadida',
-  PLAYLIST_ADDED_DESCRIPTION: 'La playlist se ha añadido correctamente',
-  PLAYLIST_NOT_ADDED_TITLE: 'Playlist no Añadida',
-  PLAYLIST_NOT_ADDED_DESCRIPTION: 'La playlist no se ha podido añadir',
-
-  SONG_ADDED_TITLE: 'Canción Añadida',
-  SONG_ADDED_DESCRIPTION: 'La canción se ha añadido correctamente',
-  SONG_NOT_ADDED_TITLE: 'Canción no Añadida',
-  SONG_NOT_ADDED_DESCRIPTION: 'La canción no se ha podido añadir',
-};
-
-export default function AddSongPlayListAccordion({
+export default function UploadSongPlaylistAccordion({
   handleClose,
   refreshSidebarData,
   setIsCloseAllowed,
-}: PropsAddSongPlayListAccordion) {
+}: PropsuploadSongPlaylistAccordion) {
+  /* Messages */
+
+  const MessagesInfoPopOver = {
+    PLAYLIST_ADDED_TITLE: t('uploadSongPlaylistAccordion.playlist-added-title'),
+    PLAYLIST_ADDED_DESCRIPTION: t(
+      'uploadSongPlaylistAccordion.playlist-added-description',
+    ),
+    PLAYLIST_NOT_ADDED_TITLE: t(
+      'uploadSongPlaylistAccordion.playlist-not-added-title',
+    ),
+    PLAYLIST_NOT_ADDED_DESCRIPTION: t(
+      'uploadSongPlaylistAccordion.playlist-not-added-description',
+    ),
+
+    SONG_ADDED_TITLE: t('uploadSongPlaylistAccordion.song-added-title'),
+    SONG_ADDED_DESCRIPTION: t(
+      'uploadSongPlaylistAccordion.song-added-description',
+    ),
+    SONG_NOT_ADDED_TITLE: t('uploadSongPlaylistAccordion.song-not-added-title'),
+    SONG_NOT_ADDED_DESCRIPTION: t(
+      'uploadSongPlaylistAccordion.song-not-added-description',
+    ),
+  };
   /* Check user type */
 
   const [isArtist, setIsArtist] = useState(false);
@@ -241,7 +253,8 @@ export default function AddSongPlayListAccordion({
               textTransform: 'uppercase',
             }}
           >
-            <LibraryMusicRoundedIcon /> Crear lista de reproducción
+            <LibraryMusicRoundedIcon />{' '}
+            {t('uploadSongPlaylistAccordion.create-playlist')}
           </Typography>
         </AccordionSummary>
         <AccordionDetails
@@ -258,7 +271,7 @@ export default function AddSongPlayListAccordion({
                     type="text"
                     id="name"
                     name="name"
-                    placeholder="Nombre de la playlist"
+                    placeholder={t('uploadSongPlaylistAccordion.playlist-name')}
                     className={` `}
                     onChange={handleChangePlaylist}
                     required
@@ -269,7 +282,9 @@ export default function AddSongPlayListAccordion({
                     type="text"
                     id="photo"
                     name="photo"
-                    placeholder="URL de la miniatura de la playlist"
+                    placeholder={t(
+                      'uploadSongPlaylistAccordion.playlist-thumbnail-url',
+                    )}
                     className={` `}
                     onChange={handleChangePlaylist}
                     required
@@ -281,7 +296,9 @@ export default function AddSongPlayListAccordion({
                 <textarea
                   id="description"
                   name="description"
-                  placeholder="Descripción de la playlist"
+                  placeholder={t(
+                    'uploadSongPlaylistAccordion.playlist-description',
+                  )}
                   onChange={handleChangePlaylist}
                   style={{ height: ' 50px', width: '100%' }}
                   required
@@ -291,7 +308,7 @@ export default function AddSongPlayListAccordion({
             <div className="d-flex flex-row">
               <p className="invisible">*</p>
               <p className="text-danger">
-                Los campos marcados con * son obligatorios.
+                {t('uploadSongPlaylistAccordion.obligatory-fields')}
               </p>
             </div>
 
@@ -299,10 +316,10 @@ export default function AddSongPlayListAccordion({
               type="button"
               onClick={handleSubmitPlaylist}
               className={`btn btn-lg ${styles.btnSend}`}
-              data-testid="sidebar-addsongplaylistaccordion-submit-playlist"
+              data-testid="sidebar-submit-playlist"
               disabled={!formDataPlaylist.name}
             >
-              Subir
+              {t('uploadSongPlaylistAccordion.upload')}
             </button>
           </form>
           <div className={`${styles.containerThumbNailUpload}`}>
@@ -332,7 +349,7 @@ export default function AddSongPlayListAccordion({
                 textTransform: 'uppercase',
               }}
             >
-              <AudiotrackIcon /> Subir canción
+              <AudiotrackIcon /> {t('uploadSongPlaylistAccordion.create-song')}
             </Typography>
           </AccordionSummary>
           <AccordionDetails
@@ -347,7 +364,7 @@ export default function AddSongPlayListAccordion({
                   type="text"
                   id="name"
                   name="name"
-                  placeholder="Nombre de la canción"
+                  placeholder={t('uploadSongPlaylistAccordion.song-name')}
                   className={` ${styles.input}`}
                   onChange={handleChangeSong}
                   required
@@ -358,7 +375,9 @@ export default function AddSongPlayListAccordion({
                 <input
                   type="text"
                   id="photo"
-                  placeholder="URL de la miniatura de la canción"
+                  placeholder={t(
+                    'uploadSongPlaylistAccordion.song-thumbnail-url',
+                  )}
                   onChange={handleChangeSong}
                   name="photo"
                   required
@@ -378,14 +397,16 @@ export default function AddSongPlayListAccordion({
                     id="genre"
                     data-testid="select-genre"
                     required
-                    defaultValue="Elige un género"
+                    defaultValue={t('uploadSongPlaylistAccordion.choose-genre')}
                   >
                     <option
                       className={` ${styles.option}`}
-                      value="Elige un género"
+                      value={t(
+                        'uploadSongPlaylistAccordion.choose-genre-default',
+                      )}
                       disabled
                     >
-                      ❗ Elige un género
+                      {t('uploadSongPlaylistAccordion.choose-genre-default')}
                     </option>
 
                     {genres &&
@@ -414,14 +435,14 @@ export default function AddSongPlayListAccordion({
                 </div>
               </div>
               <p className="text-danger mt-2">
-                Los campos marcados con * son obligatorios.
+                {t('uploadSongPlaylistAccordion.obligatory-fields')}
               </p>
 
               <button
                 type="button"
                 onClick={handleSubmitSong}
                 className={`btn btn-lg ${styles.btnSend} d-flex flex-row justify-content-center`}
-                data-testid="sidebar-addsongplaylistaccordion-submit-song"
+                data-testid="sidebar-submit-song"
                 disabled={
                   !formDataSong.name ||
                   !formDataSong.genre ||
@@ -429,7 +450,8 @@ export default function AddSongPlayListAccordion({
                   loadingUploadSong
                 }
               >
-                Subir {loadingUploadSong && <LoadingCircleSmall />}
+                {t('uploadSongPlaylistAccordion.upload')}{' '}
+                {loadingUploadSong && <LoadingCircleSmall />}
               </button>
             </form>
 

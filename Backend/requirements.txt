@@ -1,6 +1,6 @@
 fastapi==0.115.7
 python-dotenv==0.21.0
-python-jose==3.3.0
+python-jose==3.4.0
 python-multipart==0.0.20
 requests==2.32.0
 librosa==0.10.2.post1

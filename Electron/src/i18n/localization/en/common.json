@@ -5,5 +5,7 @@
   "songs": "Songs",
   "playlists": "Playlists",
   "users": "Users",
-  "artists": "Artists"
+  "artists": "Artists",
+  "artist": "Artist",
+  "user": "User"
 }

@@ -1,4 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
+import { t } from 'i18next';
 import styles from '../cards.module.css';
 import { PropsArtistCard } from './types/propsArtistCard';
 import defaultThumbnailPlaylist from '../../../assets/imgs/DefaultThumbnailPlaylist.jpg';
@@ -40,7 +41,7 @@ export default function ArtistCard({ name, photo }: PropsArtistCard) {
             onClick={handleClickArtist}
             className={`${styles.autorLista}`}
           >
-            Artista
+            {t('common.artist')}
           </button>
         </div>
       </Link>

@@ -1,9 +1,6 @@
 # ⚙️ Set up and run BACKEND
 
-In this section we will cover:
-
-- How to set up the proyect
-- Deploy docker containers for development and production
+In this section we will cover how to set up the backend of the application.
 
 ## 🛠 Set up the proyect
 
@@ -15,19 +12,19 @@ cd Backend/
 
 ### 2. Launch Backend dependencies using Docker
 
-This will launch all required dependencies such as MongoDB database for local development
+This will launch all required dependencies such as MongoDB database for local backend development.
 
 ```console
 cd Backend/docker/;
 ./build_and_up_dev_backend.sh;
 ```
 
-* More on Docker in [Docker docs](Docker.md).
+* Learn more about other Docker configurations for the application in [Docker docs](Docker.md).
 
 
 ### 3. Get or create `.env` file under `Backend/
 
-Development ready enviroment is provided at `Backend/docker/`. Copy and rename it to `.env` using the following command:
+A development ready environment files is provided at `Backend/docker/`. The environment files has to be placed under `Backend/` folder and should be named `.env`. It can be done using the following command:
 
 ```console
 cd Backend/docker/;
@@ -61,13 +58,12 @@ pip install -r requirements.txt &&
 pip install -r requirements-dev.txt &&
 pip install -r requirements-test.txt
 ```
-There's included a script `install-all-requirements.sh` that install all dependencies from a given directory in an already create virtual environment (Folder has to be named `venv`). Works both for Windows and Linux.
 
 
 ### 5. Run the app:
 
 * App will be launched at [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
-* Swagger docs will be launched at [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+* Swagger docs will be available at [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
 
 
 #### Standar with hot reload

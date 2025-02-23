@@ -12,11 +12,13 @@ npm run test
 
 ### Coverage run
 
-Run test and generate coverage, there will be a coverage folder under `Electron/`. Open `index.html` file to get an UI for visualizing coverage.
+Run test and generate coverage, open `Electron/coverage/lcov-report`. Open `index.html` file to get an UI for visualizing coverage.
 
 ```console
 npm run test:coverage
 ```
+
+_If your browser is in a sandbox environment use `python -m http.server [port]` inside `htmlcov/` folder to serve an HTTP Server with the generated coverage._
 
 ### Standalone test run
 

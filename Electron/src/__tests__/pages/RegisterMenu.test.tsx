@@ -5,6 +5,7 @@ import RegisterMenu from 'pages/StartMenu/RegisterMenu';
 import Global from 'global/global';
 import timeout from 'utils/timeout';
 import { CancelablePromise } from 'swagger/api';
+import { t } from 'i18next';
 import { UsersService } from '../../swagger/api/services/UsersService';
 
 jest.mock('../../swagger/api/services/UsersService');
@@ -24,7 +25,7 @@ describe('RegisterMenu Component', () => {
     const component = render(<RegisterMenu setIsSigningUp={jest.fn()} />);
 
     expect(component.container).toHaveTextContent(
-      'Regístrate en Spotify Electron',
+      t('registerMenu.form-register-title'),
     );
   });
 
@@ -35,29 +36,29 @@ describe('RegisterMenu Component', () => {
       <RegisterMenu setIsSigningUp={mockSetIsSigningUp} />,
     );
 
-    const registerButton = component.getByText('Registrar');
+    const registerButton = component.getByText(
+      t('registerMenu.form-register-button'),
+    );
     fireEvent.click(registerButton);
 
     expect(
       component.queryByText(
-        'No se han introducido todos los datos de registro obligatorios',
+        t('registerMenu.cant-register-missing-fields-title'),
       ),
     ).toBeInTheDocument();
 
     const popover = document.getElementById('button-info-popover');
-    expect(popover).toBeVisible();
+    expect(popover).toBeInTheDocument();
     if (popover) {
       fireEvent.click(popover);
     }
 
-    fireEvent.click(document.body);
-
     expect(
       component.queryByText(
-        'No se han introducido todos los datos de registro obligatorios',
+        t('registerMenu.cant-register-missing-fields-title'),
       ),
     ).toBeNull();
-    expect(popover).not.toBeVisible();
+    expect(popover).not.toBeInTheDocument();
   });
 
   test('Register failed bad input', () => {
@@ -67,17 +68,19 @@ describe('RegisterMenu Component', () => {
       <RegisterMenu setIsSigningUp={mockSetIsSigningUp} />,
     );
 
-    const registerButton = component.getByText('Registrar');
+    const registerButton = component.getByText(
+      t('registerMenu.form-register-button'),
+    );
     fireEvent.click(registerButton);
 
     expect(
       component.queryByText(
-        'No se han introducido todos los datos de registro obligatorios',
+        t('registerMenu.cant-register-missing-fields-title'),
       ),
     ).toBeInTheDocument();
 
     const popover = document.getElementById('button-info-popover');
-    expect(popover).toBeVisible();
+    expect(popover).toBeInTheDocument();
     if (popover) {
       fireEvent.click(popover);
     }
@@ -86,10 +89,10 @@ describe('RegisterMenu Component', () => {
 
     expect(
       component.queryByText(
-        'No se han introducido todos los datos de registro obligatorios',
+        t('registerMenu.cant-register-missing-fields-title'),
       ),
     ).toBeNull();
-    expect(popover).not.toBeVisible();
+    expect(popover).not.toBeInTheDocument();
   });
 
   test('Register failed different password inputs', () => {
@@ -109,11 +112,17 @@ describe('RegisterMenu Component', () => {
 
     // Simulate user input
 
-    const inputName = component.getByPlaceholderText('Nombre de usuario');
-    const inputPhoto = component.getByPlaceholderText('Foto de perfil');
-    const inputPassword = component.getByPlaceholderText('Contraseña');
+    const inputName = component.getByPlaceholderText(
+      t('registerMenu.form-username'),
+    );
+    const inputPhoto = component.getByPlaceholderText(
+      t('registerMenu.form-thumbnail'),
+    );
+    const inputPassword = component.getByPlaceholderText(
+      t('registerMenu.form-password'),
+    );
     const inputConfirmPassword = component.getByPlaceholderText(
-      'Confirma tu contraseña',
+      t('registerMenu.form-password-repeat'),
     );
 
     fireEvent.change(inputName, {
@@ -129,11 +138,15 @@ describe('RegisterMenu Component', () => {
       target: { value: 'testpassworddiferente' },
     });
 
-    const registerButton = component.getByText('Registrar');
+    const registerButton = component.getByText(
+      t('registerMenu.form-register-button'),
+    );
     fireEvent.click(registerButton);
 
     expect(
-      component.queryByText('Las contraseñas no coinciden'),
+      component.queryByText(
+        t('registerMenu.cant-register-password-dont-match-title'),
+      ),
     ).toBeInTheDocument();
   });
 
@@ -152,11 +165,17 @@ describe('RegisterMenu Component', () => {
 
     // Simulate user input
 
-    const inputName = component.getByPlaceholderText('Nombre de usuario');
-    const inputPhoto = component.getByPlaceholderText('Foto de perfil');
-    const inputPassword = component.getByPlaceholderText('Contraseña');
+    const inputName = component.getByPlaceholderText(
+      t('registerMenu.form-username'),
+    );
+    const inputPhoto = component.getByPlaceholderText(
+      t('registerMenu.form-thumbnail'),
+    );
+    const inputPassword = component.getByPlaceholderText(
+      t('registerMenu.form-password'),
+    );
     const inputConfirmPassword = component.getByPlaceholderText(
-      'Confirma tu contraseña',
+      t('registerMenu.form-password-repeat'),
     );
 
     fireEvent.change(inputName, {
@@ -172,7 +191,9 @@ describe('RegisterMenu Component', () => {
       target: { value: 'testpassword' },
     });
 
-    const registerButton = component.getByText('Registrar');
+    const registerButton = component.getByText(
+      t('registerMenu.form-register-button'),
+    );
 
     await act(async () => {
       fireEvent.click(registerButton);
@@ -180,7 +201,7 @@ describe('RegisterMenu Component', () => {
 
     expect(mockRegisterPromise.isCancelled).toBe(true);
     expect(
-      screen.getByText('El servidor esta iniciándose'),
+      screen.getByText(t('commonPopover.cold-start-title')),
     ).toBeInTheDocument();
   });
 
@@ -211,11 +232,17 @@ describe('RegisterMenu Component', () => {
 
     // Simulate user input
 
-    const inputName = component.getByPlaceholderText('Nombre de usuario');
-    const inputPhoto = component.getByPlaceholderText('Foto de perfil');
-    const inputPassword = component.getByPlaceholderText('Contraseña');
+    const inputName = component.getByPlaceholderText(
+      t('registerMenu.form-username'),
+    );
+    const inputPhoto = component.getByPlaceholderText(
+      t('registerMenu.form-thumbnail'),
+    );
+    const inputPassword = component.getByPlaceholderText(
+      t('registerMenu.form-password'),
+    );
     const inputConfirmPassword = component.getByPlaceholderText(
-      'Confirma tu contraseña',
+      t('registerMenu.form-password-repeat'),
     );
 
     fireEvent.change(inputName, {
@@ -231,14 +258,16 @@ describe('RegisterMenu Component', () => {
       target: { value: 'testpassword' },
     });
 
-    const registerButton = component.getByText('Registrar');
+    const registerButton = component.getByText(
+      t('registerMenu.form-register-button'),
+    );
 
     await act(async () => {
       fireEvent.click(registerButton);
     });
 
     const popover = document.getElementById('button-info-popover');
-    expect(popover).toBeVisible();
+    expect(popover).toBeInTheDocument();
     if (popover) {
       fireEvent.click(popover);
     }
@@ -254,7 +283,7 @@ describe('RegisterMenu Component', () => {
     );
 
     const regiserButton = component.getByText(
-      'Inicia sesión en Spotify Electron',
+      t('registerMenu.go-to-login-button'),
     );
     fireEvent.click(regiserButton);
 

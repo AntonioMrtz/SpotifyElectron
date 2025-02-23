@@ -50,6 +50,7 @@ const configuration: webpack.Configuration = {
               importLoaders: 1,
             },
           },
+
         ],
         include: /\.module\.css$/,
       },

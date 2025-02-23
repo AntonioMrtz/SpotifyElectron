@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { getTokenRole, getTokenUsername } from 'utils/token';
+import { t } from 'i18next';
 import styles from '../contextMenu.module.css';
 
 interface PropsContextMenuProfile {
@@ -30,16 +31,16 @@ export default function ContextMenuProfile({
   };
 
   return (
-    <div className={` ${styles.wrapperContextMenu}`}>
+    <div className={styles.wrapperContextMenu}>
       <ul>
         <li>
           <button type="button" onClick={handleClickProfile}>
-            Perfil
+            {t('contextMenuProfile.profile')}
           </button>
         </li>
         <li>
           <button type="button" onClick={handleClickLogout}>
-            Cerrar sesión
+            {t('contextMenuProfile.log-out')}
           </button>
         </li>
       </ul>

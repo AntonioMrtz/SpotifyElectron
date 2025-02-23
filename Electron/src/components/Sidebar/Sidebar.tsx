@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { getTokenUsername } from 'utils/token';
 import LoadingCircle from 'components/AdvancedUIComponents/LoadingCircle/LoadingCircle';
-import styles from './sideBarCss.module.css';
+import { t } from 'i18next';
+import styles from './sidebar.module.css';
 import PlaylistSidebar from './Playlist/PlaylistSidebar';
-import ModalAddSongPlaylist from './ModalAddSongPlaylist/ModalAddSongPlaylist';
+import ModalUploadSongPlaylist from './ModalUploadSongPlaylist/ModalUploadSongPlaylist';
 import useFetchGetUserRelevantPlaylists from '../../hooks/useFetchGetUserRelevantPlaylists';
 
 interface PropsSidebar {
@@ -27,9 +28,9 @@ export default function Sidebar({
 
   useEffect(() => {
     if (location.pathname === '/') {
-      setSelectedID('li-inicio');
-    } else if (location.pathname.includes('/explorar')) {
-      setSelectedID('li-buscar');
+      setSelectedID('li-home');
+    } else if (location.pathname.includes('/browse')) {
+      setSelectedID('li-browse');
     } else {
       setSelectedID('');
     }
@@ -37,38 +38,38 @@ export default function Sidebar({
 
   //* MENU HOVER
 
-  const [listItemInicio, setHoverInicio] = useState('');
-  const [listItemBuscar, setHoverBuscar] = useState('');
+  const [listItemHome, setHoverHome] = useState('');
+  const [listItemBrowse, setHoverBrowse] = useState('');
 
-  const [isHoveredInicio, setIsHoveredInicio] = useState(false);
-  const [isHoveredBuscar, setIsHoveredBuscar] = useState(false);
+  const [isHoveredHome, setIsHoveredHome] = useState(false);
+  const [isHoveredBrowse, setIsHoveredBrowse] = useState(false);
 
-  const handleMouseOverInicio = () => {
-    setIsHoveredInicio(true);
+  const handleMouseOverHome = () => {
+    setIsHoveredHome(true);
   };
 
-  const handleMouseOutInicio = () => {
-    setIsHoveredInicio(false);
+  const handleMouseOutHome = () => {
+    setIsHoveredHome(false);
   };
 
-  const handleMouseOverBuscar = () => {
-    setIsHoveredBuscar(true);
+  const handleMouseOverBrowse = () => {
+    setIsHoveredBrowse(true);
   };
 
-  const handleMouseOutBuscar = () => {
-    setIsHoveredBuscar(false);
+  const handleMouseOutBrowse = () => {
+    setIsHoveredBrowse(false);
   };
 
   useEffect(() => {
-    setHoverInicio(isHoveredInicio ? styles.linksubtle : '');
-    setHoverBuscar(isHoveredBuscar ? styles.linksubtle : '');
-  }, [isHoveredBuscar, isHoveredInicio]);
+    setHoverHome(isHoveredHome ? styles.linksubtle : '');
+    setHoverBrowse(isHoveredBrowse ? styles.linksubtle : '');
+  }, [isHoveredBrowse, isHoveredHome]);
 
-  const handleUrlInicioClicked = () => {
+  const handleUrlHomeClicked = () => {
     setSelectedPlaylist('');
   };
 
-  const handleUrlBuscarClicked = () => {
+  const handleUrlOnBrowseClicked = () => {
     setSelectedPlaylist('');
   };
 
@@ -91,39 +92,41 @@ export default function Sidebar({
             <Link to="/">
               <button
                 type="button"
-                onFocus={handleMouseOverInicio}
-                onBlur={handleMouseOutInicio}
+                onFocus={handleMouseOverHome}
+                onBlur={handleMouseOutHome}
                 className={`${
                   styles.headerLi
-                } ${listItemInicio} ${getSelectedClass('li-inicio')} `}
-                onMouseOver={handleMouseOverInicio}
-                onMouseOut={handleMouseOutInicio}
-                onClick={handleUrlInicioClicked}
-                id="li-inicio"
+                } ${listItemHome} ${getSelectedClass('li-home')} `}
+                onMouseOver={handleMouseOverHome}
+                onMouseOut={handleMouseOutHome}
+                onClick={handleUrlHomeClicked}
+                id="li-home"
               >
                 <i className={`fa-solid fa-house fa-fw ${styles.headerI}`} />
-                <span className={`${styles.headerI}`}>Inicio</span>
+                <span className={`${styles.headerI}`}>{t('sidebar.home')}</span>
               </button>
             </Link>
           </li>
           <li>
-            <Link to="/explorar" className={`${styles.aHeader}`}>
+            <Link to="/browse" className={`${styles.aHeader}`}>
               <button
                 type="button"
-                onFocus={handleMouseOverBuscar}
-                onBlur={handleMouseOutBuscar}
+                onFocus={handleMouseOverBrowse}
+                onBlur={handleMouseOutBrowse}
                 className={`${
                   styles.headerLi
-                } ${listItemBuscar} ${getSelectedClass('li-buscar')}`}
-                onMouseOver={handleMouseOverBuscar}
-                onMouseOut={handleMouseOutBuscar}
-                onClick={handleUrlBuscarClicked}
-                id="li-buscar"
+                } ${listItemBrowse} ${getSelectedClass('li-browse')}`}
+                onMouseOver={handleMouseOverBrowse}
+                onMouseOut={handleMouseOutBrowse}
+                onClick={handleUrlOnBrowseClicked}
+                id="li-browse"
               >
                 <i
                   className={`fa-solid fa-magnifying-glass fa-fw ${styles.headerI}`}
                 />
-                <span className={`${styles.headerI}`}>Buscar</span>
+                <span className={`${styles.headerI}`}>
+                  {t('sidebar.browse')}
+                </span>
               </button>
             </Link>
           </li>
@@ -142,7 +145,7 @@ export default function Sidebar({
             <div className="container-fluid d-flex justify-content-start p-0">
               <div className="container-fluid ps-0">
                 <i className="fa-solid fa-swatchbook fa-fw" />
-                Tu biblioteca
+                {t('sidebar.your-library')}
               </div>
             </div>
 
@@ -150,7 +153,9 @@ export default function Sidebar({
               className="container-fluid d-flex justify-content-end p-0"
               style={{ width: '25%' }}
             >
-              <ModalAddSongPlaylist refreshSidebarData={refreshSidebarData} />
+              <ModalUploadSongPlaylist
+                refreshSidebarData={refreshSidebarData}
+              />
             </div>
           </header>
           <ul

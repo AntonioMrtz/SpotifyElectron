@@ -8,6 +8,7 @@ import timeout from 'utils/timeout';
 import Global from 'global/global';
 import LoadingCircleSmall from 'components/AdvancedUIComponents/LoadingCircle/LoadingCircleSmall';
 import { CancelablePromise } from 'swagger/api';
+import { t } from 'i18next';
 import styles from './startMenu.module.css';
 import SpotifyElectronLogo from '../../assets/imgs/SpotifyElectronLogo.png';
 import { UsersService } from '../../swagger/api/services/UsersService';
@@ -56,8 +57,8 @@ export default function RegisterMenu({ setIsSigningUp }: PropsRegisterMenu) {
       setisOpenPopover(true);
 
       setPropsPopOver({
-        title: 'No se han introducido todos los datos de registro obligatorios',
-        description: 'Introduce los datos restantes',
+        title: t('registerMenu.cant-register-missing-fields-title'),
+        description: t('registerMenu.cant-register-missing-fields-description'),
         type: InfoPopoverType.ERROR,
         triggerOpenConfirmationModal: false,
         handleClose: () => {
@@ -71,8 +72,10 @@ export default function RegisterMenu({ setIsSigningUp }: PropsRegisterMenu) {
       setisOpenPopover(true);
 
       setPropsPopOver({
-        title: 'Las contraseñas no coinciden',
-        description: 'Asegúrese de que las contraseñas son iguales',
+        title: t('registerMenu.cant-register-password-dont-match-title'),
+        description: t(
+          'registerMenu.cant-register-password-dont-match-description',
+        ),
         type: InfoPopoverType.ERROR,
         triggerOpenConfirmationModal: false,
         handleClose: () => {
@@ -99,8 +102,8 @@ export default function RegisterMenu({ setIsSigningUp }: PropsRegisterMenu) {
 
       setisOpenPopover(true);
       setPropsPopOver({
-        title: 'Usuario registrado',
-        description: 'El usuario ha sido registrado con éxito',
+        title: t('registerMenu.register-success-title'),
+        description: t('registerMenu.register-success-description'),
         type: InfoPopoverType.SUCCESS,
         triggerOpenConfirmationModal: false,
         handleClose: () => {
@@ -117,13 +120,11 @@ export default function RegisterMenu({ setIsSigningUp }: PropsRegisterMenu) {
 
       if (error instanceof Error && error.message === 'Timeout') {
         createUserPromise?.cancel();
-
-        title = 'El servidor esta iniciándose';
-        description =
-          'El servidor esta iniciándose (cold-start), inténtelo de nuevo en 1 minuto';
+        title = t('commonPopover.cold-start-title');
+        description = t('commonPopover.cold-start-description');
       } else {
-        title = 'Los credenciales introducidos no son válidos';
-        description = 'No se ha podido registrar el usuario';
+        title = t('registerMenu.cant-register-title');
+        description = t('cant-register-description');
       }
 
       setPropsPopOver({
@@ -157,18 +158,18 @@ export default function RegisterMenu({ setIsSigningUp }: PropsRegisterMenu) {
 
         <hr />
 
-        <h1>Regístrate en Spotify Electron</h1>
+        <h1>{t('registerMenu.form-register-title')}</h1>
         <form className={`d-flex flex-column ${styles.formWrapper} w-100`}>
           <label
             htmlFor="username"
             className="d-flex flex-column justify-content-start"
           >
-            Nombre de usuario
+            {t('registerMenu.form-username')}
             <input
               type="text"
               name="name"
               id="name"
-              placeholder="Nombre de usuario"
+              placeholder={t('registerMenu.form-username')}
               onChange={handleChange}
               disabled={loading}
               spellCheck={false}
@@ -179,12 +180,12 @@ export default function RegisterMenu({ setIsSigningUp }: PropsRegisterMenu) {
             htmlFor="url"
             className="d-flex flex-column justify-content-start"
           >
-            Foto de perfil
+            {t('registerMenu.form-thumbnail')}
             <input
               type="text"
               name="photo"
               id="photo"
-              placeholder="Foto de perfil"
+              placeholder={t('registerMenu.form-thumbnail')}
               onChange={handleChange}
               disabled={loading}
               spellCheck={false}
@@ -197,12 +198,12 @@ export default function RegisterMenu({ setIsSigningUp }: PropsRegisterMenu) {
               htmlFor="password"
               className="d-flex flex-column justify-content-start"
             >
-              Contraseña
+              {t('registerMenu.form-password')}
               <input
                 type="password"
                 name="password"
                 id="password"
-                placeholder="Contraseña"
+                placeholder={t('registerMenu.form-password')}
                 onChange={handleChange}
                 disabled={loading}
                 spellCheck={false}
@@ -214,12 +215,12 @@ export default function RegisterMenu({ setIsSigningUp }: PropsRegisterMenu) {
               htmlFor="password"
               className="d-flex flex-column justify-content-start"
             >
-              Confirma tu contraseña
+              {t('registerMenu.form-password-repeat')}
               <input
                 type="password"
                 name="confirmpassword"
                 id="confirmpassword"
-                placeholder="Confirma tu contraseña"
+                placeholder={t('registerMenu.form-password-repeat')}
                 onChange={handleChange}
                 disabled={loading}
                 spellCheck={false}
@@ -237,7 +238,9 @@ export default function RegisterMenu({ setIsSigningUp }: PropsRegisterMenu) {
             disabled={loading}
             onClick={handleRegister}
           >
-            Registrar {loading && <LoadingCircleSmall />}
+            {t('registerMenu.form-register-button')}
+
+            {loading && <LoadingCircleSmall />}
           </button>
         </form>
 
@@ -247,7 +250,7 @@ export default function RegisterMenu({ setIsSigningUp }: PropsRegisterMenu) {
           className={`d-flex w-100 justify-content-center ${styles.wrapperRegisterText}`}
         >
           <p style={{ color: 'var(--secondary-white)', marginRight: '8px' }}>
-            ¿Ya tienes una cuenta?
+            {t('registerMenu.already-have-account')}
           </p>
           <button
             onClick={handleClickLogin}
@@ -261,7 +264,7 @@ export default function RegisterMenu({ setIsSigningUp }: PropsRegisterMenu) {
               padding: '0px',
             }}
           >
-            Inicia sesión en Spotify Electron
+            {t('registerMenu.go-to-login-button')}
           </button>
         </div>
       </div>

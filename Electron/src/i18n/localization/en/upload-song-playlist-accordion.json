@@ -1,0 +1,21 @@
+{
+  "create-playlist": "Create playlist",
+  "create-song": "Upload song",
+  "obligatory-fields": "Fields marked with * are mandatory.",
+  "playlist-name": "Playlist name",
+  "playlist-thumbnail-url": "Playlist thumbnail URL",
+  "playlist-description": "Playlist description",
+  "song-name": "Song name",
+  "song-thumbnail-url": "Song thumbnail URL",
+  "choose-genre-default": "❗ Choose a genre",
+  "choose-genre": "Choose a genre",
+  "upload": "Upload",
+  "song-added-title": "Song added",
+  "song-added-description": "The song has been added successfully.",
+  "song-not-added-title": "Error adding song",
+  "song-not-added-description": "The song could not be added.",
+  "playlist-added-title": "Playlist added",
+  "playlist-added-description": "The playlist has been added successfully.",
+  "playlist-not-added-title": "Error adding playlist",
+  "playlist-not-added-description": "The playlist could not be added."
+}

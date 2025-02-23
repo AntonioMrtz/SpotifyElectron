@@ -32,7 +32,7 @@ Test run and generate code coverage in folder `htmlcov/index.html`.
 ```console
 python -m pytest tests/ --cov=app/ --cov-report=html
 ```
-_If your browser is in a sandbox environment use `python -m http.server [port]` inside `htmlcov/` folder to serve an HTTP Server._
+_If your browser is in a sandbox environment use `python -m http.server [port]` inside `htmlcov/` folder to serve an HTTP Server with the generated coverage._
 
 ### Debug run VSCODE
 

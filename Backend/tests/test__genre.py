@@ -1,6 +1,5 @@
-import pytest
 from fastapi.testclient import TestClient
-from pytest import fixture, raises
+from pytest import fail, fixture, raises
 from starlette.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_202_ACCEPTED
 
 from app.__main__ import app
@@ -44,7 +43,7 @@ def test_validate_genre():
     try:
         Genre.validate_genre(valid_genre.value)
     except Exception as e:
-        pytest.fail(f"Error while validating a valid genre: {e}")
+        fail(f"Error while validating a valid genre: {e}")
 
 
 def test_validate_genre_invalid():

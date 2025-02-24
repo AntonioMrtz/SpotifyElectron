@@ -467,3 +467,38 @@ def get_user_playback_history(
             status_code=HTTP_500_INTERNAL_SERVER_ERROR,
             content=PropertiesMessagesManager.commonInternalServerError,
         )
+
+
+@router.patch("/{name}/promote")
+def promote_user_to_artist(
+    name: str, token: Annotated[TokenData, Depends(JWTBearer())]
+) -> Response:
+    """Promote user to artist
+
+    Args:
+        name (str): user name
+        token (Annotated[TokenData, Depends): JWT info
+    """
+    try:
+        user_service.promote_user_to_artist(name, token)
+        return Response(status_code=HTTP_204_NO_CONTENT)
+    except BaseUserBadNameError:
+        return Response(
+            status_code=HTTP_400_BAD_REQUEST,
+            content=PropertiesMessagesManager.userBadName,
+        )
+    except BaseUserNotFoundError:
+        return Response(
+            status_code=HTTP_404_NOT_FOUND,
+            content=PropertiesMessagesManager.userNotFound,
+        )
+    except UserUnauthorizedError:
+        return Response(
+            status_code=HTTP_403_FORBIDDEN,
+            content=PropertiesMessagesManager.userUnauthorized,
+        )
+    except (Exception, BaseUserServiceError):
+        return Response(
+            status_code=HTTP_500_INTERNAL_SERVER_ERROR,
+            content=PropertiesMessagesManager.commonInternalServerError,
+        )

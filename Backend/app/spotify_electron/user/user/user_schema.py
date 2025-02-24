@@ -1,5 +1,5 @@
 """
-Song schema for User domain model
+Schema for User domain model
 """
 
 from dataclasses import dataclass
@@ -19,7 +19,7 @@ from app.spotify_electron.user.base_user_schema import (
 
 @dataclass
 class UserDAO(BaseUserDAO):
-    """Represents  user data in the persistence layer"""
+    """Represents user data in the persistence layer"""
 
     playback_history: list[str]
     playlists: list[str]

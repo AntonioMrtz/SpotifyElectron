@@ -1,4 +1,3 @@
-import pytest
 from pytest import fixture
 from starlette.status import (
     HTTP_200_OK,
@@ -68,7 +67,7 @@ def test_get_search_by_name_invalid_name(clear_test_data_db):
 
 
 # executes after all tests
-@pytest.fixture()
+@fixture()
 def clear_test_data_db():
     name = "8232392323623823723"
     playlist_name = "playlist"

@@ -12,6 +12,10 @@ import app.spotify_electron.user.validations.base_user_service_validations as ba
 from app.auth.auth_schema import TokenData, UserUnauthorizedError
 from app.logging.logging_constants import LOGGING_USER_SERVICE
 from app.logging.logging_schema import SpotifyElectronLogger
+from app.spotify_electron.user.artist.artist_schema import (
+    ArtistAlreadyExistsError,
+    ArtistServiceError,
+)
 from app.spotify_electron.user.base_user_schema import (
     BaseUserAlreadyExistsError,
     BaseUserBadNameError,
@@ -193,15 +197,17 @@ def promote_user_to_artist(name: str, token: TokenData) -> None:
     """Promote user to artist
 
     Args:
-        name (str): user name
-        token (TokenData): token data
+        name (str): Username of the user to be promoted
+        token (TokenData): Token containing user authentication and authorization data
 
     Raises:
-        UserBadNameError: if the user name parameter is invalid
-        UserUnauthorizedError: if the user credentials are wrong
-        UserNotFoundError: if the user does not exist
-        UserRepositoryError: unexpected error while promoting user
-        UserServiceError: unexpected error while promoting user
+        ArtistAlreadyExistsError: If an artist with the given name already exists
+        UserBadNameError: If the provided username is invalid
+        UserUnauthorizedError: If the user lacks required permissions
+        UserNotFoundError: If no user exists with the given name
+        UserRepositoryError: If an unexpected error occurs in user repository operations
+        ArtistServiceError: If artist profile creation fails
+        UserServiceError: If an unexpected error occurs during promotion process
     """
     try:
         # TODO: Make this a transaction. Currently it's transaction-like.
@@ -214,6 +220,9 @@ def promote_user_to_artist(name: str, token: TokenData) -> None:
             user.name, user_collection_provider.get_user_collection()
         )
         user_service_logger.info(f"User: {user.name} promoted to artist successfully")
+    except ArtistAlreadyExistsError as exception:
+        user_service_logger.exception(f"Artist already exists: {name}")
+        raise ArtistAlreadyExistsError from exception
     except BaseUserBadNameError as exception:
         user_service_logger.exception(f"Bad parameters for user: {name}")
         raise UserBadNameError from exception
@@ -231,6 +240,11 @@ def promote_user_to_artist(name: str, token: TokenData) -> None:
             f"Unexpected error in User Repository promoting user: {name}"
         )
         raise UserRepositoryError from exception
+    except ArtistServiceError as exception:
+        artist_service.artist_service_logger.exception(
+            f"Artist creation from User {name} failed"
+        )
+        raise ArtistServiceError from exception
     except Exception as exception:
         user_service_logger.exception(
             f"Unexpected error in User Service promoting user: {name}"

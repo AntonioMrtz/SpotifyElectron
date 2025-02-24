@@ -21,6 +21,7 @@ from app.spotify_electron.song.validations.base_song_service_validations import 
     validate_song_name_parameter,
 )
 from app.spotify_electron.user.artist.artist_schema import (
+    ArtistAlreadyExistsError,
     ArtistBadNameError,
     ArtistDTO,
     ArtistNotFoundError,
@@ -137,26 +138,31 @@ def create_artist(user_name: str, photo: str, password: str) -> None:
 
 
 def create_artist_from_user(user: UserDAO) -> None:
-    """
-    Creates an artist from a user object existing data.
+    """Create an Artist from an User object with existing data.
+
     Args:
         user (UserDAO): User data access object containing user information
-    Returns:
-        None
 
     Raises:
+        ArtistAlreadyExistsError: If artist already exists
         ArtistServiceError: If creation fails
     """
     try:
+        artist_service_validations.validate_artist_should_not_exist(user.name)
         artist_repository.create_artist_from_user_dao(user)
+    except ArtistAlreadyExistsError as exception:
+        artist_service_logger.exception(
+            f"The User with name {user.name} is already exists as Artist"
+        )
+        raise ArtistAlreadyExistsError from exception
     except ArtistRepositoryError as exception:
         artist_service_logger.exception(
-            f"Repository error creating artist from user: {user.name}"
+            f"Repository error creating artist from User: {user.name}"
         )
         raise ArtistServiceError from exception
     except Exception as exception:
         artist_service_logger.exception(
-            f"Unexpected error creating artist from user: {user.name}"
+            f"Unexpected error creating artist from User: {user.name}"
         )
         raise ArtistServiceError from exception
 

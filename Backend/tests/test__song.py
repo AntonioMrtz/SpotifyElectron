@@ -1,4 +1,3 @@
-import pytest
 from pytest import fixture
 from starlette.status import (
     HTTP_200_OK,
@@ -506,7 +505,7 @@ def test_get_cancion_by_genre_bad_genre(clear_test_data_db):
     assert res_delete_artist.status_code == HTTP_202_ACCEPTED
 
 
-@pytest.fixture()
+@fixture()
 def clear_test_data_db():
     song_name = "8232392323623823723989"
     artista = "artista"

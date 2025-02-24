@@ -1,7 +1,6 @@
 from datetime import datetime
 
-import pytest
-from pytest import fixture
+from pytest import fixture, raises
 from starlette.status import (
     HTTP_200_OK,
     HTTP_201_CREATED,
@@ -152,7 +151,7 @@ def test_check_encrypted_password_different():
     user_service.create_user(name, photo, password)
     password = "hola2"
     generated_password = base_user_service.get_user_password(name)
-    with pytest.raises(VerifyPasswordError):
+    with raises(VerifyPasswordError):
         auth_service.verify_password(password, generated_password)
     base_user_service.delete_user(name)
 
@@ -203,7 +202,7 @@ def test_get_user_dto_from_dao():
 
 
 # executes after all tests
-@pytest.fixture()
+@fixture()
 def clear_test_data_db():
     name = "8232392323623823723"
     delete_user(name=name)

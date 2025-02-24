@@ -1,7 +1,6 @@
 from datetime import datetime
 
 import pytest
-from pytest import fixture
 from starlette.status import (
     HTTP_200_OK,
     HTTP_201_CREATED,
@@ -27,7 +26,7 @@ from tests.test_API.api_test_user import delete_user, get_user
 from tests.test_API.api_token import get_user_jwt_header
 
 
-@fixture(scope="module", autouse=True)
+@pytest.fixture(scope="module", autouse=True)
 def set_up(trigger_app_startup):
     pass
 

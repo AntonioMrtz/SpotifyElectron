@@ -1244,7 +1244,7 @@ def test_promote_user_to_artist_correct():
     assert res_delete_artist.status_code == HTTP_202_ACCEPTED
 
 
-def test_promote_user_to_artist_invalid():
+def test_promote_user_to_artist_user_not_found(clear_test_data_db):
     user_name = "8232392323623823723"
     password = "pass"
     photo = "http://photo"
@@ -1254,18 +1254,38 @@ def test_promote_user_to_artist_invalid():
 
     jwt_headers_user = get_user_jwt_header(username=user_name, password=password)
 
+    # Test promote nonexistent user
+    res_promote_user = promote_user_to_artist("non_existent_user", jwt_headers_user)
+    assert res_promote_user.status_code == HTTP_404_NOT_FOUND
+
+
+def test_promote_user_to_artist_invalid(clear_test_data_db):
+    user_name = "8232392323623823723"
+    password = "pass"
+    photo = "http://photo"
+
+    res_create_user = create_user(user_name, photo, password)
+    assert res_create_user.status_code == HTTP_201_CREATED
+
     # Test promoting without auth
     res_promote_user = promote_user_to_artist(user_name, {})
     assert res_promote_user.status_code == HTTP_403_FORBIDDEN
 
-    # Test promote nonexistent user
-    res_promote_user = promote_user_to_artist("non_existent_user", jwt_headers_user)
-    assert res_promote_user.status_code == HTTP_404_NOT_FOUND
+
+def test_promote_user_to_artist_another_user(clear_test_data_db):
+    user_name = "8232392323623823723"
+    password = "pass"
+    photo = "http://photo"
+
+    res_create_user = create_user(user_name, photo, password)
+    assert res_create_user.status_code == HTTP_201_CREATED
 
     # Test promoting another user
     other_user = "other_user"
     res_create_other = create_user(other_user, photo, password)
     assert res_create_other.status_code == HTTP_201_CREATED
+
+    jwt_headers_user = get_user_jwt_header(user_name, password)
 
     res_promote_other = promote_user_to_artist(other_user, jwt_headers_user)
     assert res_promote_other.status_code == HTTP_403_FORBIDDEN

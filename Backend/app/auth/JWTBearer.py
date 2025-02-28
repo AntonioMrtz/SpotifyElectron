@@ -1,6 +1,8 @@
 """JWT Token authentication and injection for endpoints"""
 
-from fastapi import Request
+from typing import Annotated
+
+from fastapi import Depends, Request
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 import app.auth.auth_service as auth_service
@@ -63,3 +65,6 @@ class JWTBearer(HTTPBearer):
             raise BadJWTTokenProvidedError from exception
         else:
             return jwt_token_data
+
+
+Token = Annotated[TokenData, Depends(JWTBearer())]

@@ -24,7 +24,7 @@ Once you contribute to the project, your name and GitHub profile will be added i
 
 ## 📦 Required Software
 
-- [Node 20.12.2LTS](https://nodejs.org/en/download/package-manager)
+- [Node 22 LTS](https://nodejs.org/en/download/package-manager)
 - [Python 3.12](https://www.python.org/downloads/windows/)
 - [Git](https://git-scm.com/downloads)
 - [Docker](https://docs.docker.com/compose/install/)

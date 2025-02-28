@@ -3,9 +3,7 @@ User controller for handling incoming HTTP Requests
 It uses the base_user_service for handling logic for different user types
 """
 
-from typing import Annotated
-
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter
 from fastapi.responses import Response
 from starlette.status import (
     HTTP_200_OK,
@@ -24,10 +22,9 @@ import app.spotify_electron.user.user.user_service as user_service
 import app.spotify_electron.utils.json_converter.json_converter_utils as json_converter_utils
 from app.auth.auth_schema import (
     BadJWTTokenProvidedError,
-    TokenData,
     UserUnauthorizedError,
 )
-from app.auth.JWTBearer import JWTBearer
+from app.auth.JWTBearer import Token
 from app.common.PropertiesMessagesManager import PropertiesMessagesManager
 from app.exceptions.base_exceptions_schema import JsonEncodeError
 from app.spotify_electron.playlist.playlist_schema import (
@@ -52,7 +49,7 @@ router = APIRouter(
 
 
 @router.get("/whoami")
-def get_who_am_i(token: Annotated[TokenData, Depends(JWTBearer())]) -> Response:
+def get_who_am_i(token: Token) -> Response:
     """Returns token info from JWT
 
     Args:
@@ -76,7 +73,7 @@ def get_who_am_i(token: Annotated[TokenData, Depends(JWTBearer())]) -> Response:
 
 
 @router.get("/{name}")
-def get_user(name: str, token: Annotated[TokenData, Depends(JWTBearer())]) -> Response:
+def get_user(name: str, token: Token) -> Response:
     """Get user by name
 
     Args:
@@ -169,9 +166,7 @@ def delete_user(name: str) -> Response:
 
 
 @router.patch("/{name}/playback_history")
-def patch_playback_history(
-    name: str, song_name: str, token: Annotated[TokenData, Depends(JWTBearer())]
-) -> Response:
+def patch_playback_history(name: str, song_name: str, token: Token) -> Response:
     """Add song to playback history
 
     Args:
@@ -223,9 +218,7 @@ def patch_playback_history(
 
 
 @router.patch("/{name}/saved_playlists")
-def patch_saved_playlists(
-    name: str, playlist_name: str, token: Annotated[TokenData, Depends(JWTBearer())]
-) -> Response:
+def patch_saved_playlists(name: str, playlist_name: str, token: Token) -> Response:
     """Add playlist to saved list
 
     Args:
@@ -270,9 +263,7 @@ def patch_saved_playlists(
 
 
 @router.delete("/{name}/saved_playlists")
-def delete_saved_playlists(
-    name: str, playlist_name: str, token: Annotated[TokenData, Depends(JWTBearer())]
-) -> Response:
+def delete_saved_playlists(name: str, playlist_name: str, token: Token) -> Response:
     """Delete playlist from saved list of user
 
     Args:
@@ -322,9 +313,7 @@ def delete_saved_playlists(
 
 
 @router.get("/{name}/relevant_playlists")
-def get_user_relevant_playlists(
-    name: str, token: Annotated[TokenData, Depends(JWTBearer())]
-) -> Response:
+def get_user_relevant_playlists(name: str, token: Token) -> Response:
     """Get relevant playlists for user
 
     Args:
@@ -358,9 +347,7 @@ def get_user_relevant_playlists(
 
 
 @router.get("/{name}/playlists")
-def get_user_playlists(
-    name: str, token: Annotated[TokenData, Depends(JWTBearer())]
-) -> Response:
+def get_user_playlists(name: str, token: Token) -> Response:
     """Get playlists created by the user
 
     Args:
@@ -394,9 +381,7 @@ def get_user_playlists(
 
 
 @router.get("/{name}/playlist_names")
-def get_user_playlists_names(
-    name: str, token: Annotated[TokenData, Depends(JWTBearer())]
-) -> Response:
+def get_user_playlists_names(name: str, token: Token) -> Response:
     """Get playlist names created by user
 
     Args:
@@ -432,9 +417,7 @@ def get_user_playlists_names(
 
 
 @router.get("/{name}/playback_history")
-def get_user_playback_history(
-    name: str, token: Annotated[TokenData, Depends(JWTBearer())]
-) -> Response:
+def get_user_playback_history(name: str, token: Token) -> Response:
     """Get user song playback history
 
     Args:

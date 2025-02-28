@@ -2,9 +2,7 @@
 Search controller for handling incoming HTTP Requests
 """
 
-from typing import Annotated
-
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter
 from fastapi.responses import Response
 from starlette.status import (
     HTTP_200_OK,
@@ -14,8 +12,7 @@ from starlette.status import (
 
 import app.spotify_electron.search.search_service as search_service
 import app.spotify_electron.utils.json_converter.json_converter_utils as json_converter_utils
-from app.auth.auth_schema import TokenData
-from app.auth.JWTBearer import JWTBearer
+from app.auth.JWTBearer import Token
 from app.common.PropertiesMessagesManager import PropertiesMessagesManager
 from app.exceptions.base_exceptions_schema import JsonEncodeError
 from app.logging.logging_constants import LOGGING_SEARCH_CONTROLLER
@@ -36,7 +33,7 @@ search_controller_logger = SpotifyElectronLogger(LOGGING_SEARCH_CONTROLLER).get_
 @router.get("/")
 async def get_search_name(
     name: str,
-    token: Annotated[TokenData, Depends(JWTBearer())],
+    token: Token,
 ) -> Response:
     """Search for items that partially match name
 

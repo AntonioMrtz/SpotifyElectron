@@ -3,9 +3,7 @@ Song controller for handling incoming HTTP Requests
 It uses the base_song_service for handling logic for different song architectures
 """
 
-from typing import Annotated
-
-from fastapi import APIRouter, Depends, UploadFile
+from fastapi import APIRouter, UploadFile
 from fastapi.responses import Response
 from starlette.status import (
     HTTP_200_OK,
@@ -23,10 +21,9 @@ import app.spotify_electron.song.base_song_service as base_song_service
 import app.spotify_electron.utils.json_converter.json_converter_utils as json_converter_utils
 from app.auth.auth_schema import (
     BadJWTTokenProvidedError,
-    TokenData,
     UserUnauthorizedError,
 )
-from app.auth.JWTBearer import JWTBearer
+from app.auth.JWTBearer import Token
 from app.common.PropertiesMessagesManager import PropertiesMessagesManager
 from app.exceptions.base_exceptions_schema import JsonEncodeError
 from app.spotify_electron.genre.genre_schema import Genre, GenreNotValidError
@@ -54,7 +51,7 @@ router = APIRouter(
 @router.get("/{name}")
 def get_song(
     name: str,
-    token: Annotated[TokenData, Depends(JWTBearer())],
+    token: Token,
 ) -> Response:
     """Get song
 
@@ -95,7 +92,7 @@ async def create_song(
     genre: Genre,
     photo: str,
     file: UploadFile,
-    token: Annotated[TokenData, Depends(JWTBearer())],
+    token: Token,
 ) -> Response:
     """Create song
 
@@ -195,7 +192,7 @@ def delete_song(name: str) -> Response:
 @router.get("/metadata/{name}")
 def get_song_metadata(
     name: str,
-    token: Annotated[TokenData, Depends(JWTBearer())],
+    token: Token,
 ) -> Response:
     """Get song metadata
 
@@ -223,7 +220,7 @@ def get_song_metadata(
 @router.patch("/{name}/streams")
 def increase_song_streams(
     name: str,
-    token: Annotated[TokenData, Depends(JWTBearer())],
+    token: Token,
 ) -> Response:
     """Increase total streams of a song
 
@@ -249,7 +246,7 @@ def increase_song_streams(
 @router.get("/genres/{genre}")
 def get_songs_by_genre(
     genre: Genre,
-    token: Annotated[TokenData, Depends(JWTBearer())],
+    token: Token,
 ) -> Response:
     """Get songs by genre
 

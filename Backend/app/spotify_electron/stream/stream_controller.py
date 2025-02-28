@@ -2,9 +2,7 @@
 Stream controller for handling song audio streaming
 """
 
-from typing import Annotated
-
-from fastapi import APIRouter, Depends, Request, Response
+from fastapi import APIRouter, Request, Response
 from fastapi.responses import StreamingResponse
 from starlette.status import (
     HTTP_206_PARTIAL_CONTENT,
@@ -15,8 +13,7 @@ from starlette.status import (
 )
 
 import app.spotify_electron.stream.stream_service as stream_service
-from app.auth.auth_schema import TokenData
-from app.auth.JWTBearer import JWTBearer
+from app.auth.JWTBearer import Token
 from app.common.PropertiesMessagesManager import PropertiesMessagesManager
 from app.spotify_electron.song.base_song_schema import (
     SongBadNameError,
@@ -36,7 +33,7 @@ router = APIRouter(
 
 @router.get("/{name}", response_model=None)
 async def stream_song(
-    name: str, request: Request, token: Annotated[TokenData, Depends(JWTBearer())]
+    name: str, request: Request, token: Token
 ) -> StreamingResponse | Response:
     """Streams song audio
 

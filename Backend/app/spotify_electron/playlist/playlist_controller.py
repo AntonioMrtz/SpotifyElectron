@@ -4,7 +4,7 @@ Playlist controller for handling incoming HTTP Requests
 
 from typing import Annotated
 
-from fastapi import APIRouter, Body, Depends, Query
+from fastapi import APIRouter, Body, Query
 from fastapi.responses import Response
 from starlette.status import (
     HTTP_200_OK,
@@ -22,10 +22,9 @@ import app.spotify_electron.playlist.playlist_service as playlist_service
 import app.spotify_electron.utils.json_converter.json_converter_utils as json_converter_utils
 from app.auth.auth_schema import (
     BadJWTTokenProvidedError,
-    TokenData,
     UserUnauthorizedError,
 )
-from app.auth.JWTBearer import JWTBearer
+from app.auth.JWTBearer import Token
 from app.common.PropertiesMessagesManager import PropertiesMessagesManager
 from app.exceptions.base_exceptions_schema import JsonEncodeError
 from app.logging.logging_constants import LOGGING_PLAYLIST_CONTROLLER
@@ -52,7 +51,7 @@ playlist_controller_logger = SpotifyElectronLogger(LOGGING_PLAYLIST_CONTROLLER).
 @router.get("/{name}")
 def get_playlist(
     name: str,
-    token: Annotated[TokenData, Depends(JWTBearer())],
+    token: Token,
 ) -> Response:
     """Get playlist
 
@@ -93,7 +92,7 @@ def create_playlist(
     name: str,
     photo: str,
     description: str,
-    token: Annotated[TokenData, Depends(JWTBearer())],
+    token: Token,
     song_names: Annotated[list[str], Body(...)],
 ) -> Response:
     """Create playlist
@@ -142,7 +141,7 @@ def update_playlist(  # noqa: PLR0917
     name: str,
     photo: str,
     description: str,
-    token: Annotated[TokenData, Depends(JWTBearer())],
+    token: Token,
     song_names: Annotated[list[str], Body(...)],
     new_name: str | None = None,
 ) -> Response:
@@ -215,7 +214,7 @@ def delete_playlist(name: str) -> Response:
 
 
 @router.get("/")
-def get_playlists(token: Annotated[TokenData, Depends(JWTBearer())]) -> Response:
+def get_playlists(token: Token) -> Response:
     """Get all playlists"""
     try:
         playlists = playlist_service.get_all_playlist()
@@ -247,9 +246,7 @@ def get_playlists(token: Annotated[TokenData, Depends(JWTBearer())]) -> Response
 
 
 @router.get("/selected/{names}")
-def get_selected_playlists(
-    names: str, token: Annotated[TokenData, Depends(JWTBearer())]
-) -> Response:
+def get_selected_playlists(names: str, token: Token) -> Response:
     """Get selected playlists
 
     Args:

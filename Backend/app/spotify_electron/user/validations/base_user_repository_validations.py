@@ -76,12 +76,10 @@ def validate_user_create(result: InsertOneResult) -> None:
     """Raises an exception if user insertion was not done
 
     Args:
-    ----
-        result (InsertOneResult): the result from the insertior
+        result (InsertOneResult): the result from the insertion
 
     Raises:
-    ------
-        BaseUserCreateError: if the insetion was not done
+        BaseUserCreateError: if the insertion was not done
 
     """
     if not result.acknowledged:

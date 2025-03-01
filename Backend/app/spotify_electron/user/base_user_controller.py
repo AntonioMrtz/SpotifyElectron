@@ -35,6 +35,7 @@ from app.spotify_electron.song.base_song_schema import (
     SongBadNameError,
     SongNotFoundError,
 )
+from app.spotify_electron.user.artist.artist_schema import ArtistAlreadyExistsError
 from app.spotify_electron.user.base_user_schema import (
     BaseUserAlreadyExistsError,
     BaseUserBadNameError,
@@ -453,18 +454,21 @@ def get_user_playback_history(name: str, token: Token) -> Response:
 
 
 @router.patch("/{name}/promote")
-def promote_user_to_artist(
-    name: str, token: Annotated[TokenData, Depends(JWTBearer())]
-) -> Response:
+def promote_user_to_artist(name: str, token: Token) -> Response:
     """Promote user to artist
 
     Args:
         name (str): user name
-        token (Annotated[TokenData, Depends): JWT info
+        token (Token): JWT info
     """
     try:
         user_service.promote_user_to_artist(name, token)
         return Response(status_code=HTTP_204_NO_CONTENT)
+    except ArtistAlreadyExistsError:
+        return Response(
+            status_code=HTTP_400_BAD_REQUEST,
+            content=PropertiesMessagesManager.artistAlreadyExists,
+        )
     except BaseUserBadNameError:
         return Response(
             status_code=HTTP_400_BAD_REQUEST,

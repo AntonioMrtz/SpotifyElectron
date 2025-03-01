@@ -169,7 +169,7 @@ def get_users(user_names: list[str]) -> list[UserDTO]:
 
 
 def search_by_name(name: str) -> list[UserDTO]:
-    """Retrieve the users that matchs the name
+    """Retrieve the users that match the name
 
     Args:
         name (str): name to match
@@ -178,7 +178,7 @@ def search_by_name(name: str) -> list[UserDTO]:
         UserServiceError: unexpected error searching users that match a name
 
     Returns:
-        list[UserDTO]: users that matchs the name
+        list[UserDTO]: users that match the name
     """
     try:
         matched_items_names = base_user_repository.search_by_name(
@@ -206,7 +206,6 @@ def promote_user_to_artist(name: str, token: TokenData) -> None:
         UserUnauthorizedError: If the user lacks required permissions
         UserNotFoundError: If no user exists with the given name
         UserRepositoryError: If an unexpected error occurs in user repository operations
-        ArtistServiceError: If artist profile creation fails
         UserServiceError: If an unexpected error occurs during promotion process
     """
     try:
@@ -244,7 +243,7 @@ def promote_user_to_artist(name: str, token: TokenData) -> None:
         artist_service.artist_service_logger.exception(
             f"Artist creation from User {name} failed"
         )
-        raise ArtistServiceError from exception
+        raise UserServiceError from exception
     except Exception as exception:
         user_service_logger.exception(
             f"Unexpected error in User Service promoting user: {name}"

@@ -301,7 +301,7 @@ export class UsersService {
      *
      * Args:
      * name (str): user name
-     * token (Annotated[TokenData, Depends): JWT info
+     * token (Token): JWT info
      * @param name
      * @returns any Successful Response
      * @throws ApiError

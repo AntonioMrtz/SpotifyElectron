@@ -5,10 +5,15 @@ from starlette.status import (
     HTTP_201_CREATED,
     HTTP_202_ACCEPTED,
     HTTP_204_NO_CONTENT,
+    HTTP_400_BAD_REQUEST,
     HTTP_403_FORBIDDEN,
     HTTP_404_NOT_FOUND,
 )
 
+import app.auth.auth_service as auth_service
+from app.spotify_electron.user.artist.artist_repository import (
+    create_artist as create_artist_repo,
+)
 from app.spotify_electron.user.base_user_schema import (
     BaseUserDAO,
     BaseUserDTO,
@@ -19,6 +24,7 @@ from app.spotify_electron.user.base_user_service import (
     MAX_NUMBER_PLAYBACK_HISTORY_SONGS,
 )
 from app.spotify_electron.user.user.user_schema import UserType
+from app.spotify_electron.utils.date.date_utils import get_current_iso8601_date
 from tests.test_API.api_base_users import (
     delete_playlist_saved,
     get_user_playback_history,
@@ -1292,6 +1298,28 @@ def test_promote_user_to_artist_another_user(clear_test_data_db):
 
     res_delete_other = delete_user(other_user)
     assert res_delete_other.status_code == HTTP_202_ACCEPTED
+
+
+def test_promote_user_to_artist_already_exists(clear_test_data_db):
+    artist = {
+        "name": "artista",
+        "photo": "http://photo",
+        "current_date": get_current_iso8601_date(),
+        "password": auth_service.hash_password("password"),
+    }
+    user_name = "artista"
+    password = "password"
+    photo = "http://photo"
+
+    res_create_user = create_user(user_name, photo, password)
+    assert res_create_user.status_code == HTTP_201_CREATED
+
+    create_artist_repo(**artist)
+
+    jwt_headers_user = get_user_jwt_header(user_name, password)
+
+    res_promote_other = promote_user_to_artist(user_name, jwt_headers_user)
+    assert res_promote_other.status_code == HTTP_400_BAD_REQUEST
 
 
 # executes after all tests

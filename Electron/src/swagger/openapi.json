@@ -1285,7 +1285,7 @@
           "Users"
         ],
         "summary": "Promote User To Artist",
-        "description": "Promote user to artist\n\nArgs:\n    name (str): user name\n    token (Annotated[TokenData, Depends): JWT info",
+        "description": "Promote user to artist\n\nArgs:\n    name (str): user name\n    token (Token): JWT info",
         "operationId": "promote_user_to_artist_users__name__promote_patch",
         "security": [
           {

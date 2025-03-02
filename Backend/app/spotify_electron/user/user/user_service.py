@@ -26,7 +26,6 @@ from app.spotify_electron.user.user.user_schema import (
     UserBadNameError,
     UserDTO,
     UserNotFoundError,
-    UserRepositoryError,
     UserServiceError,
     get_user_dto_from_dao,
 )
@@ -205,7 +204,6 @@ def promote_user_to_artist(name: str, token: TokenData) -> None:
         UserBadNameError: If the provided username is invalid
         UserUnauthorizedError: If the user lacks required permissions
         UserNotFoundError: If no user exists with the given name
-        UserRepositoryError: If an unexpected error occurs in user repository operations
         UserServiceError: If an unexpected error occurs during promotion process
     """
     try:
@@ -238,7 +236,7 @@ def promote_user_to_artist(name: str, token: TokenData) -> None:
         user_service_logger.exception(
             f"Unexpected error in User Repository promoting user: {name}"
         )
-        raise UserRepositoryError from exception
+        raise UserServiceError from exception
     except ArtistServiceError as exception:
         artist_service.artist_service_logger.exception(
             f"Artist creation from User {name} failed"

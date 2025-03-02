@@ -17,11 +17,9 @@ def validate_user_name_parameter(name: str) -> None:
     """Raises an exception if name parameter is invalid
 
     Args:
-    ----
         name (str): name
 
     Raises:
-    ------
         BaseUserBadNameError: if name parameter is invalid
 
     """

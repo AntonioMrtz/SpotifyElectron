@@ -5,10 +5,15 @@ from starlette.status import (
     HTTP_201_CREATED,
     HTTP_202_ACCEPTED,
     HTTP_204_NO_CONTENT,
+    HTTP_400_BAD_REQUEST,
     HTTP_403_FORBIDDEN,
     HTTP_404_NOT_FOUND,
 )
 
+import app.auth.auth_service as auth_service
+from app.spotify_electron.user.artist.artist_repository import (
+    create_artist as create_artist_repo,
+)
 from app.spotify_electron.user.base_user_schema import (
     BaseUserDAO,
     BaseUserDTO,
@@ -19,6 +24,7 @@ from app.spotify_electron.user.base_user_service import (
     MAX_NUMBER_PLAYBACK_HISTORY_SONGS,
 )
 from app.spotify_electron.user.user.user_schema import UserType
+from app.spotify_electron.utils.date.date_utils import get_current_iso8601_date
 from tests.test_API.api_base_users import (
     delete_playlist_saved,
     get_user_playback_history,
@@ -27,6 +33,7 @@ from tests.test_API.api_base_users import (
     get_user_relevant_playlists,
     patch_history_playback,
     patch_playlist_saved,
+    promote_user_to_artist,
     whoami,
 )
 from tests.test_API.api_login import post_login
@@ -1209,6 +1216,110 @@ def test_get_base_user_dto_from_dao():
     assert res_base_user_dto.name == user_name
     assert res_base_user_dto.photo == user_photo
     assert res_base_user_dto.register_date == user_register_date
+
+
+def test_promote_user_to_artist_correct():
+    user_name = "user-to-promote"
+    password = "password"
+    photo = "https://photo"
+
+    # Create a user
+    res_create_user = create_user(name=user_name, password=password, photo=photo)
+    assert res_create_user.status_code == HTTP_201_CREATED
+    jwt_headers_user = get_user_jwt_header(username=user_name, password=password)
+
+    res_get_user = get_user(name=user_name, headers=jwt_headers_user)
+    assert res_get_user.status_code == HTTP_200_OK
+    assert res_get_user.json()["name"] == user_name
+    assert res_get_user.json()["photo"] == photo
+
+    # Promote the user to artist
+    res_promote_user = promote_user_to_artist(name=user_name, headers=jwt_headers_user)
+    assert res_promote_user.status_code == HTTP_204_NO_CONTENT
+
+    # Verify the user is promoted to artist
+    jwt_headers_artist = get_user_jwt_header(username=user_name, password=password)
+
+    res_get_artist = get_artist(name=user_name, headers=jwt_headers_artist)
+    assert res_get_artist.status_code == HTTP_200_OK
+    assert res_get_artist.json()["name"] == user_name
+    assert res_get_artist.json()["photo"] == photo
+
+    # Clean up
+    res_delete_artist = delete_user(name=user_name)
+    assert res_delete_artist.status_code == HTTP_202_ACCEPTED
+
+
+def test_promote_user_to_artist_user_not_found(clear_test_data_db):
+    user_name = "8232392323623823723"
+    password = "pass"
+    photo = "http://photo"
+
+    res_create_user = create_user(user_name, photo, password)
+    assert res_create_user.status_code == HTTP_201_CREATED
+
+    jwt_headers_user = get_user_jwt_header(username=user_name, password=password)
+
+    # Test promote nonexistent user
+    res_promote_user = promote_user_to_artist("non_existent_user", jwt_headers_user)
+    assert res_promote_user.status_code == HTTP_404_NOT_FOUND
+
+
+def test_promote_user_to_artist_invalid(clear_test_data_db):
+    user_name = "8232392323623823723"
+    password = "pass"
+    photo = "http://photo"
+
+    res_create_user = create_user(user_name, photo, password)
+    assert res_create_user.status_code == HTTP_201_CREATED
+
+    # Test promoting without auth
+    res_promote_user = promote_user_to_artist(user_name, {})
+    assert res_promote_user.status_code == HTTP_403_FORBIDDEN
+
+
+def test_promote_user_to_artist_another_user(clear_test_data_db):
+    user_name = "8232392323623823723"
+    password = "pass"
+    photo = "http://photo"
+
+    res_create_user = create_user(user_name, photo, password)
+    assert res_create_user.status_code == HTTP_201_CREATED
+
+    # Test promoting another user
+    other_user = "other_user"
+    res_create_other = create_user(other_user, photo, password)
+    assert res_create_other.status_code == HTTP_201_CREATED
+
+    jwt_headers_user = get_user_jwt_header(user_name, password)
+
+    res_promote_other = promote_user_to_artist(other_user, jwt_headers_user)
+    assert res_promote_other.status_code == HTTP_403_FORBIDDEN
+
+    res_delete_other = delete_user(other_user)
+    assert res_delete_other.status_code == HTTP_202_ACCEPTED
+
+
+def test_promote_user_to_artist_already_exists(clear_test_data_db):
+    artist = {
+        "name": "artista",
+        "photo": "http://photo",
+        "current_date": get_current_iso8601_date(),
+        "password": auth_service.hash_password("password"),
+    }
+    user_name = "artista"
+    password = "password"
+    photo = "http://photo"
+
+    res_create_user = create_user(user_name, photo, password)
+    assert res_create_user.status_code == HTTP_201_CREATED
+
+    create_artist_repo(**artist)
+
+    jwt_headers_user = get_user_jwt_header(user_name, password)
+
+    res_promote_other = promote_user_to_artist(user_name, jwt_headers_user)
+    assert res_promote_other.status_code == HTTP_400_BAD_REQUEST
 
 
 # executes after all tests

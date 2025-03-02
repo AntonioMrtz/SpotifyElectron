@@ -1,4 +1,3 @@
-import pytest
 from pytest import fixture
 from starlette.status import (
     HTTP_200_OK,
@@ -116,7 +115,7 @@ def test_login_user_with_jwt_user_not_found(clear_test_data_db):
 
 
 # executes after all tests
-@pytest.fixture()
+@fixture()
 def clear_test_data_db():
     user_name = "8232392323623823723"
     artista = "artista"

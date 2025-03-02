@@ -16,6 +16,7 @@ from app.spotify_electron.user.base_user_schema import (
     BaseUserNotFoundError,
     BaseUserUpdateError,
 )
+from app.spotify_electron.user.user.user_schema import UserDAO
 from app.spotify_electron.user.validations.base_user_repository_validations import (
     validate_user_create,
     validate_user_exists,
@@ -25,18 +26,18 @@ from app.spotify_electron.user.validations.base_user_repository_validations impo
 artist_repository_logger = SpotifyElectronLogger(LOGGING_ARTIST_REPOSITORY).get_logger()
 
 
-def get_user(name: str) -> ArtistDAO:
-    """Get user by name
+def get_artist(name: str) -> ArtistDAO:
+    """Get artist by name
 
     Args:
-        name (str): user name
+        name (str): artist name
 
     Raises:
         ArtistNotFoundError: artist was not found
-        ArtistRepositoryError: unexpected error while getting user
+        ArtistRepositoryError: unexpected error while getting artist
 
     Returns:
-        UserDAO: the user
+        ArtistDAO: the artist
     """
     try:
         artist = user_collection_provider.get_artist_collection().find_one({"name": name})
@@ -64,7 +65,7 @@ def create_artist(name: str, photo: str, password: bytes, current_date: str) -> 
         current_date (str): formatted creation date
 
     Raises:
-        ArtistRepositoryError: unexpected error while creating user
+        ArtistRepositoryError: unexpected error while creating Artist
     """
     try:
         artist = {
@@ -90,6 +91,53 @@ def create_artist(name: str, photo: str, password: bytes, current_date: str) -> 
         raise ArtistRepositoryError from exception
     else:
         artist_repository_logger.info(f"Artist added to repository: {artist}")
+
+
+def create_artist_from_user_dao(user: UserDAO) -> None:
+    """Create artist from existing user data
+
+    Args:
+        user (UserDAO): Existing user data
+
+    Raises:
+        ArtistRepositoryError: Unexpected error while creating artist
+    """
+    try:
+        artist = {
+            "name": user.name,
+            "photo": user.photo,
+            "current_date": user.register_date,
+            "password": user.password,
+        }
+        create_artist(**artist)
+        missing_fields = {
+            "saved_playlists": user.saved_playlists if user.saved_playlists else [],
+            "playlists": user.playlists if user.saved_playlists else [],
+            "playback_history": user.playback_history if user.saved_playlists else [],
+            "uploaded_songs": [],
+        }
+        result = user_collection_provider.get_artist_collection().update_one(
+            {"name": user.name}, {"$set": missing_fields}
+        )
+        validate_user_update(result)
+
+    except BaseUserCreateError as exception:
+        artist_repository_logger.exception(
+            f"Error inserting Artist from user {user.name} in database"
+        )
+        raise ArtistRepositoryError from exception
+    except BaseUserUpdateError as exception:
+        artist_repository_logger.exception(
+            f"Error updating missing field into Artist {user.name}"
+        )
+        raise ArtistRepositoryError from exception
+    except Exception as exception:
+        artist_repository_logger.exception(
+            f"Unexpected error creating artist from user {user.name}"
+        )
+        raise ArtistRepositoryError from exception
+    else:
+        artist_repository_logger.info(f"Artist created from user: {user.name}")
 
 
 def get_all_artists() -> list[ArtistDAO]:

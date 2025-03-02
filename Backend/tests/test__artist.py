@@ -1,6 +1,5 @@
 from datetime import datetime
 
-import pytest
 from pytest import fixture
 from starlette.status import (
     HTTP_200_OK,
@@ -270,7 +269,7 @@ def test_get_artist_songs_user_unauthorized():
 
 
 # executes after all tests
-@pytest.fixture()
+@fixture()
 def clear_test_data_db():
     name = "8232392323623823723"
     delete_user(name=name)

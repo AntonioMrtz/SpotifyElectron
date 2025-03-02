@@ -137,18 +137,19 @@ def hash_password(plain_password: str) -> bytes:
 
     Args:
     ----
-        plain_password (str): plain text password
+        plain_password (str): provided plain password
 
     Returns:
     -------
         bytes: the hashed password
 
     """
-    return bcrypt.hashpw(plain_password.encode(), bcrypt.gensalt())
+    encoded_password = plain_password.encode()
+    return bcrypt.hashpw(encoded_password, bcrypt.gensalt())
 
 
 def verify_password(plain_password: str, hashed_password: bytes) -> None:
-    """Verifies if plan text password is the same as a hashed password
+    """Verifies if plain text password is the same as a hashed password
 
     Args:
     ----

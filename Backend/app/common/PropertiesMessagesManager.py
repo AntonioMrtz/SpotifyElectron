@@ -1,5 +1,5 @@
 """
-Manages APP global messages, storing and making them accesible across the app
+Manages APP global messages, storing and making them accessible across the app
 
 Declares _PropertiesMessagesManager global object to be accessed from across the app
 """

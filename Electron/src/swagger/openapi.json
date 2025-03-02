@@ -1279,6 +1279,52 @@
         }
       }
     },
+    "/users/{name}/promote": {
+      "patch": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Promote User To Artist",
+        "description": "Promote user to artist\n\nArgs:\n    name (str): user name\n    token (Token): JWT info",
+        "operationId": "promote_user_to_artist_users__name__promote_patch",
+        "security": [
+          {
+            "JWTBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Name"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/artists/{name}": {
       "get": {
         "tags": [

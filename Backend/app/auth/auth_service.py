@@ -45,22 +45,7 @@ auth_service_logger = SpotifyElectronLogger(LOGGING_AUTH_SERVICE).get_logger()
 
 
 def create_access_token(data: dict[str, str], expires_delta: timedelta | None = None) -> str:
-    """Create a jwt token from data with a expire date
 
-    Args:
-    ----
-        data (dict): Info to be stored in the token
-        expires_delta (timedelta | None, optional): Expire date of the token
-
-    Raises:
-    ------
-        CreateJWTError: if an error ocurred creating JWT Token
-
-    Returns:
-    -------
-        str: the JWT Token created
-
-    """
     try:
         to_encode = data.copy()
         if expires_delta:
@@ -86,17 +71,13 @@ def get_jwt_token_data(
     """Decrypt jwt data and returns data from it
 
     Args:
-    ----
-        token_raw_data (TokenData): JWT Token
+        token_raw_data (str): JWT Token
 
     Raises:
-    ------
         BadJWTTokenProvidedError: invalid token provided
 
     Returns:
-    -------
         TokenData: the data provided by the JWT Token
-
     """
     try:
         validate_token_exists(token_raw_data)
@@ -136,13 +117,10 @@ def hash_password(plain_password: str) -> bytes:
     """Hash a password with a randomly-generated salt
 
     Args:
-    ----
         plain_password (str): provided plain password
 
     Returns:
-    -------
         bytes: the hashed password
-
     """
     encoded_password = plain_password.encode()
     return bcrypt.hashpw(encoded_password, bcrypt.gensalt())
@@ -152,14 +130,11 @@ def verify_password(plain_password: str, hashed_password: bytes) -> None:
     """Verifies if plain text password is the same as a hashed password
 
     Args:
-    ----
         plain_password (str): plain text password
         hashed_password (bytes): hashed password
 
     Raises:
-    ------
         VerifyPasswordError: if passwords don't match
-
     """
     if not bcrypt.checkpw(plain_password.encode(), hashed_password):
         raise VerifyPasswordError
@@ -168,10 +143,8 @@ def verify_password(plain_password: str, hashed_password: bytes) -> None:
 def get_token_expire_date() -> datetime:
     """Returns expire date for new token
 
-    Returns
-    -------
+    Returns:
         datetime: the expire date for the token
-
     """
     current_utc_datetime = datetime.now(timezone.utc).replace(tzinfo=timezone.utc)  # noqa: UP017 TODO
     return current_utc_datetime + timedelta(days=DAYS_TO_EXPIRE_COOKIE)
@@ -181,21 +154,17 @@ def login_user(name: str, password: str) -> str:
     """Checks user credentials and return a jwt token
 
     Args:
-    ----
         name (str): Users's name
         password (str): Users's password
 
     Raises:
-    ------
         InvalidCredentialsLoginError: bad user credentials
         VerifyPasswordError: failing authenticating user and password
         BaseUserNotFoundError: user doesn't exists
         UnexpectedLoginUserError: unexpected error during user login
 
     Returns:
-    -------
         str: the JWT Token
-
     """
     try:
         validate_parameter(name)
@@ -278,11 +247,9 @@ def validate_jwt(token: str) -> None:
     """Check if JWT token is valid
 
     Args:
-    ----
         token (str): the token to validate
 
     Raises:
-    ------
         JWTValidationError: if the validation was not succesfull
 
     """

@@ -42,11 +42,9 @@ def check_playlist_exists(name: str) -> bool:
     """Returns if playlist exists
 
     Args:
-    ----
         name (str): playlist name
 
     Returns:
-    -------
         bool: if the playlist exists
 
     """
@@ -57,17 +55,14 @@ def get_playlist(name: str) -> PlaylistDTO:
     """Returns the playlist
 
     Args:
-    ----
         name (str): name of the playlist
 
     Raises:
-    ------
         PlaylistBadNameError: invalid playlist name
         PlaylistNotFoundError: playlist not found
         PlaylistServiceError: unexpected error while getting playlist
 
     Returns:
-    -------
         PlaylistDTO: the playlist
 
     """
@@ -102,7 +97,6 @@ def create_playlist(
     """Creates a playlist
 
     Args:
-    ----
         name (str): name
         photo (str): thumbnail photo
         description (str): description
@@ -110,7 +104,6 @@ def create_playlist(
         token (TokenData): token user info
 
     Raises:
-    ------
         PlaylistBadNameError: invalid playlist name
         PlaylistAlreadyExistsError: playlist already exists
         UserNotFoundError: user doesn't exists
@@ -171,7 +164,6 @@ def update_playlist(  # noqa: PLR0917
     """Updates a playlist
 
     Args:
-    ----
         name (str): name
         new_name (str | None): new playlist name, optional
         photo (str): thumbnail photo
@@ -180,7 +172,6 @@ def update_playlist(  # noqa: PLR0917
         token (TokenData): token user info
 
     Raises:
-    ------
         PlaylistBadNameError: invalid playlist name
         PlaylistNotFoundError: playlist doesn't exists
         UserUnauthorizedError: user is not the owner of playlist
@@ -237,11 +228,9 @@ def delete_playlist(name: str) -> None:
     """Delete a playlist
 
     Args:
-    ----
         name (str): playlist name
 
     Raises:
-    ------
         PlaylistBadNameError: invalid playlist name
         PlaylistNotFoundError: playlist doesn't exists
         UserNotFoundError: user doesn't exists
@@ -279,11 +268,9 @@ def get_all_playlist() -> list[PlaylistDTO]:
     """Gets all playlists
 
     Raises
-    ------
         PlaylistServiceError: unexpected error while getting all playlists
 
     Returns
-    -------
         list[PlaylistDTO]: the list of playlists
 
     """
@@ -309,15 +296,12 @@ def get_selected_playlists(playlist_names: list[str]) -> list[PlaylistDTO]:
     """Get selected playlist
 
     Args:
-    ----
         playlist_names (list[str]): list with playlists names
 
     Raises:
-    ------
         PlaylistServiceError: unexpected error while getting selected playlist
 
     Returns:
-    -------
         list[PlaylistDTO]: the list of selected playlists
 
     """
@@ -347,15 +331,12 @@ def search_by_name(name: str) -> list[PlaylistDTO]:
     """Gets playlists with partially matching name
 
     Args:
-    ----
         name (str): name to match
 
     Raises:
-    ------
         PlaylistServiceError: unexpected error while getting playlist that matches a name
 
     Returns:
-    -------
         list[PlaylistDTO]: a list with playlists that matches the name
 
     """

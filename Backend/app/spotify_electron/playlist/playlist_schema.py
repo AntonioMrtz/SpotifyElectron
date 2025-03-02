@@ -36,11 +36,9 @@ def get_playlist_dao_from_document(document: dict[str, Any]) -> PlaylistDAO:
     """Get PlaylistDAO from document
 
     Args:
-    ----
         document (dict): playlist document
 
     Returns:
-    -------
         PlaylistDAO: PlaylistDAO Object
     """
     return PlaylistDAO(
@@ -57,11 +55,9 @@ def get_playlist_dto_from_dao(playlist_dao: PlaylistDAO) -> PlaylistDTO:
     """Get PlaylistDTO from PlaylistDAO
 
     Args:
-    ----
         playlist_dao (PlaylistDAO): PlaylistDAO object
 
     Returns:
-    -------
         PlaylistDTO: PlaylistDTO object
     """
     return PlaylistDTO(

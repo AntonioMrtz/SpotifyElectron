@@ -32,15 +32,12 @@ def check_playlist_exists(
     """Checks if playlist exists
 
     Args:
-    ----
         name (str): name of the playlist
 
     Raises:
-    ------
         PlaylistRepositoryError: an error occurred while getting playlist from database
 
     Returns:
-    -------
         bool: if the playlist exsists
 
     """
@@ -64,17 +61,14 @@ def get_playlist(
     """Get a playlist by name
 
     Args:
-    ----
         name (str): name of the playlist
 
 
     Raises:
-    ------
         PlaylistNotFoundError: playlists doesn't exists on database
         PlaylistRepositoryError: an error occurred while getting playlist from database
 
     Returns:
-    -------
         PlaylistDAO: the playlist with the name parameter
 
     """
@@ -106,7 +100,6 @@ def create_playlist(  # noqa: PLR0917
     """Creates a playlist
 
     Args:
-    ----
         name (str): name
         photo (str): thumbnail photo
         upload_date (str): upload date
@@ -116,7 +109,6 @@ def create_playlist(  # noqa: PLR0917
 
 
     Raises:
-    ------
         PlaylistRepositoryError: an error occurred while inserting playlist in database
 
     """
@@ -152,12 +144,10 @@ def delete_playlist(
     """Deletes a playlist
 
     Args:
-    ----
         name (str): plalists name
 
 
     Raises:
-    ------
         PlaylistRepositoryError: an error occurred while deleting playlist from database
 
     """
@@ -181,12 +171,10 @@ def get_all_playlists() -> list[PlaylistDAO]:
 
 
     Raises
-    ------
         PlaylistRepositoryError: an error occurred while\
               getting all playlists from database
 
     Returns
-    -------
         list[PlaylistDAO]: the list whith all the playlists
 
     """
@@ -210,16 +198,13 @@ def get_selected_playlists(
     """Get selected playlists
 
     Args:
-    ----
         names (list[str]): list with the names of the playlists
 
 
     Raises:
-    ------
         PlaylistRepositoryError: an error occurred while getting playlists from database
 
     Returns:
-    -------
         list[PlaylistDAO]: the list of playlists
 
     """
@@ -244,17 +229,14 @@ def get_playlist_search_by_name(
     """Gets the playlist with similar name
 
     Args:
-    ----
         name (str): the matching name
 
 
     Raises:
-    ------
         PlaylistRepositoryError: an error occurred while getting playlist from database\
               with simimilar name
 
     Returns:
-    -------
         list[PlaylistDAO]: the list of playlists with similar name
 
     """

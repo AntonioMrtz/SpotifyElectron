@@ -32,13 +32,10 @@ def validate_token_is_expired(token: dict[str, Any]) -> None:
     """Checks if token is expired comparing current date with expiration date
 
     Args:
-    ----
-        token (dict): token to check
+        token (dict[str, Any]): token to check
 
     Raises:
-    ------
-        JWTExpiredError: if token is expired
-
+        JWTExpiredError: token is expired
     """
     expiration_time = datetime.fromtimestamp(token["exp"], timezone.utc)  # noqa: UP017 TODO
     if expiration_time < datetime.now(timezone.utc):  # noqa: UP017 TODO
@@ -49,13 +46,10 @@ def validate_token_exists(token: Any) -> None:
     """Check whether jwt token is None or not
 
     Args:
-    ----
         token (Any): the incoming token
 
     Raises:
-    ------
         JWTNotProvidedError: if the token is None
-
     """
     if token is None:
         raise JWTNotProvidedError
@@ -65,13 +59,10 @@ def validate_jwt_credentials_missing(credentials: list[Any]) -> None:
     """Check if any jwt credentials are missing
 
     Args:
-    ----
-        credentials (list[str]): list with the obtained credentials
+        credentials (list[Any]): list with the obtained credentials
 
     Raises:
-    ------
         JWTMissingCredentialsError: if a credential is missing
-
     """
     for credential in credentials:
         if credential is None:

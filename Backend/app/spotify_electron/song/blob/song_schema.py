@@ -30,11 +30,9 @@ def get_song_dao_from_document(document: dict[str, Any]) -> SongDAO:
     """Get SongDAO from document
 
     Args:
-    ----
         document (dict): song document
 
     Returns:
-    -------
         SongDAO: SongDAO Object
 
     """
@@ -53,12 +51,10 @@ def get_song_dto_from_dao(song_dao: SongDAO, url: str) -> SongDTO:
     """Get SongDTO from SongDAO
 
     Args:
-    ----
         song_dao (SongDAO): SongDAO object
         url (str): song streaming url
 
     Returns:
-    -------
         SongDTO: SongDTO object
 
     """

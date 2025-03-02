@@ -26,7 +26,6 @@ class LogPropertiesManager:
         """Loads attributes from .ini file and stores them as class attributes
 
         Args:
-        ----
             config_filename (str): the name of the config file
             config_section (str): the section inside of the config file
         """
@@ -45,7 +44,6 @@ class LogPropertiesManager:
             string it will load None
 
         Args:
-        ----
             config_section (str): the config file section to load
 
         """
@@ -58,7 +56,6 @@ class LogPropertiesManager:
         """Checks if there's a valid log file provided
 
         Returns
-        -------
             bool: Returns if there's a valid log provided
 
         """

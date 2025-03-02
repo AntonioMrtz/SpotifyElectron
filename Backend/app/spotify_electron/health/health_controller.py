@@ -14,7 +14,6 @@ def get_health() -> Response:
     """Validates if the app has launched correctly
 
     Returns
-    -------
         Response 200 OK
 
     """

@@ -44,7 +44,6 @@ class _PropertiesManager:
         """Loads attributes from .ini file and stores them as class attributes
 
         Args:
-        ----
             config_filename (str): the name of the config file
             config_section (str): the section inside of the config file
 
@@ -64,7 +63,6 @@ class _PropertiesManager:
             if value it's empty string it will load None
 
         Args:
-        ----
             config_section (str): the config file section to load
 
         """
@@ -91,7 +89,6 @@ class _PropertiesManager:
         """Load environment variables into class attributes
 
         Args:
-        ----
             env_names (List[str]): environment variables names
 
         """
@@ -118,10 +115,8 @@ class _PropertiesManager:
     def is_production_environment(self) -> bool:
         """Checks if the environment is production
 
-        Returns
-        -------
+        Returns:
             bool: Returns if it's production environment
-
         """
         return getattr(self, AppEnvironment.ENV_VALUE_ENV_NAME) == AppEnvironmentMode.PROD
 
@@ -129,7 +124,6 @@ class _PropertiesManager:
         """Checks if the environment is development
 
         Returns
-        -------
             bool: Returns if it's development environment
 
         """
@@ -139,7 +133,6 @@ class _PropertiesManager:
         """Checks if the environment is testing
 
         Returns
-        -------
             bool: Returns if it's testing environment
 
         """
@@ -149,7 +142,6 @@ class _PropertiesManager:
         """Checks if there's a valid log file provided
 
         Returns
-        -------
             bool: Returns if there's a valid log provided
 
         """

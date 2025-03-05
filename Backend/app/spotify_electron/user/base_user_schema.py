@@ -31,11 +31,9 @@ def get_base_user_dao_from_document(document: dict[str, Any]) -> BaseUserDAO:
     """Get BaseUserDAO from document
 
     Args:
-    ----
         document (dict): BaseUser document
 
     Returns:
-    -------
         BaseUserDAO: BaseUserDAO Object
 
     """
@@ -51,11 +49,9 @@ def get_base_user_dto_from_dao(user_dao: BaseUserDAO) -> BaseUserDTO:
     """Get BaseUserDTO from BaseUserDAO
 
     Args:
-    ----
         user_dao (BaseUserDAO): BaseUserDAO object
 
     Returns:
-    -------
         BaseUserDTO: BaseUserDTO object
 
     """

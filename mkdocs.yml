@@ -1,6 +1,6 @@
 site_name: Spotify Electron
 site_author: Antonio Martinez Fernandez
-site_url: https://antoniomrtz.github.io/SpotifyElectron_Web/docs
+site_url: https://antoniomrtz.github.io/SpotifyElectron_Web/docs # Website deployment URL
 repo_url: https://github.com/AntonioMrtz/SpotifyElectron
 site_description: Documentation for Spotify Electron, an open-source cross-platform music streaming app
 remote_branch: gh-pages
@@ -10,11 +10,11 @@ nav:
   - Project Vision: VISION.md
   - How to contribute: CONTRIBUTING.md
   - Developer guides:
-      - Git convention: developer/Git-Convention.md
-      - Architecture: developer/Architecture.md
-      - Global Set up: developer/SETUP.md
-      - Authentication & Login: developer/Auth-Login.md
-      - Backend:
+    - Git convention: developer/Git-Convention.md
+    - Architecture: developer/Architecture.md
+    - Global Set up: developer/SETUP.md
+    - Authentication & Login: developer/Auth-Login.md
+    - Backend:
           - Set up: developer/backend/SETUP.md
           - Environment: developer/backend/Environment.md
           - File Structure: developer/backend/File-Structure.md
@@ -23,20 +23,20 @@ nav:
           - Cloud: developer/backend/Cloud.md
           - Testing: developer/backend/Testing.md
           - FAQ: developer/backend/FAQ.md
-      - Frontend:
-          - Set up: developer/frontend/SETUP.md
-          - File Structure: developer/frontend/File-Structure.md
-          - Linting & Formatting: developer/frontend/Linting-&-Formatting.md
-          - Testing: developer/frontend/Testing.md
-          - Package app: developer/frontend/Package-app.md
-          - FAQ: developer/frontend/FAQ.md
-      - Utils:
-          - Release procedure: developer/utils/Release-Procedure.md
-          - OpenAPI schema generation & usage: developer/utils/OpenAPI.md
-          - Migration procedure for Python and Node version: developer/utils/Migration-Procedure-Node-Python.md
-          - Mkdocs development & usage: developer/utils/Mkdocs.md
-          - Generate Mock data: developer/utils/Generate-Mock-Data.md
-          - Testing principles: developer/utils/Testing-Principles.md
+    - Frontend:
+        - Set up: developer/frontend/SETUP.md
+        - File Structure: developer/frontend/File-Structure.md
+        - Linting & Formatting: developer/frontend/Linting-&-Formatting.md
+        - Testing: developer/frontend/Testing.md
+        - Package app: developer/frontend/Package-app.md
+        - FAQ: developer/frontend/FAQ.md
+    - Utils:
+        - Release procedure: developer/utils/Release-Procedure.md
+        - OpenAPI schema generation & usage: developer/utils/OpenAPI.md
+        - Migration procedure for Python and Node version: developer/utils/Migration-Procedure-Node-Python.md
+        - Mkdocs development & usage: developer/utils/Mkdocs.md
+        - Generate Mock data: developer/utils/Generate-Mock-Data.md
+        - Testing principles: developer/utils/Testing-Principles.md
   - User guides:
       - Installation guide: user/user-guides/Installation-Guide.md
   - Code of conduct: CODE_OF_CONDUCT.md

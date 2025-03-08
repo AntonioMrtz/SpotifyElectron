@@ -45,7 +45,18 @@ auth_service_logger = SpotifyElectronLogger(LOGGING_AUTH_SERVICE).get_logger()
 
 
 def create_access_token(data: dict[str, str], expires_delta: timedelta | None = None) -> str:
+    """Creates a JWT access token with optional expiration.
 
+    Args:
+        data (dict[str, str]): Dictionary containing the payload data for the token.
+        expires_delta (timedelta | None, optional): Token expiration time
+
+    Raises:
+        CreateJWTError: Raised if an error occurs during token creation.
+
+    Returns:
+        str: The generated JWT as an encoded string.
+    """
     try:
         to_encode = data.copy()
         if expires_delta:

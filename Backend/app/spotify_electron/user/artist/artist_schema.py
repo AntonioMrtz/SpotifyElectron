@@ -38,11 +38,9 @@ def get_artist_dao_from_document(document: dict[str, Any]) -> ArtistDAO:
     """Get ArtistDAO from document
 
     Args:
-    ----
         document (dict): user document
 
     Returns:
-    -------
         ArtistDAO: ArtistDAO Object
 
     """
@@ -63,11 +61,9 @@ def get_artist_dto_from_dao(artist_dao: ArtistDAO) -> ArtistDTO:
     """Get ArtistDTO from ArtistDAO
 
     Args:
-    ----
         artist_dao (ArtistDAO): ArtistDAO object
 
     Returns:
-    -------
         ArtistDTO: ArtistDTO object
 
     """

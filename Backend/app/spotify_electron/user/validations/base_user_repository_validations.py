@@ -31,11 +31,9 @@ def validate_user_exists(user: BaseUserDAO | None) -> None:
     """Raises an exception if user doesn't exists
 
     Args:
-    ----
         user (BaseUserDAO | None): the user
 
     Raises:
-    ------
         BaseUserNotFoundError: if the user doesn't exists
 
     """
@@ -60,11 +58,9 @@ def validate_user_delete_count(result: DeleteResult) -> None:
     """Raises an exception if user deletion count was 0
 
     Args:
-    ----
         result (DeleteResult): the result from the deletion
 
     Raises:
-    ------
         BaseUserDeleteError: if the deletion was not done
 
     """

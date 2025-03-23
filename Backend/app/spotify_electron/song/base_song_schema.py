@@ -50,11 +50,9 @@ def get_song_metadata_dao_from_document(document: dict[str, Any]) -> SongMetadat
     """Get SongMetadataDAO from document
 
     Args:
-    ----
         document (dict): song document
 
     Returns:
-    -------
         SongMetadataDAO: SongMetadataDAO Object
 
     """

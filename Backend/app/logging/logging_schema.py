@@ -100,7 +100,6 @@ class SpotifyElectronLogger:
         """Add handler to logger
 
         Args:
-        ----
             handler (Union[StreamHandler, RotatingFileHandler]): the handler to add
 
         """

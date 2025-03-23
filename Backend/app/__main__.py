@@ -44,10 +44,10 @@ main_logger = SpotifyElectronLogger(LOGGING_MAIN).get_logger()
 
 @asynccontextmanager
 async def lifespan_handler(app: FastAPI) -> AsyncGenerator[None, Any]:
-    """FastAPI the configured app object
+    """Handles the startup and shutdown events of the API
 
     Args:
-        app (FastAPI): Handles the the startup and shutdown events of the app
+        app (FastAPI): FastAPI entrypoint
     """
     main_logger.info("Spotify Electron Backend Started")
 

@@ -51,7 +51,7 @@ Check our [project goals and vision](docs/VISION.md).
 
 ## 🏗️ Software Architecture
 
-For an in-depth tour of the architecture, refer to the [architecture docs](docs/user/user-guides/Installation-Guide.md).
+For an in-depth tour of the architecture, refer to the [architecture docs](docs/developer/Architecture.md).
 
 ![Spotify_Electron_Software_Diagram](docs/assets/architecture/app_architecture_blob.png)
 

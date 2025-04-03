@@ -16,18 +16,18 @@
 
 @font-face {
   font-family: SpotifyCircular;
-  src: url(./fonts/CircularSpotifyText-Bold.otf);
+  src: url(../assets/fonts/CircularSpotifyText-Bold.otf);
   font-weight: bold;
 }
 
 @font-face {
   font-family: SpotifyCircular;
-  src: url(./fonts/CircularSpotifyText-Medium.otf);
+  src: url(../assets/fonts/CircularSpotifyText-Medium.otf);
   font-weight: normal;
 }
 
 @font-face {
   font-family: SpotifyCircular;
-  src: url(./fonts/CircularSpotifyText-Light.otf);
+  src: url(../assets/fonts/CircularSpotifyText-Light.otf);
   font-weight: 300;
 }

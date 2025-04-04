@@ -201,7 +201,7 @@ We're actively looking for new contributors 🙌. Feel free to check our [CONTRI
             <a href="https://github.com/Nishantsingh11">
                 <img src="https://avatars.githubusercontent.com/u/38534128?v=4" width="90" alt="berkaykrc" />
                 <br />
-                <sub><b>berkaykrc</b></sub>
+                <sub><b>Nishant Singh</b></sub>
             </a>
         </td>
     </tr>

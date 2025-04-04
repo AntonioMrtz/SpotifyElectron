@@ -2,7 +2,7 @@
 
 Project documentation will be deployed at `https://antoniomrtz.github.io/SpotifyElectron_Web/docs/`.
 
-MkDocs is a static site generator specifically designed for creating project documentation. Written in Python, it allows developers to build and deploy documentation websites with ease. It uses Markdown for writing content, supports custom themes, and integrates well with version control systems like Git. With its simple configuration and built-in support for search, MkDocs is a popular choice for creating professional, easy-to-maintain documentation sites. More info [here](https://www.mkdocs.org/)
+MkDocs is a static site generator specifically designed for creating project documentation. Written in Python, it allows developers to build and deploy documentation websites with ease. It uses Markdown for writing content, supports custom themes, and integrates well with version control systems like Git. More info [here](https://www.mkdocs.org/)
 
 ## 🔨 Set up
 
@@ -25,7 +25,7 @@ pip install -r requirements-docs.txt
 
 ## 🟩 Deployment
 
-Generated MkDocs static files are deployed inside https://antoniomrtz.github.io/SpotifyElectron_Web/docs/ when a PR is merged on main branch. This integration is done by one Github Action that triggers the deployment of the website on [website repository](https://github.com/AntonioMrtz/SpotifyElectron_Web).
+Generated MkDocs static files are deployed on this [URL](https://antoniomrtz.github.io/SpotifyElectron_Web/docs/) when a Pull Request is merged on master branch or the deploy documentation pipeline action is triggered manually. This integration is done by one Github Action that triggers the deployment of the website on the [website repository](https://github.com/AntonioMrtz/SpotifyElectron_Web).
 
 ## 🟧 Development
 

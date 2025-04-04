@@ -42,7 +42,7 @@ git clone https://github.com/AntonioMrtz/SpotifyElectron.git
 ## 🖐 How to Contribute to the project
 
 Are you interested in contributing to the project? Check our contributing rules and methodologies in
-[CONTRIBUTING readme](docs/CONTRIBUTING.md). Also you can check [all the contributors](docs/CONTRIBUTORS.md) to the project.
+[our CONTRIBUTING documentation](docs/CONTRIBUTING.md). Also you can check all the contributors to the project [here](docs/CONTRIBUTORS.md).
 
 ## 🎯 Project's goals
 
@@ -51,6 +51,8 @@ Check our [project goals and vision](docs/VISION.md).
 
 ## 🏗️ Software Architecture
 
+For an in-depth tour of the architecture, refer to the [architecture docs](docs/developer/Architecture.md).
+
 ![Spotify_Electron_Software_Diagram](docs/assets/architecture/app_architecture_blob.png)
 
 ### 🎵 Song Architecture
@@ -58,6 +60,8 @@ Check our [project goals and vision](docs/VISION.md).
 ![Spotify_Electron_Software_Song_Diagram](docs/assets/architecture/song-architecture-blob.png)
 
 ## 🤵🏼 Contributors
+
+We're actively looking for new contributors 🙌. Feel free to check our [CONTRIBUTING documentation](docs/CONTRIBUTING.md) for more info.
 
 <table>
     <tr>

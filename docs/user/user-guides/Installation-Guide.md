@@ -14,7 +14,7 @@ All you need to install and run the app is placed under `assets` at our [release
 * Go to the [latest release](https://github.com/AntonioMrtz/SpotifyElectron/releases)
 * In `assets` section download the file named `SpotifyElectron.AppImage`
 * Once downloaded, give permissions to the `.AppImage` file with `chmod +x SpotifyElectron.AppImage`
-* Then run with `./SpotifyElectron.AppImage --no-sandbox`
+* Then run with `./SpotifyElectron.AppImage`. If the app doesn't run try `./SpotifyElectron.AppImage --no-sandbox`.
 
 ### Create Desktop icon
 

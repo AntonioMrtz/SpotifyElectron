@@ -172,4 +172,3 @@ htmlcov
 
 # Frontend debug
 **/remote-debug-profile/**
-env/

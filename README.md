@@ -211,12 +211,5 @@ We're actively looking for new contributors 🙌. Feel free to check our [CONTRI
                 <sub><b>vihanvt</b></sub>
             </a>
         </td>
-        <td align="center">
-            <a href="https://github.com/vihanvt">
-                <img src="https://avatars.githubusercontent.com/u/179256419?v=4" width="90" alt="vihanvt" />
-                <br />
-                <sub><b>vihanvt</b></sub>
-            </a>
-        </td>
     </tr>
 </table>

@@ -142,9 +142,16 @@ Me gustaría expresar mi más sincero agradecimiento a las siguientes personas p
         </td>
         <td align="center">
             <a href="https://github.com/Nishantsingh11">
-                <img src="https://avatars.githubusercontent.com/u/38534128?v=4" width="90" alt="berkaykrc" />
+                <img src="https://avatars.githubusercontent.com/u/38534128?v=4" width="90" alt="Nishant Singh" />
                 <br />
                 <sub><b>Nishant Singh</b></sub>
+            </a>
+        </td>
+        <td align="center">
+            <a href="https://github.com/vihanvt">
+                <img src="https://avatars.githubusercontent.com/u/179256419?v=4" width="90" alt="vihanvt" />
+                <br />
+                <sub><b>vihanvt</b></sub>
             </a>
         </td>
     </tr>

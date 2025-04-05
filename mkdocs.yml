@@ -4,7 +4,7 @@ site_url: https://antoniomrtz.github.io/SpotifyElectron_Web/docs # Website deplo
 repo_url: https://github.com/AntonioMrtz/SpotifyElectron
 site_description: Documentation for Spotify Electron, an open-source cross-platform music streaming app
 remote_branch: gh-pages
-
+copyright: © 2025 <a href="https://github.com/AntonioMrtz">Antonio Martinez</a>. Licensed under a <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
 nav:
   - Home: index.md
   - Project Vision: VISION.md

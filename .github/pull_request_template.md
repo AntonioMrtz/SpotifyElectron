@@ -22,7 +22,7 @@
 
 ## Issue
 
-<!-- Add issue number: #issue-number
+<!-- Add issue number: #issue-number -->
 
 ## Solution
 

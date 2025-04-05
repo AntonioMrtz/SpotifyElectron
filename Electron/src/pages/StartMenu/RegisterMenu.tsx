@@ -124,7 +124,7 @@ export default function RegisterMenu({ setIsSigningUp }: PropsRegisterMenu) {
         description = t('commonPopover.cold-start-description');
       } else {
         title = t('registerMenu.cant-register-title');
-        description = t('cant-register-description');
+        description = t('registerMenu.cant-register-description');
       }
 
       setPropsPopOver({

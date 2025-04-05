@@ -85,11 +85,9 @@ def delete_song(name: str) -> None:
     """Deletes a song
 
     Args:
-    ----
         name (str): song name
 
     Raises:
-    ------
         SongRepositoryError: an error occurred while deleting song from database
 
     """

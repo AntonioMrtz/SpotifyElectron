@@ -16,11 +16,9 @@ def validate_song_exists(song: BaseSongDAO | None) -> None:
     """Raises an exception if song doesn't exists
 
     Args:
-    ----
         song (BaseSongDAO | None): the song
 
     Raises:
-    ------
         SongNotFoundError: if the song doesn't exists
 
     """
@@ -32,11 +30,9 @@ def validate_base_song_create(result: InsertOneResult) -> None:
     """Raises an exception if song insertion was not done
 
     Args:
-    ----
         result (InsertOneResult): the result from the insertion
 
     Raises:
-    ------
         SongCreateError: if the insertion was not done
 
     """
@@ -48,11 +44,9 @@ def validate_song_delete_count(result: DeleteResult) -> None:
     """Raises an exception if song deletion count was 0
 
     Args:
-    ----
         result (DeleteResult): the result from the deletion
 
     Raises:
-    ------
         SongDeleteError: if the deletion was not done
 
     """

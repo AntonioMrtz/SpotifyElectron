@@ -31,11 +31,9 @@ def validate_song_should_exists(name: str) -> None:
     """Raises an exception if song doesn't exists
 
     Args:
-    ----
         name (str): song name
 
     Raises:
-    ------
         SongNotFoundError: if song doesn't exists
 
     """
@@ -47,11 +45,9 @@ def validate_song_should_not_exists(name: str) -> None:
     """Raises an exception if song does exists
 
     Args:
-    ----
         name (str): song name
 
     Raises:
-    ------
         SongAlreadyExistsError: if song exists
 
     """

@@ -67,7 +67,7 @@ plugins:
   - mkdocstrings
   - search
   - mkdocs-video
-  
+
 markdown_extensions:
   - mdx_truly_sane_lists
   - pymdownx.highlight:

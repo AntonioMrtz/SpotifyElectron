@@ -13,7 +13,7 @@ class DatabaseProductionConnection(BaseDatabaseConnection):
         """Get Mongo client class
 
         Returns:
-            Any: the Mongo client class
+            type[MongoClient]: the Mongo client class
         """
         return MongoClient
 

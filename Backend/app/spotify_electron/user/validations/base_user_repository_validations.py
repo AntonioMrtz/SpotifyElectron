@@ -2,12 +2,11 @@
 Validations for Common user repositories
 """
 
-from typing import Any
-
 from pymongo.results import DeleteResult, InsertOneResult, UpdateResult
 
 from app.spotify_electron.user.base_user_schema import (
     BaseUserCreateError,
+    BaseUserDAO,
     BaseUserDeleteError,
     BaseUserGetPasswordError,
     BaseUserNotFoundError,
@@ -28,12 +27,12 @@ def validate_password_exists(password: bytes) -> None:
         raise BaseUserGetPasswordError
 
 
-def validate_user_exists(user: dict[str, Any] | None) -> None:
+def validate_user_exists(user: BaseUserDAO | None) -> None:
     """Raises an exception if user doesn't exists
 
     Args:
     ----
-        user (dict[str, Any] | None): the user
+        user (BaseUserDAO | None): the user
 
     Raises:
     ------

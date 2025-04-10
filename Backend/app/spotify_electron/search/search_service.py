@@ -2,7 +2,7 @@
 Search service for handling business logic
 """
 
-from asyncio import create_task, gather
+import asyncio
 
 import app.spotify_electron.playlist.playlist_service as playlist_service
 import app.spotify_electron.song.base_song_service as base_song_service
@@ -37,19 +37,15 @@ async def search_by_name(name: str) -> SearchResult:
     try:
         validate_parameter(name)
 
-        songs_task = create_task(base_song_service.search_by_name(name=name))
-        playlists_task = create_task(playlist_service.search_by_name(name=name))
-        artists_task = create_task(artist_service.search_by_name(name=name))
-        users_task = create_task(user_service.search_by_name(name=name))
+        songs_future = asyncio.to_thread(base_song_service.search_by_name, name)
+        playlists_future = asyncio.to_thread(playlist_service.search_by_name, name)
+        artists_future = asyncio.to_thread(artist_service.search_by_name, name)
+        users_future = asyncio.to_thread(user_service.search_by_name, name)
 
-        songs, playlists, artists, users = await gather(
-            *[
-                songs_task,
-                playlists_task,
-                artists_task,
-                users_task,
-            ]
-        )
+        songs = await songs_future
+        playlists = await playlists_future
+        artists = await artists_future
+        users = await users_future
 
     except BadParameterError as exception:
         search_service_logger.exception(f"Bad Search parameter: {name}")

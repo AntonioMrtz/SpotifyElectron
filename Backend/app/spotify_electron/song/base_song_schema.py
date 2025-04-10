@@ -46,14 +46,11 @@ class SongMetadataDTO(BaseSongDTO):
     """Represents Song metadata in the endpoints transfering layer"""
 
 
-def get_song_metadata_dao_from_document(
-    song_name: str, document: dict[str, Any]
-) -> SongMetadataDAO:
+def get_song_metadata_dao_from_document(document: dict[str, Any]) -> SongMetadataDAO:
     """Get SongMetadataDAO from document
 
     Args:
     ----
-        song_name (str): song name
         document (dict): song document
 
     Returns:
@@ -62,7 +59,7 @@ def get_song_metadata_dao_from_document(
 
     """
     return SongMetadataDAO(
-        name=song_name,
+        name=document["name"],
         photo=document["photo"],
         artist=document["artist"],
         seconds_duration=document["duration"],

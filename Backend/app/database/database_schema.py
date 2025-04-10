@@ -2,15 +2,12 @@
 
 import sys
 from abc import abstractmethod
-from asyncio import get_event_loop
 from enum import StrEnum
 
-from motor.motor_asyncio import (
-    AsyncIOMotorClient,
-    AsyncIOMotorCollection,
-    AsyncIOMotorDatabase,
-    AsyncIOMotorGridFSBucket,
-)
+from gridfs import GridFS
+from pymongo.collection import Collection
+from pymongo.database import Database
+from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 
 from app.common.app_schema import AppEnvironment
@@ -20,8 +17,8 @@ from app.logging.logging_constants import LOGGING_DATABASE_CONNECTION
 from app.logging.logging_schema import SpotifyElectronLogger
 
 
-class DatabaseAsyncIOMotorCollection(StrEnum):
-    """AsyncIOMotorCollection names present in database"""
+class DatabaseCollection(StrEnum):
+    """Collection names present in database"""
 
     USER = "users"
     ARTIST = "artists"
@@ -36,14 +33,14 @@ class BaseDatabaseConnection:
 
     DATABASE_NAME = "SpotifyElectron"
     """Database name"""
-    connection: AsyncIOMotorDatabase
+    connection: Database
     """Database connection"""
     collection_name_prefix: str = ""
     """Database collection prefix applied to all collections"""
     _logger = SpotifyElectronLogger(LOGGING_DATABASE_CONNECTION).get_logger()
 
     @classmethod
-    async def init_connection(cls, uri: str):
+    def init_connection(cls, uri: str):
         """Init database connection
 
         Args:
@@ -53,20 +50,19 @@ class BaseDatabaseConnection:
             uri = getattr(PropertiesManager, AppEnvironment.MONGO_URI_ENV_NAME)
             cls.collection_name_prefix = cls._get_collection_name_prefix()
             client = cls._get_mongo_client()(uri, server_api=ServerApi("1"))
-            client.get_io_loop = get_event_loop
-            await client.admin.command("ping")
+            client.admin.command("ping")
             cls.connection = client[cls.DATABASE_NAME]
         except Exception as exception:
             cls._logger.critical(f"Error establishing connection with database: {exception}")
-            sys.exit("Database connection failed. Stopping server")
+            sys.exit("Database connection failed, stopping server")
 
     @classmethod
     @abstractmethod
-    def _get_mongo_client(cls) -> type[AsyncIOMotorClient]:
+    def _get_mongo_client(cls) -> type[MongoClient]:
         """Get mongo client class
 
         Returns:
-            type[MotorClient]: the mongo client class
+            type[MongoClient]: the mongo client class
         """
         pass
 
@@ -81,38 +77,32 @@ class BaseDatabaseConnection:
         pass
 
     @classmethod
-    def get_collection_connection(
-        cls, collection_name: DatabaseAsyncIOMotorCollection
-    ) -> AsyncIOMotorCollection:
+    def get_collection_connection(cls, collection_name: DatabaseCollection) -> Collection:
         """Returns the connection with a collection
 
         Args:
             collection_name (str): the collection name
 
         Returns:
-            AsyncIOMotorCollection: the connection to the collection
+            Collection: the connection to the collection
         """
-        assert cls.connection is not None, "DatabaseConnectionManager connection is not init"
-
         return cls.connection[cls.collection_name_prefix + collection_name]
 
     @classmethod
-    def get_gridfs_collection_connection(
-        cls, collection_name: DatabaseAsyncIOMotorCollection
-    ) -> AsyncIOMotorGridFSBucket:
+    def get_gridfs_collection_connection(cls, collection_name: DatabaseCollection) -> GridFS:
         """Returns the connection with gridfs collection
 
         Args:
-            collection_name (DatabaseAsyncIOMotorCollections): the collection name
+            collection_name (DatabaseCollections): the collection name
 
         Returns:
-            AsyncIOMotorGridFSBucket: the gridfs collection connection
+            GridFS: the gridfs collection connection
         """
         assert cls.connection is not None, "DatabaseConnectionManager connection is not init"
 
-        return AsyncIOMotorGridFSBucket(
+        return GridFS(
             cls.connection,
-            bucket_name=cls.collection_name_prefix + collection_name,
+            collection=cls.collection_name_prefix + collection_name,
         )
 
 

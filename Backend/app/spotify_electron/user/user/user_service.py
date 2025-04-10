@@ -34,7 +34,7 @@ from app.spotify_electron.utils.date.date_utils import get_current_iso8601_date
 user_service_logger = SpotifyElectronLogger(LOGGING_USER_SERVICE).get_logger()
 
 
-async def does_user_exists(user_name: str) -> bool:
+def does_user_exists(user_name: str) -> bool:
     """Returns if user exists
 
     Args:
@@ -43,11 +43,12 @@ async def does_user_exists(user_name: str) -> bool:
     Returns:
         bool: if the user exists
     """
-    collection = user_collection_provider.get_user_collection()
-    return await base_user_repository.check_user_exists(user_name, collection)
+    return base_user_repository.check_user_exists(
+        user_name, user_collection_provider.get_user_collection()
+    )
 
 
-async def get_user(user_name: str) -> UserDTO:
+def get_user(user_name: str) -> UserDTO:
     """Get user from name
 
     Args:
@@ -62,8 +63,8 @@ async def get_user(user_name: str) -> UserDTO:
         UserDTO: the user
     """
     try:
-        await base_user_service_validations.validate_user_name_parameter(user_name)
-        user = await user_repository.get_user(user_name)
+        base_user_service_validations.validate_user_name_parameter(user_name)
+        user = user_repository.get_user(user_name)
         user_dto = get_user_dto_from_dao(user)
     except BaseUserBadNameError as exception:
         user_service_logger.exception(f"Bad User Name Parameter: {user_name}")
@@ -86,7 +87,7 @@ async def get_user(user_name: str) -> UserDTO:
         return user_dto
 
 
-async def create_user(user_name: str, photo: str, password: str) -> None:
+def create_user(user_name: str, photo: str, password: str) -> None:
     """Create user
 
     Args:
@@ -100,14 +101,14 @@ async def create_user(user_name: str, photo: str, password: str) -> None:
         UserServiceError: unexpected error while creating user
     """
     try:
-        await base_user_service_validations.validate_user_name_parameter(user_name)
-        await base_user_service_validations.validate_user_should_not_exist(user_name)
+        base_user_service_validations.validate_user_name_parameter(user_name)
+        base_user_service_validations.validate_user_should_not_exist(user_name)
 
         date = get_current_iso8601_date()
         photo = photo if "http" in photo else ""
         hashed_password = auth_service.hash_password(password)
 
-        await user_repository.create_user(
+        user_repository.create_user(
             name=user_name,
             photo=photo,
             current_date=date,
@@ -133,7 +134,7 @@ async def create_user(user_name: str, photo: str, password: str) -> None:
 
 
 # TODO obtain all users in same query
-async def get_users(user_names: list[str]) -> list[UserDTO]:
+def get_users(user_names: list[str]) -> list[UserDTO]:
     """Get users from a list of names
 
     Args:
@@ -149,7 +150,7 @@ async def get_users(user_names: list[str]) -> list[UserDTO]:
         users: list[UserDTO] = []
 
         for user_name in user_names:
-            users.append(await get_user(user_name))
+            users.append(get_user(user_name))
 
     except BaseUserRepositoryError as exception:
         user_service_logger.exception(
@@ -166,7 +167,7 @@ async def get_users(user_names: list[str]) -> list[UserDTO]:
         return users
 
 
-async def search_by_name(name: str) -> list[UserDTO]:
+def search_by_name(name: str) -> list[UserDTO]:
     """Retrieve the users that match the name
 
     Args:
@@ -179,10 +180,11 @@ async def search_by_name(name: str) -> list[UserDTO]:
         list[UserDTO]: users that match the name
     """
     try:
-        user_collection = user_collection_provider.get_user_collection()
-        matched_items_names = await base_user_repository.search_by_name(name, user_collection)
+        matched_items_names = base_user_repository.search_by_name(
+            name, user_collection_provider.get_user_collection()
+        )
 
-        return await get_users(matched_items_names)
+        return get_users(matched_items_names)
     except BaseUserRepositoryError as exception:
         user_service_logger.exception(
             f"Unexpected error in User Repository getting items by name {name}"
@@ -190,7 +192,7 @@ async def search_by_name(name: str) -> list[UserDTO]:
         raise UserServiceError from exception
 
 
-async def promote_user_to_artist(name: str, token: TokenData) -> None:
+def promote_user_to_artist(name: str, token: TokenData) -> None:
     """Promote user to artist
 
     Args:
@@ -206,15 +208,15 @@ async def promote_user_to_artist(name: str, token: TokenData) -> None:
     """
     try:
         # TODO: Make this a transaction. Currently it's transaction-like.
-        await base_user_service_validations.validate_user_name_parameter(name)
-        await base_user_service_validations.validate_user_should_exists(name)
+        base_user_service_validations.validate_user_name_parameter(name)
+        base_user_service_validations.validate_user_should_exists(name)
         auth_service_validations.validate_jwt_user_matches_user(token, name)
-
-        user = await user_repository.get_user(name)
-        await artist_service.create_artist_from_user(user)
-
-        user_collection = user_collection_provider.get_user_collection()
-        await base_user_repository.delete_user(user.name, user_collection)
+        user = user_repository.get_user(name)
+        artist_service.create_artist_from_user(user)
+        base_user_repository.delete_user(
+            user.name, user_collection_provider.get_user_collection()
+        )
+        user_service_logger.info(f"User: {user.name} promoted to artist successfully")
     except ArtistAlreadyExistsError as exception:
         user_service_logger.exception(f"Artist already exists: {name}")
         raise ArtistAlreadyExistsError from exception
@@ -245,5 +247,3 @@ async def promote_user_to_artist(name: str, token: TokenData) -> None:
             f"Unexpected error in User Service promoting user: {name}"
         )
         raise UserServiceError from exception
-    else:
-        user_service_logger.info(f"User: {user.name} promoted to artist successfully")

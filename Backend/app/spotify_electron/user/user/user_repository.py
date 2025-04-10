@@ -23,7 +23,7 @@ from app.spotify_electron.user.validations.base_user_repository_validations impo
 user_repository_logger = SpotifyElectronLogger(LOGGING_USER_REPOSITORY).get_logger()
 
 
-async def get_user(name: str) -> UserDAO:
+def get_user(name: str) -> UserDAO:
     """Get user by name
 
     Args:
@@ -37,9 +37,7 @@ async def get_user(name: str) -> UserDAO:
         UserDAO: the user
     """
     try:
-        collection = user_collection_provider.get_user_collection()
-        user = await collection.find_one({"name": name})
-
+        user = user_collection_provider.get_user_collection().find_one({"name": name})
         validate_user_exists(user)
         user_dao = get_user_dao_from_document(user)  # type: ignore
 
@@ -54,7 +52,7 @@ async def get_user(name: str) -> UserDAO:
         return user_dao
 
 
-async def create_user(name: str, photo: str, password: bytes, current_date: str) -> None:
+def create_user(name: str, photo: str, password: bytes, current_date: str) -> None:
     """Create user
 
     Args:
@@ -76,8 +74,7 @@ async def create_user(name: str, photo: str, password: bytes, current_date: str)
             "playlists": [],
             "playback_history": [],
         }
-        collection = user_collection_provider.get_user_collection()
-        result = await collection.insert_one(user)
+        result = user_collection_provider.get_user_collection().insert_one(user)
 
         validate_user_create(result)
     except BaseUserCreateError as exception:

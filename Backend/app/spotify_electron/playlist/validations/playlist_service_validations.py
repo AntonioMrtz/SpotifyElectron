@@ -30,7 +30,7 @@ def validate_playlist_name_parameter(name: str) -> None:
         raise PlaylistBadNameError from BadParameterError
 
 
-async def validate_playlist_should_exists(name: str) -> None:
+def validate_playlist_should_exists(name: str) -> None:
     """Raises an exception if playlist doesn't exists
 
     Args:
@@ -42,12 +42,11 @@ async def validate_playlist_should_exists(name: str) -> None:
         PlaylistNotFoundError: if playlist doesn't exists
 
     """
-    does_playlist_exist = await check_playlist_exists(name)
-    if not does_playlist_exist:
+    if not check_playlist_exists(name):
         raise PlaylistNotFoundError
 
 
-async def validate_playlist_should_not_exists(name: str) -> None:
+def validate_playlist_should_not_exists(name: str) -> None:
     """Raises an exception if playlist does exists
 
     Args:
@@ -59,6 +58,5 @@ async def validate_playlist_should_not_exists(name: str) -> None:
         PlaylistAlreadyExistsError: if playlist exists
 
     """
-    does_playlist_exist = await check_playlist_exists(name)
-    if does_playlist_exist:
+    if check_playlist_exists(name):
         raise PlaylistAlreadyExistsError

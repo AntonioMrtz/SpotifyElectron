@@ -2,18 +2,16 @@
 Provider class for supplying playlist collection connection with database
 """
 
-from motor.motor_asyncio import AsyncIOMotorCollection
+from pymongo.collection import Collection
 
-from app.database.database_schema import DatabaseAsyncIOMotorCollection
+from app.database.database_schema import DatabaseCollection
 from app.database.DatabaseConnectionManager import DatabaseConnectionManager
 
 
-def get_playlist_collection() -> AsyncIOMotorCollection:
+def get_playlist_collection() -> Collection:
     """Get playlist collection
 
     Returns:
-        AsyncIOMotorCollection: the playlist collection
+        Collection: the playlist collection
     """
-    return DatabaseConnectionManager.get_collection_connection(
-        DatabaseAsyncIOMotorCollection.PLAYLIST
-    )
+    return DatabaseConnectionManager.get_collection_connection(DatabaseCollection.PLAYLIST)

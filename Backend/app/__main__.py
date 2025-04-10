@@ -62,7 +62,7 @@ async def lifespan_handler(app: FastAPI) -> AsyncGenerator[None, Any]:
         days_to_expire_cookie=AppAuthConfig.DAYS_TO_EXPIRE_COOKIE,
     )
 
-    await DatabaseConnectionManager.init_database_connection(
+    DatabaseConnectionManager.init_database_connection(
         environment=environment, connection_uri=connection_uri
     )
     SongServiceProvider.init_service()

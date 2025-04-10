@@ -53,8 +53,7 @@ base_users_service_logger = SpotifyElectronLogger(LOGGING_BASE_USERS_SERVICE).ge
 MAX_NUMBER_PLAYBACK_HISTORY_SONGS = 5
 
 
-# TODO improve for future types of user
-async def get_user_type(user_name: str) -> UserType:
+def get_user_type(user_name: str) -> UserType:
     """Get user type
 
     Args:
@@ -64,13 +63,14 @@ async def get_user_type(user_name: str) -> UserType:
         UserType: the user type/role
     """
     validate_parameter(user_name)
-    await base_user_service_validations.validate_user_should_exists(user_name)
-    does_artist_exists = await artist_service.does_artist_exists(user_name)
+    base_user_service_validations.validate_user_should_exists(user_name)
 
-    return UserType.ARTIST if does_artist_exists else UserType.USER
+    if artist_service.does_artist_exists(user_name):
+        return UserType.ARTIST
+    return UserType.USER
 
 
-async def get_user(user_name: str) -> BaseUserDTO:
+def get_user(user_name: str) -> BaseUserDTO:
     """Returns the user
 
     Args:
@@ -79,11 +79,10 @@ async def get_user(user_name: str) -> BaseUserDTO:
     Returns:
         User: the user
     """
-    user_service = await user_service_provider.get_user_service(user_name)
-    return await user_service.get_user(user_name)
+    return user_service_provider.get_user_service(user_name).get_user(user_name)
 
 
-async def delete_user(user_name: str) -> None:
+def delete_user(user_name: str) -> None:
     """Delete user
 
     Args:
@@ -95,12 +94,10 @@ async def delete_user(user_name: str) -> None:
         BaseUserServiceError: unexpected error while deleting user
     """
     try:
-        await base_user_service_validations.validate_user_name_parameter(user_name)
-        await base_user_service_validations.validate_user_should_exists(user_name)
-
-        collection = await user_collection_provider.get_user_associated_collection(user_name)
-
-        await base_user_repository.delete_user(user_name, collection)
+        base_user_service_validations.validate_user_name_parameter(user_name)
+        base_user_service_validations.validate_user_should_exists(user_name)
+        collection = user_collection_provider.get_user_associated_collection(user_name)
+        base_user_repository.delete_user(user_name, collection)
     except BaseUserBadNameError as exception:
         base_users_service_logger.exception(f"Bad user Parameter: {user_name}")
         raise BaseUserBadNameError from exception
@@ -121,7 +118,7 @@ async def delete_user(user_name: str) -> None:
         base_users_service_logger.info(f"User {user_name} deleted")
 
 
-async def get_user_password(user_name: str) -> bytes:
+def get_user_password(user_name: str) -> bytes:
     """Get user hashed password
 
     Args:
@@ -134,8 +131,8 @@ async def get_user_password(user_name: str) -> bytes:
         bytes: the hashed password
     """
     try:
-        collection = await user_collection_provider.get_user_associated_collection(user_name)
-        password = await base_user_repository.get_user_password(user_name, collection)
+        collection = user_collection_provider.get_user_associated_collection(user_name)
+        password = base_user_repository.get_user_password(user_name, collection)
     except BaseUserRepositoryError as exception:
         base_users_service_logger.exception(
             f"Unexpected error in User Repository getting password from user: {user_name}"
@@ -151,7 +148,7 @@ async def get_user_password(user_name: str) -> bytes:
         return password
 
 
-async def add_playback_history(user_name: str, song_name: str, token: TokenData) -> None:
+def add_playback_history(user_name: str, song_name: str, token: TokenData) -> None:
     """Add playback history to user
 
     Args:
@@ -169,19 +166,18 @@ async def add_playback_history(user_name: str, song_name: str, token: TokenData)
         BaseUserServiceError: unexpected error adding playback history to user
     """
     try:
-        await base_user_service_validations.validate_user_name_parameter(user_name)
+        base_user_service_validations.validate_user_name_parameter(user_name)
         validate_song_name_parameter(song_name)
-        await base_user_service_validations.validate_user_should_exists(user_name)
+        base_user_service_validations.validate_user_should_exists(user_name)
         validate_jwt_user_matches_user(token, user_name)
-        await validate_song_should_exists(song_name)
 
-        await base_user_repository.add_playback_history(
+        validate_song_should_exists(song_name)
+
+        base_user_repository.add_playback_history(
             user_name=user_name,
             song=song_name,
             max_number_playback_history_songs=MAX_NUMBER_PLAYBACK_HISTORY_SONGS,
-            collection=await user_collection_provider.get_user_associated_collection(
-                user_name
-            ),
+            collection=user_collection_provider.get_user_associated_collection(user_name),
         )
     except BaseUserBadNameError as exception:
         base_users_service_logger.exception(f"Bad User Parameter: {user_name}")
@@ -218,7 +214,7 @@ async def add_playback_history(user_name: str, song_name: str, token: TokenData)
         )
 
 
-async def add_saved_playlist(user_name: str, playlist_name: str, token: TokenData) -> None:
+def add_saved_playlist(user_name: str, playlist_name: str, token: TokenData) -> None:
     """Add saved playlist to user
 
     Args:
@@ -235,18 +231,16 @@ async def add_saved_playlist(user_name: str, playlist_name: str, token: TokenDat
         BaseUserServiceError: unexpected error adding saved playlist to user
     """
     try:
-        await base_user_service_validations.validate_user_name_parameter(user_name)
+        base_user_service_validations.validate_user_name_parameter(user_name)
         validate_playlist_name_parameter(playlist_name)
-        await base_user_service_validations.validate_user_should_exists(user_name)
+        base_user_service_validations.validate_user_should_exists(user_name)
         validate_jwt_user_matches_user(token, user_name)
-        await validate_playlist_should_exists(playlist_name)
+        validate_playlist_should_exists(playlist_name)
 
-        await base_user_repository.add_saved_playlist(
+        base_user_repository.add_saved_playlist(
             user_name=user_name,
             playlist_name=playlist_name,
-            collection=await user_collection_provider.get_user_associated_collection(
-                user_name
-            ),
+            collection=user_collection_provider.get_user_associated_collection(user_name),
         )
     except BaseUserBadNameError as exception:
         base_users_service_logger.exception(f"Bad User Parameter: {user_name}")
@@ -283,7 +277,7 @@ async def add_saved_playlist(user_name: str, playlist_name: str, token: TokenDat
         )
 
 
-async def delete_saved_playlist(user_name: str, playlist_name: str, token: TokenData) -> None:
+def delete_saved_playlist(user_name: str, playlist_name: str, token: TokenData) -> None:
     """Deletes saved playlist from user
 
     Args:
@@ -300,18 +294,16 @@ async def delete_saved_playlist(user_name: str, playlist_name: str, token: Token
         BaseUserServiceError: unexpected error deleting saved playlist from user
     """
     try:
-        await base_user_service_validations.validate_user_name_parameter(user_name)
+        base_user_service_validations.validate_user_name_parameter(user_name)
         playlist_service.validate_playlist_name_parameter(playlist_name)
-        await base_user_service_validations.validate_user_should_exists(user_name)
+        base_user_service_validations.validate_user_should_exists(user_name)
         validate_jwt_user_matches_user(token, user_name)
-        await playlist_service.validate_playlist_should_exists(playlist_name)
+        playlist_service.validate_playlist_should_exists(playlist_name)
 
-        await base_user_repository.delete_saved_playlist(
+        base_user_repository.delete_saved_playlist(
             user_name=user_name,
             playlist_name=playlist_name,
-            collection=await user_collection_provider.get_user_associated_collection(
-                user_name
-            ),
+            collection=user_collection_provider.get_user_associated_collection(user_name),
         )
     except BaseUserBadNameError as exception:
         base_users_service_logger.exception(f"Bad User Parameter: {user_name}")
@@ -348,7 +340,7 @@ async def delete_saved_playlist(user_name: str, playlist_name: str, token: Token
         )
 
 
-async def add_playlist_to_owner(user_name: str, playlist_name: str, token: TokenData) -> None:
+def add_playlist_to_owner(user_name: str, playlist_name: str, token: TokenData) -> None:
     """Add playlist to owner
 
     Args:
@@ -360,18 +352,16 @@ async def add_playlist_to_owner(user_name: str, playlist_name: str, token: Token
         BaseUserServiceError: unexpected error adding playlist to owner
     """
     try:
-        await base_user_service_validations.validate_user_name_parameter(user_name)
+        base_user_service_validations.validate_user_name_parameter(user_name)
         validate_playlist_name_parameter(playlist_name)
-        await base_user_service_validations.validate_user_should_exists(user_name)
+        base_user_service_validations.validate_user_should_exists(user_name)
         validate_jwt_user_matches_user(token, user_name)
-        await validate_playlist_should_exists(playlist_name)
+        validate_playlist_should_exists(playlist_name)
 
-        await base_user_repository.add_playlist_to_owner(
+        base_user_repository.add_playlist_to_owner(
             user_name=user_name,
             playlist_name=playlist_name,
-            collection=await user_collection_provider.get_user_associated_collection(
-                user_name
-            ),
+            collection=user_collection_provider.get_user_associated_collection(user_name),
         )
 
         base_users_service_logger.info(
@@ -391,7 +381,7 @@ async def add_playlist_to_owner(user_name: str, playlist_name: str, token: Token
         raise BaseUserServiceError from exception
 
 
-async def delete_playlist_from_owner(playlist_name: str) -> None:
+def delete_playlist_from_owner(playlist_name: str) -> None:
     """Delete playlist from owner
 
     Args:
@@ -402,19 +392,20 @@ async def delete_playlist_from_owner(playlist_name: str) -> None:
     """
     try:
         validate_playlist_name_parameter(playlist_name)
-        await validate_playlist_should_exists(playlist_name)
+        validate_playlist_should_exists(playlist_name)
 
-        playlist = await playlist_service.get_playlist(playlist_name)
-        user_name = playlist.owner
-        user_collection = await user_collection_provider.get_user_associated_collection(
-            user_name
-        )
+        user_name = playlist_service.get_playlist(playlist_name).owner
 
-        await base_user_service_validations.validate_user_should_exists(user_name)
-        await base_user_repository.delete_playlist_from_owner(
+        base_user_service_validations.validate_user_should_exists(user_name)
+
+        base_user_repository.delete_playlist_from_owner(
             user_name=user_name,
             playlist_name=playlist_name,
-            collection=user_collection,
+            collection=user_collection_provider.get_user_associated_collection(user_name),
+        )
+
+        base_users_service_logger.info(
+            f"Playlist {playlist_name} deleted from owner {user_name} created playlists"
         )
     except BaseUserRepositoryError as exception:
         base_users_service_logger.exception(
@@ -428,13 +419,9 @@ async def delete_playlist_from_owner(playlist_name: str) -> None:
             f"from owner {user_name}"
         )
         raise BaseUserServiceError from exception
-    else:
-        base_users_service_logger.info(
-            f"Playlist {playlist_name} deleted from owner {user_name} created playlists"
-        )
 
 
-async def update_playlist_name(old_playlist_name: str, new_playlist_name: str) -> None:
+def update_playlist_name(old_playlist_name: str, new_playlist_name: str) -> None:
     """Update playlist name on users that have it saved, liked or it's the owner
 
     Args:
@@ -448,14 +435,14 @@ async def update_playlist_name(old_playlist_name: str, new_playlist_name: str) -
         return
 
     for collection in user_collection_provider.get_all_collections():
-        await base_user_repository.update_playlist_name(
+        base_user_repository.update_playlist_name(
             old_playlist_name=old_playlist_name,
             new_playlist_name=new_playlist_name,
             collection=collection,
         )
 
 
-async def get_user_relevant_playlists(user_name: str) -> list[PlaylistDTO]:
+def get_user_relevant_playlists(user_name: str) -> list[PlaylistDTO]:
     """Get user relevant playlists
 
     Args:
@@ -470,17 +457,13 @@ async def get_user_relevant_playlists(user_name: str) -> list[PlaylistDTO]:
         list[PlaylistDTO]: the relevant playlists
     """
     try:
-        await base_user_service_validations.validate_user_name_parameter(user_name)
-        await base_user_service_validations.validate_user_should_exists(user_name)
-
-        collection = await user_collection_provider.get_user_associated_collection(user_name)
-
-        relevant_playlist_names = await base_user_repository.get_user_relevant_playlist_names(
+        base_user_service_validations.validate_user_name_parameter(user_name)
+        base_user_service_validations.validate_user_should_exists(user_name)
+        collection = user_collection_provider.get_user_associated_collection(user_name)
+        relevant_playlist_names = base_user_repository.get_user_relevant_playlist_names(
             user_name, collection
         )
-        relevant_playlists = await playlist_service.get_selected_playlists(
-            relevant_playlist_names
-        )
+        relevant_playlists = playlist_service.get_selected_playlists(relevant_playlist_names)
     except BaseUserBadNameError as exception:
         base_users_service_logger.exception(f"Bad user Parameter: {user_name}")
         raise BaseUserBadNameError from exception
@@ -509,7 +492,7 @@ async def get_user_relevant_playlists(user_name: str) -> list[PlaylistDTO]:
         return relevant_playlists
 
 
-async def get_user_playlists(user_name: str) -> list[PlaylistDTO]:
+def get_user_playlists(user_name: str) -> list[PlaylistDTO]:
     """Get user created playlists
 
     Args:
@@ -524,15 +507,13 @@ async def get_user_playlists(user_name: str) -> list[PlaylistDTO]:
         list[PlaylistDTO]: the playlists created by the user
     """
     try:
-        await base_user_service_validations.validate_user_name_parameter(user_name)
-        await base_user_service_validations.validate_user_should_exists(user_name)
-
-        collection = await user_collection_provider.get_user_associated_collection(user_name)
-
-        user_playlist_names = await base_user_repository.get_user_playlist_names(
+        base_user_service_validations.validate_user_name_parameter(user_name)
+        base_user_service_validations.validate_user_should_exists(user_name)
+        collection = user_collection_provider.get_user_associated_collection(user_name)
+        user_playlist_names = base_user_repository.get_user_playlist_names(
             user_name, collection
         )
-        user_playlists = await playlist_service.get_selected_playlists(user_playlist_names)
+        user_playlists = playlist_service.get_selected_playlists(user_playlist_names)
     except BaseUserBadNameError as exception:
         base_users_service_logger.exception(f"Bad user Parameter: {user_name}")
         raise BaseUserBadNameError from exception
@@ -560,7 +541,7 @@ async def get_user_playlists(user_name: str) -> list[PlaylistDTO]:
         return user_playlists
 
 
-async def get_user_playlist_names(user_name: str) -> list[str]:
+def get_user_playlist_names(user_name: str) -> list[str]:
     """Get user created playlist names
 
     Args:
@@ -575,12 +556,10 @@ async def get_user_playlist_names(user_name: str) -> list[str]:
         list[str]: the playlist names created by the user
     """
     try:
-        await base_user_service_validations.validate_user_name_parameter(user_name)
-        await base_user_service_validations.validate_user_should_exists(user_name)
-
-        collection = await user_collection_provider.get_user_associated_collection(user_name)
-
-        user_playlist_names = await base_user_repository.get_user_playlist_names(
+        base_user_service_validations.validate_user_name_parameter(user_name)
+        base_user_service_validations.validate_user_should_exists(user_name)
+        collection = user_collection_provider.get_user_associated_collection(user_name)
+        user_playlist_names = base_user_repository.get_user_playlist_names(
             user_name, collection
         )
     except BaseUserBadNameError as exception:
@@ -605,7 +584,7 @@ async def get_user_playlist_names(user_name: str) -> list[str]:
         return user_playlist_names
 
 
-async def get_user_playback_history(user_name: str) -> list[SongMetadataDTO]:
+def get_user_playback_history(user_name: str) -> list[SongMetadataDTO]:
     """Get user song playback history
 
     Args:
@@ -620,15 +599,13 @@ async def get_user_playback_history(user_name: str) -> list[SongMetadataDTO]:
         list[str]: the song playback history from user
     """
     try:
-        await base_user_service_validations.validate_user_name_parameter(user_name)
-        await base_user_service_validations.validate_user_should_exists(user_name)
-
-        collection = await user_collection_provider.get_user_associated_collection(user_name)
-
-        playback_history_names = await base_user_repository.get_user_playback_history_names(
+        base_user_service_validations.validate_user_name_parameter(user_name)
+        base_user_service_validations.validate_user_should_exists(user_name)
+        collection = user_collection_provider.get_user_associated_collection(user_name)
+        playback_history_names = base_user_repository.get_user_playback_history_names(
             user_name=user_name, collection=collection
         )
-        songs_metadata = await base_song_service.get_songs_metadata(playback_history_names)
+        songs_metadata = base_song_service.get_songs_metadata(playback_history_names)
 
     except BaseUserBadNameError as exception:
         base_users_service_logger.exception(f"Bad user Parameter: {user_name}")

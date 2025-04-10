@@ -26,7 +26,7 @@ from app.spotify_electron.playlist.validations.playlist_repository_validations i
 playlist_repository_logger = SpotifyElectronLogger(LOGGING_PLAYLIST_REPOSITORY).get_logger()
 
 
-async def check_playlist_exists(
+def check_playlist_exists(
     name: str,
 ) -> bool:
     """Checks if playlist exists
@@ -46,7 +46,7 @@ async def check_playlist_exists(
     """
     try:
         collection = get_playlist_collection()
-        playlist = await collection.find_one({"name": name}, {"_id": 1})
+        playlist = collection.find_one({"name": name}, {"_id": 1})
     except Exception as exception:
         playlist_repository_logger.exception(
             f"Error checking if Playlist {name} exists in database"
@@ -58,7 +58,7 @@ async def check_playlist_exists(
         return result
 
 
-async def get_playlist(
+def get_playlist(
     name: str,
 ) -> PlaylistDAO:
     """Get a playlist by name
@@ -80,7 +80,7 @@ async def get_playlist(
     """
     try:
         collection = get_playlist_collection()
-        playlist = await collection.find_one({"name": name})
+        playlist = collection.find_one({"name": name})
         validate_playlist_exists(playlist)
         playlist_dao = get_playlist_dao_from_document(playlist)  # type: ignore
 
@@ -95,7 +95,7 @@ async def get_playlist(
         return playlist_dao
 
 
-async def create_playlist(  # noqa: PLR0917
+def create_playlist(  # noqa: PLR0917
     name: str,
     photo: str,
     upload_date: str,
@@ -130,7 +130,7 @@ async def create_playlist(  # noqa: PLR0917
             "owner": owner,
             "song_names": song_names,
         }
-        result = await collection.insert_one(playlist)
+        result = collection.insert_one(playlist)
         validate_playlist_create(result)
     except PlaylistCreateError as exception:
         playlist_repository_logger.exception(
@@ -146,7 +146,7 @@ async def create_playlist(  # noqa: PLR0917
         playlist_repository_logger.info(f"Playlist added to repository: {playlist}")
 
 
-async def delete_playlist(
+def delete_playlist(
     name: str,
 ) -> None:
     """Deletes a playlist
@@ -163,7 +163,7 @@ async def delete_playlist(
     """
     try:
         collection = get_playlist_collection()
-        result = await collection.delete_one({"name": name})
+        result = collection.delete_one({"name": name})
         validate_playlist_delete_count(result)
         playlist_repository_logger.info(f"Playlist {name} Deleted")
     except PlaylistDeleteError as exception:
@@ -176,7 +176,7 @@ async def delete_playlist(
         raise PlaylistRepositoryError from exception
 
 
-async def get_all_playlists() -> list[PlaylistDAO]:
+def get_all_playlists() -> list[PlaylistDAO]:
     """Get all playlist
 
 
@@ -194,8 +194,7 @@ async def get_all_playlists() -> list[PlaylistDAO]:
         collection = get_playlist_collection()
         playlists_files = collection.find()
         playlists = [
-            get_playlist_dao_from_document(playlist_file)
-            async for playlist_file in playlists_files
+            get_playlist_dao_from_document(playlist_file) for playlist_file in playlists_files
         ]
     except Exception as exception:
         playlist_repository_logger.exception("Error getting all Playlists from database")
@@ -205,7 +204,7 @@ async def get_all_playlists() -> list[PlaylistDAO]:
         return playlists
 
 
-async def get_selected_playlists(
+def get_selected_playlists(
     names: list[str],
 ) -> list[PlaylistDAO]:
     """Get selected playlists
@@ -228,7 +227,7 @@ async def get_selected_playlists(
         collection = get_playlist_collection()
         query = {"name": {"$in": names}}
         documents = collection.find(query)
-        playlists = [get_playlist_dao_from_document(document) async for document in documents]
+        playlists = [get_playlist_dao_from_document(document) for document in documents]
     except Exception as exception:
         playlist_repository_logger.exception(f"Error getting {names} Playlists from database")
         raise PlaylistRepositoryError from exception
@@ -239,7 +238,7 @@ async def get_selected_playlists(
         return playlists
 
 
-async def get_playlist_search_by_name(
+def get_playlist_search_by_name(
     name: str,
 ) -> list[PlaylistDAO]:
     """Gets the playlist with similar name
@@ -262,7 +261,7 @@ async def get_playlist_search_by_name(
     try:
         collection = get_playlist_collection()
         documents = collection.find({"name": {"$regex": name, "$options": "i"}})
-        playlists = [get_playlist_dao_from_document(document) async for document in documents]
+        playlists = [get_playlist_dao_from_document(document) for document in documents]
     except Exception as exception:
         playlist_repository_logger.exception(
             f"Error getting Playlists searched by name {name} from database"
@@ -273,7 +272,7 @@ async def get_playlist_search_by_name(
         return playlists
 
 
-async def update_playlist(
+def update_playlist(
     name: str,
     new_name: str,
     photo: str,
@@ -294,7 +293,7 @@ async def update_playlist(
     """
     try:
         collection = get_playlist_collection()
-        result_update = await collection.update_one(
+        result_update = collection.update_one(
             {"name": name},
             {
                 "$set": {
@@ -337,7 +336,7 @@ async def update_playlist(
         )
 
 
-async def add_songs_to_playlist(name: str, song_names: list[str]) -> None:
+def add_songs_to_playlist(name: str, song_names: list[str]) -> None:
     """Add songs to playlist
 
     Args:
@@ -349,7 +348,7 @@ async def add_songs_to_playlist(name: str, song_names: list[str]) -> None:
     """
     try:
         collection = get_playlist_collection()
-        result_update = await collection.update_one(
+        result_update = collection.update_one(
             {"name": name}, {"$addToSet": {"song_names": {"$each": song_names}}}
         )
         validate_playlist_update(result_update)
@@ -365,7 +364,7 @@ async def add_songs_to_playlist(name: str, song_names: list[str]) -> None:
         playlist_repository_logger.info(f"Songs added to playlist {name}: {song_names}")
 
 
-async def remove_songs_from_playlist(name: str, song_names: list[str]) -> None:
+def remove_songs_from_playlist(name: str, song_names: list[str]) -> None:
     """Remove songs from playlist
 
     Args:
@@ -377,7 +376,7 @@ async def remove_songs_from_playlist(name: str, song_names: list[str]) -> None:
     """
     try:
         collection = get_playlist_collection()
-        result_update = await collection.update_one(
+        result_update = collection.update_one(
             {"name": name},
             {"$pull": {"song_names": {"$in": song_names}}},
         )

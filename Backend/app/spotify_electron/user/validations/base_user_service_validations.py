@@ -13,7 +13,7 @@ from app.spotify_electron.user.base_user_schema import (
 from app.spotify_electron.utils.validations.validation_utils import validate_parameter
 
 
-async def validate_user_name_parameter(name: str) -> None:
+def validate_user_name_parameter(name: str) -> None:
     """Raises an exception if name parameter is invalid
 
     Args:
@@ -29,7 +29,7 @@ async def validate_user_name_parameter(name: str) -> None:
         raise BaseUserBadNameError from BadParameterError
 
 
-async def validate_user_should_exists(user_name: str) -> None:
+def validate_user_should_exists(user_name: str) -> None:
     """Raises an exception if user doesn't exists
 
     Args:
@@ -38,14 +38,14 @@ async def validate_user_should_exists(user_name: str) -> None:
     Raises:
         BaseUserNotFoundError: if the user doesn't exists
     """
-    result_artist_exists = await artist_service.does_artist_exists(user_name)
-    result_user_exists = await user_service.does_user_exists(user_name)
+    result_artist_exists = artist_service.does_artist_exists(user_name)
+    result_user_exists = user_service.does_user_exists(user_name)
 
     if not result_user_exists and not result_artist_exists:
         raise BaseUserNotFoundError
 
 
-async def validate_user_should_not_exist(user_name: str) -> None:
+def validate_user_should_not_exist(user_name: str) -> None:
     """Raises an exception if the user exists
 
     Args:
@@ -54,8 +54,8 @@ async def validate_user_should_not_exist(user_name: str) -> None:
     Raises:
         BaseUserAlreadyExistsError: if the user exists
     """
-    result_artist_exists = await artist_service.does_artist_exists(user_name)
-    result_user_exists = await user_service.does_user_exists(user_name)
+    result_artist_exists = artist_service.does_artist_exists(user_name)
+    result_user_exists = user_service.does_user_exists(user_name)
 
     if result_user_exists or result_artist_exists:
         raise BaseUserAlreadyExistsError

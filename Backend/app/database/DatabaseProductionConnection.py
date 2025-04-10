@@ -1,6 +1,6 @@
 """Database connection for production"""
 
-from motor.motor_asyncio import AsyncIOMotorClient
+from pymongo import MongoClient
 
 from app.database.database_schema import BaseDatabaseConnection
 
@@ -9,13 +9,13 @@ class DatabaseProductionConnection(BaseDatabaseConnection):
     """Database connection for production"""
 
     @classmethod
-    def _get_mongo_client(cls) -> type[AsyncIOMotorClient]:
+    def _get_mongo_client(cls) -> type[MongoClient]:
         """Get Mongo client class
 
         Returns:
-            type[AsyncIOMotorClient]: the Mongo client class
+            type[MongoClient]: the Mongo client class
         """
-        return AsyncIOMotorClient
+        return MongoClient
 
     @classmethod
     def _get_collection_name_prefix(cls) -> str:

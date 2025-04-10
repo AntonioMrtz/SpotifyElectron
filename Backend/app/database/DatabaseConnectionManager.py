@@ -1,9 +1,9 @@
 """Database connection provider"""
 
-from motor.motor_asyncio import AsyncIOMotorCollection
+from pymongo.collection import Collection
 
 from app.common.app_schema import AppEnvironmentMode
-from app.database.database_schema import BaseDatabaseConnection, DatabaseAsyncIOMotorCollection
+from app.database.database_schema import BaseDatabaseConnection, DatabaseCollection
 from app.database.DatabaseProductionConnection import DatabaseProductionConnection
 from app.database.DatabaseTestingConnection import DatabaseTestingConnection
 from app.logging.logging_constants import LOGGING_DATABASE_MANAGER
@@ -24,23 +24,21 @@ class DatabaseConnectionManager:
     _logger = SpotifyElectronLogger(LOGGING_DATABASE_MANAGER).get_logger()
 
     @classmethod
-    def get_collection_connection(
-        cls, collection_name: DatabaseAsyncIOMotorCollection
-    ) -> AsyncIOMotorCollection:
+    def get_collection_connection(cls, collection_name: DatabaseCollection) -> Collection:
         """Get a connection to a collection
 
         Args:
-            collection_name (DatabaseAsyncIOMotorCollection): collection name
+            collection_name (DatabaseCollection): collection name
 
         Returns:
-            AsyncIOMotorCollection: the connection to the selected collection
+            Collection: the connection to the selected collection
         """
         assert cls.connection is not None, "DatabaseConnectionManager connection is not init"
 
         return cls.connection.get_collection_connection(collection_name)
 
     @classmethod
-    async def init_database_connection(
+    def init_database_connection(
         cls, environment: AppEnvironmentMode, connection_uri: str
     ) -> None:
         """Initializes the database connection and loads its unique instance\
@@ -53,5 +51,5 @@ class DatabaseConnectionManager:
         database_connection_class = cls.database_connection_mapping.get(
             environment, DatabaseProductionConnection
         )
-        await database_connection_class.init_connection(connection_uri)
+        database_connection_class.init_connection(connection_uri)
         cls.connection = database_connection_class

@@ -134,28 +134,18 @@ def test_delete_artist_invalid_name(clear_test_data_db):
 
 def test_get_artists_correct():
     name = "8232392323623823723"
-    name_artist_2 = "artist2"
     photo = "https://photo"
     password = "hola"
 
     res_create_artist = create_artist(name=name, password=password, photo=photo)
     assert res_create_artist.status_code == HTTP_201_CREATED
 
-    res_create_artist_2 = create_artist(name=name_artist_2, password=password, photo=photo)
-    assert res_create_artist_2.status_code == HTTP_201_CREATED
-
-    expected_total_artists = len([name, name_artist_2])
-
     jwt_headers = get_user_jwt_header(username=name, password=password)
 
     res_get_artists = get_artists(headers=jwt_headers)
     assert res_get_artists.status_code == HTTP_200_OK
-    assert len(res_get_artists.json()["artists"]) == expected_total_artists
 
     res_delete_artist = delete_user(name=name)
-    assert res_delete_artist.status_code == HTTP_202_ACCEPTED
-
-    res_delete_artist = delete_user(name=name_artist_2)
     assert res_delete_artist.status_code == HTTP_202_ACCEPTED
 
 

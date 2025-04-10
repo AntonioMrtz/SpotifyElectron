@@ -41,7 +41,7 @@ router = APIRouter(
 
 
 @router.get("/{name}")
-async def get_artist(
+def get_artist(
     name: str,
     token: Token,
 ) -> Response:
@@ -52,7 +52,7 @@ async def get_artist(
         token (Annotated[TokenData, Depends): JWT info
     """
     try:
-        artist = await artist_service.get_artist(name)
+        artist = artist_service.get_artist(name)
         artist_json = json_converter_utils.get_json_from_model(artist)
 
         return Response(artist_json, media_type="application/json", status_code=HTTP_200_OK)
@@ -86,7 +86,7 @@ async def get_artist(
 
 
 @router.post("/")
-async def create_artist(
+def create_artist(
     name: str,
     photo: str,
     password: str,
@@ -99,7 +99,7 @@ async def create_artist(
         password (str): artist password
     """
     try:
-        await artist_service.create_artist(name, photo, password)
+        artist_service.create_artist(name, photo, password)
         return Response(None, HTTP_201_CREATED)
     except (ArtistBadNameError, BaseUserAlreadyExistsError):
         return Response(
@@ -114,10 +114,10 @@ async def create_artist(
 
 
 @router.get("/")
-async def get_artists(token: Token) -> Response:
+def get_artists(token: Token) -> Response:
     """Get all artists"""
     try:
-        artists = await artist_service.get_all_artists()
+        artists = artist_service.get_all_artists()
         artists_dict = {}
         artists_dict["artists"] = jsonable_encoder(artists)
 
@@ -158,13 +158,13 @@ async def get_artists(token: Token) -> Response:
 
 
 @router.get("/{name}/songs")
-async def get_artist_songs(
+def get_artist_songs(
     name: str,
     token: Token,
 ) -> Response:
     """Get artist songs"""
     try:
-        artist_songs = await artist_service.get_artists_songs(name)
+        artist_songs = artist_service.get_artists_songs(name)
         artist_songs_json = json_converter_utils.get_json_from_model(artist_songs)
 
         return Response(

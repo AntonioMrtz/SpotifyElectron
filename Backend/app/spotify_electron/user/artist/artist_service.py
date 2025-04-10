@@ -2,8 +2,6 @@
 Artist service for handling business logic
 """
 
-from asyncio import gather
-
 import app.auth.auth_service as auth_service
 import app.spotify_electron.song.base_song_service as base_song_service
 import app.spotify_electron.user.artist.artist_repository as artist_repository
@@ -42,7 +40,7 @@ from app.spotify_electron.utils.date.date_utils import get_current_iso8601_date
 artist_service_logger = SpotifyElectronLogger(LOGGING_ARTIST_SERVICE).get_logger()
 
 
-async def get_user(name: str) -> ArtistDTO:
+def get_user(name: str) -> ArtistDTO:
     """Get artist from name
 
     Args:
@@ -51,10 +49,10 @@ async def get_user(name: str) -> ArtistDTO:
     Returns:
         ArtistDTO: the artist
     """
-    return await get_artist(name)
+    return get_artist(name)
 
 
-async def get_artist(artist_name: str) -> ArtistDTO:
+def get_artist(artist_name: str) -> ArtistDTO:
     """Get artist from name
 
     Args:
@@ -69,12 +67,8 @@ async def get_artist(artist_name: str) -> ArtistDTO:
         ArtistDTO: the artist
     """
     try:
-        await base_user_service_validations.validate_user_name_parameter(artist_name)
-
-        artist = await artist_repository.get_artist(artist_name)
-        total_streams = await base_song_service.get_artist_total_streams(artist_name)
-        artist.total_streams = total_streams
-
+        base_user_service_validations.validate_user_name_parameter(artist_name)
+        artist = artist_repository.get_artist(artist_name)
         artist_dto = get_artist_dto_from_dao(artist)
     except BaseUserBadNameError as exception:
         artist_service_logger.exception(f"Bad Artist Name Parameter: {artist_name}")
@@ -87,11 +81,6 @@ async def get_artist(artist_name: str) -> ArtistDTO:
             f"Unexpected error in Artist Repository getting user: {artist_name}"
         )
         raise ArtistServiceError from exception
-    except SongServiceError as exception:
-        artist_service_logger.exception(
-            f"Unexpected error in Song Service getting total streams for artist: {artist_name}"
-        )
-        raise ArtistServiceError from exception
     except Exception as exception:
         artist_service_logger.exception(
             f"Unexpected error in Artist Service getting artist: {artist_name}"
@@ -102,7 +91,7 @@ async def get_artist(artist_name: str) -> ArtistDTO:
         return artist_dto
 
 
-async def create_artist(user_name: str, photo: str, password: str) -> None:
+def create_artist(user_name: str, photo: str, password: str) -> None:
     """Create artist
 
     Args:
@@ -116,14 +105,14 @@ async def create_artist(user_name: str, photo: str, password: str) -> None:
         ArtistServiceError: unexpected error while creating artist
     """
     try:
-        await base_user_service_validations.validate_user_name_parameter(user_name)
-        await base_user_service_validations.validate_user_should_not_exist(user_name)
+        base_user_service_validations.validate_user_name_parameter(user_name)
+        base_user_service_validations.validate_user_should_not_exist(user_name)
 
         date = get_current_iso8601_date()
         photo = photo if "http" in photo else ""
         hashed_password = auth_service.hash_password(password)
 
-        await artist_repository.create_artist(
+        artist_repository.create_artist(
             name=user_name,
             photo=photo,
             current_date=date,
@@ -148,7 +137,7 @@ async def create_artist(user_name: str, photo: str, password: str) -> None:
         raise ArtistServiceError from exception
 
 
-async def create_artist_from_user(user: UserDAO) -> None:
+def create_artist_from_user(user: UserDAO) -> None:
     """Create an Artist from an User object with existing data.
 
     Args:
@@ -159,8 +148,8 @@ async def create_artist_from_user(user: UserDAO) -> None:
         ArtistServiceError: If creation fails
     """
     try:
-        await artist_service_validations.validate_artist_should_not_exist(user.name)
-        await artist_repository.create_artist_from_user_dao(user)
+        artist_service_validations.validate_artist_should_not_exist(user.name)
+        artist_repository.create_artist_from_user_dao(user)
     except ArtistAlreadyExistsError as exception:
         artist_service_logger.exception(
             f"The User with name {user.name} is already exists as Artist"
@@ -178,7 +167,7 @@ async def create_artist_from_user(user: UserDAO) -> None:
         raise ArtistServiceError from exception
 
 
-async def get_all_artists() -> list[ArtistDTO]:
+def get_all_artists() -> list[ArtistDTO]:
     """Get all artists
 
     Raises:
@@ -188,17 +177,7 @@ async def get_all_artists() -> list[ArtistDTO]:
         list[ArtistDTO]: the list of all artists
     """
     try:
-        artists_dao = await artist_repository.get_all_artists()
-
-        total_streams_list = await gather(
-            *[
-                base_song_service.get_artist_total_streams(artist.name)
-                for artist in artists_dao
-            ]
-        )
-        for artist_dao, total_streams in zip(artists_dao, total_streams_list):
-            artist_dao.total_streams = total_streams
-
+        artists_dao = artist_repository.get_all_artists()
         artists_dto = [get_artist_dto_from_dao(artist_dao) for artist_dao in artists_dao]
     except ArtistRepositoryError as exception:
         artist_service_logger.exception(
@@ -216,7 +195,7 @@ async def get_all_artists() -> list[ArtistDTO]:
 
 
 # TODO obtain all users in same query
-async def get_artists(user_names: list[str]) -> list[ArtistDTO]:
+def get_artists(user_names: list[str]) -> list[ArtistDTO]:
     """Get artists from a list of names
 
     Args:
@@ -231,7 +210,7 @@ async def get_artists(user_names: list[str]) -> list[ArtistDTO]:
     try:
         artists: list[ArtistDTO] = []
         for user_name in user_names:
-            artists.append(await get_artist(user_name))
+            artists.append(get_artist(user_name))
 
     except ArtistRepositoryError as exception:
         artist_service_logger.exception(
@@ -248,7 +227,7 @@ async def get_artists(user_names: list[str]) -> list[ArtistDTO]:
         return artists
 
 
-async def search_by_name(name: str) -> list[ArtistDTO]:
+def search_by_name(name: str) -> list[ArtistDTO]:
     """Retrieve the artists than match the name
 
     Args:
@@ -261,12 +240,11 @@ async def search_by_name(name: str) -> list[ArtistDTO]:
         list[ArtistDTO]: artists that match the name
     """
     try:
-        artist_collection = user_collection_provider.get_artist_collection()
-        matched_items_names = await base_user_repository.search_by_name(
-            name, artist_collection
+        matched_items_names = base_user_repository.search_by_name(
+            name, user_collection_provider.get_artist_collection()
         )
 
-        return await get_artists(matched_items_names)
+        return get_artists(matched_items_names)
     except BaseUserNotFoundError as exception:
         artist_service_logger.exception(
             f"Unexpected error in Artist Repository getting items by name {name}"
@@ -279,7 +257,7 @@ async def search_by_name(name: str) -> list[ArtistDTO]:
         raise ArtistServiceError from exception
 
 
-async def does_artist_exists(user_name: str) -> bool:
+def does_artist_exists(user_name: str) -> bool:
     """Returns if artist exists
 
     Args:
@@ -291,11 +269,12 @@ async def does_artist_exists(user_name: str) -> bool:
         bool: if the artist exists
 
     """
-    user_collection = user_collection_provider.get_artist_collection()
-    return await base_user_repository.check_user_exists(user_name, user_collection)
+    return base_user_repository.check_user_exists(
+        user_name, user_collection_provider.get_artist_collection()
+    )
 
 
-async def get_artists_songs(artist_name: str) -> list[SongMetadataDTO]:
+def get_artists_songs(artist_name: str) -> list[SongMetadataDTO]:
     """Get artists songs
 
     Args:
@@ -311,10 +290,9 @@ async def get_artists_songs(artist_name: str) -> list[SongMetadataDTO]:
     """
     try:
         validate_song_name_parameter(artist_name)
-        await artist_service_validations.validate_user_should_be_artist(artist_name)
-
-        artist_song_names = await artist_repository.get_artist_song_names(artist_name)
-        artist_songs = await base_song_service.get_songs_metadata(artist_song_names)
+        artist_service_validations.validate_user_should_be_artist(artist_name)
+        artist_song_names = artist_repository.get_artist_song_names(artist_name)
+        artist_songs = base_song_service.get_songs_metadata(artist_song_names)
     except SongBadNameError as exception:
         artist_service_logger.exception(f"Bad Song name parameter in: {artist_song_names}")
         raise SongBadNameError from exception
@@ -335,7 +313,7 @@ async def get_artists_songs(artist_name: str) -> list[SongMetadataDTO]:
         return artist_songs
 
 
-async def add_song_to_artist(artist_name: str, song_name: str) -> None:
+def add_song_to_artist(artist_name: str, song_name: str) -> None:
     """Add song to artist
 
     Args:
@@ -350,12 +328,12 @@ async def add_song_to_artist(artist_name: str, song_name: str) -> None:
         ArtistServiceError: unexpected error adding song to artist
     """
     try:
-        await base_user_service_validations.validate_user_name_parameter(artist_name)
+        base_user_service_validations.validate_user_name_parameter(artist_name)
         validate_song_name_parameter(song_name)
 
-        await artist_service_validations.validate_user_should_be_artist(artist_name)
+        artist_service_validations.validate_user_should_be_artist(artist_name)
 
-        await artist_repository.add_song_to_artist(artist_name, song_name)
+        artist_repository.add_song_to_artist(artist_name, song_name)
 
     except BaseUserAlreadyExistsError as exception:
         artist_service_logger.exception(f"Bad Artist Name Parameter: {artist_name}")
@@ -382,7 +360,7 @@ async def add_song_to_artist(artist_name: str, song_name: str) -> None:
         raise ArtistServiceError from exception
 
 
-async def delete_song_from_artist(artist_name: str, song_name: str) -> None:
+def delete_song_from_artist(artist_name: str, song_name: str) -> None:
     """Remove song from artist
 
     Args:
@@ -397,12 +375,12 @@ async def delete_song_from_artist(artist_name: str, song_name: str) -> None:
         ArtistServiceError: unexpected error removing song from artist
     """
     try:
-        await base_user_service_validations.validate_user_name_parameter(artist_name)
+        base_user_service_validations.validate_user_name_parameter(artist_name)
         validate_song_name_parameter(song_name)
 
-        await artist_service_validations.validate_user_should_be_artist(artist_name)
+        artist_service_validations.validate_user_should_be_artist(artist_name)
 
-        await artist_repository.delete_song_from_artist(artist_name, song_name)
+        artist_repository.delete_song_from_artist(artist_name, song_name)
     except BaseUserAlreadyExistsError as exception:
         artist_service_logger.exception(f"Bad Artist Name Parameter: {artist_name}")
         raise ArtistBadNameError from exception

@@ -7,7 +7,7 @@ Song files are stored as BLOBs in a separated collection from the metadata
 When the song file is not needed, and only the metadata is required use base song services
 """
 
-from motor.motor_asyncio import AsyncIOMotorGridOut
+from gridfs import GridOut
 
 import app.spotify_electron.song.providers.song_collection_provider as song_collection_provider
 from app.logging.logging_constants import LOGGING_SONG_BLOB_REPOSITORY
@@ -36,7 +36,7 @@ from app.spotify_electron.song.validations.base_song_repository_validations impo
 song_repository_logger = SpotifyElectronLogger(LOGGING_SONG_BLOB_REPOSITORY).get_logger()
 
 
-async def get_song(name: str) -> SongDAO:
+def get_song(name: str) -> SongDAO:
     """Get song from database
 
     Args:
@@ -51,12 +51,9 @@ async def get_song(name: str) -> SongDAO:
     """
     try:
         metadata_collection = song_collection_provider.get_song_collection()
-        song_metadata = await metadata_collection.find_one({"filename": name})
+        song_metadata = metadata_collection.find_one({"name": name})
         validate_song_exists(song_metadata)
-        song_dao = get_song_dao_from_document(
-            song_name=name,
-            document=song_metadata["metadata"],  # type: ignore
-        )
+        song_dao = get_song_dao_from_document(song_metadata)  # type: ignore
 
     except SongNotFoundError as exception:
         song_repository_logger.exception(f"Song not found: {name}")
@@ -69,7 +66,7 @@ async def get_song(name: str) -> SongDAO:
         return song_dao
 
 
-async def create_song(  # noqa: PLR0917
+def create_song(  # noqa: PLR0917
     name: str, artist: str, duration: int, genre: Genre, photo: str, file: bytes
 ) -> None:
     """Create song
@@ -88,6 +85,7 @@ async def create_song(  # noqa: PLR0917
     try:
         gridfs_collection = song_collection_provider.get_gridfs_song_collection()
         song = {
+            "name": name,
             "artist": artist,
             "duration": duration,
             "genre": str(genre.value),
@@ -95,10 +93,11 @@ async def create_song(  # noqa: PLR0917
             "streams": 0,
             "url": f"/stream/{name}",
         }
-        result = await gridfs_collection.upload_from_stream(
-            filename=name, source=file, metadata=song
+        result = gridfs_collection.put(
+            file,
+            **song,
         )
-        validate_song_create(str(result))
+        validate_song_create(result)
     except SongCreateError as exception:
         song_repository_logger.exception(f"Error inserting Song {name} in database")
         raise SongRepositoryError from exception
@@ -109,7 +108,7 @@ async def create_song(  # noqa: PLR0917
         song_repository_logger.info(f"Song added to repository: {song}")
 
 
-async def get_song_data(name: str) -> AsyncIOMotorGridOut:
+def get_song_data(name: str) -> GridOut:
     """Get song data
 
     Args:
@@ -120,12 +119,11 @@ async def get_song_data(name: str) -> AsyncIOMotorGridOut:
         SongRepositoryError: unexpected error getting song data
 
     Returns:
-        AsyncIOMotorGridOut: song data
+        GridOut: song data
     """
     try:
         file_collection = song_collection_provider.get_gridfs_song_collection()
-        song_data = await file_collection.open_download_stream_by_name(name)
-
+        song_data = file_collection.find_one({"name": name})
         validate_song_data_exists(song_data)
 
     except SongDataNotFoundError as exception:
@@ -136,4 +134,4 @@ async def get_song_data(name: str) -> AsyncIOMotorGridOut:
         raise SongRepositoryError from exception
     else:
         song_repository_logger.info("Song data obtained")
-        return song_data
+        return song_data  # type: ignore

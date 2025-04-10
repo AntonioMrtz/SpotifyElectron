@@ -28,7 +28,7 @@ from app.spotify_electron.song.validations.base_song_repository_validations impo
 song_repository_logger = SpotifyElectronLogger(LOGGING_SONG_SERVERLESS_REPOSITORY).get_logger()
 
 
-async def get_song(name: str) -> SongDAO:
+def get_song(name: str) -> SongDAO:
     """Get song from database
 
     Args:
@@ -43,9 +43,9 @@ async def get_song(name: str) -> SongDAO:
     """
     try:
         collection = song_collection_provider.get_song_collection()
-        song = await collection.find_one({"filename": name})
+        song = collection.find_one({"name": name})
         validate_song_exists(song)
-        song_dao = get_song_dao_from_document(song_name=name, document=song["metadata"])  # type: ignore
+        song_dao = get_song_dao_from_document(song)  # type: ignore
 
     except SongNotFoundError as exception:
         raise SongNotFoundError from exception
@@ -57,7 +57,7 @@ async def get_song(name: str) -> SongDAO:
         return song_dao
 
 
-async def create_song(
+def create_song(
     name: str,
     artist: str,
     duration: int,
@@ -79,17 +79,15 @@ async def create_song(
     try:
         collection = song_collection_provider.get_song_collection()
         song = {
-            "filename": name,
-            "metadata": {
-                "artist": artist,
-                "duration": duration,
-                "genre": str(genre.value),
-                "photo": photo,
-                "streams": 0,
-            },
+            "name": name,
+            "artist": artist,
+            "duration": duration,
+            "genre": str(genre.value),
+            "photo": photo,
+            "streams": 0,
         }
 
-        result = await collection.insert_one(song)
+        result = collection.insert_one(song)
         validate_base_song_create(result)
     except SongCreateError as exception:
         song_repository_logger.exception(f"Error inserting Song {song} in database")

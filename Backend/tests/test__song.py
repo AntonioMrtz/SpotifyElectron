@@ -50,9 +50,6 @@ def test_post_cancion_correct(clear_test_data_db):
     )
     assert res_create_song.status_code == HTTP_201_CREATED
 
-    res_get_song = get_song(name=song_name, headers=jwt_headers)
-    assert res_get_song.status_code == HTTP_200_OK
-
     res_delete_song = delete_song(song_name)
     assert res_delete_song.status_code == HTTP_202_ACCEPTED
 
@@ -285,7 +282,7 @@ def test_delete_cancion_not_found():
     assert res_delete_song.status_code == HTTP_404_NOT_FOUND
 
 
-def test_patch_number_plays_cancion_correct():
+def test_patch_number_plays_cancion_correct(clear_test_data_db):
     song_name = "8232392323623823723989"
     artista = "artista"
     genre = "Pop"

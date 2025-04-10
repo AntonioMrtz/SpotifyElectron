@@ -84,7 +84,7 @@ def get_song_streaming_url(name: str) -> str:
         return streaming_url
 
 
-def get_song(name: str) -> SongDTO:
+async def get_song(name: str) -> SongDTO:
     """Get song
 
     Args:
@@ -101,7 +101,7 @@ def get_song(name: str) -> SongDTO:
     try:
         validate_song_name_parameter(name)
 
-        song_dao = song_repository.get_song(name)
+        song_dao = await song_repository.get_song(name)
         streaming_url = get_song_streaming_url(name)
 
         song_dto = get_song_dto_from_dao(song_dao, streaming_url)
@@ -154,11 +154,11 @@ async def create_song(  # noqa: C901
 
     try:
         validate_song_name_parameter(name)
-        base_user_service_validations.validate_user_name_parameter(artist)
+        await base_user_service_validations.validate_user_name_parameter(artist)
         Genre.validate_genre(genre.value)
 
-        validate_song_should_not_exists(name)
-        validate_user_should_be_artist(artist)
+        await validate_song_should_not_exists(name)
+        await validate_user_should_be_artist(artist)
 
         song_duration = get_song_duration_seconds(name, file)
         encoded_bytes = encode_file(name, file)
@@ -168,14 +168,14 @@ async def create_song(  # noqa: C901
         )
         validate_song_creating_streaming_response(name, response_create_song_request)
 
-        song_repository.create_song(
+        await song_repository.create_song(
             name=name,
             artist=artist,
             photo=photo,
             duration=song_duration,
             genre=genre,
         )
-        artist_service.add_song_to_artist(artist, name)
+        await artist_service.add_song_to_artist(artist, name)
     except GenreNotValidError as exception:
         song_service_logger.exception(f"Bad genre provided {genre}")
         raise GenreNotValidError from exception
@@ -219,7 +219,7 @@ async def create_song(  # noqa: C901
         raise SongServiceError from exception
 
 
-def delete_song(name: str) -> None:
+async def delete_song(name: str) -> None:
     """Delete song
 
     Args:
@@ -233,19 +233,19 @@ def delete_song(name: str) -> None:
     """
     try:
         validate_song_name_parameter(name)
-        validate_song_should_exists(name)
+        await validate_song_should_exists(name)
         delete_song_streaming_response = song_serverless_api.delete_song(name)
         validate_song_deleting_streaming_response(name, delete_song_streaming_response)
 
-        artist_name = base_song_repository.get_artist_from_song(name=name)
+        artist_name = await base_song_repository.get_artist_from_song(name=name)
 
-        base_user_service_validations.validate_user_should_exists(artist_name)
+        await base_user_service_validations.validate_user_should_exists(artist_name)
 
-        artist_service.delete_song_from_artist(
+        await artist_service.delete_song_from_artist(
             artist_name,
             name,
         )
-        base_song_repository.delete_song(name)
+        await base_song_repository.delete_song(name)
 
     except SongNotFoundError as exception:
         song_service_logger.exception(f"Song not found: {name}")

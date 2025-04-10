@@ -34,7 +34,7 @@ router = APIRouter(
 
 
 @router.post("/")
-def login_user(
+async def login_user(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
 ) -> Response:
     """Login user
@@ -45,7 +45,7 @@ def login_user(
 
     """
     try:
-        jwt = auth_service.login_user(form_data.username, form_data.password)
+        jwt = await auth_service.login_user(form_data.username, form_data.password)
 
         access_token_json = json_converter_utils.get_json_from_model(jwt)
         expiration_date = auth_service.get_token_expire_date()
@@ -87,14 +87,14 @@ def login_user(
 
 
 @router.post("/token/{token}")
-def login_user_with_jwt(token: str) -> Response:
+async def login_user_with_jwt(token: str) -> Response:
     """Login user with token
 
     Args:
         token (str): the user token
     """
     try:
-        auth_service.login_user_with_token(token)
+        await auth_service.login_user_with_token(token)
     except JWTValidationError:
         return Response(
             status_code=HTTP_403_FORBIDDEN,

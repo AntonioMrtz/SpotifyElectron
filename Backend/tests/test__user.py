@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from pytest import fixture, raises
+from pytest import fixture, mark, raises
 from starlette.status import (
     HTTP_200_OK,
     HTTP_201_CREATED,
@@ -133,27 +133,29 @@ def test_delete_user_invalid_name(clear_test_data_db):
     assert res_delete_user.status_code == HTTP_405_METHOD_NOT_ALLOWED
 
 
-def test_check_encrypted_password_correct():
+@mark.asyncio
+async def test_check_encrypted_password_correct():
     name = "8232392323623823723"
     photo = "https://photo"
     password = "hola"
-    user_service.create_user(name, photo, password)
-    generated_password = base_user_service.get_user_password(name)
+    await user_service.create_user(name, photo, password)
+    generated_password = await base_user_service.get_user_password(name)
 
     auth_service.verify_password(password, generated_password)
-    base_user_service.delete_user(name)
+    await base_user_service.delete_user(name)
 
 
-def test_check_encrypted_password_different():
+@mark.asyncio
+async def test_check_encrypted_password_different():
     name = "8232392323623823723"
     photo = "https://photo"
     password = "hola"
-    user_service.create_user(name, photo, password)
+    await user_service.create_user(name, photo, password)
     password = "hola2"
-    generated_password = base_user_service.get_user_password(name)
+    generated_password = await base_user_service.get_user_password(name)
     with raises(VerifyPasswordError):
         auth_service.verify_password(password, generated_password)
-    base_user_service.delete_user(name)
+    await base_user_service.delete_user(name)
 
 
 def test_get_user_dao_from_document():

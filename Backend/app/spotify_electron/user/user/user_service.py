@@ -34,7 +34,7 @@ from app.spotify_electron.utils.date.date_utils import get_current_iso8601_date
 user_service_logger = SpotifyElectronLogger(LOGGING_USER_SERVICE).get_logger()
 
 
-def does_user_exists(user_name: str) -> bool:
+async def does_user_exists(user_name: str) -> bool:
     """Returns if user exists
 
     Args:
@@ -43,12 +43,11 @@ def does_user_exists(user_name: str) -> bool:
     Returns:
         bool: if the user exists
     """
-    return base_user_repository.check_user_exists(
-        user_name, user_collection_provider.get_user_collection()
-    )
+    collection = user_collection_provider.get_user_collection()
+    return await base_user_repository.check_user_exists(user_name, collection)
 
 
-def get_user(user_name: str) -> UserDTO:
+async def get_user(user_name: str) -> UserDTO:
     """Get user from name
 
     Args:
@@ -63,8 +62,8 @@ def get_user(user_name: str) -> UserDTO:
         UserDTO: the user
     """
     try:
-        base_user_service_validations.validate_user_name_parameter(user_name)
-        user = user_repository.get_user(user_name)
+        await base_user_service_validations.validate_user_name_parameter(user_name)
+        user = await user_repository.get_user(user_name)
         user_dto = get_user_dto_from_dao(user)
     except BaseUserBadNameError as exception:
         user_service_logger.exception(f"Bad User Name Parameter: {user_name}")
@@ -87,7 +86,7 @@ def get_user(user_name: str) -> UserDTO:
         return user_dto
 
 
-def create_user(user_name: str, photo: str, password: str) -> None:
+async def create_user(user_name: str, photo: str, password: str) -> None:
     """Create user
 
     Args:
@@ -101,14 +100,14 @@ def create_user(user_name: str, photo: str, password: str) -> None:
         UserServiceError: unexpected error while creating user
     """
     try:
-        base_user_service_validations.validate_user_name_parameter(user_name)
-        base_user_service_validations.validate_user_should_not_exist(user_name)
+        await base_user_service_validations.validate_user_name_parameter(user_name)
+        await base_user_service_validations.validate_user_should_not_exist(user_name)
 
         date = get_current_iso8601_date()
         photo = photo if "http" in photo else ""
         hashed_password = auth_service.hash_password(password)
 
-        user_repository.create_user(
+        await user_repository.create_user(
             name=user_name,
             photo=photo,
             current_date=date,
@@ -134,7 +133,7 @@ def create_user(user_name: str, photo: str, password: str) -> None:
 
 
 # TODO obtain all users in same query
-def get_users(user_names: list[str]) -> list[UserDTO]:
+async def get_users(user_names: list[str]) -> list[UserDTO]:
     """Get users from a list of names
 
     Args:
@@ -150,7 +149,7 @@ def get_users(user_names: list[str]) -> list[UserDTO]:
         users: list[UserDTO] = []
 
         for user_name in user_names:
-            users.append(get_user(user_name))
+            users.append(await get_user(user_name))
 
     except BaseUserRepositoryError as exception:
         user_service_logger.exception(
@@ -167,7 +166,7 @@ def get_users(user_names: list[str]) -> list[UserDTO]:
         return users
 
 
-def search_by_name(name: str) -> list[UserDTO]:
+async def search_by_name(name: str) -> list[UserDTO]:
     """Retrieve the users that match the name
 
     Args:
@@ -180,11 +179,10 @@ def search_by_name(name: str) -> list[UserDTO]:
         list[UserDTO]: users that match the name
     """
     try:
-        matched_items_names = base_user_repository.search_by_name(
-            name, user_collection_provider.get_user_collection()
-        )
+        user_collection = user_collection_provider.get_user_collection()
+        matched_items_names = await base_user_repository.search_by_name(name, user_collection)
 
-        return get_users(matched_items_names)
+        return await get_users(matched_items_names)
     except BaseUserRepositoryError as exception:
         user_service_logger.exception(
             f"Unexpected error in User Repository getting items by name {name}"
@@ -192,7 +190,7 @@ def search_by_name(name: str) -> list[UserDTO]:
         raise UserServiceError from exception
 
 
-def promote_user_to_artist(name: str, token: TokenData) -> None:
+async def promote_user_to_artist(name: str, token: TokenData) -> None:
     """Promote user to artist
 
     Args:
@@ -208,15 +206,15 @@ def promote_user_to_artist(name: str, token: TokenData) -> None:
     """
     try:
         # TODO: Make this a transaction. Currently it's transaction-like.
-        base_user_service_validations.validate_user_name_parameter(name)
-        base_user_service_validations.validate_user_should_exists(name)
+        await base_user_service_validations.validate_user_name_parameter(name)
+        await base_user_service_validations.validate_user_should_exists(name)
         auth_service_validations.validate_jwt_user_matches_user(token, name)
-        user = user_repository.get_user(name)
-        artist_service.create_artist_from_user(user)
-        base_user_repository.delete_user(
-            user.name, user_collection_provider.get_user_collection()
-        )
-        user_service_logger.info(f"User: {user.name} promoted to artist successfully")
+
+        user = await user_repository.get_user(name)
+        await artist_service.create_artist_from_user(user)
+
+        user_collection = user_collection_provider.get_user_collection()
+        await base_user_repository.delete_user(user.name, user_collection)
     except ArtistAlreadyExistsError as exception:
         user_service_logger.exception(f"Artist already exists: {name}")
         raise ArtistAlreadyExistsError from exception
@@ -247,3 +245,5 @@ def promote_user_to_artist(name: str, token: TokenData) -> None:
             f"Unexpected error in User Service promoting user: {name}"
         )
         raise UserServiceError from exception
+    else:
+        user_service_logger.info(f"User: {user.name} promoted to artist successfully")

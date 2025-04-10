@@ -38,7 +38,7 @@ from app.spotify_electron.utils.date.date_utils import get_current_iso8601_date
 playlist_service_logger = SpotifyElectronLogger(LOGGING_PLAYLIST_SERVICE).get_logger()
 
 
-def check_playlist_exists(name: str) -> bool:
+async def check_playlist_exists(name: str) -> bool:
     """Returns if playlist exists
 
     Args:
@@ -50,10 +50,10 @@ def check_playlist_exists(name: str) -> bool:
         bool: if the playlist exists
 
     """
-    return playlist_repository.check_playlist_exists(name)
+    return await playlist_repository.check_playlist_exists(name)
 
 
-def get_playlist(name: str) -> PlaylistDTO:
+async def get_playlist(name: str) -> PlaylistDTO:
     """Returns the playlist
 
     Args:
@@ -73,7 +73,7 @@ def get_playlist(name: str) -> PlaylistDTO:
     """
     try:
         validate_playlist_name_parameter(name)
-        playlist = playlist_repository.get_playlist(name)
+        playlist = await playlist_repository.get_playlist(name)
         playlist_dto = get_playlist_dto_from_dao(playlist)
     except PlaylistBadNameError as exception:
         playlist_service_logger.exception(f"Bad Playlist Name Parameter: {name}")
@@ -96,7 +96,7 @@ def get_playlist(name: str) -> PlaylistDTO:
         return playlist_dto
 
 
-def create_playlist(
+async def create_playlist(
     name: str, photo: str, description: str, song_names: list[str], token: TokenData
 ) -> None:
     """Creates a playlist
@@ -123,10 +123,10 @@ def create_playlist(
         date = get_current_iso8601_date()
 
         validate_playlist_name_parameter(name)
-        validate_playlist_should_not_exists(name)
-        base_user_service_validations.validate_user_should_exists(owner)
+        await validate_playlist_should_not_exists(name)
+        await base_user_service_validations.validate_user_should_exists(owner)
 
-        playlist_repository.create_playlist(
+        await playlist_repository.create_playlist(
             name,
             photo if "http" in photo else "",
             date,
@@ -134,7 +134,7 @@ def create_playlist(
             owner,
             song_names,
         )
-        base_user_service.add_playlist_to_owner(
+        await base_user_service.add_playlist_to_owner(
             user_name=owner, playlist_name=name, token=token
         )
     except PlaylistBadNameError as exception:
@@ -160,7 +160,7 @@ def create_playlist(
         playlist_service_logger.info(f"Playlist {name} created successfully")
 
 
-def update_playlist(  # noqa: PLR0917
+async def update_playlist(  # noqa: PLR0917
     name: str,
     new_name: str | None,
     photo: str,
@@ -188,20 +188,20 @@ def update_playlist(  # noqa: PLR0917
     """
     try:
         validate_playlist_name_parameter(name)
-        validate_playlist_should_exists(name)
+        await validate_playlist_should_exists(name)
 
-        playlist = playlist_repository.get_playlist(name)
+        playlist = await playlist_repository.get_playlist(name)
 
         validate_jwt_user_matches_user(token, playlist.owner)
 
         if not new_name:
-            playlist_repository.update_playlist(
+            await playlist_repository.update_playlist(
                 name, name, photo if "http" in photo else "", description, song_names
             )
             return
 
         validate_playlist_name_parameter(new_name)
-        playlist_repository.update_playlist(
+        await playlist_repository.update_playlist(
             name,
             new_name,
             photo if "http" in photo else "",
@@ -209,7 +209,7 @@ def update_playlist(  # noqa: PLR0917
             song_names,
         )
 
-        base_user_service.update_playlist_name(name, new_name)
+        await base_user_service.update_playlist_name(name, new_name)
     except PlaylistBadNameError as exception:
         playlist_service_logger.exception(f"Bad Playlist Name Parameter: {name}")
         raise PlaylistBadNameError from exception
@@ -233,7 +233,7 @@ def update_playlist(  # noqa: PLR0917
         playlist_service_logger.info(f"Playlist {name} updated successfully")
 
 
-def delete_playlist(name: str) -> None:
+async def delete_playlist(name: str) -> None:
     """Delete a playlist
 
     Args:
@@ -249,9 +249,9 @@ def delete_playlist(name: str) -> None:
     """
     try:
         validate_playlist_name_parameter(name)
-        validate_playlist_should_exists(name)
-        base_user_service.delete_playlist_from_owner(playlist_name=name)
-        playlist_repository.delete_playlist(name)
+        await validate_playlist_should_exists(name)
+        await base_user_service.delete_playlist_from_owner(playlist_name=name)
+        await playlist_repository.delete_playlist(name)
     except PlaylistBadNameError as exception:
         playlist_service_logger.exception(f"Bad Playlist Name Parameter: {name}")
         raise PlaylistBadNameError from exception
@@ -275,7 +275,7 @@ def delete_playlist(name: str) -> None:
         playlist_service_logger.info(f"Playlist {name} deleted successfully")
 
 
-def get_all_playlist() -> list[PlaylistDTO]:
+async def get_all_playlist() -> list[PlaylistDTO]:
     """Gets all playlists
 
     Raises
@@ -288,7 +288,7 @@ def get_all_playlist() -> list[PlaylistDTO]:
 
     """
     try:
-        playlists = playlist_repository.get_all_playlists()
+        playlists = await playlist_repository.get_all_playlists()
         playlists_dto = [get_playlist_dto_from_dao(playlist) for playlist in playlists]
     except PlaylistRepositoryError as exception:
         playlist_service_logger.exception(
@@ -305,7 +305,7 @@ def get_all_playlist() -> list[PlaylistDTO]:
         return playlists_dto
 
 
-def get_selected_playlists(playlist_names: list[str]) -> list[PlaylistDTO]:
+async def get_selected_playlists(playlist_names: list[str]) -> list[PlaylistDTO]:
     """Get selected playlist
 
     Args:
@@ -322,7 +322,7 @@ def get_selected_playlists(playlist_names: list[str]) -> list[PlaylistDTO]:
 
     """
     try:
-        playlists = playlist_repository.get_selected_playlists(playlist_names)
+        playlists = await playlist_repository.get_selected_playlists(playlist_names)
         playlists_dto = [get_playlist_dto_from_dao(playlist) for playlist in playlists]
     except PlaylistRepositoryError as exception:
         playlist_service_logger.exception(
@@ -343,7 +343,7 @@ def get_selected_playlists(playlist_names: list[str]) -> list[PlaylistDTO]:
         return playlists_dto
 
 
-def search_by_name(name: str) -> list[PlaylistDTO]:
+async def search_by_name(name: str) -> list[PlaylistDTO]:
     """Gets playlists with partially matching name
 
     Args:
@@ -360,7 +360,7 @@ def search_by_name(name: str) -> list[PlaylistDTO]:
 
     """
     try:
-        playlists = playlist_repository.get_playlist_search_by_name(name)
+        playlists = await playlist_repository.get_playlist_search_by_name(name)
         playlists_dto = [get_playlist_dto_from_dao(playlist) for playlist in playlists]
     except PlaylistRepositoryError as exception:
         playlist_service_logger.exception(
@@ -379,7 +379,7 @@ def search_by_name(name: str) -> list[PlaylistDTO]:
         return playlists_dto
 
 
-def add_songs_to_playlist(playlist_name: str, song_names: list[str]) -> None:
+async def add_songs_to_playlist(playlist_name: str, song_names: list[str]) -> None:
     """Add songs to playlist
 
     Args:
@@ -395,11 +395,11 @@ def add_songs_to_playlist(playlist_name: str, song_names: list[str]) -> None:
     """
     try:
         validate_playlist_name_parameter(playlist_name)
-        validate_playlist_should_exists(playlist_name)
+        await validate_playlist_should_exists(playlist_name)
         for name in song_names:
             base_song_service_validations.validate_song_name_parameter(name)
-            base_song_service_validations.validate_song_should_exists(name)
-        playlist_repository.add_songs_to_playlist(playlist_name, song_names)
+            await base_song_service_validations.validate_song_should_exists(name)
+        await playlist_repository.add_songs_to_playlist(playlist_name, song_names)
     except PlaylistBadNameError as exception:
         playlist_service_logger.exception(f"Bad Playlist Name Parameter: {playlist_name}")
         raise PlaylistBadNameError from exception
@@ -428,7 +428,7 @@ def add_songs_to_playlist(playlist_name: str, song_names: list[str]) -> None:
         playlist_service_logger.info(f"Songs added to playlist {playlist_name}: {song_names}")
 
 
-def remove_songs_from_playlist(playlist_name: str, song_names: list[str]) -> None:
+async def remove_songs_from_playlist(playlist_name: str, song_names: list[str]) -> None:
     """Remove songs from playlist
 
     Args:
@@ -444,11 +444,11 @@ def remove_songs_from_playlist(playlist_name: str, song_names: list[str]) -> Non
     """
     try:
         validate_playlist_name_parameter(playlist_name)
-        validate_playlist_should_exists(playlist_name)
+        await validate_playlist_should_exists(playlist_name)
         for name in song_names:
             base_song_service_validations.validate_song_name_parameter(name)
-            base_song_service_validations.validate_song_should_exists(name)
-        playlist_repository.remove_songs_from_playlist(playlist_name, song_names)
+            await base_song_service_validations.validate_song_should_exists(name)
+        await playlist_repository.remove_songs_from_playlist(playlist_name, song_names)
     except PlaylistBadNameError as exception:
         playlist_service_logger.exception(f"Bad Playlist Name Parameter: {playlist_name}")
         raise PlaylistBadNameError from exception

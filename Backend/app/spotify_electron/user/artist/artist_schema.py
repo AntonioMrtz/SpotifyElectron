@@ -5,7 +5,6 @@ Artist schema for User domain model
 from dataclasses import dataclass
 from typing import Any
 
-from app.spotify_electron.song.base_song_repository import get_artist_total_streams
 from app.spotify_electron.user.base_user_schema import (
     BaseUserAlreadyExistsError,
     BaseUserBadNameError,
@@ -55,7 +54,6 @@ def get_artist_dao_from_document(document: dict[str, Any]) -> ArtistDAO:
         playlists=document["playlists"],
         saved_playlists=document["saved_playlists"],
         uploaded_songs=document["uploaded_songs"],
-        total_streams=get_artist_total_streams(document["name"]),
     )
 
 

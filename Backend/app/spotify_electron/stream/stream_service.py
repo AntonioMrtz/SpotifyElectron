@@ -69,7 +69,7 @@ def _get_range_header(range_header: str | None, file_size: int) -> tuple[int, in
     return start, end
 
 
-def get_stream_audio_data(range_header: str | None, name: str) -> StreamAudioContent:
+async def get_stream_audio_data(range_header: str | None, name: str) -> StreamAudioContent:
     """Gets stream audio data
 
     Args:
@@ -88,7 +88,7 @@ def get_stream_audio_data(range_header: str | None, name: str) -> StreamAudioCon
         StreamAudioContent: the needed audio data for streaming
     """
     try:
-        song_data = song_service.get_song_data(name)
+        song_data = await song_service.get_song_data(name)
         file_size = len(song_data)
         stream_service_logger.info(f"Streaming song {name}")
 

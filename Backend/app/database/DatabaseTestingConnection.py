@@ -9,17 +9,17 @@ class DatabaseTestingConnection(BaseDatabaseConnection):
     TESTING_COLLECTION_NAME_PREFIX = "test."
 
     @classmethod
-    def _get_mongo_client(cls):  # noqa: ANN202
+    def _get_mongo_client(cls):
         from mongomock.gridfs import enable_gridfs_integration
-        from mongomock.mongo_client import MongoClient as MongoClientMock
+        from mongomock_motor import AsyncMongoMockClient
 
         """Get mock Mongo client class
 
         Returns:
-            MongoClientMock: the mock Mongo client class
+            AsyncMongoMockClient: the mock Mongo client class
         """
         enable_gridfs_integration()
-        return MongoClientMock
+        return AsyncMongoMockClient
 
     @classmethod
     def _get_collection_name_prefix(cls) -> str:

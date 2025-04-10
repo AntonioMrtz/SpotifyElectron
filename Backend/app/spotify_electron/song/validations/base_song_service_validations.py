@@ -27,7 +27,7 @@ def validate_song_name_parameter(name: str) -> None:
         raise SongBadNameError from BadParameterError
 
 
-def validate_song_should_exists(name: str) -> None:
+async def validate_song_should_exists(name: str) -> None:
     """Raises an exception if song doesn't exists
 
     Args:
@@ -39,11 +39,12 @@ def validate_song_should_exists(name: str) -> None:
         SongNotFoundError: if song doesn't exists
 
     """
-    if not check_song_exists(name):
+    does_song_exists = await check_song_exists(name)
+    if not does_song_exists:
         raise SongNotFoundError
 
 
-def validate_song_should_not_exists(name: str) -> None:
+async def validate_song_should_not_exists(name: str) -> None:
     """Raises an exception if song does exists
 
     Args:
@@ -55,5 +56,6 @@ def validate_song_should_not_exists(name: str) -> None:
         SongAlreadyExistsError: if song exists
 
     """
-    if check_song_exists(name):
+    does_song_exists = await check_song_exists(name)
+    if does_song_exists:
         raise SongAlreadyExistsError

@@ -4,7 +4,7 @@ python-jose==3.4.0
 python-multipart==0.0.20
 requests==2.32.0
 librosa==0.10.2.post1
-pymongo==4.10.0
+motor==3.7.0
 bcrypt==4.0.1
 httpx==0.24.1
 uvicorn==0.34.0

@@ -26,7 +26,7 @@ from app.spotify_electron.user.validations.base_user_repository_validations impo
 artist_repository_logger = SpotifyElectronLogger(LOGGING_ARTIST_REPOSITORY).get_logger()
 
 
-def get_artist(name: str) -> ArtistDAO:
+async def get_artist(name: str) -> ArtistDAO:
     """Get artist by name
 
     Args:
@@ -40,7 +40,9 @@ def get_artist(name: str) -> ArtistDAO:
         ArtistDAO: the artist
     """
     try:
-        artist = user_collection_provider.get_artist_collection().find_one({"name": name})
+        collection = user_collection_provider.get_artist_collection()
+        artist = await collection.find_one({"name": name})
+
         validate_user_exists(artist)
         artist_dao = get_artist_dao_from_document(artist)  # type: ignore
 
@@ -55,7 +57,7 @@ def get_artist(name: str) -> ArtistDAO:
         return artist_dao
 
 
-def create_artist(name: str, photo: str, password: bytes, current_date: str) -> None:
+async def create_artist(name: str, photo: str, password: bytes, current_date: str) -> None:
     """Create artist
 
     Args:
@@ -78,7 +80,8 @@ def create_artist(name: str, photo: str, password: bytes, current_date: str) -> 
             "playback_history": [],
             "uploaded_songs": [],
         }
-        result = user_collection_provider.get_artist_collection().insert_one(artist)
+        collection = user_collection_provider.get_artist_collection()
+        result = await collection.insert_one(artist)
 
         validate_user_create(result)
     except BaseUserCreateError as exception:
@@ -93,7 +96,7 @@ def create_artist(name: str, photo: str, password: bytes, current_date: str) -> 
         artist_repository_logger.info(f"Artist added to repository: {artist}")
 
 
-def create_artist_from_user_dao(user: UserDAO) -> None:
+async def create_artist_from_user_dao(user: UserDAO) -> None:
     """Create artist from existing user data
 
     Args:
@@ -109,16 +112,16 @@ def create_artist_from_user_dao(user: UserDAO) -> None:
             "current_date": user.register_date,
             "password": user.password,
         }
-        create_artist(**artist)
+        await create_artist(**artist)
         missing_fields = {
             "saved_playlists": user.saved_playlists if user.saved_playlists else [],
             "playlists": user.playlists if user.saved_playlists else [],
             "playback_history": user.playback_history if user.saved_playlists else [],
             "uploaded_songs": [],
         }
-        result = user_collection_provider.get_artist_collection().update_one(
-            {"name": user.name}, {"$set": missing_fields}
-        )
+
+        collection = user_collection_provider.get_artist_collection()
+        result = await collection.update_one({"name": user.name}, {"$set": missing_fields})
         validate_user_update(result)
 
     except BaseUserCreateError as exception:
@@ -140,7 +143,7 @@ def create_artist_from_user_dao(user: UserDAO) -> None:
         artist_repository_logger.info(f"Artist created from user: {user.name}")
 
 
-def get_all_artists() -> list[ArtistDAO]:
+async def get_all_artists() -> list[ArtistDAO]:
     """Get all artists
 
     Raises:
@@ -150,10 +153,9 @@ def get_all_artists() -> list[ArtistDAO]:
         list[ArtistDAO]: a list with all artists
     """
     try:
-        artists = [
-            get_artist_dao_from_document(artist)
-            for artist in user_collection_provider.get_artist_collection().find()
-        ]
+        collection = user_collection_provider.get_artist_collection()
+        all_artists = collection.find()
+        artists = [get_artist_dao_from_document(artist) async for artist in all_artists]
     except Exception as exception:
         artist_repository_logger.exception("Error getting all artists names from database")
         raise ArtistRepositoryError from exception
@@ -162,7 +164,7 @@ def get_all_artists() -> list[ArtistDAO]:
         return artists
 
 
-def add_song_to_artist(artist_name: str, song_name: str) -> None:
+async def add_song_to_artist(artist_name: str, song_name: str) -> None:
     """Add song to artist
 
     Args:
@@ -173,7 +175,8 @@ def add_song_to_artist(artist_name: str, song_name: str) -> None:
         ArtistRepositoryError: unexpected error adding song to artist
     """
     try:
-        result = user_collection_provider.get_artist_collection().update_one(
+        collection = user_collection_provider.get_artist_collection()
+        result = await collection.update_one(
             {"name": artist_name}, {"$push": {"uploaded_songs": song_name}}
         )
         validate_user_update(result)
@@ -189,7 +192,7 @@ def add_song_to_artist(artist_name: str, song_name: str) -> None:
         raise ArtistRepositoryError from exception
 
 
-def delete_song_from_artist(artist_name: str, song_name: str) -> None:
+async def delete_song_from_artist(artist_name: str, song_name: str) -> None:
     """Delete song from artist
 
     Args:
@@ -200,7 +203,8 @@ def delete_song_from_artist(artist_name: str, song_name: str) -> None:
         ArtistRepositoryError: unexpected error deleting song from artist
     """
     try:
-        result = user_collection_provider.get_artist_collection().update_one(
+        collection = user_collection_provider.get_artist_collection()
+        result = await collection.update_one(
             {"name": artist_name}, {"$pull": {"uploaded_songs": song_name}}
         )
         validate_user_update(result)
@@ -217,7 +221,7 @@ def delete_song_from_artist(artist_name: str, song_name: str) -> None:
         raise ArtistRepositoryError from exception
 
 
-def get_artist_song_names(artist_name: str) -> list[str]:
+async def get_artist_song_names(artist_name: str) -> list[str]:
     """Get artist song names
 
     Args:
@@ -226,7 +230,8 @@ def get_artist_song_names(artist_name: str) -> list[str]:
     Returns:
         list[str]: the artist uploaded song names
     """
-    artist_data = user_collection_provider.get_artist_collection().find_one(
+    collection = user_collection_provider.get_artist_collection()
+    artist_data = await collection.find_one(
         {"name": artist_name}, {"uploaded_songs": 1, "_id": 0}
     )
 

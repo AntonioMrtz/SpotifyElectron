@@ -3,10 +3,10 @@ Provider class for supplying user collection connection with database depending 
     architecture on the associated user type
 """
 
-from pymongo.collection import Collection
+from motor.motor_asyncio import AsyncIOMotorCollection
 
 import app.spotify_electron.user.base_user_service as base_user_service
-from app.database.database_schema import DatabaseCollection
+from app.database.database_schema import DatabaseAsyncIOMotorCollection
 from app.database.DatabaseConnectionManager import DatabaseConnectionManager
 from app.logging.logging_constants import LOGGING_USER_COLLECTION_PROVIDER
 from app.logging.logging_schema import SpotifyElectronLogger
@@ -17,22 +17,22 @@ users_collection_provider_logger = SpotifyElectronLogger(
 ).get_logger()
 
 
-def get_user_associated_collection(user_name: str) -> Collection:
+async def get_user_associated_collection(user_name: str) -> AsyncIOMotorCollection:
     """Returns the user collection according to the user role
 
     Returns:
-        Collection: the user collection
+        AsyncIOMotorCollection: the user collection
     """
     collection_map = {
         UserType.USER: DatabaseConnectionManager.get_collection_connection(
-            DatabaseCollection.USER
+            DatabaseAsyncIOMotorCollection.USER
         ),
         UserType.ARTIST: DatabaseConnectionManager.get_collection_connection(
-            DatabaseCollection.ARTIST
+            DatabaseAsyncIOMotorCollection.ARTIST
         ),
     }
 
-    user_type = base_user_service.get_user_type(user_name)
+    user_type = await base_user_service.get_user_type(user_name)
     if user_type not in collection_map:
         users_collection_provider_logger.warning(
             f"User {user_name} doesn't have a valid user type "
@@ -42,36 +42,40 @@ def get_user_associated_collection(user_name: str) -> Collection:
     return collection_map[user_type]
 
 
-def get_artist_collection() -> Collection:
+def get_artist_collection() -> AsyncIOMotorCollection:
     """Get artist collection
 
     Returns:
-        Collection: the artist collection
+        AsyncIOMotorCollection: the artist collection
     """
-    return DatabaseConnectionManager.get_collection_connection(DatabaseCollection.ARTIST)
+    return DatabaseConnectionManager.get_collection_connection(
+        DatabaseAsyncIOMotorCollection.ARTIST
+    )
 
 
-def get_user_collection() -> Collection:
+def get_user_collection() -> AsyncIOMotorCollection:
     """Get user collection
 
     Returns:
-        Collection: the user collection
+        AsyncIOMotorCollection: the user collection
     """
-    return DatabaseConnectionManager.get_collection_connection(DatabaseCollection.USER)
+    return DatabaseConnectionManager.get_collection_connection(
+        DatabaseAsyncIOMotorCollection.USER
+    )
 
 
-def get_all_collections() -> list[Collection]:
+def get_all_collections() -> list[AsyncIOMotorCollection]:
     """Get all user collections
 
     Returns:
-        list[Collection]: all the users collections
+        list[AsyncIOMotorCollection]: all the users collections
     """
     collection_map = {
         UserType.USER: DatabaseConnectionManager.get_collection_connection(
-            DatabaseCollection.USER
+            DatabaseAsyncIOMotorCollection.USER
         ),
         UserType.ARTIST: DatabaseConnectionManager.get_collection_connection(
-            DatabaseCollection.ARTIST
+            DatabaseAsyncIOMotorCollection.ARTIST
         ),
     }
     return list(collection_map.values())

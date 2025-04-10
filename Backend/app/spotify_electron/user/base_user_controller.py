@@ -74,7 +74,7 @@ def get_who_am_i(token: Token) -> Response:
 
 
 @router.get("/{name}")
-def get_user(name: str, token: Token) -> Response:
+async def get_user(name: str, token: Token) -> Response:
     """Get user by name
 
     Args:
@@ -82,7 +82,7 @@ def get_user(name: str, token: Token) -> Response:
         token (Annotated[TokenData, Depends): JWT info
     """
     try:
-        user = base_user_service.get_user(name)
+        user = await base_user_service.get_user(name)
         user_json = json_converter_utils.get_json_from_model(user)
 
         return Response(user_json, media_type="application/json", status_code=HTTP_200_OK)
@@ -116,7 +116,7 @@ def get_user(name: str, token: Token) -> Response:
 
 
 @router.post("/")
-def create_user(name: str, photo: str, password: str) -> Response:
+async def create_user(name: str, photo: str, password: str) -> Response:
     """Create user
 
     Args:
@@ -125,7 +125,7 @@ def create_user(name: str, photo: str, password: str) -> Response:
         password (str): user password
     """
     try:
-        user_service.create_user(name, photo, password)
+        await user_service.create_user(name, photo, password)
         return Response(None, HTTP_201_CREATED)
     except (BaseUserBadNameError, BaseUserAlreadyExistsError):
         return Response(
@@ -140,14 +140,14 @@ def create_user(name: str, photo: str, password: str) -> Response:
 
 
 @router.delete("/{name}")
-def delete_user(name: str) -> Response:
+async def delete_user(name: str) -> Response:
     """Delete user
 
     Args:
         name (str): user name
     """
     try:
-        base_user_service.delete_user(name)
+        await base_user_service.delete_user(name)
         return Response(status_code=HTTP_202_ACCEPTED)
     except BaseUserBadNameError:
         return Response(
@@ -167,7 +167,7 @@ def delete_user(name: str) -> Response:
 
 
 @router.patch("/{name}/playback_history")
-def patch_playback_history(name: str, song_name: str, token: Token) -> Response:
+async def patch_playback_history(name: str, song_name: str, token: Token) -> Response:
     """Add song to playback history
 
     Args:
@@ -176,7 +176,7 @@ def patch_playback_history(name: str, song_name: str, token: Token) -> Response:
         token (Annotated[TokenData, Depends): JWT info
     """
     try:
-        base_user_service.add_playback_history(
+        await base_user_service.add_playback_history(
             user_name=name, song_name=song_name, token=token
         )
         return Response(None, HTTP_204_NO_CONTENT)
@@ -219,7 +219,7 @@ def patch_playback_history(name: str, song_name: str, token: Token) -> Response:
 
 
 @router.patch("/{name}/saved_playlists")
-def patch_saved_playlists(name: str, playlist_name: str, token: Token) -> Response:
+async def patch_saved_playlists(name: str, playlist_name: str, token: Token) -> Response:
     """Add playlist to saved list
 
     Args:
@@ -228,7 +228,7 @@ def patch_saved_playlists(name: str, playlist_name: str, token: Token) -> Respon
         token (Annotated[TokenData, Depends): JWT info
     """
     try:
-        base_user_service.add_saved_playlist(name, playlist_name, token=token)
+        await base_user_service.add_saved_playlist(name, playlist_name, token=token)
         return Response(None, HTTP_204_NO_CONTENT)
     except BaseUserBadNameError:
         return Response(
@@ -264,7 +264,7 @@ def patch_saved_playlists(name: str, playlist_name: str, token: Token) -> Respon
 
 
 @router.delete("/{name}/saved_playlists")
-def delete_saved_playlists(name: str, playlist_name: str, token: Token) -> Response:
+async def delete_saved_playlists(name: str, playlist_name: str, token: Token) -> Response:
     """Delete playlist from saved list of user
 
     Args:
@@ -273,7 +273,7 @@ def delete_saved_playlists(name: str, playlist_name: str, token: Token) -> Respo
         token (Annotated[TokenData, Depends): JWT info
     """
     try:
-        base_user_service.delete_saved_playlist(name, playlist_name, token=token)
+        await base_user_service.delete_saved_playlist(name, playlist_name, token=token)
         return Response(None, HTTP_202_ACCEPTED)
     except BaseUserBadNameError:
         return Response(
@@ -314,7 +314,7 @@ def delete_saved_playlists(name: str, playlist_name: str, token: Token) -> Respo
 
 
 @router.get("/{name}/relevant_playlists")
-def get_user_relevant_playlists(name: str, token: Token) -> Response:
+async def get_user_relevant_playlists(name: str, token: Token) -> Response:
     """Get relevant playlists for user
 
     Args:
@@ -322,7 +322,7 @@ def get_user_relevant_playlists(name: str, token: Token) -> Response:
         token (Annotated[TokenData, Depends): JWT info
     """
     try:
-        playlists = base_user_service.get_user_relevant_playlists(name)
+        playlists = await base_user_service.get_user_relevant_playlists(name)
         playlists_json = json_converter_utils.get_json_from_model(playlists)
         return Response(playlists_json, media_type="application/json", status_code=HTTP_200_OK)
     except BaseUserBadNameError:
@@ -348,7 +348,7 @@ def get_user_relevant_playlists(name: str, token: Token) -> Response:
 
 
 @router.get("/{name}/playlists")
-def get_user_playlists(name: str, token: Token) -> Response:
+async def get_user_playlists(name: str, token: Token) -> Response:
     """Get playlists created by the user
 
     Args:
@@ -356,7 +356,7 @@ def get_user_playlists(name: str, token: Token) -> Response:
         token (Annotated[TokenData, Depends): JWT info
     """
     try:
-        playlists = base_user_service.get_user_playlists(name)
+        playlists = await base_user_service.get_user_playlists(name)
         playlists_json = json_converter_utils.get_json_from_model(playlists)
         return Response(playlists_json, media_type="application/json", status_code=HTTP_200_OK)
     except BaseUserBadNameError:
@@ -382,7 +382,7 @@ def get_user_playlists(name: str, token: Token) -> Response:
 
 
 @router.get("/{name}/playlist_names")
-def get_user_playlists_names(name: str, token: Token) -> Response:
+async def get_user_playlists_names(name: str, token: Token) -> Response:
     """Get playlist names created by user
 
     Args:
@@ -390,7 +390,7 @@ def get_user_playlists_names(name: str, token: Token) -> Response:
         token (Annotated[TokenData, Depends): JWT info
     """
     try:
-        playlist_names = base_user_service.get_user_playlist_names(name)
+        playlist_names = await base_user_service.get_user_playlist_names(name)
         playlist_names_json = json_converter_utils.get_json_from_model(playlist_names)
         return Response(
             playlist_names_json, media_type="application/json", status_code=HTTP_200_OK
@@ -418,7 +418,7 @@ def get_user_playlists_names(name: str, token: Token) -> Response:
 
 
 @router.get("/{name}/playback_history")
-def get_user_playback_history(name: str, token: Token) -> Response:
+async def get_user_playback_history(name: str, token: Token) -> Response:
     """Get user song playback history
 
     Args:
@@ -426,7 +426,7 @@ def get_user_playback_history(name: str, token: Token) -> Response:
         token (Annotated[TokenData, Depends): JWT info
     """
     try:
-        playback_history = base_user_service.get_user_playback_history(name)
+        playback_history = await base_user_service.get_user_playback_history(name)
         playback_history_json = json_converter_utils.get_json_from_model(playback_history)
         return Response(
             playback_history_json, media_type="application/json", status_code=HTTP_200_OK
@@ -454,7 +454,7 @@ def get_user_playback_history(name: str, token: Token) -> Response:
 
 
 @router.patch("/{name}/promote")
-def promote_user_to_artist(name: str, token: Token) -> Response:
+async def promote_user_to_artist(name: str, token: Token) -> Response:
     """Promote user to artist
 
     Args:
@@ -462,7 +462,7 @@ def promote_user_to_artist(name: str, token: Token) -> Response:
         token (Token): JWT info
     """
     try:
-        user_service.promote_user_to_artist(name, token)
+        await user_service.promote_user_to_artist(name, token)
         return Response(status_code=HTTP_204_NO_CONTENT)
     except ArtistAlreadyExistsError:
         return Response(

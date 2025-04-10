@@ -49,7 +49,7 @@ from app.spotify_electron.utils.audio_management.audio_management_utils import (
 song_service_logger = SpotifyElectronLogger(LOGGING_SONG_BLOB_SERVICE).get_logger()
 
 
-def get_song(name: str) -> SongDTO:
+async def get_song(name: str) -> SongDTO:
     """Get song
 
     Args:
@@ -66,7 +66,7 @@ def get_song(name: str) -> SongDTO:
     try:
         validate_song_name_parameter(name)
 
-        song_dao = song_repository.get_song(name)
+        song_dao = await song_repository.get_song(name)
         song_dto = get_song_dto_from_dao(song_dao, song_dao.url)
 
     except SongBadNameError as exception:
@@ -117,14 +117,14 @@ async def create_song(  # noqa: C901
 
     try:
         validate_song_name_parameter(name)
-        base_user_service_validations.validate_user_name_parameter(artist)
+        await base_user_service_validations.validate_user_name_parameter(artist)
         Genre.validate_genre(genre.value)
 
-        validate_song_should_not_exists(name)
-        validate_user_should_be_artist(artist)
+        await validate_song_should_not_exists(name)
+        await validate_user_should_be_artist(artist)
 
         song_duration = get_song_duration_seconds(name, file)
-        song_repository.create_song(
+        await song_repository.create_song(
             name=name,
             artist=artist,
             photo=photo,
@@ -132,7 +132,7 @@ async def create_song(  # noqa: C901
             genre=genre,
             file=file,
         )
-        artist_service.add_song_to_artist(artist, name)
+        await artist_service.add_song_to_artist(artist, name)
     except GenreNotValidError as exception:
         song_service_logger.exception(f"Bad genre provided {genre}")
         raise GenreNotValidError from exception
@@ -173,7 +173,7 @@ async def create_song(  # noqa: C901
         raise SongServiceError from exception
 
 
-def delete_song(name: str) -> None:
+async def delete_song(name: str) -> None:
     """Delete song
 
     Args:
@@ -187,16 +187,16 @@ def delete_song(name: str) -> None:
     """
     try:
         validate_song_name_parameter(name)
-        validate_song_should_exists(name)
-        artist_name = base_song_repository.get_artist_from_song(name=name)
+        await validate_song_should_exists(name)
+        artist_name = await base_song_repository.get_artist_from_song(name=name)
 
-        base_user_service_validations.validate_user_should_exists(artist_name)
+        await base_user_service_validations.validate_user_should_exists(artist_name)
 
-        artist_service.delete_song_from_artist(
+        await artist_service.delete_song_from_artist(
             artist_name,
             name,
         )
-        base_song_repository.delete_song(name)
+        await base_song_repository.delete_song(name)
 
     except SongBadNameError as exception:
         song_service_logger.exception(f"Bad Song Name Parameter: {name}")
@@ -224,7 +224,7 @@ def delete_song(name: str) -> None:
         raise SongServiceError from exception
 
 
-def get_song_data(name: str) -> bytes:
+async def get_song_data(name: str) -> bytes:
     """Get song data
 
     Args:
@@ -241,9 +241,10 @@ def get_song_data(name: str) -> bytes:
     """
     try:
         validate_song_name_parameter(name)
-        validate_song_should_exists(name)
+        await validate_song_should_exists(name)
 
-        song_data = song_repository.get_song_data(name).read()
+        song_data = await song_repository.get_song_data(name)
+        read_song_data = await song_data.read()
     except SongBadNameError as exception:
         song_service_logger.exception(f"Bad Song Name Parameter: {name}")
         raise SongBadNameError from exception
@@ -264,4 +265,4 @@ def get_song_data(name: str) -> bytes:
         )
         raise SongServiceError from exception
     else:
-        return song_data
+        return read_song_data

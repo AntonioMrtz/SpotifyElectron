@@ -23,12 +23,13 @@ class SongDTO(BaseSongDTO):
     url: str
 
 
-def get_song_dao_from_document(document: dict[str, Any]) -> SongDAO:
+def get_song_dao_from_document(song_name: str, document: dict[str, Any]) -> SongDAO:
     """Get SongDAO from document
 
     Args:
     ----
-        document (dict): song document
+        song_name (str): song name
+        document (dict[str,Any]): song document
 
     Returns:
     -------
@@ -36,7 +37,7 @@ def get_song_dao_from_document(document: dict[str, Any]) -> SongDAO:
 
     """
     return SongDAO(
-        name=document["name"],
+        name=song_name,
         photo=document["photo"],
         artist=document["artist"],
         seconds_duration=document["duration"],

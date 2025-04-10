@@ -40,7 +40,6 @@ def login_user(
     """Login user
 
     Args:
-    ----
         form_data (Annotated[OAuth2PasswordRequestForm, Depends): user and password
 
     """

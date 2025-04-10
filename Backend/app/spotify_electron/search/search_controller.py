@@ -38,7 +38,6 @@ async def get_search_name(
     """Search for items that partially match name
 
     Args:
-    ----
         name (str): name to match
         token (Annotated[TokenData, Depends): JWT info
     """

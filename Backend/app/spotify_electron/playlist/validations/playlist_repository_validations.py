@@ -17,11 +17,9 @@ def validate_playlist_exists(playlist: PlaylistDAO | None) -> None:
     """Raises an exception if playlist doesn't exists
 
     Args:
-    ----
         playlist (PlaylistDAO | None): the playlist
 
     Raises:
-    ------
         PlaylistNotFoundError: if the playlists doesn't exists
 
     """
@@ -33,11 +31,9 @@ def validate_playlist_delete_count(result: DeleteResult) -> None:
     """Raises an exception if playlist deletion count was 0
 
     Args:
-    ----
         result (DeleteResult): the result from the deletion
 
     Raises:
-    ------
         PlaylistDeleteError: if the deletion was not done
 
     """
@@ -62,11 +58,9 @@ def validate_playlist_create(result: InsertOneResult) -> None:
     """Raises an exception if playlist insertion was not done
 
     Args:
-    ----
         result (InsertOneResult): the result from the insertion
 
     Raises:
-    ------
         PlaylistCreateError: if the insertion was not done
 
     """

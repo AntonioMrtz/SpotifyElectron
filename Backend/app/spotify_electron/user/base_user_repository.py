@@ -24,17 +24,14 @@ def check_user_exists(name: str, collection: Collection) -> bool:
     """Checks if user exists
 
     Args:
-    ----
         name (str): name of the user
         collection (Collection): user collection
 
     Raises:
-    ------
         BaseUserRepositoryError:
             an error occurred while getting user from database
 
     Returns:
-    -------
         bool: if the user exists
 
     """

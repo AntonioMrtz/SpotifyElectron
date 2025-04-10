@@ -18,11 +18,9 @@ def get_json_from_model(object: Any) -> str:
     """Returns json string from an object
 
     Args:
-    ----
         object (Any): the object that's going to be converted into json string
 
     Returns:
-    -------
         str: the object converted into json string
 
     """
@@ -33,12 +31,10 @@ def get_json_with_iterable_field_from_model(object: Any, field_name: str) -> str
     """Returns a json string that contains an object inside a field name
 
     Args:
-    ----
         object (Any): the object to be put inside a field name
         field_name (str): the name of the field name where the object will be put on
 
     Returns:
-    -------
         str: the json string with the object inside a field name
 
     """
@@ -50,16 +46,13 @@ def _get_json_from_model(object: Any) -> str:
     """Returns json string from an object
 
     Args:
-    ----
         object (Any): the object that's going to be converted into json string
 
     Raises:
-    ------
         JsonEncodeError: if an error occurred while encoding the object \
             into json string
 
     Returns:
-    -------
         str: the object converted into json string
 
     """

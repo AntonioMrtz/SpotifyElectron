@@ -261,11 +261,9 @@ def does_artist_exists(user_name: str) -> bool:
     """Returns if artist exists
 
     Args:
-    ----
         user_name (str): artist name
 
     Returns:
-    -------
         bool: if the artist exists
 
     """

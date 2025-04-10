@@ -49,7 +49,7 @@ playlist_controller_logger = SpotifyElectronLogger(LOGGING_PLAYLIST_CONTROLLER).
 
 
 @router.get("/{name}")
-def get_playlist(
+async def get_playlist(
     name: str,
     token: Token,
 ) -> Response:
@@ -60,7 +60,7 @@ def get_playlist(
         token (Annotated[TokenData, Depends): JWT info
     """
     try:
-        playlist = playlist_service.get_playlist(name)
+        playlist = await playlist_service.get_playlist(name)
         playlist_json = json_converter_utils.get_json_from_model(playlist)
 
         return Response(playlist_json, media_type="application/json", status_code=HTTP_200_OK)
@@ -88,7 +88,7 @@ def get_playlist(
 
 
 @router.post("/")
-def create_playlist(
+async def create_playlist(
     name: str,
     photo: str,
     description: str,
@@ -105,7 +105,7 @@ def create_playlist(
         token (Annotated[TokenData, Depends): JWT info
     """
     try:
-        playlist_service.create_playlist(
+        await playlist_service.create_playlist(
             name=name,
             photo=photo,
             description=description,
@@ -137,7 +137,7 @@ def create_playlist(
 
 
 @router.put("/{name}")
-def update_playlist(  # noqa: PLR0917
+async def update_playlist(  # noqa: PLR0917
     name: str,
     photo: str,
     description: str,
@@ -156,7 +156,9 @@ def update_playlist(  # noqa: PLR0917
         token (Annotated[TokenData, Depends): JWT info
     """
     try:
-        playlist_service.update_playlist(name, new_name, photo, description, song_names, token)
+        await playlist_service.update_playlist(
+            name, new_name, photo, description, song_names, token
+        )
         return Response(None, HTTP_204_NO_CONTENT)
     except BadJWTTokenProvidedError:
         return Response(
@@ -187,14 +189,14 @@ def update_playlist(  # noqa: PLR0917
 
 
 @router.delete("/{name}")
-def delete_playlist(name: str) -> Response:
+async def delete_playlist(name: str) -> Response:
     """Delete playlsit
 
     Args:
         name (str): playlist name
     """
     try:
-        playlist_service.delete_playlist(name)
+        await playlist_service.delete_playlist(name)
         return Response(status_code=HTTP_202_ACCEPTED)
     except PlaylistBadNameError:
         return Response(
@@ -214,10 +216,10 @@ def delete_playlist(name: str) -> Response:
 
 
 @router.get("/")
-def get_playlists(token: Token) -> Response:
+async def get_playlists(token: Token) -> Response:
     """Get all playlists"""
     try:
-        playlists = playlist_service.get_all_playlist()
+        playlists = await playlist_service.get_all_playlist()
         playlist_json = json_converter_utils.get_json_with_iterable_field_from_model(
             playlists, "playlists"
         )
@@ -246,7 +248,7 @@ def get_playlists(token: Token) -> Response:
 
 
 @router.get("/selected/{names}")
-def get_selected_playlists(names: str, token: Token) -> Response:
+async def get_selected_playlists(names: str, token: Token) -> Response:
     """Get selected playlists
 
     Args:
@@ -254,7 +256,7 @@ def get_selected_playlists(names: str, token: Token) -> Response:
         token (Annotated[TokenData, Depends): JWT info
     """
     try:
-        playlists = playlist_service.get_selected_playlists(names.split(","))
+        playlists = await playlist_service.get_selected_playlists(names.split(","))
 
         playlist_json = json_converter_utils.get_json_with_iterable_field_from_model(
             playlists, "playlists"
@@ -283,7 +285,7 @@ def get_selected_playlists(names: str, token: Token) -> Response:
 
 
 @router.patch("/{name}/songs/")
-def add_songs_to_playlist(name: str, song_names: list[str]) -> Response:
+async def add_songs_to_playlist(name: str, song_names: list[str]) -> Response:
     """Add songs to playlist
 
     Args:
@@ -291,7 +293,7 @@ def add_songs_to_playlist(name: str, song_names: list[str]) -> Response:
         song_names (list[str]): song names
     """
     try:
-        playlist_service.add_songs_to_playlist(name, song_names)
+        await playlist_service.add_songs_to_playlist(name, song_names)
         return Response(None, HTTP_204_NO_CONTENT)
     except PlaylistBadNameError:
         return Response(
@@ -320,7 +322,7 @@ def add_songs_to_playlist(name: str, song_names: list[str]) -> Response:
 
 
 @router.delete("/{name}/songs/")
-def remove_songs_from_playlist(
+async def remove_songs_from_playlist(
     name: str, song_names: Annotated[list[str], Query(...)]
 ) -> Response:
     """Remove songs from playlist
@@ -330,7 +332,7 @@ def remove_songs_from_playlist(
         song_names (list[str]): song names
     """
     try:
-        playlist_service.remove_songs_from_playlist(name, song_names)
+        await playlist_service.remove_songs_from_playlist(name, song_names)
         return Response(None, HTTP_202_ACCEPTED)
     except PlaylistBadNameError:
         return Response(

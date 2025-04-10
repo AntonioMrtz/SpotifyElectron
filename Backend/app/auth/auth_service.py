@@ -177,7 +177,7 @@ def get_token_expire_date() -> datetime:
     return current_utc_datetime + timedelta(days=DAYS_TO_EXPIRE_COOKIE)
 
 
-def login_user(name: str, password: str) -> str:
+async def login_user(name: str, password: str) -> str:
     """Checks user credentials and return a jwt token
 
     Args:
@@ -200,10 +200,10 @@ def login_user(name: str, password: str) -> str:
     try:
         validate_parameter(name)
         validate_parameter(password)
-        base_user_service_validations.validate_user_should_exists(name)
+        await base_user_service_validations.validate_user_should_exists(name)
 
-        user_type = base_user_service.get_user_type(user_name=name)
-        user_password = base_user_service.get_user_password(user_name=name)
+        user_type = await base_user_service.get_user_type(user_name=name)
+        user_password = await base_user_service.get_user_password(user_name=name)
 
         verify_password(password, user_password)
 
@@ -239,7 +239,7 @@ def login_user(name: str, password: str) -> str:
         return access_token_data
 
 
-def login_user_with_token(raw_token: str) -> None:
+async def login_user_with_token(raw_token: str) -> None:
     """User Login with token
 
     Args:
@@ -254,7 +254,7 @@ def login_user_with_token(raw_token: str) -> None:
         validate_jwt(raw_token)
 
         token_data = get_jwt_token_data(raw_token)
-        base_user_service_validations.validate_user_should_exists(token_data.username)
+        await base_user_service_validations.validate_user_should_exists(token_data.username)
 
     except (JWTValidationError, BadJWTTokenProvidedError) as exception:
         auth_service_logger.exception(f"Error validating jwt token data: {raw_token}")

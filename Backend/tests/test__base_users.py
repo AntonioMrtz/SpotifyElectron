@@ -1,5 +1,5 @@
 # TODO, only use user, move user tests here. Move artist tests into its own file
-from pytest import fixture
+from pytest import fixture, mark
 from starlette.status import (
     HTTP_200_OK,
     HTTP_201_CREATED,
@@ -1300,7 +1300,8 @@ def test_promote_user_to_artist_another_user(clear_test_data_db):
     assert res_delete_other.status_code == HTTP_202_ACCEPTED
 
 
-def test_promote_user_to_artist_already_exists(clear_test_data_db):
+@mark.asyncio
+async def test_promote_user_to_artist_already_exists(clear_test_data_db):
     artist = {
         "name": "artista",
         "photo": "http://photo",
@@ -1314,7 +1315,7 @@ def test_promote_user_to_artist_already_exists(clear_test_data_db):
     res_create_user = create_user(user_name, photo, password)
     assert res_create_user.status_code == HTTP_201_CREATED
 
-    create_artist_repo(**artist)
+    await create_artist_repo(**artist)
 
     jwt_headers_user = get_user_jwt_header(user_name, password)
 

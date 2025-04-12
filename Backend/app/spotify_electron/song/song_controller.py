@@ -49,7 +49,7 @@ router = APIRouter(
 
 
 @router.get("/{name}")
-def get_song(
+async def get_song(
     name: str,
     token: Token,
 ) -> Response:
@@ -60,7 +60,8 @@ def get_song(
         token (Annotated[TokenData, Depends): JWT info
     """
     try:
-        song = get_song_service().get_song(name)
+        song_service = get_song_service()
+        song = await song_service.get_song(name)
         song_json = json_converter_utils.get_json_from_model(song)
 
         return Response(song_json, media_type="application/json", status_code=HTTP_200_OK)
@@ -106,7 +107,8 @@ async def create_song(
     read_file = await file.read()
 
     try:
-        await get_song_service().create_song(name, genre, photo, read_file, token)
+        song_service = get_song_service()
+        await song_service.create_song(name, genre, photo, read_file, token)
         return Response(None, HTTP_201_CREATED)
     except GenreNotValidError:
         return Response(
@@ -157,14 +159,14 @@ async def create_song(
 
 
 @router.delete("/{name}")
-def delete_song(name: str) -> Response:
+async def delete_song(name: str) -> Response:
     """Delete song
 
     Args:
         name (str): song name
     """
     try:
-        base_song_service.delete_song(name)
+        await base_song_service.delete_song(name)
 
         return Response(None, HTTP_202_ACCEPTED)
     except SongBadNameError:
@@ -190,7 +192,7 @@ def delete_song(name: str) -> Response:
 
 
 @router.get("/metadata/{name}")
-def get_song_metadata(
+async def get_song_metadata(
     name: str,
     token: Token,
 ) -> Response:
@@ -201,7 +203,7 @@ def get_song_metadata(
         token (Annotated[TokenData, Depends): JWT info
     """
     try:
-        song = base_song_service.get_song_metadata(name)
+        song = await base_song_service.get_song_metadata(name)
         song_json = json_converter_utils.get_json_from_model(song)
     except JsonEncodeError:
         return Response(
@@ -218,7 +220,7 @@ def get_song_metadata(
 
 
 @router.patch("/{name}/streams")
-def increase_song_streams(
+async def increase_song_streams(
     name: str,
     token: Token,
 ) -> Response:
@@ -229,7 +231,7 @@ def increase_song_streams(
         token (Annotated[TokenData, Depends): JWT info
     """
     try:
-        base_song_service.increase_song_streams(name)
+        await base_song_service.increase_song_streams(name)
         return Response(None, HTTP_204_NO_CONTENT)
     except SongNotFoundError:
         return Response(
@@ -244,7 +246,7 @@ def increase_song_streams(
 
 
 @router.get("/genres/{genre}")
-def get_songs_by_genre(
+async def get_songs_by_genre(
     genre: Genre,
     token: Token,
 ) -> Response:
@@ -255,7 +257,7 @@ def get_songs_by_genre(
         token (Annotated[TokenData, Depends): JWT info
     """
     try:
-        songs = base_song_service.get_songs_by_genre(genre)
+        songs = await base_song_service.get_songs_by_genre(genre)
         songs_json = json_converter_utils.get_json_with_iterable_field_from_model(
             songs, "songs"
         )

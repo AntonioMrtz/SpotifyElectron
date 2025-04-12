@@ -45,7 +45,7 @@ async def stream_song(
     try:
         range_header = request.headers.get("range")
 
-        stream_audio_content = stream_service.get_stream_audio_data(range_header, name)
+        stream_audio_content = await stream_service.get_stream_audio_data(range_header, name)
 
         return StreamingResponse(
             stream_service.stream_audio(

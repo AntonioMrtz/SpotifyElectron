@@ -17,6 +17,7 @@ extend-select = [
     "PLR",
     "FAST",
     "N",
+    "ASYNC",
     "C90",
     "D100",
     "D101",

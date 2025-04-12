@@ -1,6 +1,6 @@
 """Database connection provider"""
 
-from pymongo.collection import Collection
+from motor.motor_asyncio import AsyncIOMotorCollection
 
 from app.common.app_schema import AppEnvironmentMode
 from app.database.database_schema import BaseDatabaseConnection, DatabaseCollection
@@ -24,21 +24,23 @@ class DatabaseConnectionManager:
     _logger = SpotifyElectronLogger(LOGGING_DATABASE_MANAGER).get_logger()
 
     @classmethod
-    def get_collection_connection(cls, collection_name: DatabaseCollection) -> Collection:
+    def get_collection_connection(
+        cls, collection_name: DatabaseCollection
+    ) -> AsyncIOMotorCollection:
         """Get a connection to a collection
 
         Args:
             collection_name (DatabaseCollection): collection name
 
         Returns:
-            Collection: the connection to the selected collection
+            AsyncIOMotorCollection: the connection to the selected collection
         """
         assert cls.connection is not None, "DatabaseConnectionManager connection is not init"
 
         return cls.connection.get_collection_connection(collection_name)
 
     @classmethod
-    def init_database_connection(
+    async def init_database_connection(
         cls, environment: AppEnvironmentMode, connection_uri: str
     ) -> None:
         """Initializes the database connection and loads its unique instance\
@@ -51,5 +53,5 @@ class DatabaseConnectionManager:
         database_connection_class = cls.database_connection_mapping.get(
             environment, DatabaseProductionConnection
         )
-        database_connection_class.init_connection(connection_uri)
+        await database_connection_class.init_connection(connection_uri)
         cls.connection = database_connection_class

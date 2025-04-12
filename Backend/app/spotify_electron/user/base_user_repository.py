@@ -3,7 +3,7 @@ User repository for persisted data.
 It uses the collection for the associated user type
 """
 
-from pymongo.collection import Collection
+from motor.motor_asyncio import AsyncIOMotorCollection
 
 from app.logging.logging_constants import LOGGING_BASE_USERS_REPOSITORY
 from app.logging.logging_schema import SpotifyElectronLogger
@@ -20,13 +20,13 @@ from app.spotify_electron.user.validations.base_user_repository_validations impo
 base_user_repository_logger = SpotifyElectronLogger(LOGGING_BASE_USERS_REPOSITORY).get_logger()
 
 
-def check_user_exists(name: str, collection: Collection) -> bool:
+async def check_user_exists(name: str, collection: AsyncIOMotorCollection) -> bool:
     """Checks if user exists
 
     Args:
     ----
         name (str): name of the user
-        collection (Collection): user collection
+        collection (AsyncIOMotorDatabase): user collection
 
     Raises:
     ------
@@ -39,7 +39,7 @@ def check_user_exists(name: str, collection: Collection) -> bool:
 
     """
     try:
-        user = collection.find_one({"name": name}, {"_id": 0, "name": 1})
+        user = await collection.find_one({"name": name}, {"_id": 0, "name": 1})
     except Exception as exception:
         base_user_repository_logger.exception(
             f"Error checking if User {name} exists in database"
@@ -51,19 +51,19 @@ def check_user_exists(name: str, collection: Collection) -> bool:
         return result
 
 
-def delete_user(name: str, collection: Collection) -> None:
+async def delete_user(name: str, collection: AsyncIOMotorCollection) -> None:
     """Delete user
 
     Args:
         name (str): user name
-        collection (Collection): user collection
+        collection (AsyncIOMotorCollection): user collection
 
     Raises:
         BaseUserRepositoryError:
             an error occurred while deleting user from database
     """
     try:
-        result = collection.delete_one({"name": name})
+        result = await collection.delete_one({"name": name})
         validate_user_delete_count(result)
         base_user_repository_logger.info(f"User {name} Deleted")
     except BaseUserDeleteError as exception:
@@ -76,12 +76,12 @@ def delete_user(name: str, collection: Collection) -> None:
         raise BaseUserRepositoryError from exception
 
 
-def get_user_password(name: str, collection: Collection) -> bytes:
+async def get_user_password(name: str, collection: AsyncIOMotorCollection) -> bytes:
     """Get password from user
 
     Args:
         name (str): user name
-        collection (Collection): the database collection
+        collection (AsyncIOMotorCollection): the database collection
 
     Raises:
         BaseUserRepositoryError:
@@ -91,9 +91,10 @@ def get_user_password(name: str, collection: Collection) -> bytes:
         bytes: the user password
     """
     try:
-        password = collection.find_one({"name": name}, {"password": 1, "_id": 0})[  # type: ignore
-            "password"
-        ]
+        password_document = await collection.find_one(
+            {"name": name}, {"password": 1, "_id": 0}
+        )
+        password = password_document["password"]  # type: ignore
         validate_password_exists(password)
     except BaseUserGetPasswordError as exception:
         base_user_repository_logger.exception(
@@ -109,12 +110,12 @@ def get_user_password(name: str, collection: Collection) -> bytes:
         return password
 
 
-def search_by_name(name: str, collection: Collection) -> list[str]:
+async def search_by_name(name: str, collection: AsyncIOMotorCollection) -> list[str]:
     """Get user items that matches a name
 
     Args:
         name (str): name to match
-        collection (Collection): user collection
+        collection (AsyncIOMotorAsyncIOMotorCollection): user collection
 
     Raises:
         BaseUserRepositoryError: unexpected error searching items by name
@@ -126,7 +127,7 @@ def search_by_name(name: str, collection: Collection) -> list[str]:
         matching_items = collection.find(
             {"name": {"$regex": name, "$options": "i"}}, {"_id": 0, "name": 1}
         )
-        return [user["name"] for user in matching_items]
+        return [user["name"] async for user in matching_items]
     except Exception as exception:
         base_user_repository_logger.exception(
             f"Error checking searching items by name {name} in database"
@@ -134,11 +135,11 @@ def search_by_name(name: str, collection: Collection) -> list[str]:
         raise BaseUserRepositoryError from exception
 
 
-def add_playback_history(
+async def add_playback_history(
     user_name: str,
     song: str,
     max_number_playback_history_songs: int,
-    collection: Collection,
+    collection: AsyncIOMotorCollection,
 ) -> None:
     """Add song playback history to user
 
@@ -146,13 +147,13 @@ def add_playback_history(
         user_name (str): user name
         song (str): song name
         max_number_playback_history_songs (int): max number of songs stored in playback history
-        collection (Collection): the user collection
+        collection (AsyncIOMotorCollection): the user collection
 
     Raises:
         BaseUserRepositoryError: unexpected error adding song to user playback history
     """
     try:
-        user_data = collection.find_one({"name": user_name})
+        user_data = await collection.find_one({"name": user_name})
 
         playback_history = user_data["playback_history"]  # type: ignore
 
@@ -161,7 +162,7 @@ def add_playback_history(
 
         playback_history.append(song)
 
-        collection.update_one(
+        await collection.update_one(
             {"name": user_name}, {"$set": {"playback_history": playback_history}}
         )
     except Exception as exception:
@@ -171,25 +172,27 @@ def add_playback_history(
         raise BaseUserRepositoryError from exception
 
 
-def add_saved_playlist(user_name: str, playlist_name: str, collection: Collection) -> None:
+async def add_saved_playlist(
+    user_name: str, playlist_name: str, collection: AsyncIOMotorCollection
+) -> None:
     """Add saved playlist to user
 
     Args:
         user_name (str): user name
         playlist_name (str): playlist name
-        collection (Collection): user collection
+        collection (AsyncIOMotorCollection): user collection
 
     Raises:
         BaseUserRepositoryError: unexpected error adding saved playlist to user
     """
     try:
         # TODO make in one query
-        user_data = collection.find_one({"name": user_name})
+        user_data = await collection.find_one({"name": user_name})
         saved_playlists = user_data["saved_playlists"]  # type: ignore
 
         saved_playlists.append(playlist_name)
 
-        collection.update_one(
+        await collection.update_one(
             {"name": user_name},
             {"$set": {"saved_playlists": list(set(saved_playlists))}},
         )
@@ -201,26 +204,28 @@ def add_saved_playlist(user_name: str, playlist_name: str, collection: Collectio
         raise BaseUserRepositoryError from exception
 
 
-def delete_saved_playlist(user_name: str, playlist_name: str, collection: Collection) -> None:
+async def delete_saved_playlist(
+    user_name: str, playlist_name: str, collection: AsyncIOMotorCollection
+) -> None:
     """Deletes a saved playlist from a user
 
     Args:
         user_name (str): user name
         playlist_name (str): playlist name
-        collection (Collection): user collection
+        collection (AsyncIOMotorCollection): user collection
 
     Raises:
         BaseUserRepositoryError: unexpected error deleting saved playlist from user
     """
     try:
-        user_data = collection.find_one({"name": user_name})
+        user_data = await collection.find_one({"name": user_name})
 
         saved_playlists = user_data["saved_playlists"]  # type: ignore
 
         if playlist_name in saved_playlists:
             saved_playlists.remove(playlist_name)
 
-            collection.update_one(
+            await collection.update_one(
                 {"name": user_name}, {"$set": {"saved_playlists": saved_playlists}}
             )
     except Exception as exception:
@@ -230,25 +235,27 @@ def delete_saved_playlist(user_name: str, playlist_name: str, collection: Collec
         raise BaseUserRepositoryError from exception
 
 
-def add_playlist_to_owner(user_name: str, playlist_name: str, collection: Collection) -> None:
+async def add_playlist_to_owner(
+    user_name: str, playlist_name: str, collection: AsyncIOMotorCollection
+) -> None:
     """Adds a playlist to his ownwer
 
     Args:
         user_name (str): owner name
         playlist_name (str): playlist name
-        collection (Collection): user collection
+        collection (AsyncIOMotorCollection): user collection
 
     Raises:
         BaseUserRepositoryError: unexpected error adding playlist to its owner
     """
     try:
-        user_data = collection.find_one({"name": user_name})
+        user_data = await collection.find_one({"name": user_name})
 
         playlists = user_data["playlists"]  # type: ignore
 
         playlists.append(playlist_name)
 
-        collection.update_one(
+        await collection.update_one(
             {"name": user_name}, {"$set": {"playlists": list(set(playlists))}}
         )
 
@@ -259,28 +266,30 @@ def add_playlist_to_owner(user_name: str, playlist_name: str, collection: Collec
         raise BaseUserRepositoryError from exception
 
 
-def delete_playlist_from_owner(
-    user_name: str, playlist_name: str, collection: Collection
+async def delete_playlist_from_owner(
+    user_name: str, playlist_name: str, collection: AsyncIOMotorCollection
 ) -> None:
     """Deletes a playlist from his ownwer
 
     Args:
         user_name (str): owner name
         playlist_name (str): playlist name
-        collection (Collection): user collection
+        collection (AsyncIOMotorCollection): user collection
 
     Raises:
         BaseUserRepositoryError: unexpected error deleting playlist from owner
     """
     try:
-        user_data = collection.find_one({"name": user_name})
+        user_data = await collection.find_one({"name": user_name})
 
         playlists = user_data["playlists"]  # type: ignore
 
         if playlist_name in playlists:
             playlists.remove(playlist_name)
 
-            collection.update_one({"name": user_name}, {"$set": {"playlists": playlists}})
+            await collection.update_one(
+                {"name": user_name}, {"$set": {"playlists": playlists}}
+            )
     except Exception as exception:
         base_user_repository_logger.exception(
             f"Error deleting playlist {playlist_name} from owner {user_name} in database"
@@ -288,26 +297,26 @@ def delete_playlist_from_owner(
         raise BaseUserRepositoryError from exception
 
 
-def update_playlist_name(
-    old_playlist_name: str, new_playlist_name: str, collection: Collection
+async def update_playlist_name(
+    old_playlist_name: str, new_playlist_name: str, collection: AsyncIOMotorCollection
 ) -> None:
     """Update playlist name with a new one
 
     Args:
         old_playlist_name (str): old name
         new_playlist_name (str): new name
-        collection (Collection): user collection
+        collection (AsyncIOMotorCollection): user collection
 
     Raises:
         BaseUserRepositoryError: unexpected error updating playlist name
     """
     try:
         # has to be done sequentially, pull and push on the same query generates errors
-        collection.update_many(
+        await collection.update_many(
             {"saved_playlists": old_playlist_name},
             {"$set": {"saved_playlists.$": new_playlist_name}},
         )
-        collection.update_many(
+        await collection.update_many(
             {"playlists": old_playlist_name},
             {"$set": {"playlists.$": new_playlist_name}},
         )
@@ -320,17 +329,19 @@ def update_playlist_name(
         raise BaseUserRepositoryError from exception
 
 
-def get_user_relevant_playlist_names(user_name: str, collection: Collection) -> list[str]:
+async def get_user_relevant_playlist_names(
+    user_name: str, collection: AsyncIOMotorCollection
+) -> list[str]:
     """Get user relevant playlist names
 
     Args:
         user_name (str): user name
-        collection (Collection): user collection
+        collection (AsyncIOMotorCollection): user collection
 
     Returns:
         list[str]: the playlist names of the playlists relevant to the user
     """
-    user_data = collection.find_one(
+    user_data = await collection.find_one(
         {"name": user_name}, {"playlists": 1, "saved_playlists": 1, "_id": 0}
     )
     playlist_names = []
@@ -340,31 +351,37 @@ def get_user_relevant_playlist_names(user_name: str, collection: Collection) -> 
     return playlist_names
 
 
-def get_user_playlist_names(user_name: str, collection: Collection) -> list[str]:
+async def get_user_playlist_names(
+    user_name: str, collection: AsyncIOMotorCollection
+) -> list[str]:
     """Get user created playlist names
 
     Args:
         user_name (str): user name
-        collection (Collection): user collection
+        collection (AsyncIOMotorCollection): user collection
 
     Returns:
         list[str]: the playlist names of the user created playlists
     """
-    user_data = collection.find_one({"name": user_name}, {"playlists": 1, "_id": 0})
+    user_data = await collection.find_one({"name": user_name}, {"playlists": 1, "_id": 0})
 
     return user_data["playlists"]  # type: ignore
 
 
-def get_user_playback_history_names(user_name: str, collection: Collection) -> list[str]:
+async def get_user_playback_history_names(
+    user_name: str, collection: AsyncIOMotorCollection
+) -> list[str]:
     """Get user playback history song names
 
     Args:
         user_name (str): user name
-        collection (Collection): user collection
+        collection (AsyncIOMotorCollection): user collection
 
     Returns:
         list[str]: the user playback history
     """
-    user_data = collection.find_one({"name": user_name}, {"playback_history": 1, "_id": 0})
+    user_data = await collection.find_one(
+        {"name": user_name}, {"playback_history": 1, "_id": 0}
+    )
 
     return user_data["playback_history"]  # type: ignore

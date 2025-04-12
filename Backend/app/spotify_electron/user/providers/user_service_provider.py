@@ -23,13 +23,13 @@ users_service_provider_logger = SpotifyElectronLogger(
 ).get_logger()
 
 
-def get_user_service(user_name: str) -> Annotated[Any, "ModuleType"]:
+async def get_user_service(user_name: str) -> Annotated[Any, "ModuleType"]:
     """Returns the user service according to the user role
 
     Returns:
         ModuleType: the user service
     """
-    user_type = base_user_service.get_user_type(user_name)
+    user_type = await base_user_service.get_user_type(user_name)
     if user_type not in services_map:
         users_service_provider_logger.warning(
             f"User {user_name} doesn't have a valid user type "

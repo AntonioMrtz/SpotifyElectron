@@ -397,7 +397,9 @@ export default function UploadSongPlaylistAccordion({
                     id="genre"
                     data-testid="select-genre"
                     required
-                    defaultValue={t('uploadSongPlaylistAccordion.choose-genre')}
+                    defaultValue={t(
+                      'uploadSongPlaylistAccordion.choose-genre-default',
+                    )}
                   >
                     <option
                       className={` ${styles.option}`}

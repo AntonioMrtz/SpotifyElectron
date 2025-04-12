@@ -27,12 +27,10 @@ def get_song_dao_from_document(song_name: str, document: dict[str, Any]) -> Song
     """Get SongDAO from document
 
     Args:
-    ----
         song_name (str): song name
-        document (dict[str,Any]): song document
+        document (dict[str, Any]): song document
 
     Returns:
-    -------
         SongDAO: SongDAO Object
 
     """

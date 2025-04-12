@@ -53,7 +53,7 @@ base_users_service_logger = SpotifyElectronLogger(LOGGING_BASE_USERS_SERVICE).ge
 MAX_NUMBER_PLAYBACK_HISTORY_SONGS = 5
 
 
-# TODO improve for future types of user
+# TODO improve to accept future implementations of new types of user
 async def get_user_type(user_name: str) -> UserType:
     """Get user type
 

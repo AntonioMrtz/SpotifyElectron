@@ -2,6 +2,8 @@
 User service for handling business logic
 """
 
+from asyncio import gather
+
 import app.auth.auth_service as auth_service
 import app.auth.auth_service_validations as auth_service_validations
 import app.spotify_electron.user.artist.artist_service as artist_service
@@ -146,10 +148,7 @@ async def get_users(user_names: list[str]) -> list[UserDTO]:
         list[User]: the selected users
     """
     try:
-        users: list[UserDTO] = []
-
-        for user_name in user_names:
-            users.append(await get_user(user_name))
+        users = await gather(*[get_user(name) for name in user_names])
 
     except BaseUserRepositoryError as exception:
         user_service_logger.exception(

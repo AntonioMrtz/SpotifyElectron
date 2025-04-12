@@ -20,8 +20,8 @@ from app.logging.logging_constants import LOGGING_DATABASE_CONNECTION
 from app.logging.logging_schema import SpotifyElectronLogger
 
 
-class DatabaseAsyncIOMotorCollection(StrEnum):
-    """AsyncIOMotorCollection names present in database"""
+class DatabaseCollection(StrEnum):
+    """Collection names present in database"""
 
     USER = "users"
     ARTIST = "artists"
@@ -53,6 +53,7 @@ class BaseDatabaseConnection:
             uri = getattr(PropertiesManager, AppEnvironment.MONGO_URI_ENV_NAME)
             cls.collection_name_prefix = cls._get_collection_name_prefix()
             client = cls._get_mongo_client()(uri, server_api=ServerApi("1"))
+            # Needed because of https://github.com/encode/starlette/issues/1315#issuecomment-980784457
             client.get_io_loop = get_event_loop
             await client.admin.command("ping")
             cls.connection = client[cls.DATABASE_NAME]
@@ -66,7 +67,7 @@ class BaseDatabaseConnection:
         """Get mongo client class
 
         Returns:
-            type[MotorClient]: the mongo client class
+            type[AsyncIOMotorClient]: the mongo client class
         """
         pass
 
@@ -82,12 +83,12 @@ class BaseDatabaseConnection:
 
     @classmethod
     def get_collection_connection(
-        cls, collection_name: DatabaseAsyncIOMotorCollection
+        cls, collection_name: DatabaseCollection
     ) -> AsyncIOMotorCollection:
         """Returns the connection with a collection
 
         Args:
-            collection_name (str): the collection name
+            collection_name (DatabaseCollection): the collection name
 
         Returns:
             AsyncIOMotorCollection: the connection to the collection
@@ -98,12 +99,12 @@ class BaseDatabaseConnection:
 
     @classmethod
     def get_gridfs_collection_connection(
-        cls, collection_name: DatabaseAsyncIOMotorCollection
+        cls, collection_name: DatabaseCollection
     ) -> AsyncIOMotorGridFSBucket:
         """Returns the connection with gridfs collection
 
         Args:
-            collection_name (DatabaseAsyncIOMotorCollections): the collection name
+            collection_name (DatabaseCollection): the collection name
 
         Returns:
             AsyncIOMotorGridFSBucket: the gridfs collection connection

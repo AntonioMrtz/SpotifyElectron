@@ -256,7 +256,9 @@ async def get_selected_playlists(names: str, token: Token) -> Response:
         token (Annotated[TokenData, Depends): JWT info
     """
     try:
-        playlists = await playlist_service.get_selected_playlists(names.split(","))
+        playlists = await playlist_service.get_selected_playlists(
+            [name.strip() for name in names.split(",")]
+        )
 
         playlist_json = json_converter_utils.get_json_with_iterable_field_from_model(
             playlists, "playlists"

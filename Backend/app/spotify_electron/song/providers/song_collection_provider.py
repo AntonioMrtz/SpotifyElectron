@@ -7,7 +7,7 @@ from motor.motor_asyncio import AsyncIOMotorCollection, AsyncIOMotorGridFSBucket
 
 from app.common.app_schema import AppArchitecture, AppEnvironment
 from app.common.PropertiesManager import PropertiesManager
-from app.database.database_schema import DatabaseAsyncIOMotorCollection
+from app.database.database_schema import DatabaseCollection
 from app.database.DatabaseConnectionManager import DatabaseConnectionManager
 
 
@@ -19,10 +19,10 @@ def get_song_collection() -> AsyncIOMotorCollection:
     """
     repository_map: dict[AppArchitecture, AsyncIOMotorCollection] = {
         AppArchitecture.ARCH_BLOB: DatabaseConnectionManager.get_collection_connection(
-            DatabaseAsyncIOMotorCollection.SONG_BLOB_FILE
+            DatabaseCollection.SONG_BLOB_FILE
         ),
         AppArchitecture.ARCH_SERVERLESS: DatabaseConnectionManager.get_collection_connection(
-            DatabaseAsyncIOMotorCollection.SONG_STREAMING
+            DatabaseCollection.SONG_STREAMING
         ),
     }
     current_architecture = getattr(PropertiesManager, AppEnvironment.ARCHITECTURE_ENV_NAME)
@@ -36,5 +36,5 @@ def get_gridfs_song_collection() -> AsyncIOMotorGridFSBucket:
         AsyncIOMotorGridFSBucket: the gridfs song collection
     """
     return DatabaseConnectionManager.connection.get_gridfs_collection_connection(
-        DatabaseAsyncIOMotorCollection.SONG_BLOB_DATA
+        DatabaseCollection.SONG_BLOB_DATA
     )

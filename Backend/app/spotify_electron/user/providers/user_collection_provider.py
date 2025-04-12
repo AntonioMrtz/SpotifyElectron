@@ -6,7 +6,7 @@ Provider class for supplying user collection connection with database depending 
 from motor.motor_asyncio import AsyncIOMotorCollection
 
 import app.spotify_electron.user.base_user_service as base_user_service
-from app.database.database_schema import DatabaseAsyncIOMotorCollection
+from app.database.database_schema import DatabaseCollection
 from app.database.DatabaseConnectionManager import DatabaseConnectionManager
 from app.logging.logging_constants import LOGGING_USER_COLLECTION_PROVIDER
 from app.logging.logging_schema import SpotifyElectronLogger
@@ -23,12 +23,12 @@ async def get_user_associated_collection(user_name: str) -> AsyncIOMotorCollecti
     Returns:
         AsyncIOMotorCollection: the user collection
     """
-    collection_map = {
+    collection_map: dict[UserType, AsyncIOMotorCollection] = {
         UserType.USER: DatabaseConnectionManager.get_collection_connection(
-            DatabaseAsyncIOMotorCollection.USER
+            DatabaseCollection.USER
         ),
         UserType.ARTIST: DatabaseConnectionManager.get_collection_connection(
-            DatabaseAsyncIOMotorCollection.ARTIST
+            DatabaseCollection.ARTIST
         ),
     }
 
@@ -48,9 +48,7 @@ def get_artist_collection() -> AsyncIOMotorCollection:
     Returns:
         AsyncIOMotorCollection: the artist collection
     """
-    return DatabaseConnectionManager.get_collection_connection(
-        DatabaseAsyncIOMotorCollection.ARTIST
-    )
+    return DatabaseConnectionManager.get_collection_connection(DatabaseCollection.ARTIST)
 
 
 def get_user_collection() -> AsyncIOMotorCollection:
@@ -59,9 +57,7 @@ def get_user_collection() -> AsyncIOMotorCollection:
     Returns:
         AsyncIOMotorCollection: the user collection
     """
-    return DatabaseConnectionManager.get_collection_connection(
-        DatabaseAsyncIOMotorCollection.USER
-    )
+    return DatabaseConnectionManager.get_collection_connection(DatabaseCollection.USER)
 
 
 def get_all_collections() -> list[AsyncIOMotorCollection]:
@@ -72,10 +68,10 @@ def get_all_collections() -> list[AsyncIOMotorCollection]:
     """
     collection_map = {
         UserType.USER: DatabaseConnectionManager.get_collection_connection(
-            DatabaseAsyncIOMotorCollection.USER
+            DatabaseCollection.USER
         ),
         UserType.ARTIST: DatabaseConnectionManager.get_collection_connection(
-            DatabaseAsyncIOMotorCollection.ARTIST
+            DatabaseCollection.ARTIST
         ),
     }
     return list(collection_map.values())

@@ -3,7 +3,7 @@
 from motor.motor_asyncio import AsyncIOMotorCollection
 
 from app.common.app_schema import AppEnvironmentMode
-from app.database.database_schema import BaseDatabaseConnection, DatabaseAsyncIOMotorCollection
+from app.database.database_schema import BaseDatabaseConnection, DatabaseCollection
 from app.database.DatabaseProductionConnection import DatabaseProductionConnection
 from app.database.DatabaseTestingConnection import DatabaseTestingConnection
 from app.logging.logging_constants import LOGGING_DATABASE_MANAGER
@@ -25,12 +25,12 @@ class DatabaseConnectionManager:
 
     @classmethod
     def get_collection_connection(
-        cls, collection_name: DatabaseAsyncIOMotorCollection
+        cls, collection_name: DatabaseCollection
     ) -> AsyncIOMotorCollection:
         """Get a connection to a collection
 
         Args:
-            collection_name (DatabaseAsyncIOMotorCollection): collection name
+            collection_name (DatabaseCollection): collection name
 
         Returns:
             AsyncIOMotorCollection: the connection to the selected collection

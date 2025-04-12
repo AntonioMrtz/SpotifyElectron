@@ -204,10 +204,10 @@ async def get_song_names_search_by_name(song_name: str) -> list[str]:
     """
     try:
         collection = song_collection_provider.get_song_collection()
-        song_names_response = collection.find(
+        cursor = collection.find(
             {"name": {"$regex": song_name, "$options": "i"}}, {"_id": 0, "name": 1}
         )
-        return [song["name"] async for song in song_names_response]  # type: ignore
+        return [song["name"] async for song in cursor]  # type: ignore
     except SongRepositoryError as exception:
         song_repository_logger.exception(
             f"Unexpected error getting song names that matched {song_name} in database"
@@ -215,8 +215,8 @@ async def get_song_names_search_by_name(song_name: str) -> list[str]:
         raise SongRepositoryError from exception
 
 
-async def get_songs_metadata_by_genre(genre: str) -> list[SongMetadataDAO]:
-    """Get songs metadata by genre
+async def get_songs_metadata_by_genre(genre: Genre) -> list[SongMetadataDAO]:
+    """Obtains all songs with the selected genre
 
     Args:
         genre (str): genre to match
@@ -228,7 +228,8 @@ async def get_songs_metadata_by_genre(genre: str) -> list[SongMetadataDAO]:
         list[SongMetadataDAO]: list of song metadatas with selected genre
     """
     collection = song_collection_provider.get_song_collection()
-    result_get_song_by_genre = collection.find({"genre": genre})
+    genre_str = Genre.get_genre_string_value(genre)
+    cursor = collection.find({"genre": genre_str})
     try:
         return [
             SongMetadataDAO(
@@ -239,7 +240,7 @@ async def get_songs_metadata_by_genre(genre: str) -> list[SongMetadataDAO]:
                 genre=Genre(song_data["genre"]),
                 streams=song_data["streams"],
             )
-            async for song_data in result_get_song_by_genre
+            async for song_data in cursor
         ]
     except SongRepositoryError as exception:
         song_repository_logger.exception(

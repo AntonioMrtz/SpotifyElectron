@@ -60,7 +60,8 @@ async def get_song(
         token (Annotated[TokenData, Depends): JWT info
     """
     try:
-        song = await get_song_service().get_song(name)
+        song_service = get_song_service()
+        song = await song_service.get_song(name)
         song_json = json_converter_utils.get_json_from_model(song)
 
         return Response(song_json, media_type="application/json", status_code=HTTP_200_OK)
@@ -106,7 +107,8 @@ async def create_song(
     read_file = await file.read()
 
     try:
-        await get_song_service().create_song(name, genre, photo, read_file, token)
+        song_service = get_song_service()
+        await song_service.create_song(name, genre, photo, read_file, token)
         return Response(None, HTTP_201_CREATED)
     except GenreNotValidError:
         return Response(

@@ -227,8 +227,8 @@ async def get_selected_playlists(
     try:
         collection = get_playlist_collection()
         query = {"name": {"$in": names}}
-        documents = collection.find(query)
-        playlists = [get_playlist_dao_from_document(document) async for document in documents]
+        cursor = collection.find(query)
+        playlists = [get_playlist_dao_from_document(document) async for document in cursor]
     except Exception as exception:
         playlist_repository_logger.exception(f"Error getting {names} Playlists from database")
         raise PlaylistRepositoryError from exception
@@ -261,8 +261,8 @@ async def get_playlist_search_by_name(
     """
     try:
         collection = get_playlist_collection()
-        documents = collection.find({"name": {"$regex": name, "$options": "i"}})
-        playlists = [get_playlist_dao_from_document(document) async for document in documents]
+        cursor = collection.find({"name": {"$regex": name, "$options": "i"}})
+        playlists = [get_playlist_dao_from_document(document) async for document in cursor]
     except Exception as exception:
         playlist_repository_logger.exception(
             f"Error getting Playlists searched by name {name} from database"

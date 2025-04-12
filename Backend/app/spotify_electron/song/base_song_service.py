@@ -177,8 +177,7 @@ async def get_songs_by_genre(genre: Genre) -> list[SongMetadataDTO]:
         list[SongMetadataDTO]: the list of songs that matched the genre
     """
     try:
-        str_genre = Genre.get_genre_string_value(genre)
-        songs_dao = await base_song_repository.get_songs_metadata_by_genre(str_genre)
+        songs_dao = await base_song_repository.get_songs_metadata_by_genre(genre)
         return [get_song_metadata_dto_from_dao(song_dao) for song_dao in songs_dao]
     except GenreNotValidError as exception:
         base_song_service_logger.exception(f"Bad genre provided {genre}")

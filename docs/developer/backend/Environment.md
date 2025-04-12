@@ -40,6 +40,7 @@ In this section we will explain the meaning and the usage of the environment var
 - **ENV_VALUE**: determines the current environment of the app, it can be:
   - `PROD`: production environment.
   - `DEV`: development environment. Enables hot reload.
+  - `TEST`: testing or development environment. Uses in-memory MongoDB.
 - **ARCH**: the song architecture selected, it can be one of the following [architectures](../Architecture.md):
   - `BLOB(Recommended for production and development)`: song architecture that stores songs in database and streams them using an endpoint.
   - `SERVERLESS`: (deprecated) song architecture using AWS Serverless Function with streaming.

@@ -44,12 +44,13 @@ jobs:
           python -m venv venv
           source venv/bin/activate
           pip install -r requirements.txt
+          pip install -r requirements-test.txt
           python -m app.tools.generate_openapi
         env:
           MONGO_URI: mongodb://root:root@localhost:27017/
           SECRET_KEY_SIGN: "f24e2f3ac557d487b6d879fb2d86f2b2"
           ARCH: "BLOB"
-          ENV_VALUE: "PROD"
+          ENV_VALUE: "TEST"
 
       - name: Compare new and existing OpenAPI Schema
         working-directory: Electron/src/swagger/

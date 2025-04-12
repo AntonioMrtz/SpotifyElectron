@@ -9,7 +9,7 @@ In this section we will cover how to run tests and develop them. Make sure `Back
 
 Default configuration will only need a serverless function path if using `SERVERLESS` for executing tests. If another architecture is selected you can run tests out of the box locally.
 
-If the app is being executed for running test the file `pytest.ini` will override `ENV_VALUE` environment variable with `TEST` mode. This behaviour triggers the app to load an in-memory database instead of a real one. This can be side stepped by changing the `TEST` env value in `pytest.ini` to something like `PROD` or `DEV` **if you need a real database for testing**.
+If the app is being executed for running test the file `pytest.ini` will override `ENV_VALUE` environment variable with `TEST` mode. This behaviour triggers the app to load an in-memory database instead of a real one. This can be side-stepped by changing the `TEST` env value in `pytest.ini` to something like `PROD` or `DEV` **if you need a real database for testing**.
 
 ### SERVERLESS(deprecated)
 

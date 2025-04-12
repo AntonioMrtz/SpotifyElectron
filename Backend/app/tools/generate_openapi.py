@@ -1,14 +1,16 @@
-"""Generate OpenAPI Schema from app
+"""Generate OpenAPI Schema from app.
 
 Steps:
     1. Go to Backend/
-    2. Run `python -m app.tools.generate_openapi`
+    2. Run `ENV_VALUE=TEST python -m app.tools.generate_openapi`
     3. OpenAPI Schema will be located at OPENAPI_SCHEMA_OUTPUT_FILE path
 """
 
 import asyncio
 import json
 import os
+
+import anyio
 
 from app.__main__ import app, lifespan_handler
 
@@ -20,7 +22,6 @@ def check_openapi_folder_exists() -> bool:
     """Checks if folder that has to store OpenAPI file exists
 
     Returns:
-    -------
         bool: if the OpenAPI folder exists
     """
     cwd = os.path.abspath(os.getcwd())
@@ -44,9 +45,9 @@ async def generate_openapi() -> None:
         print("> Generating OpenAPI Schema")
         openapi = app.openapi()
         openapi_json = json.dumps(openapi, indent=2)
-        with open(OPENAPI_SCHEMA_OUTPUT_FILE, "w") as file:
+        async with await anyio.open_file(OPENAPI_SCHEMA_OUTPUT_FILE, "w") as file:
             print(f"> Writing OpenAPI Schema on {OPENAPI_SCHEMA_OUTPUT_FILE}")
-            file.write(openapi_json)
+            await file.write(openapi_json)
 
 
 if __name__ == "__main__":

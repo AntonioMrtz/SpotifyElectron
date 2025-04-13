@@ -70,6 +70,7 @@ class BaseDatabaseConnection:
         On version >=4.0 connection won't be accesible after closing
         https://motor.readthedocs.io/en/stable/api-tornado/motor_client.html#motor.motor_tornado.MotorClient.close
         """
+        cls.__assert_connection_is_initialized()
         cls._client.close()
 
     @classmethod
@@ -104,6 +105,7 @@ class BaseDatabaseConnection:
         Returns:
             AsyncIOMotorCollection: the connection to the collection
         """
+        cls.__assert_connection_is_initialized()
         return cls._connection[cls.__collection_name_prefix + collection_name]
 
     @classmethod
@@ -118,10 +120,17 @@ class BaseDatabaseConnection:
         Returns:
             AsyncIOMotorGridFSBucket: the gridfs collection connection
         """
+        cls.__assert_connection_is_initialized()
         return AsyncIOMotorGridFSBucket(
             cls._connection,
             bucket_name=cls.__collection_name_prefix + collection_name,
         )
+
+    @classmethod
+    def __assert_connection_is_initialized(
+        cls,
+    ):
+        assert cls._connection is not None, "Database connection is not initialized"
 
 
 class DatabasePingFailedError(SpotifyElectronError):

@@ -34,11 +34,13 @@ class DatabaseCollection(StrEnum):
 class BaseDatabaseConnection:
     """Base MongoDB connection Instance. Manages a single connection for the whole app"""
 
-    DATABASE_NAME = "SpotifyElectron"
+    __DATABASE_NAME = "SpotifyElectron"
     """Database name"""
-    connection: AsyncIOMotorDatabase
+    _connection: AsyncIOMotorDatabase
     """Database connection"""
-    collection_name_prefix: str = ""
+    _client: AsyncIOMotorClient
+    """Database client"""
+    __collection_name_prefix: str = ""
     """Database collection prefix applied to all collections"""
     _logger = SpotifyElectronLogger(LOGGING_DATABASE_CONNECTION).get_logger()
 
@@ -51,15 +53,25 @@ class BaseDatabaseConnection:
         """
         try:
             uri = getattr(PropertiesManager, AppEnvironment.MONGO_URI_ENV_NAME)
-            cls.collection_name_prefix = cls._get_collection_name_prefix()
-            client = cls._get_mongo_client()(uri, server_api=ServerApi("1"))
+            cls.__collection_name_prefix = cls._get_collection_name_prefix()
+            cls._client = cls._get_mongo_client()(uri, server_api=ServerApi("1"))
             # Needed because of https://github.com/encode/starlette/issues/1315#issuecomment-980784457
-            client.get_io_loop = get_event_loop
-            await client.admin.command("ping")
-            cls.connection = client[cls.DATABASE_NAME]
+            cls._client.get_io_loop = get_event_loop
+            await cls._client.admin.command("ping")
+            cls._connection = cls._client[cls.__DATABASE_NAME]
         except Exception as exception:
             cls._logger.critical(f"Error establishing connection with database: {exception}")
             sys.exit("Database connection failed. Stopping server")
+
+    @classmethod
+    def close_connection(cls) -> None:
+        """Close client connection. If the instance is used again the connection
+        will be automatically re-opened.
+        On version >=4.0 connection won't be accesible after closing
+        https://motor.readthedocs.io/en/stable/api-tornado/motor_client.html#motor.motor_tornado.MotorClient.close
+        """
+        cls.__assert_connection_is_initialized()
+        cls._client.close()
 
     @classmethod
     @abstractmethod
@@ -93,9 +105,8 @@ class BaseDatabaseConnection:
         Returns:
             AsyncIOMotorCollection: the connection to the collection
         """
-        assert cls.connection is not None, "DatabaseConnectionManager connection is not init"
-
-        return cls.connection[cls.collection_name_prefix + collection_name]
+        cls.__assert_connection_is_initialized()
+        return cls._connection[cls.__collection_name_prefix + collection_name]
 
     @classmethod
     def get_gridfs_collection_connection(
@@ -109,12 +120,17 @@ class BaseDatabaseConnection:
         Returns:
             AsyncIOMotorGridFSBucket: the gridfs collection connection
         """
-        assert cls.connection is not None, "DatabaseConnectionManager connection is not init"
-
+        cls.__assert_connection_is_initialized()
         return AsyncIOMotorGridFSBucket(
-            cls.connection,
-            bucket_name=cls.collection_name_prefix + collection_name,
+            cls._connection,
+            bucket_name=cls.__collection_name_prefix + collection_name,
         )
+
+    @classmethod
+    def __assert_connection_is_initialized(
+        cls,
+    ):
+        assert cls._connection is not None, "Database connection is not initialized"
 
 
 class DatabasePingFailedError(SpotifyElectronError):

@@ -1,6 +1,6 @@
 """Database connection provider"""
 
-from motor.motor_asyncio import AsyncIOMotorCollection
+from motor.motor_asyncio import AsyncIOMotorCollection, AsyncIOMotorGridFSBucket
 
 from app.common.app_schema import AppEnvironmentMode
 from app.database.database_schema import BaseDatabaseConnection, DatabaseCollection
@@ -13,15 +13,15 @@ from app.logging.logging_schema import SpotifyElectronLogger
 class DatabaseConnectionManager:
     """Manages the unique database connection and exposes it to the app"""
 
-    connection: type[BaseDatabaseConnection]
+    __connection: type[BaseDatabaseConnection]
     """Connection instance of database"""
-    database_connection_mapping: dict[AppEnvironmentMode, type[BaseDatabaseConnection]] = {
+    __connection_mapping: dict[AppEnvironmentMode, type[BaseDatabaseConnection]] = {
         AppEnvironmentMode.PROD: DatabaseProductionConnection,
         AppEnvironmentMode.DEV: DatabaseProductionConnection,
         AppEnvironmentMode.TEST: DatabaseTestingConnection,
     }
     """Mapping between environment mode and database connection"""
-    _logger = SpotifyElectronLogger(LOGGING_DATABASE_MANAGER).get_logger()
+    __logger = SpotifyElectronLogger(LOGGING_DATABASE_MANAGER).get_logger()
 
     @classmethod
     def get_collection_connection(
@@ -35,9 +35,9 @@ class DatabaseConnectionManager:
         Returns:
             AsyncIOMotorCollection: the connection to the selected collection
         """
-        assert cls.connection is not None, "DatabaseConnectionManager connection is not init"
+        cls.__assert_connection_is_initialized()
 
-        return cls.connection.get_collection_connection(collection_name)
+        return cls.__connection.get_collection_connection(collection_name)
 
     @classmethod
     async def init_database_connection(
@@ -50,8 +50,39 @@ class DatabaseConnectionManager:
             environment (AppEnvironmentMode): the current environment value
             connection_uri (str): the database connection uri
         """
-        database_connection_class = cls.database_connection_mapping.get(
+        database_connection_class = cls.__connection_mapping.get(
             environment, DatabaseProductionConnection
         )
         await database_connection_class.init_connection(connection_uri)
-        cls.connection = database_connection_class
+        cls.__connection = database_connection_class
+
+    @classmethod
+    def close_database_connection(cls) -> None:
+        """Close database connection"""
+        cls.__assert_connection_is_initialized()
+
+        cls.__connection.close_connection()
+
+    @classmethod
+    def get_gridfs_collection_connection(
+        cls,
+        collection_name: DatabaseCollection,
+    ) -> AsyncIOMotorGridFSBucket:
+        """Get GridFS collection
+
+        Args:
+            collection_name (DatabaseCollection): collection name
+
+        Returns:
+            AsyncIOMotorGridFSBucket: the GridFS collection
+        """
+        cls.__assert_connection_is_initialized()
+        return cls.__connection.get_gridfs_collection_connection(collection_name)
+
+    @classmethod
+    def __assert_connection_is_initialized(
+        cls,
+    ):
+        assert cls.__connection is not None, (
+            "DatabaseConnectionManager connection is not initialized"
+        )

@@ -33,8 +33,8 @@ def get_gridfs_song_collection() -> AsyncIOMotorGridFSBucket:
     """Get gridfs collection for managing song files
 
     Returns:
-        AsyncIOMotorGridFSBucket: the gridfs song collection
+        AsyncIOMotorGridFSBucket: the GridFS song collection
     """
-    return DatabaseConnectionManager.connection.get_gridfs_collection_connection(
+    return DatabaseConnectionManager.get_gridfs_collection_connection(
         DatabaseCollection.SONG_BLOB_DATA
     )

@@ -77,6 +77,7 @@ async def lifespan_handler(app: FastAPI) -> AsyncGenerator[None, Any]:
     app.include_router(stream_controller.router)
     app.include_router(health_controller.router)
     yield
+    DatabaseConnectionManager.close_database_connection()
     main_logger.info("Spotify Electron Backend Stopped")
 
 

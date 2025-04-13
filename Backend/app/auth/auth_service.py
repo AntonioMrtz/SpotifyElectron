@@ -101,7 +101,7 @@ def get_jwt_token_data(
     try:
         validate_token_exists(token_raw_data)
         payload = jwt.decode(
-            token_raw_data,  # type: ignore
+            token_raw_data,
             AuthConfig.SIGNING_SECRET_KEY,
             algorithms=[ALGORITHM],
         )

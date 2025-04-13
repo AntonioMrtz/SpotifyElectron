@@ -6,15 +6,32 @@ the song resource.
 
 from abc import ABC
 from dataclasses import dataclass
-from typing import Any
+from typing import TypedDict
 
 from app.exceptions.base_exceptions_schema import SpotifyElectronError
 from app.spotify_electron.genre.genre_schema import Genre
 
 
+class BaseSongMetadataDocument(TypedDict):
+    """Represents song metadata in the persistence layer"""
+
+    photo: str
+    artist: str
+    seconds_duration: int
+    genre: str
+    streams: int
+
+
+class BaseSongDocument(TypedDict):
+    """Represents song data in the persistence layer"""
+
+    filename: str
+    metadata: BaseSongMetadataDocument
+
+
 @dataclass
 class BaseSongDAO(ABC):
-    """Base song represention of song data in the persistence layer"""
+    """Represents song data in the internal processing layer"""
 
     name: str
     photo: str
@@ -47,14 +64,14 @@ class SongMetadataDTO(BaseSongDTO):
 
 
 def get_song_metadata_dao_from_document(
-    song_name: str, document: dict[str, Any]
+    song_name: str, document: BaseSongMetadataDocument
 ) -> SongMetadataDAO:
     """Get SongMetadataDAO from document
 
     Args:
     ----
         song_name (str): song name
-        document (dict): song document
+        document (BaseSongMetadataDocument): song document
 
     Returns:
     -------
@@ -65,7 +82,7 @@ def get_song_metadata_dao_from_document(
         name=song_name,
         photo=document["photo"],
         artist=document["artist"],
-        seconds_duration=document["duration"],
+        seconds_duration=document["seconds_duration"],
         genre=Genre(document["genre"]),
         streams=document["streams"],
     )

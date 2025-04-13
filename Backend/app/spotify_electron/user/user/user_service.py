@@ -8,7 +8,7 @@ import app.auth.auth_service as auth_service
 import app.auth.auth_service_validations as auth_service_validations
 import app.spotify_electron.user.artist.artist_service as artist_service
 import app.spotify_electron.user.base_user_repository as base_user_repository
-import app.spotify_electron.user.providers.user_collection_provider as user_collection_provider
+import app.spotify_electron.user.providers.user_collection_provider as provider
 import app.spotify_electron.user.user.user_repository as user_repository
 import app.spotify_electron.user.validations.base_user_service_validations as base_user_service_validations  # noqa: E501
 from app.auth.auth_schema import TokenData, UserUnauthorizedError
@@ -45,7 +45,7 @@ async def does_user_exists(user_name: str) -> bool:
     Returns:
         bool: if the user exists
     """
-    collection = user_collection_provider.get_user_collection()
+    collection = provider.get_user_collection()
     return await base_user_repository.check_user_exists(user_name, collection)
 
 
@@ -178,7 +178,7 @@ async def search_by_name(name: str) -> list[UserDTO]:
         list[UserDTO]: users that match the name
     """
     try:
-        user_collection = user_collection_provider.get_user_collection()
+        user_collection = provider.get_user_collection()
         matched_items_names = await base_user_repository.search_by_name(name, user_collection)
 
         return await get_users(matched_items_names)
@@ -212,7 +212,7 @@ async def promote_user_to_artist(name: str, token: TokenData) -> None:
         user = await user_repository.get_user(name)
         await artist_service.create_artist_from_user(user)
 
-        user_collection = user_collection_provider.get_user_collection()
+        user_collection = provider.get_user_collection()
         await base_user_repository.delete_user(user.name, user_collection)
     except ArtistAlreadyExistsError as exception:
         user_service_logger.exception(f"Artist already exists: {name}")

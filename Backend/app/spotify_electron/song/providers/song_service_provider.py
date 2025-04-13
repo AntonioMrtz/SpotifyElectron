@@ -1,5 +1,5 @@
 """
-Provider class for supplying service depending on song architecture selected
+Song service provider based on selected architecture
 """
 
 import importlib

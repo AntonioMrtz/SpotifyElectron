@@ -3,14 +3,25 @@ Playlist schema for domain model
 """
 
 from dataclasses import dataclass
-from typing import Any
+from typing import TypedDict
 
 from app.exceptions.base_exceptions_schema import SpotifyElectronError
 
 
+class PlaylistDocument(TypedDict):
+    """Represents playlist data in the persistence layer"""
+
+    name: str
+    photo: str
+    description: str
+    upload_date: str
+    owner: str
+    song_names: list[str]
+
+
 @dataclass
 class PlaylistDAO:
-    """Represents playlist data in the persistence layer"""
+    """Represents playlist data in the internal processing layer"""
 
     name: str
     photo: str
@@ -32,7 +43,7 @@ class PlaylistDTO:
     song_names: list[str]
 
 
-def get_playlist_dao_from_document(document: dict[str, Any]) -> PlaylistDAO:
+def get_playlist_dao_from_document(document: PlaylistDocument) -> PlaylistDAO:
     """Get PlaylistDAO from document
 
     Args:

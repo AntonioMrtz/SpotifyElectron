@@ -49,7 +49,7 @@ class AppInfo:
 ## 4. Prepare database
 
 * Prepare data sets
-* Delete non compatible data with new version in database
+* Delete non compatible data with new version in database. In case of minor version release database data should be migrated or deleted.
 
 ## 5. Deploy backend cloud service
 

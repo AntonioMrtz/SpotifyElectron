@@ -2,22 +2,24 @@
 Common validations for all Song services, regardless of the current architecture
 """
 
+from collections.abc import Mapping
+from typing import Any
+
 from pymongo.results import DeleteResult, InsertOneResult
 
 from app.spotify_electron.song.base_song_schema import (
-    BaseSongDAO,
     SongCreateError,
     SongDeleteError,
     SongNotFoundError,
 )
 
 
-def validate_song_exists(song: BaseSongDAO | None) -> None:
+def validate_song_exists(song: Mapping[str, Any] | None) -> None:
     """Raises an exception if song doesn't exists
 
     Args:
     ----
-        song (BaseSongDAO | None): the song
+        song (Mapping[str, Any] | None): the song
 
     Raises:
     ------

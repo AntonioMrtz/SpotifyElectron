@@ -16,6 +16,7 @@ from app.spotify_electron.user.artist.artist_repository import (
 )
 from app.spotify_electron.user.base_user_schema import (
     BaseUserDAO,
+    BaseUserDocument,
     BaseUserDTO,
     get_base_user_dao_from_document,
     get_base_user_dto_from_dao,
@@ -1183,7 +1184,7 @@ def test_get_base_user_dao_from_document():
     user_name = "user-name"
     user_photo = "https://photo"
     user_register_date = "2024-11-30T10:00:00Z"
-    user_password = "pass"
+    user_password: bytes = b"pass"
 
     document = {
         "name": user_name,
@@ -1191,6 +1192,13 @@ def test_get_base_user_dao_from_document():
         "register_date": user_register_date,
         "password": user_password,
     }
+
+    document = BaseUserDocument(
+        name=user_name,
+        photo=user_photo,
+        register_date=user_register_date,
+        password=bytes(user_password),
+    )
 
     res_base_user_dao = get_base_user_dao_from_document(document)
 

@@ -2,11 +2,12 @@
 Artist repository for managing persisted data
 """
 
-import app.spotify_electron.user.providers.user_collection_provider as user_collection_provider
+import app.spotify_electron.user.providers.user_collection_provider as provider
 from app.logging.logging_constants import LOGGING_ARTIST_REPOSITORY
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.user.artist.artist_schema import (
     ArtistDAO,
+    ArtistDocument,
     ArtistNotFoundError,
     ArtistRepositoryError,
     get_artist_dao_from_document,
@@ -40,11 +41,13 @@ async def get_artist(name: str) -> ArtistDAO:
         ArtistDAO: the artist
     """
     try:
-        collection = user_collection_provider.get_artist_collection()
+        collection = provider.get_artist_collection()
         artist = await collection.find_one({"name": name})
 
         validate_user_exists(artist)
-        artist_dao = get_artist_dao_from_document(artist)  # type: ignore
+        assert artist
+
+        artist_dao = get_artist_dao_from_document(artist)
 
     except BaseUserNotFoundError as exception:
         raise ArtistNotFoundError from exception
@@ -70,17 +73,17 @@ async def create_artist(name: str, photo: str, password: bytes, current_date: st
         ArtistRepositoryError: unexpected error while creating Artist
     """
     try:
-        artist = {
-            "name": name,
-            "photo": photo,
-            "register_date": current_date,
-            "password": password,
-            "saved_playlists": [],
-            "playlists": [],
-            "playback_history": [],
-            "uploaded_songs": [],
-        }
-        collection = user_collection_provider.get_artist_collection()
+        artist = ArtistDocument(
+            name=name,
+            photo=photo,
+            register_date=current_date,
+            password=password,
+            saved_playlists=[],
+            playlists=[],
+            playback_history=[],
+            uploaded_songs=[],
+        )
+        collection = provider.get_artist_collection()
         result = await collection.insert_one(artist)
 
         validate_user_create(result)
@@ -120,7 +123,7 @@ async def create_artist_from_user_dao(user: UserDAO) -> None:
             "uploaded_songs": [],
         }
 
-        collection = user_collection_provider.get_artist_collection()
+        collection = provider.get_artist_collection()
         result = await collection.update_one({"name": user.name}, {"$set": missing_fields})
         validate_user_update(result)
 
@@ -153,7 +156,7 @@ async def get_all_artists() -> list[ArtistDAO]:
         list[ArtistDAO]: a list with all artists
     """
     try:
-        collection = user_collection_provider.get_artist_collection()
+        collection = provider.get_artist_collection()
         all_artists = collection.find()
         artists = [get_artist_dao_from_document(artist) async for artist in all_artists]
     except Exception as exception:
@@ -175,7 +178,7 @@ async def add_song_to_artist(artist_name: str, song_name: str) -> None:
         ArtistRepositoryError: unexpected error adding song to artist
     """
     try:
-        collection = user_collection_provider.get_artist_collection()
+        collection = provider.get_artist_collection()
         result = await collection.update_one(
             {"name": artist_name}, {"$push": {"uploaded_songs": song_name}}
         )
@@ -203,7 +206,7 @@ async def delete_song_from_artist(artist_name: str, song_name: str) -> None:
         ArtistRepositoryError: unexpected error deleting song from artist
     """
     try:
-        collection = user_collection_provider.get_artist_collection()
+        collection = provider.get_artist_collection()
         result = await collection.update_one(
             {"name": artist_name}, {"$pull": {"uploaded_songs": song_name}}
         )
@@ -230,9 +233,12 @@ async def get_artist_song_names(artist_name: str) -> list[str]:
     Returns:
         list[str]: the artist uploaded song names
     """
-    collection = user_collection_provider.get_artist_collection()
+    collection = provider.get_artist_collection()
     artist_data = await collection.find_one(
         {"name": artist_name}, {"uploaded_songs": 1, "_id": 0}
     )
 
-    return artist_data["uploaded_songs"]  # type: ignore
+    validate_user_exists(artist_data)
+    assert artist_data
+
+    return artist_data["uploaded_songs"]

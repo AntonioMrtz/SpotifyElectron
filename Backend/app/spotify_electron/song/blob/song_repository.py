@@ -9,7 +9,7 @@ When the song file is not needed, and only the metadata is required use base son
 
 from motor.motor_asyncio import AsyncIOMotorGridOut
 
-import app.spotify_electron.song.providers.song_collection_provider as song_collection_provider
+import app.spotify_electron.song.blob.providers.song_collection_provider as provider
 from app.logging.logging_constants import LOGGING_SONG_BLOB_REPOSITORY
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.genre.genre_schema import Genre
@@ -21,6 +21,7 @@ from app.spotify_electron.song.base_song_schema import (
 from app.spotify_electron.song.blob.song_schema import (
     SongDAO,
     SongDataNotFoundError,
+    SongMetadataDocument,
     get_song_dao_from_document,
 )
 from app.spotify_electron.song.blob.validations.song_repository_validations import (
@@ -50,12 +51,16 @@ async def get_song(name: str) -> SongDAO:
         SongDAO: the song
     """
     try:
-        metadata_collection = song_collection_provider.get_song_collection()
+        metadata_collection = provider.get_blob_song_collection()
         song_metadata = await metadata_collection.find_one({"filename": name})
+
         validate_song_exists(song_metadata)
+
+        assert song_metadata
+
         song_dao = get_song_dao_from_document(
             song_name=name,
-            document=song_metadata["metadata"],  # type: ignore
+            document=song_metadata["metadata"],
         )
 
     except SongNotFoundError as exception:
@@ -70,31 +75,32 @@ async def get_song(name: str) -> SongDAO:
 
 
 async def create_song(  # noqa: PLR0917
-    name: str, artist: str, duration: int, genre: Genre, photo: str, file: bytes
+    name: str, artist: str, seconds_duration: int, genre: Genre, photo: str, file: bytes
 ) -> None:
-    """Create song
+    """Creates song
 
     Args:
         name (str): song name
-        artist (str): song artist
-        duration (int): song duration in seconds
+        artist (str): artist name
+        seconds_duration (int): song duration on seconds
         genre (Genre): song genre
         photo (str): song photo
-        file (bytes): song content
+        file (bytes): song data
 
     Raises:
         SongRepositoryError: unexpected error creating song
     """
     try:
-        gridfs_collection = song_collection_provider.get_gridfs_song_collection()
-        song = {
-            "artist": artist,
-            "duration": duration,
-            "genre": str(genre.value),
-            "photo": photo,
-            "streams": 0,
-            "url": f"/stream/{name}",
-        }
+        gridfs_collection = provider.get_gridfs_song_collection()
+
+        song = SongMetadataDocument(
+            artist=artist,
+            seconds_duration=seconds_duration,
+            genre=str(genre.value),
+            photo=photo,
+            streams=0,
+            url=f"/stream/{name}",
+        )
         result = await gridfs_collection.upload_from_stream(
             filename=name, source=file, metadata=song
         )
@@ -123,7 +129,7 @@ async def get_song_data(name: str) -> AsyncIOMotorGridOut:
         AsyncIOMotorGridOut: song data
     """
     try:
-        file_collection = song_collection_provider.get_gridfs_song_collection()
+        file_collection = provider.get_gridfs_song_collection()
         song_data = await file_collection.open_download_stream_by_name(name)
 
         validate_song_data_exists(song_data)

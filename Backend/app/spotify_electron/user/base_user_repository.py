@@ -15,6 +15,7 @@ from app.spotify_electron.user.base_user_schema import (
 from app.spotify_electron.user.validations.base_user_repository_validations import (
     validate_password_exists,
     validate_user_delete_count,
+    validate_user_exists,
 )
 
 base_user_repository_logger = SpotifyElectronLogger(LOGGING_BASE_USERS_REPOSITORY).get_logger()
@@ -91,10 +92,12 @@ async def get_user_password(name: str, collection: AsyncIOMotorCollection) -> by
         bytes: the user password
     """
     try:
-        password_document = await collection.find_one(
-            {"name": name}, {"password": 1, "_id": 0}
-        )
-        password = password_document["password"]  # type: ignore
+        user_data = await collection.find_one({"name": name}, {"password": 1, "_id": 0})
+
+        validate_user_exists(user_data)
+        assert user_data
+
+        password = user_data["password"]
         validate_password_exists(password)
     except BaseUserGetPasswordError as exception:
         base_user_repository_logger.exception(
@@ -155,7 +158,10 @@ async def add_playback_history(
     try:
         user_data = await collection.find_one({"name": user_name})
 
-        playback_history = user_data["playback_history"]  # type: ignore
+        validate_user_exists(user_data)
+        assert user_data
+
+        playback_history = user_data["playback_history"]
 
         if len(playback_history) == max_number_playback_history_songs:
             playback_history.pop(0)
@@ -188,7 +194,11 @@ async def add_saved_playlist(
     try:
         # TODO make in one query
         user_data = await collection.find_one({"name": user_name})
-        saved_playlists = user_data["saved_playlists"]  # type: ignore
+
+        validate_user_exists(user_data)
+        assert user_data
+
+        saved_playlists = user_data["saved_playlists"]
 
         saved_playlists.append(playlist_name)
 
@@ -220,7 +230,10 @@ async def delete_saved_playlist(
     try:
         user_data = await collection.find_one({"name": user_name})
 
-        saved_playlists = user_data["saved_playlists"]  # type: ignore
+        validate_user_exists(user_data)
+        assert user_data
+
+        saved_playlists = user_data["saved_playlists"]
 
         if playlist_name in saved_playlists:
             saved_playlists.remove(playlist_name)
@@ -251,7 +264,10 @@ async def add_playlist_to_owner(
     try:
         user_data = await collection.find_one({"name": user_name})
 
-        playlists = user_data["playlists"]  # type: ignore
+        validate_user_exists(user_data)
+        assert user_data
+
+        playlists = user_data["playlists"]
 
         playlists.append(playlist_name)
 
@@ -282,7 +298,10 @@ async def delete_playlist_from_owner(
     try:
         user_data = await collection.find_one({"name": user_name})
 
-        playlists = user_data["playlists"]  # type: ignore
+        validate_user_exists(user_data)
+        assert user_data
+
+        playlists = user_data["playlists"]
 
         if playlist_name in playlists:
             playlists.remove(playlist_name)
@@ -344,9 +363,11 @@ async def get_user_relevant_playlist_names(
     user_data = await collection.find_one(
         {"name": user_name}, {"playlists": 1, "saved_playlists": 1, "_id": 0}
     )
-    playlist_names = []
-    playlist_names.extend(user_data["playlists"])  # type: ignore
-    playlist_names.extend(user_data["saved_playlists"])  # type: ignore
+
+    validate_user_exists(user_data)
+    assert user_data
+
+    playlist_names = user_data["playlists"] + user_data["saved_playlists"]
 
     return playlist_names
 
@@ -365,7 +386,10 @@ async def get_user_playlist_names(
     """
     user_data = await collection.find_one({"name": user_name}, {"playlists": 1, "_id": 0})
 
-    return user_data["playlists"]  # type: ignore
+    validate_user_exists(user_data)
+    assert user_data
+
+    return user_data["playlists"]
 
 
 async def get_user_playback_history_names(
@@ -384,4 +408,7 @@ async def get_user_playback_history_names(
         {"name": user_name}, {"playback_history": 1, "_id": 0}
     )
 
-    return user_data["playback_history"]  # type: ignore
+    validate_user_exists(user_data)
+    assert user_data
+
+    return user_data["playback_history"]

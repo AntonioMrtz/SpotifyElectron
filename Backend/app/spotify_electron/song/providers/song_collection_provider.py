@@ -1,17 +1,17 @@
 """
-Provider class for supplying song collection connection with database depending on the\
-      architecture on song selected
+Song collections provider based on selected architecture
 """
 
-from motor.motor_asyncio import AsyncIOMotorCollection, AsyncIOMotorGridFSBucket
+from motor.motor_asyncio import AsyncIOMotorCollection
 
 from app.common.app_schema import AppArchitecture, AppEnvironment
 from app.common.PropertiesManager import PropertiesManager
 from app.database.database_schema import DatabaseCollection
 from app.database.DatabaseConnectionManager import DatabaseConnectionManager
+from app.spotify_electron.song.base_song_schema import BaseSongDocument
 
 
-def get_song_collection() -> AsyncIOMotorCollection:
+def get_song_collection() -> AsyncIOMotorCollection[BaseSongDocument]:
     """Get song collection
 
     Returns:
@@ -27,14 +27,3 @@ def get_song_collection() -> AsyncIOMotorCollection:
     }
     current_architecture = getattr(PropertiesManager, AppEnvironment.ARCHITECTURE_ENV_NAME)
     return repository_map.get(current_architecture, repository_map[AppArchitecture.ARCH_BLOB])
-
-
-def get_gridfs_song_collection() -> AsyncIOMotorGridFSBucket:
-    """Get gridfs collection for managing song files
-
-    Returns:
-        AsyncIOMotorGridFSBucket: the GridFS song collection
-    """
-    return DatabaseConnectionManager.get_gridfs_collection_connection(
-        DatabaseCollection.SONG_BLOB_DATA
-    )

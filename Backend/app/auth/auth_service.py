@@ -275,7 +275,7 @@ def validate_jwt(token: str) -> None:
 
     Raises:
     ------
-        JWTValidationError: if the validation was not succesfull
+        JWTValidationError: if the validation was not successfull
     """
     try:
         decoded_token = jwt.decode(

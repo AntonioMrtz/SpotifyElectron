@@ -11,9 +11,9 @@ export class StreamService {
      * Streams song audio
      *
      * Args:
-     * name (str): song name
-     * request (Request): incoming request
-     * token (Annotated[TokenData, Depends): JWT info
+     * name: song name
+     * request: incoming request
+     * token: JWT info
      * @param name
      * @returns any Successful Response
      * @throws ApiError

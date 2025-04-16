@@ -9,10 +9,10 @@ def validate_song_data_exists(song_file: AsyncIOMotorGridOut | None) -> None:
     """Validate song data exists
 
     Args:
-        song_file (AsyncIOMotorGridOut): song data
+        song_file: song data
 
     Raises:
-        SongDataNotFoundError: if the song data doesn't exists
+        SongDataNotFoundError: song data doesn't exists
     """
     if song_file is None:
         raise SongDataNotFoundError

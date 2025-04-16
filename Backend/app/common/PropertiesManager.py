@@ -1,5 +1,4 @@
-"""
-Manages APP global state variables and manages initialization of\
+"""Manages APP global state variables and manages initialization of\
       environment variables and .ini files
 
 Declares PropertiesManager global object to be accessed from across the app
@@ -45,9 +44,8 @@ class _PropertiesManager:
 
         Args:
         ----
-            config_filename (str): the name of the config file
-            config_section (str): the section inside of the config file
-
+            config_filename: the name of the config file
+            config_section: the section inside of the config file
         """
         self.config_file = os.path.join(
             self.current_directory,
@@ -65,8 +63,7 @@ class _PropertiesManager:
 
         Args:
         ----
-            config_section (str): the config file section to load
-
+            config_section: the config file section to load
         """
         for key, value in self.config.items(config_section):
             if value == "":
@@ -92,8 +89,7 @@ class _PropertiesManager:
 
         Args:
         ----
-            env_names (List[str]): environment variables names
-
+            env_names: environment variables names
         """
         loaded_envs = []
         for env_name in env_names:
@@ -111,7 +107,7 @@ class _PropertiesManager:
         """Get current environment
 
         Returns:
-            environment: the current selected environment
+            the current selected environment
         """
         return getattr(self, AppEnvironment.ENV_VALUE_ENV_NAME)
 
@@ -120,8 +116,7 @@ class _PropertiesManager:
 
         Returns
         -------
-            bool: Returns if it's production environment
-
+            Returns if it's production environment
         """
         return getattr(self, AppEnvironment.ENV_VALUE_ENV_NAME) == AppEnvironmentMode.PROD
 
@@ -130,8 +125,7 @@ class _PropertiesManager:
 
         Returns
         -------
-            bool: Returns if it's development environment
-
+            Returns if it's development environment
         """
         return getattr(self, AppEnvironment.ENV_VALUE_ENV_NAME) == AppEnvironmentMode.DEV
 
@@ -140,8 +134,7 @@ class _PropertiesManager:
 
         Returns
         -------
-            bool: Returns if it's testing environment
-
+            Returns if it's testing environment
         """
         return getattr(self, AppEnvironment.ENV_VALUE_ENV_NAME) == AppEnvironmentMode.TEST
 
@@ -150,8 +143,7 @@ class _PropertiesManager:
 
         Returns
         -------
-            bool: Returns if there's a valid log provided
-
+            Returns if there's a valid log provided
         """
         return getattr(self, AppConfig.LOG_INI_FILE) is not None
 

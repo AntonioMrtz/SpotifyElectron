@@ -28,12 +28,12 @@ async def stream_audio(song_data: bytes, start: int, end: int) -> AsyncGenerator
     """Yield chunks of song data from start to end
 
     Args:
-        song_data (bytes): song data
-        start (int): start byte
-        end (int): end byte
+        song_data: song data
+        start: start byte
+        end: end byte
 
     Yields:
-        AsyncGenerator[bytes, None]: yield chunk bytes from requested range
+        yield chunk bytes from requested range
     """
     # Ensure we don't exceed the end limit
     effective_end = min(end, len(song_data))
@@ -46,14 +46,14 @@ def _get_range_header(range_header: str | None, file_size: int) -> tuple[int, in
     """Get range headers
 
     Args:
-        range_header (str | None): range content header [bytes 1000-1499/1500]
-        file_size (int): file size
+        range_header: range content header [bytes 1000-1499/1500]
+        file_size: file size
 
     Raises:
-        InvalidContentRangeStreamError: invalid content range for streaming
+        InvalidContentRangeStreamError: range for streaming
 
     Returns:
-        tuple[int, int]: start, end byte position
+        start, end byte position
     """
     try:
         if range_header is None:
@@ -73,19 +73,19 @@ async def get_stream_audio_data(range_header: str | None, name: str) -> StreamAu
     """Gets stream audio data
 
     Args:
-        range_header (str | None): range content header [bytes 1000-1499/1500]\
+        range_header: range content header [bytes 1000-1499/1500]\
          https://developer.mozilla.org/en-US/docs/Web/HTTP/Range_requests
-        name (str): song name
+        name: song name
 
     Raises:
-        SongBadNameError: invalid song name
+        SongBadNameError: name
         SongNotFoundError: song not found
         SongDataNotFoundError: song data doesn't exists
         InvalidContentRangeStreamError: invalid content range for streaming
         StreamServiceError: unexpected error while getting stream audio data
 
     Returns:
-        StreamAudioContent: the needed audio data for streaming
+        the needed audio data for streaming
     """
     try:
         song_data = await song_service.get_song_data(name)

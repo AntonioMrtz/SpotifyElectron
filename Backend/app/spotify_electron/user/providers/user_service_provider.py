@@ -1,6 +1,4 @@
-"""
-Provider class for supplying service depending on associated user type
-"""
+"""Provider class for supplying service depending on associated user type"""
 
 from typing import Annotated, Any
 
@@ -27,7 +25,7 @@ async def get_user_service(user_name: str) -> Annotated[Any, "ModuleType"]:
     """Returns the user service according to the user role
 
     Returns:
-        ModuleType: the user service
+        the user service
     """
     user_type = await base_user_service.get_user_type(user_name)
     if user_type not in services_map:

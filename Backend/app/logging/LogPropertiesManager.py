@@ -1,6 +1,4 @@
-"""
-Loads and manages logging configurations
-"""
+"""Loads and manages logging configurations"""
 
 import configparser
 import os
@@ -27,8 +25,8 @@ class LogPropertiesManager:
 
         Args:
         ----
-            config_filename (str): the name of the config file
-            config_section (str): the section inside of the config file
+            config_filename: the name of the config file
+            config_section: the section inside of the config file
         """
         self.config_file = os.path.join(
             self.current_directory,
@@ -46,8 +44,7 @@ class LogPropertiesManager:
 
         Args:
         ----
-            config_section (str): the config file section to load
-
+            config_section: the config file section to load
         """
         for key, value in self.config.items(config_section):
             if value == "":
@@ -59,7 +56,6 @@ class LogPropertiesManager:
 
         Returns
         -------
-            bool: Returns if there's a valid log provided
-
+            Returns if there's a valid log provided
         """
         return getattr(self, AppConfig.LOG_INI_FILE) is not None

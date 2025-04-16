@@ -1,6 +1,4 @@
-"""
-Genre service for handling business logic
-"""
+"""Genre service for handling business logic"""
 
 import json
 
@@ -15,10 +13,10 @@ def get_genres() -> str:
     """Returns a json with all the available genres
 
     Raises:
-        GenreServiceError: invalid genre
+        GenreServiceError:
 
     Returns:
-        str: genres json as string
+        genres json as string
     """
     try:
         genre_dict = {}

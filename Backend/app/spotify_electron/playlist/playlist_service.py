@@ -1,6 +1,4 @@
-"""
-Playlist service for handling business logic
-"""
+"""Playlist service for handling business logic"""
 
 import app.spotify_electron.playlist.playlist_repository as playlist_repository
 import app.spotify_electron.song.validations.base_song_service_validations as base_song_service_validations  # noqa: E501
@@ -43,12 +41,11 @@ async def check_playlist_exists(name: str) -> bool:
 
     Args:
     ----
-        name (str): playlist name
+        name: playlist name
 
     Returns:
     -------
-        bool: if the playlist exists
-
+        if the playlist exists
     """
     return await playlist_repository.check_playlist_exists(name)
 
@@ -58,7 +55,7 @@ async def get_playlist(name: str) -> PlaylistDTO:
 
     Args:
     ----
-        name (str): name of the playlist
+        name: name of the playlist
 
     Raises:
     ------
@@ -68,8 +65,7 @@ async def get_playlist(name: str) -> PlaylistDTO:
 
     Returns:
     -------
-        PlaylistDTO: the playlist
-
+        the playlist
     """
     try:
         validate_playlist_name_parameter(name)
@@ -103,11 +99,11 @@ async def create_playlist(
 
     Args:
     ----
-        name (str): name
-        photo (str): thumbnail photo
-        description (str): description
-        song_names (list): list of song names
-        token (TokenData): token user info
+        name: name
+        photo: thumbnail photo
+        description: description
+        song_names: list of song names
+        token: token user info
 
     Raises:
     ------
@@ -115,7 +111,6 @@ async def create_playlist(
         PlaylistAlreadyExistsError: playlist already exists
         UserNotFoundError: user doesn't exists
         PlaylistServiceError: unexpected error while creating playlist
-
     """
     try:
         owner = token.username
@@ -172,12 +167,12 @@ async def update_playlist(  # noqa: PLR0917
 
     Args:
     ----
-        name (str): name
-        new_name (str | None): new playlist name, optional
-        photo (str): thumbnail photo
-        description (str): description
-        song_names (list): list of song names
-        token (TokenData): token user info
+        name: name
+        new_name: new playlist name, optional
+        photo: thumbnail photo
+        description: description
+        song_names: list of song names
+        token: token user info
 
     Raises:
     ------
@@ -238,7 +233,7 @@ async def delete_playlist(name: str) -> None:
 
     Args:
     ----
-        name (str): playlist name
+        name: playlist name
 
     Raises:
     ------
@@ -284,8 +279,7 @@ async def get_all_playlist() -> list[PlaylistDTO]:
 
     Returns
     -------
-        list[PlaylistDTO]: the list of playlists
-
+        the list of playlists
     """
     try:
         playlists = await playlist_repository.get_all_playlists()
@@ -310,7 +304,7 @@ async def get_selected_playlists(playlist_names: list[str]) -> list[PlaylistDTO]
 
     Args:
     ----
-        playlist_names (list[str]): list with playlists names
+        playlist_names: list with playlists names
 
     Raises:
     ------
@@ -318,8 +312,7 @@ async def get_selected_playlists(playlist_names: list[str]) -> list[PlaylistDTO]
 
     Returns:
     -------
-        list[PlaylistDTO]: the list of selected playlists
-
+        the list of selected playlists
     """
     try:
         playlists = await playlist_repository.get_selected_playlists(playlist_names)
@@ -348,7 +341,7 @@ async def search_by_name(name: str) -> list[PlaylistDTO]:
 
     Args:
     ----
-        name (str): name to match
+        name: name to match
 
     Raises:
     ------
@@ -356,8 +349,7 @@ async def search_by_name(name: str) -> list[PlaylistDTO]:
 
     Returns:
     -------
-        list[PlaylistDTO]: a list with playlists that matches the name
-
+        a list with playlists that matches the name
     """
     try:
         playlists = await playlist_repository.get_playlist_search_by_name(name)
@@ -383,11 +375,11 @@ async def add_songs_to_playlist(playlist_name: str, song_names: list[str]) -> No
     """Add songs to playlist
 
     Args:
-        playlist_name (str): playlist name
-        song_names (list[str]): song names
+        playlist_name: playlist name
+        song_names: song names
 
     Raises:
-        PlaylistBadNameError: invalid playlist name
+        PlaylistBadNameError: name
         PlaylistNotFoundError: playlist doesn't exists
         SongBadNameError: invalid song name
         SongNotFoundError: song not found
@@ -432,11 +424,11 @@ async def remove_songs_from_playlist(playlist_name: str, song_names: list[str]) 
     """Remove songs from playlist
 
     Args:
-        playlist_name (str): playlist name
-        song_names (list[str]): song names
+        playlist_name: playlist name
+        song_names: song names
 
     Raises:
-        PlaylistBadNameError: invalid playlist name
+        PlaylistBadNameError: name
         PlaylistNotFoundError: playlist doesn't exists
         SongBadNameError: invalid song name
         SongNotFoundError: song not found

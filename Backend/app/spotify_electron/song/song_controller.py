@@ -1,5 +1,4 @@
-"""
-Song controller for handling incoming HTTP Requests
+"""Song controller for handling incoming HTTP Requests
 It uses the base_song_service for handling logic for different song architectures
 """
 
@@ -56,8 +55,8 @@ async def get_song(
     """Get song
 
     Args:
-        name (str): song name
-        token (Annotated[TokenData, Depends): JWT info
+        name: song name
+        token: JWT info
     """
     try:
         song_service = get_song_service()
@@ -98,11 +97,11 @@ async def create_song(
     """Create song
 
     Args:
-        name (str): song name
-        genre (Genre): genre
-        photo (str): photo
-        file (UploadFile): song file
-        token (Annotated[TokenData, Depends): JWT info
+        name: song name
+        genre: genre
+        photo: photo
+        file: song file
+        token: JWT info
     """
     read_file = await file.read()
 
@@ -163,7 +162,7 @@ async def delete_song(name: str) -> Response:
     """Delete song
 
     Args:
-        name (str): song name
+        name: song name
     """
     try:
         await base_song_service.delete_song(name)
@@ -199,8 +198,8 @@ async def get_song_metadata(
     """Get song metadata
 
     Args:
-        name (str): the song name
-        token (Annotated[TokenData, Depends): JWT info
+        name: the song name
+        token: JWT info
     """
     try:
         song = await base_song_service.get_song_metadata(name)
@@ -227,8 +226,8 @@ async def increase_song_streams(
     """Increase total streams of a song
 
     Args:
-        name (str): song name
-        token (Annotated[TokenData, Depends): JWT info
+        name: song name
+        token: JWT info
     """
     try:
         await base_song_service.increase_song_streams(name)
@@ -253,8 +252,8 @@ async def get_songs_by_genre(
     """Get songs by genre
 
     Args:
-        genre (Genre): the genre to match
-        token (Annotated[TokenData, Depends): JWT info
+        genre: the genre to match
+        token: JWT info
     """
     try:
         songs = await base_song_service.get_songs_by_genre(genre)

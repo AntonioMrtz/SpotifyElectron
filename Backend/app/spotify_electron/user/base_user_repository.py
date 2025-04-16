@@ -1,5 +1,4 @@
-"""
-User repository for persisted data.
+"""User repository for persisted data.
 It uses the collection for the associated user type
 """
 
@@ -25,8 +24,8 @@ async def check_user_exists(name: str, collection: AsyncIOMotorCollection) -> bo
 
     Args:
     ----
-        name (str): name of the user
-        collection (AsyncIOMotorDatabase): user collection
+        name: name of the user
+        collection: user collection
 
     Raises:
     ------
@@ -35,8 +34,7 @@ async def check_user_exists(name: str, collection: AsyncIOMotorCollection) -> bo
 
     Returns:
     -------
-        bool: if the user exists
-
+        if the user exists
     """
     try:
         user = await collection.find_one({"name": name}, {"_id": 0, "name": 1})
@@ -55,13 +53,11 @@ async def delete_user(name: str, collection: AsyncIOMotorCollection) -> None:
     """Delete user
 
     Args:
-        name (str): user name
-        collection (AsyncIOMotorCollection): user collection
+        name: user name
+        collection: user collection
 
     Raises:
-        BaseUserRepositoryError:
-            an error occurred while deleting user from database
-    """
+        BaseUserRepositoryError: occurred while deleting user from database"""
     try:
         result = await collection.delete_one({"name": name})
         validate_user_delete_count(result)
@@ -80,15 +76,14 @@ async def get_user_password(name: str, collection: AsyncIOMotorCollection) -> by
     """Get password from user
 
     Args:
-        name (str): user name
-        collection (AsyncIOMotorCollection): the database collection
+        name: user name
+        collection: the database collection
 
     Raises:
-        BaseUserRepositoryError:
-            an error occurred while getting user password from database
+        BaseUserRepositoryError: occurred while getting user password from database
 
     Returns:
-        bytes: the user password
+        the user password
     """
     try:
         password_document = await collection.find_one(
@@ -114,14 +109,14 @@ async def search_by_name(name: str, collection: AsyncIOMotorCollection) -> list[
     """Get user items that matches a name
 
     Args:
-        name (str): name to match
-        collection (AsyncIOMotorAsyncIOMotorCollection): user collection
+        name: name to match
+        collection: user collection
 
     Raises:
-        BaseUserRepositoryError: unexpected error searching items by name
+        BaseUserRepositoryError: searching items by name
 
     Returns:
-        list[str]: the list of user names that matched the name
+        the list of user names that matched the name
     """
     try:
         matching_items = collection.find(
@@ -144,13 +139,13 @@ async def add_playback_history(
     """Add song playback history to user
 
     Args:
-        user_name (str): user name
-        song (str): song name
-        max_number_playback_history_songs (int): max number of songs stored in playback history
-        collection (AsyncIOMotorCollection): the user collection
+        user_name: user name
+        song: song name
+        max_number_playback_history_songs: max number of songs stored in playback history
+        collection: the user collection
 
     Raises:
-        BaseUserRepositoryError: unexpected error adding song to user playback history
+        BaseUserRepositoryError: adding song to user playback history
     """
     try:
         user_data = await collection.find_one({"name": user_name})
@@ -178,12 +173,12 @@ async def add_saved_playlist(
     """Add saved playlist to user
 
     Args:
-        user_name (str): user name
-        playlist_name (str): playlist name
-        collection (AsyncIOMotorCollection): user collection
+        user_name: user name
+        playlist_name: playlist name
+        collection: user collection
 
     Raises:
-        BaseUserRepositoryError: unexpected error adding saved playlist to user
+        BaseUserRepositoryError: adding saved playlist to user
     """
     try:
         # TODO make in one query
@@ -210,12 +205,12 @@ async def delete_saved_playlist(
     """Deletes a saved playlist from a user
 
     Args:
-        user_name (str): user name
-        playlist_name (str): playlist name
-        collection (AsyncIOMotorCollection): user collection
+        user_name: user name
+        playlist_name: playlist name
+        collection: user collection
 
     Raises:
-        BaseUserRepositoryError: unexpected error deleting saved playlist from user
+        BaseUserRepositoryError: deleting saved playlist from user
     """
     try:
         user_data = await collection.find_one({"name": user_name})
@@ -241,12 +236,12 @@ async def add_playlist_to_owner(
     """Adds a playlist to his ownwer
 
     Args:
-        user_name (str): owner name
-        playlist_name (str): playlist name
-        collection (AsyncIOMotorCollection): user collection
+        user_name: owner name
+        playlist_name: playlist name
+        collection: user collection
 
     Raises:
-        BaseUserRepositoryError: unexpected error adding playlist to its owner
+        BaseUserRepositoryError: adding playlist to its owner
     """
     try:
         user_data = await collection.find_one({"name": user_name})
@@ -272,12 +267,12 @@ async def delete_playlist_from_owner(
     """Deletes a playlist from his ownwer
 
     Args:
-        user_name (str): owner name
-        playlist_name (str): playlist name
-        collection (AsyncIOMotorCollection): user collection
+        user_name: owner name
+        playlist_name: playlist name
+        collection: user collection
 
     Raises:
-        BaseUserRepositoryError: unexpected error deleting playlist from owner
+        BaseUserRepositoryError: deleting playlist from owner
     """
     try:
         user_data = await collection.find_one({"name": user_name})
@@ -303,12 +298,12 @@ async def update_playlist_name(
     """Update playlist name with a new one
 
     Args:
-        old_playlist_name (str): old name
-        new_playlist_name (str): new name
-        collection (AsyncIOMotorCollection): user collection
+        old_playlist_name: old name
+        new_playlist_name: new name
+        collection: user collection
 
     Raises:
-        BaseUserRepositoryError: unexpected error updating playlist name
+        BaseUserRepositoryError: updating playlist name
     """
     try:
         # has to be done sequentially, pull and push on the same query generates errors
@@ -335,11 +330,11 @@ async def get_user_relevant_playlist_names(
     """Get user relevant playlist names
 
     Args:
-        user_name (str): user name
-        collection (AsyncIOMotorCollection): user collection
+        user_name: user name
+        collection: user collection
 
     Returns:
-        list[str]: the playlist names of the playlists relevant to the user
+        the playlist names of the playlists relevant to the user
     """
     user_data = await collection.find_one(
         {"name": user_name}, {"playlists": 1, "saved_playlists": 1, "_id": 0}
@@ -357,11 +352,11 @@ async def get_user_playlist_names(
     """Get user created playlist names
 
     Args:
-        user_name (str): user name
-        collection (AsyncIOMotorCollection): user collection
+        user_name: user name
+        collection: user collection
 
     Returns:
-        list[str]: the playlist names of the user created playlists
+        the playlist names of the user created playlists
     """
     user_data = await collection.find_one({"name": user_name}, {"playlists": 1, "_id": 0})
 
@@ -374,11 +369,11 @@ async def get_user_playback_history_names(
     """Get user playback history song names
 
     Args:
-        user_name (str): user name
-        collection (AsyncIOMotorCollection): user collection
+        user_name: user name
+        collection: user collection
 
     Returns:
-        list[str]: the user playback history
+        the user playback history
     """
     user_data = await collection.find_one(
         {"name": user_name}, {"playback_history": 1, "_id": 0}

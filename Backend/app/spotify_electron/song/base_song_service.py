@@ -1,5 +1,4 @@
-"""
-Base Song service for handling bussiness logic
+"""Base Song service for handling bussiness logic
 
 Handles common methods between all song architectures
 Redirects to the specific architecture service in case the method is not common
@@ -32,10 +31,10 @@ async def check_song_exists(name: str) -> bool:
     """Check if song exists
 
     Args:
-        name (str): song name
+        name: song name
 
     Returns:
-        bool: if the songs exists
+        if the songs exists
     """
     return await base_song_repository.check_song_exists(name)
 
@@ -44,15 +43,15 @@ async def get_song_metadata(name: str) -> SongMetadataDTO:
     """Get song metadata
 
     Args:
-        name (str): song name
+        name: song name
 
     Raises:
-        SongBadNameError: bad song name
+        SongBadNameError: name
         SongNotFoundError: song doesn't exists
         SongServiceError: unexpected error getting song metadata
 
     Returns:
-        SongMetadataDTO: song metadata
+        song metadata
     """
     try:
         validate_song_name_parameter(name)
@@ -85,7 +84,7 @@ async def delete_song(name: str) -> None:
     """Delete song
 
     Args:
-        name (str): song name
+        name: song name
     """
     await get_song_service().delete_song(name)
 
@@ -94,13 +93,13 @@ async def get_songs_metadata(song_names: list[str]) -> list[SongMetadataDTO]:
     """Get multiple songs metadata
 
     Args:
-        song_names (list[str]): list of song names
+        song_names: list of song names
 
     Raises:
-        SongServiceError: unexpected error getting song metadata
+        SongServiceError: getting song metadata
 
     Returns:
-        list[SongMetadataDTO]: list of songs metadata
+        list of songs metadata
     """
     try:
         songs_metadata = await gather(
@@ -124,10 +123,10 @@ async def increase_song_streams(name: str) -> None:
     """Increase by one the streams of a song
 
     Args:
-        name (str): song name
+        name: song name
 
     Raises:
-        SongNotFoundError: song doesn't exists
+        SongNotFoundError:'t exists
         SongServiceError: unexpected error increasing song streams
     """
     try:
@@ -152,10 +151,10 @@ async def search_by_name(name: str) -> list[SongMetadataDTO]:
     """Search song items that match a name
 
     Args:
-        name (str): the name to match
+        name: the name to match
 
     Returns:
-        list[SongMetadataDTO]: a list of song metadatas that matched the name
+        a list of song metadatas that matched the name
     """
     # TODO only do 1 request
     song_names = await base_song_repository.get_song_names_search_by_name(name)
@@ -167,14 +166,14 @@ async def get_songs_by_genre(genre: Genre) -> list[SongMetadataDTO]:
     """Get songs by genre
 
     Args:
-        genre (Genre): the genre
+        genre: the genre
 
     Raises:
-        GenreNotValidError: invalid genre
+        GenreNotValidError:
         SongServiceError: unexpected error getting songs by genre
 
     Returns:
-        list[SongMetadataDTO]: the list of songs that matched the genre
+        the list of songs that matched the genre
     """
     try:
         songs_dao = await base_song_repository.get_songs_metadata_by_genre(genre)
@@ -198,13 +197,13 @@ async def get_artist_total_streams(artist_name: str) -> int:
     """Get artist total streams
 
     Args:
-        artist_name (str): artist name
+        artist_name: artist name
 
     Raises:
-        SongServiceError: unexpected error getting artist total streams
+        SongServiceError: getting artist total streams
 
     Returns:
-        int: total streams of artist songs
+        total streams of artist songs
     """
     try:
         total_streams = await base_song_repository.get_artist_total_streams(artist_name)

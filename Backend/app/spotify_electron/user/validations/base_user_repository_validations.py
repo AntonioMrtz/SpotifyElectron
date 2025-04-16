@@ -1,6 +1,4 @@
-"""
-Validations for Common user repositories
-"""
+"""Validations for Common user repositories"""
 
 from typing import Any
 
@@ -19,10 +17,10 @@ def validate_password_exists(password: bytes) -> None:
     """Raises an exception if cant get password from user
 
     Args:
-        password (bytes): user password
+        password: user password
 
     Raises:
-        BaseUserGetPasswordError: if there's no password retrieved
+        BaseUserGetPasswordError:'s no password retrieved
     """
     if not password:
         raise BaseUserGetPasswordError
@@ -33,12 +31,11 @@ def validate_user_exists(user: dict[str, Any] | None) -> None:
 
     Args:
     ----
-        user (dict[str, Any] | None): the user
+        user: the user
 
     Raises:
     ------
         BaseUserNotFoundError: if the user doesn't exists
-
     """
     if user is None:
         raise BaseUserNotFoundError
@@ -48,10 +45,10 @@ def validate_user_update(result: UpdateResult) -> None:
     """Raises an exception if user update was not done
 
     Args:
-        result (UpdateResult): update result
+        result: update result
 
     Raises:
-        BaseUserUpdateError: if the update was not done
+        BaseUserUpdateError: update was not done
     """
     if not result.acknowledged:
         raise BaseUserUpdateError
@@ -62,12 +59,11 @@ def validate_user_delete_count(result: DeleteResult) -> None:
 
     Args:
     ----
-        result (DeleteResult): the result from the deletion
+        result: the result from the deletion
 
     Raises:
     ------
         BaseUserDeleteError: if the deletion was not done
-
     """
     if result.deleted_count == 0:
         raise BaseUserDeleteError
@@ -77,11 +73,10 @@ def validate_user_create(result: InsertOneResult) -> None:
     """Raises an exception if user insertion was not done
 
     Args:
-        result (InsertOneResult): the result from the insertion
+        result: the result from the insertion
 
     Raises:
-        BaseUserCreateError: if the insertion was not done
-
+        BaseUserCreateError: insertion was not done
     """
     if not result.acknowledged:
         raise BaseUserCreateError

@@ -1,6 +1,4 @@
-"""
-Search schema for domain model
-"""
+"""Search schema for domain model"""
 
 from dataclasses import dataclass
 

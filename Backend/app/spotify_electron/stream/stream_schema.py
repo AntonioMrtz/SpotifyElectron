@@ -1,6 +1,4 @@
-"""
-Stream schema for domain model
-"""
+"""Stream schema for domain model"""
 
 from dataclasses import dataclass
 

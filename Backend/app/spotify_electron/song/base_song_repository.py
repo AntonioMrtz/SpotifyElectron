@@ -1,5 +1,4 @@
-"""
-Song repository for managing common persisted data regardless of the current architecture.
+"""Song repository for managing common persisted data regardless of the current architecture.
 The repository will only handle Song metadata
 """
 
@@ -31,13 +30,13 @@ async def check_song_exists(name: str) -> bool:
     """Check if song exits
 
     Args:
-        name (str): song name
+        name: song name
 
     Raises:
-        SongRepositoryError: unexpected error checking if song exists
+        SongRepositoryError: checking if song exists
 
     Returns:
-        bool: if song exists
+        if song exists
     """
     try:
         collection = song_collection_provider.get_song_collection()
@@ -55,14 +54,14 @@ async def get_song_metadata(name: str) -> SongMetadataDAO:
     """Get song metadata from database
 
     Args:
-        name (str): song name
+        name: song name
 
     Raises:
-        SongNotFoundError: song not found
+        SongNotFoundError: found
         SongRepositoryError: unexpected error getting song metadata
 
     Returns:
-        SongMetadataDAO: the song
+        the song
     """
     try:
         collection = song_collection_provider.get_song_collection()
@@ -89,12 +88,11 @@ async def delete_song(name: str) -> None:
 
     Args:
     ----
-        name (str): song name
+        name: song name
 
     Raises:
     ------
         SongRepositoryError: an error occurred while deleting song from database
-
     """
     try:
         collection = song_collection_provider.get_song_collection()
@@ -113,13 +111,13 @@ async def get_artist_from_song(name: str) -> str:
     """Get artist name from song
 
     Args:
-        name (str): song name
+        name: song name
 
     Raises:
-        SongRepositoryError: unexpected error while getting artist from song
+        SongRepositoryError: while getting artist from song
 
     Returns:
-        str: the artist name
+        the artist name
     """
     try:
         collection = song_collection_provider.get_song_collection()
@@ -141,10 +139,10 @@ async def increase_song_streams(name: str) -> None:
     """Increase number of song streams
 
     Args:
-        name (str): song name
+        name: song name
 
     Raises:
-        SongRepositoryError: unexpected error while increasing song streams
+        SongRepositoryError: while increasing song streams
     """
     try:
         collection = song_collection_provider.get_song_collection()
@@ -160,13 +158,13 @@ async def get_artist_total_streams(artist_name: str) -> int:
     """Get artist total streams
 
     Args:
-        artist_name (str): artist name
+        artist_name: artist name
 
     Raises:
-        SongRepositoryError: unexpected error while getting artist's total streams
+        SongRepositoryError: while getting artist's total streams
 
     Returns:
-        int: the number of total streams of artist songs
+        the number of total streams of artist songs
     """
     try:
         collection = get_song_collection()
@@ -194,13 +192,13 @@ async def get_song_names_search_by_name(song_name: str) -> list[str]:
     """Get song names when searching by name
 
     Args:
-        song_name (str): song name to match
+        song_name: song name to match
 
     Raises:
-        SongRepositoryError: unexpected error while getting songs by name
+        SongRepositoryError: while getting songs by name
 
     Returns:
-        list[str]: list of song names that matched the song name
+        list of song names that matched the song name
     """
     try:
         collection = song_collection_provider.get_song_collection()
@@ -219,13 +217,13 @@ async def get_songs_metadata_by_genre(genre: Genre) -> list[SongMetadataDAO]:
     """Obtains all songs with the selected genre
 
     Args:
-        genre (str): genre to match
+        genre: genre to match
 
     Raises:
-        SongRepositoryError: unexpected error getting song metadatas from genre
+        SongRepositoryError: getting song metadatas from genre
 
     Returns:
-        list[SongMetadataDAO]: list of song metadatas with selected genre
+        list of song metadatas with selected genre
     """
     collection = song_collection_provider.get_song_collection()
     genre_str = Genre.get_genre_string_value(genre)

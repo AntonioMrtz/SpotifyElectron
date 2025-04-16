@@ -1,6 +1,4 @@
-"""
-Health controller for handling incoming HTTP Requests
-"""
+"""Health controller for handling incoming HTTP Requests"""
 
 from fastapi import APIRouter
 from fastapi.responses import Response
@@ -16,6 +14,5 @@ def get_health() -> Response:
     Returns
     -------
         Response 200 OK
-
     """
     return Response(status_code=HTTP_200_OK, content="OK", media_type="text/plain")

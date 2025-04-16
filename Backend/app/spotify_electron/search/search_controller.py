@@ -1,6 +1,4 @@
-"""
-Search controller for handling incoming HTTP Requests
-"""
+"""Search controller for handling incoming HTTP Requests"""
 
 from fastapi import APIRouter
 from fastapi.responses import Response
@@ -39,8 +37,8 @@ async def get_search_name(
 
     Args:
     ----
-        name (str): name to match
-        token (Annotated[TokenData, Depends): JWT info
+        name: name to match
+        token: JWT info
     """
     try:
         items = await search_service.search_by_name(name=name)

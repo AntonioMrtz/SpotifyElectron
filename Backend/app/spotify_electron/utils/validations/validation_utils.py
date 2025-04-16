@@ -1,6 +1,4 @@
-"""
-Field common validations utils
-"""
+"""Field common validations utils"""
 
 from typing import Any
 
@@ -11,10 +9,10 @@ def validate_parameter(parameter: Any) -> None:
     """Checks if the parameter string is not None or empty
 
     Args:
-        parameter (Any): parameter name
+        parameter: parameter name
 
     Raises:
-        BadParameterError: if the parameter is invalid
+        BadParameterError: parameter is invalid
     """
     if parameter is None or parameter == "":
         raise BadParameterError(parameter)

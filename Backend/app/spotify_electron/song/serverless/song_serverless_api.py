@@ -1,6 +1,4 @@
-"""
-API to comunicate with Serverless function that handles song files in Cloud
-"""
+"""API to comunicate with Serverless function that handles song files in Cloud"""
 
 from requests import Response, delete, get, post
 
@@ -12,7 +10,10 @@ def get_song(song_name: str) -> Response:
     """Get song from cloud
 
     Args:
-        song_name (str): song name
+        song_name: song name
+
+    Returns:
+        request response
     """
     response = get(
         f"{getattr(PropertiesManager, AppEnvironment.SERVERLESS_URL_ENV_NAME)}",
@@ -27,8 +28,11 @@ def create_song(song_name: str, encoded_bytes: str) -> Response:
     """Create song in cloud
 
     Args:
-        song_name (str): song name
-        encoded_bytes (str): encoded bytes of song
+        song_name: song name
+        encoded_bytes: encoded bytes of song
+
+    Returns:
+        request response
     """
     request_data_body = {
         "file": encoded_bytes,
@@ -45,7 +49,10 @@ def delete_song(song_name: str) -> Response:
     """Delete song from cloud
 
     Args:
-        song_name (str): song name
+        song_name: song name
+
+    Returns:
+        request response
     """
     response = delete(
         f"{getattr(PropertiesManager, AppEnvironment.SERVERLESS_URL_ENV_NAME)}",

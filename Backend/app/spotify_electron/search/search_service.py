@@ -1,6 +1,4 @@
-"""
-Search service for handling business logic
-"""
+"""Search service for handling business logic"""
 
 from asyncio import create_task, gather
 
@@ -25,14 +23,14 @@ async def search_by_name(name: str) -> SearchResult:
     """Return items that partially match the given name
 
     Args:
-        name (str): the name to match
+        name: the name to match
 
     Raises:
-        BadSearchParameterError: invalid name for searching
+        BadSearchParameterError: for searching
         SearchServiceError: unexpected error getting items by name
 
     Returns:
-        SearchResult: the items that partially match the name
+        the items that partially match the name
     """
     try:
         validate_parameter(name)

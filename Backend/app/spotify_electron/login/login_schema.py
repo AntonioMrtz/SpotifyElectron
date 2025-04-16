@@ -1,6 +1,4 @@
-"""
-Login schema for domain model
-"""
+"""Login schema for domain model"""
 
 from app.exceptions.base_exceptions_schema import SpotifyElectronError
 

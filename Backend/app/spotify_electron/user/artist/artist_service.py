@@ -1,6 +1,4 @@
-"""
-Artist service for handling business logic
-"""
+"""Artist service for handling business logic"""
 
 from asyncio import gather
 
@@ -46,10 +44,10 @@ async def get_user(name: str) -> ArtistDTO:
     """Get artist from name
 
     Args:
-        name (str): artist name
+        name: artist name
 
     Returns:
-        ArtistDTO: the artist
+        the artist
     """
     return await get_artist(name)
 
@@ -58,15 +56,15 @@ async def get_artist(artist_name: str) -> ArtistDTO:
     """Get artist from name
 
     Args:
-        artist_name (str): the artist name
+        artist_name: the artist name
 
     Raises:
-        ArtistBadNameError: invalid user name
+        ArtistBadNameError: name
         ArtistNotFoundError: artist not found
         ArtistServiceError: unexpected error while getting artist
 
     Returns:
-        ArtistDTO: the artist
+        the artist
     """
     try:
         await base_user_service_validations.validate_user_name_parameter(artist_name)
@@ -106,12 +104,12 @@ async def create_artist(user_name: str, photo: str, password: str) -> None:
     """Create artist
 
     Args:
-        user_name (str): artist name
-        photo (str): artist photo
-        password (str): artist password
+        user_name: artist name
+        photo: artist photo
+        password: artist password
 
     Raises:
-        BaseUserAlreadyExistsError: if the artist already exists
+        BaseUserAlreadyExistsError: artist already exists
         ArtistBadNameError: if the artist name is invalid
         ArtistServiceError: unexpected error while creating artist
     """
@@ -152,10 +150,10 @@ async def create_artist_from_user(user: UserDAO) -> None:
     """Create an Artist from an User object with existing data.
 
     Args:
-        user (UserDAO): User data access object containing user information
+        user: User data access object containing user information
 
     Raises:
-        ArtistAlreadyExistsError: If artist already exists
+        ArtistAlreadyExistsError: already exists
         ArtistServiceError: If creation fails
     """
     try:
@@ -182,10 +180,10 @@ async def get_all_artists() -> list[ArtistDTO]:
     """Get all artists
 
     Raises:
-        ArtistServiceError: unexpected error getting all artists
+        ArtistServiceError: getting all artists
 
     Returns:
-        list[ArtistDTO]: the list of all artists
+        the list of all artists
     """
     try:
         artists_dao = await artist_repository.get_all_artists()
@@ -220,13 +218,13 @@ async def get_artists(user_names: list[str]) -> list[ArtistDTO]:
     """Get artists from a list of names
 
     Args:
-        user_names (list[str]): the list with the artist names to retrieve
+        user_names: the list with the artist names to retrieve
 
     Raises:
-        ArtistServiceError: unexpected error getting selected artists
+        ArtistServiceError: getting selected artists
 
     Returns:
-        list[ArtistDTO]: the selected artists
+        the selected artists
     """
     try:
         artists: list[ArtistDTO] = []
@@ -252,13 +250,13 @@ async def search_by_name(name: str) -> list[ArtistDTO]:
     """Retrieve the artists than match the name
 
     Args:
-        name (str): name to match
+        name: name to match
 
     Raises:
-        ArtistServiceError: unexpected error searching artists that match a name
+        ArtistServiceError: searching artists that match a name
 
     Returns:
-        list[ArtistDTO]: artists that match the name
+        artists that match the name
     """
     try:
         artist_collection = user_collection_provider.get_artist_collection()
@@ -284,12 +282,11 @@ async def does_artist_exists(user_name: str) -> bool:
 
     Args:
     ----
-        user_name (str): artist name
+        user_name: artist name
 
     Returns:
     -------
-        bool: if the artist exists
-
+        if the artist exists
     """
     user_collection = user_collection_provider.get_artist_collection()
     return await base_user_repository.check_user_exists(user_name, user_collection)
@@ -299,15 +296,15 @@ async def get_artists_songs(artist_name: str) -> list[SongMetadataDTO]:
     """Get artists songs
 
     Args:
-        artist_name (str): artist name
+        artist_name: artist name
 
     Raises:
-        SongBadNameError: song invalid name
+        SongBadNameError: name
         UserUnauthorizedError: user is not artist
         ArtistServiceError: unexpected error getting artist songs
 
     Returns:
-        list[SongMetadataDTO]: the artist songs
+        the artist songs
     """
     try:
         validate_song_name_parameter(artist_name)
@@ -339,11 +336,11 @@ async def add_song_to_artist(artist_name: str, song_name: str) -> None:
     """Add song to artist
 
     Args:
-        artist_name (str): artist name
-        song_name (str): song name
+        artist_name: artist name
+        song_name: song name
 
     Raises:
-        ArtistBadNameError: artist invalid name
+        ArtistBadNameError: name
         ArtistNotFoundError: artist doesn't exists
         UserUnauthorizedError: user is not artist
         SongBadNameError: song invalid name
@@ -386,11 +383,11 @@ async def delete_song_from_artist(artist_name: str, song_name: str) -> None:
     """Remove song from artist
 
     Args:
-        artist_name (str): artist name
-        song_name (str): song name
+        artist_name: artist name
+        song_name: song name
 
     Raises:
-        ArtistBadNameError: artist invalid name
+        ArtistBadNameError: name
         ArtistNotFoundError: artist doesn't exists
         SongBadNameError: song invalid name
         UserUnauthorizedError: user is not artist

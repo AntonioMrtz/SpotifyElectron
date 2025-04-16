@@ -1,6 +1,4 @@
-"""
-User repository for managing persisted data
-"""
+"""User repository for managing persisted data"""
 
 import app.spotify_electron.user.providers.user_collection_provider as user_collection_provider
 from app.logging.logging_constants import LOGGING_USER_REPOSITORY
@@ -27,14 +25,14 @@ async def get_user(name: str) -> UserDAO:
     """Get user by name
 
     Args:
-        name (str): user name
+        name: user name
 
     Raises:
-        UserNotFoundError: user was not found
+        UserNotFoundError: not found
         UserRepositoryError: unexpected error while getting user
 
     Returns:
-        UserDAO: the user
+        the user
     """
     try:
         collection = user_collection_provider.get_user_collection()
@@ -58,13 +56,13 @@ async def create_user(name: str, photo: str, password: bytes, current_date: str)
     """Create user
 
     Args:
-        name (str): user name
-        photo (str): user photo
-        password (bytes): user hashed password
-        current_date (str): formatted creation date
+        name: user name
+        photo: user photo
+        password: user hashed password
+        current_date: formatted creation date
 
     Raises:
-        UserRepositoryError: unexpected error while creating user
+        UserRepositoryError: while creating user
     """
     try:
         user = {

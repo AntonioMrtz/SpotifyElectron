@@ -45,7 +45,7 @@ class SpotifyElectronFormatter(logging.Formatter):
             record: the output log record
 
         Returns:
-            the result of formating the log record with the custom formatter
+            the result of formatting the log record with the custom formatter
         """
         log_format = self.FORMATS.get(
             record.levelno, "%(asctime)s - %(name)s - %(levelname)s - %(message)s"

@@ -13,7 +13,7 @@ export class LoginService {
      *
      * Args:
      * ----
-     * form_data (Annotated[OAuth2PasswordRequestForm, Depends): user and password
+     * form_data: user and password
      * @param formData
      * @returns any Successful Response
      * @throws ApiError
@@ -36,7 +36,7 @@ export class LoginService {
      * Login user with token
      *
      * Args:
-     * token (str): the user token
+     * token: the user token
      * @param token
      * @returns any Successful Response
      * @throws ApiError

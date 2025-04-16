@@ -11,7 +11,7 @@ export class UsersService {
      * Returns token info from JWT
      *
      * Args:
-     * token (TokenData): the jwt token. Defaults to None.
+     * token: the jwt token. Defaults to None.
      * @returns any Successful Response
      * @throws ApiError
      */
@@ -26,8 +26,8 @@ export class UsersService {
      * Get user by name
      *
      * Args:
-     * name (str): user name
-     * token (Annotated[TokenData, Depends): JWT info
+     * name: user name
+     * token: JWT info
      * @param name
      * @returns any Successful Response
      * @throws ApiError
@@ -51,7 +51,7 @@ export class UsersService {
      * Delete user
      *
      * Args:
-     * name (str): user name
+     * name: user name
      * @param name
      * @returns any Successful Response
      * @throws ApiError
@@ -75,9 +75,9 @@ export class UsersService {
      * Create user
      *
      * Args:
-     * name (str): user name
-     * photo (str): user photo
-     * password (str): user password
+     * name: user name
+     * photo: user photo
+     * password: user password
      * @param name
      * @param photo
      * @param password
@@ -107,9 +107,9 @@ export class UsersService {
      * Add song to playback history
      *
      * Args:
-     * name (str): user name
-     * song_name (str): song name
-     * token (Annotated[TokenData, Depends): JWT info
+     * name: user name
+     * song_name: song name
+     * token: JWT info
      * @param name
      * @param songName
      * @returns any Successful Response
@@ -138,8 +138,8 @@ export class UsersService {
      * Get user song playback history
      *
      * Args:
-     * name (str): user name
-     * token (Annotated[TokenData, Depends): JWT info
+     * name: user name
+     * token: JWT info
      * @param name
      * @returns any Successful Response
      * @throws ApiError
@@ -163,9 +163,9 @@ export class UsersService {
      * Add playlist to saved list
      *
      * Args:
-     * name (str): user name
-     * playlist_name (str): saved playlist
-     * token (Annotated[TokenData, Depends): JWT info
+     * name: user name
+     * playlist_name: saved playlist
+     * token: JWT info
      * @param name
      * @param playlistName
      * @returns any Successful Response
@@ -194,9 +194,9 @@ export class UsersService {
      * Delete playlist from saved list of user
      *
      * Args:
-     * name (str): user name
-     * playlist_name (str): playlist name
-     * token (Annotated[TokenData, Depends): JWT info
+     * name: user name
+     * playlist_name: playlist name
+     * token: JWT info
      * @param name
      * @param playlistName
      * @returns any Successful Response
@@ -225,8 +225,8 @@ export class UsersService {
      * Get relevant playlists for user
      *
      * Args:
-     * name (str): user name
-     * token (Annotated[TokenData, Depends): JWT info
+     * name: user name
+     * token: JWT info
      * @param name
      * @returns any Successful Response
      * @throws ApiError
@@ -250,8 +250,8 @@ export class UsersService {
      * Get playlists created by the user
      *
      * Args:
-     * name (str): user name
-     * token (Annotated[TokenData, Depends): JWT info
+     * name: user name
+     * token: JWT info
      * @param name
      * @returns any Successful Response
      * @throws ApiError
@@ -275,8 +275,8 @@ export class UsersService {
      * Get playlist names created by user
      *
      * Args:
-     * name (str): user name
-     * token (Annotated[TokenData, Depends): JWT info
+     * name: user name
+     * token: JWT info
      * @param name
      * @returns any Successful Response
      * @throws ApiError
@@ -300,8 +300,8 @@ export class UsersService {
      * Promote user to artist
      *
      * Args:
-     * name (str): user name
-     * token (Token): JWT info
+     * name: user name
+     * token: JWT info
      * @param name
      * @returns any Successful Response
      * @throws ApiError

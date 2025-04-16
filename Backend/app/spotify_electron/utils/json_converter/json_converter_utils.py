@@ -1,6 +1,4 @@
-"""
-Json converter utils for building HTTP Json responses from domain objects
-"""
+"""Json converter utils for building HTTP Json responses from domain objects"""
 
 import json
 from typing import Any
@@ -19,12 +17,11 @@ def get_json_from_model(object: Any) -> str:
 
     Args:
     ----
-        object (Any): the object that's going to be converted into json string
+        object: the object that's going to be converted into json string
 
     Returns:
     -------
-        str: the object converted into json string
-
+        the object converted into json string
     """
     return _get_json_from_model(object)
 
@@ -34,13 +31,12 @@ def get_json_with_iterable_field_from_model(object: Any, field_name: str) -> str
 
     Args:
     ----
-        object (Any): the object to be put inside a field name
-        field_name (str): the name of the field name where the object will be put on
+        object: the object to be put inside a field name
+        field_name: the name of the field name where the object will be put on
 
     Returns:
     -------
-        str: the json string with the object inside a field name
-
+        the json string with the object inside a field name
     """
     object_dict = {field_name: object}
     return _get_json_from_model(object_dict)
@@ -51,7 +47,7 @@ def _get_json_from_model(object: Any) -> str:
 
     Args:
     ----
-        object (Any): the object that's going to be converted into json string
+        object: the object that's going to be converted into json string
 
     Raises:
     ------
@@ -60,8 +56,7 @@ def _get_json_from_model(object: Any) -> str:
 
     Returns:
     -------
-        str: the object converted into json string
-
+        the object converted into json string
     """
     try:
         jsonable_object = jsonable_encoder(object)

@@ -1,6 +1,4 @@
-"""
-Genre schema for domain model
-"""
+"""Genre schema for domain model"""
 
 from enum import StrEnum
 
@@ -50,10 +48,10 @@ class Genre(StrEnum):
         """Checks if the genre is valid and raises an exception if not
 
         Args:
-            genre (str): genre
+            genre: genre
 
         Raises:
-            GenreNotValidError: invalid genre provided
+            GenreNotValidError: provided
         """
         if genre not in {member.value for member in Genre}:
             genre_class_logger.exception(f"Genre {genre} is not a valid Genre")
@@ -64,13 +62,13 @@ class Genre(StrEnum):
         """Gets genre string representation value from Genre
 
         Args:
-            genre (Enum): the genre Enum
+            genre: the genre Enum
 
         Raises:
-            GenreNotValidError: if the genre doesn't match any existing genres
+            GenreNotValidError: genre doesn't match any existing genres
 
         Returns:
-            str: the string representation of the genre
+            the string representation of the genre
         """
         try:
             return str(genre.value)

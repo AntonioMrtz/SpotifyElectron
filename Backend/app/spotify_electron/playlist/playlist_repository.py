@@ -1,6 +1,4 @@
-"""
-Playlist repository for managing persisted data
-"""
+"""Playlist repository for managing persisted data"""
 
 from app.logging.logging_constants import LOGGING_PLAYLIST_REPOSITORY
 from app.logging.logging_schema import SpotifyElectronLogger
@@ -33,7 +31,7 @@ async def check_playlist_exists(
 
     Args:
     ----
-        name (str): name of the playlist
+        name: name of the playlist
 
     Raises:
     ------
@@ -41,8 +39,7 @@ async def check_playlist_exists(
 
     Returns:
     -------
-        bool: if the playlist exsists
-
+        if the playlist exsists
     """
     try:
         collection = get_playlist_collection()
@@ -65,7 +62,7 @@ async def get_playlist(
 
     Args:
     ----
-        name (str): name of the playlist
+        name: name of the playlist
 
 
     Raises:
@@ -75,8 +72,7 @@ async def get_playlist(
 
     Returns:
     -------
-        PlaylistDAO: the playlist with the name parameter
-
+        the playlist with the name parameter
     """
     try:
         collection = get_playlist_collection()
@@ -107,18 +103,16 @@ async def create_playlist(  # noqa: PLR0917
 
     Args:
     ----
-        name (str): name
-        photo (str): thumbnail photo
-        upload_date (str): upload date
-        description (str): description
-        owner (str): playlist's owner
-        song_names (list[str]): song names
-
+        name: name
+        photo: thumbnail photo
+        upload_date: upload date
+        description: description
+        owner: playlist's owner
+        song_names: song names
 
     Raises:
     ------
         PlaylistRepositoryError: an error occurred while inserting playlist in database
-
     """
     try:
         collection = get_playlist_collection()
@@ -153,13 +147,12 @@ async def delete_playlist(
 
     Args:
     ----
-        name (str): plalists name
+        name: plalists name
 
 
     Raises:
     ------
         PlaylistRepositoryError: an error occurred while deleting playlist from database
-
     """
     try:
         collection = get_playlist_collection()
@@ -187,8 +180,7 @@ async def get_all_playlists() -> list[PlaylistDAO]:
 
     Returns
     -------
-        list[PlaylistDAO]: the list whith all the playlists
-
+        the list whith all the playlists
     """
     try:
         collection = get_playlist_collection()
@@ -212,7 +204,7 @@ async def get_selected_playlists(
 
     Args:
     ----
-        names (list[str]): list with the names of the playlists
+        names: list with the names of the playlists
 
 
     Raises:
@@ -221,8 +213,7 @@ async def get_selected_playlists(
 
     Returns:
     -------
-        list[PlaylistDAO]: the list of playlists
-
+        the list of playlists
     """
     try:
         collection = get_playlist_collection()
@@ -246,7 +237,7 @@ async def get_playlist_search_by_name(
 
     Args:
     ----
-        name (str): the matching name
+        name: the matching name
 
 
     Raises:
@@ -256,8 +247,7 @@ async def get_playlist_search_by_name(
 
     Returns:
     -------
-        list[PlaylistDAO]: the list of playlists with similar name
-
+        the list of playlists with similar name
     """
     try:
         collection = get_playlist_collection()
@@ -283,14 +273,14 @@ async def update_playlist(
     """Update playlist
 
     Args:
-        name (str): playlist name
-        new_name (str): new name
-        photo (str): new photo
-        description (str): new description
-        song_names (list[str]): new song names
+        name: playlist name
+        new_name: new name
+        photo: new photo
+        description: new description
+        song_names: new song names
 
     Raises:
-        PlaylistRepositoryError: unexpected error updating playlist
+        PlaylistRepositoryError: updating playlist
     """
     try:
         collection = get_playlist_collection()
@@ -341,11 +331,11 @@ async def add_songs_to_playlist(name: str, song_names: list[str]) -> None:
     """Add songs to playlist
 
     Args:
-        name (str): playlist name
-        song_names (list[str]): song names
+        name: playlist name
+        song_names: song names
 
     Raises:
-        PlaylistRepositoryError: unexpected error adding songs to playlist
+        PlaylistRepositoryError: adding songs to playlist
     """
     try:
         collection = get_playlist_collection()
@@ -369,11 +359,11 @@ async def remove_songs_from_playlist(name: str, song_names: list[str]) -> None:
     """Remove songs from playlist
 
     Args:
-        name (str): playlist name
-        song_names (list[str]): song names
+        name: playlist name
+        song_names: song names
 
     Raises:
-        PlaylistRepositoryError: unexpected error adding songs to playlist
+        PlaylistRepositoryError: adding songs to playlist
     """
     try:
         collection = get_playlist_collection()

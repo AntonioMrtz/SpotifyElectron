@@ -1,6 +1,4 @@
-"""
-User service for handling business logic
-"""
+"""User service for handling business logic"""
 
 from asyncio import gather
 
@@ -40,10 +38,10 @@ async def does_user_exists(user_name: str) -> bool:
     """Returns if user exists
 
     Args:
-        user_name (str): user name
+        user_name: user name
 
     Returns:
-        bool: if the user exists
+        if the user exists
     """
     collection = user_collection_provider.get_user_collection()
     return await base_user_repository.check_user_exists(user_name, collection)
@@ -53,15 +51,15 @@ async def get_user(user_name: str) -> UserDTO:
     """Get user from name
 
     Args:
-        user_name (str): the user name
+        user_name: the user name
 
     Raises:
-        UserBadNameError: invalid user name
+        UserBadNameError: name
         UserNotFoundError: user not found
         UserServiceError: unexpected error while getting user
 
     Returns:
-        UserDTO: the user
+        the user
     """
     try:
         await base_user_service_validations.validate_user_name_parameter(user_name)
@@ -92,12 +90,12 @@ async def create_user(user_name: str, photo: str, password: str) -> None:
     """Create user
 
     Args:
-        user_name (str): user name
-        photo (str): user photo
-        password (str): user password
+        user_name: user name
+        photo: user photo
+        password: user password
 
     Raises:
-        BaseUserAlreadyExistsError: if the user already exists
+        BaseUserAlreadyExistsError: user already exists
         UserBadNameError: if the user name is invalid
         UserServiceError: unexpected error while creating user
     """
@@ -139,13 +137,13 @@ async def get_users(user_names: list[str]) -> list[UserDTO]:
     """Get users from a list of names
 
     Args:
-        user_names (list[str]): the list with the user names to retrieve
+        user_names: the list with the user names to retrieve
 
     Raises:
-        UserServiceError: unexpected error while getting users
+        UserServiceError: while getting users
 
     Returns:
-        list[User]: the selected users
+        the selected users
     """
     try:
         users = await gather(*[get_user(name) for name in user_names])
@@ -169,13 +167,13 @@ async def search_by_name(name: str) -> list[UserDTO]:
     """Retrieve the users that match the name
 
     Args:
-        name (str): name to match
+        name: name to match
 
     Raises:
-        UserServiceError: unexpected error searching users that match a name
+        UserServiceError: searching users that match a name
 
     Returns:
-        list[UserDTO]: users that match the name
+        users that match the name
     """
     try:
         user_collection = user_collection_provider.get_user_collection()
@@ -193,11 +191,11 @@ async def promote_user_to_artist(name: str, token: TokenData) -> None:
     """Promote user to artist
 
     Args:
-        name (str): Username of the user to be promoted
-        token (TokenData): Token containing user authentication and authorization data
+        name: Username of the user to be promoted
+        token: Token containing user authentication and authorization data
 
     Raises:
-        ArtistAlreadyExistsError: If an artist with the given name already exists
+        ArtistAlreadyExistsError: artist with the given name already exists
         UserBadNameError: If the provided username is invalid
         UserUnauthorizedError: If the user lacks required permissions
         UserNotFoundError: If no user exists with the given name

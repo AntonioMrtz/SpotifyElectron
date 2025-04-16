@@ -1,6 +1,4 @@
-"""
-Provider class for supplying service depending on song architecture selected
-"""
+"""Provider class for supplying service depending on song architecture selected"""
 
 import importlib
 from types import ModuleType
@@ -40,7 +38,7 @@ class SongServiceProvider:
         """Returns the imported song service depending on the architecture selected.
 
         Returns:
-            ModuleType: the imported song service
+            the imported song service
         """
         return SongServiceProvider.song_service
 
@@ -52,6 +50,6 @@ def get_song_service() -> ModuleType:
     shortens both imports and calls
 
     Returns:
-        ModuleType: the song service module
+        the song service module
     """
     return SongServiceProvider.get_song_service()

@@ -1,6 +1,4 @@
-"""
-Validations for Common user services
-"""
+"""Validations for Common user services"""
 
 import app.spotify_electron.user.artist.artist_service as artist_service
 import app.spotify_electron.user.user.user_service as user_service
@@ -17,11 +15,10 @@ async def validate_user_name_parameter(name: str) -> None:
     """Raises an exception if name parameter is invalid
 
     Args:
-        name (str): name
+        name: name
 
     Raises:
-        BaseUserBadNameError: if name parameter is invalid
-
+        BaseUserBadNameError: parameter is invalid
     """
     try:
         validate_parameter(name)
@@ -33,10 +30,10 @@ async def validate_user_should_exists(user_name: str) -> None:
     """Raises an exception if user doesn't exists
 
     Args:
-        user_name (str): the user name
+        user_name: the user name
 
     Raises:
-        BaseUserNotFoundError: if the user doesn't exists
+        BaseUserNotFoundError: user doesn't exists
     """
     result_artist_exists = await artist_service.does_artist_exists(user_name)
     result_user_exists = await user_service.does_user_exists(user_name)
@@ -49,10 +46,10 @@ async def validate_user_should_not_exist(user_name: str) -> None:
     """Raises an exception if the user exists
 
     Args:
-        user_name (str): the user name
+        user_name: the user name
 
     Raises:
-        BaseUserAlreadyExistsError: if the user exists
+        BaseUserAlreadyExistsError: user exists
     """
     result_artist_exists = await artist_service.does_artist_exists(user_name)
     result_user_exists = await user_service.does_user_exists(user_name)

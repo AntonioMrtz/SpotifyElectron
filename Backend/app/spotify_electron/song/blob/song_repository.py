@@ -1,5 +1,4 @@
-"""
-Song repository for managing persisted data. These are stored using GridFS, \
+"""Song repository for managing persisted data. These are stored using GridFS, \
     a MongoDB fylesystem for storing BLOB files and its metadata.\
     See https://www.mongodb.com/docs/manual/core/gridfs/
 
@@ -40,14 +39,14 @@ async def get_song(name: str) -> SongDAO:
     """Get song from database
 
     Args:
-        name (str): song name
+        name: song name
 
     Raises:
-        SongNotFoundError: song not found
+        SongNotFoundError: found
         SongRepositoryError: unexpected error getting song
 
     Returns:
-        SongDAO: the song
+        the song
     """
     try:
         metadata_collection = song_collection_provider.get_song_collection()
@@ -75,15 +74,15 @@ async def create_song(  # noqa: PLR0917
     """Create song
 
     Args:
-        name (str): song name
-        artist (str): song artist
-        duration (int): song duration in seconds
-        genre (Genre): song genre
-        photo (str): song photo
-        file (bytes): song content
+        name: song name
+        artist: song artist
+        duration: song duration in seconds
+        genre: song genre
+        photo: song photo
+        file: song content
 
     Raises:
-        SongRepositoryError: unexpected error creating song
+        SongRepositoryError: creating song
     """
     try:
         gridfs_collection = song_collection_provider.get_gridfs_song_collection()
@@ -113,14 +112,14 @@ async def get_song_data(name: str) -> AsyncIOMotorGridOut:
     """Get song data
 
     Args:
-        name (str): song name
+        name: song name
 
     Raises:
-        SongDataNotFoundError: song data doesn't exists
+        SongDataNotFoundError: doesn't exists
         SongRepositoryError: unexpected error getting song data
 
     Returns:
-        AsyncIOMotorGridOut: song data
+        song data
     """
     try:
         file_collection = song_collection_provider.get_gridfs_song_collection()

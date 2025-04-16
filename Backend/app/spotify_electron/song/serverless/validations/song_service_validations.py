@@ -1,6 +1,4 @@
-"""
-Validations for Serverless function Song service
-"""
+"""Validations for Serverless function Song service"""
 
 from requests import Response
 from starlette.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_202_ACCEPTED
@@ -24,11 +22,11 @@ def validate_song_creating_streaming_response(name: str, response: Response) -> 
     """Validate create streaming song
 
     Args:
-        name (str): song name
-        response (Response): incoming response
+        name: song name
+        response: incoming response
 
     Raises:
-        SongCreateSongStreamingError: if the request failed
+        SongCreateSongStreamingError: request failed
     """
     if response.status_code != HTTP_201_CREATED:
         song_service_logger.error(
@@ -42,11 +40,11 @@ def validate_get_song_url_streaming_response(name: str, response: Response) -> N
     """Validate get url streaming song response
 
     Args:
-        name (str): song name
-        response (Response): the incoming response
+        name: song name
+        response: the incoming response
 
     Raises:
-        SongGetUrlStreamingError: if the request failed
+        SongGetUrlStreamingError: request failed
     """
     if response.status_code != HTTP_200_OK:
         song_service_logger.error(
@@ -60,11 +58,11 @@ def validate_song_deleting_streaming_response(name: str, response: Response) -> 
     """Validate deleting streaming song
 
     Args:
-        name (str): song name
-        response (Response): incoming response
+        name: song name
+        response: incoming response
 
     Raises:
-        SongDeleteSongStreamingError: if the request failed
+        SongDeleteSongStreamingError: request failed
     """
     if response.status_code != HTTP_202_ACCEPTED:
         song_service_logger.error(

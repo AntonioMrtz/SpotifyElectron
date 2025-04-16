@@ -1,5 +1,4 @@
-"""
-FastAPI APP entrypoint
+"""FastAPI APP entrypoint
 
 - Handles startup and shutdown app events
 - Loads middlewares
@@ -47,7 +46,7 @@ async def lifespan_handler(app: FastAPI) -> AsyncGenerator[None, Any]:
     """Handles the startup and shutdown events of the API
 
     Args:
-        app (FastAPI): FastAPI entrypoint
+        app: FastAPI entrypoint
     """
     main_logger.info("Spotify Electron Backend Started")
 

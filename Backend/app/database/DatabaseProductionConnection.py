@@ -13,7 +13,7 @@ class DatabaseProductionConnection(BaseDatabaseConnection):
         """Get Mongo client class
 
         Returns:
-            type[AsyncIOMotorClient]: the Mongo client class
+            the Mongo client class
         """
         return AsyncIOMotorClient
 
@@ -22,6 +22,6 @@ class DatabaseProductionConnection(BaseDatabaseConnection):
         """Returns prod prefix for collections
 
         Returns:
-            str: the prod prefix for collections
+            the prod prefix for collections
         """
         return ""

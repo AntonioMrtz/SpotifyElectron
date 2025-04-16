@@ -1,6 +1,4 @@
-"""
-App config schema
-"""
+"""App config schema"""
 
 from enum import StrEnum
 

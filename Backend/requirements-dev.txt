@@ -1,2 +1,2 @@
-ruff==0.9.4 # bump pipelines to match ruff version if modified
+ruff==0.11.5 # bump pipelines to match ruff version if modified
 -r requirements-test.txt

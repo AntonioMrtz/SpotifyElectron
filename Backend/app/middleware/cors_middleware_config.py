@@ -1,6 +1,4 @@
-"""
-CORS Middleware configurations
-"""
+"""CORS Middleware configurations"""
 
 allowed_origins = [
     "http://localhost/",

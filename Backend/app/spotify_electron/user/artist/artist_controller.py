@@ -1,6 +1,4 @@
-"""
-Artist controller for handling incoming HTTP Requests
-"""
+"""Artist controller for handling incoming HTTP Requests"""
 
 import json
 
@@ -48,8 +46,8 @@ async def get_artist(
     """Get artist by name
 
     Args:
-        name (str): artist name
-        token (Annotated[TokenData, Depends): JWT info
+        name: artist name
+        token: JWT info
     """
     try:
         artist = await artist_service.get_artist(name)
@@ -94,9 +92,9 @@ async def create_artist(
     """Create artist
 
     Args:
-        name (str): artist name
-        photo (str): artist photo
-        password (str): artist password
+        name: artist name
+        photo: artist photo
+        password: artist password
     """
     try:
         await artist_service.create_artist(name, photo, password)

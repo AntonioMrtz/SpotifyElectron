@@ -49,7 +49,7 @@ class BaseDatabaseConnection:
         """Init database connection
 
         Args:
-            uri (str): database connection URI
+            uri: database connection URI
         """
         try:
             uri = getattr(PropertiesManager, AppEnvironment.MONGO_URI_ENV_NAME)
@@ -79,7 +79,7 @@ class BaseDatabaseConnection:
         """Get mongo client class
 
         Returns:
-            type[AsyncIOMotorClient]: the mongo client class
+            the mongo client class
         """
         pass
 
@@ -89,7 +89,7 @@ class BaseDatabaseConnection:
         """Returns collection prefix
 
         Returns:
-            str: the prefix for collections
+            the prefix for collections
         """
         pass
 
@@ -100,10 +100,10 @@ class BaseDatabaseConnection:
         """Returns the connection with a collection
 
         Args:
-            collection_name (DatabaseCollection): the collection name
+            collection_name: the collection name
 
         Returns:
-            AsyncIOMotorCollection: the connection to the collection
+            the connection to the collection
         """
         cls.__assert_connection_is_initialized()
         return cls._connection[cls.__collection_name_prefix + collection_name]
@@ -115,10 +115,10 @@ class BaseDatabaseConnection:
         """Returns the connection with gridfs collection
 
         Args:
-            collection_name (DatabaseCollection): the collection name
+            collection_name: the collection name
 
         Returns:
-            AsyncIOMotorGridFSBucket: the gridfs collection connection
+            the gridfs collection connection
         """
         cls.__assert_connection_is_initialized()
         return AsyncIOMotorGridFSBucket(

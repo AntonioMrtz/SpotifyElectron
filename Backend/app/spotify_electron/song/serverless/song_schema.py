@@ -1,6 +1,4 @@
-"""
-Song schema for domain model
-"""
+"""Song schema for domain model"""
 
 from dataclasses import dataclass
 from typing import Any
@@ -27,12 +25,11 @@ def get_song_dao_from_document(song_name: str, document: dict[str, Any]) -> Song
     """Get SongDAO from document
 
     Args:
-        song_name (str): song name
-        document (dict[str, Any]): song document
+        song_name: song name
+        document: song document
 
     Returns:
-        SongDAO: SongDAO Object
-
+        SongDAO Object
     """
     return SongDAO(
         name=song_name,
@@ -49,13 +46,12 @@ def get_song_dto_from_dao(song_dao: SongDAO, url: str) -> SongDTO:
 
     Args:
     ----
-        song_dao (SongDAO): SongDAO object
-        url (str): song streaming url
+        song_dao: SongDAO object
+        url: song streaming url
 
     Returns:
     -------
-        SongDTO: SongDTO object
-
+        SongDTO object
     """
     return SongDTO(
         name=song_dao.name,

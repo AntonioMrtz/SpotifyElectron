@@ -1,6 +1,4 @@
-"""
-Logging and Format schemas
-"""
+"""Logging and Format schemas"""
 
 import logging
 import logging.handlers
@@ -44,10 +42,10 @@ class SpotifyElectronFormatter(logging.Formatter):
         """Format log output with the custom formatter structure
 
         Args:
-            record (LogRecord): the output log record
+            record: the output log record
 
         Returns:
-            str: the result of formating the log record with the custom formatter
+            the result of formating the log record with the custom formatter
         """
         log_format = self.FORMATS.get(
             record.levelno, "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
@@ -101,8 +99,7 @@ class SpotifyElectronLogger:
 
         Args:
         ----
-            handler (Union[StreamHandler, RotatingFileHandler]): the handler to add
-
+            handler: the handler to add
         """
         handler.setLevel(self._get_log_level())
         formatter = SpotifyElectronFormatter()

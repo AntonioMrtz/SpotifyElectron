@@ -1,6 +1,4 @@
-"""
-Login controller for handling incoming HTTP Requests
-"""
+"""Login controller for handling incoming HTTP Requests"""
 
 from typing import Annotated
 
@@ -41,8 +39,7 @@ async def login_user(
 
     Args:
     ----
-        form_data (Annotated[OAuth2PasswordRequestForm, Depends): user and password
-
+        form_data: user and password
     """
     try:
         jwt = await auth_service.login_user(form_data.username, form_data.password)
@@ -91,7 +88,7 @@ async def login_user_with_jwt(token: str) -> Response:
     """Login user with token
 
     Args:
-        token (str): the user token
+        token: the user token
     """
     try:
         await auth_service.login_user_with_token(token)

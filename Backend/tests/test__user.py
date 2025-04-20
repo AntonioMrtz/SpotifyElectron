@@ -16,6 +16,7 @@ import app.spotify_electron.user.user.user_service as user_service
 from app.auth.auth_schema import VerifyPasswordError
 from app.spotify_electron.user.user.user_schema import (
     UserDAO,
+    UserDocument,
     UserDTO,
     get_user_dao_from_document,
     get_user_dto_from_dao,
@@ -159,15 +160,15 @@ async def test_check_encrypted_password_different():
 
 
 def test_get_user_dao_from_document():
-    document = {
-        "name": "test_user",
-        "photo": "https://photo",
-        "register_date": "2024-11-30T12:00:00",
-        "password": b"securepassword",
-        "playback_history": ["song1", "song2"],
-        "playlists": ["playlist1", "playlist2"],
-        "saved_playlists": ["saved_playlist1"],
-    }
+    document = UserDocument(
+        name="test_user",
+        photo="https://photo",
+        register_date="2024-11-30T12:00:00",
+        password=b"securepassword",
+        playback_history=["song1", "song2"],
+        playlists=["playlist1", "playlist2"],
+        saved_playlists=["saved_playlist1"],
+    )
 
     user_dao = get_user_dao_from_document(document)
 

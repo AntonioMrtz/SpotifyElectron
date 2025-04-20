@@ -14,6 +14,7 @@ import { TextField } from '@mui/material/';
 import { inputStyle } from 'styles/mui5/styles';
 import { useNowPlayingContext } from 'hooks/useNowPlayingContext';
 import { t } from 'i18next';
+import { UserProps } from 'types/user';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 import Song from '../../components/Song/Song';
 import styles from './playlist.module.css';
@@ -76,13 +77,15 @@ export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
     setdisplayLike(styles.displayNoneLike);
     setLiked(false);
   };
+
   const loadPlaylistLikedStatus = async () => {
     const username = getTokenUsername();
 
     try {
       // TODO simplify query to obtain the result directly
 
-      const userData = await UsersService.getUserUsersNameGet(username);
+      const userData: UserProps =
+        await UsersService.getUserUsersNameGet(username);
 
       if (
         userData &&
@@ -139,7 +142,7 @@ export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
 
     if (songs) {
       songs.forEach((song) => {
-        totalDuration += song.duration;
+        totalDuration += song.secondsDuration;
       });
     }
     return totalDuration;
@@ -223,14 +226,14 @@ export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
                     playlistName,
                     artistName: '',
                     streams: 0,
-                    duration: 0,
+                    secondsDuration: 0,
                     index: 0,
                     handleSongCliked: changeSongName,
                     refreshPlaylistData: loadPlaylistData,
                     refreshSidebarData,
                   };
                   propsSong.artistName = songData.artist;
-                  propsSong.duration = songData.seconds_duration;
+                  propsSong.secondsDuration = songData.seconds_duration;
                   propsSong.streams = songData.streams;
 
                   resolve(propsSong);
@@ -526,7 +529,7 @@ export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
                   artistName={song.artistName}
                   streams={song.streams}
                   index={index + 1}
-                  duration={song.duration}
+                  secondsDuration={song.secondsDuration}
                   handleSongCliked={changeSongName}
                   refreshPlaylistData={refreshPlaylistData}
                   refreshSidebarData={refreshSidebarData}

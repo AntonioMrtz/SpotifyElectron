@@ -210,9 +210,9 @@ async def get_song_names_search_by_name(song_name: str) -> list[str]:
     try:
         collection = provider.get_song_collection()
         cursor = collection.find(
-            {"name": {"$regex": song_name, "$options": "i"}}, {"_id": 0, "name": 1}
+            {"filename": {"$regex": song_name, "$options": "i"}}, {"_id": 0, "filename": 1}
         )
-        return [song["name"] async for song in cursor]
+        return [song["filename"] async for song in cursor]
     except SongRepositoryError as exception:
         song_repository_logger.exception(
             f"Unexpected error getting song names that matched {song_name} in database"
@@ -234,16 +234,11 @@ async def get_songs_metadata_by_genre(genre: Genre) -> list[SongMetadataDAO]:
     """
     collection = provider.get_song_collection()
     genre_str = Genre.get_genre_string_value(genre)
-    cursor = collection.find({"genre": genre_str})
+    cursor = collection.find({"metadata.genre": genre_str})
     try:
         return [
-            SongMetadataDAO(
-                name=song_data["name"],
-                artist=song_data["artist"],
-                photo=song_data["photo"],
-                seconds_duration=song_data["seconds_duration"],
-                genre=Genre(song_data["genre"]),
-                streams=song_data["streams"],
+            get_song_metadata_dao_from_document(
+                song_name=song_data["filename"], document=song_data["metadata"]
             )
             async for song_data in cursor
         ]

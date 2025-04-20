@@ -54,7 +54,6 @@ async def get_song(name: str) -> SongDAO:
         song_metadata = await metadata_collection.find_one({"filename": name})
 
         validate_song_exists(song_metadata)
-
         assert song_metadata
 
         song_dao = get_song_dao_from_document(

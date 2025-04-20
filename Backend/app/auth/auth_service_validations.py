@@ -42,8 +42,8 @@ def validate_token_is_expired(token: dict[str, Any]) -> None:
         raise JWTExpiredError
 
 
-def validate_token_exists(token: Any) -> None:
-    """Check whether jwt token is None or not
+def validate_token_exists(token: str | None) -> None:
+    """Check whether jwt token is None or empty
 
     Args:
     ----
@@ -51,13 +51,13 @@ def validate_token_exists(token: Any) -> None:
 
     Raises:
     ------
-        JWTNotProvidedError: if the token is None
+        JWTNotProvidedError: if the token is None or empty
     """
-    if token is None:
+    if token is None or token == "":
         raise JWTNotProvidedError
 
 
-def validate_jwt_credentials_missing(credentials: list[Any]) -> None:
+def validate_jwt_credentials_missing(credentials: list[Any | None]) -> None:
     """Check if any jwt credentials are missing
 
     Args:

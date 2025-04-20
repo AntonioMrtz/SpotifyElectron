@@ -33,6 +33,7 @@ from app.spotify_electron.user.base_user_schema import (
     BaseUserNotFoundError,
     BaseUserServiceError,
 )
+from app.spotify_electron.user.user.user_schema import UserType
 from app.spotify_electron.utils.validations.validation_utils import validate_parameter
 
 ALGORITHM = "HS256"
@@ -80,34 +81,39 @@ def create_access_token(data: dict[str, str], expires_delta: timedelta | None = 
 def get_jwt_token_data(
     token_raw_data: str,
 ) -> TokenData:
-    """Decrypt jwt data and returns data from it
+    """Get token data from JWT
 
     Args:
-    ----
-        token_raw_data: JWT Token
+        token_raw_data: raw JWT
 
     Raises:
-    ------
-        BadJWTTokenProvidedError: invalid token provided
+        BadJWTTokenProvidedError: invalid token
 
     Returns:
-    -------
-        TokenData: the data provided by the JWT Token
+        parsed JWT data
     """
     try:
         validate_token_exists(token_raw_data)
+        assert token_raw_data
+
         payload = jwt.decode(
-            token_raw_data,  # type: ignore
+            token_raw_data,
             AuthConfig.SIGNING_SECRET_KEY,
             algorithms=[ALGORITHM],
         )
+
         username = payload.get("access_token")
         role = payload.get("role")
         token_type = payload.get("token_type")
 
         credentials = [username, role, token_type]
         validate_jwt_credentials_missing(credentials)
-        token_data = TokenData(username=username, role=role, token_type=token_type)  # type: ignore
+        assert username is not None
+        assert token_type is not None
+
+        role = UserType(role)
+
+        token_data = TokenData(username=username, role=role, token_type=token_type)
 
     except JWTNotProvidedError as exception:
         auth_service_logger.exception("No JWT Token was provided")

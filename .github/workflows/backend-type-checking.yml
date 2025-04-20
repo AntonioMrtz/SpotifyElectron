@@ -1,4 +1,4 @@
-name: Backend Pyright type checking
+name: Backend Type Checking
 
 on:
   pull_request:
@@ -7,7 +7,7 @@ on:
       - 'master-*'
 
 jobs:
-  run_pyright_type_check:
+  run_type_check:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code

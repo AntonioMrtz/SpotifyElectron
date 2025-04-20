@@ -26,7 +26,7 @@ echo "Copied spotify-electron.desktop"
 # =============================
 echo "Starting Backend OPENAPI generation and Frontend OpenAPI client update..."
 
-cd tools/
+cd scripts/
 ./update_openapi.sh
 
 echo "Virtual environment deactivated"

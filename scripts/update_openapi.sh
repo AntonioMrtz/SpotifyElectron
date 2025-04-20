@@ -18,7 +18,7 @@ fi
 
 # Set the environment variable and execute the Python command
 echo "Generating OpenAPI schema with timeout..."
-timeout 15s env ENV_VALUE="TEST" python -m app.tools.generate_openapi || {
+timeout 15s env ENV_VALUE="TEST" python -m app.scripts.generate_openapi || {
     echo "Error: Python generate_openapi script timed out";
     exit 1
 }

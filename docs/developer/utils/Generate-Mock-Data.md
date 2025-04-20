@@ -11,4 +11,4 @@ Somethis is useful to have fake/mock data to test the behaviour of the app under
 
 1. Go to `Backend/`
 2. Install app dependencies with `pip install -r requirements.txt`
-3. Run `python -m app.tools.generate_mock_data [(help) | (small|medium|large)]`
+3. Run `python -m app.scripts.generate_mock_data [(help) | (small|medium|large)]`

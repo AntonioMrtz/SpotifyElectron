@@ -13,8 +13,6 @@ from motor.motor_asyncio import (
 )
 from pymongo.server_api import ServerApi
 
-from app.common.app_schema import AppEnvironment
-from app.common.PropertiesManager import PropertiesManager
 from app.exceptions.base_exceptions_schema import SpotifyElectronError
 from app.logging.logging_constants import LOGGING_DATABASE_CONNECTION
 from app.logging.logging_schema import SpotifyElectronLogger
@@ -52,7 +50,6 @@ class BaseDatabaseConnection:
             uri: database connection URI
         """
         try:
-            uri = getattr(PropertiesManager, AppEnvironment.MONGO_URI_ENV_NAME)
             cls.__collection_name_prefix = cls._get_collection_name_prefix()
             cls._client = cls._get_mongo_client()(uri, server_api=ServerApi("1"))
             # Needed because of https://github.com/encode/starlette/issues/1315#issuecomment-980784457

@@ -8,7 +8,9 @@ The following fields will be included in the metadata field and removed from the
 "genre",
 "photo",
 "streams",
-"url",
+"url"
+
+Then the old fields will be unset
 """
 
 import asyncio

@@ -2,7 +2,7 @@
 
 Steps:
     1. Go to Backend/
-    2. Run `ENV_VALUE=TEST python -m app.tools.generate_openapi`
+    2. Run `ENV_VALUE=TEST python -m app.scripts.generate_openapi`
     3. OpenAPI Schema will be located at OPENAPI_SCHEMA_OUTPUT_FILE path
 """
 

@@ -33,6 +33,7 @@ nav:
     - Utils:
       - Release procedure: developer/utils/Release-Procedure.md
       - OpenAPI schema generation & usage: developer/utils/OpenAPI.md
+      - Database Migration: developer/utils/Migration-DB.md
       - Migration procedure for Python and Node version: developer/utils/Migration-Procedure-Node-Python.md
       - Mkdocs development & usage: developer/utils/Mkdocs.md
       - Generate Mock data: developer/utils/Generate-Mock-Data.md

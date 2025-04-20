@@ -170,7 +170,7 @@ async def create_song(  # noqa: C901
             name=name,
             artist=artist,
             photo=photo,
-            duration=song_duration,
+            seconds_duration=song_duration,
             genre=genre,
         )
         await artist_service.add_song_to_artist(artist, name)

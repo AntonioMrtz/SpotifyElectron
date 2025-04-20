@@ -1,6 +1,6 @@
 """User repository for managing persisted data"""
 
-import app.spotify_electron.user.providers.user_collection_provider as user_collection_provider
+import app.spotify_electron.user.providers.user_collection_provider as provider
 from app.logging.logging_constants import LOGGING_USER_REPOSITORY
 from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.user.base_user_schema import (
@@ -9,6 +9,7 @@ from app.spotify_electron.user.base_user_schema import (
 )
 from app.spotify_electron.user.user.user_schema import (
     UserDAO,
+    UserDocument,
     UserNotFoundError,
     UserRepositoryError,
     get_user_dao_from_document,
@@ -35,11 +36,13 @@ async def get_user(name: str) -> UserDAO:
         the user
     """
     try:
-        collection = user_collection_provider.get_user_collection()
+        collection = provider.get_user_collection()
         user = await collection.find_one({"name": name})
 
         validate_user_exists(user)
-        user_dao = get_user_dao_from_document(user)  # type: ignore
+        assert user
+
+        user_dao = get_user_dao_from_document(user)
 
     except BaseUserNotFoundError as exception:
         raise UserNotFoundError from exception
@@ -65,7 +68,7 @@ async def create_user(name: str, photo: str, password: bytes, current_date: str)
         UserRepositoryError: while creating user
     """
     try:
-        user = {
+        user: UserDocument = {
             "name": name,
             "photo": photo,
             "register_date": current_date,
@@ -74,7 +77,7 @@ async def create_user(name: str, photo: str, password: bytes, current_date: str)
             "playlists": [],
             "playback_history": [],
         }
-        collection = user_collection_provider.get_user_collection()
+        collection = provider.get_user_collection()
         result = await collection.insert_one(user)
 
         validate_user_create(result)

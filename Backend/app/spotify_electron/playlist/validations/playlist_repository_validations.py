@@ -4,14 +4,14 @@ from pymongo.results import DeleteResult, InsertOneResult, UpdateResult
 
 from app.spotify_electron.playlist.playlist_schema import (
     PlaylistCreateError,
-    PlaylistDAO,
     PlaylistDeleteError,
+    PlaylistDocument,
     PlaylistNotFoundError,
     PlaylistUpdateError,
 )
 
 
-def validate_playlist_exists(playlist: PlaylistDAO | None) -> None:
+def validate_playlist_exists(playlist: PlaylistDocument | None) -> None:
     """Raises an exception if playlist doesn't exists
 
     Args:

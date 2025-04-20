@@ -1,17 +1,9 @@
 import { useState, useEffect } from 'react';
+import { UserProps } from 'types/user';
 import { UsersService } from '../swagger/api/services/UsersService';
 
-interface SongProps {
-  name: string;
-  artist: string;
-  photo: string;
-  duration: string;
-  genre: string;
-  streams: string;
-}
-
 const useFetchGetUser = (username: string) => {
-  const [user, setUser] = useState<SongProps | null>(null);
+  const [user, setUser] = useState<UserProps | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
   const [error, setError] = useState<string | null>(null);
@@ -21,13 +13,13 @@ const useFetchGetUser = (username: string) => {
       setLoading(true);
       try {
         const data = await UsersService.getUserUsersNameGet(username);
-        const mappedUser: SongProps = {
+        const mappedUser: UserProps = {
           name: data.name || '',
-          artist: data.artist || '',
           photo: data.photo || '',
-          duration: data.duration || '',
-          genre: data.genre || '',
-          streams: data.streams || '',
+          register_date: data.register_date || '',
+          playback_history: data.playback_history || [],
+          saved_playlists: data.saved_playlists || [],
+          playlists: data.playlists || [],
         };
 
         setUser(mappedUser);

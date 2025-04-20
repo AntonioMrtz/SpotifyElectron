@@ -2,12 +2,12 @@
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import Any
 
 from app.spotify_electron.user.base_user_schema import (
     BaseUserAlreadyExistsError,
     BaseUserBadNameError,
     BaseUserDAO,
+    BaseUserDocument,
     BaseUserDTO,
     BaseUserNotFoundError,
     BaseUserRepositoryError,
@@ -15,9 +15,17 @@ from app.spotify_electron.user.base_user_schema import (
 )
 
 
+class UserDocument(BaseUserDocument):
+    """Represents user data in the persistence layer"""
+
+    playback_history: list[str]
+    playlists: list[str]
+    saved_playlists: list[str]
+
+
 @dataclass
 class UserDAO(BaseUserDAO):
-    """Represents user data in the persistence layer"""
+    """Represents user data in the internal processing layer"""
 
     playback_history: list[str]
     playlists: list[str]
@@ -40,7 +48,7 @@ class UserType(Enum):
     USER = "user"
 
 
-def get_user_dao_from_document(document: dict[str, Any]) -> UserDAO:
+def get_user_dao_from_document(document: UserDocument) -> UserDAO:
     """Get UserDAO from document by extracting all required fields.
 
     Args:

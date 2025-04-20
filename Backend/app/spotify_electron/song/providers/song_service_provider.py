@@ -1,4 +1,4 @@
-"""Provider class for supplying service depending on song architecture selected"""
+"""Song service provider based on selected architecture"""
 
 import importlib
 from types import ModuleType
@@ -23,10 +23,10 @@ class SongServiceProvider:
             AppArchitecture.ARCH_BLOB: SongServicePath.BLOB_MODULE_NAME,
             AppArchitecture.ARCH_SERVERLESS: SongServicePath.SERVERLESS_MODULE_NAME,
         }
-        cls.create_song_service()
+        cls._create_song_service()
 
     @classmethod
-    def create_song_service(cls) -> None:
+    def _create_song_service(cls) -> None:
         """Creates the song service depending on the song architecture selected"""
         architecture_type = getattr(PropertiesManager, AppEnvironment.ARCHITECTURE_ENV_NAME)
         import_module = importlib.import_module(cls.song_services[architecture_type])

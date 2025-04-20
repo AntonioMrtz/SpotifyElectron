@@ -2,7 +2,7 @@
 The repository will only handle Song metadata
 """
 
-import app.spotify_electron.song.providers.song_collection_provider as song_collection_provider
+import app.spotify_electron.song.providers.song_collection_provider as provider
 from app.logging.logging_constants import (
     LOGGING_BASE_SONG_REPOSITORY,
 )
@@ -39,7 +39,7 @@ async def check_song_exists(name: str) -> bool:
         if song exists
     """
     try:
-        collection = song_collection_provider.get_song_collection()
+        collection = provider.get_song_collection()
         song = await collection.find_one({"filename": name}, {"_id": 1})
     except Exception as exception:
         song_repository_logger.exception(f"Error checking if Song {name} exists in database")
@@ -64,12 +64,15 @@ async def get_song_metadata(name: str) -> SongMetadataDAO:
         the song
     """
     try:
-        collection = song_collection_provider.get_song_collection()
+        collection = provider.get_song_collection()
         song = await collection.find_one({"filename": name})
+
         validate_song_exists(song)
+        assert song
+
         song_dao = get_song_metadata_dao_from_document(
             song_name=name,
-            document=song["metadata"],  # type: ignore
+            document=song["metadata"],
         )
 
     except SongNotFoundError as exception:
@@ -95,7 +98,7 @@ async def delete_song(name: str) -> None:
         SongRepositoryError: an error occurred while deleting song from database
     """
     try:
-        collection = song_collection_provider.get_song_collection()
+        collection = provider.get_song_collection()
         result = await collection.delete_one({"filename": name})
         validate_song_delete_count(result)
         song_repository_logger.info(f"Song {name} Deleted")
@@ -120,11 +123,15 @@ async def get_artist_from_song(name: str) -> str:
         the artist name
     """
     try:
-        collection = song_collection_provider.get_song_collection()
+        collection = provider.get_song_collection()
         document = await collection.find_one({"filename": name})
+
+        validate_song_exists(document)
+        assert document
+
         song_metadata = get_song_metadata_dao_from_document(
             song_name=name,
-            document=document["metadata"],  # type: ignore
+            document=document["metadata"],
         )
     except SongRepositoryError as exception:
         song_repository_logger.exception(
@@ -145,7 +152,7 @@ async def increase_song_streams(name: str) -> None:
         SongRepositoryError: while increasing song streams
     """
     try:
-        collection = song_collection_provider.get_song_collection()
+        collection = provider.get_song_collection()
         await collection.update_one({"filename": name}, {"$inc": {"metadata.streams": 1}})
     except SongRepositoryError as exception:
         song_repository_logger.exception(
@@ -171,7 +178,7 @@ async def get_artist_total_streams(artist_name: str) -> int:
         result_total_streams_query = collection.aggregate(
             [
                 {"$match": {"metadata.artist": artist_name}},
-                {"$group": {"_id": None, "total": {"$sum": "$metadata.streams"}}},
+                {"$group": {"_id": None, "streams": {"$sum": "$metadata.streams"}}},
             ]
         )
         result_list = await result_total_streams_query.to_list(length=1)
@@ -179,7 +186,7 @@ async def get_artist_total_streams(artist_name: str) -> int:
         if not result_list:
             return 0
 
-        return result_list[0]["total"]
+        return result_list[0]["streams"]  # type: ignore
 
     except SongRepositoryError as exception:
         song_repository_logger.exception(
@@ -201,11 +208,11 @@ async def get_song_names_search_by_name(song_name: str) -> list[str]:
         list of song names that matched the song name
     """
     try:
-        collection = song_collection_provider.get_song_collection()
+        collection = provider.get_song_collection()
         cursor = collection.find(
-            {"name": {"$regex": song_name, "$options": "i"}}, {"_id": 0, "name": 1}
+            {"filename": {"$regex": song_name, "$options": "i"}}, {"_id": 0, "filename": 1}
         )
-        return [song["name"] async for song in cursor]  # type: ignore
+        return [song["filename"] async for song in cursor]
     except SongRepositoryError as exception:
         song_repository_logger.exception(
             f"Unexpected error getting song names that matched {song_name} in database"
@@ -225,18 +232,13 @@ async def get_songs_metadata_by_genre(genre: Genre) -> list[SongMetadataDAO]:
     Returns:
         list of song metadatas with selected genre
     """
-    collection = song_collection_provider.get_song_collection()
+    collection = provider.get_song_collection()
     genre_str = Genre.get_genre_string_value(genre)
-    cursor = collection.find({"genre": genre_str})
+    cursor = collection.find({"metadata.genre": genre_str})
     try:
         return [
-            SongMetadataDAO(
-                name=song_data["name"],
-                artist=song_data["artist"],
-                photo=song_data["photo"],
-                seconds_duration=song_data["duration"],
-                genre=Genre(song_data["genre"]),
-                streams=song_data["streams"],
+            get_song_metadata_dao_from_document(
+                song_name=song_data["filename"], document=song_data["metadata"]
             )
             async for song_data in cursor
         ]

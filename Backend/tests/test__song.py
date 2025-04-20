@@ -480,7 +480,7 @@ def test_get_cancion_by_genre(clear_test_data_db):
 
     res_get_song_by_genre = get_songs_by_genre(genre=genre, headers=jwt_headers)
     assert res_get_song_by_genre.status_code == HTTP_200_OK
-    assert len(res_get_song_by_genre.json()) == 1
+    assert len(res_get_song_by_genre.json()["songs"]) == 1
 
     res_delete_song = delete_song(song_name)
     assert res_delete_song.status_code == HTTP_202_ACCEPTED

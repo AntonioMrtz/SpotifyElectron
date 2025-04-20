@@ -1,16 +1,32 @@
 """Song schema for domain model"""
 
 from dataclasses import dataclass
-from typing import Any
 
 from app.exceptions.base_exceptions_schema import SpotifyElectronError
 from app.spotify_electron.genre.genre_schema import Genre
-from app.spotify_electron.song.base_song_schema import BaseSongDAO, BaseSongDTO
+from app.spotify_electron.song.base_song_schema import (
+    BaseSongDAO,
+    BaseSongDocument,
+    BaseSongDTO,
+    BaseSongMetadataDocument,
+)
+
+
+class SongMetadataDocument(BaseSongMetadataDocument):
+    """Represents song metadata in the persistence layer"""
+
+    pass
+
+
+class SongDocument(BaseSongDocument):
+    """Represents song data in the persistence layer"""
+
+    pass
 
 
 @dataclass
 class SongDAO(BaseSongDAO):
-    """Represents song data in the persistence layer"""
+    """Represents song data in the internal processing layer"""
 
 
 @dataclass
@@ -21,7 +37,7 @@ class SongDTO(BaseSongDTO):
     url: str
 
 
-def get_song_dao_from_document(song_name: str, document: dict[str, Any]) -> SongDAO:
+def get_song_dao_from_document(song_name: str, document: SongMetadataDocument) -> SongDAO:
     """Get SongDAO from document
 
     Args:
@@ -35,7 +51,7 @@ def get_song_dao_from_document(song_name: str, document: dict[str, Any]) -> Song
         name=song_name,
         photo=document["photo"],
         artist=document["artist"],
-        seconds_duration=document["duration"],
+        seconds_duration=document["seconds_duration"],
         genre=Genre(document["genre"]),
         streams=document["streams"],
     )

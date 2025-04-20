@@ -6,6 +6,7 @@ from app.spotify_electron.playlist.playlist_schema import (
     PlaylistCreateError,
     PlaylistDAO,
     PlaylistDeleteError,
+    PlaylistDocument,
     PlaylistNotFoundError,
     PlaylistRepositoryError,
     PlaylistUpdateError,
@@ -77,8 +78,11 @@ async def get_playlist(
     try:
         collection = get_playlist_collection()
         playlist = await collection.find_one({"name": name})
+
         validate_playlist_exists(playlist)
-        playlist_dao = get_playlist_dao_from_document(playlist)  # type: ignore
+        assert playlist
+
+        playlist_dao = get_playlist_dao_from_document(playlist)
 
     except PlaylistNotFoundError as exception:
         raise PlaylistNotFoundError from exception
@@ -116,14 +120,14 @@ async def create_playlist(  # noqa: PLR0917
     """
     try:
         collection = get_playlist_collection()
-        playlist = {
-            "name": name,
-            "photo": photo,
-            "upload_date": upload_date,
-            "description": description,
-            "owner": owner,
-            "song_names": song_names,
-        }
+        playlist = PlaylistDocument(
+            name=name,
+            photo=photo,
+            upload_date=upload_date,
+            description=description,
+            owner=owner,
+            song_names=song_names,
+        )
         result = await collection.insert_one(playlist)
         validate_playlist_create(result)
     except PlaylistCreateError as exception:

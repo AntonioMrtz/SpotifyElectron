@@ -1,6 +1,4 @@
-"""Provider class for supplying user collection connection with database depending on the \
-    architecture on the associated user type
-"""
+"""User collections provider"""
 
 from motor.motor_asyncio import AsyncIOMotorCollection
 
@@ -9,14 +7,18 @@ from app.database.database_schema import DatabaseCollection
 from app.database.DatabaseConnectionManager import DatabaseConnectionManager
 from app.logging.logging_constants import LOGGING_USER_COLLECTION_PROVIDER
 from app.logging.logging_schema import SpotifyElectronLogger
-from app.spotify_electron.user.user.user_schema import UserType
+from app.spotify_electron.user.artist.artist_schema import ArtistDocument
+from app.spotify_electron.user.base_user_schema import BaseUserDocument
+from app.spotify_electron.user.user.user_schema import UserDocument, UserType
 
 users_collection_provider_logger = SpotifyElectronLogger(
     LOGGING_USER_COLLECTION_PROVIDER
 ).get_logger()
 
 
-async def get_user_associated_collection(user_name: str) -> AsyncIOMotorCollection:
+async def get_user_associated_collection(
+    user_name: str,
+) -> AsyncIOMotorCollection[BaseUserDocument]:
     """Returns the user collection according to the user role
 
     Returns:
@@ -41,7 +43,7 @@ async def get_user_associated_collection(user_name: str) -> AsyncIOMotorCollecti
     return collection_map[user_type]
 
 
-def get_artist_collection() -> AsyncIOMotorCollection:
+def get_artist_collection() -> AsyncIOMotorCollection[ArtistDocument]:
     """Get artist collection
 
     Returns:
@@ -50,7 +52,7 @@ def get_artist_collection() -> AsyncIOMotorCollection:
     return DatabaseConnectionManager.get_collection_connection(DatabaseCollection.ARTIST)
 
 
-def get_user_collection() -> AsyncIOMotorCollection:
+def get_user_collection() -> AsyncIOMotorCollection[UserDocument]:
     """Get user collection
 
     Returns:

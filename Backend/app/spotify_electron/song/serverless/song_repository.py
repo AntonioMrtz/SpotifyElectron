@@ -4,7 +4,7 @@ Song metadata is stored in database and song files are managed by AWS S3 instanc
 When the song file is not needed, and only the metadata is required use base song services
 """
 
-import app.spotify_electron.song.providers.song_collection_provider as song_collection_provider
+import app.spotify_electron.song.serverless.providers.song_collection_provider as provider
 from app.logging.logging_constants import (
     LOGGING_SONG_SERVERLESS_REPOSITORY,
 )
@@ -17,6 +17,8 @@ from app.spotify_electron.song.base_song_schema import (
 )
 from app.spotify_electron.song.serverless.song_schema import (
     SongDAO,
+    SongDocument,
+    SongMetadataDocument,
     get_song_dao_from_document,
 )
 from app.spotify_electron.song.validations.base_song_repository_validations import (
@@ -41,10 +43,13 @@ async def get_song(name: str) -> SongDAO:
         the song
     """
     try:
-        collection = song_collection_provider.get_song_collection()
+        collection = provider.get_serverless_song_collection()
         song = await collection.find_one({"filename": name})
+
         validate_song_exists(song)
-        song_dao = get_song_dao_from_document(song_name=name, document=song["metadata"])  # type: ignore
+        assert song
+
+        song_dao = get_song_dao_from_document(song_name=name, document=song["metadata"])
 
     except SongNotFoundError as exception:
         raise SongNotFoundError from exception
@@ -56,10 +61,10 @@ async def get_song(name: str) -> SongDAO:
         return song_dao
 
 
-async def create_song(
+async def create_song(  # noqa: D417
     name: str,
     artist: str,
-    duration: int,
+    seconds_duration: int,
     genre: Genre,
     photo: str,
 ) -> None:
@@ -76,17 +81,18 @@ async def create_song(
         SongRepositoryError: creating song
     """
     try:
-        collection = song_collection_provider.get_song_collection()
-        song = {
-            "filename": name,
-            "metadata": {
-                "artist": artist,
-                "duration": duration,
-                "genre": str(genre.value),
-                "photo": photo,
-                "streams": 0,
-            },
-        }
+        collection = provider.get_serverless_song_collection()
+
+        song = SongDocument(
+            filename=name,
+            metadata=SongMetadataDocument(
+                artist=artist,
+                seconds_duration=seconds_duration,
+                genre=str(genre.value),
+                photo=photo,
+                streams=0,
+            ),
+        )
 
         result = await collection.insert_one(song)
         validate_base_song_create(result)

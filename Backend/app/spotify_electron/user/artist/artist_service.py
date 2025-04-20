@@ -7,7 +7,7 @@ import app.spotify_electron.song.base_song_service as base_song_service
 import app.spotify_electron.user.artist.artist_repository as artist_repository
 import app.spotify_electron.user.artist.validations.artist_service_validations as artist_service_validations  # noqa: E501
 import app.spotify_electron.user.base_user_repository as base_user_repository
-import app.spotify_electron.user.providers.user_collection_provider as user_collection_provider
+import app.spotify_electron.user.providers.user_collection_provider as provider
 import app.spotify_electron.user.validations.base_user_service_validations as base_user_service_validations  # noqa: E501
 from app.auth.auth_schema import UserUnauthorizedError
 from app.logging.logging_constants import LOGGING_ARTIST_SERVICE
@@ -259,7 +259,7 @@ async def search_by_name(name: str) -> list[ArtistDTO]:
         artists that match the name
     """
     try:
-        artist_collection = user_collection_provider.get_artist_collection()
+        artist_collection = provider.get_artist_collection()
         matched_items_names = await base_user_repository.search_by_name(
             name, artist_collection
         )
@@ -288,7 +288,7 @@ async def does_artist_exists(user_name: str) -> bool:
     -------
         if the artist exists
     """
-    user_collection = user_collection_provider.get_artist_collection()
+    user_collection = provider.get_artist_collection()
     return await base_user_repository.check_user_exists(user_name, user_collection)
 
 

@@ -1,6 +1,4 @@
-"""Provider class for supplying song collection connection with database depending on the\
-      architecture on song selected
-"""
+"""Song collections provider"""
 
 from motor.motor_asyncio import AsyncIOMotorCollection, AsyncIOMotorGridFSBucket
 
@@ -8,9 +6,10 @@ from app.common.app_schema import AppArchitecture, AppEnvironment
 from app.common.PropertiesManager import PropertiesManager
 from app.database.database_schema import DatabaseCollection
 from app.database.DatabaseConnectionManager import DatabaseConnectionManager
+from app.spotify_electron.song.base_song_schema import BaseSongDocument
 
 
-def get_song_collection() -> AsyncIOMotorCollection:
+def get_song_collection() -> AsyncIOMotorCollection[BaseSongDocument]:
     """Get song collection
 
     Returns:

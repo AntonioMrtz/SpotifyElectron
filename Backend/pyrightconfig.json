@@ -3,14 +3,12 @@
     "pythonVersion": "3.12",
     "useLibraryCodeForTypes": true,
     "reportMissingTypeStubs": "none",
-    "maxNumberOfThreads": 0,
-    "watch": true,
-    "verbose": true,
+    "verboseOutput": true,
     "reportGeneralTypeIssues": "error",
-    "reportUninitializedVariable": "error",
     "reportMissingImports": "error",
     "reportOptionalSubscript": "error",
     "reportOptionalCall": "error",
-    "reportOptionalMember": "error",
-    "reportPossiblyUnboundVariable":false
+    "reportOptionalMemberAccess": "error",
+    "reportPossiblyUnboundVariable": "none",
+    "reportUninitializedInstanceVariable": "none"
 }

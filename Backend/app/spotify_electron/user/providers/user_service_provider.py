@@ -1,4 +1,4 @@
-"""Provider class for supplying service depending on associated user type"""
+"""User service provider"""
 
 from typing import Annotated, Any
 

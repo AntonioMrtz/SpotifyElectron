@@ -1,14 +1,23 @@
 """BaseUser schema"""
 
 from dataclasses import dataclass
-from typing import Any
+from typing import TypedDict
 
 from app.exceptions.base_exceptions_schema import SpotifyElectronError
 
 
+class BaseUserDocument(TypedDict):
+    """Represents user data in the persistence layer"""
+
+    name: str
+    photo: str
+    register_date: str
+    password: bytes
+
+
 @dataclass
 class BaseUserDAO:
-    """Represents base user data in the persistence layer"""
+    """Represents user data in the internal processing layer"""
 
     name: str
     photo: str
@@ -25,7 +34,7 @@ class BaseUserDTO:
     register_date: str
 
 
-def get_base_user_dao_from_document(document: dict[str, Any]) -> BaseUserDAO:
+def get_base_user_dao_from_document(document: BaseUserDocument) -> BaseUserDAO:
     """Get BaseUserDAO from document
 
     Args:

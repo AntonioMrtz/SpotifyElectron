@@ -1,7 +1,6 @@
 """Artist schema for User domain model"""
 
 from dataclasses import dataclass
-from typing import Any
 
 from app.spotify_electron.user.base_user_schema import (
     BaseUserAlreadyExistsError,
@@ -12,12 +11,18 @@ from app.spotify_electron.user.base_user_schema import (
     BaseUserRepositoryError,
     BaseUserServiceError,
 )
-from app.spotify_electron.user.user.user_schema import UserDAO, UserDTO
+from app.spotify_electron.user.user.user_schema import UserDAO, UserDocument, UserDTO
+
+
+class ArtistDocument(UserDocument):
+    """Represents artist data in the persistence layer"""
+
+    uploaded_songs: list[str]
 
 
 @dataclass
 class ArtistDAO(UserDAO):
-    """Represents artist data in the persistence layer"""
+    """Represents artist data in the internal processing layer"""
 
     uploaded_songs: list[str]
     total_streams: int = 0
@@ -31,7 +36,7 @@ class ArtistDTO(UserDTO):
     total_streams: int = 0
 
 
-def get_artist_dao_from_document(document: dict[str, Any]) -> ArtistDAO:
+def get_artist_dao_from_document(document: ArtistDocument) -> ArtistDAO:
     """Get ArtistDAO from document
 
     Args:

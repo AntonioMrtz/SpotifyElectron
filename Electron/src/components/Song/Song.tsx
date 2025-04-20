@@ -11,7 +11,7 @@ export default function Song({
   playlistName,
   artistName,
   index,
-  duration,
+  secondsDuration,
   streams,
   handleSongCliked,
   refreshPlaylistData,
@@ -83,7 +83,7 @@ export default function Song({
         {streams}
       </span>
       <span className={` d-flex justify-content-end ${styles.gridItem}`}>
-        {secondsToMinutesSeconds(duration)}
+        {secondsToMinutesSeconds(secondsDuration)}
       </span>
 
       <div>

@@ -1,6 +1,4 @@
-"""
-Artist repository for managing persisted data
-"""
+"""Artist repository for managing persisted data"""
 
 import app.spotify_electron.user.providers.user_collection_provider as provider
 from app.logging.logging_constants import LOGGING_ARTIST_REPOSITORY
@@ -31,14 +29,14 @@ async def get_artist(name: str) -> ArtistDAO:
     """Get artist by name
 
     Args:
-        name (str): artist name
+        name: artist name
 
     Raises:
-        ArtistNotFoundError: artist was not found
+        ArtistNotFoundError: not found
         ArtistRepositoryError: unexpected error while getting artist
 
     Returns:
-        ArtistDAO: the artist
+        the artist
     """
     try:
         collection = provider.get_artist_collection()
@@ -64,13 +62,13 @@ async def create_artist(name: str, photo: str, password: bytes, current_date: st
     """Create artist
 
     Args:
-        name (str): artist name
-        photo (str): artist photo
-        password (bytes): artist hashed password
-        current_date (str): formatted creation date
+        name: artist name
+        photo: artist photo
+        password: artist hashed password
+        current_date: formatted creation date
 
     Raises:
-        ArtistRepositoryError: unexpected error while creating Artist
+        ArtistRepositoryError: while creating Artist
     """
     try:
         artist = ArtistDocument(
@@ -103,10 +101,10 @@ async def create_artist_from_user_dao(user: UserDAO) -> None:
     """Create artist from existing user data
 
     Args:
-        user (UserDAO): Existing user data
+        user: Existing user data
 
     Raises:
-        ArtistRepositoryError: Unexpected error while creating artist
+        ArtistRepositoryError: while creating artist
     """
     try:
         artist = {
@@ -150,10 +148,10 @@ async def get_all_artists() -> list[ArtistDAO]:
     """Get all artists
 
     Raises:
-        ArtistRepositoryError: unexpected error getting all artists
+        ArtistRepositoryError: getting all artists
 
     Returns:
-        list[ArtistDAO]: a list with all artists
+        a list with all artists
     """
     try:
         collection = provider.get_artist_collection()
@@ -171,11 +169,11 @@ async def add_song_to_artist(artist_name: str, song_name: str) -> None:
     """Add song to artist
 
     Args:
-        artist_name (str): artist name
-        song_name (str): song name
+        artist_name: artist name
+        song_name: song name
 
     Raises:
-        ArtistRepositoryError: unexpected error adding song to artist
+        ArtistRepositoryError: adding song to artist
     """
     try:
         collection = provider.get_artist_collection()
@@ -199,11 +197,11 @@ async def delete_song_from_artist(artist_name: str, song_name: str) -> None:
     """Delete song from artist
 
     Args:
-        artist_name (str): artist name
-        song_name (str): song name
+        artist_name: artist name
+        song_name: song name
 
     Raises:
-        ArtistRepositoryError: unexpected error deleting song from artist
+        ArtistRepositoryError: deleting song from artist
     """
     try:
         collection = provider.get_artist_collection()
@@ -228,10 +226,10 @@ async def get_artist_song_names(artist_name: str) -> list[str]:
     """Get artist song names
 
     Args:
-        artist_name (str): artist name
+        artist_name: artist name
 
     Returns:
-        list[str]: the artist uploaded song names
+        the artist uploaded song names
     """
     collection = provider.get_artist_collection()
     artist_data = await collection.find_one(

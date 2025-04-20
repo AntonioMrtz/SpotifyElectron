@@ -1,6 +1,4 @@
-"""
-Validations for Playlist repository
-"""
+"""Validations for Playlist repository"""
 
 from pymongo.results import DeleteResult, InsertOneResult, UpdateResult
 
@@ -18,12 +16,11 @@ def validate_playlist_exists(playlist: PlaylistDocument | None) -> None:
 
     Args:
     ----
-        playlist (PlaylistDAO | None): the playlist
+        playlist: the playlist
 
     Raises:
     ------
         PlaylistNotFoundError: if the playlists doesn't exists
-
     """
     if playlist is None:
         raise PlaylistNotFoundError
@@ -34,12 +31,11 @@ def validate_playlist_delete_count(result: DeleteResult) -> None:
 
     Args:
     ----
-        result (DeleteResult): the result from the deletion
+        result: the result from the deletion
 
     Raises:
     ------
         PlaylistDeleteError: if the deletion was not done
-
     """
     if result.deleted_count == 0:
         raise PlaylistDeleteError
@@ -49,10 +45,10 @@ def validate_playlist_update(result: UpdateResult) -> None:
     """Raises an exception if playlist update was not done
 
     Args:
-        result (UpdateResult): update result
+        result: update result
 
     Raises:
-        PlaylistUpdateError: if the update was not done
+        PlaylistUpdateError: update was not done
     """
     if not result.acknowledged:
         raise PlaylistUpdateError
@@ -63,12 +59,11 @@ def validate_playlist_create(result: InsertOneResult) -> None:
 
     Args:
     ----
-        result (InsertOneResult): the result from the insertion
+        result: the result from the insertion
 
     Raises:
     ------
         PlaylistCreateError: if the insertion was not done
-
     """
     if not result.acknowledged:
         raise PlaylistCreateError

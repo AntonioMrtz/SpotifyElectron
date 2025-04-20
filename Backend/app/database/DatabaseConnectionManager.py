@@ -27,10 +27,10 @@ class DatabaseConnectionManager:
         """Get a connection to a collection
 
         Args:
-            collection_name (DatabaseCollection): collection name
+            collection_name: collection name
 
         Returns:
-            AsyncIOMotorCollection: the connection to the selected collection
+            the connection to the selected collection
         """
         cls.__assert_connection_is_initialized()
 
@@ -44,9 +44,9 @@ class DatabaseConnectionManager:
             based on current environment value
 
         Args:
-            environment (AppEnvironmentMode): the current environment value
-            connection_uri (str): the database connection uri
-        """
+            environment: the current environment value
+            connection_uri: the database connection uri
+    """
         database_connection_class = cls.__connection_mapping.get(
             environment, DatabaseProductionConnection
         )
@@ -68,10 +68,10 @@ class DatabaseConnectionManager:
         """Get GridFS collection
 
         Args:
-            collection_name (DatabaseCollection): collection name
+            collection_name: collection name
 
         Returns:
-            AsyncIOMotorGridFSBucket: the GridFS collection
+            the GridFS collection
         """
         cls.__assert_connection_is_initialized()
         return cls.__connection.get_gridfs_collection_connection(collection_name)

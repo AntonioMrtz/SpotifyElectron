@@ -1,6 +1,4 @@
-"""
-Song service provider based on selected architecture
-"""
+"""Song service provider based on selected architecture"""
 
 import importlib
 from types import ModuleType
@@ -40,7 +38,7 @@ class SongServiceProvider:
         """Returns the imported song service depending on the architecture selected.
 
         Returns:
-            ModuleType: the imported song service
+            the imported song service
         """
         return SongServiceProvider.song_service
 
@@ -52,6 +50,6 @@ def get_song_service() -> ModuleType:
     shortens both imports and calls
 
     Returns:
-        ModuleType: the song service module
+        the song service module
     """
     return SongServiceProvider.get_song_service()

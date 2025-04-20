@@ -1,8 +1,6 @@
-"""
-Song collections provider based on selected architecture
-"""
+"""Song collections provider"""
 
-from motor.motor_asyncio import AsyncIOMotorCollection
+from motor.motor_asyncio import AsyncIOMotorCollection, AsyncIOMotorGridFSBucket
 
 from app.common.app_schema import AppArchitecture, AppEnvironment
 from app.common.PropertiesManager import PropertiesManager
@@ -15,7 +13,7 @@ def get_song_collection() -> AsyncIOMotorCollection[BaseSongDocument]:
     """Get song collection
 
     Returns:
-        AsyncIOMotorCollection: the song collection depending on architecture
+        the song collection depending on architecture
     """
     repository_map: dict[AppArchitecture, AsyncIOMotorCollection] = {
         AppArchitecture.ARCH_BLOB: DatabaseConnectionManager.get_collection_connection(
@@ -27,3 +25,14 @@ def get_song_collection() -> AsyncIOMotorCollection[BaseSongDocument]:
     }
     current_architecture = getattr(PropertiesManager, AppEnvironment.ARCHITECTURE_ENV_NAME)
     return repository_map.get(current_architecture, repository_map[AppArchitecture.ARCH_BLOB])
+
+
+def get_gridfs_song_collection() -> AsyncIOMotorGridFSBucket:
+    """Get gridfs collection for managing song files
+
+    Returns:
+        the GridFS song collection
+    """
+    return DatabaseConnectionManager.get_gridfs_collection_connection(
+        DatabaseCollection.SONG_BLOB_DATA
+    )

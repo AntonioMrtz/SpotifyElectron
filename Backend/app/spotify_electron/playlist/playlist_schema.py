@@ -1,6 +1,4 @@
-"""
-Playlist schema for domain model
-"""
+"""Playlist schema for domain model"""
 
 from dataclasses import dataclass
 from typing import TypedDict
@@ -48,11 +46,11 @@ def get_playlist_dao_from_document(document: PlaylistDocument) -> PlaylistDAO:
 
     Args:
     ----
-        document (dict): playlist document
+        document: playlist document
 
     Returns:
     -------
-        PlaylistDAO: PlaylistDAO Object
+        PlaylistDAO Object
     """
     return PlaylistDAO(
         name=document["name"],
@@ -69,11 +67,11 @@ def get_playlist_dto_from_dao(playlist_dao: PlaylistDAO) -> PlaylistDTO:
 
     Args:
     ----
-        playlist_dao (PlaylistDAO): PlaylistDAO object
+        playlist_dao: PlaylistDAO object
 
     Returns:
     -------
-        PlaylistDTO: PlaylistDTO object
+        PlaylistDTO object
     """
     return PlaylistDTO(
         name=playlist_dao.name,

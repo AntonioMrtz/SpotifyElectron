@@ -1,6 +1,4 @@
-"""
-Audio management utils
-"""
+"""Audio management utils"""
 
 import base64
 import io
@@ -20,11 +18,11 @@ def get_song_duration_seconds(name: str, file: bytes) -> int:
     """Get song duration
 
     Args:
-        name (str): song name
-        file (_type_): song file
+        name: song name
+        file: song file
 
     Returns:
-        int: the duration in seconds, defaulted to 0 if not a song file
+        the duration in seconds, defaulted to 0 if not a song file
     """
     try:
         audio_data, sample_rate = librosa.load(io.BytesIO(file), sr=None)
@@ -45,14 +43,14 @@ def encode_file(name: str, file: bytes) -> str:
     """Encode file into a string
 
     Args:
-        name (str): file name
-        file (bytes): file bytes
+        name: file name
+        file: file bytes
 
     Raises:
-        EncodingFileError: unexpected error encoding file
+        EncodingFileError: encoding file
 
     Returns:
-        str: the encoded str
+        the encoded str
     """
     # b'ZGF0YSB0byBiZSBlbmNvZGVk'
     try:

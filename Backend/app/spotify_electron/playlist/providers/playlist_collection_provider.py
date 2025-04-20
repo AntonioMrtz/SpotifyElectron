@@ -1,6 +1,4 @@
-"""
-Playlist collections provider
-"""
+"""Playlist collections provider"""
 
 from motor.motor_asyncio import AsyncIOMotorCollection
 
@@ -13,6 +11,6 @@ def get_playlist_collection() -> AsyncIOMotorCollection[PlaylistDocument]:
     """Get playlist collection
 
     Returns:
-        AsyncIOMotorCollection: the playlist collection
+        the playlist collection
     """
     return DatabaseConnectionManager.get_collection_connection(DatabaseCollection.PLAYLIST)

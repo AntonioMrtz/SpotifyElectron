@@ -1,6 +1,4 @@
-"""
-Validations for Playlist service
-"""
+"""Validations for Playlist service"""
 
 from app.exceptions.base_exceptions_schema import BadParameterError
 from app.spotify_electron.playlist.playlist_repository import check_playlist_exists
@@ -17,12 +15,11 @@ def validate_playlist_name_parameter(name: str) -> None:
 
     Args:
     ----
-        name (str): name
+        name: name
 
     Raises:
     ------
         PlaylistBadNameError: if name parameter is invalid
-
     """
     try:
         validate_parameter(name)
@@ -35,12 +32,11 @@ async def validate_playlist_should_exists(name: str) -> None:
 
     Args:
     ----
-        name (str): playlist name
+        name: playlist name
 
     Raises:
     ------
         PlaylistNotFoundError: if playlist doesn't exists
-
     """
     does_playlist_exist = await check_playlist_exists(name)
     if not does_playlist_exist:
@@ -52,12 +48,11 @@ async def validate_playlist_should_not_exists(name: str) -> None:
 
     Args:
     ----
-        name (str): playlist name
+        name: playlist name
 
     Raises:
     ------
         PlaylistAlreadyExistsError: if playlist exists
-
     """
     does_playlist_exist = await check_playlist_exists(name)
     if does_playlist_exist:

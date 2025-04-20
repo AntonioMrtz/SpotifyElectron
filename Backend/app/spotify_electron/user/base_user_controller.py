@@ -1,6 +1,5 @@
-"""
-User controller for handling incoming HTTP Requests
-It uses the base_user_service for handling logic for different user types
+"""User controller for handling incoming HTTP Requests
+It uses the `base_user_service` for handling logic for different user types
 """
 
 from fastapi import APIRouter
@@ -54,7 +53,7 @@ def get_who_am_i(token: Token) -> Response:
     """Returns token info from JWT
 
     Args:
-        token (TokenData): the jwt token. Defaults to None.
+        token: the jwt token. Defaults to None.
     """
     try:
         jwt_token_json = json_converter_utils.get_json_from_model(token)
@@ -78,8 +77,8 @@ async def get_user(name: str, token: Token) -> Response:
     """Get user by name
 
     Args:
-        name (str): user name
-        token (Annotated[TokenData, Depends): JWT info
+        name: user name
+        token: JWT info
     """
     try:
         user = await base_user_service.get_user(name)
@@ -120,9 +119,9 @@ async def create_user(name: str, photo: str, password: str) -> Response:
     """Create user
 
     Args:
-        name (str): user name
-        photo (str): user photo
-        password (str): user password
+        name: user name
+        photo: user photo
+        password: user password
     """
     try:
         await user_service.create_user(name, photo, password)
@@ -144,7 +143,7 @@ async def delete_user(name: str) -> Response:
     """Delete user
 
     Args:
-        name (str): user name
+        name: user name
     """
     try:
         await base_user_service.delete_user(name)
@@ -171,9 +170,9 @@ async def patch_playback_history(name: str, song_name: str, token: Token) -> Res
     """Add song to playback history
 
     Args:
-        name (str): user name
-        song_name (str): song name
-        token (Annotated[TokenData, Depends): JWT info
+        name: user name
+        song_name: song name
+        token: JWT info
     """
     try:
         await base_user_service.add_playback_history(
@@ -223,9 +222,9 @@ async def patch_saved_playlists(name: str, playlist_name: str, token: Token) -> 
     """Add playlist to saved list
 
     Args:
-        name (str): user name
-        playlist_name (str): saved playlist
-        token (Annotated[TokenData, Depends): JWT info
+        name: user name
+        playlist_name: saved playlist
+        token: JWT info
     """
     try:
         await base_user_service.add_saved_playlist(name, playlist_name, token=token)
@@ -268,9 +267,9 @@ async def delete_saved_playlists(name: str, playlist_name: str, token: Token) ->
     """Delete playlist from saved list of user
 
     Args:
-        name (str): user name
-        playlist_name (str): playlist name
-        token (Annotated[TokenData, Depends): JWT info
+        name: user name
+        playlist_name: playlist name
+        token: JWT info
     """
     try:
         await base_user_service.delete_saved_playlist(name, playlist_name, token=token)
@@ -318,8 +317,8 @@ async def get_user_relevant_playlists(name: str, token: Token) -> Response:
     """Get relevant playlists for user
 
     Args:
-        name (str): user name
-        token (Annotated[TokenData, Depends): JWT info
+        name: user name
+        token: JWT info
     """
     try:
         playlists = await base_user_service.get_user_relevant_playlists(name)
@@ -352,8 +351,8 @@ async def get_user_playlists(name: str, token: Token) -> Response:
     """Get playlists created by the user
 
     Args:
-        name (str): user name
-        token (Annotated[TokenData, Depends): JWT info
+        name: user name
+        token: JWT info
     """
     try:
         playlists = await base_user_service.get_user_playlists(name)
@@ -386,8 +385,8 @@ async def get_user_playlists_names(name: str, token: Token) -> Response:
     """Get playlist names created by user
 
     Args:
-        name (str): user name
-        token (Annotated[TokenData, Depends): JWT info
+        name: user name
+        token: JWT info
     """
     try:
         playlist_names = await base_user_service.get_user_playlist_names(name)
@@ -422,8 +421,8 @@ async def get_user_playback_history(name: str, token: Token) -> Response:
     """Get user song playback history
 
     Args:
-        name (str): user name
-        token (Annotated[TokenData, Depends): JWT info
+        name: user name
+        token: JWT info
     """
     try:
         playback_history = await base_user_service.get_user_playback_history(name)
@@ -458,8 +457,8 @@ async def promote_user_to_artist(name: str, token: Token) -> Response:
     """Promote user to artist
 
     Args:
-        name (str): user name
-        token (Token): JWT info
+        name: user name
+        token: JWT info
     """
     try:
         await user_service.promote_user_to_artist(name, token)

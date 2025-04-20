@@ -1,5 +1,4 @@
-"""
-Base User service for handling bussiness logic
+"""Base User service for handling bussiness logic
 Redirects to the specific user type service for non common logic
 """
 
@@ -58,10 +57,10 @@ async def get_user_type(user_name: str) -> UserType:
     """Get user type
 
     Args:
-        user_name (str): user name
+        user_name: user name
 
     Returns:
-        UserType: the user type/role
+        the user type/role
     """
     validate_parameter(user_name)
     await base_user_service_validations.validate_user_should_exists(user_name)
@@ -74,10 +73,10 @@ async def get_user(user_name: str) -> BaseUserDTO:
     """Returns the user
 
     Args:
-        user_name (str): the user name
+        user_name: the user name
 
     Returns:
-        User: the user
+        the user
     """
     user_service = await user_service_provider.get_user_service(user_name)
     return await user_service.get_user(user_name)
@@ -87,10 +86,10 @@ async def delete_user(user_name: str) -> None:
     """Delete user
 
     Args:
-        user_name (str): user name
+        user_name: user name
 
     Raises:
-        BaseUserBadNameError: invalid user name parameter
+        BaseUserBadNameError: name parameter
         BaseUserNotFoundError: user not found
         BaseUserServiceError: unexpected error while deleting user
     """
@@ -125,13 +124,13 @@ async def get_user_password(user_name: str) -> bytes:
     """Get user hashed password
 
     Args:
-        user_name (str): the user name
+        user_name: the user name
 
     Raises:
-        BaseUserServiceError: unexpected error while getting user password
+        BaseUserServiceError: while getting user password
 
     Returns:
-        bytes: the hashed password
+        the hashed password
     """
     try:
         collection = await provider.get_user_associated_collection(user_name)
@@ -155,12 +154,12 @@ async def add_playback_history(user_name: str, song_name: str, token: TokenData)
     """Add playback history to user
 
     Args:
-        user_name (str): user name
-        song_name (str): song name to add
-        token (TokenData): token data from user
+        user_name: user name
+        song_name: song name to add
+        token: token data from user
 
     Raises:
-        BaseUserBadNameError: invalid user name
+        BaseUserBadNameError: name
         BaseUserNotFoundError: user doesn't exists
         SongBadNameError: invalid song name
         UserUnauthorizedError: user cannot modify playback history that \
@@ -220,12 +219,12 @@ async def add_saved_playlist(user_name: str, playlist_name: str, token: TokenDat
     """Add saved playlist to user
 
     Args:
-        user_name (str): user name
-        playlist_name (str): playlist name
-        token (TokenData): user token data
+        user_name: user name
+        playlist_name: playlist name
+        token: user token data
 
     Raises:
-        BaseUserBadNameError: invalid user name
+        BaseUserBadNameError: name
         PlaylistBadNameError: invalid playlist name
         UserUnauthorizedError: user cannot access a playlist that is not created by him
         BaseUserNotFoundError: user doesn't exists
@@ -283,12 +282,12 @@ async def delete_saved_playlist(user_name: str, playlist_name: str, token: Token
     """Deletes saved playlist from user
 
     Args:
-        user_name (str): user name
-        playlist_name (str): playlist name
-        token (TokenData): token data from user
+        user_name: user name
+        playlist_name: playlist name
+        token: token data from user
 
     Raises:
-        BaseUserBadNameError: invalid user name
+        BaseUserBadNameError: name
         PlaylistBadNameError: invalid playlist name
         UserUnauthorizedError: user cannot access a playlist that is created by him
         BaseUserNotFoundError: user doesn't exists
@@ -346,12 +345,12 @@ async def add_playlist_to_owner(user_name: str, playlist_name: str, token: Token
     """Add playlist to owner
 
     Args:
-        user_name (str): user name
-        playlist_name (str): playlist name
-        token (TokenData): user token info
+        user_name: user name
+        playlist_name: playlist name
+        token: user token info
 
     Raises:
-        BaseUserServiceError: unexpected error adding playlist to owner
+        BaseUserServiceError: adding playlist to owner
     """
     try:
         await base_user_service_validations.validate_user_name_parameter(user_name)
@@ -387,10 +386,10 @@ async def delete_playlist_from_owner(playlist_name: str) -> None:
     """Delete playlist from owner
 
     Args:
-        playlist_name (str): playlist name
+        playlist_name: playlist name
 
     Raises:
-        BaseUserServiceError: unexpected error deleting playlist from owner
+        BaseUserServiceError: deleting playlist from owner
     """
     try:
         validate_playlist_name_parameter(playlist_name)
@@ -428,8 +427,8 @@ async def update_playlist_name(old_playlist_name: str, new_playlist_name: str) -
     """Update playlist name on users that have it saved, liked or it's the owner
 
     Args:
-        old_playlist_name (str): old name
-        new_playlist_name (str): new name
+        old_playlist_name: old name
+        new_playlist_name: new name
     """
     validate_playlist_name_parameter(old_playlist_name)
     validate_playlist_name_parameter(new_playlist_name)
@@ -449,15 +448,15 @@ async def get_user_relevant_playlists(user_name: str) -> list[PlaylistDTO]:
     """Get user relevant playlists
 
     Args:
-        user_name (str): user name
+        user_name: user name
 
     Raises:
-        BaseUserBadNameError: invalid user name
+        BaseUserBadNameError: name
         BaseUserNotFoundError: user not found
         BaseUserServiceError: unexpected error getting relevant playlists from user
 
     Returns:
-        list[PlaylistDTO]: the relevant playlists
+        the relevant playlists
     """
     try:
         await base_user_service_validations.validate_user_name_parameter(user_name)
@@ -503,15 +502,15 @@ async def get_user_playlists(user_name: str) -> list[PlaylistDTO]:
     """Get user created playlists
 
     Args:
-        user_name (str): user name
+        user_name: user name
 
     Raises:
-        BaseUserBadNameError: invalid user name
+        BaseUserBadNameError: name
         BaseUserNotFoundError: user not found
         BaseUserServiceError: unexpected error getting playlists created by the user
 
     Returns:
-        list[PlaylistDTO]: the playlists created by the user
+        the playlists created by the user
     """
     try:
         await base_user_service_validations.validate_user_name_parameter(user_name)
@@ -554,15 +553,15 @@ async def get_user_playlist_names(user_name: str) -> list[str]:
     """Get user created playlist names
 
     Args:
-        user_name (str): user name
+        user_name: user name
 
     Raises:
-        BaseUserBadNameError: invalid user name
+        BaseUserBadNameError: name
         BaseUserNotFoundError: user not found
         BaseUserServiceError: unexpected error getting playlist names from user
 
     Returns:
-        list[str]: the playlist names created by the user
+        the playlist names created by the user
     """
     try:
         await base_user_service_validations.validate_user_name_parameter(user_name)
@@ -599,15 +598,15 @@ async def get_user_playback_history(user_name: str) -> list[SongMetadataDTO]:
     """Get user song playback history
 
     Args:
-        user_name (str): user name
+        user_name: user name
 
     Raises:
-        BaseUserBadNameError: invalid user name
+        BaseUserBadNameError: name
         BaseUserNotFoundError: user not found
         BaseUserServiceError: unexpected error getting playback history from user
 
     Returns:
-        list[str]: the song playback history from user
+        the song playback history from user
     """
     try:
         await base_user_service_validations.validate_user_name_parameter(user_name)

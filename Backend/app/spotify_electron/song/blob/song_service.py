@@ -1,6 +1,4 @@
-"""
-Song service for handling business logic
-"""
+"""Song service for handling business logic"""
 
 import app.spotify_electron.song.base_song_repository as base_song_repository
 import app.spotify_electron.song.blob.song_repository as song_repository
@@ -53,15 +51,15 @@ async def get_song(name: str) -> SongDTO:
     """Get song
 
     Args:
-        name (str): song name
+        name: song name
 
     Raises:
-        SongBadNameError: invalid song name
+        SongBadNameError: name
         SongNotFoundError: song not found
         SongServiceError: unexpected error while getting song
 
     Returns:
-        SongDTO: the song
+        the song
     """
     try:
         validate_song_name_parameter(name)
@@ -97,14 +95,14 @@ async def create_song(  # noqa: C901
     """Create song
 
     Args:
-        name (str): song name
-        genre (Genre): song genre
-        photo (str): song photo
-        file (bytes): song file
-        token (TokenData): user token
+        name: song name
+        genre: song genre
+        photo: song photo
+        file: song file
+        token: user token
 
     Raises:
-        GenreNotValidError: invalid genre
+        GenreNotValidError:
         UserBadNameError: invalid user name
         UserNotFoundError: user doesn't exists
         EncodingFileError: error encoding file
@@ -177,10 +175,10 @@ async def delete_song(name: str) -> None:
     """Delete song
 
     Args:
-        name (str): song name
+        name: song name
 
     Raises:
-        SongBadNameError: invalid song name
+        SongBadNameError: name
         SongNotFoundError: song doesn't exists
         UserNotFoundError: artist doesn't exists
         SongServiceError: unexpected error deleting song
@@ -228,16 +226,16 @@ async def get_song_data(name: str) -> bytes:
     """Get song data
 
     Args:
-        name (str): song name
+        name: song name
 
     Raises:
-        SongBadNameError: invalid song name
+        SongBadNameError: name
         SongNotFoundError: song not found
         SongDataNotFoundError: song data doesn't exists
         SongServiceError: unexpected error getting song data
 
     Returns:
-        bytes: song data
+        song data
     """
     try:
         validate_song_name_parameter(name)

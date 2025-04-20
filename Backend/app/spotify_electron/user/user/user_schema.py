@@ -1,6 +1,4 @@
-"""
-Schema for User domain model
-"""
+"""Schema for User domain model"""
 
 from dataclasses import dataclass
 from enum import Enum
@@ -54,10 +52,10 @@ def get_user_dao_from_document(document: UserDocument) -> UserDAO:
     """Get UserDAO from document by extracting all required fields.
 
     Args:
-        document (UserDocument): The user document.
+        document: The user document.
 
     Returns:
-        UserDAO: A fully populated UserDAO object.
+        A fully populated UserDAO object.
     """
     return UserDAO(
         name=document["name"],
@@ -74,10 +72,10 @@ def get_user_dto_from_dao(user_dao: UserDAO) -> UserDTO:
     """Convert UserDAO to UserDTO for data transfer.
 
     Args:
-        user_dao (UserDAO): UserDAO object to convert.
+        user_dao: UserDAO object to convert.
 
     Returns:
-        UserDTO: Converted UserDTO object.
+        Converted UserDTO object.
     """
     return UserDTO(
         name=user_dao.name,

@@ -1,6 +1,4 @@
-"""
-Stream controller for handling song audio streaming
-"""
+"""Stream controller for handling song audio streaming"""
 
 from fastapi import APIRouter, Request, Response
 from fastapi.responses import StreamingResponse
@@ -38,9 +36,9 @@ async def stream_song(
     """Streams song audio
 
     Args:
-        name (str): song name
-        request (Request): incoming request
-        token (Annotated[TokenData, Depends): JWT info
+        name: song name
+        request: incoming request
+        token: JWT info
     """
     try:
         range_header = request.headers.get("range")

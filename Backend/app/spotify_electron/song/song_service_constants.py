@@ -1,6 +1,4 @@
-"""
-Constants for Song services
-"""
+"""Constants for Song services"""
 
 from enum import StrEnum
 

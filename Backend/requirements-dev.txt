@@ -1,2 +1,3 @@
-ruff==0.9.4 # bump pipelines to match ruff version if modified
+ruff==0.11.5 # bump pipelines and pre-commit to match ruff version if modified
+pyright[nodejs]==1.1.399 # bump pipelines to match pyright version if modified
 -r requirements-test.txt

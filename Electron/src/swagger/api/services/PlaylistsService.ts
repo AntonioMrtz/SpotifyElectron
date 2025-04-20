@@ -11,8 +11,8 @@ export class PlaylistsService {
      * Get playlist
      *
      * Args:
-     * name (str): playlist name
-     * token (Annotated[TokenData, Depends): JWT info
+     * name: playlist name
+     * token: JWT info
      * @param name
      * @returns any Successful Response
      * @throws ApiError
@@ -36,12 +36,12 @@ export class PlaylistsService {
      * Update playlist
      *
      * Args:
-     * name (str): playlist name
-     * photo (str): playlist new photo
-     * description (str): playlist new description
-     * song_names (list[str], optional): playlist new song names. Defaults to Body(...).
-     * new_name (str | None, optional): playlist new name. Defaults to None.
-     * token (Annotated[TokenData, Depends): JWT info
+     * name: playlist name
+     * photo: playlist new photo
+     * description: playlist new description
+     * song_names: playlist new song names. Defaults to Body(...).
+     * new_name: playlist new name. Defaults to None.
+     * token: JWT info
      * @param name
      * @param photo
      * @param description
@@ -80,7 +80,7 @@ export class PlaylistsService {
      * Delete playlsit
      *
      * Args:
-     * name (str): playlist name
+     * name: playlist name
      * @param name
      * @returns any Successful Response
      * @throws ApiError
@@ -104,11 +104,11 @@ export class PlaylistsService {
      * Create playlist
      *
      * Args:
-     * name (str): playlist name
-     * photo (str): playlist photo
-     * description (str): playlist description
-     * song_names (list[str]): list of song names included in playlist.
-     * token (Annotated[TokenData, Depends): JWT info
+     * name: playlist name
+     * photo: playlist photo
+     * description: playlist description
+     * song_names: list of song names included in playlist.
+     * token: JWT info
      * @param name
      * @param photo
      * @param description
@@ -154,8 +154,8 @@ export class PlaylistsService {
      * Get selected playlists
      *
      * Args:
-     * names (str): playlist names
-     * token (Annotated[TokenData, Depends): JWT info
+     * names: playlist names
+     * token: JWT info
      * @param names
      * @returns any Successful Response
      * @throws ApiError
@@ -179,8 +179,8 @@ export class PlaylistsService {
      * Add songs to playlist
      *
      * Args:
-     * name (str): playlist name
-     * song_names (list[str]): song names
+     * name: playlist name
+     * song_names: song names
      * @param name
      * @param requestBody
      * @returns any Successful Response
@@ -208,8 +208,8 @@ export class PlaylistsService {
      * Remove songs from playlist
      *
      * Args:
-     * name (str): playlist name
-     * song_names (list[str]): song names
+     * name: playlist name
+     * song_names: song names
      * @param name
      * @param songNames
      * @returns any Successful Response

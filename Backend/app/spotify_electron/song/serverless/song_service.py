@@ -1,6 +1,4 @@
-"""
-Song service for handling business logic
-"""
+"""Song service for handling business logic"""
 
 import app.spotify_electron.song.base_song_repository as base_song_repository
 import app.spotify_electron.song.serverless.song_repository as song_repository
@@ -59,13 +57,13 @@ def get_song_streaming_url(name: str) -> str:
     """Get song streaming url
 
     Args:
-        name (str): song name
+        name: song name
 
     Raises:
-        SongGetUrlStreamingError: unexpected error getting song streaming url
+        SongGetUrlStreamingError: getting song streaming url
 
     Returns:
-        str: the streaming url
+        the streaming url
     """
     try:
         response_get_url_streaming_request = song_serverless_api.get_song(name)
@@ -88,15 +86,15 @@ async def get_song(name: str) -> SongDTO:
     """Get song
 
     Args:
-        name (str): song name
+        name: song name
 
     Raises:
-        SongBadNameError: invalid song name
+        SongBadNameError: name
         SongNotFoundError: song not found
         SongServiceError: unexpected error while getting song
 
     Returns:
-        SongDTO: the song
+        the song
     """
     try:
         validate_song_name_parameter(name)
@@ -134,14 +132,14 @@ async def create_song(  # noqa: C901
     """Create song
 
     Args:
-        name (str): song name
-        genre (Genre): song genre
-        photo (str): song photo
-        file (bytes): song file
-        token (TokenData): user token
+        name: song name
+        genre: song genre
+        photo: song photo
+        file: song file
+        token: user token
 
     Raises:
-        GenreNotValidError: invalid genre
+        GenreNotValidError:
         UserBadNameError: invalid user name
         UserNotFoundError: user doesn't exists
         EncodingFileError: error encoding file
@@ -223,10 +221,10 @@ async def delete_song(name: str) -> None:
     """Delete song
 
     Args:
-        name (str): song name
+        name: song name
 
     Raises:
-        SongNotFoundError: song doesn't exists
+        SongNotFoundError:'t exists
         SongBadNameError: invalid song nae
         UserNotFoundError: artist doesn't exists
         SongServiceError: unexpected error deleting song

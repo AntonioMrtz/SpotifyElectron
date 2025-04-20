@@ -1,5 +1,4 @@
-"""
-Base Song schema.
+"""Base Song schema.
 It contains Base DAO/DTO objects both for Metadata and Song containing
 the song resource.
 """
@@ -70,13 +69,12 @@ def get_song_metadata_dao_from_document(
 
     Args:
     ----
-        song_name (str): song name
-        document (BaseSongMetadataDocument): song document
+        song_name: song name
+        document: song document
 
     Returns:
     -------
-        SongMetadataDAO: SongMetadataDAO Object
-
+        SongMetadataDAO Object
     """
     return SongMetadataDAO(
         name=song_name,
@@ -92,10 +90,10 @@ def get_song_metadata_dto_from_dao(song_dao: SongMetadataDAO) -> SongMetadataDTO
     """Get song metadata from dao
 
     Args:
-        song_dao (SongMetadataDAO): song dao
+        song_dao: song dao
 
     Returns:
-        SongMetadataDTO: the song metadata
+        the song metadata
     """
     return SongMetadataDTO(
         name=song_dao.name,

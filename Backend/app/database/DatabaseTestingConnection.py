@@ -16,7 +16,7 @@ class DatabaseTestingConnection(BaseDatabaseConnection):
         """Get mock Mongo client class
 
         Returns:
-            AsyncMongoMockClient: the mock Mongo client class
+            the mock Mongo client class
         """
         enable_gridfs_integration()
         return AsyncMongoMockClient
@@ -26,6 +26,6 @@ class DatabaseTestingConnection(BaseDatabaseConnection):
         """Returns prefix for testing
 
         Returns:
-            str: the testing prefix for collections
+            the testing prefix for collections
         """
         return cls.TESTING_COLLECTION_NAME_PREFIX

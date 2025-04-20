@@ -1,6 +1,4 @@
-"""
-Genre controller for handling incoming HTTP Requests
-"""
+"""Genre controller for handling incoming HTTP Requests"""
 
 from fastapi import APIRouter
 from fastapi.responses import Response

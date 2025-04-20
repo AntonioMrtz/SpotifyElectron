@@ -1,6 +1,4 @@
-"""
-Authentication schema for domain model
-"""
+"""Authentication schema for domain model"""
 
 from dataclasses import dataclass
 
@@ -52,11 +50,11 @@ class AuthConfig:
         """Init authentication configuration, required to start the app successfully
 
         Args:
-            verification_algorithm (str): JWT verification algorithm
-            secret_key_sign (str): 32 byte key(16 characters) for signing JWT Tokens that\
+            verification_algorithm: JWT verification algorithm
+            secret_key_sign: 32 byte key(16 characters) for signing JWT Tokens that\
                   will authenticate the user
-            access_token_expire_minutes (int): minutes until the JWT expires
-            days_to_expire_cookie (int): days until cookies expire
+            access_token_expire_minutes: minutes until the JWT expires
+            days_to_expire_cookie: days until cookies expire
         """
         cls.SIGNING_SECRET_KEY = secret_key_sign
 

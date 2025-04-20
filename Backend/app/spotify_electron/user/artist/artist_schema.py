@@ -1,6 +1,4 @@
-"""
-Artist schema for User domain model
-"""
+"""Artist schema for User domain model"""
 
 from dataclasses import dataclass
 
@@ -43,12 +41,11 @@ def get_artist_dao_from_document(document: ArtistDocument) -> ArtistDAO:
 
     Args:
     ----
-        document (ArtistDocument): user document
+        document: user document
 
     Returns:
     -------
-        ArtistDAO: ArtistDAO Object
-
+        ArtistDAO Object
     """
     return ArtistDAO(
         name=document["name"],
@@ -67,12 +64,11 @@ def get_artist_dto_from_dao(artist_dao: ArtistDAO) -> ArtistDTO:
 
     Args:
     ----
-        artist_dao (ArtistDAO): ArtistDAO object
+        artist_dao: ArtistDAO object
 
     Returns:
     -------
-        ArtistDTO: ArtistDTO object
-
+        ArtistDTO object
     """
     return ArtistDTO(
         name=artist_dao.name,

@@ -1,6 +1,4 @@
-"""
-Playlist controller for handling incoming HTTP Requests
-"""
+"""Playlist controller for handling incoming HTTP Requests"""
 
 from typing import Annotated
 
@@ -56,8 +54,8 @@ async def get_playlist(
     """Get playlist
 
     Args:
-        name (str): playlist name
-        token (Annotated[TokenData, Depends): JWT info
+        name: playlist name
+        token: JWT info
     """
     try:
         playlist = await playlist_service.get_playlist(name)
@@ -98,11 +96,11 @@ async def create_playlist(
     """Create playlist
 
     Args:
-        name (str): playlist name
-        photo (str): playlist photo
-        description (str): playlist description
-        song_names (list[str]): list of song names included in playlist.
-        token (Annotated[TokenData, Depends): JWT info
+        name: playlist name
+        photo: playlist photo
+        description: playlist description
+        song_names: list of song names included in playlist.
+        token: JWT info
     """
     try:
         await playlist_service.create_playlist(
@@ -148,12 +146,12 @@ async def update_playlist(  # noqa: PLR0917
     """Update playlist
 
     Args:
-        name (str): playlist name
-        photo (str): playlist new photo
-        description (str): playlist new description
-        song_names (list[str], optional): playlist new song names. Defaults to Body(...).
-        new_name (str | None, optional): playlist new name. Defaults to None.
-        token (Annotated[TokenData, Depends): JWT info
+        name: playlist name
+        photo: playlist new photo
+        description: playlist new description
+        song_names: playlist new song names. Defaults to Body(...).
+        new_name: playlist new name. Defaults to None.
+        token: JWT info
     """
     try:
         await playlist_service.update_playlist(
@@ -193,7 +191,7 @@ async def delete_playlist(name: str) -> Response:
     """Delete playlsit
 
     Args:
-        name (str): playlist name
+        name: playlist name
     """
     try:
         await playlist_service.delete_playlist(name)
@@ -252,8 +250,8 @@ async def get_selected_playlists(names: str, token: Token) -> Response:
     """Get selected playlists
 
     Args:
-        names (str): playlist names
-        token (Annotated[TokenData, Depends): JWT info
+        names: playlist names
+        token: JWT info
     """
     try:
         playlists = await playlist_service.get_selected_playlists(
@@ -291,8 +289,8 @@ async def add_songs_to_playlist(name: str, song_names: list[str]) -> Response:
     """Add songs to playlist
 
     Args:
-        name (str): playlist name
-        song_names (list[str]): song names
+        name: playlist name
+        song_names: song names
     """
     try:
         await playlist_service.add_songs_to_playlist(name, song_names)
@@ -330,8 +328,8 @@ async def remove_songs_from_playlist(
     """Remove songs from playlist
 
     Args:
-        name (str): playlist name
-        song_names (list[str]): song names
+        name: playlist name
+        song_names: song names
     """
     try:
         await playlist_service.remove_songs_from_playlist(name, song_names)

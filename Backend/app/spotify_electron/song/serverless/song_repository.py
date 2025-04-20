@@ -1,5 +1,4 @@
-"""
-Song repository for managing persisted data
+"""Song repository for managing persisted data
 
 Song metadata is stored in database and song files are managed by AWS S3 instances
 When the song file is not needed, and only the metadata is required use base song services
@@ -34,14 +33,14 @@ async def get_song(name: str) -> SongDAO:
     """Get song from database
 
     Args:
-        name (str): song name
+        name: song name
 
     Raises:
-        SongNotFoundError: song not found
+        SongNotFoundError: found
         SongRepositoryError: unexpected error getting song
 
     Returns:
-        SongDAO: the song
+        the song
     """
     try:
         collection = provider.get_serverless_song_collection()
@@ -72,14 +71,14 @@ async def create_song(  # noqa: D417
     """Create song
 
     Args:
-        name (str): song name
-        artist (str): song artist
-        duration (int): song duration in seconds
-        genre (Genre): song genre
-        photo (str): song photo
+        name: song name
+        artist: song artist
+        duration: song duration in seconds
+        genre: song genre
+        photo: song photo
 
     Raises:
-        SongRepositoryError: unexpected error creating song
+        SongRepositoryError: creating song
     """
     try:
         collection = provider.get_serverless_song_collection()

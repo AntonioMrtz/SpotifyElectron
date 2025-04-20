@@ -1,6 +1,4 @@
-"""
-Common validations for all Song services, regardless of the current architecture
-"""
+"""Common validations for all Song services, regardless of the current architecture"""
 
 from collections.abc import Mapping
 from typing import Any
@@ -19,12 +17,11 @@ def validate_song_exists(song: Mapping[str, Any] | None) -> None:
 
     Args:
     ----
-        song (Mapping[str, Any] | None): the song
+        song: the song
 
     Raises:
     ------
         SongNotFoundError: if the song doesn't exists
-
     """
     if song is None:
         raise SongNotFoundError
@@ -35,12 +32,11 @@ def validate_base_song_create(result: InsertOneResult) -> None:
 
     Args:
     ----
-        result (InsertOneResult): the result from the insertion
+        result: the result from the insertion
 
     Raises:
     ------
         SongCreateError: if the insertion was not done
-
     """
     if not result.acknowledged:
         raise SongCreateError
@@ -51,12 +47,11 @@ def validate_song_delete_count(result: DeleteResult) -> None:
 
     Args:
     ----
-        result (DeleteResult): the result from the deletion
+        result: the result from the deletion
 
     Raises:
     ------
         SongDeleteError: if the deletion was not done
-
     """
     if result.deleted_count == 0:
         raise SongDeleteError

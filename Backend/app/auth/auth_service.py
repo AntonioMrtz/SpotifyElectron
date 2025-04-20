@@ -1,6 +1,4 @@
-"""
-Authentication service for handling business logic
-"""
+"""Authentication service for handling business logic"""
 
 from datetime import UTC, datetime, timedelta, timezone
 from typing import Any
@@ -35,6 +33,7 @@ from app.spotify_electron.user.base_user_schema import (
     BaseUserNotFoundError,
     BaseUserServiceError,
 )
+from app.spotify_electron.user.user.user_schema import UserType
 from app.spotify_electron.utils.validations.validation_utils import validate_parameter
 
 ALGORITHM = "HS256"
@@ -49,8 +48,8 @@ def create_access_token(data: dict[str, str], expires_delta: timedelta | None = 
 
     Args:
     ----
-        data (dict): Info to be stored in the token
-        expires_delta (timedelta | None, optional): Expire date of the token
+        data: Info to be stored in the token
+        expires_delta: Expire date of the token
 
     Raises:
     ------
@@ -59,7 +58,6 @@ def create_access_token(data: dict[str, str], expires_delta: timedelta | None = 
     Returns:
     -------
         str: the JWT Token created
-
     """
     try:
         to_encode = data.copy()
@@ -83,35 +81,39 @@ def create_access_token(data: dict[str, str], expires_delta: timedelta | None = 
 def get_jwt_token_data(
     token_raw_data: str,
 ) -> TokenData:
-    """Decrypt jwt data and returns data from it
+    """Get token data from JWT
 
     Args:
-    ----
-        token_raw_data (TokenData): JWT Token
+        token_raw_data: raw JWT
 
     Raises:
-    ------
-        BadJWTTokenProvidedError: invalid token provided
+        BadJWTTokenProvidedError: invalid token
 
     Returns:
-    -------
-        TokenData: the data provided by the JWT Token
-
+        parsed JWT data
     """
     try:
         validate_token_exists(token_raw_data)
+        assert token_raw_data
+
         payload = jwt.decode(
             token_raw_data,
             AuthConfig.SIGNING_SECRET_KEY,
             algorithms=[ALGORITHM],
         )
+
         username = payload.get("access_token")
         role = payload.get("role")
         token_type = payload.get("token_type")
 
         credentials = [username, role, token_type]
         validate_jwt_credentials_missing(credentials)
-        token_data = TokenData(username=username, role=role, token_type=token_type)  # type: ignore
+        assert username is not None
+        assert token_type is not None
+
+        role = UserType(role)
+
+        token_data = TokenData(username=username, role=role, token_type=token_type)
 
     except JWTNotProvidedError as exception:
         auth_service_logger.exception("No JWT Token was provided")
@@ -137,12 +139,11 @@ def hash_password(plain_password: str) -> bytes:
 
     Args:
     ----
-        plain_password (str): provided plain password
+        plain_password: provided plain password
 
     Returns:
     -------
         bytes: the hashed password
-
     """
     encoded_password = plain_password.encode()
     return bcrypt.hashpw(encoded_password, bcrypt.gensalt())
@@ -153,13 +154,12 @@ def verify_password(plain_password: str, hashed_password: bytes) -> None:
 
     Args:
     ----
-        plain_password (str): plain text password
-        hashed_password (bytes): hashed password
+        plain_password: plain text password
+        hashed_password: hashed password
 
     Raises:
     ------
         VerifyPasswordError: if passwords don't match
-
     """
     if not bcrypt.checkpw(plain_password.encode(), hashed_password):
         raise VerifyPasswordError
@@ -171,7 +171,6 @@ def get_token_expire_date() -> datetime:
     Returns
     -------
         datetime: the expire date for the token
-
     """
     current_utc_datetime = datetime.now(timezone.utc).replace(tzinfo=timezone.utc)  # noqa: UP017 TODO
     return current_utc_datetime + timedelta(days=DAYS_TO_EXPIRE_COOKIE)
@@ -182,8 +181,8 @@ async def login_user(name: str, password: str) -> str:
 
     Args:
     ----
-        name (str): Users's name
-        password (str): Users's password
+        name: Users's name
+        password: Users's password
 
     Raises:
     ------
@@ -195,7 +194,6 @@ async def login_user(name: str, password: str) -> str:
     Returns:
     -------
         str: the JWT Token
-
     """
     try:
         validate_parameter(name)
@@ -243,10 +241,10 @@ async def login_user_with_token(raw_token: str) -> None:
     """User Login with token
 
     Args:
-        raw_token (str): the jwt token
+        raw_token: the jwt token
 
     Raises:
-        JWTValidationError: invalid JWT credentials
+        JWTValidationError: credentials
         BaseUserNotFoundError: user doesn't exists
         UnexpectedLoginUserError: unexpected error during user login
     """
@@ -279,12 +277,11 @@ def validate_jwt(token: str) -> None:
 
     Args:
     ----
-        token (str): the token to validate
+        token: the token to validate
 
     Raises:
     ------
-        JWTValidationError: if the validation was not succesfull
-
+        JWTValidationError: if the validation was not successfull
     """
     try:
         decoded_token = jwt.decode(
@@ -311,10 +308,10 @@ def get_authorization_bearer_from_headers(headers: list[tuple[bytes, Any]]) -> s
     """Get authorization bearer value from HTTP header 'authorization'
 
     Args:
-        headers (list[tuple]): headers
+        headers: headers
 
     Returns:
-        str | None: the authorization value
+        the authorization value
     """
     for key, value in headers:
         if key == b"authorization":

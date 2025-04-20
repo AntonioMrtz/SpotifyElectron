@@ -1,6 +1,4 @@
-"""
-Logging constants
-"""
+"""Logging constants"""
 
 # Log Levels
 DEBUG = "DEBUG"

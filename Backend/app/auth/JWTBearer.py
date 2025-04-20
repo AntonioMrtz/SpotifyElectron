@@ -31,13 +31,13 @@ class JWTBearer(HTTPBearer):
         """Returns Token data or 403 Code if credentials are invalid
 
         Args:
-            request (Request): the incoming request
+            request: the incoming request
 
         Raises:
-            BadJWTTokenProvidedError: invalid credentials
+            BadJWTTokenProvidedError:
 
         Returns:
-            TokenData: the token data
+            the token data
         """
         # TODO Receiving b'"bearer eyJhbGciOiJIUzI"' from frontend
         # instead of b'bearer eyJhbGciOiJIUzI'

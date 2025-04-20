@@ -1,6 +1,4 @@
-"""
-Common validations for all Song respositories, regardless of the current architecture
-"""
+"""Common validations for all Song respositories, regardless of the current architecture"""
 
 from app.exceptions.base_exceptions_schema import BadParameterError
 from app.spotify_electron.song.base_song_repository import check_song_exists
@@ -16,10 +14,10 @@ def validate_song_name_parameter(name: str) -> None:
     """Raises an exception if song name parameter is invalid
 
     Args:
-        name (str): song name
+        name: song name
 
     Raises:
-        SongBadNameError: if name parameter is invalid
+        SongBadNameError: parameter is invalid
     """
     try:
         validate_parameter(name)
@@ -32,12 +30,11 @@ async def validate_song_should_exists(name: str) -> None:
 
     Args:
     ----
-        name (str): song name
+        name: song name
 
     Raises:
     ------
         SongNotFoundError: if song doesn't exists
-
     """
     does_song_exists = await check_song_exists(name)
     if not does_song_exists:
@@ -49,12 +46,11 @@ async def validate_song_should_not_exists(name: str) -> None:
 
     Args:
     ----
-        name (str): song name
+        name: song name
 
     Raises:
     ------
         SongAlreadyExistsError: if song exists
-
     """
     does_song_exists = await check_song_exists(name)
     if does_song_exists:

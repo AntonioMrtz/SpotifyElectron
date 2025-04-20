@@ -1,6 +1,4 @@
-"""
-User collections provider
-"""
+"""User collections provider"""
 
 from motor.motor_asyncio import AsyncIOMotorCollection
 
@@ -24,7 +22,7 @@ async def get_user_associated_collection(
     """Returns the user collection according to the user role
 
     Returns:
-        AsyncIOMotorCollection: the user collection
+        the user collection
     """
     collection_map: dict[UserType, AsyncIOMotorCollection] = {
         UserType.USER: DatabaseConnectionManager.get_collection_connection(
@@ -49,7 +47,7 @@ def get_artist_collection() -> AsyncIOMotorCollection[ArtistDocument]:
     """Get artist collection
 
     Returns:
-        AsyncIOMotorCollection: the artist collection
+        the artist collection
     """
     return DatabaseConnectionManager.get_collection_connection(DatabaseCollection.ARTIST)
 
@@ -58,7 +56,7 @@ def get_user_collection() -> AsyncIOMotorCollection[UserDocument]:
     """Get user collection
 
     Returns:
-        AsyncIOMotorCollection: the user collection
+        the user collection
     """
     return DatabaseConnectionManager.get_collection_connection(DatabaseCollection.USER)
 
@@ -67,7 +65,7 @@ def get_all_collections() -> list[AsyncIOMotorCollection]:
     """Get all user collections
 
     Returns:
-        list[AsyncIOMotorCollection]: all the users collections
+        all the users collections
     """
     collection_map = {
         UserType.USER: DatabaseConnectionManager.get_collection_connection(

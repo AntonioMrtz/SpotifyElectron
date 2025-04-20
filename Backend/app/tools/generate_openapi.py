@@ -22,7 +22,7 @@ def check_openapi_folder_exists() -> bool:
     """Checks if folder that has to store OpenAPI file exists
 
     Returns:
-        bool: if the OpenAPI folder exists
+        if the OpenAPI folder exists
     """
     cwd = os.path.abspath(os.getcwd())
     print(f"> Current Working Directory: {cwd}")

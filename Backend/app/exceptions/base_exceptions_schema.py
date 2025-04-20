@@ -1,6 +1,4 @@
-"""
-Base common exceptions
-"""
+"""Base common exceptions"""
 
 from app.logging.logging_constants import LOGGING_EXCEPTION
 from app.logging.logging_schema import SpotifyElectronLogger

@@ -1,6 +1,4 @@
-"""
-BaseUser schema
-"""
+"""BaseUser schema"""
 
 from dataclasses import dataclass
 from typing import TypedDict
@@ -41,12 +39,11 @@ def get_base_user_dao_from_document(document: BaseUserDocument) -> BaseUserDAO:
 
     Args:
     ----
-        document (BaseUserDocument): BaseUser document
+        document: BaseUser document
 
     Returns:
     -------
-        BaseUserDAO: BaseUserDAO Object
-
+        BaseUserDAO Object
     """
     return BaseUserDAO(
         name=document["name"],
@@ -61,12 +58,11 @@ def get_base_user_dto_from_dao(user_dao: BaseUserDAO) -> BaseUserDTO:
 
     Args:
     ----
-        user_dao (BaseUserDAO): BaseUserDAO object
+        user_dao: BaseUserDAO object
 
     Returns:
     -------
-        BaseUserDTO: BaseUserDTO object
-
+        BaseUserDTO object
     """
     return BaseUserDTO(
         name=user_dao.name,

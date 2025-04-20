@@ -1,9 +1,15 @@
 # ✅🎨 Linting & Formatting
 
-### ✅ Run linting
+### ✅ Linting
 
 ```console
 python -m ruff check --fix
+```
+
+### 🔒 Static type checking
+
+```console
+python -m pyright .
 ```
 
 ## 🎨 Formatting

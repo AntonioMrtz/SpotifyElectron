@@ -1,0 +1,16 @@
+{
+    "typeCheckingMode": "basic",
+    "pythonVersion": "3.12",
+    "useLibraryCodeForTypes": true,
+    "reportMissingTypeStubs": "none",
+    "maxNumberOfThreads": 0,
+    "watch": true,
+    "verbose": true,
+    "reportGeneralTypeIssues": "error",
+    "reportUninitializedVariable": "error",
+    "reportMissingImports": "error",
+    "reportOptionalSubscript": "error",
+    "reportOptionalCall": "error",
+    "reportOptionalMember": "error",
+    "reportPossiblyUnboundVariable":false
+}

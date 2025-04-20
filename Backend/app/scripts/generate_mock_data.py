@@ -6,7 +6,7 @@ Commands:
 
 Steps:
     1. Go to Backend/
-    2. Run `python -m app.tools.generate_mock_data [(help) | (small|medium|large)]`
+    2. Run `python -m app.scripts.generate_mock_data [(help) | (small|medium|large)]`
 """
 
 import asyncio

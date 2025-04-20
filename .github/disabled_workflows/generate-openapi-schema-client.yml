@@ -28,7 +28,7 @@ jobs:
           source venv/bin/activate
           pip install -r requirements.txt
           pip install -r requirements-test.txt
-          python -m app.tools.generate_openapi
+          python -m app.scripts.generate_openapi
         env:
           MONGO_URI: ${{ secrets.MONGO_URI }}
           SECRET_KEY_SIGN: none

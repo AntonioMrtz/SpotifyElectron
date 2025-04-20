@@ -9,7 +9,7 @@ OpenAPI is a standard for describing and documenting APIs. It uses schemas to de
 
 1. Go to `Backend/`
 2. Install app dependencies with `pip install -r requirements.txt && pip install -r requirements-test.txt`
-3. Run `ENV_VALUE=TEST python -m app.tools.generate_openapi`
+3. Run `ENV_VALUE=TEST python -m app.scripts.generate_openapi`
 4. OpenAPI schema can also be found in `Electron/src/swagger` folder,
 
 ## Generate OpenAPI Client (Frontend)

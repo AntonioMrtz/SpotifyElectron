@@ -13,7 +13,7 @@ In this document we will cover the file structure of the Backend for Spotify Ele
 - 📁 Logging. Configure and provide logging formatting and handling for all app modules.
 - 📁 Middleware. Stores the middlewares used in the app and its logic.
 - 📁 Resources. Common configuration `.ini`.
-- 📁 Tools. Backend related tools.
+- 📁 Scripts. Backend utilities scripts. Migrations, mock data generation can be found in this folder.
 - 📁 Spotify_electron: main folder for our bussiness logic.
   - 📁 Playlist. We will use playlist as an example but this apply to the whole domain model.
     - 📄 Controller. Router used by FastAPI, it handles the incoming HTTP Requests. Upon recieving HTTP Request it delegates into the service layer.

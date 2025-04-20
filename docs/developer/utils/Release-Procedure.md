@@ -49,7 +49,7 @@ class AppInfo:
 ## 4. Prepare database
 
 * Prepare data sets
-* Delete non compatible data with new version in database
+* Migrate non compatible data with new version in database. More info on [database migration docs](../utils/Migration-DB.md).
 
 ## 5. Deploy backend cloud service
 

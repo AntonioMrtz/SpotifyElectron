@@ -3,7 +3,11 @@
 from motor.motor_asyncio import AsyncIOMotorCollection, AsyncIOMotorGridFSBucket
 
 from app.common.app_schema import AppEnvironmentMode
-from app.database.database_schema import BaseDatabaseConnection, DatabaseCollection
+from app.database.database_schema import (
+    BaseDatabaseConnection,
+    DatabaseCollection,
+    DatabasePingFailedError,
+)
 from app.database.DatabaseProductionConnection import DatabaseProductionConnection
 from app.database.DatabaseTestingConnection import DatabaseTestingConnection
 
@@ -52,6 +56,34 @@ class DatabaseConnectionManager:
         )
         await database_connection_class.init_connection(connection_uri)
         cls.__connection = database_connection_class
+
+    @classmethod
+    def check_database_health(cls) -> bool:
+        """
+        Check if the database connection is established and working.
+        This method attempts to verify that the connection to the database
+        is active and functioning properly.
+
+        Raises:
+            DatabasePingFailedError: When the ping command fails or an error occurs while
+            communicating with the database
+
+        Returns:
+            bool: True if the database connection is working, False otherwise.
+        """
+        try:
+            if cls.connection is None:
+                cls._logger.error("Database connection not initialized")
+                return False
+            if cls.connection.check_connection_health():
+                cls._logger.info("Connected to database cluster")
+                return True
+            else:
+                cls._logger.error("Database connection failed")
+                return False
+        except DatabasePingFailedError as exception:
+            cls._logger.exception("Database ping command failed")
+            raise DatabasePingFailedError from exception
 
     @classmethod
     def close_database_connection(cls) -> None:

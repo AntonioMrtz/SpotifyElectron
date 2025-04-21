@@ -129,6 +129,24 @@ class BaseDatabaseConnection:
     ):
         assert cls._connection is not None, "Database connection is not initialized"
 
+    @classmethod
+    def check_connection_health(cls) -> bool:
+        """Check the health status of the database connection.
+
+        Raises:
+            DatabasePingFailedError: When the ping command fails or an error occurs while
+            communicating with the database
+
+        Returns:
+            bool: True if the database connection is healthy, False otherwise
+        """
+        try:
+            ping_response = cls.connection.command("ping")
+            return int(ping_response.get("ok", 0)) == 1
+        except Exception as exception:
+            cls._logger.exception("Database ping command failed")
+            raise DatabasePingFailedError from exception
+
 
 class DatabasePingFailedError(SpotifyElectronError):
     """Database ping failure"""

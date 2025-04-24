@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Spotify Electron
-Comment=Spotify Electron is a cross-platform music streaming desktop app made with Electron-React frontend and Python-FastAPI-MongoDB. The main goal is to reproduce the original Spotify functionality while adding new ones like uploading songs.
+Comment=A cross-platform, open-source music streaming desktop app that includes Spotify-like core functionalities and user-requested features—such as the ability to upload personal music.
 Exec=/bin/sh -c  "$HOME/SpotifyElectron/SpotifyElectron.AppImage"
 Icon=spotify-electron-logo
 Terminal=false

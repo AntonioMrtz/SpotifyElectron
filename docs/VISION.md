@@ -2,7 +2,7 @@
 
 ## 👀 Overview
 
-Spotify Electron is envisioned as a dynamic cross-platform music streaming desktop application, combining Electron-React frontend with Python-FastAPI-AWS backend. Its main objective is to emulate the functionalities of the original Spotify platform while incorporating new features such as song uploading.
+Spotify Electron is envisioned as a dynamic cross-platform, open-source music streaming desktop application, combining Electron-React frontend with Python-FastAPI-MongoDB backend. Its main objective is to emulate the functionalities of the original Spotify platform while incorporating new features such as song uploading.
 
 ## 🎯 Goals
 

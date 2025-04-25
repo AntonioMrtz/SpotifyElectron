@@ -1,3 +1,2 @@
 pre-commit==4.0.2
 setuptools==70.0.0
-ruff==0.9.4 # bump pre-commit rev field if version changes

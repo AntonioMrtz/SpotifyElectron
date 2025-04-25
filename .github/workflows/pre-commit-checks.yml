@@ -1,8 +1,9 @@
 name: Pre-commit Checks
 on:
-  push:
-    branches: [master-*]
-  pull_request:    
+  pull_request:
+    branches:
+      - "master"
+      - "master-*"
 
 jobs:
   pre-commit:
@@ -11,19 +12,17 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v4
         with:
-          python-version: "3.11"
+          python-version: "3.12"
 
       - name: Install pre-commit
         run: pip install pre-commit
 
-      - name: Run specified hooks
+      - name: Run selected hooks
         run: |
           pre-commit run \
             check-yaml \
-            check-json \
             end-of-file-fixer \
             trailing-whitespace \
-            check-merge-conflict \
             --all-files

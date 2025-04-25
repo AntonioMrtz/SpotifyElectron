@@ -29,4 +29,5 @@ repos:
     rev: v1.3
     hooks:
     - id:  giticket
+    
       args: ['--regex=(\d+)',"--mode=regex_match", '--format={commit_msg} | [#{ticket}]']

@@ -36,10 +36,10 @@ This procedure will apply a migration on a dataset.
 migration = Migration()
 asyncio.run(migration.execute_migration())
 ```
-5. Run `python -m app.scripts.migration_file db_uri up`.
+5. Run `python -m app.scripts.migrations.migration_file db_uri up`.
 Example:
 ```
-python -m app.scripts.migration_file mongodb://root:root@127.0.0.1:27017/ db_uri up
+python -m app.scripts.migrations.migration_file mongodb://root:root@127.0.0.1:27017/ db_uri up
 ```
 
 ## 🔙 Revert Migration (Down)
@@ -48,5 +48,5 @@ This procedure will revert a migration on a dataset.
 
 1. Follow the same steps as for doing a migration but instead execte this code:
 ```
-python -m app.scripts.migration_file mongodb://root:root@127.0.0.1:27017/ db_uri down
+python -m app.scripts.migrations.migration_file mongodb://root:root@127.0.0.1:27017/ db_uri down
 ```

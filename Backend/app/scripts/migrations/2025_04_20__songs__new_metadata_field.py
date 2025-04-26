@@ -71,6 +71,7 @@ class Migration(BaseMigration):
             [
                 {
                     "$set": {
+                        "name": "$filename",
                         "artist": "$metadata.artist",
                         "duration": "$metadata.duration",
                         "genre": "$metadata.genre",
@@ -81,6 +82,7 @@ class Migration(BaseMigration):
                 },
                 {
                     "$unset": [
+                        "filename",
                         "metadata.artist",
                         "metadata.duration",
                         "metadata.genre",

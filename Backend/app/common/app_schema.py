@@ -9,7 +9,7 @@ class AppInfo:
     TITLE = "Spotify Electron Backend API"
     DESCRIPTION = "API created with Python FastAPI to serve\
           as backend for Spotify Electron music streaming Desktop App"
-    VERSION = "2.1.0"
+    VERSION = "2.2.0"
     CONTACT_NAME = "Antonio Martínez Fernández"
     CONTACT_URL = "https://github.com/AntonioMrtz"
     CONTACT_EMAIL = "antoniomartinezfernandez17@gmail.com"

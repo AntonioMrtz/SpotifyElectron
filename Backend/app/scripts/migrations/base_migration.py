@@ -16,7 +16,7 @@ Steps:
     migration = Migration()
     asyncio.run(migration.execute_migration())
     ```
-    5. Run `python -m app.scripts.migration_file \
+    5. Run `python -m app.scripts.migrations.migration_file \
         [help | mongodb://root:root@127.0.0.1:27017/ (up|down)]`
 """
 

@@ -48,8 +48,6 @@ async def lifespan_handler(app: FastAPI) -> AsyncGenerator[None, Any]:
     Args:
         app: FastAPI entrypoint
     """
-    main_logger.info("Spotify Electron Backend Started")
-
     environment = PropertiesManager.get_environment()
     secret_key_sign = getattr(PropertiesManager, AppEnvironment.SECRET_KEY_SIGN_ENV_NAME)
     connection_uri = getattr(PropertiesManager, AppEnvironment.MONGO_URI_ENV_NAME)
@@ -75,6 +73,8 @@ async def lifespan_handler(app: FastAPI) -> AsyncGenerator[None, Any]:
     app.include_router(search_controller.router)
     app.include_router(stream_controller.router)
     app.include_router(health_controller.router)
+
+    main_logger.info("Spotify Electron Backend Started")
     yield
     DatabaseConnectionManager.close_database_connection()
     main_logger.info("Spotify Electron Backend Stopped")

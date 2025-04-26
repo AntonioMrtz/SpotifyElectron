@@ -29,13 +29,13 @@
   "editor.formatOnType": false,
   "vs-code-prettier-eslint.prettierLast": false,
   "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
   },
   "jest.runMode": {
     "runAllTestsOnStartup": false,
     "type": "on-demand"
   },
   "[typescriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
   }
 }

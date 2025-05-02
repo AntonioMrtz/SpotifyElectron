@@ -24,8 +24,13 @@ repos:
         files: ^Electron/src/
         exclude: ^Electron/src/swagger/
 
-  - repo:  https://github.com/milin/giticket
+  - repo: https://github.com/milin/giticket
     rev: v1.3
     hooks:
-    - id:  giticket
-      args: ['--regex=(\d+)',"--mode=regex_match", '--format={commit_msg} | [#{ticket}]']
+      - id: giticket
+        args: ['--regex=(\d+)', "--mode=regex_match", '--format={commit_msg} | [#{ticket}]']
+
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.24.2
+    hooks:
+      - id: gitleaks

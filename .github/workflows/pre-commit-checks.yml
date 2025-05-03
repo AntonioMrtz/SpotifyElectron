@@ -1,0 +1,28 @@
+name: Pre-commit Checks
+on:
+  pull_request:
+    branches:
+      - "master"
+      - "master-*"
+
+jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+
+      - name: Install pre-commit
+        run: pip install pre-commit
+
+      - name: Run selected hooks
+        run: |
+          pre-commit run \
+            check-yaml \
+            end-of-file-fixer \
+            trailing-whitespace \
+            --all-files

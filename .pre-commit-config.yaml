@@ -2,6 +2,7 @@ repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v2.3.0
     hooks:
+      # Consider updating pre-commit pipeline if a new hook is added
       - id: check-yaml
       - id: check-json
         exclude: ^(.devcontainer/|Electron/.vscode/|Backend/.vscode)

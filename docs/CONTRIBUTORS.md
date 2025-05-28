@@ -155,6 +155,15 @@ Me gustaría expresar mi más sincero agradecimiento a las siguientes personas p
             </a>
         </td>
     </tr>
+    <tr>
+        <td align="center">
+            <a href="https://github.com/akintewe">
+                <img src="https://avatars.githubusercontent.com/u/85641756?v=4" width="90" alt="akintewe" />
+                <br />
+                <sub><b>akintewe</b></sub>
+            </a>
+        </td>
+    </tr>
 </table>
 
 

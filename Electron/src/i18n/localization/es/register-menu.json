@@ -3,7 +3,7 @@
   "form-username": "Nombre de usuario",
   "form-password": "Contraseña",
   "form-password-repeat": "Confirma tu contraseña",
-  "form-thumbnail": "Foto de perfil",
+  "form-thumbnail": "Foto de perfil en formato URL",
   "form-register-button": "Registrar",
   "go-to-login-button": "Inicia sesión en Spotify Electron",
   "already-have-account": "¿Ya tienes una cuenta?",

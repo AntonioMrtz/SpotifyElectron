@@ -460,6 +460,12 @@ export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
             className={`${styles.hoverableItemubheader} ${displayDislike}`}
             onClick={handleLike}
             id="playlist-like-button"
+            disabled={owner === getTokenUsername()}
+            title={
+              owner === getTokenUsername()
+                ? t('You cannot like your own playlist')
+                : undefined
+            }
           >
             <i
               className="fa-regular fa-heart"
@@ -471,6 +477,12 @@ export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
             className={`${displayLike}`}
             onClick={handleLike}
             id="playlist-unlike-button"
+            disabled={owner === getTokenUsername()}
+            title={
+              owner === getTokenUsername()
+                ? t('You cannot like your own playlist')
+                : undefined
+            }
           >
             <i
               className="fa-solid fa-heart"

@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom';
-import { act, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import * as router from 'react-router';
 import '@testing-library/jest-dom/extend-expect';
 import UserProfile from 'pages/UserProfile/UserProfile';
@@ -9,6 +9,7 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import getMockHeaders from 'utils/mockHeaders';
 import { NowPlayingContextProvider } from 'providers/NowPlayingProvider';
 import { t } from 'i18next';
+import { act } from 'react';
 
 /* afterEach(() => {
   jest.clearAllMocks();

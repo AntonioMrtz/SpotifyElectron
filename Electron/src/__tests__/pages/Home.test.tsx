@@ -1,11 +1,12 @@
 import '@testing-library/jest-dom';
-import { act, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import * as router from 'react-router';
 import '@testing-library/jest-dom/extend-expect';
 import Home from 'pages/Home/Home';
 import Global from 'global/global';
 import { BrowserRouter } from 'react-router-dom';
 import { t } from 'i18next';
+import { act } from 'react';
 
 const navigate = jest.fn();
 

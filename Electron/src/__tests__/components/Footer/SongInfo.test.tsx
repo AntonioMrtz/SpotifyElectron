@@ -1,8 +1,9 @@
 import '@testing-library/jest-dom';
 import '@testing-library/jest-dom/extend-expect';
-import { act, fireEvent, render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 import SongInfo from 'components/footer/SongInfo/SongInfo';
 import { BrowserRouter } from 'react-router-dom';
+import { act } from 'react';
 
 test('Render Song info', () => {
   const component = render(

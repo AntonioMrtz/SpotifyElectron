@@ -1,11 +1,12 @@
 import '@testing-library/jest-dom';
-import { act, fireEvent, render, waitFor } from '@testing-library/react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { BrowserRouter } from 'react-router-dom';
 import Global from 'global/global';
 import UserType from 'utils/role';
 import UploadSongPlaylistAccordion from 'components/Sidebar/ModalUploadSongPlaylist/Accordion/UploadSongPlaylistAccordion';
 import getMockHeaders from 'utils/mockHeaders';
+import { act } from 'react';
 
 import * as TokenModule from 'utils/token';
 import { t } from 'i18next';

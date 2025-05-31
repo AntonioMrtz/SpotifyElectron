@@ -1,11 +1,12 @@
 import '@testing-library/jest-dom';
-import { act, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { BrowserRouter } from 'react-router-dom';
 import Global from 'global/global';
 import Sidebar from 'components/Sidebar/Sidebar';
 import UserType from 'utils/role';
 import getMockHeaders from 'utils/mockHeaders';
+import { act } from 'react';
 
 import * as TokenModule from 'utils/token';
 

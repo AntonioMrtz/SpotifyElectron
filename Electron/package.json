@@ -61,7 +61,6 @@
     "@types/node": "20.6.2",
     "@types/react": "19.0.0",
     "@types/react-dom": "19.0.0",
-    "@types/react-test-renderer": "^18.0.1",
     "@types/webpack-bundle-analyzer": "^4.6.0",
     "@typescript-eslint/eslint-plugin": "^6.7.0",
     "@typescript-eslint/parser": "^6.7.0",

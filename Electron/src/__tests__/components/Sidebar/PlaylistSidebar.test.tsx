@@ -1,11 +1,12 @@
 import '@testing-library/jest-dom';
-import { act, fireEvent, render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { BrowserRouter } from 'react-router-dom';
 import Global from 'global/global';
 import UserType from 'utils/role';
 import PlaylistSidebar from 'components/Sidebar/Playlist/PlaylistSidebar';
 import getMockHeaders from 'utils/mockHeaders';
+import { act } from 'react';
 
 import * as TokenModule from 'utils/token';
 import { t } from 'i18next';

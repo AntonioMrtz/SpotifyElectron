@@ -4,7 +4,9 @@ import { render } from '@testing-library/react';
 import PlayerBlob from 'components/footer/Player/PlayerBlob';
 import Global from 'global/global';
 import UserType from 'utils/role';
-import { act } from 'react-test-renderer';
+
+import { act } from 'react';
+
 import getMockHeaders from 'utils/mockHeaders';
 
 import * as TokenModule from 'utils/token';

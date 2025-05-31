@@ -1,6 +1,8 @@
 import '@testing-library/jest-dom';
 import '@testing-library/jest-dom/extend-expect';
-import { act, fireEvent, render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
+import { act } from 'react';
+
 import SongConfig from 'components/footer/SongConfig/SongConfig';
 import VolumeSlider from 'components/footer/SongConfig/VolumeSlider/VolumeSlider';
 import { BrowserRouter } from 'react-router-dom';

@@ -1,11 +1,12 @@
 import '@testing-library/jest-dom';
-import { act, fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import RegisterMenu from 'pages/StartMenu/RegisterMenu';
 import Global from 'global/global';
 import timeout from 'utils/timeout';
 import { CancelablePromise } from 'swagger/api';
 import { t } from 'i18next';
+import { act } from 'react';
 import { UsersService } from '../../swagger/api/services/UsersService';
 
 jest.mock('../../swagger/api/services/UsersService');

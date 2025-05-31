@@ -130,6 +130,31 @@ test('Playlist user role get all info', async () => {
 });
 
 test('Playlist user role hit like button', async () => {
+  // Mock a different user than the playlist owner
+  const currentUser = 'differentUser';
+  jest.spyOn(TokenModule, 'getTokenUsername').mockReturnValue(currentUser);
+
+  // Mock playlist data with different owner
+  const playlistDTOMockFetch = {
+    name: playlistName,
+    photo: 'playlist',
+    description: 'des',
+    upload_date: 'date',
+    owner: 'originalOwner', // Different from current user
+    song_names: [songName],
+  };
+
+  // Mock user data with empty saved_playlists (not liked)
+  const userMockFetch = {
+    name: currentUser,
+    photo: 'photo',
+    register_date: 'date',
+    password: 'hashpassword',
+    playback_history: [songName],
+    playlists: [],
+    saved_playlists: [], // Empty saved playlists to start with
+  };
+
   global.fetch = jest.fn((url: string, options: any) => {
     if (
       url === `${Global.backendBaseUrl}/playlists/${playlistDTOMockFetch.name}`
@@ -139,18 +164,14 @@ test('Playlist user role hit like button', async () => {
         status: 200,
         ok: true,
         headers: getMockHeaders(),
-      }).catch((error) => {
-        console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}/artists/${artistMockFetch.name}`) {
+    if (url === `${Global.backendBaseUrl}/users/${currentUser}`) {
       return Promise.resolve({
-        json: () => artistMockFetch,
+        json: () => userMockFetch,
         status: 200,
         ok: true,
         headers: getMockHeaders(),
-      }).catch((error) => {
-        console.log(error);
       });
     }
     if (url === `${Global.backendBaseUrl}/songs/metadata/${songName}`) {
@@ -159,13 +180,11 @@ test('Playlist user role hit like button', async () => {
         status: 200,
         ok: true,
         headers: getMockHeaders(),
-      }).catch((error) => {
-        console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}/users/${userMockFetch.name}`) {
+    if (url === `${Global.backendBaseUrl}/artists/${artistMockFetch.name}`) {
       return Promise.resolve({
-        json: () => userMockFetch,
+        json: () => artistMockFetch,
         status: 200,
         ok: true,
         headers: getMockHeaders(),
@@ -186,7 +205,7 @@ test('Playlist user role hit like button', async () => {
 
     if (
       url ===
-        `${Global.backendBaseUrl}/users/${userMockFetch.name}/saved_playlists?playlist_name=${playlistName}` &&
+        `${Global.backendBaseUrl}/users/${currentUser}/saved_playlists?playlist_name=${playlistName}` &&
       options.method === 'PATCH'
     ) {
       return Promise.resolve({
@@ -201,7 +220,7 @@ test('Playlist user role hit like button', async () => {
 
     if (
       url ===
-        `${Global.backendBaseUrl}/users/${userMockFetch.name}/saved_playlists?playlist_name=${playlistName}` &&
+        `${Global.backendBaseUrl}/users/${currentUser}/saved_playlists?playlist_name=${playlistName}` &&
       options.method === 'DELETE'
     ) {
       return Promise.resolve({
@@ -233,15 +252,28 @@ test('Playlist user role hit like button', async () => {
     );
   });
 
+  // Wait for the component to load and state to update
   await act(async () => {
-    const likeButton = component.container.querySelector(
-      '#playlist-like-button',
-    );
+    await new Promise((resolve) => setTimeout(resolve, 0));
+  });
+
+  // First verify the like button is present
+  const likeButton = component.container.querySelector('#playlist-like-button');
+  expect(likeButton).toBeInTheDocument();
+
+  // Click the like button
+  await act(async () => {
     if (likeButton) {
       fireEvent.click(likeButton);
     }
   });
 
+  // Wait for the state to update after clicking
+  await act(async () => {
+    await new Promise((resolve) => setTimeout(resolve, 0));
+  });
+
+  // Verify the unlike button is present after liking
   const unlikeButton = component.container.querySelector(
     '#playlist-unlike-button',
   );
@@ -249,6 +281,31 @@ test('Playlist user role hit like button', async () => {
 });
 
 test('Playlist user role get unlike button', async () => {
+  // Mock a different user than the playlist owner
+  const currentUser = 'differentUser';
+  jest.spyOn(TokenModule, 'getTokenUsername').mockReturnValue(currentUser);
+
+  // Mock playlist data with different owner
+  const playlistDTOMockFetch = {
+    name: playlistName,
+    photo: 'playlist',
+    description: 'des',
+    upload_date: 'date',
+    owner: 'originalOwner', // Different from current user
+    song_names: [songName],
+  };
+
+  // Mock user data with the playlist in saved_playlists (already liked)
+  const userMockFetch = {
+    name: currentUser,
+    photo: 'photo',
+    register_date: 'date',
+    password: 'hashpassword',
+    playback_history: [songName],
+    playlists: [],
+    saved_playlists: [playlistName], // Playlist is already liked
+  };
+
   global.fetch = jest.fn((url: string, options: any) => {
     if (
       url === `${Global.backendBaseUrl}/playlists/${playlistDTOMockFetch.name}`
@@ -258,18 +315,14 @@ test('Playlist user role get unlike button', async () => {
         status: 200,
         ok: true,
         headers: getMockHeaders(),
-      }).catch((error) => {
-        console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}/artists/${artistMockFetch.name}`) {
+    if (url === `${Global.backendBaseUrl}/users/${currentUser}`) {
       return Promise.resolve({
-        json: () => artistMockFetch,
+        json: () => userMockFetch,
         status: 200,
         ok: true,
         headers: getMockHeaders(),
-      }).catch((error) => {
-        console.log(error);
       });
     }
     if (url === `${Global.backendBaseUrl}/songs/metadata/${songName}`) {
@@ -278,13 +331,11 @@ test('Playlist user role get unlike button', async () => {
         status: 200,
         ok: true,
         headers: getMockHeaders(),
-      }).catch((error) => {
-        console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}/users/${userMockFetch.name}`) {
+    if (url === `${Global.backendBaseUrl}/artists/${artistMockFetch.name}`) {
       return Promise.resolve({
-        json: () => userMockFetch,
+        json: () => artistMockFetch,
         status: 200,
         ok: true,
         headers: getMockHeaders(),
@@ -305,7 +356,7 @@ test('Playlist user role get unlike button', async () => {
 
     if (
       url ===
-        `${Global.backendBaseUrl}/users/${userMockFetch.name}/saved_playlists?playlist_name=${playlistName}` &&
+        `${Global.backendBaseUrl}/users/${currentUser}/saved_playlists?playlist_name=${playlistName}` &&
       options.method === 'PATCH'
     ) {
       return Promise.resolve({
@@ -320,7 +371,7 @@ test('Playlist user role get unlike button', async () => {
 
     if (
       url ===
-        `${Global.backendBaseUrl}/users/${userMockFetch.name}/saved_playlists?playlist_name=${playlistName}` &&
+        `${Global.backendBaseUrl}/users/${currentUser}/saved_playlists?playlist_name=${playlistName}` &&
       options.method === 'DELETE'
     ) {
       return Promise.resolve({
@@ -352,20 +403,60 @@ test('Playlist user role get unlike button', async () => {
     );
   });
 
+  // Wait for the component to load and state to update
   await act(async () => {
-    const unlikeButton = component.container.querySelector(
-      '#playlist-unlike-button',
-    );
+    await new Promise((resolve) => setTimeout(resolve, 0));
+  });
+
+  // First verify the unlike button is present (since playlist is already liked)
+  const unlikeButton = component.container.querySelector(
+    '#playlist-unlike-button',
+  );
+  expect(unlikeButton).toBeInTheDocument();
+
+  // Click the unlike button
+  await act(async () => {
     if (unlikeButton) {
       fireEvent.click(unlikeButton);
     }
   });
 
+  // Wait for the state to update after clicking
+  await act(async () => {
+    await new Promise((resolve) => setTimeout(resolve, 0));
+  });
+
+  // Verify the like button is present after unliking
   const likeButton = component.container.querySelector('#playlist-like-button');
   expect(likeButton).toBeInTheDocument();
 });
 
 test('Playlist user role update playlist', async () => {
+  // Mock a different user than the playlist owner
+  const currentUser = 'differentUser';
+  jest.spyOn(TokenModule, 'getTokenUsername').mockReturnValue(currentUser);
+
+  // Mock playlist data with different owner
+  const playlistDTOMockFetch = {
+    name: playlistName,
+    photo: 'playlist',
+    description: 'des',
+    upload_date: 'date',
+    owner: currentUser, // Set owner to be the current user
+    song_names: [songName],
+  };
+
+  // Mock user data
+  const userMockFetch = {
+    name: currentUser,
+    photo: 'photo',
+    register_date: 'date',
+    password: 'hashpassword',
+    playback_history: [songName],
+    playlists: [],
+    saved_playlists: [],
+  };
+
   global.fetch = jest.fn((url: string, options: any) => {
     if (
       url === `${Global.backendBaseUrl}/playlists/${playlistDTOMockFetch.name}`
@@ -375,18 +466,14 @@ test('Playlist user role update playlist', async () => {
         status: 200,
         ok: true,
         headers: getMockHeaders(),
-      }).catch((error) => {
-        console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}/artists/${artistMockFetch.name}`) {
+    if (url === `${Global.backendBaseUrl}/users/${currentUser}`) {
       return Promise.resolve({
-        json: () => artistMockFetch,
+        json: () => userMockFetch,
         status: 200,
         ok: true,
         headers: getMockHeaders(),
-      }).catch((error) => {
-        console.log(error);
       });
     }
     if (url === `${Global.backendBaseUrl}/songs/metadata/${songName}`) {
@@ -395,18 +482,6 @@ test('Playlist user role update playlist', async () => {
         status: 200,
         ok: true,
         headers: getMockHeaders(),
-      }).catch((error) => {
-        console.log(error);
-      });
-    }
-    if (url === `${Global.backendBaseUrl}/users/${userMockFetch.name}`) {
-      return Promise.resolve({
-        json: () => userMockFetch,
-        status: 200,
-        ok: true,
-        headers: getMockHeaders(),
-      }).catch((error) => {
-        console.log(error);
       });
     }
     if (url === `${Global.backendBaseUrl}/playlists/${playlistName}`) {
@@ -415,41 +490,9 @@ test('Playlist user role update playlist', async () => {
         status: 204,
         ok: true,
         headers: getMockHeaders(),
-      }).catch((error) => {
-        console.log(`${error}`);
       });
     }
-
-    if (
-      url ===
-        `${Global.backendBaseUrl}/users/${userMockFetch.name}/saved_playlists?playlist_name=${playlistName}` &&
-      options.method === 'PATCH'
-    ) {
-      return Promise.resolve({
-        json: () => {},
-        status: 204,
-        ok: true,
-        headers: getMockHeaders(),
-      }).catch((error) => {
-        console.log(error);
-      });
-    }
-
-    if (
-      url ===
-        `${Global.backendBaseUrl}/users/${userMockFetch.name}/saved_playlists?playlist_name=${playlistName}` &&
-      options.method === 'DELETE'
-    ) {
-      return Promise.resolve({
-        json: () => {},
-        status: 202,
-        ok: true,
-        headers: getMockHeaders(),
-      }).catch((error) => {
-        console.log(error);
-      });
-    }
-
+    // Add mock for the playlist update URL
     if (
       url ===
       `${Global.backendBaseUrl}/playlists/${playlistName}?photo=&description=description`
@@ -459,10 +502,9 @@ test('Playlist user role update playlist', async () => {
         status: 204,
         ok: true,
         headers: getMockHeaders(),
-      }).catch((error) => {
-        console.log(error);
       });
     }
+    // ... other fetch mocks ...
     return Promise.reject(new Error(`Unhandled URL in fetch mock: ${url}`));
   }) as jest.Mock;
 
@@ -483,6 +525,12 @@ test('Playlist user role update playlist', async () => {
     );
   });
 
+  // Wait for the component to load
+  await act(async () => {
+    await new Promise((resolve) => setTimeout(resolve, 0));
+  });
+
+  // Click the thumbnail to open the edit modal
   await act(async () => {
     const thumbnailPlaylist = component.getByAltText('thumbnail-playlist');
     if (thumbnailPlaylist) {
@@ -490,18 +538,27 @@ test('Playlist user role update playlist', async () => {
     }
   });
 
-  const inputName = component.getByPlaceholderText(
+  // Wait for the modal to open
+  await act(async () => {
+    await new Promise((resolve) => setTimeout(resolve, 0));
+  });
+
+  // Find the description input using the correct placeholder text
+  const inputDescription = component.getByPlaceholderText(
     t('playlist.description-placeholder'),
   );
 
+  // Update the description
   await act(async () => {
-    fireEvent.change(inputName, {
+    fireEvent.change(inputDescription, {
       target: { value: 'description' },
     });
   });
 
+  // Verify the modal is open
   expect(component.queryByText(t('playlist.edit-details'))).toBeInTheDocument();
 
+  // Click the save button
   await act(async () => {
     const submitUpdateButton = component.queryByText(t('playlist.save'));
     if (submitUpdateButton) {
@@ -509,5 +566,59 @@ test('Playlist user role update playlist', async () => {
     }
   });
 
+  // Verify the sidebar was refreshed
   expect(refreshSidebarData).toHaveBeenCalledTimes(1);
+});
+
+test('Playlist owner should not see like buttons', async () => {
+  // Mock the playlist owner as the current user
+  const ownerName = 'ownerUser';
+  jest.spyOn(TokenModule, 'getTokenUsername').mockReturnValue(ownerName);
+
+  const playlistDTOMockFetch = {
+    name: playlistName,
+    photo: 'playlist',
+    description: 'des',
+    upload_date: 'date',
+    owner: ownerName, // Set owner to be the same as current user
+    song_names: [songName],
+  };
+
+  global.fetch = jest.fn((url: string) => {
+    if (
+      url === `${Global.backendBaseUrl}/playlists/${playlistDTOMockFetch.name}`
+    ) {
+      return Promise.resolve({
+        json: () => playlistDTOMockFetch,
+        status: 200,
+        ok: true,
+        headers: getMockHeaders(),
+      });
+    }
+    // ... other fetch mocks ...
+    return Promise.reject(new Error(`Unhandled URL in fetch mock: ${url}`));
+  }) as jest.Mock;
+
+  const component = await act(() => {
+    return render(
+      <MemoryRouter initialEntries={[`/playlist/${playlistDTOMockFetch.name}`]}>
+        <NowPlayingContextProvider>
+          <Routes>
+            <Route
+              path="/playlist/:id"
+              element={<Playlist refreshSidebarData={jest.fn()} />}
+            />
+          </Routes>
+        </NowPlayingContextProvider>
+      </MemoryRouter>,
+    );
+  });
+
+  // Verify that like buttons are not present
+  const likeButton = component.container.querySelector('#playlist-like-button');
+  const unlikeButton = component.container.querySelector(
+    '#playlist-unlike-button',
+  );
+  expect(likeButton).not.toBeInTheDocument();
+  expect(unlikeButton).not.toBeInTheDocument();
 });

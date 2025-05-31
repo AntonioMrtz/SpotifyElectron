@@ -219,5 +219,12 @@ We're actively looking for new contributors 🙌. Feel free to check our [CONTRI
                 <sub><b>akintewe</b></sub>
             </a>
         </td>
+        <td align="center">
+            <a href="https://github.com/tlorand2">
+                <img src="https://avatars.githubusercontent.com/u/129942166?v=4" width="90" alt="akintewe" />
+                <br />
+                <sub><b>tlorand2</b></sub>
+            </a>
+        </td>
     </tr>
 </table>

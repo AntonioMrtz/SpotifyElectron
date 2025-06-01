@@ -12,9 +12,9 @@ import LoadingCircle from 'components/AdvancedUIComponents/LoadingCircle/Loading
 import Global from 'global/global';
 import { CancelablePromise } from 'swagger/api';
 import LoadingCircleSmall from 'components/AdvancedUIComponents/LoadingCircle/LoadingCircleSmall';
-import FormControl from '@mui/material/FormControl/';
+import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem/';
+import MenuItem from '@mui/material/MenuItem';
 import Language from 'i18n/languages';
 import { changeLanguage } from 'i18n/i18n';
 import { t } from 'i18next';

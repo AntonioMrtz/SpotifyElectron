@@ -1,9 +1,7 @@
 name: Ruff format check
 on:
   pull_request:
-    branches:
-      - "master"
-      - "master-*"
+
 jobs:
   ruff-format-check:
     runs-on: ubuntu-latest

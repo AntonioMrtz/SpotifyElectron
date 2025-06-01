@@ -11,7 +11,7 @@ import groupIcon from '../../assets/imgs/groupIcon.png';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 
 interface PropsStickyHeader {
-  handleLogout: Function;
+  handleLogout: () => void;
 }
 
 export default function StickyHeader({ handleLogout }: PropsStickyHeader) {
@@ -132,9 +132,9 @@ export default function StickyHeader({ handleLogout }: PropsStickyHeader) {
     handleOpenContextMenu(e);
   };
 
-  const logOut = (args: any) => {
+  const logOut = () => {
     changeSongName(Global.noSongPlaying);
-    handleLogout(args);
+    handleLogout();
   };
 
   return (

@@ -1,5 +1,4 @@
 import '@testing-library/jest-dom';
-import '@testing-library/jest-dom/extend-expect';
 import { render } from '@testing-library/react';
 import Footer from 'components/footer/Footer';
 import { NowPlayingContextProvider } from 'providers/NowPlayingProvider';

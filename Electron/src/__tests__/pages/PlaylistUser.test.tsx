@@ -1,6 +1,5 @@
 import '@testing-library/jest-dom';
-import { act, fireEvent, render } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
+import { fireEvent, render } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import Playlist from 'pages/Playlist/Playlist';
 import Global from 'global/global';
@@ -9,6 +8,7 @@ import getMockHeaders from 'utils/mockHeaders';
 import * as TokenModule from 'utils/token';
 import { NowPlayingContextProvider } from 'providers/NowPlayingProvider';
 import { t } from 'i18next';
+import { act } from 'react';
 
 const userName = 'prueba';
 const roleUser = UserType.USER;

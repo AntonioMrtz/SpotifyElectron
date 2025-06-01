@@ -114,7 +114,7 @@ export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
         refreshSidebarData();
       } catch (err) {
         console.log(
-          `Unable to add user ${username} saved playlists with ${playlistName}`,
+          `Unable to add user ${username} saved playlists with ${playlistName} | ${err}`,
         );
       }
     } else {
@@ -127,7 +127,7 @@ export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
         refreshSidebarData();
       } catch (err) {
         console.log(
-          `Unable to delete user ${username} saved playlists with ${playlistName}`,
+          `Unable to delete user ${username} saved playlists with ${playlistName} | ${err}`,
         );
       }
     }

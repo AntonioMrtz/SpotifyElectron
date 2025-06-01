@@ -8,8 +8,9 @@ const config = {
   },
   setupFiles: [
     './.erb/scripts/check-build-exists.ts',
-    './src/__tests__/utils/loadLocalization.ts',
-    './src/__tests__/utils/loadOpenAPI.ts',
+    './src/__tests__/setup/setup.jest.ts',
+    './src/__tests__/setup/loadLocalization.jest.ts',
+    './src/__tests__/setup/loadOpenAPI.jest.ts',
   ],
   testEnvironment: 'jsdom',
   testEnvironmentOptions: {
@@ -18,7 +19,7 @@ const config = {
   testPathIgnorePatterns: [
     'release/app/dist',
     '.erb/dll',
-    'src/__tests__/utils',
+    'src/__tests__/setup',
   ],
   transform: {
     '\\.(ts|tsx|js|jsx)$': 'ts-jest',

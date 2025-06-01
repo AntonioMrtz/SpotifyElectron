@@ -1,7 +1,5 @@
 import '@testing-library/jest-dom';
-import { act, render } from '@testing-library/react';
-import * as router from 'react-router';
-import '@testing-library/jest-dom/extend-expect';
+import { render } from '@testing-library/react';
 import UserProfile from 'pages/UserProfile/UserProfile';
 import UserType from 'utils/role';
 import Global from 'global/global';
@@ -9,16 +7,7 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import getMockHeaders from 'utils/mockHeaders';
 import { NowPlayingContextProvider } from 'providers/NowPlayingProvider';
 import { t } from 'i18next';
-
-/* afterEach(() => {
-  jest.clearAllMocks();
-}); */
-
-const navigate = jest.fn();
-
-beforeEach(() => {
-  jest.spyOn(router, 'useNavigate').mockImplementation(() => navigate);
-});
+import { act } from 'react';
 
 test('UserProfile User load Playback history and his Playlists', async () => {
   const playlistName = 'playlisttest';

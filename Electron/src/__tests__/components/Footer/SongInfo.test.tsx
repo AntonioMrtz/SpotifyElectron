@@ -1,5 +1,4 @@
 import '@testing-library/jest-dom';
-import '@testing-library/jest-dom/extend-expect';
 import { fireEvent, render } from '@testing-library/react';
 import SongInfo from 'components/footer/SongInfo/SongInfo';
 import { BrowserRouter } from 'react-router-dom';

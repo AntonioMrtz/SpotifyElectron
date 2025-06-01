@@ -1,16 +1,10 @@
 import '@testing-library/jest-dom';
 import { render } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
 import { BrowserRouter } from 'react-router-dom';
 import Global from 'global/global';
 import ItemsAllArtist from 'components/ShowAllItems/Items/ItemsAllArtist';
-import * as router from 'react-router';
 import getMockHeaders from 'utils/mockHeaders';
 import { act } from 'react';
-
-const navigate = jest.fn();
-
-jest.spyOn(router, 'useNavigate').mockImplementation(() => navigate);
 
 test('Render ItemsAllArtist', async () => {
   global.fetch = jest.fn((url: string) => {

@@ -1,6 +1,5 @@
 import '@testing-library/jest-dom';
 import { render } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import Genre from 'pages/Genre/Genre';
 import { act } from 'react';

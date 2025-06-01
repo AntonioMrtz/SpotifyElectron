@@ -1,6 +1,5 @@
 import '@testing-library/jest-dom';
 import { render } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
 import { BrowserRouter } from 'react-router-dom';
 import Global from 'global/global';
 import Sidebar from 'components/Sidebar/Sidebar';

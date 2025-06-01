@@ -1,5 +1,4 @@
 import '@testing-library/jest-dom';
-import '@testing-library/jest-dom/extend-expect';
 import { render } from '@testing-library/react';
 import PlayerServerless from 'components/footer/Player/PlayerServerless';
 import Global from 'global/global';

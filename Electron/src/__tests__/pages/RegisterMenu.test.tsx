@@ -1,6 +1,5 @@
 import '@testing-library/jest-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
 import RegisterMenu from 'pages/StartMenu/RegisterMenu';
 import Global from 'global/global';
 import timeout from 'utils/timeout';

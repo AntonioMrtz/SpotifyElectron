@@ -1,6 +1,5 @@
 import '@testing-library/jest-dom';
 import { fireEvent, render, waitFor } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
 import Browse from 'pages/Browse/Browse';
 import { BrowserRouter } from 'react-router-dom';
 import Global from 'global/global';

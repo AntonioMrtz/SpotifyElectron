@@ -1,7 +1,6 @@
 import '@testing-library/jest-dom';
 import { fireEvent, render } from '@testing-library/react';
 import { act } from 'react';
-import '@testing-library/jest-dom/extend-expect';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import StickyHeader from 'components/StickyHeader/StickyHeader';
 import * as TokenModule from 'utils/token';

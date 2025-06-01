@@ -1,18 +1,10 @@
 import '@testing-library/jest-dom';
 import { render } from '@testing-library/react';
-import * as router from 'react-router';
-import '@testing-library/jest-dom/extend-expect';
 import Home from 'pages/Home/Home';
 import Global from 'global/global';
 import { BrowserRouter } from 'react-router-dom';
 import { t } from 'i18next';
 import { act } from 'react';
-
-const navigate = jest.fn();
-
-beforeEach(() => {
-  jest.spyOn(router, 'useNavigate').mockImplementation(() => navigate);
-});
 
 test('render Home', async () => {
   global.fetch = jest.fn(() =>
@@ -24,7 +16,11 @@ test('render Home', async () => {
   ) as jest.Mock;
 
   const component = await act(() => {
-    return render(<Home refreshSidebarData={jest.fn()} />);
+    return render(
+      <BrowserRouter>
+        <Home refreshSidebarData={jest.fn()} />
+      </BrowserRouter>,
+    );
   });
 
   expect(component).toBeTruthy();

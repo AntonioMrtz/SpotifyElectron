@@ -4,7 +4,8 @@ In this document we will cover the convention applied to git usage in the projec
 
 ## Branches
 
-- The main branch of the project is `master`. All pull requests will be created towards `master` branch.
+- The main branch of the project is `master`. Code should only be merged there from `development-vx.xx` branches when the version content is completed.
+- Development branches. All PRs must point to the development branch associated with the milestone version of the issue. If the milestone of the issue is `v2.00` the PR should point to `development-v2.00` branch.
 - `gh-pages` branch will host the documentation for the project and will only update using CI. This CI will be triggered when a pull request is merged into `master`.
 
 ## Branch convention
@@ -42,20 +43,21 @@ _pre-commit will insert the issue number if the branch name follows the conventi
 
 ## Pull Request convention
 
-After creating your Pull Request rename the title with the issue title and its number:
+### Title
 
-`#issue-number: IssueTitle`
+After creating your pull request, rename the title to match the issue title and include its number, like the following:
 
-Examples:
+`#issue-number: issue-title`
 
-```
-Issue:
+Example:
 
-issue-title: Add Home Page
-issue-number: #7777
-```
+* Given a issue with number #7777 and title Add Home Page
+* Our PR title will be `#7777: Add Home Page`
 
-- \#7777: Add Home Page
+### Description
+
+Pull Request description template non-optional fields must be filled.
+
 
 ## Naming convention prefixes
 

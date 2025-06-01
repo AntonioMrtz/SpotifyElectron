@@ -6,5 +6,6 @@
   "python.testing.unittestEnabled": false,
   "python.testing.pytestEnabled": true,
   "editor.defaultFormatter": "charliermarsh.ruff",
-  "autoDocstring.docstringFormat": "google-notypes"
+  "autoDocstring.docstringFormat": "google-notypes",
+  "python.analysis.importFormat": "absolute"
 }

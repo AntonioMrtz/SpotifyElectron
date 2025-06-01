@@ -8,9 +8,9 @@ import { FastAverageColor } from 'fast-average-color';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import ContextMenuPlaylist from 'components/AdvancedUIComponents/ContextMenu/Playlist/ContextMenuPlaylist';
-import Popover, { PopoverPosition } from '@mui/material/Popover/';
+import Popover, { PopoverPosition } from '@mui/material/Popover';
 import { secondsToHoursAndMinutesFormatted } from 'utils/date';
-import { TextField } from '@mui/material/';
+import { TextField } from '@mui/material';
 import { inputStyle } from 'styles/mui5/styles';
 import { useNowPlayingContext } from 'hooks/useNowPlayingContext';
 import { t } from 'i18next';
@@ -114,7 +114,7 @@ export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
         refreshSidebarData();
       } catch (err) {
         console.log(
-          `Unable to add user ${username} saved playlists with ${playlistName}`,
+          `Unable to add user ${username} saved playlists with ${playlistName} | ${err}`,
         );
       }
     } else {
@@ -127,7 +127,7 @@ export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
         refreshSidebarData();
       } catch (err) {
         console.log(
-          `Unable to delete user ${username} saved playlists with ${playlistName}`,
+          `Unable to delete user ${username} saved playlists with ${playlistName} | ${err}`,
         );
       }
     }

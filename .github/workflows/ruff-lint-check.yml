@@ -1,9 +1,7 @@
 name: Ruff lint check
 on:
   pull_request:
-    branches:
-      - "master"
-      - "master-*"
+
 jobs:
   ruff-lint-check:
     runs-on: ubuntu-latest

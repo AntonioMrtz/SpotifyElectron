@@ -2,9 +2,6 @@ name: Backend Tests - BLOB Architecture
 
 on:
   pull_request:
-    branches:
-      - 'master'
-      - 'master-*'
 
 jobs:
   run_tests_blob_architecture:

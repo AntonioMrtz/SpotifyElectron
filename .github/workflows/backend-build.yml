@@ -2,9 +2,6 @@ name: Backend Build with MongoDB
 
 on:
   pull_request:
-    branches:
-      - 'master'
-      - 'master-*'
 
 jobs:
   backend-build:

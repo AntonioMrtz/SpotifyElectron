@@ -9,7 +9,7 @@ jobs:
   trigger-action:
     runs-on: ubuntu-latest
     if: |
-      (startsWith(github.head_ref, 'master') && github.event.pull_request.merged == true) ||
+      (github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'master') ||
       github.event_name == 'workflow_dispatch'
     steps:
       - name: Trigger SpotifyElectron website Github pages deploy workflow

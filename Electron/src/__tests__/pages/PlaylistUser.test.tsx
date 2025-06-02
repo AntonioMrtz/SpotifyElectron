@@ -483,7 +483,7 @@ test('Playlist user role update playlist', async () => {
     saved_playlists: [],
   };
 
-  global.fetch = jest.fn((url: string, options: any) => {
+  global.fetch = jest.fn((url: string) => {
     if (url === `${Global.backendBaseUrl}/playlists/${mockPlaylist.name}`) {
       return Promise.resolve({
         json: () => mockPlaylist,
@@ -516,7 +516,6 @@ test('Playlist user role update playlist', async () => {
         headers: getMockHeaders(),
       });
     }
-    // Add mock for the playlist update URL
     if (
       url ===
       `${Global.backendBaseUrl}/playlists/${playlistName}?photo=&description=description`
@@ -528,7 +527,6 @@ test('Playlist user role update playlist', async () => {
         headers: getMockHeaders(),
       });
     }
-    // ... other fetch mocks ...
     return Promise.reject(new Error(`Unhandled URL in fetch mock: ${url}`));
   }) as jest.Mock;
 

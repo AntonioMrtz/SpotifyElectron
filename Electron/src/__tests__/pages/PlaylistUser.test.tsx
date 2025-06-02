@@ -59,6 +59,26 @@ const userMockFetch = {
 jest.spyOn(TokenModule, 'getTokenUsername').mockReturnValue(userName);
 jest.spyOn(TokenModule, 'getTokenRole').mockReturnValue(roleUser);
 
+// First, let's declare the mock data types at the top level
+interface PlaylistDTO {
+  name: string;
+  photo: string;
+  description: string;
+  upload_date: string;
+  owner: string;
+  song_names: string[];
+}
+
+interface UserMock {
+  name: string;
+  photo: string;
+  register_date: string;
+  password: string;
+  playback_history: string[];
+  playlists: string[];
+  saved_playlists: string[];
+}
+
 test('Playlist user role get all info', async () => {
   global.fetch = jest.fn((url: string) => {
     if (
@@ -130,37 +150,32 @@ test('Playlist user role get all info', async () => {
 });
 
 test('Playlist user role hit like button', async () => {
-  // Mock a different user than the playlist owner
   const currentUser = 'differentUser';
   jest.spyOn(TokenModule, 'getTokenUsername').mockReturnValue(currentUser);
 
-  // Mock playlist data with different owner
-  const playlistDTOMockFetch = {
+  const mockPlaylist: PlaylistDTO = {
     name: playlistName,
     photo: 'playlist',
     description: 'des',
     upload_date: 'date',
-    owner: 'originalOwner', // Different from current user
+    owner: 'originalOwner',
     song_names: [songName],
   };
 
-  // Mock user data with empty saved_playlists (not liked)
-  const userMockFetch = {
+  const mockUser: UserMock = {
     name: currentUser,
     photo: 'photo',
     register_date: 'date',
     password: 'hashpassword',
     playback_history: [songName],
     playlists: [],
-    saved_playlists: [], // Empty saved playlists to start with
+    saved_playlists: [],
   };
 
   global.fetch = jest.fn((url: string, options: any) => {
-    if (
-      url === `${Global.backendBaseUrl}/playlists/${playlistDTOMockFetch.name}`
-    ) {
+    if (url === `${Global.backendBaseUrl}/playlists/${mockPlaylist.name}`) {
       return Promise.resolve({
-        json: () => playlistDTOMockFetch,
+        json: () => mockPlaylist,
         status: 200,
         ok: true,
         headers: getMockHeaders(),
@@ -168,7 +183,7 @@ test('Playlist user role hit like button', async () => {
     }
     if (url === `${Global.backendBaseUrl}/users/${currentUser}`) {
       return Promise.resolve({
-        json: () => userMockFetch,
+        json: () => mockUser,
         status: 200,
         ok: true,
         headers: getMockHeaders(),
@@ -239,7 +254,7 @@ test('Playlist user role hit like button', async () => {
 
   const component = await act(() => {
     return render(
-      <MemoryRouter initialEntries={[`/playlist/${playlistDTOMockFetch.name}`]}>
+      <MemoryRouter initialEntries={[`/playlist/${mockPlaylist.name}`]}>
         <NowPlayingContextProvider>
           <Routes>
             <Route
@@ -254,7 +269,11 @@ test('Playlist user role hit like button', async () => {
 
   // Wait for the component to load and state to update
   await act(async () => {
-    await new Promise((resolve) => setTimeout(resolve, 0));
+    await new Promise<void>((resolve) => {
+      setTimeout(() => {
+        resolve();
+      }, 0);
+    });
   });
 
   // First verify the like button is present
@@ -270,7 +289,11 @@ test('Playlist user role hit like button', async () => {
 
   // Wait for the state to update after clicking
   await act(async () => {
-    await new Promise((resolve) => setTimeout(resolve, 0));
+    await new Promise<void>((resolve) => {
+      setTimeout(() => {
+        resolve();
+      }, 0);
+    });
   });
 
   // Verify the unlike button is present after liking
@@ -281,37 +304,32 @@ test('Playlist user role hit like button', async () => {
 });
 
 test('Playlist user role get unlike button', async () => {
-  // Mock a different user than the playlist owner
   const currentUser = 'differentUser';
   jest.spyOn(TokenModule, 'getTokenUsername').mockReturnValue(currentUser);
 
-  // Mock playlist data with different owner
-  const playlistDTOMockFetch = {
+  const mockPlaylist: PlaylistDTO = {
     name: playlistName,
     photo: 'playlist',
     description: 'des',
     upload_date: 'date',
-    owner: 'originalOwner', // Different from current user
+    owner: 'originalOwner',
     song_names: [songName],
   };
 
-  // Mock user data with the playlist in saved_playlists (already liked)
-  const userMockFetch = {
+  const mockUser: UserMock = {
     name: currentUser,
     photo: 'photo',
     register_date: 'date',
     password: 'hashpassword',
     playback_history: [songName],
     playlists: [],
-    saved_playlists: [playlistName], // Playlist is already liked
+    saved_playlists: [playlistName],
   };
 
   global.fetch = jest.fn((url: string, options: any) => {
-    if (
-      url === `${Global.backendBaseUrl}/playlists/${playlistDTOMockFetch.name}`
-    ) {
+    if (url === `${Global.backendBaseUrl}/playlists/${mockPlaylist.name}`) {
       return Promise.resolve({
-        json: () => playlistDTOMockFetch,
+        json: () => mockPlaylist,
         status: 200,
         ok: true,
         headers: getMockHeaders(),
@@ -319,7 +337,7 @@ test('Playlist user role get unlike button', async () => {
     }
     if (url === `${Global.backendBaseUrl}/users/${currentUser}`) {
       return Promise.resolve({
-        json: () => userMockFetch,
+        json: () => mockUser,
         status: 200,
         ok: true,
         headers: getMockHeaders(),
@@ -390,7 +408,7 @@ test('Playlist user role get unlike button', async () => {
 
   const component = await act(() => {
     return render(
-      <MemoryRouter initialEntries={[`/playlist/${playlistDTOMockFetch.name}`]}>
+      <MemoryRouter initialEntries={[`/playlist/${mockPlaylist.name}`]}>
         <NowPlayingContextProvider>
           <Routes>
             <Route
@@ -405,7 +423,11 @@ test('Playlist user role get unlike button', async () => {
 
   // Wait for the component to load and state to update
   await act(async () => {
-    await new Promise((resolve) => setTimeout(resolve, 0));
+    await new Promise<void>((resolve) => {
+      setTimeout(() => {
+        resolve();
+      }, 0);
+    });
   });
 
   // First verify the unlike button is present (since playlist is already liked)
@@ -423,7 +445,11 @@ test('Playlist user role get unlike button', async () => {
 
   // Wait for the state to update after clicking
   await act(async () => {
-    await new Promise((resolve) => setTimeout(resolve, 0));
+    await new Promise<void>((resolve) => {
+      setTimeout(() => {
+        resolve();
+      }, 0);
+    });
   });
 
   // Verify the like button is present after unliking
@@ -437,7 +463,7 @@ test('Playlist user role update playlist', async () => {
   jest.spyOn(TokenModule, 'getTokenUsername').mockReturnValue(currentUser);
 
   // Mock playlist data with different owner
-  const playlistDTOMockFetch = {
+  const mockPlaylist: PlaylistDTO = {
     name: playlistName,
     photo: 'playlist',
     description: 'des',
@@ -447,7 +473,7 @@ test('Playlist user role update playlist', async () => {
   };
 
   // Mock user data
-  const userMockFetch = {
+  const mockUser: UserMock = {
     name: currentUser,
     photo: 'photo',
     register_date: 'date',
@@ -458,11 +484,9 @@ test('Playlist user role update playlist', async () => {
   };
 
   global.fetch = jest.fn((url: string, options: any) => {
-    if (
-      url === `${Global.backendBaseUrl}/playlists/${playlistDTOMockFetch.name}`
-    ) {
+    if (url === `${Global.backendBaseUrl}/playlists/${mockPlaylist.name}`) {
       return Promise.resolve({
-        json: () => playlistDTOMockFetch,
+        json: () => mockPlaylist,
         status: 200,
         ok: true,
         headers: getMockHeaders(),
@@ -470,7 +494,7 @@ test('Playlist user role update playlist', async () => {
     }
     if (url === `${Global.backendBaseUrl}/users/${currentUser}`) {
       return Promise.resolve({
-        json: () => userMockFetch,
+        json: () => mockUser,
         status: 200,
         ok: true,
         headers: getMockHeaders(),
@@ -512,7 +536,7 @@ test('Playlist user role update playlist', async () => {
 
   const component = await act(() => {
     return render(
-      <MemoryRouter initialEntries={[`/playlist/${playlistDTOMockFetch.name}`]}>
+      <MemoryRouter initialEntries={[`/playlist/${mockPlaylist.name}`]}>
         <NowPlayingContextProvider>
           <Routes>
             <Route
@@ -527,7 +551,11 @@ test('Playlist user role update playlist', async () => {
 
   // Wait for the component to load
   await act(async () => {
-    await new Promise((resolve) => setTimeout(resolve, 0));
+    await new Promise<void>((resolve) => {
+      setTimeout(() => {
+        resolve();
+      }, 0);
+    });
   });
 
   // Click the thumbnail to open the edit modal
@@ -540,7 +568,11 @@ test('Playlist user role update playlist', async () => {
 
   // Wait for the modal to open
   await act(async () => {
-    await new Promise((resolve) => setTimeout(resolve, 0));
+    await new Promise<void>((resolve) => {
+      setTimeout(() => {
+        resolve();
+      }, 0);
+    });
   });
 
   // Find the description input using the correct placeholder text
@@ -575,7 +607,7 @@ test('Playlist owner should not see like buttons', async () => {
   const ownerName = 'ownerUser';
   jest.spyOn(TokenModule, 'getTokenUsername').mockReturnValue(ownerName);
 
-  const playlistDTOMockFetch = {
+  const mockPlaylist: PlaylistDTO = {
     name: playlistName,
     photo: 'playlist',
     description: 'des',
@@ -585,11 +617,9 @@ test('Playlist owner should not see like buttons', async () => {
   };
 
   global.fetch = jest.fn((url: string) => {
-    if (
-      url === `${Global.backendBaseUrl}/playlists/${playlistDTOMockFetch.name}`
-    ) {
+    if (url === `${Global.backendBaseUrl}/playlists/${mockPlaylist.name}`) {
       return Promise.resolve({
-        json: () => playlistDTOMockFetch,
+        json: () => mockPlaylist,
         status: 200,
         ok: true,
         headers: getMockHeaders(),
@@ -601,7 +631,7 @@ test('Playlist owner should not see like buttons', async () => {
 
   const component = await act(() => {
     return render(
-      <MemoryRouter initialEntries={[`/playlist/${playlistDTOMockFetch.name}`]}>
+      <MemoryRouter initialEntries={[`/playlist/${mockPlaylist.name}`]}>
         <NowPlayingContextProvider>
           <Routes>
             <Route

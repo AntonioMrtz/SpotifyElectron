@@ -2,9 +2,6 @@ name: Backend Type Checking
 
 on:
   pull_request:
-    branches:
-      - 'master'
-      - 'master-*'
 
 jobs:
   run_type_check:

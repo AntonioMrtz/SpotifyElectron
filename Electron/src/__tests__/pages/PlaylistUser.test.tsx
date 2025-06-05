@@ -59,7 +59,7 @@ const userMockFetch = {
 jest.spyOn(TokenModule, 'getTokenUsername').mockReturnValue(userName);
 jest.spyOn(TokenModule, 'getTokenRole').mockReturnValue(roleUser);
 
-// First, let's declare the mock data types at the top level
+
 interface PlaylistDTO {
   name: string;
   photo: string;
@@ -124,7 +124,6 @@ test('Playlist user role get all info', async () => {
       });
     }
 
-    // In case the URL doesn't match, return a rejected promise
     return Promise.reject(new Error(`Unhandled URL in fetch mock: ${url}`));
   }) as jest.Mock;
 
@@ -247,8 +246,6 @@ test('Playlist user role hit like button', async () => {
         console.log(error);
       });
     }
-
-    // In case the URL doesn't match, return a rejected promise
     return Promise.reject(new Error(`Unhandled URL in fetch mock: ${url}`));
   }) as jest.Mock;
 
@@ -267,7 +264,7 @@ test('Playlist user role hit like button', async () => {
     );
   });
 
-  // Wait for the component to load and state to update
+
   await act(async () => {
     await new Promise<void>((resolve) => {
       setTimeout(() => {
@@ -276,11 +273,11 @@ test('Playlist user role hit like button', async () => {
     });
   });
 
-  // First verify the like button is present
+
   const likeButton = component.container.querySelector('#playlist-like-button');
   expect(likeButton).toBeInTheDocument();
 
-  // Click the like button
+
   await act(async () => {
     if (likeButton) {
       fireEvent.click(likeButton);
@@ -296,7 +293,7 @@ test('Playlist user role hit like button', async () => {
     });
   });
 
-  // Verify the unlike button is present after liking
+ 
   const unlikeButton = component.container.querySelector(
     '#playlist-unlike-button',
   );
@@ -402,7 +399,6 @@ test('Playlist user role get unlike button', async () => {
       });
     }
 
-    // In case the URL doesn't match, return a rejected promise
     return Promise.reject(new Error(`Unhandled URL in fetch mock: ${url}`));
   }) as jest.Mock;
 
@@ -430,7 +426,7 @@ test('Playlist user role get unlike button', async () => {
     });
   });
 
-  // First verify the unlike button is present (since playlist is already liked)
+
   const unlikeButton = component.container.querySelector(
     '#playlist-unlike-button',
   );
@@ -443,7 +439,7 @@ test('Playlist user role get unlike button', async () => {
     }
   });
 
-  // Wait for the state to update after clicking
+
   await act(async () => {
     await new Promise<void>((resolve) => {
       setTimeout(() => {
@@ -452,13 +448,13 @@ test('Playlist user role get unlike button', async () => {
     });
   });
 
-  // Verify the like button is present after unliking
+
   const likeButton = component.container.querySelector('#playlist-like-button');
   expect(likeButton).toBeInTheDocument();
 });
 
 test('Playlist user role update playlist', async () => {
-  // Mock a different user than the playlist owner
+
   const currentUser = 'differentUser';
   jest.spyOn(TokenModule, 'getTokenUsername').mockReturnValue(currentUser);
 
@@ -556,7 +552,7 @@ test('Playlist user role update playlist', async () => {
     });
   });
 
-  // Click the thumbnail to open the edit modal
+
   await act(async () => {
     const thumbnailPlaylist = component.getByAltText('thumbnail-playlist');
     if (thumbnailPlaylist) {
@@ -564,7 +560,7 @@ test('Playlist user role update playlist', async () => {
     }
   });
 
-  // Wait for the modal to open
+
   await act(async () => {
     await new Promise<void>((resolve) => {
       setTimeout(() => {
@@ -573,22 +569,20 @@ test('Playlist user role update playlist', async () => {
     });
   });
 
-  // Find the description input using the correct placeholder text
   const inputDescription = component.getByPlaceholderText(
     t('playlist.description-placeholder'),
   );
 
-  // Update the description
   await act(async () => {
     fireEvent.change(inputDescription, {
       target: { value: 'description' },
     });
   });
 
-  // Verify the modal is open
+
   expect(component.queryByText(t('playlist.edit-details'))).toBeInTheDocument();
 
-  // Click the save button
+
   await act(async () => {
     const submitUpdateButton = component.queryByText(t('playlist.save'));
     if (submitUpdateButton) {
@@ -596,12 +590,11 @@ test('Playlist user role update playlist', async () => {
     }
   });
 
-  // Verify the sidebar was refreshed
+
   expect(refreshSidebarData).toHaveBeenCalledTimes(1);
 });
 
 test('Playlist owner should not see like buttons', async () => {
-  // Mock the playlist owner as the current user
   const ownerName = 'ownerUser';
   jest.spyOn(TokenModule, 'getTokenUsername').mockReturnValue(ownerName);
 
@@ -610,7 +603,7 @@ test('Playlist owner should not see like buttons', async () => {
     photo: 'playlist',
     description: 'des',
     upload_date: 'date',
-    owner: ownerName, // Set owner to be the same as current user
+    owner: ownerName, 
     song_names: [songName],
   };
 
@@ -623,7 +616,7 @@ test('Playlist owner should not see like buttons', async () => {
         headers: getMockHeaders(),
       });
     }
-    // ... other fetch mocks ...
+
     return Promise.reject(new Error(`Unhandled URL in fetch mock: ${url}`));
   }) as jest.Mock;
 
@@ -642,7 +635,6 @@ test('Playlist owner should not see like buttons', async () => {
     );
   });
 
-  // Verify that like buttons are not present
   const likeButton = component.container.querySelector('#playlist-like-button');
   const unlikeButton = component.container.querySelector(
     '#playlist-unlike-button',

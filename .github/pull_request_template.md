@@ -2,6 +2,13 @@
 
 <!-- Describe the proposed changes in this pull request concisely and clearly. -->
 
+## Checklist
+
+- [ ] I have read and followed the [Contributing Guidelines](../docs/CONTRIBUTING.md).
+- [ ] I have followed the project's [git convention](../docs/developer/Git-Convention.md).
+- [ ] I have tested the changes and verified they work as intended. Automated tests (unit, integration, e2e as applicable) and manual tests (UI interactions, edge cases, error states, etc.).
+- [ ] I have set the pull request base to the appropriate `development-vx.xx` branch corresponding to the issue milestone.
+
 ## Commit type
 
 <!-- Select only one commit type that describes the main changes done in this Pull Request
@@ -24,9 +31,6 @@
 
 <!-- Add issue number: #issue-number -->
 
-## Solution
-
-<!-- Explain how the problem is resolved or the need is addressed in this pull request. -->
 
 ## Proposed Changes
 
@@ -44,9 +48,6 @@
 
 <!-- If applicable, provide screenshots that help visualize the changes made. -->
 
-## Additional Tasks
-
-<!-- List any additional tasks that need to be performed after the pull request is merged, such as documentation updates, additional testing, etc. -->
 
 ## Assigned
 

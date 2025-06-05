@@ -3,6 +3,9 @@ name: Backend Build with MongoDB
 on:
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   backend-build:
     runs-on: ubuntu-latest

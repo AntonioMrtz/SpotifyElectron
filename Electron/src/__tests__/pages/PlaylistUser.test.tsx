@@ -265,15 +265,6 @@ test('Playlist user role hit like button', async () => {
   });
 
 
-  await act(async () => {
-    await new Promise<void>((resolve) => {
-      setTimeout(() => {
-        resolve();
-      }, 0);
-    });
-  });
-
-
   const likeButton = component.container.querySelector('#playlist-like-button');
   expect(likeButton).toBeInTheDocument();
 

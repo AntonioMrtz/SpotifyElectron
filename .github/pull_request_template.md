@@ -4,8 +4,8 @@
 
 ## Checklist
 
-- [ ] I have read and followed the [Contributing Guidelines](../docs/CONTRIBUTING.md).
-- [ ] I have followed the project's [git convention](../docs/developer/Git-Convention.md).
+- [ ] I have read and followed the [Contributing Guidelines](docs/CONTRIBUTING.md).
+- [ ] I have followed the project's [git convention](docs/developer/Git-Convention.md).
 - [ ] I have tested the changes and verified they work as intended. Automated tests (unit, integration, e2e as applicable) and manual tests (UI interactions, edge cases, error states, etc.).
 - [ ] I have set the pull request base to the appropriate `development-vx.xx` branch corresponding to the issue milestone.
 

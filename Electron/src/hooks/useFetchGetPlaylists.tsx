@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { PropsPlaylistCard } from 'types/playlist';
+import { useSidebar } from 'providers/SidebarProvider';
 import defaultThumbnailPlaylist from '../assets/imgs/DefaultThumbnailPlaylist.jpg';
 import { PlaylistsService } from '../swagger/api/services/PlaylistsService';
 
-const useFetchGetPlaylists = (refreshSidebarData: () => void) => {
+const useFetchGetPlaylists = () => {
+  const { refreshSidebarData } = useSidebar();
   const [playlists, setPlaylists] = useState<PropsPlaylistCard[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);

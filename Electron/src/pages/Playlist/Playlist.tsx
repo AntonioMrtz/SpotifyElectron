@@ -13,8 +13,9 @@ import { secondsToHoursAndMinutesFormatted } from 'utils/date';
 import { TextField } from '@mui/material';
 import { inputStyle } from 'styles/mui5/styles';
 import { useNowPlayingContext } from 'hooks/useNowPlayingContext';
-import { t } from 'i18next';
+import i18n, { t } from 'i18next';
 import { UserProps } from 'types/user';
+import { useSidebar } from 'providers/SidebarProvider';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 import Song from '../../components/Song/Song';
 import styles from './playlist.module.css';
@@ -22,12 +23,13 @@ import { UsersService } from '../../swagger/api/services/UsersService';
 import { PlaylistsService } from '../../swagger/api/services/PlaylistsService';
 import { SongsService } from '../../swagger/api/services/SongsService';
 
-interface PropsPlaylist {
-  refreshSidebarData: () => void;
-}
+// interface PropsPlaylist {
+//   refreshSidebarData: () => void;
+// }
 
-export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
+export default function Playlist() {
   const { changeSongName } = useNowPlayingContext();
+  const { refreshSidebarData } = useSidebar();
 
   const [mainColorThumbnail, setMainColorThumbnail] = useState('');
 
@@ -192,73 +194,52 @@ export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
 
   const loadPlaylistData = async () => {
     try {
-      // TODO custom hook
       const playlistData =
         await PlaylistsService.getPlaylistPlaylistsNameGet(playlistName);
       setOwner(playlistData.owner);
       setCreationDate(playlistData.upload_date.split('-')[0]);
       setDescription(playlistData.description);
-
-      setThumbnail(
-        playlistData.photo === ''
-          ? defaultThumbnailPlaylist
-          : playlistData.photo,
-      );
+      setThumbnail(playlistData.photo || defaultThumbnailPlaylist);
       setThumbnailUpdatePlaylist(
-        playlistData.photo === ''
-          ? defaultThumbnailPlaylist
-          : playlistData.photo,
+        playlistData.photo || defaultThumbnailPlaylist,
       );
-
       if (playlistData.song_names) {
         setNumberSongs(playlistData.song_names.length);
-        const songPromises: Promise<any>[] = [];
-
-        // TODO reduce complexity or refactor
-
-        playlistData.song_names.reverse().forEach((songName: string) => {
-          songPromises.push(
-            new Promise((resolve) => {
-              SongsService.getSongMetadataSongsMetadataNameGet(songName)
-                .then((songData) => {
-                  const propsSong: PropsSongs = {
-                    name: songName,
-                    playlistName,
-                    artistName: '',
-                    streams: 0,
-                    secondsDuration: 0,
-                    index: 0,
-                    handleSongCliked: changeSongName,
-                    refreshPlaylistData: loadPlaylistData,
-                    refreshSidebarData,
-                  };
-                  propsSong.artistName = songData.artist;
-                  propsSong.secondsDuration = songData.seconds_duration;
-                  propsSong.streams = songData.streams;
-
-                  resolve(propsSong);
-                  return propsSong;
-                })
-                .catch((err) => {
-                  console.log('Unable to get Song Data');
-                  console.error(err);
-                });
-            }),
-          );
-        });
-
+        const songPromises = playlistData.song_names
+          .reverse()
+          .map((songName: string) => {
+            return SongsService.getSongMetadataSongsMetadataNameGet(songName)
+              .then((songData) => {
+                const propsSong: PropsSongs = {
+                  name: songName,
+                  playlistName,
+                  artistName: songData.artist,
+                  streams: songData.streams,
+                  secondsDuration: songData.seconds_duration,
+                  index: 0,
+                  handleSongCliked: changeSongName,
+                  refreshPlaylistData: loadPlaylistData,
+                  refreshSidebarData,
+                };
+                return propsSong;
+              })
+              .catch((err) => {
+                console.log('Unable to get Song Data');
+                console.error(err);
+              });
+          });
         Promise.all(songPromises)
           .then((resSongPromises) => {
             setSongs([...resSongPromises]);
-            return null;
           })
           .catch(() => {
             console.log('Unable to get Songs Data');
           });
       }
     } catch (err) {
-      console.log(`Unable to get playlist ${playlistName}`);
-      console.log(err);
+      console.error(`Unable to get playlist ${playlistName}:`, err);
+      setSongs([]);
+      setNumberSongs(0);
     }
   };
 
@@ -352,15 +333,22 @@ export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
 
   /*  */
 
+  // useEffect(() => {
+  //   loadPlaylistData();
+
+  //   if (localStorage.getItem('playlistEdit') === 'true') {
+  //     setopenModalUpdatePlaylist(true);
+  //     localStorage.setItem('playlistEdit', JSON.stringify(false));
+  //   }
+
+  //   loadPlaylistLikedStatus();
+  // }, [location]);
+
   useEffect(() => {
-    loadPlaylistData();
-
-    if (localStorage.getItem('playlistEdit') === 'true') {
-      setopenModalUpdatePlaylist(true);
-      localStorage.setItem('playlistEdit', JSON.stringify(false));
+    if (i18n.isInitialized) {
+      loadPlaylistData();
+      loadPlaylistLikedStatus();
     }
-
-    loadPlaylistLikedStatus();
   }, [location]);
 
   /* Process photo color */
@@ -575,7 +563,7 @@ export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
             owner={owner}
             handleCloseParent={handleCloseContextMenu}
             refreshPlaylistData={refreshPlaylistData}
-            refreshSidebarData={refreshSidebarData}
+            // refreshSidebarData={refreshSidebarData}
           />
         </Popover>
       </div>
@@ -662,7 +650,7 @@ export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
                     <TextField
                       id="photo-input"
                       label={t('playlist.thumbnail')}
-                      name="name"
+                      name="photo"
                       variant="outlined"
                       type="text"
                       placeholder={t('playlist.thumbnail-placeholder')}

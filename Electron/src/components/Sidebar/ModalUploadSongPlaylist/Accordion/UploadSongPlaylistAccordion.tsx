@@ -13,6 +13,7 @@ import UserType from 'utils/role';
 import LoadingCircleSmall from 'components/AdvancedUIComponents/LoadingCircle/LoadingCircleSmall';
 import { getGenreFromString } from 'utils/genre';
 import { t } from 'i18next';
+import { useSidebar } from 'providers/SidebarProvider';
 import GenreOption from './GenreOption/GenreOption';
 import styles from './uploadSongPlaylistAccordion.module.css';
 import useFetchGetGenres from '../../../../hooks/useFetchGetGenres';
@@ -27,10 +28,12 @@ interface PropsuploadSongPlaylistAccordion {
 
 export default function UploadSongPlaylistAccordion({
   handleClose,
-  refreshSidebarData,
+  // refreshSidebarData,
   setIsCloseAllowed,
 }: PropsuploadSongPlaylistAccordion) {
   /* Messages */
+
+  const { refreshSidebarData } = useSidebar();
 
   const MessagesInfoPopOver = {
     PLAYLIST_ADDED_TITLE: t('uploadSongPlaylistAccordion.playlist-added-title'),

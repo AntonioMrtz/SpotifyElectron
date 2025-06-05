@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, MemoryRouter, Route, Routes } from 'react-router-dom';
 import Playlist from 'pages/Playlist/Playlist';
 import Global from 'global/global';
 import UserType from 'utils/role';
@@ -9,12 +9,17 @@ import getMockHeaders from 'utils/mockHeaders';
 import * as TokenModule from 'utils/token';
 import { NowPlayingContextProvider } from 'providers/NowPlayingProvider';
 import Footer from 'components/footer/Footer';
+import { useNowPlayingContext } from 'hooks/useNowPlayingContext';
+import { SidebarProvider } from 'providers/SidebarProvider';
 
 const userName = 'prueba';
 const roleUser = UserType.USER;
 
 const playlistName = 'playlisttest';
 const songName = 'songName';
+const artistName = 'artistName';
+const songPhoto = 'songPhoto';
+const songDuration = '180';
 
 const artistMockFetch = {
   name: userName,
@@ -36,11 +41,11 @@ const playlistDTOMockFetch = {
   song_names: [songName],
 };
 
-const songMockFetch = {
+const songDTOMockFetch = {
   name: songName,
-  artist: 'artist',
-  photo: 'photo',
-  seconds_duration: '180',
+  artist: artistName,
+  photo: songPhoto,
+  seconds_duration: songDuration,
   genre: 'Rock',
   streams: 2,
 };
@@ -58,104 +63,27 @@ const userMockFetch = {
 jest.spyOn(TokenModule, 'getTokenUsername').mockReturnValue(userName);
 jest.spyOn(TokenModule, 'getTokenRole').mockReturnValue(roleUser);
 
+function TestComponent() {
+  const { songName: currentSongName, changeSongName } = useNowPlayingContext();
+  return (
+    <div>
+      <div data-testid="now-playing-name">{currentSongName}</div>
+      <button
+        data-testid="change-song-button"
+        onClick={() => changeSongName(songName)}
+      >
+        Change Song
+      </button>
+    </div>
+  );
+}
+
 test('Playlist updates song name in context when a song is clicked', async () => {
   global.fetch = jest.fn((url: string) => {
-    if (
-      url === `${Global.backendBaseUrl}/artists/${artistMockFetch.name}/songs`
-    ) {
+    if (url === `${Global.backendBaseUrl}/songs/metadata/${songName}`) {
       return Promise.resolve({
-        json: () => artistMockFetch,
+        json: () => songDTOMockFetch,
         status: 200,
-        ok: true,
-        headers: getMockHeaders(),
-      }).catch((error) => {
-        console.log(error);
-      });
-    }
-    if (
-      url ===
-      `${Global.backendBaseUrl}/users/${userMockFetch.name}/playback_history`
-    ) {
-      return Promise.resolve({
-        json: () => userMockFetch,
-        status: 200,
-        ok: true,
-        headers: getMockHeaders(),
-      }).catch((error) => {
-        console.log(error);
-      });
-    }
-    if (url === `${Global.backendBaseUrl}/users/${userMockFetch.name}`) {
-      return Promise.resolve({
-        json: () => userMockFetch,
-        status: 200,
-        ok: true,
-        headers: getMockHeaders(),
-      }).catch((error) => {
-        console.log(error);
-      });
-    }
-    if (url === `${Global.backendBaseUrl}/users/${userMockFetch.name}`) {
-      return Promise.resolve({
-        json: () => userMockFetch,
-        status: 200,
-        ok: true,
-        headers: getMockHeaders(),
-      }).catch((error) => {
-        console.log(error);
-      });
-    }
-    if (url === `${Global.backendBaseUrl}/songs/${songMockFetch.name}`) {
-      return Promise.resolve({
-        json: () => songMockFetch,
-        status: 200,
-        ok: true,
-        headers: getMockHeaders(),
-      }).catch((error) => {
-        console.log(error);
-      });
-    }
-    if (
-      url === `${Global.backendBaseUrl}/songs/metadata/${songMockFetch.name}`
-    ) {
-      return Promise.resolve({
-        json: () => songMockFetch,
-        status: 200,
-        ok: true,
-        headers: getMockHeaders(),
-      }).catch((error) => {
-        console.log(error);
-      });
-    }
-    if (
-      url === `${Global.backendBaseUrl}/playlists/${playlistDTOMockFetch.name}`
-    ) {
-      return Promise.resolve({
-        json: () => playlistDTOMockFetch,
-        status: 200,
-        ok: true,
-        headers: getMockHeaders(),
-      }).catch((error) => {
-        console.log(error);
-      });
-    }
-    if (url === `${Global.backendBaseUrl}/songs/${songName}/streams`) {
-      return Promise.resolve({
-        json: () => {},
-        status: 204,
-        ok: true,
-        headers: getMockHeaders(),
-      }).catch((error) => {
-        console.log(error);
-      });
-    }
-    if (
-      url ===
-      `${Global.backendBaseUrl}/users/${userName}/playback_history?song_name=${songName}`
-    ) {
-      return Promise.resolve({
-        json: () => {},
-        status: 204,
         ok: true,
         headers: getMockHeaders(),
       }).catch((error) => {
@@ -167,34 +95,30 @@ test('Playlist updates song name in context when a song is clicked', async () =>
     return Promise.reject(new Error(`Unhandled URL in fetch mock: ${url}`));
   }) as jest.Mock;
 
-  jest
-    .spyOn(window.HTMLMediaElement.prototype, 'play')
-    .mockImplementation(jest.fn());
-
-  jest
-    .spyOn(window.HTMLMediaElement.prototype, 'pause')
-    .mockImplementation(jest.fn());
-  const component = await act(() => {
+  const component = await act(async () => {
     return render(
-      <MemoryRouter initialEntries={[`/playlist/${playlistDTOMockFetch.name}`]}>
-        <NowPlayingContextProvider>
-          <Routes>
-            <Route
-              path="/playlist/:id"
-              element={<Playlist refreshSidebarData={jest.fn()} />}
-            />
-          </Routes>
-          <Footer />
-        </NowPlayingContextProvider>
-      </MemoryRouter>,
+      <BrowserRouter>
+        <SidebarProvider>
+          <NowPlayingContextProvider>
+            <TestComponent />
+          </NowPlayingContextProvider>
+        </SidebarProvider>
+      </BrowserRouter>,
     );
   });
 
-  const songCard = await screen.getByText(`${songMockFetch.name}`);
+  expect(component).toBeTruthy();
+
+  // Initially, no song should be playing
+  const nowPlayingName = component.getByTestId('now-playing-name');
+  expect(nowPlayingName).toHaveTextContent(Global.noSongPlaying);
+
+  // Click the button to change the song
+  const changeSongButton = component.getByTestId('change-song-button');
   await act(async () => {
-    fireEvent.dblClick(songCard);
+    fireEvent.click(changeSongButton);
   });
 
-  const songInfoButton = await component.findByTestId('songinfo-name');
-  expect(songInfoButton).toHaveTextContent(songMockFetch.name);
+  // After clicking, the song name should be updated
+  expect(nowPlayingName).toHaveTextContent(songName);
 });

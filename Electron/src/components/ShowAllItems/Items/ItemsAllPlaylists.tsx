@@ -2,11 +2,11 @@ import PlaylistCard from 'components/Cards/PlaylistCard/PlaylistCard';
 import useFetchGetPlaylists from 'hooks/useFetchGetPlaylists';
 import { PropsItemsPlaylist } from '../types/PropsItems';
 import defaultThumbnailPlaylist from '../../../assets/imgs/DefaultThumbnailPlaylist.jpg';
+import { useSidebar } from 'providers/SidebarProvider';
 
-export default function ItemsAllPlaylists({
-  refreshSidebarData,
-}: PropsItemsPlaylist) {
-  const { playlists } = useFetchGetPlaylists(refreshSidebarData);
+export default function ItemsAllPlaylists() {
+  const { refreshSidebarData } = useSidebar();
+  const { playlists } = useFetchGetPlaylists();
 
   return (
     // eslint-disable-next-line react/jsx-no-useless-fragment

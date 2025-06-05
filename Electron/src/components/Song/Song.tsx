@@ -4,6 +4,7 @@ import ContextMenuSong from 'components/AdvancedUIComponents/ContextMenu/Song/Co
 import Popover, { PopoverPosition } from '@mui/material/Popover';
 import { useNavigate } from 'react-router-dom';
 import { secondsToMinutesSeconds } from 'utils/date';
+import { useSidebar } from 'providers/SidebarProvider';
 import styles from '../../pages/Playlist/playlist.module.css';
 
 export default function Song({
@@ -14,10 +15,10 @@ export default function Song({
   secondsDuration,
   streams,
   handleSongCliked,
-  refreshPlaylistData,
-  refreshSidebarData,
+  refreshPlaylistData, // refreshSidebarData,
 }: PropsSongs) {
   const navigate = useNavigate();
+  const { refreshSidebarData } = useSidebar();
 
   const [isOpen, setIsOpen] = useState(false);
   const [anchorPosition, setAnchorPosition] = useState<{
@@ -116,7 +117,7 @@ export default function Song({
             playlistName={playlistName}
             handleCloseParent={handleClose}
             refreshPlaylistData={refreshPlaylistData}
-            refreshSidebarData={refreshSidebarData}
+            // refreshSidebarData={refreshSidebarData}
           />
         </Popover>
       </div>

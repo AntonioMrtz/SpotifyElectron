@@ -11,6 +11,7 @@ import UserType from 'utils/role';
 import RegisterMenu from 'pages/StartMenu/RegisterMenu';
 import { deleteToken } from 'utils/token';
 import { NowPlayingContextProvider } from 'providers/NowPlayingProvider';
+import { SidebarProvider } from 'providers/SidebarProvider';
 import styles from './app.module.css';
 import Sidebar from '../components/Sidebar/Sidebar';
 import Home from '../pages/Home/Home';
@@ -50,99 +51,75 @@ function App() {
   const [isSigningUp, setIsSigningUp] = useState(false);
 
   return (
-    <>
-      {isSigningUp && <RegisterMenu setIsSigningUp={setIsSigningUp} />}
-      {!isLogged && !isSigningUp && (
-        <StartMenu setIsLogged={setIsLogged} setIsSigningUp={setIsSigningUp} />
-      )}
+    <SidebarProvider>
       <NowPlayingContextProvider>
-        {isLogged && (
-          <div className={`App d-flex flex-column ${styles.appBackground}`}>
-            <StickyHeader handleLogout={handleLogout} />
+        {isSigningUp && <RegisterMenu setIsSigningUp={setIsSigningUp} />}
+        {!isLogged && !isSigningUp && (
+          <StartMenu
+            setIsLogged={setIsLogged}
+            setIsSigningUp={setIsSigningUp}
+          />
+        )}
+        <div className={`App d-flex flex-column ${styles.appBackground}`}>
+          <StickyHeader handleLogout={handleLogout} />
 
-            <div className="d-flex">
-              <Sidebar
-                refreshSidebarTriggerValue={refreshSidebarTriggerValue}
-                refreshSidebarData={refreshSidebarData}
-              />
-              <div
-                className={`App d-flex container-fluid ${styles.mainContentWrapper}`}
-              >
-                <Routes>
-                  <Route
-                    path="/playlist/:id"
-                    element=<Playlist refreshSidebarData={refreshSidebarData} />
-                  />
-                  <Route
-                    path="/browse"
-                    element=<Browse refreshSidebarData={refreshSidebarData} />
-                  />
-                  <Route
-                    path="/browse/genre/:id"
-                    element=<Genre refreshSidebarData={refreshSidebarData} />
-                  />
-
-                  <Route
-                    path="/user/:id"
-                    element=<UserProfile
-                      refreshSidebarData={refreshSidebarData}
-                      userType={UserType.USER}
-                    />
-                  />
-
-                  <Route
-                    path="/artist/:id"
-                    element=<UserProfile
-                      refreshSidebarData={refreshSidebarData}
-                      userType={UserType.ARTIST}
-                    />
-                  />
-
-                  <Route
-                    path="/showAllItemsPlaylist/:id"
-                    element=<ShowAllItems
-                      refreshSidebarData={refreshSidebarData}
-                      type={ShowAllItemsTypes.ALL_PLAYLISTS}
-                    />
-                  />
-                  <Route
-                    path="/showAllItemsArtist/:id"
-                    element=<ShowAllItems
-                      refreshSidebarData={refreshSidebarData}
-                      type={ShowAllItemsTypes.ALL_ARTISTS}
-                    />
-                  />
-                  <Route
-                    path="/showAllPlaylistFromUser/:id/:user/:usertype"
-                    element=<ShowAllItems
-                      refreshSidebarData={refreshSidebarData}
+          <div className="d-flex">
+            <Sidebar
+              refreshSidebarTriggerValue={refreshSidebarTriggerValue}
+              refreshSidebarData={refreshSidebarData}
+            />
+            <div
+              className={`App d-flex container-fluid ${styles.mainContentWrapper}`}
+            >
+              <Routes>
+                <Route path="/playlist/:id" element={<Playlist />} />
+                <Route path="/browse" element={<Browse />} />
+                <Route path="/browse/genre/:id" element={<Genre />} />
+                <Route
+                  path="/user/:id"
+                  element={<UserProfile userType={UserType.USER} />}
+                />
+                <Route
+                  path="/artist/:id"
+                  element={<UserProfile userType={UserType.ARTIST} />}
+                />
+                <Route
+                  path="/showAllItemsPlaylist/:id"
+                  element={
+                    <ShowAllItems type={ShowAllItemsTypes.ALL_PLAYLISTS} />
+                  }
+                />
+                <Route
+                  path="/showAllItemsArtist/:id"
+                  element={
+                    <ShowAllItems type={ShowAllItemsTypes.ALL_ARTISTS} />
+                  }
+                />
+                <Route
+                  path="/showAllPlaylistFromUser/:id/:user/:usertype"
+                  element={
+                    <ShowAllItems
                       type={ShowAllItemsTypes.ALL_PLAYLIST_FROM_USER}
                     />
-                  />
-                  <Route
-                    path="/showAllSongsFromArtist/:id/:artist"
-                    element=<ShowAllItems
-                      refreshSidebarData={refreshSidebarData}
+                  }
+                />
+                <Route
+                  path="/showAllSongsFromArtist/:id/:artist"
+                  element={
+                    <ShowAllItems
                       type={ShowAllItemsTypes.ALL_SONGS_FROM_ARTIST}
                     />
-                  />
-                  <Route
-                    path="/"
-                    element=<Home refreshSidebarData={refreshSidebarData} />
-                  />
-
-                  <Route
-                    path="*"
-                    element=<Home refreshSidebarData={refreshSidebarData} />
-                  />
-                </Routes>
-              </div>
+                  }
+                />
+                <Route path="/" element={<Home />} />
+                <Route path="*" element={<Home />} />
+              </Routes>
             </div>
-            <Footer />
           </div>
-        )}
+          <Footer />
+        </div>
       </NowPlayingContextProvider>
-    </>
+    </SidebarProvider>
   );
 }
 

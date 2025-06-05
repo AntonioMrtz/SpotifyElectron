@@ -4,16 +4,17 @@ import Popover, { PopoverPosition } from '@mui/material/Popover';
 import { useNavigate } from 'react-router-dom';
 import { PropsSongCard } from 'types/song';
 import { useNowPlayingContext } from 'hooks/useNowPlayingContext';
+import { useSidebar } from 'providers/SidebarProvider';
 import styles from '../cards.module.css';
 import defaultThumbnailPlaylist from '../../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 
 export default function SongCard({
   name,
   artist,
-  photo,
-  refreshSidebarData,
+  photo, // refreshSidebarData,
 }: PropsSongCard) {
   const { changeSongName } = useNowPlayingContext();
+  const { refreshSidebarData } = useSidebar();
 
   const navigate = useNavigate();
 
@@ -118,7 +119,7 @@ export default function SongCard({
             playlistName=""
             handleCloseParent={handleClose}
             refreshPlaylistData={() => {}}
-            refreshSidebarData={refreshSidebarData}
+            // refreshSidebarData={refreshSidebarData}
           />
         </Popover>
       </div>

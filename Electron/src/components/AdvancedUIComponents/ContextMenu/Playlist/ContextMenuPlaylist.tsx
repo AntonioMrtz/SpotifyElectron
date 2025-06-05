@@ -9,6 +9,7 @@ import { getTokenUsername } from 'utils/token';
 import useFetchGetUserPlaylistNames from 'hooks/useFetchGetUserPlaylistNames';
 import { PlaylistsService } from 'swagger/api';
 import { t } from 'i18next';
+import { useSidebar } from 'providers/SidebarProvider';
 import styles from '../contextMenu.module.css';
 import { PropsContextMenuPlaylist } from '../types/propsContextMenu';
 
@@ -112,10 +113,10 @@ const reducerConfirmationMenu = (
 export default function ContextMenuPlaylist({
   playlistName,
   owner,
-  handleCloseParent,
-  refreshSidebarData,
+  handleCloseParent, // refreshSidebarData,
 }: PropsContextMenuPlaylist) {
   const navigate = useNavigate();
+  const { refreshSidebarData } = useSidebar();
 
   const initialState: ConfirmationMenuState = {
     payload: {

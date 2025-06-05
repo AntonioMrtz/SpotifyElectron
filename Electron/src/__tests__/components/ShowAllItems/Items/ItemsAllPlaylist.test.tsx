@@ -6,6 +6,7 @@ import Global from 'global/global';
 import * as router from 'react-router';
 import ItemsAllPlaylists from 'components/ShowAllItems/Items/ItemsAllPlaylists';
 import getMockHeaders from 'utils/mockHeaders';
+import { SidebarProvider } from 'providers/SidebarProvider';
 
 const navigate = jest.fn();
 jest.spyOn(router, 'useNavigate').mockImplementation(() => navigate);
@@ -51,10 +52,12 @@ test('Render itemsAllPlaylist', async () => {
   const component = await act(() => {
     return render(
       <BrowserRouter>
-        <ItemsAllPlaylists
-          refreshSidebarData={jest.fn()}
-          id={playlistDTOMockFetch.name}
-        />
+        <SidebarProvider>
+          <ItemsAllPlaylists
+            refreshSidebarData={jest.fn()}
+            id={playlistDTOMockFetch.name}
+          />
+        </SidebarProvider>
       </BrowserRouter>,
     );
   });

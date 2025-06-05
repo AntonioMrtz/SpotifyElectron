@@ -6,16 +6,18 @@ import ArtistCard from 'components/Cards/ArtistCard/ArtistCard';
 import UserCard from 'components/Cards/UserCard/UserCard';
 import useFetchSearchItemsByName from 'hooks/useFetchGetSearchItemsByName';
 import { t } from 'i18next';
+import { useSidebar } from 'providers/SidebarProvider';
 import useFetchGetGenres from '../../hooks/useFetchGetGenres';
 import styles from './browse.module.css';
 import GenreCard from '../../components/Cards/GenreCard/GenreCard';
 
-interface PropsBrowse {
-  refreshSidebarData: () => void;
-}
+// interface PropsBrowse {
+//   refreshSidebarData: () => void;
+// }
 
-export default function Browse({ refreshSidebarData }: PropsBrowse) {
+export default function Browse() {
   const [filterName, setFilterName] = useState('');
+  const { refreshSidebarData } = useSidebar();
 
   const { filteredPlaylists, filteredArtists, filteredSongs, filteredUsers } =
     useFetchSearchItemsByName(filterName, refreshSidebarData);

@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import { ChangeEvent, FormEvent, useEffect, useState, MouseEvent } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState, MouseEvent, useRef } from 'react'; // Import useRef
 import { useLocation, useNavigate } from 'react-router-dom';
 import { getTokenUsername } from 'utils/token';
 import { PropsSongs } from 'components/Sidebar/types/propsSongs';
@@ -82,8 +82,6 @@ export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
     const username = getTokenUsername();
 
     try {
-      // TODO simplify query to obtain the result directly
-
       const userData: UserProps =
         await UsersService.getUserUsersNameGet(username);
 
@@ -192,7 +190,6 @@ export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
 
   const loadPlaylistData = async () => {
     try {
-      // TODO custom hook
       const playlistData =
         await PlaylistsService.getPlaylistPlaylistsNameGet(playlistName);
       setOwner(playlistData.owner);
@@ -213,8 +210,6 @@ export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
       if (playlistData.song_names) {
         setNumberSongs(playlistData.song_names.length);
         const songPromises: Promise<any>[] = [];
-
-        // TODO reduce complexity or refactor
 
         playlistData.song_names.reverse().forEach((songName: string) => {
           songPromises.push(
@@ -263,7 +258,6 @@ export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
   };
 
   const refreshPlaylistData = () => {
-    // wait until backend has data updated, fast requests after update can trigger 404 on backend (Ej: playlist update - sidebar - playlist)
     setTimeout(() => {
       loadPlaylistData();
     }, 500);
@@ -273,7 +267,6 @@ export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
     event.preventDefault();
 
     try {
-      // TODO add song to playlist instead of fetching already present songs
       const playlistData =
         await PlaylistsService.getPlaylistPlaylistsNameGet(playlistName);
       const newSongsPutPlaylist = [...playlistData.song_names];
@@ -303,7 +296,6 @@ export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
       setopenModalUpdatePlaylist(false);
 
       if (formData.name !== playlistName && formData.name !== '') {
-        // on name change
         setTimeout(() => {
           refreshSidebarData();
           navigate(`/playlist/${formData.name}`, { replace: true });
@@ -321,8 +313,6 @@ export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
 
   /* Context Menu */
 
-  const [isOpen, setIsOpen] = useState(false);
-
   const [anchorPosition, setAnchorPosition] = useState<{
     top: number;
     left: number;
@@ -331,8 +321,16 @@ export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
   const open = Boolean(anchorPosition);
   const id = open ? 'parent-popover' : undefined;
 
+  // Ref to hold the timeout ID
+  const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+
   const handleOpenContextMenu = (event: MouseEvent<HTMLButtonElement>) => {
-    setIsOpen(!isOpen);
+    // Clear any pending close timeout when opening
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+      closeTimeoutRef.current = null;
+    }
     setAnchorPosition({
       top: event.clientY,
       left: event.clientX,
@@ -340,17 +338,26 @@ export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
   };
 
   const handleCloseContextMenu = () => {
+    // Directly close without delay for clickAway/escape
     setAnchorPosition(null);
-    setIsOpen(false);
   };
 
-  useEffect(() => {
-    if (!isOpen) {
-      handleCloseContextMenu();
-    }
-  }, [isOpen]);
+  const handlePopoverMouseLeave = () => {
+    // Set a timeout to close the popover after a short delay
+    closeTimeoutRef.current = setTimeout(() => {
+      setAnchorPosition(null);
+    }, 200); // 200ms delay, adjust as needed
+  };
 
-  /*  */
+  const handlePopoverMouseEnter = () => {
+    // Clear the timeout if the mouse re-enters the popover before it closes
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+      closeTimeoutRef.current = null;
+    }
+  };
+
+  /* */
 
   useEffect(() => {
     loadPlaylistData();
@@ -563,13 +570,19 @@ export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
             },
           }}
         >
-          <ContextMenuPlaylist
-            playlistName={playlistName}
-            owner={owner}
-            handleCloseParent={handleCloseContextMenu}
-            refreshPlaylistData={refreshPlaylistData}
-            refreshSidebarData={refreshSidebarData}
-          />
+          {/* Wrap ContextMenuPlaylist to detect mouse leave on the popover content */}
+          <div
+            onMouseLeave={handlePopoverMouseLeave}
+            onMouseEnter={handlePopoverMouseEnter}
+          >
+            <ContextMenuPlaylist
+              playlistName={playlistName}
+              owner={owner}
+              handleCloseParent={handleCloseContextMenu}
+              refreshPlaylistData={refreshPlaylistData}
+              refreshSidebarData={refreshSidebarData}
+            />
+          </div>
         </Popover>
       </div>
 

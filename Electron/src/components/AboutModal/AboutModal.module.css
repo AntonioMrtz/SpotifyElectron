@@ -1,18 +1,69 @@
-/* AboutModal.module.css - Matching Spotify Electron theme */
+/* AboutModal.module.css - Enhanced Spotify Electron theme */
 
 /* Modal backdrop styling */
 .modalBackdrop {
-  backdrop-filter: blur(8px);
-  background-color: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(12px);
+  background-color: rgba(0, 0, 0, 0.85);
+}
+
+/* Modal container */
+.aboutModal {
+  animation: modalSlideIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Paper styles for the modal */
+.modalPaper {
+  background: linear-gradient(145deg, var(--secondary-black, #1e1e1e) 0%, #1a1a1a 100%) !important;
+  border-radius: 16px !important;
+  border: 1px solid var(--separator-white, hsla(0, 0%, 100%, 0.1)) !important;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(29, 185, 84, 0.1) !important;
+  overflow: hidden !important;
+  max-width: 500px !important;
+  width: 100% !important;
+  position: relative !important;
+}
+
+/* Subtle top accent line */
+.modalPaper::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--spotify-green, #1db954), #1ed760, var(--spotify-green, #1db954));
+  animation: shimmer 3s ease-in-out infinite;
+  z-index: 1;
 }
 
 /* Custom scrollbar matching app style */
-.aboutModal .MuiDialogContent-root::-webkit-scrollbar {
-  display: none; /* Hide scrollbar like in sidebar */
+.modalContent::-webkit-scrollbar {
+  display: none;
 }
 
-.aboutModal .MuiDialogContent-root {
-  scrollbar-width: none; /* Firefox */
+.modalContent {
+  scrollbar-width: none;
+  background: transparent !important;
+  padding: 20px 24px !important;
+  color: var(--pure-white, #ffffff) !important;
+  position: relative;
+}
+
+/* Header styling */
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px 16px !important;
+  background: transparent !important;
+  border-bottom: 1px solid var(--separator-white, hsla(0, 0%, 100%, 0.1)) !important;
+  position: relative;
+}
+
+.headerTitle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 /* Focus states for accessibility */
@@ -21,11 +72,11 @@
   outline-offset: 2px;
 }
 
-/* Animation for modal appearance */
+/* Enhanced animations */
 @keyframes modalSlideIn {
   from {
     opacity: 0;
-    transform: translateY(-20px) scale(0.95);
+    transform: translateY(-30px) scale(0.9);
   }
   to {
     opacity: 1;
@@ -33,66 +84,185 @@
   }
 }
 
-.modal {
-  animation: modalSlideIn 0.3s ease-out;
+@keyframes shimmer {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
-/* Button hover effects matching context menu */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Close button styling */
+.closeButton {
+  color: var(--secondary-white, hsla(0, 0%, 100%, 0.7)) !important;
+  padding: 8px !important;
+  border-radius: 8px !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  backdrop-filter: blur(10px) !important;
+  transition: all 0.3s ease !important;
+}
+
+.closeButton:hover {
+  color: var(--pure-white, #ffffff) !important;
+  background: var(--hover-white, hsla(0, 0%, 100%, 0.1)) !important;
+  transform: scale(1.05) !important;
+}
+
+/* App icon styling */
+.appIcon {
+  color: var(--spotify-green, #1db954) !important;
+  font-size: 28px !important;
+  filter: drop-shadow(0 2px 4px rgba(29, 185, 84, 0.3));
+}
+
+/* Enhanced button hover effects */
 .linkButton {
-  background-color: transparent !important;
-  border: none;
+  background: rgba(255, 255, 255, 0.02) !important;
+  border: 1px solid transparent !important;
   width: 100%;
-  display: flex;
-  justify-content: flex-start;
-  color: hsla(0, 0%, 100%, 0.9);
-  font-size: 0.875rem;
-  padding: 12px;
-  border-radius: 2px;
+  display: flex !important;
+  justify-content: flex-start !important;
+  align-items: center !important;
+  color: hsla(0, 0%, 100%, 0.9) !important;
+  font-size: 0.875rem !important;
+  padding: 14px 16px !important;
+  border-radius: 8px !important;
   text-align: start;
-  transition: background-color 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+  margin-bottom: 6px !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.linkButton::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(29, 185, 84, 0.1), transparent);
+  transition: left 0.5s ease;
 }
 
 .linkButton:hover {
-  background-color: hsla(0, 0%, 100%, 0.1) !important;
+  background: rgba(29, 185, 84, 0.08) !important;
+  border-color: rgba(29, 185, 84, 0.2) !important;
+  transform: translateX(4px) !important;
+  box-shadow: 0 4px 12px rgba(29, 185, 84, 0.15) !important;
 }
 
-/* Social buttons styling */
+.linkButton:hover::before {
+  left: 100%;
+}
+
+/* Link button icon */
+.linkButtonIcon {
+  color: var(--spotify-green, #1db954) !important;
+  margin-right: 14px !important;
+  font-size: 20px !important;
+  transition: transform 0.3s ease !important;
+}
+
+.linkButton:hover .linkButtonIcon {
+  transform: scale(1.1) !important;
+}
+
+/* Enhanced social buttons */
 .socialButton {
-  background-color: var(--hover-white);
-  color: hsla(0, 0%, 100%, 0.9);
-  border: 1px solid var(--separator-white);
-  border-radius: 4px;
-  padding: 8px 12px;
-  font-size: 0.875rem;
-  transition: all 0.2s ease;
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: hsla(0, 0%, 100%, 0.9) !important;
+  border: 1px solid var(--separator-white, hsla(0, 0%, 100%, 0.1)) !important;
+  border-radius: 8px !important;
+  padding: 10px 14px !important;
+  font-size: 0.875rem !important;
+  transition: all 0.3s ease !important;
+  margin-right: 8px !important;
+  margin-bottom: 8px !important;
+  backdrop-filter: blur(10px) !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.socialButton::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: radial-gradient(circle, rgba(29, 185, 84, 0.2) 0%, transparent 70%);
+  transition: all 0.3s ease;
+  transform: translate(-50%, -50%);
 }
 
 .socialButton:hover {
-  background-color: hsla(0, 0%, 100%, 0.1);
-  color: var(--pure-white);
-  transform: translateY(-1px);
+  background: rgba(29, 185, 84, 0.1) !important;
+  color: var(--pure-white, #ffffff) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3) !important;
+  border-color: rgba(29, 185, 84, 0.3) !important;
 }
 
-/* Star button enhanced styling */
+.socialButton:hover::before {
+  width: 100px;
+  height: 100px;
+}
+
+/* Enhanced star button */
 .starButton {
-  background-color: var(--spotify-green, #1db954);
-  color: var(--pure-white);
-  font-weight: bold;
-  padding: 12px 24px;
-  border-radius: 25px;
-  transition: all 0.2s ease;
+  background: linear-gradient(135deg, var(--spotify-green, #1db954) 0%, #1ed760 100%) !important;
+  color: var(--pure-white, #ffffff) !important;
+  font-weight: bold !important;
+  padding: 14px 28px !important;
+  border-radius: 30px !important;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+  text-transform: none !important;
+  box-shadow: 0 6px 20px rgba(29, 185, 84, 0.3) !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.starButton::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.6s ease;
 }
 
 .starButton:hover {
-  background-color: var(--spotify-green-hover, #1ed760);
-  transform: scale(1.05);
+  background: linear-gradient(135deg, #1ed760 0%, var(--spotify-green, #1db954) 100%) !important;
+  transform: translateY(-3px) scale(1.05) !important;
+  box-shadow: 0 10px 30px rgba(29, 185, 84, 0.5) !important;
 }
 
-/* Section styling */
+.starButton:hover::before {
+  left: 100%;
+}
+
+/* Section styling with animations */
 .section {
-  margin-bottom: 24px;
-  padding-top: 16px;
-  border-top: 1px solid var(--separator-white);
+  margin-bottom: 28px;
+  padding-top: 20px;
+  border-top: 1px solid var(--separator-white, hsla(0, 0%, 100%, 0.1));
+  animation: fadeInUp 0.6s ease-out;
 }
 
 .sectionFirst {
@@ -100,132 +270,167 @@
   padding-top: 0;
 }
 
-/* Version chip styling */
+/* Enhanced version chip */
 .versionChip {
-  background-color: var(--hover-white);
-  color: hsla(0, 0%, 100%, 0.9);
-  font-size: 0.875rem;
-  font-weight: bold;
-  border-radius: 4px;
-  padding: 4px 8px;
+  background: linear-gradient(135deg, rgba(29, 185, 84, 0.15) 0%, rgba(30, 215, 96, 0.1) 100%) !important;
+  color: var(--spotify-green, #1db954) !important;
+  font-size: 0.875rem !important;
+  font-weight: bold !important;
+  border-radius: 20px !important;
+  padding: 8px 16px !important;
+  border: 1px solid rgba(29, 185, 84, 0.2) !important;
+  backdrop-filter: blur(10px) !important;
+  animation: fadeInUp 0.4s ease-out;
 }
 
-/* Title styling */
+/* Enhanced title styling */
 .title {
-  color: var(--pure-white);
-  font-weight: 800;
-  font-size: 1.35rem;
+  color: var(--pure-white, #ffffff) !important;
+  font-weight: 800 !important;
+  font-size: 1.4rem !important;
+  margin: 0 !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
 }
 
 .sectionTitle {
-  color: var(--pure-white);
-  font-weight: 800;
-  font-size: 1.1rem;
+  color: var(--pure-white, #ffffff) !important;
+  font-weight: 700 !important;
+  font-size: 1.1rem !important;
+  margin-bottom: 18px !important;
+  display: flex !important;
+  align-items: center !important;
+  position: relative !important;
 }
 
-/* Text styling */
+.sectionTitle::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 30px;
+  height: 2px;
+  background: var(--spotify-green, #1db954);
+  border-radius: 1px;
+}
+
+/* Enhanced text styling */
 .primaryText {
-  color: var(--pure-white);
-  font-weight: 800;
+  color: var(--pure-white, #ffffff) !important;
+  font-weight: 700 !important;
+  margin-bottom: 4px !important;
+  font-size: 1rem !important;
 }
 
 .secondaryText {
-  color: var(--secondary-white);
-  font-size: 0.875rem;
+  color: var(--secondary-white, hsla(0, 0%, 100%, 0.7)) !important;
+  font-size: 0.875rem !important;
+  line-height: 1.5 !important;
 }
 
-/* Additional styles for enhanced layout */
-.modalPaper {
-  background-color: var(--secondary-black) !important;
-  border-radius: 8px !important;
-  border: 1px solid var(--separator-white) !important;
-  max-width: 480px !important;
-  width: 100% !important;
-}
-
-.modalHeader {
-  background-color: var(--secondary-black) !important;
-  border-bottom: 1px solid var(--separator-white) !important;
-  padding: 16px 20px !important;
-}
-
-.modalContent {
-  background-color: var(--secondary-black) !important;
-  padding: 20px !important;
-}
-
-.closeButton {
-  color: var(--secondary-white) !important;
-  padding: 8px !important;
-  border-radius: 4px !important;
-  transition: all 0.2s ease !important;
-}
-
-.closeButton:hover {
-  color: var(--pure-white) !important;
-  background-color: hsla(0, 0%, 100%, 0.1) !important;
-}
-
-.appIcon {
-  color: var(--spotify-green, #1db954) !important;
-  margin-right: 8px !important;
-}
-
-.projectLinkIcon {
-  color: var(--secondary-white) !important;
-  margin-right: 12px !important;
-  min-width: 24px !important;
-}
-
+/* Enhanced developer section */
 .developerSection {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
+  gap: 16px;
+  margin-bottom: 18px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.3s ease;
+}
+
+.developerSection:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(29, 185, 84, 0.1);
 }
 
 .developerAvatar {
-  background-color: var(--spotify-green, #1db954) !important;
-  color: var(--pure-white) !important;
-  width: 40px !important;
-  height: 40px !important;
-  font-size: 1rem !important;
+  background: linear-gradient(135deg, var(--spotify-green, #1db954) 0%, #1ed760 100%) !important;
+  color: var(--pure-white, #ffffff) !important;
+  width: 48px !important;
+  height: 48px !important;
+  font-size: 1.1rem !important;
   font-weight: bold !important;
+  box-shadow: 0 4px 12px rgba(29, 185, 84, 0.3) !important;
+  transition: transform 0.3s ease !important;
+}
+
+.developerAvatar:hover {
+  transform: scale(1.05) !important;
 }
 
 .socialLinksContainer {
   display: flex;
-  gap: 8px;
   flex-wrap: wrap;
+  gap: 8px;
 }
 
+/* Enhanced CTA section */
 .ctaSection {
   text-align: center;
-  padding-top: 16px;
-  border-top: 1px solid var(--separator-white);
+  padding: 24px 20px 20px;
+  background: rgba(29, 185, 84, 0.03);
+  border-radius: 12px;
+  border: 1px solid rgba(29, 185, 84, 0.1);
+  margin-top: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+.ctaSection::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--spotify-green, #1db954), transparent);
 }
 
 /* Responsive design */
 @media (max-width: 480px) {
-  .modal {
-    margin: 8px;
-    max-height: calc(100vh - 16px);
-  }
-
   .modalPaper {
-    max-width: calc(100vw - 16px) !important;
-  }
-
-  .linkButton {
-    padding: 10px;
-  }
-
-  .socialButton {
-    padding: 6px 10px;
-    font-size: 0.8rem;
+    margin: 12px !important;
+    max-height: calc(100vh - 24px) !important;
+    max-width: calc(100vw - 24px) !important;
+    border-radius: 12px !important;
   }
 
   .modalContent {
-    padding: 16px !important;
+    padding: 16px 20px !important;
+  }
+
+  .modalHeader {
+    padding: 16px 20px 12px !important;
+  }
+
+  .linkButton {
+    padding: 12px 14px !important;
+  }
+
+  .socialButton {
+    padding: 8px 12px !important;
+    font-size: 0.8rem !important;
+  }
+
+  .title {
+    font-size: 1.2rem !important;
+  }
+
+  .sectionTitle {
+    font-size: 1rem !important;
+  }
+
+  .starButton {
+    padding: 12px 24px !important;
+  }
+
+  .developerSection {
+    padding: 12px;
+  }
+
+  .ctaSection {
+    padding: 20px 16px 16px;
   }
 }

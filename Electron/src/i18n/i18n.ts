@@ -19,6 +19,7 @@ interface Translations {
   stickyHeader: Record<string, string>;
   song: Record<string, string>;
   uploadSongPlaylistAccordion: Record<string, string>;
+  aboutModal: Record<string, string>; // ← Add this line
 }
 
 const loadTranslationFiles = async (): Promise<
@@ -53,6 +54,7 @@ const loadTranslationFiles = async (): Promise<
       uploadSongPlaylistAccordion: await import(
         `./localization/${lang}/upload-song-playlist-accordion.json`
       ),
+      aboutModal: await import(`./localization/${lang}/about-modal.json`), // ← Add this line
     };
   });
 

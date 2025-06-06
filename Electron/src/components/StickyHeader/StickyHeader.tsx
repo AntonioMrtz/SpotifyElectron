@@ -1,9 +1,13 @@
+// Updated StickyHeader.tsx - Add AboutModal integration
+// Add these imports to your existing StickyHeader component
+
 import { useEffect, useState, MouseEvent } from 'react';
 import { useLocation } from 'react-router-dom';
 import Global from 'global/global';
 import { getTokenUsername } from 'utils/token';
 import Popover, { PopoverPosition } from '@mui/material/Popover';
 import ContextMenuProfile from 'components/AdvancedUIComponents/ContextMenu/Profile/ContextMenuProfile';
+import AboutModal from 'components/AboutModal/AboutModal'; // Add this import
 import useFetchGetUser from 'hooks/useFetchGetUser';
 import { useNowPlayingContext } from 'hooks/useNowPlayingContext';
 import styles from './stickyHeader.module.css';
@@ -23,6 +27,10 @@ export default function StickyHeader({ handleLogout }: PropsStickyHeader) {
 
   const [visibleBackground, setVisibleBackground] = useState({});
 
+  // Add AboutModal state
+  const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
+
+  // Your existing scroll handler...
   const handleScroll = () => {
     if (window.scrollY > 200) {
       setVisibleBackground({
@@ -46,6 +54,7 @@ export default function StickyHeader({ handleLogout }: PropsStickyHeader) {
     }
   };
 
+  // Your existing useEffect and handlers...
   useEffect(() => {
     if (user?.photo) {
       setProfileIcon(user.photo === '' ? defaultThumbnailPlaylist : user.photo);
@@ -56,6 +65,7 @@ export default function StickyHeader({ handleLogout }: PropsStickyHeader) {
     };
   }, [user]);
 
+  // Your existing navigation handlers...
   const handleGoingBackArrows = () => {
     window.electron.loadPreviousUrl.sendMessage('load-previous-url');
   };
@@ -64,8 +74,8 @@ export default function StickyHeader({ handleLogout }: PropsStickyHeader) {
     window.electron.loadForwardUrl.sendMessage('load-forward-url');
   };
 
+  // Your existing URL change logic...
   const location = useLocation();
-
   const [arrowState, setArrowState] = useState<Global.HandleUrlChangeResponse>({
     canGoBack: false,
     canGoForward: false,
@@ -97,10 +107,8 @@ export default function StickyHeader({ handleLogout }: PropsStickyHeader) {
     setForwardArrowStyle(!arrowState.canGoForward ? styles.arrowOpacity : '');
   }, [arrowState]);
 
-  /* Context Menu */
-
+  /* Context Menu - Your existing logic */
   const [isOpen, setIsOpen] = useState(false);
-
   const [anchorPosition, setAnchorPosition] = useState<{
     top: number;
     left: number;
@@ -137,64 +145,83 @@ export default function StickyHeader({ handleLogout }: PropsStickyHeader) {
     handleLogout(args);
   };
 
+  // Add AboutModal handlers
+  const handleOpenAbout = () => {
+    setIsAboutModalOpen(true);
+    handleCloseContextMenu(); // Close the context menu when opening About
+  };
+
+  const handleCloseAbout = () => {
+    setIsAboutModalOpen(false);
+  };
+
   return (
-    <header
-      style={visibleBackground}
-      className={`d-flex flex-row justify-content-space-evenly ${styles.wrapperStickyHeader}`}
-    >
-      <div
-        className={`d-flex flex-row container-fluid ${styles.wrapperDirectionArrows}`}
+    <>
+      <header
+        style={visibleBackground}
+        className={`d-flex flex-row justify-content-space-evenly ${styles.wrapperStickyHeader}`}
       >
-        <button type="button" onClick={handleGoingBackArrows}>
-          <i className={`fa-solid fa-chevron-left ${backArrowStyle}`} />
-        </button>
-        <button type="button" onClick={handleGoingForwardArrows}>
-          <i className={`fa-solid fa-chevron-right ${forwardArrowStyle}`} />
-        </button>
-      </div>
-
-      <div
-        className={`d-flex flex-row container-fluid  ${styles.wrapperProfileOptions}`}
-      >
-        <button type="button" onClick={handleProfileButon}>
-          <img src={profileIcon} alt="profile-icon" />
-        </button>
-
-        <button type="button">
-          <img className={`${styles.groupIcon}`} src={groupIcon} alt="" />
-        </button>
-      </div>
-
-      <div>
-        <Popover
-          id={id}
-          open={open}
-          onClose={handleCloseContextMenu}
-          anchorReference="anchorPosition"
-          anchorPosition={anchorPosition as PopoverPosition}
-          anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'left',
-          }}
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'left',
-          }}
-          sx={{
-            '& .MuiPaper-root': {
-              backgroundColor: 'var(--hover-white)',
-            },
-            '& . MuiPopover-root': {
-              zIndex: '1000',
-            },
-          }}
+        <div
+          className={`d-flex flex-row container-fluid ${styles.wrapperDirectionArrows}`}
         >
-          <ContextMenuProfile
-            handleLogout={logOut}
-            handleClose={handleCloseContextMenu}
-          />
-        </Popover>
-      </div>
-    </header>
+          <button type="button" onClick={handleGoingBackArrows}>
+            <i className={`fa-solid fa-chevron-left ${backArrowStyle}`} />
+          </button>
+          <button type="button" onClick={handleGoingForwardArrows}>
+            <i className={`fa-solid fa-chevron-right ${forwardArrowStyle}`} />
+          </button>
+        </div>
+
+        <div
+          className={`d-flex flex-row container-fluid  ${styles.wrapperProfileOptions}`}
+        >
+          <button type="button" onClick={handleProfileButon}>
+            <img src={profileIcon} alt="profile-icon" />
+          </button>
+
+          <button type="button">
+            <img className={`${styles.groupIcon}`} src={groupIcon} alt="" />
+          </button>
+        </div>
+
+        <div>
+          <Popover
+            id={id}
+            open={open}
+            onClose={handleCloseContextMenu}
+            anchorReference="anchorPosition"
+            anchorPosition={anchorPosition as PopoverPosition}
+            anchorOrigin={{
+              vertical: 'top',
+              horizontal: 'left',
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'left',
+            }}
+            sx={{
+              '& .MuiPaper-root': {
+                backgroundColor: 'var(--hover-white)',
+              },
+              '& . MuiPopover-root': {
+                zIndex: '1000',
+              },
+            }}
+          >
+            <ContextMenuProfile
+              handleLogout={logOut}
+              handleClose={handleCloseContextMenu}
+              handleOpenAbout={handleOpenAbout} // Pass the About handler
+            />
+          </Popover>
+        </div>
+      </header>
+
+      {/* Add the AboutModal */}
+      <AboutModal 
+        open={isAboutModalOpen}
+        onClose={handleCloseAbout}
+      />
+    </>
   );
 }

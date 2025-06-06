@@ -6,6 +6,7 @@ import styles from '../contextMenu.module.css';
 interface PropsContextMenuProfile {
   handleLogout: Function;
   handleClose: Function;
+  handleOpenAbout: Function; // Add this new prop
 }
 
 const linkUserTypeMap: Record<string, string> = {
@@ -16,6 +17,7 @@ const linkUserTypeMap: Record<string, string> = {
 export default function ContextMenuProfile({
   handleLogout,
   handleClose,
+  handleOpenAbout, // Add this prop
 }: PropsContextMenuProfile) {
   const navigate = useNavigate();
 
@@ -24,6 +26,11 @@ export default function ContextMenuProfile({
     const type = getTokenRole();
     navigate(`/${linkUserTypeMap[type]}/${username}`);
     handleClose();
+  };
+
+  const handleClickAbout = () => {
+    handleOpenAbout(); // This will open the AboutModal
+    // handleClose() is called in the parent component
   };
 
   const handleClickLogout = () => {
@@ -36,6 +43,12 @@ export default function ContextMenuProfile({
         <li>
           <button type="button" onClick={handleClickProfile}>
             {t('contextMenuProfile.profile')}
+          </button>
+        </li>
+        {/* Add the About menu item */}
+        <li>
+          <button type="button" onClick={handleClickAbout}>
+            {t('contextMenuProfile.about')}
           </button>
         </li>
         <li>

@@ -1,0 +1,231 @@
+/* AboutModal.module.css - Matching Spotify Electron theme */
+
+/* Modal backdrop styling */
+.modalBackdrop {
+  backdrop-filter: blur(8px);
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* Custom scrollbar matching app style */
+.aboutModal .MuiDialogContent-root::-webkit-scrollbar {
+  display: none; /* Hide scrollbar like in sidebar */
+}
+
+.aboutModal .MuiDialogContent-root {
+  scrollbar-width: none; /* Firefox */
+}
+
+/* Focus states for accessibility */
+.focusVisible {
+  outline: 2px solid var(--spotify-green, #1db954);
+  outline-offset: 2px;
+}
+
+/* Animation for modal appearance */
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modal {
+  animation: modalSlideIn 0.3s ease-out;
+}
+
+/* Button hover effects matching context menu */
+.linkButton {
+  background-color: transparent !important;
+  border: none;
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  color: hsla(0, 0%, 100%, 0.9);
+  font-size: 0.875rem;
+  padding: 12px;
+  border-radius: 2px;
+  text-align: start;
+  transition: background-color 0.2s ease;
+}
+
+.linkButton:hover {
+  background-color: hsla(0, 0%, 100%, 0.1) !important;
+}
+
+/* Social buttons styling */
+.socialButton {
+  background-color: var(--hover-white);
+  color: hsla(0, 0%, 100%, 0.9);
+  border: 1px solid var(--separator-white);
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+}
+
+.socialButton:hover {
+  background-color: hsla(0, 0%, 100%, 0.1);
+  color: var(--pure-white);
+  transform: translateY(-1px);
+}
+
+/* Star button enhanced styling */
+.starButton {
+  background-color: var(--spotify-green, #1db954);
+  color: var(--pure-white);
+  font-weight: bold;
+  padding: 12px 24px;
+  border-radius: 25px;
+  transition: all 0.2s ease;
+}
+
+.starButton:hover {
+  background-color: var(--spotify-green-hover, #1ed760);
+  transform: scale(1.05);
+}
+
+/* Section styling */
+.section {
+  margin-bottom: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--separator-white);
+}
+
+.sectionFirst {
+  border-top: none;
+  padding-top: 0;
+}
+
+/* Version chip styling */
+.versionChip {
+  background-color: var(--hover-white);
+  color: hsla(0, 0%, 100%, 0.9);
+  font-size: 0.875rem;
+  font-weight: bold;
+  border-radius: 4px;
+  padding: 4px 8px;
+}
+
+/* Title styling */
+.title {
+  color: var(--pure-white);
+  font-weight: 800;
+  font-size: 1.35rem;
+}
+
+.sectionTitle {
+  color: var(--pure-white);
+  font-weight: 800;
+  font-size: 1.1rem;
+}
+
+/* Text styling */
+.primaryText {
+  color: var(--pure-white);
+  font-weight: 800;
+}
+
+.secondaryText {
+  color: var(--secondary-white);
+  font-size: 0.875rem;
+}
+
+/* Additional styles for enhanced layout */
+.modalPaper {
+  background-color: var(--secondary-black) !important;
+  border-radius: 8px !important;
+  border: 1px solid var(--separator-white) !important;
+  max-width: 480px !important;
+  width: 100% !important;
+}
+
+.modalHeader {
+  background-color: var(--secondary-black) !important;
+  border-bottom: 1px solid var(--separator-white) !important;
+  padding: 16px 20px !important;
+}
+
+.modalContent {
+  background-color: var(--secondary-black) !important;
+  padding: 20px !important;
+}
+
+.closeButton {
+  color: var(--secondary-white) !important;
+  padding: 8px !important;
+  border-radius: 4px !important;
+  transition: all 0.2s ease !important;
+}
+
+.closeButton:hover {
+  color: var(--pure-white) !important;
+  background-color: hsla(0, 0%, 100%, 0.1) !important;
+}
+
+.appIcon {
+  color: var(--spotify-green, #1db954) !important;
+  margin-right: 8px !important;
+}
+
+.projectLinkIcon {
+  color: var(--secondary-white) !important;
+  margin-right: 12px !important;
+  min-width: 24px !important;
+}
+
+.developerSection {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.developerAvatar {
+  background-color: var(--spotify-green, #1db954) !important;
+  color: var(--pure-white) !important;
+  width: 40px !important;
+  height: 40px !important;
+  font-size: 1rem !important;
+  font-weight: bold !important;
+}
+
+.socialLinksContainer {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.ctaSection {
+  text-align: center;
+  padding-top: 16px;
+  border-top: 1px solid var(--separator-white);
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+  .modal {
+    margin: 8px;
+    max-height: calc(100vh - 16px);
+  }
+
+  .modalPaper {
+    max-width: calc(100vw - 16px) !important;
+  }
+
+  .linkButton {
+    padding: 10px;
+  }
+
+  .socialButton {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+  }
+
+  .modalContent {
+    padding: 16px !important;
+  }
+}

@@ -3,6 +3,9 @@ name: Frontend Tests
 on:
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   frontend-test:
     runs-on: ubuntu-latest

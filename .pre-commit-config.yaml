@@ -1,15 +1,8 @@
-# NOTE: If you modify the following hooks, make sure to update the GitHub Actions workflow
-# in .github/workflows/pre-commit-hooks.yml to include the same hooks:
-# - check-yaml
-# - check-json
-# - end-of-file-fixer
-# - trailing-whitespace
-# - check-merge-conflict
-
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v2.3.0
     hooks:
+      # Consider updating pre-commit pipeline if a new hook is added
       - id: check-yaml
       - id: check-json
         exclude: ^(.devcontainer/|Electron/.vscode/|Backend/.vscode)
@@ -36,12 +29,7 @@ repos:
     rev: v1.3
     hooks:
       - id: giticket
-        args:
-          [
-            '--regex=(\d+)',
-            "--mode=regex_match",
-            "--format={commit_msg} | [#{ticket}]",
-          ]
+        args: ['--regex=(\d+)', "--mode=regex_match", '--format={commit_msg} | [#{ticket}]']
 
   - repo: https://github.com/gitleaks/gitleaks
     rev: v8.24.2

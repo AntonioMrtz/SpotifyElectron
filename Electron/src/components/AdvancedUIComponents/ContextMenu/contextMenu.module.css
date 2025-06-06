@@ -4,17 +4,20 @@
   border-radius: 4px;
   color: hsla(0, 0%, 100%, 0.9);
   padding: 4px;
+  z-index: 9999;
 }
 
 .wrapperContextMenu ul {
-  margin: 0px;
+  margin: 0;
   padding: 1% !important;
+  list-style: none;
 }
 
 .wrapperContextMenu ul li {
   padding: 1% !important;
   border-top: 1px solid var(--separator-white);
   border-bottom: 1px solid var(--separator-white);
+  position: relative;
 }
 
 .wrapperContextMenu ul li:first-child {
@@ -26,12 +29,8 @@
   border: none !important;
 }
 
-.wrapperContextMenu ul li + li {
-  border-top: none;
-  /* Elimina el borde superior del siguiente <li> */
-}
-
-.wrapperContextMenu ul li button {
+.wrapperContextMenu ul li button,
+.wrapperContextMenu ul li > div {
   background-color: transparent;
   border: none;
   width: 100%;
@@ -42,46 +41,47 @@
   padding: 12px;
   border-radius: 2px;
   text-align: start;
-  /* font-weight: 300 !important;
- */
+  cursor: pointer;
 }
 
-.wrapperContextMenu ul button:hover {
+.wrapperContextMenu ul li > div {
+  justify-content: space-between;
+}
+
+.wrapperContextMenu ul button:hover,
+.wrapperContextMenu ul li > div:hover {
   background-color: hsla(0, 0%, 100%, 0.1);
 }
-
-/* Add to playlist */
 
 .wrapperContextMenuAddToPlaylist {
   width: 15svw !important;
   height: 40svh;
   overflow-y: scroll;
+  pointer-events: auto;
 }
 
-/* Scrollbar AddToPlaylist */
-
+/* Scrollbar styling */
 .wrapperContextMenuAddToPlaylist::-webkit-scrollbar {
-  display: block;
   width: 10px;
-  /* Set the width of the scrollbar */
-  transition: background-color 0.2s;
 }
 
 .wrapperContextMenuAddToPlaylist::-webkit-scrollbar-track {
   background-color: transparent;
-  /* Background color of the scrollbar track */
 }
 
 .wrapperContextMenuAddToPlaylist::-webkit-scrollbar-thumb {
   background: #555;
-  /* Color of the thumb on hover */
 }
 
 .wrapperContextMenuAddToPlaylist::-webkit-scrollbar-thumb:hover {
   background: #888;
-  /* Color of the scrollbar thumb */
 }
 
-.wrapperContextMenuAddToPlaylist li:not(:nth-child(2)) {
-  border: none !important;
+/* Popover fixes */
+.MuiPopover-root {
+  z-index: 10000 !important;
+}
+
+.MuiPopover-paper {
+  pointer-events: auto !important;
 }

@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { useState, MouseEvent, useEffect } from 'react';
+import { useState, MouseEvent, useEffect, useRef } from 'react'; // Import useRef
 import ContextMenuPlaylist from 'components/AdvancedUIComponents/ContextMenu/Playlist/ContextMenuPlaylist';
 import Popover, { PopoverPosition } from '@mui/material/Popover';
 import { PropsPlaylistCard } from 'types/playlist';
@@ -33,7 +33,7 @@ export default function PlaylistCard({
   };
 
   const handleButtonClick = (e: MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation(); // Detener la propagación del evento de clic
+    e.stopPropagation();
     e.preventDefault();
     handlePlay();
   };
@@ -46,8 +46,6 @@ export default function PlaylistCard({
 
   /* Context Menu */
 
-  const [isOpen, setIsOpen] = useState(false);
-
   const [anchorPosition, setAnchorPosition] = useState<{
     top: number;
     left: number;
@@ -56,8 +54,15 @@ export default function PlaylistCard({
   const open = Boolean(anchorPosition);
   const id = open ? 'parent-popover' : undefined;
 
+  // Ref to hold the timeout ID
+  const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
   const handleOpenContextMenu = (event: MouseEvent<HTMLDivElement>) => {
-    setIsOpen(!isOpen);
+    // Clear any pending close timeout when opening
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+      closeTimeoutRef.current = null;
+    }
     setAnchorPosition({
       top: event.clientY,
       left: event.clientX,
@@ -65,15 +70,24 @@ export default function PlaylistCard({
   };
 
   const handleCloseContextMenu = () => {
+    // Directly close without delay for clickAway/escape
     setAnchorPosition(null);
-    setIsOpen(false);
   };
 
-  useEffect(() => {
-    if (!isOpen) {
-      handleCloseContextMenu();
+  const handlePopoverMouseLeave = () => {
+    // Set a timeout to close the popover after a short delay
+    closeTimeoutRef.current = setTimeout(() => {
+      setAnchorPosition(null);
+    }, 200); // 200ms delay, adjust as needed
+  };
+
+  const handlePopoverMouseEnter = () => {
+    // Clear the timeout if the mouse re-enters the popover before it closes
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+      closeTimeoutRef.current = null;
     }
-  }, [isOpen]);
+  };
 
   return (
     <>
@@ -85,6 +99,9 @@ export default function PlaylistCard({
         <div
           className={`${styles.imgContainer}`}
           onContextMenu={handleOpenContextMenu}
+          // OPTIONAL: If you want the popover to hide when the mouse leaves the *card* image
+          // onMouseLeave={handlePopoverMouseLeave}
+          // onMouseEnter={handlePopoverMouseEnter} // To keep it open if mouse re-enters card
         >
           <img
             src={photo === '' ? defaultThumbnailPlaylist : photo}
@@ -129,7 +146,7 @@ export default function PlaylistCard({
         <Popover
           id={id}
           open={open}
-          onClose={handleCloseContextMenu}
+          onClose={handleCloseContextMenu} // This handles click-away and escape key
           anchorReference="anchorPosition"
           anchorPosition={anchorPosition as PopoverPosition}
           anchorOrigin={{
@@ -149,13 +166,19 @@ export default function PlaylistCard({
             },
           }}
         >
-          <ContextMenuPlaylist
-            playlistName={name}
-            handleCloseParent={handleCloseContextMenu}
-            owner={owner}
-            refreshPlaylistData={() => {}}
-            refreshSidebarData={refreshSidebarData}
-          />
+          {/* Wrap ContextMenuPlaylist to detect mouse leave on the popover content */}
+          <div
+            onMouseLeave={handlePopoverMouseLeave}
+            onMouseEnter={handlePopoverMouseEnter}
+          >
+            <ContextMenuPlaylist
+              playlistName={name}
+              handleCloseParent={handleCloseContextMenu}
+              owner={owner}
+              refreshPlaylistData={() => {}}
+              refreshSidebarData={refreshSidebarData}
+            />
+          </div>
         </Popover>
       </div>
     </>

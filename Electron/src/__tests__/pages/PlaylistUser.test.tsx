@@ -59,7 +59,6 @@ const userMockFetch = {
 jest.spyOn(TokenModule, 'getTokenUsername').mockReturnValue(userName);
 jest.spyOn(TokenModule, 'getTokenRole').mockReturnValue(roleUser);
 
-
 interface PlaylistDTO {
   name: string;
   photo: string;
@@ -264,10 +263,8 @@ test('Playlist user role hit like button', async () => {
     );
   });
 
-
   const likeButton = component.container.querySelector('#playlist-like-button');
   expect(likeButton).toBeInTheDocument();
-
 
   await act(async () => {
     if (likeButton) {
@@ -275,8 +272,6 @@ test('Playlist user role hit like button', async () => {
     }
   });
 
-
- 
   const unlikeButton = component.container.querySelector(
     '#playlist-unlike-button',
   );
@@ -400,8 +395,6 @@ test('Playlist user role get unlike button', async () => {
     );
   });
 
-
-
   const unlikeButton = component.container.querySelector(
     '#playlist-unlike-button',
   );
@@ -413,15 +406,11 @@ test('Playlist user role get unlike button', async () => {
     }
   });
 
-
-
-
   const likeButton = component.container.querySelector('#playlist-like-button');
   expect(likeButton).toBeInTheDocument();
 });
 
 test('Playlist user role update playlist', async () => {
-
   const currentUser = 'differentUser';
   jest.spyOn(TokenModule, 'getTokenUsername').mockReturnValue(currentUser);
 
@@ -431,7 +420,7 @@ test('Playlist user role update playlist', async () => {
     photo: 'playlist',
     description: 'des',
     upload_date: 'date',
-    owner: currentUser, 
+    owner: currentUser,
     song_names: [songName],
   };
 
@@ -510,14 +499,12 @@ test('Playlist user role update playlist', async () => {
     );
   });
 
-
   await act(async () => {
     const thumbnailPlaylist = component.getByAltText('thumbnail-playlist');
     if (thumbnailPlaylist) {
       fireEvent.click(thumbnailPlaylist);
     }
   });
-
 
   const inputDescription = component.getByPlaceholderText(
     t('playlist.description-placeholder'),
@@ -529,9 +516,7 @@ test('Playlist user role update playlist', async () => {
     });
   });
 
-
   expect(component.queryByText(t('playlist.edit-details'))).toBeInTheDocument();
-
 
   await act(async () => {
     const submitUpdateButton = component.queryByText(t('playlist.save'));
@@ -539,7 +524,6 @@ test('Playlist user role update playlist', async () => {
       fireEvent.click(submitUpdateButton);
     }
   });
-
 
   expect(refreshSidebarData).toHaveBeenCalledTimes(1);
 });
@@ -553,7 +537,7 @@ test('Playlist owner should not see like buttons', async () => {
     photo: 'playlist',
     description: 'des',
     upload_date: 'date',
-    owner: ownerName, 
+    owner: ownerName,
     song_names: [songName],
   };
 

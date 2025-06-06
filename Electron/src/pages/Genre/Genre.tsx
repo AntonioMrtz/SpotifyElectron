@@ -2,6 +2,7 @@ import { useLocation } from 'react-router-dom';
 import { genreColorsMapping } from 'utils/genre';
 import useFetchSongsByGenre from 'hooks/useFetchGetSongsbyGenre';
 import { t } from 'i18next';
+import { useSidebar } from 'providers/SidebarProvider';
 import styles from './genre.module.css';
 import SongCard from '../../components/Cards/SongCard/SongCard';
 
@@ -9,7 +10,7 @@ interface PropsGenre {
   refreshSidebarData: () => void;
 }
 
-export default function Genre({ refreshSidebarData }: PropsGenre) {
+export default function Genre() {
   /* Get current Playlist Name */
   const location = useLocation();
   const genreName = decodeURIComponent(
@@ -17,6 +18,7 @@ export default function Genre({ refreshSidebarData }: PropsGenre) {
   );
 
   const { songs } = useFetchSongsByGenre(genreName);
+  const { refreshSidebarData } = useSidebar();
 
   return (
     <div className="d-flex flex-column container-fluid p-0">

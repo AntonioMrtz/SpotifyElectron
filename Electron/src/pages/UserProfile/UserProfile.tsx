@@ -8,22 +8,23 @@ import { PropsSongCard } from 'types/song';
 import { ArtistsService, UsersService } from 'swagger/api';
 import useFetchGetUserPlaylists from 'hooks/useFetchGetUserPlaylists';
 import { t } from 'i18next';
+import { useSidebar } from 'providers/SidebarProvider';
 import styles from './userProfile.module.css';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 import verifiedIcon from '../../assets/imgs/verified_icon.png';
 
 interface PropsUserProfile {
   userType: UserType;
-  refreshSidebarData: () => void;
+  // refreshSidebarData: () => void;
 }
 
 // TODO refactor component?
 export default function UserProfile({
-  userType,
-  refreshSidebarData,
+  userType, // refreshSidebarData,
 }: PropsUserProfile) {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { refreshSidebarData } = useSidebar();
 
   const userPlaylistsTitle = t('userProfile.user-playlists');
   const artistSongsTitle = t('userProfile.artist-songs');

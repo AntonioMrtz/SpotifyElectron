@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import useFetchGetUserPlaylistNames from 'hooks/useFetchGetUserPlaylistNames';
 import { PlaylistsService } from 'swagger/api';
 import { t } from 'i18next';
+import { useSidebar } from 'providers/SidebarProvider';
 import styles from '../contextMenu.module.css';
 import { PropsContextMenuSong } from '../types/propsContextMenu';
 
@@ -25,10 +26,10 @@ export default function ContextMenuSong({
   artistName,
   playlistName,
   handleCloseParent,
-  refreshPlaylistData,
-  refreshSidebarData,
+  refreshPlaylistData, // refreshSidebarData,
 }: PropsContextMenuSong) {
   const navigate = useNavigate();
+  const { refreshSidebarData } = useSidebar();
 
   const urlArtist = `/artist/${artistName}`;
 

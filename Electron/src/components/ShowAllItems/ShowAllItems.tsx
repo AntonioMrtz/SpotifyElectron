@@ -1,4 +1,5 @@
 import { useParams } from 'react-router-dom';
+import { useSidebar } from 'providers/SidebarProvider';
 import styles from './showAllItems.module.css';
 import ItemsPlaylist from './Items/ItemsAllPlaylists';
 import { PropsAllItems, ShowAllItemsTypes } from './types/PropsShowAllItems';
@@ -7,9 +8,10 @@ import ItemsAllPlaylistsFromUser from './Items/ItemsAllPlaylistFromUser';
 import ItemsAllSongsFromArtist from './Items/ItemsAllSongsFromArtist';
 
 export default function ShowAllItems({
-  refreshSidebarData,
+  // refreshSidebarData,
   type,
 }: PropsAllItems) {
+  const { refreshSidebarData } = useSidebar();
   const { id } = useParams();
   const { user } = useParams();
   const { artist } = useParams();
@@ -18,9 +20,7 @@ export default function ShowAllItems({
   const itemsDisplayed: {
     [key in ShowAllItemsTypes]: typeof ItemsPlaylist | any;
   } = {
-    [ShowAllItemsTypes.ALL_PLAYLISTS]: (
-      <ItemsPlaylist id={id} refreshSidebarData={refreshSidebarData} />
-    ),
+    [ShowAllItemsTypes.ALL_PLAYLISTS]: <ItemsPlaylist />,
     [ShowAllItemsTypes.ALL_ARTISTS]: <ItemsArtist />,
     [ShowAllItemsTypes.SONG]: 'Rejected',
     [ShowAllItemsTypes.ALL_PLAYLIST_FROM_USER]: (

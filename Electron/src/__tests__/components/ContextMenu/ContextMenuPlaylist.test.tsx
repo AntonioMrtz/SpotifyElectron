@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 import '@testing-library/jest-dom/extend-expect';
-import { act, fireEvent, render } from '@testing-library/react';
+import { act, fireEvent, render, waitFor } from '@testing-library/react';
 import ContextMenuPlaylist from 'components/AdvancedUIComponents/ContextMenu/Playlist/ContextMenuPlaylist';
 import Global from 'global/global';
 import { BrowserRouter } from 'react-router-dom';
@@ -8,7 +8,64 @@ import UserType from 'utils/role';
 import * as router from 'react-router';
 import getMockHeaders from 'utils/mockHeaders';
 import * as TokenModule from 'utils/token';
-import { t } from 'i18next';
+import i18n, { t } from 'i18next';
+import { SidebarProvider } from 'providers/SidebarProvider';
+import { NowPlayingContextProvider } from 'providers/NowPlayingProvider';
+import { initReactI18next } from 'react-i18next';
+
+// Initialize i18next for testing
+i18n.use(initReactI18next).init({
+  lng: 'en',
+  fallbackLng: 'en',
+  ns: ['contextMenuPlaylist'],
+  defaultNS: 'contextMenuPlaylist',
+  resources: {
+    en: {
+      contextMenuPlaylist: {
+        'add-to-queue': 'Add to queue',
+        edit: 'Edit',
+        'create-similar-playlist': 'Create similar playlist',
+        delete: 'Delete',
+        download: 'Download',
+        'add-to-playlist': 'Add to playlist',
+        share: 'Share',
+        'search-playlist': 'Search playlist',
+        'create-playlist': 'Create playlist',
+        'confirmationMenu.delete-success.title': 'Playlist deleted',
+        'confirmationMenu.delete-success.description':
+          'The playlist has been deleted successfully',
+        'confirmationMenu.add-success.title': 'Songs added',
+        'confirmationMenu.add-success.description':
+          'The songs have been added successfully',
+        'confirmationMenu.add-error.title': 'Error adding songs',
+        'confirmationMenu.add-error.description':
+          'Unable to add songs to playlist',
+        'confirmationMenu.delete-error.title': 'Error deleting playlist',
+        'confirmationMenu.delete-error.description':
+          'Unable to delete playlist',
+        'confirmationMenu.clipboard.title': 'Copied to clipboard',
+        'confirmationMenu.clipboard.description':
+          'The link has been copied to clipboard',
+        'confirmationMenu.error.title': 'Error',
+        'confirmationMenu.error.description': 'An error occurred',
+      },
+    },
+  },
+  interpolation: {
+    escapeValue: false,
+  },
+});
+
+// Wait for i18next to be ready
+beforeAll(async () => {
+  await new Promise((resolve) => {
+    if (i18n.isInitialized) {
+      resolve(true);
+    } else {
+      i18n.on('initialized', () => resolve(true));
+    }
+  });
+});
 
 const playlistName = 'playlisttest';
 const songName = 'songName';
@@ -116,13 +173,16 @@ test('Render ContextMenuPlaylist', async () => {
   const component = await act(() => {
     return render(
       <BrowserRouter>
-        <ContextMenuPlaylist
-          playlistName={playlistName}
-          owner={artistMockFetch.name}
-          handleCloseParent={jest.fn()}
-          refreshPlaylistData={jest.fn()}
-          refreshSidebarData={jest.fn()}
-        />
+        <SidebarProvider>
+          <NowPlayingContextProvider>
+            <ContextMenuPlaylist
+              playlistName={playlistName}
+              owner={artistMockFetch.name}
+              handleCloseParent={jest.fn()}
+              refreshPlaylistData={jest.fn()}
+            />
+          </NowPlayingContextProvider>
+        </SidebarProvider>
       </BrowserRouter>,
     );
   });
@@ -130,68 +190,121 @@ test('Render ContextMenuPlaylist', async () => {
 });
 
 test('ContextMenuPlaylist delete Playlist success', async () => {
-  const refreshSidebarDataMock = jest.fn();
-
-  const component = await act(() => {
+  const component = await act(async () => {
     return render(
       <BrowserRouter>
-        <ContextMenuPlaylist
-          playlistName={playlistName}
-          owner={artistMockFetch.name}
-          handleCloseParent={jest.fn()}
-          refreshPlaylistData={jest.fn()}
-          refreshSidebarData={refreshSidebarDataMock}
-        />
+        <SidebarProvider>
+          <NowPlayingContextProvider>
+            <ContextMenuPlaylist
+              playlistName={playlistName}
+              owner={artistMockFetch.name}
+              handleCloseParent={jest.fn()}
+              refreshPlaylistData={jest.fn()}
+            />
+          </NowPlayingContextProvider>
+        </SidebarProvider>
       </BrowserRouter>,
     );
   });
 
-  const deleteButton = component.getByText(t('contextMenuPlaylist.delete'));
-  if (deleteButton) {
-    await act(async () => {
-      fireEvent.click(deleteButton);
-    });
-  }
+  // Wait for the delete button to appear
+  await waitFor(
+    () => {
+      const deleteButton = component.getByText('contextMenuPlaylist.delete');
+      expect(deleteButton).toBeInTheDocument();
+    },
+    {
+      timeout: 3000,
+      interval: 100,
+    },
+  );
 
-  expect(refreshSidebarDataMock).toHaveBeenCalled();
+  const deleteButton = component.getByText('contextMenuPlaylist.delete');
+  await act(async () => {
+    fireEvent.click(deleteButton);
+  });
+
+  // Wait for navigation to home page
+  await waitFor(
+    () => {
+      expect(navigate).toHaveBeenCalledWith('/home');
+    },
+    {
+      timeout: 3000,
+      interval: 100,
+    },
+  );
 });
 
 test('ContextMenuPlaylist Add Playlist to Playlist', async () => {
   const refreshSidebarDataMock = jest.fn();
 
-  const component = await act(() => {
+  const component = await act(async () => {
     return render(
       <BrowserRouter>
-        <ContextMenuPlaylist
-          playlistName={playlistName}
-          owner={artistMockFetch.name}
-          handleCloseParent={jest.fn()}
-          refreshPlaylistData={jest.fn()}
-          refreshSidebarData={refreshSidebarDataMock}
-        />
+        <SidebarProvider>
+          <NowPlayingContextProvider>
+            <ContextMenuPlaylist
+              playlistName={playlistName}
+              owner={artistMockFetch.name}
+              handleCloseParent={jest.fn()}
+              refreshPlaylistData={jest.fn()}
+            />
+          </NowPlayingContextProvider>
+        </SidebarProvider>
       </BrowserRouter>,
     );
   });
 
-  const addToOtherPlaylistButton = component.getByText(
-    t('contextMenuPlaylist.add-to-playlist'),
+  // Wait for the add to playlist button to appear
+  await waitFor(
+    () => {
+      const addToOtherPlaylistButton = component.getByText(
+        'contextMenuPlaylist.add-to-playlist',
+      );
+      expect(addToOtherPlaylistButton).toBeInTheDocument();
+    },
+    {
+      timeout: 3000,
+      interval: 100,
+    },
   );
-  if (addToOtherPlaylistButton) {
-    await act(async () => {
-      fireEvent.click(addToOtherPlaylistButton);
-    });
-  }
+
+  const addToOtherPlaylistButton = component.getByText(
+    'contextMenuPlaylist.add-to-playlist',
+  );
+  await act(async () => {
+    fireEvent.click(addToOtherPlaylistButton);
+  });
+
+  // Wait for the playlist button to appear
+  await waitFor(
+    () => {
+      const playlistButton = component.getByText(playlistName);
+      expect(playlistButton).toBeInTheDocument();
+    },
+    {
+      timeout: 3000,
+      interval: 100,
+    },
+  );
 
   const playlistButton = component.getByText(playlistName);
-  if (playlistButton) {
-    await act(async () => {
-      fireEvent.click(playlistButton);
-    });
-  }
+  await act(async () => {
+    fireEvent.click(playlistButton);
+  });
 
-  expect(
-    component.queryByText(
-      t('contextMenuPlaylist.confirmationMenu.add-success.title'),
-    ),
-  ).toBeInTheDocument();
+  // Wait for the success message to appear
+  await waitFor(
+    () => {
+      const successMessage = component.getByText(
+        'contextMenuPlaylist.confirmationMenu.add-success.title',
+      );
+      expect(successMessage).toBeInTheDocument();
+    },
+    {
+      timeout: 3000,
+      interval: 100,
+    },
+  );
 });

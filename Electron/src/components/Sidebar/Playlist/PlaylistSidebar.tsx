@@ -4,6 +4,7 @@ import { useEffect, useState, MouseEvent } from 'react';
 import ContextMenuPlaylist from 'components/AdvancedUIComponents/ContextMenu/Playlist/ContextMenuPlaylist';
 import { PropsPlaylistCardSidebar } from 'types/playlist';
 import { t } from 'i18next';
+import { useSidebar } from 'providers/SidebarProvider';
 import styles from './playlistSidebar.module.css';
 
 export default function PlaylistSidebar({
@@ -11,14 +12,17 @@ export default function PlaylistSidebar({
   photo,
   owner,
   playlistStyle,
-  handleUrlPlaylistClicked,
-  refreshSidebarData,
+  handleUrlPlaylistClicked, // refreshSidebarData,
 }: PropsPlaylistCardSidebar) {
   const handleClickPlaylist = () => {
     handleUrlPlaylistClicked(name);
   };
 
+  const { refreshSidebarData } = useSidebar();
+
   const [isOpen, setIsOpen] = useState(false);
+
+  console.log('Line number 23:', refreshSidebarData);
 
   const [anchorPosition, setAnchorPosition] = useState<{
     top: number;
@@ -98,7 +102,7 @@ export default function PlaylistSidebar({
             handleCloseParent={handleClose}
             owner={owner}
             refreshPlaylistData={() => {}}
-            refreshSidebarData={refreshSidebarData}
+            // refreshSidebarData={refreshSidebarData}
           />
         </Popover>
       </div>

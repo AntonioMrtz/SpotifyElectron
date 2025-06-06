@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 import '@testing-library/jest-dom/extend-expect';
-import { act, fireEvent, render } from '@testing-library/react';
+import { act, fireEvent, render, waitFor } from '@testing-library/react';
 import ContextMenuSong from 'components/AdvancedUIComponents/ContextMenu/Song/ContextMenuSong';
 import Global from 'global/global';
 import UserType from 'utils/role';
@@ -9,6 +9,8 @@ import { BrowserRouter } from 'react-router-dom';
 import getMockHeaders from 'utils/mockHeaders';
 import * as TokenModule from 'utils/token';
 import { t } from 'i18next';
+import { SidebarProvider } from 'providers/SidebarProvider';
+import * as SidebarModule from 'providers/SidebarProvider';
 
 const playlistName = 'playlisttest';
 const songName = 'songName';
@@ -107,14 +109,15 @@ test('Render ContextMenuSong', async () => {
   const component = await act(() => {
     return render(
       <BrowserRouter>
-        <ContextMenuSong
-          playlistName={playlistName}
-          songName={songName}
-          artistName={artistName}
-          handleCloseParent={jest.fn()}
-          refreshPlaylistData={jest.fn()}
-          refreshSidebarData={jest.fn()}
-        />
+        <SidebarProvider>
+          <ContextMenuSong
+            playlistName={playlistName}
+            songName={songName}
+            artistName={artistName}
+            handleCloseParent={jest.fn()}
+            refreshPlaylistData={jest.fn()}
+          />
+        </SidebarProvider>
       </BrowserRouter>,
     );
   });
@@ -127,14 +130,15 @@ test('ContextMenuSong remove from playlist', async () => {
   const component = await act(() => {
     return render(
       <BrowserRouter>
-        <ContextMenuSong
-          playlistName={playlistName}
-          songName={songName}
-          artistName={artistName}
-          handleCloseParent={jest.fn()}
-          refreshPlaylistData={refreshPlaylistDataMock}
-          refreshSidebarData={jest.fn()}
-        />
+        <SidebarProvider>
+          <ContextMenuSong
+            playlistName={playlistName}
+            songName={songName}
+            artistName={artistName}
+            handleCloseParent={jest.fn()}
+            refreshPlaylistData={refreshPlaylistDataMock}
+          />
+        </SidebarProvider>
       </BrowserRouter>,
     );
   });
@@ -142,7 +146,7 @@ test('ContextMenuSong remove from playlist', async () => {
   try {
     const quitarListaButton = component.getByText(
       t('contextMenuSong.remove-from-playlist'),
-    ); // <-- Replaced with i18n key
+    );
 
     await act(async () => {
       fireEvent.click(quitarListaButton);
@@ -158,17 +162,23 @@ test('ContextMenuSong remove from playlist', async () => {
 test('ContextMenuSong create playlist', async () => {
   const refreshSidebarMock = jest.fn();
 
+  // Mock the useSidebar hook
+  jest.spyOn(SidebarModule, 'useSidebar').mockReturnValue({
+    refreshSidebarData: refreshSidebarMock,
+  });
+
   const component = await act(() => {
     return render(
       <BrowserRouter>
-        <ContextMenuSong
-          playlistName={playlistName}
-          songName={songName}
-          artistName={artistName}
-          handleCloseParent={jest.fn()}
-          refreshPlaylistData={jest.fn()}
-          refreshSidebarData={refreshSidebarMock}
-        />
+        <SidebarProvider>
+          <ContextMenuSong
+            playlistName={playlistName}
+            songName={songName}
+            artistName={artistName}
+            handleCloseParent={jest.fn()}
+            refreshPlaylistData={jest.fn()}
+          />
+        </SidebarProvider>
       </BrowserRouter>,
     );
   });
@@ -176,7 +186,7 @@ test('ContextMenuSong create playlist', async () => {
   try {
     const addToListButton = component.getByText(
       t('contextMenuSong.add-to-playlist'),
-    ); // <-- Replaced with i18n key
+    );
 
     await act(async () => {
       fireEvent.click(addToListButton);
@@ -184,16 +194,22 @@ test('ContextMenuSong create playlist', async () => {
 
     const crearListaButton = component.getByText(
       t('contextMenuSong.create-playlist'),
-    ); // <-- Replaced with i18n key
+    );
 
     await act(async () => {
       fireEvent.click(crearListaButton);
     });
 
-    await act(async () => {
-      fireEvent.click(addToListButton);
-    });
-    expect(refreshSidebarMock).toHaveBeenCalled();
+    // Wait for the refreshSidebarMock to be called
+    await waitFor(
+      () => {
+        expect(refreshSidebarMock).toHaveBeenCalled();
+      },
+      {
+        timeout: 3000,
+        interval: 100,
+      },
+    );
   } catch (error) {
     // eslint-disable-next-line jest/no-conditional-expect
     expect(error).toBeUndefined();
@@ -204,14 +220,15 @@ test('ContextMenuSong add to playlist', async () => {
   const component = await act(() => {
     return render(
       <BrowserRouter>
-        <ContextMenuSong
-          playlistName={playlistName}
-          songName={songName}
-          artistName={artistName}
-          handleCloseParent={jest.fn()}
-          refreshPlaylistData={jest.fn()}
-          refreshSidebarData={jest.fn()}
-        />
+        <SidebarProvider>
+          <ContextMenuSong
+            playlistName={playlistName}
+            songName={songName}
+            artistName={artistName}
+            handleCloseParent={jest.fn()}
+            refreshPlaylistData={jest.fn()}
+          />
+        </SidebarProvider>
       </BrowserRouter>,
     );
   });
@@ -219,7 +236,7 @@ test('ContextMenuSong add to playlist', async () => {
   try {
     const addToListButton = component.getByText(
       t('contextMenuSong.add-to-playlist'),
-    ); // <-- Replaced with i18n key
+    );
 
     await act(async () => {
       fireEvent.click(addToListButton);

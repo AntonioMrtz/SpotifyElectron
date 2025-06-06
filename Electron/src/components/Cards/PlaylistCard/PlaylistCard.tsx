@@ -3,16 +3,17 @@ import { useState, MouseEvent, useEffect } from 'react';
 import ContextMenuPlaylist from 'components/AdvancedUIComponents/ContextMenu/Playlist/ContextMenuPlaylist';
 import Popover, { PopoverPosition } from '@mui/material/Popover';
 import { PropsPlaylistCard } from 'types/playlist';
+import { useSidebar } from 'providers/SidebarProvider';
 import styles from '../cards.module.css';
 import defaultThumbnailPlaylist from '../../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 
 export default function PlaylistCard({
   name,
   photo,
-  owner,
-  refreshSidebarData,
+  owner, // refreshSidebarData,
 }: PropsPlaylistCard) {
   const navigate = useNavigate();
+  const { refreshSidebarData } = useSidebar();
 
   const [displayPlay, setdisplayPlay] = useState(styles.displayTruePlay);
   const [displayPause, setdisplayPause] = useState(styles.displayNonePlay);
@@ -154,7 +155,7 @@ export default function PlaylistCard({
             handleCloseParent={handleCloseContextMenu}
             owner={owner}
             refreshPlaylistData={() => {}}
-            refreshSidebarData={refreshSidebarData}
+            // refreshSidebarData={refreshSidebarData}
           />
         </Popover>
       </div>

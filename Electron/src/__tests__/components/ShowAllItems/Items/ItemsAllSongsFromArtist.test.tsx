@@ -6,6 +6,7 @@ import Global from 'global/global';
 import ItemsAllSongsFromArtist from 'components/ShowAllItems/Items/ItemsAllSongsFromArtist';
 import getMockHeaders from 'utils/mockHeaders';
 import { NowPlayingContextProvider } from 'providers/NowPlayingProvider';
+import { SidebarProvider } from 'providers/SidebarProvider';
 
 const playlistName = 'playlisttest';
 const songName = 'songName';
@@ -52,13 +53,15 @@ test('Render items All Songs from Artist', async () => {
   const component = await act(() => {
     return render(
       <BrowserRouter>
-        <NowPlayingContextProvider>
-          <ItemsAllSongsFromArtist
-            artistName={artistMockFetch.name}
-            refreshSidebarData={jest.fn()}
-            id={artistMockFetch.name}
-          />
-        </NowPlayingContextProvider>
+        <SidebarProvider>
+          <NowPlayingContextProvider>
+            <ItemsAllSongsFromArtist
+              artistName={artistMockFetch.name}
+              refreshSidebarData={jest.fn()}
+              id={artistMockFetch.name}
+            />
+          </NowPlayingContextProvider>
+        </SidebarProvider>
       </BrowserRouter>,
     );
   });

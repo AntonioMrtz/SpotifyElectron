@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
+import { useSidebar } from 'providers/SidebarProvider';
 import styles from './modalUploadSongPlaylist.module.css';
 import UploadSongPlaylistAccordion from './Accordion/UploadSongPlaylistAccordion';
 
@@ -20,10 +21,10 @@ interface PropsModalUploadSongPlaylist {
   refreshSidebarData: () => void;
 }
 
-export default function ModalUploadSongPlaylist({
-  refreshSidebarData,
-}: PropsModalUploadSongPlaylist) {
+export default function ModalUploadSongPlaylist() {
   /* ADDSONGPLAYLIST MODAL */
+
+  const { refreshSidebarData } = useSidebar();
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);

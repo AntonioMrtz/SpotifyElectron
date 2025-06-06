@@ -9,6 +9,7 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import getMockHeaders from 'utils/mockHeaders';
 import { NowPlayingContextProvider } from 'providers/NowPlayingProvider';
 import { t } from 'i18next';
+import { SidebarProvider } from 'providers/SidebarProvider';
 
 /* afterEach(() => {
   jest.clearAllMocks();
@@ -101,21 +102,18 @@ test('UserProfile User load Playback history and his Playlists', async () => {
 
   const component = await act(() => {
     return render(
-      <MemoryRouter initialEntries={[`/user/${userMockFetch.name}`]}>
-        <NowPlayingContextProvider>
-          <Routes>
-            <Route
-              path="/user/:id"
-              element={
-                <UserProfile
-                  refreshSidebarData={jest.fn()}
-                  userType={UserType.USER}
-                />
-              }
-            />
-          </Routes>
-        </NowPlayingContextProvider>
-      </MemoryRouter>,
+      <SidebarProvider>
+        <MemoryRouter initialEntries={[`/user/${userMockFetch.name}`]}>
+          <NowPlayingContextProvider>
+            <Routes>
+              <Route
+                path="/user/:id"
+                element={<UserProfile userType={UserType.USER} />}
+              />
+            </Routes>
+          </NowPlayingContextProvider>
+        </MemoryRouter>
+      </SidebarProvider>,
     );
   });
 
@@ -209,21 +207,18 @@ test('UserProfile Artist load Songs and total streams', async () => {
 
   const component = await act(() => {
     return render(
-      <MemoryRouter initialEntries={[`/artist/${artistMockFetch.name}`]}>
-        <NowPlayingContextProvider>
-          <Routes>
-            <Route
-              path="/artist/:id"
-              element={
-                <UserProfile
-                  refreshSidebarData={jest.fn()}
-                  userType={UserType.ARTIST}
-                />
-              }
-            />
-          </Routes>
-        </NowPlayingContextProvider>
-      </MemoryRouter>,
+      <SidebarProvider>
+        <MemoryRouter initialEntries={[`/artist/${artistMockFetch.name}`]}>
+          <NowPlayingContextProvider>
+            <Routes>
+              <Route
+                path="/artist/:id"
+                element={<UserProfile userType={UserType.ARTIST} />}
+              />
+            </Routes>
+          </NowPlayingContextProvider>
+        </MemoryRouter>
+      </SidebarProvider>,
     );
   });
 

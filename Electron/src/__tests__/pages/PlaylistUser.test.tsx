@@ -275,14 +275,6 @@ test('Playlist user role hit like button', async () => {
     }
   });
 
-  // Wait for the state to update after clicking
-  await act(async () => {
-    await new Promise<void>((resolve) => {
-      setTimeout(() => {
-        resolve();
-      }, 0);
-    });
-  });
 
  
   const unlikeButton = component.container.querySelector(
@@ -408,14 +400,6 @@ test('Playlist user role get unlike button', async () => {
     );
   });
 
-  // Wait for the component to load and state to update
-  await act(async () => {
-    await new Promise<void>((resolve) => {
-      setTimeout(() => {
-        resolve();
-      }, 0);
-    });
-  });
 
 
   const unlikeButton = component.container.querySelector(
@@ -423,7 +407,6 @@ test('Playlist user role get unlike button', async () => {
   );
   expect(unlikeButton).toBeInTheDocument();
 
-  // Click the unlike button
   await act(async () => {
     if (unlikeButton) {
       fireEvent.click(unlikeButton);
@@ -431,13 +414,6 @@ test('Playlist user role get unlike button', async () => {
   });
 
 
-  await act(async () => {
-    await new Promise<void>((resolve) => {
-      setTimeout(() => {
-        resolve();
-      }, 0);
-    });
-  });
 
 
   const likeButton = component.container.querySelector('#playlist-like-button');
@@ -455,7 +431,7 @@ test('Playlist user role update playlist', async () => {
     photo: 'playlist',
     description: 'des',
     upload_date: 'date',
-    owner: currentUser, // Set owner to be the current user
+    owner: currentUser, 
     song_names: [songName],
   };
 
@@ -534,15 +510,6 @@ test('Playlist user role update playlist', async () => {
     );
   });
 
-  // Wait for the component to load
-  await act(async () => {
-    await new Promise<void>((resolve) => {
-      setTimeout(() => {
-        resolve();
-      }, 0);
-    });
-  });
-
 
   await act(async () => {
     const thumbnailPlaylist = component.getByAltText('thumbnail-playlist');
@@ -551,14 +518,6 @@ test('Playlist user role update playlist', async () => {
     }
   });
 
-
-  await act(async () => {
-    await new Promise<void>((resolve) => {
-      setTimeout(() => {
-        resolve();
-      }, 0);
-    });
-  });
 
   const inputDescription = component.getByPlaceholderText(
     t('playlist.description-placeholder'),

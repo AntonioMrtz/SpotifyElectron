@@ -54,8 +54,8 @@ test('Render itemsAllPlaylist', async () => {
       <BrowserRouter>
         <SidebarProvider>
           <ItemsAllPlaylists
-            refreshSidebarData={jest.fn()}
-            id={playlistDTOMockFetch.name}
+          // refreshSidebarData={jest.fn()}
+          // id={playlistDTOMockFetch.name}
           />
         </SidebarProvider>
       </BrowserRouter>,

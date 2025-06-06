@@ -144,7 +144,9 @@ export default function Playlist() {
 
     if (songs) {
       songs.forEach((song) => {
-        totalDuration += song.secondsDuration;
+        if (song && typeof song.secondsDuration === 'number') {
+          totalDuration += song.secondsDuration;
+        }
       });
     }
     return totalDuration;
@@ -210,6 +212,7 @@ export default function Playlist() {
           .map((songName: string) => {
             return SongsService.getSongMetadataSongsMetadataNameGet(songName)
               .then((songData) => {
+                if (!songData) return null;
                 const propsSong: PropsSongs = {
                   name: songName,
                   playlistName,
@@ -226,14 +229,20 @@ export default function Playlist() {
               .catch((err) => {
                 console.log('Unable to get Song Data');
                 console.error(err);
+                return null;
               });
           });
         Promise.all(songPromises)
           .then((resSongPromises) => {
-            setSongs([...resSongPromises]);
+            setSongs(
+              resSongPromises.filter(
+                (song): song is PropsSongs => song !== null,
+              ),
+            );
           })
           .catch(() => {
             console.log('Unable to get Songs Data');
+            setSongs([]);
           });
       }
     } catch (err) {
@@ -524,7 +533,7 @@ export default function Playlist() {
                   artistName={song.artistName}
                   streams={song.streams}
                   index={index + 1}
-                  secondsDuration={song.secondsDuration}
+                  secondsDuration={song?.secondsDuration}
                   handleSongCliked={changeSongName}
                   refreshPlaylistData={refreshPlaylistData}
                   refreshSidebarData={refreshSidebarData}

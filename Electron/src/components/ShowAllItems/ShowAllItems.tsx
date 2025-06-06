@@ -20,9 +20,7 @@ export default function ShowAllItems({
   const itemsDisplayed: {
     [key in ShowAllItemsTypes]: typeof ItemsPlaylist | any;
   } = {
-    [ShowAllItemsTypes.ALL_PLAYLISTS]: (
-      <ItemsPlaylist id={id} refreshSidebarData={refreshSidebarData} />
-    ),
+    [ShowAllItemsTypes.ALL_PLAYLISTS]: <ItemsPlaylist />,
     [ShowAllItemsTypes.ALL_ARTISTS]: <ItemsArtist />,
     [ShowAllItemsTypes.SONG]: 'Rejected',
     [ShowAllItemsTypes.ALL_PLAYLIST_FROM_USER]: (

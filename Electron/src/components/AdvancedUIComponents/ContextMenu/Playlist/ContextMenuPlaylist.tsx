@@ -305,23 +305,25 @@ export default function ContextMenuPlaylist({
 
                   {!loading &&
                     playlistNames &&
-                    playlistNames.map((playlistNameItem) => {
-                      return (
-                        <li key={playlistNameItem}>
-                          <button
-                            type="button"
-                            onClick={() =>
-                              handleAddPlaylistToPlaylist(
-                                playlistNameItem.toString(),
-                                playlistName,
-                              )
-                            }
-                          >
-                            {playlistNameItem}
-                          </button>
-                        </li>
-                      );
-                    })}
+                    playlistNames
+                      .filter((playlistNameItem) => playlistNameItem !== playlistName)
+                      .map((playlistNameItem) => {
+                        return (
+                          <li key={playlistNameItem}>
+                            <button
+                              type="button"
+                              onClick={() =>
+                                handleAddPlaylistToPlaylist(
+                                  playlistNameItem.toString(),
+                                  playlistName,
+                                )
+                              }
+                            >
+                              {playlistNameItem}
+                            </button>
+                          </li>
+                        );
+                      })}
                 </ul>
               </div>
             </Popover>

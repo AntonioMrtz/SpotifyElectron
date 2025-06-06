@@ -42,6 +42,30 @@ jest.spyOn(router, 'useNavigate').mockImplementation(() => navigate);
 jest.spyOn(TokenModule, 'getTokenUsername').mockReturnValue(userName);
 jest.spyOn(TokenModule, 'getTokenRole').mockReturnValue(roleUser);
 
+// Mock localStorage
+const localStorageMock = {
+  storage: {} as { [key: string]: string },
+  getItem: jest.fn((key: string) => localStorageMock.storage[key] || null),
+  setItem: jest.fn((key: string, value: string) => {
+    localStorageMock.storage[key] = value;
+  }),
+  removeItem: jest.fn((key: string) => {
+    delete localStorageMock.storage[key];
+  }),
+  clear: jest.fn(() => {
+    localStorageMock.storage = {};
+  }),
+};
+
+Object.defineProperty(window, 'localStorage', {
+  value: localStorageMock,
+});
+
+beforeEach(() => {
+  jest.clearAllMocks();
+  localStorageMock.clear();
+});
+
 global.fetch = jest.fn((url: string, options: any) => {
   if (
     url === `${Global.backendBaseUrl}/playlists/${playlistDTOMockFetch.name}`
@@ -194,4 +218,41 @@ test('ContextMenuPlaylist Add Playlist to Playlist', async () => {
       t('contextMenuPlaylist.confirmationMenu.add-success.title'),
     ),
   ).toBeInTheDocument();
+});
+
+test('ContextMenuPlaylist edit playlist navigates to correct route', async () => {
+  const mockHandleClose = jest.fn();
+
+  // Clear previous navigate calls
+  navigate.mockClear();
+
+  const component = await act(() => {
+    return render(
+      <BrowserRouter>
+        <ContextMenuPlaylist
+          playlistName={playlistName}
+          owner={userName}
+          handleCloseParent={mockHandleClose}
+          refreshPlaylistData={jest.fn()}
+          refreshSidebarData={jest.fn()}
+        />
+      </BrowserRouter>,
+    );
+  });
+
+  // Find and click the edit button
+  const editButton = component.getByText(t('contextMenuPlaylist.edit'));
+
+  await act(async () => {
+    fireEvent.click(editButton);
+  });
+
+  // Verify navigation was called with correct route (singular /playlist/, not /playlists/)
+  expect(navigate).toHaveBeenCalledWith(`/playlist/${playlistName}?edit=true`, { replace: true });
+
+  // Verify localStorage was set
+  expect(localStorage.getItem('playlistEdit')).toBe('true');
+
+  // Verify close handler was called
+  expect(mockHandleClose).toHaveBeenCalled();
 });

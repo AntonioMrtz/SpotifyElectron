@@ -20,6 +20,7 @@ from tests.test_API.api_test_playlist import (
     get_playlists,
     remove_song_from_playlist,
     update_playlist,
+    update_playlist_metadata,
 )
 from tests.test_API.api_test_song import create_song, delete_song
 from tests.test_API.api_test_user import delete_user, get_user
@@ -558,3 +559,52 @@ def test_remove_song_from_playlist_song_not_found():
 
     res_delete_artist = delete_user(playlist_owner)
     assert res_delete_artist.status_code == HTTP_202_ACCEPTED
+
+
+def test_update_playlist_metadata():
+    name = "testplaylistmeta"
+    photo = "photo"
+    descripcion = "desc"
+    owner = "testusermeta"
+    password = "password"
+
+    res_create_artist = create_artist(owner, photo, password)
+    assert res_create_artist.status_code == HTTP_201_CREATED
+    jwt_headers = get_user_jwt_header(username=owner, password=password)
+    res_create_playlist = create_playlist(
+        name=name, descripcion=descripcion, photo=photo, headers=jwt_headers
+    )
+    assert res_create_playlist.status_code == HTTP_201_CREATED
+
+    # Update only description
+    new_description = "newdesc"
+    res_update = update_playlist_metadata(
+        name=name, descripcion=new_description, headers=jwt_headers
+    )
+    assert res_update.status_code == 204
+    res_get = get_playlist(name=name, headers=jwt_headers)
+    assert res_get.json()["description"] == new_description
+
+    # Update only photo
+    new_photo = "http://newphoto"
+    res_update = update_playlist_metadata(
+        name=name, photo=new_photo, headers=jwt_headers
+    )
+    assert res_update.status_code == 204
+    res_get = get_playlist(name=name, headers=jwt_headers)
+    assert res_get.json()["photo"] == new_photo
+
+    # Update name
+    new_name = "testplaylistmeta2"
+    res_update = update_playlist_metadata(
+        name=name, nuevo_nombre=new_name, headers=jwt_headers
+    )
+    assert res_update.status_code == 204
+    res_get = get_playlist(name=new_name, headers=jwt_headers)
+    assert res_get.json()["name"] == new_name
+
+    # Clean up
+    res_delete = delete_playlist(new_name)
+    assert res_delete.status_code == 202
+    res_delete_artist = delete_user(owner)
+    assert res_delete_artist.status_code == 202

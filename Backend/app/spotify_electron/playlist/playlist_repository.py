@@ -388,3 +388,28 @@ async def remove_songs_from_playlist(name: str, song_names: list[str]) -> None:
         raise PlaylistRepositoryError from exception
     else:
         playlist_repository_logger.info(f"Songs removed from playlist {name}: {song_names}")
+
+
+async def update_playlist_metadata(name: str, update_fields: dict) -> None:
+    """Update only provided metadata fields for a playlist."""
+    try:
+        collection = get_playlist_collection()
+        result_update = await collection.update_one(
+            {"name": name},
+            {"$set": update_fields},
+        )
+        validate_playlist_update(result_update)
+    except PlaylistUpdateError as exception:
+        playlist_repository_logger.exception(
+            f"Error updating playlist metadata {name}: {update_fields}"
+        )
+        raise PlaylistRepositoryError from exception
+    except Exception as exception:
+        playlist_repository_logger.exception(
+            f"Unexpected error updating playlist metadata {name}: {update_fields}"
+        )
+        raise PlaylistRepositoryError from exception
+    else:
+        playlist_repository_logger.info(
+            f"Playlist {name} metadata updated: {update_fields}"
+        )

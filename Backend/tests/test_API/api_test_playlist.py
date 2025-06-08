@@ -46,6 +46,25 @@ def update_playlist(
     return client.put(url, json=payload, headers={**file_type_header, **headers})
 
 
+def update_playlist_metadata(
+    name: str,
+    descripcion: str = None,
+    photo: str = None,
+    headers: dict[str, str] = None,
+    nuevo_nombre: str = None,
+) -> Response:
+    url = f"/playlists/{name}/metadata"
+    params = {}
+    if nuevo_nombre:
+        params["new_name"] = nuevo_nombre
+    if descripcion is not None:
+        params["description"] = descripcion
+    if photo is not None:
+        params["photo"] = photo
+    file_type_header = {"Content-Type": "application/json"}
+    return client.patch(url, params=params, headers={**file_type_header, **(headers or {})})
+
+
 def delete_playlist(name: str) -> Response:
     return client.delete(f"/playlists/{name}")
 

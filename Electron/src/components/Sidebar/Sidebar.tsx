@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { getTokenUsername } from 'utils/token';
 import LoadingCircle from 'components/AdvancedUIComponents/LoadingCircle/LoadingCircle';
 import { t } from 'i18next';
+import { useSidebar } from 'providers/SidebarProvider';
 import styles from './sidebar.module.css';
 import PlaylistSidebar from './Playlist/PlaylistSidebar';
 import ModalUploadSongPlaylist from './ModalUploadSongPlaylist/ModalUploadSongPlaylist';
@@ -15,9 +16,9 @@ interface PropsSidebar {
 
 //* HIGHLIGHT CURRENT SECTION LI
 export default function Sidebar({
-  refreshSidebarTriggerValue,
-  refreshSidebarData,
+  refreshSidebarTriggerValue, // refreshSidebarData,
 }: PropsSidebar) {
+  const { refreshSidebarData } = useSidebar();
   const [selectedID, setSelectedID] = useState<string>();
   const [selectedPlaylist, setSelectedPlaylist] = useState<string>('');
 
@@ -154,7 +155,7 @@ export default function Sidebar({
               style={{ width: '25%' }}
             >
               <ModalUploadSongPlaylist
-                refreshSidebarData={refreshSidebarData}
+              // refreshSidebarData={refreshSidebarData}
               />
             </div>
           </header>

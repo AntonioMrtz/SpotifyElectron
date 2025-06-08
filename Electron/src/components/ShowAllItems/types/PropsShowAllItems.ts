@@ -7,6 +7,6 @@ export enum ShowAllItemsTypes {
 }
 
 export interface PropsAllItems {
-  refreshSidebarData: () => void;
+  // refreshSidebarData: () => void;
   type: ShowAllItemsTypes;
 }

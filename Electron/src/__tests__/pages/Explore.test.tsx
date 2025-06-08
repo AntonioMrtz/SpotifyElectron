@@ -6,6 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 import Global from 'global/global';
 import getMockHeaders from 'utils/mockHeaders';
 import { NowPlayingContextProvider } from 'providers/NowPlayingProvider';
+import { SidebarProvider } from 'providers/SidebarProvider';
 
 const playlistName = 'playlisttest';
 const songName = 'songName';
@@ -51,13 +52,23 @@ const songMockFetch = {
   streams: 2,
 };
 
+const genreName = 'Rock';
+const genreColor = '#FF0000';
+
+const genreDTOMockFetch = {
+  name: genreName,
+  color: genreColor,
+};
+
 global.fetch = jest.fn((url: string) => {
   if (url === `${Global.backendBaseUrl}/genres/`) {
     return Promise.resolve({
-      json: () => Promise.resolve({ ROCK: 'Rock', POP: 'Pop' }),
+      json: () => ['Rock', 'Pop', 'Hip-hop'],
       status: 200,
       ok: true,
       headers: getMockHeaders(),
+    }).catch((error) => {
+      console.log(error);
     });
   }
   if (url === `${Global.backendBaseUrl}/search/?name=prueba`) {
@@ -84,9 +95,11 @@ test('Render Browse and get Genres', async () => {
   const component = await act(() => {
     return render(
       <BrowserRouter>
-        <NowPlayingContextProvider>
-          <Browse refreshSidebarData={jest.fn()} />
-        </NowPlayingContextProvider>
+        <SidebarProvider>
+          <NowPlayingContextProvider>
+            <Browse />
+          </NowPlayingContextProvider>
+        </SidebarProvider>
       </BrowserRouter>,
     );
   });
@@ -97,9 +110,11 @@ test('Browse filter by name', async () => {
   const component = await act(() => {
     return render(
       <BrowserRouter>
-        <NowPlayingContextProvider>
-          <Browse refreshSidebarData={jest.fn()} />
-        </NowPlayingContextProvider>
+        <SidebarProvider>
+          <NowPlayingContextProvider>
+            <Browse />
+          </NowPlayingContextProvider>
+        </SidebarProvider>
       </BrowserRouter>,
     );
   });

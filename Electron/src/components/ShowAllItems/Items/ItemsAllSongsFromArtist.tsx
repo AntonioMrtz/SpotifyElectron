@@ -1,13 +1,14 @@
 import SongCard from 'components/Cards/SongCard/SongCard';
 import useFetchGetArtistSongs from 'hooks/useFetchGetArtistSongs';
 import { sanitizeUserName } from 'utils/sanitizeParameters';
+import { useSidebar } from 'providers/SidebarProvider';
 import { PropsItemsSongsFromArtist } from '../types/PropsItems';
 
 export default function ItemsAllSongsFromArtist({
-  artistName,
-  refreshSidebarData,
+  artistName, // refreshSidebarData,
 }: PropsItemsSongsFromArtist) {
   const { songs } = useFetchGetArtistSongs(sanitizeUserName(artistName));
+  const { refreshSidebarData } = useSidebar();
 
   return (
     // eslint-disable-next-line react/jsx-no-useless-fragment

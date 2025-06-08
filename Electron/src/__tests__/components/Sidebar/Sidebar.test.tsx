@@ -8,6 +8,7 @@ import UserType from 'utils/role';
 import getMockHeaders from 'utils/mockHeaders';
 
 import * as TokenModule from 'utils/token';
+import { SidebarProvider } from 'providers/SidebarProvider';
 
 const playlistName = 'playlisttest';
 const songName = 'songName';
@@ -69,7 +70,9 @@ test('render Sidebar', async () => {
   const component = await act(() => {
     return render(
       <BrowserRouter>
-        <Sidebar refreshSidebarData={jest.fn()} refreshSidebarTriggerValue />
+        <SidebarProvider>
+          <Sidebar refreshSidebarData={jest.fn()} refreshSidebarTriggerValue />
+        </SidebarProvider>
       </BrowserRouter>,
     );
   });

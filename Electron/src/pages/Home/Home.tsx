@@ -2,20 +2,21 @@ import { useNavigate } from 'react-router-dom';
 import LoadingCircle from 'components/AdvancedUIComponents/LoadingCircle/LoadingCircle';
 import ArtistCard from 'components/Cards/ArtistCard/ArtistCard';
 import { t } from 'i18next';
+import { useSidebar } from 'providers/SidebarProvider';
 import styles from './homeCss.module.css';
 import PlaylistCard from '../../components/Cards/PlaylistCard/PlaylistCard';
 import useFetchGetPlaylists from '../../hooks/useFetchGetPlaylists';
 import useFetchGetArtists from '../../hooks/useFetchGetArtists';
 
-interface PropsHome {
-  refreshSidebarData: () => void;
-}
+// interface PropsHome {
+//   refreshSidebarData: () => void;
+// }
 
-export default function Home({ refreshSidebarData }: PropsHome) {
+export default function Home() {
   const navigate = useNavigate();
+  const { refreshSidebarData } = useSidebar();
 
-  const { playlists, loading: loadingPlaylists } =
-    useFetchGetPlaylists(refreshSidebarData);
+  const { playlists, loading: loadingPlaylists } = useFetchGetPlaylists();
   const { artists, loading: loadingArtists } = useFetchGetArtists();
 
   const madeForYouTitle = t('home.made-for');

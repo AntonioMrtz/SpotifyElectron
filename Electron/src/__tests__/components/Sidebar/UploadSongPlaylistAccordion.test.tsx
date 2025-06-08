@@ -9,6 +9,7 @@ import getMockHeaders from 'utils/mockHeaders';
 
 import * as TokenModule from 'utils/token';
 import { t } from 'i18next';
+import { SidebarProvider } from 'providers/SidebarProvider';
 
 const userName = 'prueba';
 const roleUser = UserType.ARTIST;
@@ -39,13 +40,13 @@ test('render UploadSongPlaylistAccordion', async () => {
 
   const component = await act(() => {
     return render(
-      <BrowserRouter>
+      <SidebarProvider>
         <UploadSongPlaylistAccordion
           handleClose={handleCloseMock}
           refreshSidebarData={refreshSidebarDataMock}
           setIsCloseAllowed={setIsCloseAllowed}
         />
-      </BrowserRouter>,
+      </SidebarProvider>,
     );
   });
 
@@ -81,13 +82,13 @@ test('UploadSongPlaylistAccordion submit playlist correct', async () => {
 
   const component = await act(() => {
     return render(
-      <BrowserRouter>
+      <SidebarProvider>
         <UploadSongPlaylistAccordion
           handleClose={handleCloseMock}
           refreshSidebarData={refreshSidebarDataMock}
           setIsCloseAllowed={setIsCloseAllowed}
         />
-      </BrowserRouter>,
+      </SidebarProvider>,
     );
   });
 
@@ -163,13 +164,13 @@ test('UploadSongPlaylistAccordion submit valid song files', async () => {
 
   const component = await act(() => {
     return render(
-      <BrowserRouter>
+      <SidebarProvider>
         <UploadSongPlaylistAccordion
           handleClose={handleCloseMock}
           refreshSidebarData={refreshSidebarDataMock}
           setIsCloseAllowed={setIsCloseAllowed}
         />
-      </BrowserRouter>,
+      </SidebarProvider>,
     );
   });
 
@@ -284,13 +285,13 @@ test('UploadSongPlaylistAccordion rejects invalid song files', async () => {
 
   const component = await act(() => {
     return render(
-      <BrowserRouter>
+      <SidebarProvider>
         <UploadSongPlaylistAccordion
           handleClose={handleCloseMock}
           refreshSidebarData={refreshSidebarDataMock}
           setIsCloseAllowed={setIsCloseAllowed}
         />
-      </BrowserRouter>,
+      </SidebarProvider>,
     );
   });
 
@@ -386,13 +387,13 @@ test('UploadSongPlaylistAccordion disables the upload button while song is uploa
 
   const component = await act(async () => {
     return render(
-      <BrowserRouter>
+      <SidebarProvider>
         <UploadSongPlaylistAccordion
           handleClose={handleCloseMock}
           refreshSidebarData={refreshSidebarDataMock}
           setIsCloseAllowed={setIsCloseAllowed}
         />
-      </BrowserRouter>,
+      </SidebarProvider>,
     );
   });
 
@@ -482,13 +483,13 @@ test('Upload song form button disabled and enabled depending on filled fields', 
 
   const component = await act(async () => {
     return render(
-      <BrowserRouter>
+      <SidebarProvider>
         <UploadSongPlaylistAccordion
           handleClose={handleCloseMock}
           refreshSidebarData={refreshSidebarDataMock}
           setIsCloseAllowed={setIsCloseAllowed}
         />
-      </BrowserRouter>,
+      </SidebarProvider>,
     );
   });
 
@@ -563,13 +564,13 @@ test('Add playlist form button disabled and enabled depending on filled fields',
 
   const component = await act(async () => {
     return render(
-      <BrowserRouter>
+      <SidebarProvider>
         <UploadSongPlaylistAccordion
           handleClose={handleCloseMock}
           refreshSidebarData={refreshSidebarDataMock}
           setIsCloseAllowed={setIsCloseAllowed}
         />
-      </BrowserRouter>,
+      </SidebarProvider>,
     );
   });
 

@@ -1,19 +1,23 @@
 import '@testing-library/jest-dom';
 import { act, fireEvent, render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import { BrowserRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router-dom';
 import Global from 'global/global';
 import UserType from 'utils/role';
 import PlaylistSidebar from 'components/Sidebar/Playlist/PlaylistSidebar';
 import getMockHeaders from 'utils/mockHeaders';
-
+import * as router from 'react-router';
 import * as TokenModule from 'utils/token';
 import { t } from 'i18next';
+import { SidebarProvider } from 'providers/SidebarProvider';
 
 const playlistName = 'playlisttest';
 const songName = 'songName';
 const userName = 'prueba';
 const roleUser = UserType.ARTIST;
+
+const navigate = jest.fn();
+jest.spyOn(router, 'useNavigate').mockImplementation(() => navigate);
 
 const artistMockFetch = {
   name: userName,
@@ -44,16 +48,18 @@ test('render Sidebar Playlist', async () => {
 
   const component = await act(() => {
     return render(
-      <BrowserRouter>
-        <PlaylistSidebar
-          name={playlistDTOMockFetch.name}
-          photo={playlistDTOMockFetch.photo}
-          owner={artistMockFetch.name}
-          playlistStyle=""
-          handleUrlPlaylistClicked={handleUrlPlaylistClicked}
-          refreshSidebarData={refreshSidebarData}
-        />
-      </BrowserRouter>,
+      <MemoryRouter>
+        <SidebarProvider>
+          <PlaylistSidebar
+            name={playlistDTOMockFetch.name}
+            photo={playlistDTOMockFetch.photo}
+            owner={artistMockFetch.name}
+            playlistStyle=""
+            handleUrlPlaylistClicked={handleUrlPlaylistClicked}
+            refreshSidebarData={refreshSidebarData}
+          />
+        </SidebarProvider>
+      </MemoryRouter>,
     );
   });
 
@@ -96,16 +102,18 @@ test('Sidebar Playlist handle open context menu', async () => {
 
   const component = await act(() => {
     return render(
-      <BrowserRouter>
-        <PlaylistSidebar
-          name={playlistDTOMockFetch.name}
-          photo={playlistDTOMockFetch.photo}
-          owner={artistMockFetch.name}
-          playlistStyle=""
-          handleUrlPlaylistClicked={handleUrlPlaylistClickedMock}
-          refreshSidebarData={refreshSidebarDataMock}
-        />
-      </BrowserRouter>,
+      <MemoryRouter>
+        <SidebarProvider>
+          <PlaylistSidebar
+            name={playlistDTOMockFetch.name}
+            photo={playlistDTOMockFetch.photo}
+            owner={artistMockFetch.name}
+            playlistStyle=""
+            handleUrlPlaylistClicked={handleUrlPlaylistClickedMock}
+            refreshSidebarData={refreshSidebarDataMock}
+          />
+        </SidebarProvider>
+      </MemoryRouter>,
     );
   });
 
@@ -157,16 +165,18 @@ test('Sidebar Playlist left-click', async () => {
 
   const component = await act(() => {
     return render(
-      <BrowserRouter>
-        <PlaylistSidebar
-          name={playlistDTOMockFetch.name}
-          photo={playlistDTOMockFetch.photo}
-          owner={artistMockFetch.name}
-          playlistStyle=""
-          handleUrlPlaylistClicked={handleUrlPlaylistClickedMock}
-          refreshSidebarData={refreshSidebarDataMock}
-        />
-      </BrowserRouter>,
+      <MemoryRouter>
+        <SidebarProvider>
+          <PlaylistSidebar
+            name={playlistDTOMockFetch.name}
+            photo={playlistDTOMockFetch.photo}
+            owner={artistMockFetch.name}
+            playlistStyle=""
+            handleUrlPlaylistClicked={handleUrlPlaylistClickedMock}
+            refreshSidebarData={refreshSidebarDataMock}
+          />
+        </SidebarProvider>
+      </MemoryRouter>,
     );
   });
 

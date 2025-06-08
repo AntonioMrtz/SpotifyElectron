@@ -3,6 +3,7 @@ import { act, render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import Genre from 'pages/Genre/Genre';
+import { SidebarProvider } from 'providers/SidebarProvider';
 
 const genreName = 'Rock';
 
@@ -29,14 +30,13 @@ global.fetch = jest.fn(() =>
 test('Render Genre with one song', async () => {
   const component = await act(() => {
     return render(
-      <MemoryRouter initialEntries={[`/artist/${genreName}`]}>
-        <Routes>
-          <Route
-            path="/artist/:id"
-            element={<Genre refreshSidebarData={jest.fn()} />}
-          />
-        </Routes>
-      </MemoryRouter>,
+      <SidebarProvider>
+        <MemoryRouter initialEntries={[`/artist/${genreName}`]}>
+          <Routes>
+            <Route path="/artist/:id" element={<Genre />} />
+          </Routes>
+        </MemoryRouter>
+      </SidebarProvider>,
     );
   });
 

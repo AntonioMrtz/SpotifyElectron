@@ -29,7 +29,7 @@ test('UserProfile User load Playback history and his Playlists', async () => {
     photo: 'photo',
     register_date: 'date',
     password: 'hashpassword',
-    playback_history: [songName],
+    recently_played: [songName],
     playlists: [playlistName],
     saved_playlists: [playlistName],
   };
@@ -84,7 +84,7 @@ test('UserProfile User load Playback history and his Playlists', async () => {
     }
     if (
       url ===
-      `${Global.backendBaseUrl}/users/${userMockFetch.name}/playback_history`
+      `${Global.backendBaseUrl}/users/${userMockFetch.name}/recently_played`
     ) {
       return Promise.resolve({
         json: () => [songMockFetch],
@@ -136,7 +136,7 @@ test('UserProfile Artist load Songs and total streams', async () => {
     photo: 'photo',
     register_date: 'date',
     password: 'hashpassword',
-    playback_history: [songName],
+    recently_played: [songName],
     playlists: [playlistName],
     saved_playlists: [playlistName],
     uploaded_songs: [songName],

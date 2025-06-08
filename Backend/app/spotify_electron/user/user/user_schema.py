@@ -18,7 +18,7 @@ from app.spotify_electron.user.base_user_schema import (
 class UserDocument(BaseUserDocument):
     """Represents user data in the persistence layer"""
 
-    playback_history: list[str]
+    recently_played: list[str]
     playlists: list[str]
     saved_playlists: list[str]
 
@@ -27,7 +27,7 @@ class UserDocument(BaseUserDocument):
 class UserDAO(BaseUserDAO):
     """Represents user data in the internal processing layer"""
 
-    playback_history: list[str]
+    recently_played: list[str]
     playlists: list[str]
     saved_playlists: list[str]
 
@@ -36,7 +36,7 @@ class UserDAO(BaseUserDAO):
 class UserDTO(BaseUserDTO):
     """Represents user data in the endpoints transfer layer"""
 
-    playback_history: list[str]
+    recently_played: list[str]
     playlists: list[str]
     saved_playlists: list[str]
 
@@ -62,7 +62,7 @@ def get_user_dao_from_document(document: UserDocument) -> UserDAO:
         photo=document["photo"],
         register_date=document["register_date"],
         password=document["password"],
-        playback_history=document.get("playback_history", []),
+        recently_played=document.get("recently_played", []),
         playlists=document.get("playlists", []),
         saved_playlists=document.get("saved_playlists", []),
     )
@@ -81,7 +81,7 @@ def get_user_dto_from_dao(user_dao: UserDAO) -> UserDTO:
         name=user_dao.name,
         photo=user_dao.photo,
         register_date=user_dao.register_date,
-        playback_history=user_dao.playback_history,
+        recently_played=user_dao.recently_played,
         playlists=user_dao.playlists,
         saved_playlists=user_dao.saved_playlists,
     )

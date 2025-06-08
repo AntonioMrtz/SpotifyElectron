@@ -127,6 +127,13 @@ function App() {
                     />
                   />
                   <Route
+                    path="/show-all/recently-played/:id"
+                    element=<ShowAllItems
+                      refreshSidebarData={refreshSidebarData}
+                      type={ShowAllItemsTypes.ALL_RECENTLY_PLAYED}
+                    />
+                  />
+                  <Route
                     path="/"
                     element=<Home refreshSidebarData={refreshSidebarData} />
                   />

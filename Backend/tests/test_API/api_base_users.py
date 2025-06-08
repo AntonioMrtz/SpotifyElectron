@@ -6,11 +6,9 @@ from app.__main__ import app
 client = TestClient(app)
 
 
-def patch_history_playback(
-    user_name: str, song_name: str, headers: dict[str, str]
-) -> Response:
+def patch_recently_played(user_name: str, song_name: str, headers: dict[str, str]) -> Response:
     return client.patch(
-        f"/users/{user_name}/playback_history/?song_name={song_name}", headers=headers
+        f"/users/{user_name}/recently_played/?song_name={song_name}", headers=headers
     )
 
 
@@ -50,8 +48,8 @@ def get_user_playlists(name: str, headers: dict[str, str]) -> Response:
     return client.get(f"/users/{name}/playlists", headers=headers)
 
 
-def get_user_playback_history(user_name: str, headers: dict[str, str]) -> Response:
-    return client.get(f"/users/{user_name}/playback_history", headers=headers)
+def get_user_recently_played(user_name: str, headers: dict[str, str]) -> Response:
+    return client.get(f"/users/{user_name}/recently_played", headers=headers)
 
 
 def promote_user_to_artist(name: str, headers: dict[str, str]) -> Response:

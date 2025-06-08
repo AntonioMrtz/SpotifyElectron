@@ -21,14 +21,14 @@ def update_artist(
     photo: str,
     playlists: list[str],
     saved_playlists: list[str],
-    playback_history: list[str],
+    recently_played: list[str],
     uploaded_songs: list[str],
     headers: dict[str, str],
 ) -> Response:
     url = f"/artists/{name}/?photo={photo}"
 
     payload = {
-        "playback_history": playback_history,
+        "recently_played": recently_played,
         "playlists": playlists,
         "saved_playlists": saved_playlists,
         "uploaded_songs": uploaded_songs,

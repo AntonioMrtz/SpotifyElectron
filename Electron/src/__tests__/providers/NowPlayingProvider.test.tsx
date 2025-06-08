@@ -74,7 +74,7 @@ test('Playlist updates song name in context when a song is clicked', async () =>
     }
     if (
       url ===
-      `${Global.backendBaseUrl}/users/${userMockFetch.name}/playback_history`
+      `${Global.backendBaseUrl}/users/${userMockFetch.name}/recently_played`
     ) {
       return Promise.resolve({
         json: () => userMockFetch,
@@ -151,7 +151,7 @@ test('Playlist updates song name in context when a song is clicked', async () =>
     }
     if (
       url ===
-      `${Global.backendBaseUrl}/users/${userName}/playback_history?song_name=${songName}`
+      `${Global.backendBaseUrl}/users/${userName}/recently_played?song_name=${songName}`
     ) {
       return Promise.resolve({
         json: () => {},

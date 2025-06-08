@@ -3,6 +3,7 @@ export enum ShowAllItemsTypes {
   ALL_ARTISTS = 'all-artists',
   ALL_PLAYLIST_FROM_USER = 'all-playlists-from-user',
   ALL_SONGS_FROM_ARTIST = 'all-songs-from-artist',
+  ALL_RECENTLY_PLAYED = 'all-recently-played',
   SONG = 'song',
 }
 

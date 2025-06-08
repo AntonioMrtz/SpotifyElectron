@@ -59,7 +59,7 @@ global.fetch = jest.fn((url: string) => {
   }
   if (
     url ===
-    `${Global.backendBaseUrl}/users/${userName}/playback_history?song_name=${songName}`
+    `${Global.backendBaseUrl}/users/${userName}/recently_played?song_name=${songName}`
   ) {
     return Promise.resolve({
       json: () => {},

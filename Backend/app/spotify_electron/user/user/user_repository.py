@@ -75,7 +75,7 @@ async def create_user(name: str, photo: str, password: bytes, current_date: str)
             "password": password,
             "saved_playlists": [],
             "playlists": [],
-            "playback_history": [],
+            "recently_played": [],
         }
         collection = provider.get_user_collection()
         result = await collection.insert_one(user)

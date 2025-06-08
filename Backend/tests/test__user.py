@@ -165,7 +165,7 @@ def test_get_user_dao_from_document():
         photo="https://photo",
         register_date="2024-11-30T12:00:00",
         password=b"securepassword",
-        playback_history=["song1", "song2"],
+        recently_played=["song1", "song2"],
         playlists=["playlist1", "playlist2"],
         saved_playlists=["saved_playlist1"],
     )
@@ -177,7 +177,7 @@ def test_get_user_dao_from_document():
     assert user_dao.photo == "https://photo"
     assert user_dao.register_date == "2024-11-30T12:00:00"
     assert user_dao.password == b"securepassword"
-    assert user_dao.playback_history == ["song1", "song2"]
+    assert user_dao.recently_played == ["song1", "song2"]
     assert user_dao.playlists == ["playlist1", "playlist2"]
     assert user_dao.saved_playlists == ["saved_playlist1"]
 
@@ -188,7 +188,7 @@ def test_get_user_dto_from_dao():
         photo="https://photo",
         register_date="2024-11-30T12:00:00",
         password=b"securepassword",
-        playback_history=["song1", "song2"],
+        recently_played=["song1", "song2"],
         playlists=["playlist1", "playlist2"],
         saved_playlists=["saved_playlist1"],
     )
@@ -199,7 +199,7 @@ def test_get_user_dto_from_dao():
     assert user_dto.name == "test_user"
     assert user_dto.photo == "https://photo"
     assert user_dto.register_date == "2024-11-30T12:00:00"
-    assert user_dto.playback_history == ["song1", "song2"]
+    assert user_dto.recently_played == ["song1", "song2"]
     assert user_dto.playlists == ["playlist1", "playlist2"]
     assert user_dto.saved_playlists == ["saved_playlist1"]
 

@@ -21,19 +21,16 @@ from app.spotify_electron.user.base_user_schema import (
     get_base_user_dao_from_document,
     get_base_user_dto_from_dao,
 )
-from app.spotify_electron.user.base_user_service import (
-    MAX_NUMBER_PLAYBACK_HISTORY_SONGS,
-)
 from app.spotify_electron.user.user.user_schema import UserType
 from app.spotify_electron.utils.date.date_utils import get_current_iso8601_date
 from tests.test_API.api_base_users import (
     delete_playlist_saved,
-    get_user_playback_history,
     get_user_playlist_names,
     get_user_playlists,
+    get_user_recently_played,
     get_user_relevant_playlists,
-    patch_history_playback,
     patch_playlist_saved,
+    patch_recently_played,
     promote_user_to_artist,
     whoami,
 )
@@ -50,7 +47,7 @@ def set_up(trigger_app_startup):
     pass
 
 
-def test_patch_playback_history_user_correct(clear_test_data_db):
+def test_patch_recently_played_user_correct(clear_test_data_db):
     name = "8232392323623823723"
     password = "hola"
     artista = "artista"
@@ -79,15 +76,15 @@ def test_patch_playback_history_user_correct(clear_test_data_db):
     )
     assert res_create_song.status_code == HTTP_201_CREATED
 
-    res_patch_user = patch_history_playback(
+    res_patch_user = patch_recently_played(
         user_name=name, song_name=song_name, headers=jwt_headers_user
     )
     assert res_patch_user.status_code == HTTP_204_NO_CONTENT
 
     res_get_user = get_user(name=name, headers=jwt_headers_user)
     assert res_get_user.status_code == HTTP_200_OK
-    assert len(res_get_user.json()["playback_history"]) == 1
-    assert res_get_user.json()["playback_history"][0] == song_name
+    assert len(res_get_user.json()["recently_played"]) == 1
+    assert res_get_user.json()["recently_played"][0] == song_name
 
     res_delete_user = delete_user(name=name)
     assert res_delete_user.status_code == HTTP_202_ACCEPTED
@@ -99,7 +96,7 @@ def test_patch_playback_history_user_correct(clear_test_data_db):
     assert res_delete_artist.status_code == HTTP_202_ACCEPTED
 
 
-def test_patch_playback_history_artist_correct(clear_test_data_db):
+def test_patch_recently_played_artist_correct(clear_test_data_db):
     photo = "https://photo"
     password = "hola"
     artista = "artista"
@@ -125,13 +122,13 @@ def test_patch_playback_history_artist_correct(clear_test_data_db):
     )
     assert res_create_song.status_code == HTTP_201_CREATED
 
-    res_patch_user = patch_history_playback(artista, song_name, headers=jwt_headers_artist)
+    res_patch_user = patch_recently_played(artista, song_name, headers=jwt_headers_artist)
     assert res_patch_user.status_code == HTTP_204_NO_CONTENT
 
     res_get_artist = get_artist(name=artista, headers=jwt_headers_artist)
     assert res_get_artist.status_code == HTTP_200_OK
-    assert len(res_get_artist.json()["playback_history"]) == 1
-    assert res_get_artist.json()["playback_history"][0] == song_name
+    assert len(res_get_artist.json()["recently_played"]) == 1
+    assert res_get_artist.json()["recently_played"][0] == song_name
 
     res_delete_song = delete_song(song_name)
     assert res_delete_song.status_code == HTTP_202_ACCEPTED
@@ -140,7 +137,7 @@ def test_patch_playback_history_artist_correct(clear_test_data_db):
     assert res_delete_artist.status_code == HTTP_202_ACCEPTED
 
 
-def test_patch_playback_history_non_existing_user():
+def test_patch_recently_played_non_existing_user():
     photo = "https://photo"
     password = "hola"
     artista = "artista"
@@ -152,14 +149,14 @@ def test_patch_playback_history_non_existing_user():
 
     jwt_headers_artist = get_user_jwt_header(username=artista, password=password)
 
-    res_patch_user = patch_history_playback("usuario1", "cancion1", jwt_headers_artist)
+    res_patch_user = patch_recently_played("usuario1", "cancion1", jwt_headers_artist)
     assert res_patch_user.status_code == HTTP_404_NOT_FOUND
 
     res_delete_artist = delete_user(artista)
     assert res_delete_artist.status_code == HTTP_202_ACCEPTED
 
 
-def test_patch_playback_history_user_modifying_another_user():
+def test_patch_recently_played_user_modifying_another_user():
     photo = "https://photo"
     password = "hola"
     artista = "artista"
@@ -175,7 +172,7 @@ def test_patch_playback_history_user_modifying_another_user():
 
     jwt_headers_artist = get_user_jwt_header(username=artista, password=password)
 
-    res_patch_user = patch_history_playback(artista2, "cancion1", jwt_headers_artist)
+    res_patch_user = patch_recently_played(artista2, "cancion1", jwt_headers_artist)
     assert res_patch_user.status_code == HTTP_403_FORBIDDEN
 
     res_delete_artist = delete_user(artista)
@@ -185,7 +182,7 @@ def test_patch_playback_history_user_modifying_another_user():
     assert res_delete_artist.status_code == HTTP_202_ACCEPTED
 
 
-def test_patch_playback_history_song_not_found():
+def test_patch_recently_played_song_not_found():
     photo = "https://photo"
     password = "hola"
     artista = "artista"
@@ -198,14 +195,14 @@ def test_patch_playback_history_song_not_found():
 
     jwt_headers_artist = get_user_jwt_header(username=artista, password=password)
 
-    res_patch_user = patch_history_playback(artista, non_existent_song, jwt_headers_artist)
+    res_patch_user = patch_recently_played(artista, non_existent_song, jwt_headers_artist)
     assert res_patch_user.status_code == HTTP_404_NOT_FOUND
 
     res_delete_artist = delete_user(artista)
     assert res_delete_artist.status_code == HTTP_202_ACCEPTED
 
 
-def test_patch_playback_history_user_correct_insert_6_songs(clear_test_data_db):
+def test_patch_recently_played_user_correct_insert_6_songs(clear_test_data_db):
     name = "8232392323623823723"
     photo = "https://photo"
     password = "hola"
@@ -245,16 +242,18 @@ def test_patch_playback_history_user_correct_insert_6_songs(clear_test_data_db):
     assert res_create_song.status_code == HTTP_201_CREATED
 
     for i in range(0, 5):
-        res_patch_user = patch_history_playback(name, song_name, headers=jwt_headers_user)
+        res_patch_user = patch_recently_played(name, song_name, headers=jwt_headers_user)
         assert res_patch_user.status_code == HTTP_204_NO_CONTENT
 
-    res_patch_user = patch_history_playback(name, new_song_name, headers=jwt_headers_user)
+    res_patch_user = patch_recently_played(name, new_song_name, headers=jwt_headers_user)
     assert res_patch_user.status_code == HTTP_204_NO_CONTENT
 
     res_get_user = get_user(name=name, headers=jwt_headers_user)
     assert res_get_user.status_code == HTTP_200_OK
-    assert len(res_get_user.json()["playback_history"]) == MAX_NUMBER_PLAYBACK_HISTORY_SONGS
-    assert res_get_user.json()["playback_history"][4] == new_song_name
+    # 5 + 1 = 6 songs, under the limit of 50
+    expected_songs_count = 6
+    assert len(res_get_user.json()["recently_played"]) == expected_songs_count
+    assert res_get_user.json()["recently_played"][5] == new_song_name
 
     res_delete_user = delete_user(name=name)
     assert res_delete_user.status_code == HTTP_202_ACCEPTED
@@ -951,24 +950,6 @@ def test_get_artist_playlist_names_correct():
     assert res_delete_artist.status_code == HTTP_202_ACCEPTED
 
 
-def test_get_user_playlist_names_user_not_found():
-    user_name = "user-name"
-    artist_name = "artist-name"
-    password = "pass"
-    photo = "https://photo"
-
-    res_create_artist = create_artist(name=artist_name, password=password, photo=photo)
-    assert res_create_artist.status_code == HTTP_201_CREATED
-
-    jwt_headers_artist = get_user_jwt_header(username=artist_name, password=password)
-
-    res_get_user_playlist_names = get_user_playlist_names(user_name, jwt_headers_artist)
-    assert res_get_user_playlist_names.status_code == HTTP_404_NOT_FOUND
-
-    res_delete_artist = delete_user(artist_name)
-    assert res_delete_artist.status_code == HTTP_202_ACCEPTED
-
-
 def test_get_user_playlists_correct():
     playlist_name_user = "playlist"
     playlist_name_artist_saved = "saved-playlist"
@@ -1085,30 +1066,12 @@ def test_get_artist_playlists_correct():
     assert res_delete_artist.status_code == HTTP_202_ACCEPTED
 
 
-def test_get_user_playlists_user_not_found():
-    user_name = "user-name"
-    artist_name = "artist-name"
+def test_get_user_recently_played_correct():
+    artist_name = "artist-name-unique-test"
     password = "pass"
     photo = "https://photo"
-
-    res_create_artist = create_artist(name=artist_name, password=password, photo=photo)
-    assert res_create_artist.status_code == HTTP_201_CREATED
-
-    jwt_headers_artist = get_user_jwt_header(username=artist_name, password=password)
-
-    res_get_user_playlist_names = get_user_playlists(user_name, jwt_headers_artist)
-    assert res_get_user_playlist_names.status_code == HTTP_404_NOT_FOUND
-
-    res_delete_artist = delete_user(artist_name)
-    assert res_delete_artist.status_code == HTTP_202_ACCEPTED
-
-
-def test_get_user_playback_history_correct():
-    artist_name = "artist-name"
-    password = "pass"
-    photo = "https://photo"
-    song_name = "8232392323623823723989"
-    song_name_2 = "8232392323623823723988"
+    song_name = "unique-song-test-1"
+    song_name_2 = "unique-song-test-2"
     excepted_playback_history_songs = [song_name, song_name_2]
     file_path = "tests/assets/song.mp3"
     genre = "Pop"
@@ -1136,22 +1099,22 @@ def test_get_user_playback_history_correct():
     )
     assert res_create_song.status_code == HTTP_201_CREATED
 
-    res_patch_user = patch_history_playback(
+    res_patch_user = patch_recently_played(
         user_name=artist_name, song_name=song_name, headers=jwt_headers_artist
     )
     assert res_patch_user.status_code == HTTP_204_NO_CONTENT
 
-    res_patch_user = patch_history_playback(
+    res_patch_user = patch_recently_played(
         user_name=artist_name, song_name=song_name_2, headers=jwt_headers_artist
     )
     assert res_patch_user.status_code == HTTP_204_NO_CONTENT
 
-    res_get_user_playback_history = get_user_playback_history(
+    res_get_user_recently_played = get_user_recently_played(
         artist_name, headers=jwt_headers_artist
     )
-    assert res_get_user_playback_history.status_code == HTTP_200_OK
+    assert res_get_user_recently_played.status_code == HTTP_200_OK
     assert set(excepted_playback_history_songs) == set(
-        [song["name"] for song in res_get_user_playback_history.json()]
+        [song["name"] for song in res_get_user_recently_played.json()]
     )
 
     delete_song(name=song_name)
@@ -1161,8 +1124,8 @@ def test_get_user_playback_history_correct():
     assert res_delete_artist.status_code == HTTP_202_ACCEPTED
 
 
-def test_get_user_playback_history_user_not_found():
-    artist_name = "artist-name"
+def test_get_user_recently_played_user_not_found():
+    artist_name = "artist-name-unique-test-2"
     password = "pass"
     photo = "https://photo"
 
@@ -1174,10 +1137,10 @@ def test_get_user_playback_history_user_not_found():
     res_delete_artist = delete_user(artist_name)
     assert res_delete_artist.status_code == HTTP_202_ACCEPTED
 
-    res_get_user_playback_history = get_user_playback_history(
+    res_get_user_recently_played = get_user_recently_played(
         artist_name, headers=jwt_headers_artist
     )
-    assert res_get_user_playback_history.status_code == HTTP_404_NOT_FOUND
+    assert res_get_user_recently_played.status_code == HTTP_404_NOT_FOUND
 
 
 def test_get_base_user_dao_from_document():
@@ -1354,3 +1317,21 @@ def clear_test_data_db():
     delete_user(name=artista)
     delete_song(name=song_name)
     delete_song(name=new_song_name)
+
+
+def test_get_user_playlists_user_not_found():
+    user_name = "user-name"
+    artist_name = "artist-name-unique-test-2"
+    password = "pass"
+    photo = "https://photo"
+
+    res_create_artist = create_artist(name=artist_name, password=password, photo=photo)
+    assert res_create_artist.status_code == HTTP_201_CREATED
+
+    jwt_headers_artist = get_user_jwt_header(username=artist_name, password=password)
+
+    res_get_user_playlist_names = get_user_playlists(user_name, jwt_headers_artist)
+    assert res_get_user_playlist_names.status_code == HTTP_404_NOT_FOUND
+
+    res_delete_artist = delete_user(artist_name)
+    assert res_delete_artist.status_code == HTTP_202_ACCEPTED

@@ -934,14 +934,14 @@
         }
       }
     },
-    "/users/{name}/playback_history": {
+    "/users/{name}/recently_played": {
       "patch": {
         "tags": [
           "Users"
         ],
-        "summary": "Patch Playback History",
+        "summary": "Patch Recently Played",
         "description": "Add song to playback history\n\nArgs:\n    name: user name\n    song_name: song name\n    token: JWT info",
-        "operationId": "patch_playback_history_users__name__playback_history_patch",
+        "operationId": "patch_recently_played_users__name__recently_played_patch",
         "security": [
           {
             "JWTBearer": []
@@ -992,9 +992,9 @@
         "tags": [
           "Users"
         ],
-        "summary": "Get User Playback History",
+        "summary": "Get User Recently Played",
         "description": "Get user song playback history\n\nArgs:\n    name: user name\n    token: JWT info",
-        "operationId": "get_user_playback_history_users__name__playback_history_get",
+        "operationId": "get_user_recently_played_users__name__recently_played_get",
         "security": [
           {
             "JWTBearer": []

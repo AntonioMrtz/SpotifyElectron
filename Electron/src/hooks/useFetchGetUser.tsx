@@ -17,7 +17,7 @@ const useFetchGetUser = (username: string) => {
           name: data.name || '',
           photo: data.photo || '',
           register_date: data.register_date || '',
-          playback_history: data.playback_history || [],
+          recently_played: data.recently_played || [],
           saved_playlists: data.saved_playlists || [],
           playlists: data.playlists || [],
         };

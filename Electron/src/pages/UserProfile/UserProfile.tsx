@@ -30,23 +30,23 @@ export default function UserProfile({
 
   const [thumbnail, setThumbnail] = useState<string>(defaultThumbnailPlaylist);
   const [mainColorThumbnail, setMainColorThumbnail] = useState('');
-  const [playbackHistory, setPlaybackHistory] = useState<PropsSongCard[]>([]);
+  const [recentlyPlayed, setRecentlyPlayed] = useState<PropsSongCard[]>([]);
   const [uploadedSongs, setUploadedSongs] = useState<PropsSongCard[]>([]);
   const [artistStreams, setArtistStreams] = useState(0);
 
   const { playlists } = useFetchGetUserPlaylists(id);
 
   useEffect(() => {
-    const loadPlaybackHistory = async (userName: string) => {
+    const loadRecentlyPlayed = async (userName: string) => {
       try {
-        const playbackHistoryData =
+        const recentlyPlayedData =
           await UsersService.getUserPlaybackHistoryUsersNamePlaybackHistoryGet(
             userName,
           );
-        setPlaybackHistory(playbackHistoryData);
+        setRecentlyPlayed(recentlyPlayedData);
       } catch (error) {
-        setPlaybackHistory([]);
-        console.log(`Unable to get playback history from user ${id}`);
+        setRecentlyPlayed([]);
+        console.log(`Unable to get recently played from user ${id}`);
       }
     };
     const loadSongsFromArtist = async (artistName: string) => {
@@ -56,8 +56,8 @@ export default function UserProfile({
 
         setUploadedSongs(artistSongsData);
       } catch (error) {
-        setPlaybackHistory([]);
-        console.log(`Unable to get playback history from user ${id}`);
+        setRecentlyPlayed([]);
+        console.log(`Unable to get recently played from user ${id}`);
       }
     };
     const handleLoadProfile = async (userName: string) => {
@@ -66,7 +66,7 @@ export default function UserProfile({
       setThumbnail(userData.photo);
 
       if (userType === UserType.USER) {
-        loadPlaybackHistory(userName);
+        loadRecentlyPlayed(userName);
       } else if (userType === UserType.ARTIST) {
         setArtistStreams(userData.total_streams);
         loadSongsFromArtist(userName);
@@ -269,20 +269,47 @@ export default function UserProfile({
 
       {userType === UserType.USER && (
         <div className="p-4">
-          <h2
-            style={{
-              color: 'var(--pure-white)',
-              fontWeight: '700',
-              fontSize: '1.5rem',
-              marginTop: '1rem',
-              marginBottom: '1.5rem',
-            }}
-          >
-            {t('userProfile.listening-history')}
-          </h2>
+          <div className="d-flex justify-content-between align-items-center">
+            <h2
+              style={{
+                color: 'var(--pure-white)',
+                fontWeight: '700',
+                fontSize: '1.5rem',
+                marginTop: '1rem',
+                marginBottom: '1.5rem',
+              }}
+            >
+              {t('userProfile.recently-played')}
+            </h2>
+            {recentlyPlayed && recentlyPlayed.length > 5 && (
+              <button
+                type="button"
+                onClick={() => navigate(`/show-all/recently-played/${id}`)}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: 'var(--secondary-white)',
+                  fontSize: '0.875rem',
+                  fontWeight: '700',
+                  cursor: 'pointer',
+                  textDecoration: 'none',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = 'var(--pure-white)';
+                  e.currentTarget.style.textDecoration = 'underline';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = 'var(--secondary-white)';
+                  e.currentTarget.style.textDecoration = 'none';
+                }}
+              >
+                {t('common.show-all')}
+              </button>
+            )}
+          </div>
           <div className="d-flex flex-row flex-wrap " style={{ gap: '14px' }}>
-            {playbackHistory &&
-              playbackHistory.map((songItem, index) => {
+            {recentlyPlayed &&
+              recentlyPlayed.slice(0, 5).map((songItem, index) => {
                 return (
                   <SongCard
                     // eslint-disable-next-line react/no-array-index-key

@@ -3,6 +3,9 @@ name: Backend Type Checking
 on:
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   run_type_check:
     runs-on: ubuntu-latest

@@ -21,7 +21,7 @@ const userMockFetch = {
   photo: 'photo',
   register_date: 'date',
   password: 'hashpassword',
-  playback_history: [],
+  recently_played: [],
   playlists: [],
   saved_playlists: [],
 };

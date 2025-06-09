@@ -139,16 +139,16 @@ async def add_playback_history(
     max_number_playback_history_songs: int,
     collection: AsyncIOMotorCollection,
 ) -> None:
-    """Add song playback history to user
+    """Add song plays history to user
 
     Args:
         user_name: user name
         song: song name
-        max_number_playback_history_songs: max number of songs stored in playback history
+        max_number_playback_history_songs: max number of songs stored in plays history
         collection: the user collection
 
     Raises:
-        BaseUserRepositoryError: adding song to user playback history
+        BaseUserRepositoryError: adding song to user plays history
     """
     try:
         user_data = await collection.find_one({"name": user_name})
@@ -156,19 +156,19 @@ async def add_playback_history(
         validate_user_exists(user_data)
         assert user_data
 
-        playback_history = user_data["playback_history"]
+        recently_played = user_data["recently_played"]
 
-        if len(playback_history) == max_number_playback_history_songs:
-            playback_history.pop(0)
+        if len(recently_played) == max_number_playback_history_songs:
+            recently_played.pop(0)
 
-        playback_history.append(song)
+        recently_played.append(song)
 
         await collection.update_one(
-            {"name": user_name}, {"$set": {"playback_history": playback_history}}
+            {"name": user_name}, {"$set": {"recently_played": recently_played}}
         )
     except Exception as exception:
         base_user_repository_logger.exception(
-            f"Error adding playback history of song {song} to user {user_name} in database"
+            f"Error adding plays history of song {song} to user {user_name} in database"
         )
         raise BaseUserRepositoryError from exception
 
@@ -390,20 +390,20 @@ async def get_user_playlist_names(
 async def get_user_playback_history_names(
     user_name: str, collection: AsyncIOMotorCollection
 ) -> list[str]:
-    """Get user playback history song names
+    """Get user plays history song names
 
     Args:
         user_name: user name
         collection: user collection
 
     Returns:
-        the user playback history
+        the user plays history
     """
     user_data = await collection.find_one(
-        {"name": user_name}, {"playback_history": 1, "_id": 0}
+        {"name": user_name}, {"recently_played": 1, "_id": 0}
     )
 
     validate_user_exists(user_data)
     assert user_data
 
-    return user_data["playback_history"]
+    return user_data["recently_played"]

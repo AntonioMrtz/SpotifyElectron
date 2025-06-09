@@ -88,7 +88,7 @@ export default function PlayerServerless({
     }
   };
 
-  const handleUpdatePlaybackHistory = async () => {
+  const handleUpdateRecentlyPlayed = async () => {
     const userName = getTokenUsername();
 
     try {
@@ -98,7 +98,7 @@ export default function PlayerServerless({
       );
     } catch (err) {
       console.log(
-        `Unable to update User ${userName} playback history with Son ${songName}`,
+        `Unable to update User ${userName} recently played with Song ${songName}`,
       );
       console.log(err);
     }
@@ -117,7 +117,7 @@ export default function PlayerServerless({
       const songData = await SongsService.getSongSongsNameGet(songName);
 
       handleIncreaseSongStreams();
-      handleUpdatePlaybackHistory();
+      handleUpdateRecentlyPlayed();
 
       changeSongInfo({
         name: songData.name,

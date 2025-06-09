@@ -78,7 +78,7 @@ async def create_artist(name: str, photo: str, password: bytes, current_date: st
             password=password,
             saved_playlists=[],
             playlists=[],
-            playback_history=[],
+            recently_played=[],
             uploaded_songs=[],
         )
         collection = provider.get_artist_collection()
@@ -117,7 +117,7 @@ async def create_artist_from_user_dao(user: UserDAO) -> None:
         missing_fields = {
             "saved_playlists": user.saved_playlists if user.saved_playlists else [],
             "playlists": user.playlists if user.saved_playlists else [],
-            "playback_history": user.playback_history if user.saved_playlists else [],
+            "recently_played": user.recently_played if user.saved_playlists else [],
             "uploaded_songs": [],
         }
 

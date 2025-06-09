@@ -49,7 +49,7 @@ base_users_service_logger = SpotifyElectronLogger(LOGGING_BASE_USERS_SERVICE).ge
 
 
 # TODO not hardcoded
-MAX_NUMBER_PLAYBACK_HISTORY_SONGS = 5
+MAX_NUMBER_PLAYBACK_HISTORY_SONGS = 50
 
 
 # TODO improve to accept future implementations of new types of user
@@ -151,7 +151,7 @@ async def get_user_password(user_name: str) -> bytes:
 
 
 async def add_playback_history(user_name: str, song_name: str, token: TokenData) -> None:
-    """Add playback history to user
+    """Add plays history to user
 
     Args:
         user_name: user name
@@ -162,10 +162,10 @@ async def add_playback_history(user_name: str, song_name: str, token: TokenData)
         BaseUserBadNameError: name
         BaseUserNotFoundError: user doesn't exists
         SongBadNameError: invalid song name
-        UserUnauthorizedError: user cannot modify playback history that \
+        UserUnauthorizedError: user cannot modify plays history that \
             is not created by him
         SongNotFoundError: song doesn't exists
-        BaseUserServiceError: unexpected error adding playback history to user
+        BaseUserServiceError: unexpected error adding plays history to user
     """
     try:
         await base_user_service_validations.validate_user_name_parameter(user_name)
@@ -191,7 +191,7 @@ async def add_playback_history(user_name: str, song_name: str, token: TokenData)
         raise SongBadNameError from exception
     except UserUnauthorizedError as exception:
         base_users_service_logger.exception(
-            f"Unathorized user {user_name} for adding playback songs"
+            f"Unathorized user {user_name} for adding plays songs"
         )
         raise UserUnauthorizedError from exception
     except SongNotFoundError as exception:
@@ -200,18 +200,18 @@ async def add_playback_history(user_name: str, song_name: str, token: TokenData)
     except BaseUserRepositoryError as exception:
         base_users_service_logger.exception(
             f"Unexpected error in User Repository adding song {song_name} "
-            f"to user {user_name} playback history"
+            f"to user {user_name} plays history"
         )
         raise BaseUserServiceError from exception
     except Exception as exception:
         base_users_service_logger.exception(
             f"Unexpected error in User Service adding song {song_name} "
-            f"to user {user_name} playback history"
+            f"to user {user_name} plays history"
         )
         raise BaseUserServiceError from exception
     else:
         base_users_service_logger.info(
-            f"Song {song_name} added to User {user_name} playback history"
+            f"Song {song_name} added to User {user_name} plays history"
         )
 
 
@@ -595,7 +595,7 @@ async def get_user_playlist_names(user_name: str) -> list[str]:
 
 
 async def get_user_playback_history(user_name: str) -> list[SongMetadataDTO]:
-    """Get user song playback history
+    """Get user song plays history
 
     Args:
         user_name: user name
@@ -603,10 +603,10 @@ async def get_user_playback_history(user_name: str) -> list[SongMetadataDTO]:
     Raises:
         BaseUserBadNameError: name
         BaseUserNotFoundError: user not found
-        BaseUserServiceError: unexpected error getting playback history from user
+        BaseUserServiceError: unexpected error getting plays history from user
 
     Returns:
-        the song playback history from user
+        the song plays history from user
     """
     try:
         await base_user_service_validations.validate_user_name_parameter(user_name)
@@ -627,13 +627,12 @@ async def get_user_playback_history(user_name: str) -> list[SongMetadataDTO]:
         raise BaseUserNotFoundError from exception
     except BaseUserRepositoryError as exception:
         base_users_service_logger.exception(
-            f"Unexpected error in User Repository getting playback history "
-            f"from owner {user_name}"
+            f"Unexpected error in User Repository getting plays history from owner {user_name}"
         )
         raise BaseUserServiceError from exception
     except Exception as exception:
         base_users_service_logger.exception(
-            f"Unexpected error in User Service getting getting playback history "
+            f"Unexpected error in User Service getting getting plays history "
             f"from owner {user_name}"
         )
         raise BaseUserServiceError from exception

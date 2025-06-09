@@ -3,6 +3,6 @@ export interface UserProps {
   photo: string;
   register_date: string;
   playlists: string[];
-  playback_history: string[];
+  recently_played: string[];
   saved_playlists: string[];
 }

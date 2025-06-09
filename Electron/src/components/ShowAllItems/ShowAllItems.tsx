@@ -5,6 +5,7 @@ import { PropsAllItems, ShowAllItemsTypes } from './types/PropsShowAllItems';
 import ItemsArtist from './Items/ItemsAllArtist';
 import ItemsAllPlaylistsFromUser from './Items/ItemsAllPlaylistFromUser';
 import ItemsAllSongsFromArtist from './Items/ItemsAllSongsFromArtist';
+import ItemsAllRecentlyPlayed from './Items/ItemsAllRecentlyPlayed';
 
 export default function ShowAllItems({
   refreshSidebarData,
@@ -36,6 +37,9 @@ export default function ShowAllItems({
         id={id}
         refreshSidebarData={refreshSidebarData}
       />
+    ),
+    [ShowAllItemsTypes.ALL_RECENTLY_PLAYED]: (
+      <ItemsAllRecentlyPlayed refreshSidebarData={refreshSidebarData} id={id} />
     ),
   };
 

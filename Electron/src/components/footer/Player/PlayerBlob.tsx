@@ -91,7 +91,7 @@ export default function PlayerBlob({
     }
   };
 
-  const handleUpdatePlaybackHistory = async () => {
+  const handleUpdateRecentlyPlayed = async () => {
     const userName = getTokenUsername();
 
     try {
@@ -101,7 +101,7 @@ export default function PlayerBlob({
       );
     } catch (err) {
       console.log(
-        `Unable to update User ${userName} playback history with Son ${songName}`,
+        `Unable to update User ${userName} recently played with Song ${songName}`,
       );
       console.log(err);
     }
@@ -119,7 +119,7 @@ export default function PlayerBlob({
       const songData = await SongsService.getSongSongsNameGet(songName);
 
       handleIncreaseSongStreams();
-      handleUpdatePlaybackHistory();
+      handleUpdateRecentlyPlayed();
 
       changeSongInfo({
         name: songData.name,

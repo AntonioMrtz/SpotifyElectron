@@ -165,9 +165,9 @@ async def delete_user(name: str) -> Response:
         )
 
 
-@router.patch("/{name}/playback_history")
-async def patch_playback_history(name: str, song_name: str, token: Token) -> Response:
-    """Add song to playback history
+@router.patch("/{name}/recently_played")
+async def patch_recently_played(name: str, song_name: str, token: Token) -> Response:
+    """Add song to recently played
 
     Args:
         name: user name
@@ -416,9 +416,9 @@ async def get_user_playlists_names(name: str, token: Token) -> Response:
         )
 
 
-@router.get("/{name}/playback_history")
-async def get_user_playback_history(name: str, token: Token) -> Response:
-    """Get user song playback history
+@router.get("/{name}/recently_played")
+async def get_user_recently_played(name: str, token: Token) -> Response:
+    """Get user song recently played
 
     Args:
         name: user name

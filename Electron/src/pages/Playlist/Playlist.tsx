@@ -455,28 +455,35 @@ export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
               style={{ color: 'var(--primary-green)', fontSize: '3rem' }}
             />
           </button>
-          <button
-            type="button"
-            className={`${styles.hoverableItemubheader} ${displayDislike}`}
-            onClick={handleLike}
-            id="playlist-like-button"
-          >
-            <i
-              className="fa-regular fa-heart"
-              style={{ color: 'var(--secondary-white)', fontSize: '1.75rem' }}
-            />
-          </button>
-          <button
-            type="button"
-            className={`${displayLike}`}
-            onClick={handleLike}
-            id="playlist-unlike-button"
-          >
-            <i
-              className="fa-solid fa-heart"
-              style={{ color: 'var(--primary-green)', fontSize: '1.75rem' }}
-            />
-          </button>
+          {owner !== getTokenUsername() && (
+            <>
+              <button
+                type="button"
+                className={`${styles.hoverableItemubheader} ${displayDislike}`}
+                onClick={handleLike}
+                id="playlist-like-button"
+              >
+                <i
+                  className="fa-regular fa-heart"
+                  style={{
+                    color: 'var(--secondary-white)',
+                    fontSize: '1.75rem',
+                  }}
+                />
+              </button>
+              <button
+                type="button"
+                className={`${displayLike}`}
+                onClick={handleLike}
+                id="playlist-unlike-button"
+              >
+                <i
+                  className="fa-solid fa-heart"
+                  style={{ color: 'var(--primary-green)', fontSize: '1.75rem' }}
+                />
+              </button>
+            </>
+          )}
           <button type="button" className={`${styles.hoverableItemubheader}`}>
             <i
               className="fa-regular fa-circle-down"

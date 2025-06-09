@@ -247,7 +247,6 @@ test('ContextMenuPlaylist edit playlist navigates to correct route', async () =>
     fireEvent.click(editButton);
   });
 
-  // Verify navigation was called with correct route (singular /playlist/, not /playlists/)
   expect(navigate).toHaveBeenCalledWith(
     `/playlist/${playlistName}?edit=true`,
     { replace: true },

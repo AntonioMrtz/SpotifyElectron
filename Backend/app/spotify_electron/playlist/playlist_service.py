@@ -228,6 +228,55 @@ async def update_playlist(  # noqa: PLR0917
         playlist_service_logger.info(f"Playlist {name} updated successfully")
 
 
+async def update_playlist_metadata(
+    name: str,
+    token: TokenData,
+    new_name: str | None = None,
+    description: str | None = None,
+    photo: str | None = None,
+) -> None:
+    """Update playlist metadata (name, description, photo). Only provided fields are updated."""
+    try:
+        validate_playlist_name_parameter(name)
+        await validate_playlist_should_exists(name)
+        playlist = await playlist_repository.get_playlist(name)
+        validate_jwt_user_matches_user(token, playlist.owner)
+        update_fields = {}
+        if new_name:
+            validate_playlist_name_parameter(new_name)
+            update_fields["name"] = new_name
+        if description is not None:
+            update_fields["description"] = description
+        if photo is not None:
+            update_fields["photo"] = photo if "http" in photo else ""
+        if not update_fields:
+            return  # Nothing to update
+        await playlist_repository.update_playlist_metadata(name, update_fields)
+        if new_name:
+            await base_user_service.update_playlist_name(name, new_name)
+    except PlaylistBadNameError as exception:
+        playlist_service_logger.exception(f"Bad Playlist Name Parameter: {name}")
+        raise PlaylistBadNameError from exception
+    except PlaylistNotFoundError as exception:
+        playlist_service_logger.exception(f"Playlist not found: {name}")
+        raise PlaylistNotFoundError from exception
+    except UserUnauthorizedError as exception:
+        playlist_service_logger.exception(f"User is not the owner of playlist: {name}")
+        raise UserUnauthorizedError from exception
+    except PlaylistRepositoryError as exception:
+        playlist_service_logger.exception(
+            f"Unexpected error in Playlist Repository updating playlist metadata: {name}"
+        )
+        raise PlaylistServiceError from exception
+    except Exception as exception:
+        playlist_service_logger.exception(
+            f"Unexpected error in Playlist Service updating playlist metadata: {name}"
+        )
+        raise PlaylistServiceError from exception
+    else:
+        playlist_service_logger.info(f"Playlist {name} metadata updated successfully")
+
+
 async def delete_playlist(name: str) -> None:
     """Delete a playlist
 

@@ -1,10 +1,66 @@
-# 🤵🏼 Contributors of Spotify Electron
+# Spotify Electron
 
-I would like to express my heartfelt gratitude to the following individuals for their invaluable contributions to Spotify Electron. Your efforts are immensely appreciated and hold significant importance for me and the project.
+![Spotify Electron Media Preview](docs/assets/videos/SpotifyElectronReadmePreview.gif)
 
-Me gustaría expresar mi más sincero agradecimiento a las siguientes personas por sus invaluables contribuciones a Spotify Electron. Sus esfuerzos son inmensamente apreciados y tienen una gran importancia para mí y para el proyecto.
 
-## Contributors
+## Overview
+
+[Spotify Electron](https://antoniomrtz.github.io/SpotifyElectron_Web/) is a cross-platform, open-source music streaming desktop app made with Electron-React frontend and Python-FastAPI-MongoDB backend. Our goal is to replicate Spotify's core functionalities while incorporating user-requested features—such as the ability to upload personal music.
+
+https://github.com/user-attachments/assets/1f32fa25-e99f-4cc3-8664-b21bce155934
+
+
+## 🌐 Website
+
+Check out our [website](https://antoniomrtz.github.io/SpotifyElectron_Web/). Contributions to the website can made through [its repository](https://github.com/AntonioMrtz/SpotifyElectron_Web).
+
+## 📚 Docs
+
+Check the [project documentation](https://antoniomrtz.github.io/SpotifyElectron_Web/docs/).
+
+## 🔽 Download Installer
+
+Download the [installer](https://github.com/AntonioMrtz/SpotifyElectron/releases). Follow the [instalation guide](docs/user/user-guides/Installation-Guide.md) for a more in deep explanation about installing and running the app.
+
+## 🔧 Set up and run
+
+### 1. Clone the repository
+
+```console
+git clone https://github.com/AntonioMrtz/SpotifyElectron.git
+```
+
+### 2. Set up and run
+
+[⚙️ GLOBAL](docs/developer/SETUP.md)
+
+[🖥 BACKEND](docs/developer/backend/SETUP.md)
+
+[💻 FRONTEND](docs/developer/frontend/SETUP.md)
+
+## 🖐 How to Contribute to the project
+
+Are you interested in contributing to the project? Check our contributing rules and methodologies in
+[our CONTRIBUTING documentation](docs/CONTRIBUTING.md). Also you can check all the contributors to the project [here](docs/CONTRIBUTORS.md).
+
+## 🎯 Project's goals
+
+Check our [project goals and vision](docs/VISION.md).
+
+
+## 🏗️ Software Architecture
+
+For an in-depth tour of the architecture, refer to the [architecture docs](docs/developer/Architecture.md).
+
+![Spotify_Electron_Software_Diagram](docs/assets/architecture/app_architecture_blob.png)
+
+### 🎵 Song Architecture
+
+![Spotify_Electron_Software_Song_Diagram](docs/assets/architecture/song-architecture-blob.png)
+
+## 🤵🏼 Contributors
+
+We're actively looking for new contributors 🙌. Feel free to check our [CONTRIBUTING documentation](docs/CONTRIBUTING.md) for more info.
 
 <table>
     <tr>
@@ -142,7 +198,7 @@ Me gustaría expresar mi más sincero agradecimiento a las siguientes personas p
         </td>
         <td align="center">
             <a href="https://github.com/Nishantsingh11">
-                <img src="https://avatars.githubusercontent.com/u/38534128?v=4" width="90" alt="Nishant Singh" />
+                <img src="https://avatars.githubusercontent.com/u/38534128?v=4" width="90" alt="Nishantsingh11" />
                 <br />
                 <sub><b>Nishant Singh</b></sub>
             </a>
@@ -156,32 +212,32 @@ Me gustaría expresar mi más sincero agradecimiento a las siguientes personas p
         </td>
     </tr>
     <tr>
-    <td align="center">
-        <a href="https://github.com/akintewe">
-            <img src="https://avatars.githubusercontent.com/u/85641756?v=4" width="90" alt="akintewe" />
-            <br />
-            <sub><b>akintewe</b></sub>
-        </a>
-    </td>
-    <td align="center">
-        <a href="https://github.com/tlorand2">
-            <img src="https://avatars.githubusercontent.com/u/129942166?v=4" width="90" alt="tlorand2" />
-            <br />
-            <sub><b>tlorand2</b></sub>
-        </a>
-    </td>
-    <td align="center">
-        <a href="https://github.com/Nikhil034">
-            <img src="https://avatars.githubusercontent.com/u/78275382?v=4" width="90" alt="Nikhil034" />
-            <br />
-            <sub><b>Nikhil034</b></sub>
-        </a>
-    </td>
-    <td></td>
-    <td></td>
-</tr>
-
-</table>
+        <td align="center">
+            <a href="https://github.com/akintewe">
+                <img src="https://avatars.githubusercontent.com/u/85641756?v=4" width="90" alt="akintewe" />
+                <br />
+                <sub><b>akintewe</b></sub>
+            </a>
+        </td>
+        <td align="center">
+            <a href="https://github.com/tlorand2">
+                <img src="https://avatars.githubusercontent.com/u/129942166?v=4" width="90" alt="tlorand2" />
+                <br />
+                <sub><b>tlorand2</b></sub>
+            </a>
+        </td>
+        <td align="center">
+             <a href="https://github.com/Nikhil034">
+                 <img src="https://avatars.githubusercontent.com/u/78275382?v=4" width="90" alt="Nikhil034" />
+                 <br />
+                 <sub><b>Nikhil034</b></sub>
+             </a>
+         </td>
+         <td></td>
+         <td></td>
+    </tr>
+ 
+</table> 
 
 If you have contributed to this project and your name is not listed here, please accept our apologies and let us know so we can add you!
 

@@ -9,7 +9,7 @@ import {
   Box,
   IconButton,
   Divider,
-  Link
+  Link,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useTranslation } from 'react-i18next';
@@ -87,9 +87,7 @@ function AboutModal({ open, onClose }: AboutModalProps) {
     >
       <DialogTitle id="about-dialog-title">
         <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Typography variant="h6">
-            {t('aboutModal.title')}
-          </Typography>
+          <Typography variant="h6">{t('aboutModal.title')}</Typography>
           <IconButton
             aria-label="Close about dialog"
             onClick={onClose}
@@ -174,16 +172,10 @@ function AboutModal({ open, onClose }: AboutModalProps) {
       </DialogContent>
 
       <DialogActions>
-        <Button
-          variant="contained"
-          onClick={handleStarClick}
-          color="primary"
-        >
+        <Button variant="contained" onClick={handleStarClick} color="primary">
           {t('aboutModal.starButton')}
         </Button>
-        <Button onClick={onClose}>
-          Close
-        </Button>
+        <Button onClick={onClose}>Close</Button>
       </DialogActions>
     </Dialog>
   );

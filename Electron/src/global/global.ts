@@ -20,7 +20,9 @@ namespace Global {
   }
 
   // Get version from package.json or use fallback
-  const APP_VERSION = packageJson?.version ? `v${packageJson.version}` : 'v1.0.0';
+  const APP_VERSION = packageJson?.version
+    ? `v${packageJson.version}`
+    : 'v1.0.0';
 
   export const APPVERSION = APP_VERSION;
   export const GITHUB_REPO = 'https://github.com/AntonioMrtz/SpotifyElectron';

@@ -218,10 +218,7 @@ export default function StickyHeader({ handleLogout }: PropsStickyHeader) {
       </header>
 
       {/* Add the AboutModal */}
-      <AboutModal 
-        open={isAboutModalOpen}
-        onClose={handleCloseAbout}
-      />
+      <AboutModal open={isAboutModalOpen} onClose={handleCloseAbout} />
     </>
   );
 }

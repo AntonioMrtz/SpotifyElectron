@@ -3,6 +3,9 @@ name: Backend Tests - BLOB Architecture
 on:
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   run_tests_blob_architecture:
     runs-on: ubuntu-latest

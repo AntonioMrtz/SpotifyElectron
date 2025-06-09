@@ -257,7 +257,7 @@ export default function ContextMenuPlaylist({
           >
             {t('contextMenuPlaylist.delete')}
           </button>
-          <button type="button"> {t('contextMenuPlaylist.download')}</button>
+          <button type="button">{t('contextMenuPlaylist.download')}</button>
         </li>
         <li>
           <button

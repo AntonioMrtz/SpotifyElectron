@@ -6,14 +6,23 @@ from starlette.status import (
     HTTP_201_CREATED,
     HTTP_202_ACCEPTED,
     HTTP_204_NO_CONTENT,
+    HTTP_400_BAD_REQUEST,
+    HTTP_401_UNAUTHORIZED,
+    HTTP_403_FORBIDDEN,
     HTTP_404_NOT_FOUND,
     HTTP_405_METHOD_NOT_ALLOWED,
+    HTTP_409_CONFLICT,
 )
 
-from tests.test_API.api_base_users import patch_playlist_saved
+from tests.test_API.api_base_users import (
+    create_random_user,
+    get_jwt_header,
+    patch_playlist_saved,
+)
 from tests.test_API.api_test_artist import create_artist
 from tests.test_API.api_test_playlist import (
     add_songs_to_playlist,
+    create_basic_playlist,
     create_playlist,
     delete_playlist,
     get_playlist,
@@ -561,50 +570,110 @@ def test_remove_song_from_playlist_song_not_found():
     assert res_delete_artist.status_code == HTTP_202_ACCEPTED
 
 
-def test_update_playlist_metadata():
-    name = "testplaylistmeta"
-    photo = "photo"
-    descripcion = "desc"
-    owner = "testusermeta"
-    password = "password"
+def test_update_playlist_metadata_description():
+    """Test updating only playlist description"""
+    playlist_owner = create_random_user()
+    jwt_headers = get_jwt_header(playlist_owner)
+    name = "test_playlist"
+    new_description = "New description"
 
-    res_create_artist = create_artist(owner, photo, password)
-    assert res_create_artist.status_code == HTTP_201_CREATED
-    jwt_headers = get_user_jwt_header(username=owner, password=password)
-    res_create_playlist = create_playlist(
-        name=name, descripcion=descripcion, photo=photo, headers=jwt_headers
-    )
-    assert res_create_playlist.status_code == HTTP_201_CREATED
+    create_basic_playlist(name, playlist_owner)
 
-    # Update only description
-    new_description = "newdesc"
     res_update = update_playlist_metadata(
-        name=name, descripcion=new_description, headers=jwt_headers
+        name=name,
+        description=new_description,
+        headers=jwt_headers,
     )
-    assert res_update.status_code == 204
+    assert res_update.status_code == HTTP_204_NO_CONTENT
+
     res_get = get_playlist(name=name, headers=jwt_headers)
     assert res_get.json()["description"] == new_description
 
-    # Update only photo
-    new_photo = "http://newphoto"
+    delete_user(playlist_owner)
+
+
+def test_update_playlist_metadata_name():
+    """Test updating only playlist name"""
+    playlist_owner = create_random_user()
+    jwt_headers = get_jwt_header(playlist_owner)
+    name = "test_playlist"
+    new_name = "updated_playlist"
+
+    create_basic_playlist(name, playlist_owner)
+
     res_update = update_playlist_metadata(
-        name=name, photo=new_photo, headers=jwt_headers
+        name=name,
+        new_name=new_name,
+        headers=jwt_headers,
     )
-    assert res_update.status_code == 204
+    assert res_update.status_code == HTTP_204_NO_CONTENT
+
+    # Old name should not exist anymore
+    res_get_old = get_playlist(name=name, headers=jwt_headers)
+    assert res_get_old.status_code == HTTP_404_NOT_FOUND
+
+    # New name should exist and retain other properties
+    res_get_new = get_playlist(name=new_name, headers=jwt_headers)
+    assert res_get_new.status_code == HTTP_200_OK
+
+    delete_user(playlist_owner)
+
+
+def test_update_playlist_metadata_photo():
+    """Test updating only playlist photo"""
+    playlist_owner = create_random_user()
+    jwt_headers = get_jwt_header(playlist_owner)
+    name = "test_playlist"
+    new_photo = "https://example.com/new-photo.jpg"
+
+    create_basic_playlist(name, playlist_owner)
+
+    res_update = update_playlist_metadata(
+        name=name,
+        photo=new_photo,
+        headers=jwt_headers,
+    )
+    assert res_update.status_code == HTTP_204_NO_CONTENT
+
     res_get = get_playlist(name=name, headers=jwt_headers)
     assert res_get.json()["photo"] == new_photo
 
-    # Update name
-    new_name = "testplaylistmeta2"
-    res_update = update_playlist_metadata(
-        name=name, nuevo_nombre=new_name, headers=jwt_headers
-    )
-    assert res_update.status_code == 204
-    res_get = get_playlist(name=new_name, headers=jwt_headers)
-    assert res_get.json()["name"] == new_name
+    delete_user(playlist_owner)
 
-    # Clean up
-    res_delete = delete_playlist(new_name)
-    assert res_delete.status_code == 202
-    res_delete_artist = delete_user(owner)
-    assert res_delete_artist.status_code == 202
+
+def test_update_playlist_metadata_unauthorized():
+    """Test updating playlist metadata by non-owner"""
+    playlist_owner = create_random_user()
+    another_user = create_random_user()
+    name = "test_playlist"
+    new_description = "New description"
+
+    create_basic_playlist(name, playlist_owner)
+
+    jwt_headers = get_jwt_header(another_user)
+    res_update = update_playlist_metadata(
+        name=name,
+        description=new_description,
+        headers=jwt_headers,
+    )
+    assert res_update.status_code == HTTP_403_FORBIDDEN
+
+    delete_user(playlist_owner)
+    delete_user(another_user)
+
+
+def test_update_playlist_metadata_no_changes():
+    """Test updating playlist metadata with no changes"""
+    playlist_owner = create_random_user()
+    jwt_headers = get_jwt_header(playlist_owner)
+    name = "test_playlist"
+
+    create_basic_playlist(name, playlist_owner)
+
+    res_update = update_playlist_metadata(
+        name=name,
+        headers=jwt_headers,
+    )
+    assert res_update.status_code == HTTP_204_NO_CONTENT
+
+    delete_user(playlist_owner)

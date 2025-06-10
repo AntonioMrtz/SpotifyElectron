@@ -21,6 +21,7 @@ from app.spotify_electron.playlist.validations.playlist_repository_validations i
     validate_playlist_exists,
     validate_playlist_update,
 )
+from typing import Any
 
 playlist_repository_logger = SpotifyElectronLogger(LOGGING_PLAYLIST_REPOSITORY).get_logger()
 
@@ -364,10 +365,10 @@ async def remove_songs_from_playlist(name: str, song_names: list[str]) -> None:
 
     Args:
         name: playlist name
-        song_names: song names
+        song_names: song names to remove
 
     Raises:
-        PlaylistRepositoryError: adding songs to playlist
+        PlaylistRepositoryError: If there's an error removing songs from the playlist
     """
     try:
         collection = get_playlist_collection()
@@ -390,8 +391,17 @@ async def remove_songs_from_playlist(name: str, song_names: list[str]) -> None:
         playlist_repository_logger.info(f"Songs removed from playlist {name}: {song_names}")
 
 
-async def update_playlist_metadata(name: str, update_fields: dict) -> None:
-    """Update only provided metadata fields for a playlist."""
+async def update_playlist_metadata(name: str, update_fields: dict[str, Any]) -> None:
+    """Update only provided metadata fields for a playlist.
+    
+    Args:
+        name: The name of the playlist to update
+        update_fields: Dictionary containing the fields to update and their new values.
+            Possible keys: name, description, photo, is_collaborative, is_public
+            
+    Raises:
+        PlaylistRepositoryError: If there's an error updating the playlist metadata
+    """
     try:
         collection = get_playlist_collection()
         result_update = await collection.update_one(

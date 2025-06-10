@@ -32,6 +32,7 @@ from app.spotify_electron.song.base_song_schema import (
 )
 from app.spotify_electron.user.user.user_schema import UserNotFoundError
 from app.spotify_electron.utils.date.date_utils import get_current_iso8601_date
+from typing import Any
 
 playlist_service_logger = SpotifyElectronLogger(LOGGING_PLAYLIST_SERVICE).get_logger()
 
@@ -234,14 +235,34 @@ async def update_playlist_metadata(
     new_name: str | None = None,
     description: str | None = None,
     photo: str | None = None,
+    is_collaborative: bool | None = None,
+    is_public: bool | None = None,
 ) -> None:
-    """Update playlist metadata (name, description, photo). Only provided fields are updated."""
+    """Update playlist metadata.
+
+    Args:
+        name: The current name of the playlist
+        token: The user's authentication token
+        new_name: Optional new name for the playlist
+        description: Optional new description
+        photo: Optional new photo URL
+        is_collaborative: Optional new collaborative status
+        is_public: Optional new public status
+
+    Raises:
+        PlaylistBadNameError: If the name is invalid
+        PlaylistNotFoundError: If the playlist doesn't exist
+        UserUnauthorizedError: If the user is not the owner
+        PlaylistServiceError: For unexpected errors
+    """
     try:
         validate_playlist_name_parameter(name)
         await validate_playlist_should_exists(name)
         playlist = await playlist_repository.get_playlist(name)
         validate_jwt_user_matches_user(token, playlist.owner)
-        update_fields = {}
+        
+        update_fields: dict[str, Any] = {}
+        
         if new_name:
             validate_playlist_name_parameter(new_name)
             update_fields["name"] = new_name
@@ -249,11 +270,18 @@ async def update_playlist_metadata(
             update_fields["description"] = description
         if photo is not None:
             update_fields["photo"] = photo if "http" in photo else ""
+        if is_collaborative is not None:
+            update_fields["is_collaborative"] = is_collaborative
+        if is_public is not None:
+            update_fields["is_public"] = is_public
+            
         if not update_fields:
             return  # Nothing to update
+            
         await playlist_repository.update_playlist_metadata(name, update_fields)
         if new_name:
             await base_user_service.update_playlist_name(name, new_name)
+            
     except PlaylistBadNameError as exception:
         playlist_service_logger.exception(f"Bad Playlist Name Parameter: {name}")
         raise PlaylistBadNameError from exception

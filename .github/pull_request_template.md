@@ -5,7 +5,7 @@
 ## Checklist
 
 - [ ] I have read and followed the [Contributing Guidelines](https://github.com/AntonioMrtz/SpotifyElectron/blob/master/docs/CONTRIBUTING.md).
-- [ ] I have followed the project's [git convention](https://github.com/AntonioMrtz/SpotifyElectron/blob/master/docs/developer/Git-Convention.md).
+- [ ] I have followed the project's [git convention](https://github.com/AntonioMrtz/SpotifyElectron/blob/master/docs/developer/Git-Convention.md) for the Pull Request's name and git commits.
 - [ ] I have tested the changes and verified they work as intended. Automated tests (unit, integration, e2e as applicable) and manual tests (UI interactions, edge cases, error states, etc.).
 - [ ] I have set the pull request base to the appropriate `development-vx.xx` branch corresponding to the issue milestone.
 

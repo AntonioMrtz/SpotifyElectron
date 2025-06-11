@@ -2,13 +2,11 @@
 
 ![Spotify Electron Media Preview](docs/assets/videos/SpotifyElectronReadmePreview.gif)
 
-
 ## Overview
 
 [Spotify Electron](https://antoniomrtz.github.io/SpotifyElectron_Web/) is a cross-platform, open-source music streaming desktop app made with Electron-React frontend and Python-FastAPI-MongoDB backend. Our goal is to replicate Spotify's core functionalities while incorporating user-requested features—such as the ability to upload personal music.
 
 https://github.com/user-attachments/assets/1f32fa25-e99f-4cc3-8664-b21bce155934
-
 
 ## 🌐 Website
 
@@ -46,7 +44,6 @@ Are you interested in contributing to the project? Check our contributing rules 
 ## 🎯 Project's goals
 
 Check our [project goals and vision](docs/VISION.md).
-
 
 ## 🏗️ Software Architecture
 
@@ -221,10 +218,26 @@ We're actively looking for new contributors 🙌. Feel free to check our [CONTRI
         </td>
         <td align="center">
             <a href="https://github.com/tlorand2">
-                <img src="https://avatars.githubusercontent.com/u/129942166?v=4" width="90" alt="akintewe" />
+                <img src="https://avatars.githubusercontent.com/u/129942166?v=4" width="90" alt="tlorand2" />
                 <br />
                 <sub><b>tlorand2</b></sub>
             </a>
         </td>
+        <td align="center">
+             <a href="https://github.com/Nikhil034">
+                 <img src="https://avatars.githubusercontent.com/u/78275382?v=4" width="90" alt="Nikhil034" />
+                 <br />
+                 <sub><b>Nikhil034</b></sub>
+             </a>
+         </td>
+         <td align="center">
+             <a href="https://github.com/Chubbi-Stephen">
+                 <img src="https://avatars.githubusercontent.com/u/Chubbi-Stephen?v=4" width="90" alt="Chubbi-Stephen" />
+                 <br />
+                 <sub><b>Chubbi-Stephen</b></sub>
+             </a>
+         </td>
+         <td></td>
     </tr>
+ 
 </table>

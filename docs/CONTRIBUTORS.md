@@ -165,15 +165,28 @@ Me gustaría expresar mi más sincero agradecimiento a las siguientes personas p
         </td>
         <td align="center">
             <a href="https://github.com/tlorand2">
-                <img src="https://avatars.githubusercontent.com/u/129942166?v=4" width="90" alt="akintewe" />
+                <img src="https://avatars.githubusercontent.com/u/129942166?v=4" width="90" alt="tlorand2" />
                 <br />
                 <sub><b>tlorand2</b></sub>
             </a>
         </td>
+        <td align="center">
+             <a href="https://github.com/Nikhil034">
+                 <img src="https://avatars.githubusercontent.com/u/78275382?v=4" width="90" alt="Nikhil034" />
+                 <br />
+                 <sub><b>Nikhil034</b></sub>
+             </a>
+         </td>
+         <td align="center">
+             <a href="https://github.com/Chubbi-Stephen">
+                 <img src="https://avatars.githubusercontent.com/u/Chubbi-Stephen?v=4" width="90" alt="Chubbi-Stephen" />
+                 <br />
+                 <sub><b>Chubbi-Stephen</b></sub>
+             </a>
+         </td>
+         <td></td>
     </tr>
 </table>
-
-
 
 If you have contributed to this project and your name is not listed here, please accept our apologies and let us know so we can add you!
 

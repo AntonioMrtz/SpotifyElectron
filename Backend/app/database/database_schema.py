@@ -11,6 +11,7 @@ from motor.motor_asyncio import (
     AsyncIOMotorDatabase,
     AsyncIOMotorGridFSBucket,
 )
+from pymongo.errors import PyMongoError
 from pymongo.server_api import ServerApi
 
 from app.exceptions.base_exceptions_schema import SpotifyElectronError
@@ -130,7 +131,7 @@ class BaseDatabaseConnection:
         assert cls._connection is not None, "Database connection is not initialized"
 
     @classmethod
-    def check_connection_health(cls) -> bool:
+    async def check_connection_health(cls) -> bool | None:
         """Check the health status of the database connection.
 
         Raises:
@@ -141,9 +142,12 @@ class BaseDatabaseConnection:
             bool: True if the database connection is healthy, False otherwise
         """
         try:
-            ping_response = cls.connection.command("ping")
-            return int(ping_response.get("ok", 0)) == 1
-        except Exception as exception:
+            ping_response = await cls._client.admin.command("ping")
+            cls._logger.info("Database connection health check successful")
+            if isinstance(ping_response, dict) and "ok" in ping_response:
+                cls._logger.debug(f"Ping response: {ping_response}")
+                return int(ping_response.get("ok", 0)) == 1
+        except PyMongoError as exception:
             cls._logger.exception("Database ping command failed")
             raise DatabasePingFailedError from exception
 

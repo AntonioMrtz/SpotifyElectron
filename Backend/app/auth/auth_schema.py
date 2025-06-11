@@ -3,6 +3,8 @@
 from dataclasses import dataclass
 
 from app.exceptions.base_exceptions_schema import SpotifyElectronError
+from app.logging.logging_constants import LOGGING_AUTH_SERVICE
+from app.logging.logging_schema import SpotifyElectronLogger
 from app.spotify_electron.user.user.user_schema import UserType
 
 TOKEN_HEADER_FIELD_NAME = "Authorization"
@@ -56,11 +58,32 @@ class AuthConfig:
             access_token_expire_minutes: minutes until the JWT expires
             days_to_expire_cookie: days until cookies expire
         """
+        cls.logger = SpotifyElectronLogger(LOGGING_AUTH_SERVICE).get_logger()
         cls.SIGNING_SECRET_KEY = secret_key_sign
 
         cls.VERTIFICATION_ALGORITHM = verification_algorithm
         cls.ACCESS_TOKEN_EXPIRE_MINUTES = access_token_expire_minutes
         cls.DAYS_TO_EXPIRE_COOKIE = days_to_expire_cookie
+
+    @classmethod
+    def check_auth_health(cls) -> bool:
+        """Check if the Auth configuration is initialized and functioning.
+
+        Returns:
+            bool: True if the auth config is correct
+
+        Raises:
+            AuthServiceHealthCheckError: If the Auth configuration is not properly initialized.
+        """
+        if (
+            not hasattr(cls, "ACCESS_TOKEN_EXPIRE_MINUTES")
+            or not hasattr(cls, "DAYS_TO_EXPIRE_COOKIE")
+            or not hasattr(cls, "VERTIFICATION_ALGORITHM")
+            or not hasattr(cls, "SIGNING_SECRET_KEY")
+        ):
+            raise AuthServiceHealthCheckError
+        cls.logger.info("Auth configuration health check successfull")
+        return True
 
 
 class BadJWTTokenProvidedError(SpotifyElectronError):
@@ -167,3 +190,12 @@ class UserUnauthorizedError(SpotifyElectronError):
 
     def __init__(self):
         super().__init__("User is unauthorized to access the resource")
+
+
+class AuthServiceHealthCheckError(SpotifyElectronError):
+    """Auth service health check failure"""
+
+    ERROR = "Auth service health check failed"
+
+    def __init__(self):
+        super().__init__(self.ERROR)

@@ -1678,7 +1678,7 @@
           "health"
         ],
         "summary": "Health Check Endpoint",
-        "description": "Validates if the app has launched correctly\n\nReturns\n-------\n    Response 200 OK",
+        "description": "Validates if the application has launched correctly by returning a health check response\n\nThis endpoint can be used to verify that the server is running and responding to requests.\nIt checks both database connectivity and song service availability.\n\nReturns:\n    Response: HTTP 200 OK if all services are healthy,\n             HTTP 500 if services are unhealthy but reachable,\n             HTTP 503 if specific service errors occur.",
         "operationId": "get_health_health__get",
         "responses": {
           "200": {

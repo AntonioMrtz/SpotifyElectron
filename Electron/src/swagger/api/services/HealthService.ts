@@ -8,11 +8,15 @@ import { request as __request } from '../core/request';
 export class HealthService {
     /**
      * Health Check Endpoint
-     * Validates if the app has launched correctly
+     * Validates if the application has launched correctly by returning a health check response
      *
-     * Returns
-     * -------
-     * Response 200 OK
+     * This endpoint can be used to verify that the server is running and responding to requests.
+     * It checks both database connectivity and song service availability.
+     *
+     * Returns:
+     * Response: HTTP 200 OK if all services are healthy,
+     * HTTP 500 if services are unhealthy but reachable,
+     * HTTP 503 if specific service errors occur.
      * @returns any Successful Response
      * @throws ApiError
      */

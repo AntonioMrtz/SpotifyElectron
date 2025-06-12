@@ -229,7 +229,7 @@ export default function ContextMenuPlaylist({
   };
 
   const handleEditPlaylistData = () => {
-    navigate(`/playlists/${playlistName}?edit=true`, { replace: true });
+    navigate(`/playlist/${playlistName}?edit=true`, { replace: true });
 
     localStorage.setItem('playlistEdit', JSON.stringify(true));
 
@@ -257,7 +257,7 @@ export default function ContextMenuPlaylist({
           >
             {t('contextMenuPlaylist.delete')}
           </button>
-          <button type="button"> {t('contextMenuPlaylist.download')}</button>
+          <button type="button">{t('contextMenuPlaylist.download')}</button>
         </li>
         <li>
           <button

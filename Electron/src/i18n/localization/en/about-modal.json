@@ -1,0 +1,12 @@
+{
+  "title": "About SpotifyElectron",
+  "version": "Version {{version}}",
+  "projectLinks": "Project Links",
+  "officialWebsite": "Official Website",
+  "githubRepository": "GitHub Repository",
+  "documentation": "Documentation",
+  "createdBy": "Created by",
+  "connectDeveloper": "Connect with the developer:",
+  "supportText": "💡 Found this helpful? Support the project by starring it on GitHub!",
+  "starButton": "Star on GitHub"
+}

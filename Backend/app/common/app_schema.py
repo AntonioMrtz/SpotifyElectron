@@ -54,7 +54,7 @@ class AppArchitecture(StrEnum):
 class AppAuthConfig:
     """App authentication configuration"""
 
-    VERTIFICATION_ALGORITHM = "HS256"
+    VERIFICATION_ALGORITHM = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES = 10080  # 7 days
     DAYS_TO_EXPIRE_COOKIE = 7
 

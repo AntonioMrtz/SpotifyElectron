@@ -1678,7 +1678,7 @@
           "health"
         ],
         "summary": "Health Check Endpoint",
-        "description": "Validates if the app has launched correctly\n\nReturns\n-------\n    Response 200 OK",
+        "description": "Validates if the application has launched correctly by returning a health check response\n\nResponse:\n    HTTP 200 OK with \"OK\" content if all services are healthy.\n    HTTP 503 Service Unavailable with specific error message if a particular\n    service health check fails\n    HTTP 500 Internal Server Error with generic error message for unexpected errors",
         "operationId": "get_health_health__get",
         "responses": {
           "200": {

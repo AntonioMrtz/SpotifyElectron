@@ -22,26 +22,17 @@ router = APIRouter(prefix="/health", tags=["health"])
 async def get_health() -> Response:
     """Validates if the application has launched correctly by returning a health check response
 
-    This endpoint can be used to verify that the server is running and responding to requests.
-    It checks both database connectivity and song service availability.
-
-    Returns:
-        Response: HTTP 200 OK if all services are healthy,
-                 HTTP 500 if services are unhealthy but reachable,
-                 HTTP 503 if specific service errors occur.
+    Response:
+        HTTP 200 OK with "OK" content if all services are healthy.
+        HTTP 503 Service Unavailable with specific error message if a particular
+        service health check fails
+        HTTP 500 Internal Server Error with generic error message for unexpected errors
     """
     try:
-        if (
-            await DatabaseConnectionManager.check_database_health()
-            and SongServiceProvider.check_service_health()
-            and AuthConfig.check_auth_health()
-        ):
-            return Response(status_code=HTTP_200_OK, content="OK", media_type="text/plain")
-        return Response(
-            status_code=HTTP_500_INTERNAL_SERVER_ERROR,
-            content="Health check failed",
-            media_type="text/plain",
-        )
+        await DatabaseConnectionManager.check_database_health()
+        AuthConfig.check_auth_health()
+        SongServiceProvider.check_song_service_health()
+        return Response(status_code=HTTP_200_OK, content="OK", media_type="text/plain")
     except DatabasePingFailedError:
         return Response(
             status_code=HTTP_503_SERVICE_UNAVAILABLE,
@@ -56,4 +47,9 @@ async def get_health() -> Response:
         return Response(
             status_code=HTTP_503_SERVICE_UNAVAILABLE,
             content=PropertiesMessagesManager.authServiceUnhealthy,
+        )
+    except Exception:
+        return Response(
+            status_code=HTTP_500_INTERNAL_SERVER_ERROR,
+            content=PropertiesMessagesManager.commonInternalServerError,
         )

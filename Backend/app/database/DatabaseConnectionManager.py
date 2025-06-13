@@ -62,30 +62,19 @@ class DatabaseConnectionManager:
         cls.__logger.info(f"Initialized database using{database_connection_class.__name__}")
 
     @classmethod
-    async def check_database_health(cls) -> bool:
+    async def check_database_health(cls) -> None:
         """Check if the database connection is established and working.
 
-        This method attempts to verify that the connection to the database
-        is active and functioning properly.
-
         Raises:
-            DatabasePingFailedError: When a connection error occurs while
-                communicating with the database
-
-        Returns:
-            bool: True if the database connection is working and healthy,
-            False if the health check fails
+            DatabasePingFailedError:
+                When a connection error occurs while communicating with the database
         """
         cls.__assert_connection_is_initialized()
         try:
-            if await cls.__connection.check_connection_health():
-                cls.__logger.info("Database connection health check successful")
-                return True
-            else:
-                cls.__logger.warning("Database connection health check failed")
-                return False
+            await cls.__connection.check_connection_health()
+            cls.__logger.info("Database connection health check successful")
         except DatabasePingFailedError as exception:
-            cls.__logger.exception("Database ping command failed")
+            cls.__logger.warning("Database connection health check failed")
             raise DatabasePingFailedError from exception
 
     @classmethod

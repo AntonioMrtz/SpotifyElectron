@@ -25,6 +25,7 @@ class SongServiceProvider:
             AppArchitecture.ARCH_SERVERLESS: SongServicePath.SERVERLESS_MODULE_NAME,
         }
         cls._create_song_service()
+        cls.check_song_service_health()
 
     @classmethod
     def _create_song_service(cls) -> None:
@@ -44,33 +45,16 @@ class SongServiceProvider:
         return SongServiceProvider.song_service
 
     @classmethod
-    def check_service_health(cls) -> bool:
+    def check_song_service_health(cls) -> None:
         """Check if the song service initialized and functioning.
-
-        Returns:
-            bool: True if the song service is operational, False otherwise
 
         Raises:
             SongServiceHealthCheckError: When health check fail on service provider
         """
-        try:
-            if not hasattr(cls, "song_service") or not cls.song_service:
-                cls.logger.warning("Song service not initialized")
-                return False
-            method_list = [
-                method
-                for method in dir(cls.song_service)
-                if callable(getattr(cls.song_service, method)) and not method.startswith("__")
-            ]
-            for method in method_list:
-                if not hasattr(cls.song_service, method):
-                    cls.logger.warning(f"Song servise missing required method: {method}")
-        except Exception as exception:
-            cls.logger.exception("Error checking song service health")
-            raise SongServiceHealthCheckError from exception
-        else:
-            cls.logger.info("Song service health check successful")
-            return True
+        if not getattr(cls, "song_service", None):
+            cls.logger.warning("Song service not initialized")
+            raise SongServiceHealthCheckError
+        cls.logger.info("Song service health check successful")
 
     @classmethod
     def _get_current_architecture(cls) -> AppArchitecture:

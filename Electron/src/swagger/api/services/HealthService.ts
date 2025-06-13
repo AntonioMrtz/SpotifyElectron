@@ -10,13 +10,11 @@ export class HealthService {
      * Health Check Endpoint
      * Validates if the application has launched correctly by returning a health check response
      *
-     * This endpoint can be used to verify that the server is running and responding to requests.
-     * It checks both database connectivity and song service availability.
-     *
-     * Returns:
-     * Response: HTTP 200 OK if all services are healthy,
-     * HTTP 500 if services are unhealthy but reachable,
-     * HTTP 503 if specific service errors occur.
+     * Response:
+     * HTTP 200 OK with "OK" content if all services are healthy.
+     * HTTP 503 Service Unavailable with specific error message if a particular
+     * service health check fails
+     * HTTP 500 Internal Server Error with generic error message for unexpected errors
      * @returns any Successful Response
      * @throws ApiError
      */

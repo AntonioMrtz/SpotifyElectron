@@ -54,7 +54,7 @@ class SongServiceProvider:
         if not getattr(cls, "song_service", None):
             cls.logger.warning("Song service not initialized")
             raise SongServiceHealthCheckError
-        cls.logger.info("Song service health check successful")
+        cls.logger.debug("Song service health check successful")
 
     @classmethod
     def _get_current_architecture(cls) -> AppArchitecture:

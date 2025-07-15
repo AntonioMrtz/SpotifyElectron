@@ -72,7 +72,7 @@ def test_health_check_auth_service_exception(mocker):
 
 
 def test_health_check_multiple_services_unhealthy(mocker):
-    """Test health endpoint returns 500 when multiple services are unhealthy."""
+    """Test health endpoint returns 503 when multiple services are unhealthy."""
 
     async def mock_health_check_exception():
         from app.database.database_schema import DatabasePingFailedError

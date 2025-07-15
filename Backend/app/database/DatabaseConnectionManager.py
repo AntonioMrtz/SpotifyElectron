@@ -72,7 +72,7 @@ class DatabaseConnectionManager:
         cls.__assert_connection_is_initialized()
         try:
             await cls.__connection.check_connection_health()
-            cls.__logger.info("Database connection health check successful")
+            cls.__logger.debug("Database connection health check successful")
         except DatabasePingFailedError as exception:
             cls.__logger.warning("Database connection health check failed")
             raise DatabasePingFailedError from exception

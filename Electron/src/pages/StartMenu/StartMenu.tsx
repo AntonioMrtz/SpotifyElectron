@@ -15,6 +15,8 @@ import LoadingCircleSmall from 'components/AdvancedUIComponents/LoadingCircle/Lo
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import Language from 'i18n/languages';
 import { changeLanguage } from 'i18n/i18n';
 import { t } from 'i18next';
@@ -39,6 +41,7 @@ export default function StartMenu({
   const [propsPopOver, setPropsPopOver] = useState<PropsInfoPopover | null>(
     null,
   );
+  const [passwordVisibility, setPasswordVisibility] = useState(false);
 
   /* Loading state for auto-login */
   const [autoLoginLoading, setAutoLoginLoading] = useState(false);
@@ -280,19 +283,43 @@ export default function StartMenu({
             </label>
             <label
               htmlFor="password"
-              className="d-flex flex-column justify-content-start"
+              className={`d-flex flex-column justify-content-start ${styles.passwordContainer}`}
             >
               {t('startMenu.form-password')}
-              <input
-                type="password"
-                name="password"
-                id="password"
-                placeholder={t('startMenu.form-password')}
-                onChange={handleChange}
-                disabled={loginLoading}
-                spellCheck={false}
-                required
-              />
+              <div className={styles.passwordInputWrapper}>
+                <input
+                  type={passwordVisibility ? 'text' : 'password'}
+                  name="password"
+                  id="password"
+                  placeholder={t('startMenu.form-password')}
+                  onChange={handleChange}
+                  disabled={loginLoading}
+                  spellCheck={false}
+                  required
+                  className={styles.passwordInput}
+                />
+                <button
+                  type="button"
+                  className={styles.visibilityToggle}
+                  onClick={() => setPasswordVisibility(!passwordVisibility)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      setPasswordVisibility(!passwordVisibility);
+                    }
+                  }}
+                  aria-label={
+                    passwordVisibility
+                      ? t('startMenu.hide-password')
+                      : t('startMenu.show-password')
+                  }
+                >
+                  {passwordVisibility ? (
+                    <VisibilityIcon className={styles.visibilityIcon} />
+                  ) : (
+                    <VisibilityOffIcon className={styles.visibilityIcon} />
+                  )}
+                </button>
+              </div>
             </label>
 
             <button

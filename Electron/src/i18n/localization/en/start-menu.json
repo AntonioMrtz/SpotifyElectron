@@ -6,5 +6,7 @@
   "go-to-register-button": "Register for Spotify Electron",
   "no-account": "Don't have an account?",
   "cant-login-title": "The credentials provided are invalid",
-  "cant-login-description": "Unable to log in"
+  "cant-login-description": "Unable to log in",
+  "hide-password": "Hide password",
+  "show-password": "Show password"
 }

@@ -7,6 +7,7 @@ from app.common.app_schema import AppArchitecture, AppEnvironment
 from app.common.PropertiesManager import PropertiesManager
 from app.logging.logging_constants import LOGGING_SONG_SERVICE_PROVIDER
 from app.logging.logging_schema import SpotifyElectronLogger
+from app.spotify_electron.song.base_song_schema import SongServiceHealthCheckError
 from app.spotify_electron.song.song_service_constants import SongServicePath
 
 
@@ -24,11 +25,12 @@ class SongServiceProvider:
             AppArchitecture.ARCH_SERVERLESS: SongServicePath.SERVERLESS_MODULE_NAME,
         }
         cls._create_song_service()
+        cls.check_song_service_health()
 
     @classmethod
     def _create_song_service(cls) -> None:
         """Creates the song service depending on the song architecture selected"""
-        architecture_type = getattr(PropertiesManager, AppEnvironment.ARCHITECTURE_ENV_NAME)
+        architecture_type = cls._get_current_architecture()
         import_module = importlib.import_module(cls.song_services[architecture_type])
         cls.logger.info(f"Song service MODULE selected: {architecture_type}")
         cls.song_service = import_module
@@ -41,6 +43,23 @@ class SongServiceProvider:
             the imported song service
         """
         return SongServiceProvider.song_service
+
+    @classmethod
+    def check_song_service_health(cls) -> None:
+        """Check if the song service initialized and functioning.
+
+        Raises:
+            SongServiceHealthCheckError: When health check fail on service provider
+        """
+        if not getattr(cls, "song_service", None):
+            cls.logger.warning("Song service not initialized")
+            raise SongServiceHealthCheckError
+        cls.logger.debug("Song service health check successful")
+
+    @classmethod
+    def _get_current_architecture(cls) -> AppArchitecture:
+        """Get the current architecture type."""
+        return getattr(PropertiesManager, AppEnvironment.ARCHITECTURE_ENV_NAME)
 
 
 def get_song_service() -> ModuleType:

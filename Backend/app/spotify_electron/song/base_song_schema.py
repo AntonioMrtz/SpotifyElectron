@@ -175,3 +175,12 @@ class SongBadNameError(SpotifyElectronError):
 
     def __init__(self):
         super().__init__(self.ERROR)
+
+
+class SongServiceHealthCheckError(SpotifyElectronError):
+    """Song service health check failure"""
+
+    ERROR = "Song service health check failed"
+
+    def __init__(self):
+        super().__init__(self.ERROR)

@@ -236,5 +236,5 @@ We're actively looking for new contributors 🙌. Feel free to check our [CONTRI
          <td></td>
          <td></td>
     </tr>
- 
+
 </table>

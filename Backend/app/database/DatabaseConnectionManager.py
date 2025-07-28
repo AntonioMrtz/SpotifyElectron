@@ -3,9 +3,15 @@
 from motor.motor_asyncio import AsyncIOMotorCollection, AsyncIOMotorGridFSBucket
 
 from app.common.app_schema import AppEnvironmentMode
-from app.database.database_schema import BaseDatabaseConnection, DatabaseCollection
+from app.database.database_schema import (
+    BaseDatabaseConnection,
+    DatabaseCollection,
+    DatabasePingFailedError,
+)
 from app.database.DatabaseProductionConnection import DatabaseProductionConnection
 from app.database.DatabaseTestingConnection import DatabaseTestingConnection
+from app.logging.logging_constants import LOGGING_DATABASE_MANAGER
+from app.logging.logging_schema import SpotifyElectronLogger
 
 
 class DatabaseConnectionManager:
@@ -19,6 +25,7 @@ class DatabaseConnectionManager:
         AppEnvironmentMode.TEST: DatabaseTestingConnection,
     }
     """Mapping between environment mode and database connection"""
+    __logger = SpotifyElectronLogger(LOGGING_DATABASE_MANAGER).get_logger()
 
     @classmethod
     def get_collection_connection(
@@ -52,6 +59,23 @@ class DatabaseConnectionManager:
         )
         await database_connection_class.init_connection(connection_uri)
         cls.__connection = database_connection_class
+        cls.__logger.info(f"Initialized database using{database_connection_class.__name__}")
+
+    @classmethod
+    async def check_database_health(cls) -> None:
+        """Check if the database connection is established and working.
+
+        Raises:
+            DatabasePingFailedError:
+                When a connection error occurs while communicating with the database
+        """
+        cls.__assert_connection_is_initialized()
+        try:
+            await cls.__connection.check_connection_health()
+            cls.__logger.debug("Database connection health check successful")
+        except DatabasePingFailedError as exception:
+            cls.__logger.warning("Database connection health check failed")
+            raise DatabasePingFailedError from exception
 
     @classmethod
     def close_database_connection(cls) -> None:

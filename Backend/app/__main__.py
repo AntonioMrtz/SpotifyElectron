@@ -55,7 +55,7 @@ async def lifespan_handler(app: FastAPI) -> AsyncGenerator[None, Any]:
     AuthConfig.init_auth_config(
         access_token_expire_minutes=AppAuthConfig.ACCESS_TOKEN_EXPIRE_MINUTES,
         secret_key_sign=secret_key_sign,
-        verification_algorithm=AppAuthConfig.VERTIFICATION_ALGORITHM,
+        verification_algorithm=AppAuthConfig.VERIFICATION_ALGORITHM,
         days_to_expire_cookie=AppAuthConfig.DAYS_TO_EXPIRE_COOKIE,
     )
 

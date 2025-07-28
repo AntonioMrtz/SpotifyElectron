@@ -263,4 +263,5 @@ async def get_song_data(name: str) -> bytes:
         )
         raise SongServiceError from exception
     else:
+        song_service_logger.info("Song data retrieved succesfully")
         return read_song_data

@@ -147,3 +147,49 @@
     margin-bottom: 2rem !important;
   }
 }
+
+.passwordContainer {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.passwordInputWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.passwordInput {
+  width: 100%;
+  padding: 0.75rem;
+  padding-right: 2.5rem; /* Space for the icon */
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background-color: var(--input-bg-color);
+  color: var(--text-color);
+  font-size: 1rem;
+}
+
+.passwordInput:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+.visibilityToggle {
+  position: absolute;
+  right: 0.75rem;
+  top: 54%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--secondary-text-color);
+}
+
+.visibilityToggle:hover {
+  color: var(--text-color);
+}
+
+.visibilityIcon {
+  font-size: 1.25rem;
+}

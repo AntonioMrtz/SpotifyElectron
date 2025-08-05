@@ -7,6 +7,8 @@ import {
 import timeout from 'utils/timeout';
 import Global from 'global/global';
 import LoadingCircleSmall from 'components/AdvancedUIComponents/LoadingCircle/LoadingCircleSmall';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { CancelablePromise } from 'swagger/api';
 import { t } from 'i18next';
 import styles from './startMenu.module.css';
@@ -42,6 +44,10 @@ export default function RegisterMenu({ setIsSigningUp }: PropsRegisterMenu) {
   const [propsPopOver, setPropsPopOver] = useState<PropsInfoPopover | null>(
     null,
   );
+  const [confirmPasswordVisibility, setConfirmPasswordVisibility] =
+    useState(false);
+
+  const [passwordVisibility, setPasswordVisibility] = useState(false);
 
   /* Loading state */
   const [loading, setLoading] = useState(false);
@@ -199,33 +205,83 @@ export default function RegisterMenu({ setIsSigningUp }: PropsRegisterMenu) {
               className="d-flex flex-column justify-content-start"
             >
               {t('registerMenu.form-password')}
-              <input
-                type="password"
-                name="password"
-                id="password"
-                placeholder={t('registerMenu.form-password')}
-                onChange={handleChange}
-                disabled={loading}
-                spellCheck={false}
-                required
-              />
+              <div className={styles.passwordInputWrapper}>
+                <input
+                  type={passwordVisibility ? 'text' : 'password'} // Toggle based on state
+                  name="password"
+                  id="password"
+                  placeholder={t('registerMenu.form-password')}
+                  onChange={handleChange}
+                  disabled={loading}
+                  spellCheck={false}
+                  required
+                  className={styles.passwordInput}
+                />
+                <button
+                  type="button"
+                  className={styles.visibilityToggle}
+                  onClick={() => setPasswordVisibility(!passwordVisibility)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      setPasswordVisibility(!passwordVisibility);
+                    }
+                  }}
+                  aria-label={
+                    passwordVisibility
+                      ? t('startMenu.hide-password')
+                      : t('startMenu.show-password')
+                  }
+                >
+                  {passwordVisibility ? (
+                    <VisibilityIcon className={styles.visibilityIcon} />
+                  ) : (
+                    <VisibilityOffIcon className={styles.visibilityIcon} />
+                  )}
+                </button>
+              </div>
             </label>
 
             <label
-              htmlFor="password"
-              className="d-flex flex-column justify-content-start"
+              htmlFor="confirmpassword"
+              className={`d-flex flex-column justify-content-start ${styles.passwordContainer}`}
             >
               {t('registerMenu.form-password-repeat')}
-              <input
-                type="password"
-                name="confirmpassword"
-                id="confirmpassword"
-                placeholder={t('registerMenu.form-password-repeat')}
-                onChange={handleChange}
-                disabled={loading}
-                spellCheck={false}
-                required
-              />
+              <div className={styles.passwordInputWrapper}>
+                <input
+                  type={confirmPasswordVisibility ? 'text' : 'password'} // Toggle based on state
+                  name="confirmpassword"
+                  id="confirmpassword"
+                  placeholder={t('registerMenu.form-password-repeat')}
+                  onChange={handleChange}
+                  disabled={loading}
+                  spellCheck={false}
+                  required
+                  className={styles.passwordInput}
+                />
+                <button
+                  type="button"
+                  className={styles.visibilityToggle}
+                  onClick={() =>
+                    setConfirmPasswordVisibility(!confirmPasswordVisibility)
+                  }
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      setConfirmPasswordVisibility(!confirmPasswordVisibility);
+                    }
+                  }}
+                  aria-label={
+                    confirmPasswordVisibility
+                      ? t('startMenu.hide-password')
+                      : t('startMenu.show-password')
+                  }
+                >
+                  {confirmPasswordVisibility ? (
+                    <VisibilityIcon className={styles.visibilityIcon} />
+                  ) : (
+                    <VisibilityOffIcon className={styles.visibilityIcon} />
+                  )}
+                </button>
+              </div>
             </label>
           </div>
 

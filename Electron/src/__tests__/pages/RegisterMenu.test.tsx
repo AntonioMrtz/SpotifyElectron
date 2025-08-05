@@ -289,4 +289,38 @@ describe('RegisterMenu Component', () => {
 
     expect(mockSetIsSigningUp).toHaveBeenCalledWith(false);
   });
+
+  test('toggles password visibility when eye icon is clicked', () => {
+    render(<RegisterMenu setIsSigningUp={jest.fn()} />);
+
+    const passwordInput = screen.getByPlaceholderText(
+      t('registerMenu.form-password'),
+    ) as HTMLInputElement;
+
+    const toggleButton = passwordInput.nextSibling as HTMLElement;
+    expect(passwordInput.type).toBe('password');
+
+    fireEvent.click(toggleButton);
+    expect(passwordInput.type).toBe('text');
+
+    fireEvent.click(toggleButton);
+    expect(passwordInput.type).toBe('password');
+  });
+
+  test('toggles confirm password visibility when eye icon is clicked', () => {
+    render(<RegisterMenu setIsSigningUp={jest.fn()} />);
+
+    const confirmPasswordInput = screen.getByPlaceholderText(
+      t('registerMenu.form-password-repeat'),
+    ) as HTMLInputElement;
+
+    const toggleButton = confirmPasswordInput.nextSibling as HTMLElement;
+    expect(confirmPasswordInput.type).toBe('password');
+
+    fireEvent.click(toggleButton);
+    expect(confirmPasswordInput.type).toBe('text');
+
+    fireEvent.click(toggleButton);
+    expect(confirmPasswordInput.type).toBe('password');
+  });
 });

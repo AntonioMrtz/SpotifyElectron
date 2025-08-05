@@ -6,5 +6,7 @@
   "go-to-register-button": "Regístrate en Spotify Electron",
   "no-account": "¿No tienes cuenta?",
   "cant-login-title": "Los credenciales introducidos no son válidos",
-  "cant-login-description": "No se ha podido iniciar sesión"
+  "cant-login-description": "No se ha podido iniciar sesión",
+  "hide-password": "Ocultar contraseña",
+  "show-password": "Mostrar contraseña"
 }

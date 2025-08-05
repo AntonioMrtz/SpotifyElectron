@@ -44,6 +44,9 @@ export default function RegisterMenu({ setIsSigningUp }: PropsRegisterMenu) {
   const [propsPopOver, setPropsPopOver] = useState<PropsInfoPopover | null>(
     null,
   );
+  const [confirmPasswordVisibility, setConfirmPasswordVisibility] =
+    useState(false);
+
   const [passwordVisibility, setPasswordVisibility] = useState(false);
 
   /* Loading state */
@@ -202,29 +205,12 @@ export default function RegisterMenu({ setIsSigningUp }: PropsRegisterMenu) {
               className="d-flex flex-column justify-content-start"
             >
               {t('registerMenu.form-password')}
-              <input
-                type="password"
-                name="password"
-                id="password"
-                placeholder={t('registerMenu.form-password')}
-                onChange={handleChange}
-                disabled={loading}
-                spellCheck={false}
-                required
-              />
-            </label>
-
-            <label
-              htmlFor="confirmpassword"
-              className={`d-flex flex-column justify-content-start ${styles.passwordContainer}`}
-            >
-              {t('registerMenu.form-password-repeat')}
               <div className={styles.passwordInputWrapper}>
                 <input
                   type={passwordVisibility ? 'text' : 'password'} // Toggle based on state
-                  name="confirmpassword"
-                  id="confirmpassword"
-                  placeholder={t('registerMenu.form-password-repeat')}
+                  name="password"
+                  id="password"
+                  placeholder={t('registerMenu.form-password')}
                   onChange={handleChange}
                   disabled={loading}
                   spellCheck={false}
@@ -247,6 +233,49 @@ export default function RegisterMenu({ setIsSigningUp }: PropsRegisterMenu) {
                   }
                 >
                   {passwordVisibility ? (
+                    <VisibilityIcon className={styles.visibilityIcon} />
+                  ) : (
+                    <VisibilityOffIcon className={styles.visibilityIcon} />
+                  )}
+                </button>
+              </div>
+            </label>
+
+            <label
+              htmlFor="confirmpassword"
+              className={`d-flex flex-column justify-content-start ${styles.passwordContainer}`}
+            >
+              {t('registerMenu.form-password-repeat')}
+              <div className={styles.passwordInputWrapper}>
+                <input
+                  type={confirmPasswordVisibility ? 'text' : 'password'} // Toggle based on state
+                  name="confirmpassword"
+                  id="confirmpassword"
+                  placeholder={t('registerMenu.form-password-repeat')}
+                  onChange={handleChange}
+                  disabled={loading}
+                  spellCheck={false}
+                  required
+                  className={styles.passwordInput}
+                />
+                <button
+                  type="button"
+                  className={styles.visibilityToggle}
+                  onClick={() =>
+                    setConfirmPasswordVisibility(!confirmPasswordVisibility)
+                  }
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      setConfirmPasswordVisibility(!confirmPasswordVisibility);
+                    }
+                  }}
+                  aria-label={
+                    confirmPasswordVisibility
+                      ? t('startMenu.hide-password')
+                      : t('startMenu.show-password')
+                  }
+                >
+                  {confirmPasswordVisibility ? (
                     <VisibilityIcon className={styles.visibilityIcon} />
                   ) : (
                     <VisibilityOffIcon className={styles.visibilityIcon} />

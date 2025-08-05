@@ -255,4 +255,30 @@ describe('StartMenu Component', () => {
     expect(screen.getByAltText('spanish flag')).toBeInTheDocument();
     expect(screen.queryByAltText('english flag')).not.toBeInTheDocument();
   });
+
+  test('toggles password visibility when clicking the eye icon', async () => {
+    await act(async () => {
+      render(
+        <StartMenu
+          setIsLogged={setIsLoggedMock}
+          setIsSigningUp={setIsSigningUpMock}
+        />,
+      );
+    });
+
+    const passwordInput = screen.getByPlaceholderText(
+      t('startMenu.form-password'),
+    );
+    const toggleButton = screen.getByRole('button', {
+      name: t('startMenu.show-password'),
+    });
+
+    expect(passwordInput).toHaveAttribute('type', 'password');
+
+    fireEvent.click(toggleButton);
+    expect(passwordInput).toHaveAttribute('type', 'text');
+
+    fireEvent.click(toggleButton);
+    expect(passwordInput).toHaveAttribute('type', 'password');
+  });
 });

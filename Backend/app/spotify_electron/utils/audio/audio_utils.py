@@ -38,6 +38,9 @@ def check_file_size(file: bytes) -> bool:
 
 # stripping the metadata
 def strip_metadata(file: bytes, output_format: str = "mp3") -> bytes:
+    if not file or len(file) == 0:
+        raise ValueError("File is empty. cannot strip metadata")
+    
     input_bytes = BytesIO(file) # file buffer
 
     command  = [
@@ -79,6 +82,9 @@ def strip_metadata(file: bytes, output_format: str = "mp3") -> bytes:
 
 # re-encoding bytes to mp3 from any other extension
 def reencode_audio(file: bytes, output_format: str = "mp3") -> bytes:
+    if not file or len(file) == 0:
+        raise ValueError("File is empty. Cannot reencode")
+    
     input_bytes = BytesIO(file)
 
     command = [
@@ -110,9 +116,13 @@ def reencode_audio(file: bytes, output_format: str = "mp3") -> bytes:
 # ---------------------------- END OF HELPER FUNCTIONS ------------------------------
 
 # song sanitizer func
-def sanitize_audio(file) -> bytes:
+def sanitize_audio(file: bytes) -> bytes:
+
+    if not file or len(file) == 0:
+        raise ValueError("File is empty")
+
     if not check_file_type(file):
-        raise ValueError("wrong file type")
+        raise ValueError("Wrong file type")
 
     if not check_file_size(file):
         raise ValueError("File size is too large. max 10MB allowed")

@@ -1,100 +1,59 @@
-import sys, os
-
-
 import io
+import pytest
+from app.spotify_electron.utils.audio.audio_utils import (
+    check_file_size,
+    check_file_type,
+    strip_metadata,
+    reencode_audio,
+    sanitize_audio
+)
 
 
-import mutagen
+with open(r"C:\Users\admin\Desktop\all projects\SpotifyElectron\Backend\tests\assets\song_4_seconds.mp3", "rb") as f:
+    real_audio_bytes = f.read()
 
+fake_bytes = b"this is not audio"
+empty_bytes = b""
 
-from app.spotify_electron.utils.audio.audio_utils import check_file_size, check_file_type, strip_metadata, reencode_audio, sanitize_audio
+# ----------------- CHECK FILE SIZE -----------------
+def test_check_file_size_real_audio():
+    assert check_file_size(real_audio_bytes) is True
 
+def test_check_file_size_empty_file():
+    assert check_file_size(empty_bytes) is True
 
-file = open(r"C:\Users\admin\Desktop\all projects\SpotifyElectron\Backend\tests\assets\song_4_seconds.mp3", "rb")
-fake = r"this is fake audio byte file" # fake byte file for testing
-empty = r"" # empty file for testing
+# ----------------- CHECK FILE TYPE -----------------
+def test_check_file_type_real_audio():
+    assert check_file_type(real_audio_bytes) is True
 
-text = file.read()
+def test_check_file_type_fake_audio():
+    assert check_file_type(fake_bytes) is False
 
-"""
-CHECK FILE SIZE
+# ----------------- STRIP METADATA -----------------
+def test_strip_metadata_removes_tags():
+    cleaned = strip_metadata(real_audio_bytes)
+    # If metadata existed, the bytes should change
+    assert isinstance(cleaned, bytes)
+    assert cleaned != real_audio_bytes
 
---- test1 ---
-if check_file_size(text):
-    print("file size is okay")
-else:
-    print("file size is too big")
+def test_strip_metadata_empty_file():
+    cleaned = strip_metadata(empty_bytes)
+    assert cleaned == empty_bytes  # nothing to strip
 
---- test2 ---
-if check_file_size(fake):
-    print("file size is okay")
-else:
-    print("file size is too big")
+# ----------------- REENCODE AUDIO -----------------
+def test_reencode_audio_returns_bytes():
+    reencoded = reencode_audio(real_audio_bytes)
+    assert isinstance(reencoded, bytes)
 
-"""
+# ----------------- SANITIZE AUDIO -----------------
+def test_sanitize_audio_real_audio():
+    sanitized = sanitize_audio(real_audio_bytes)
+    assert isinstance(sanitized, bytes)
 
+def test_sanitize_audio_fake_audio():
+    with pytest.raises(ValueError, match="wrong file type"):
+        sanitize_audio(fake_bytes)
 
-"""
-CHECK FILE TYPE
-
---- test1 ---
-if check_file_type(text):
-    print("file type is audio, nothing malicious")
-else:
-    print("nope, file type is not audio")
-
---- test2 ---
-if check_file_type(fake):
-    print("file type is audio, nothing malicious")
-else:
-    print("nope, file type is not audio")
-
-"""
-
-
-"""
-TEST strip_metadata()
-
---- test1 ---
-original_audio = mutagen.File(io.BytesIO(text))
-print("Original metadata:", original_audio.tags)
-
-cleaned_bytes = strip_metadata(file)
-
-cleaned_audio = mutagen.File(io.BytesIO(cleaned_bytes))
-print("After stripping:", cleaned_audio.tags)
-
---- test2 ---
-original_audio = mutagen.File(io.BytesIO(empty))
-print("Original metadata:", original_audio.tags)
-
-cleaned_bytes = strip_metadata(file)
-
-cleaned_audio = mutagen.File(io.BytesIO(cleaned_bytes))
-print("After stripping:", cleaned_audio.tags)
-
-
-"""
-
-
-"""
-TEST reencode_audio()
-
---- test1 ---
-reencoded_bytes = reencode_audio(text)
-
-if puremagic.from_string(stripped_metadata_bytes).lower() != ".mp3":
-    print("file reencoded")
-else:
-    print("nope, file could not reencode")
-
---- test1 ---
-reencoded_bytes = reencode_audio(empty)
-
-if puremagic.from_string(stripped_metadata_bytes).lower() != ".mp3":
-    print("file reencoded")
-else:
-    print("nope, file could not reencode")
-
-"""
-
+def test_sanitize_audio_empty_file():
+    sanitized = sanitize_audio(empty_bytes)
+    assert isinstance(sanitized, bytes)

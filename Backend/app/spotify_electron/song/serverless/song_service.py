@@ -1,5 +1,7 @@
 """Song service for handling business logic"""
 
+from utils.audio.audio_utils import sanitize_audio
+
 import app.spotify_electron.song.base_song_repository as base_song_repository
 import app.spotify_electron.song.serverless.song_repository as song_repository
 import app.spotify_electron.user.artist.artist_service as artist_service
@@ -157,6 +159,8 @@ async def create_song(  # noqa: C901
 
         await validate_song_should_not_exists(name)
         await validate_user_should_be_artist(artist)
+
+        file = await sanitize_audio(file) # sanitizing audio
 
         song_duration = get_song_duration_seconds(name, file)
         encoded_bytes = encode_file(name, file)

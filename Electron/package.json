@@ -45,7 +45,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-i18next": "^15.0.3",
-    "react-router-dom": "^6.11.2",
+    "react-router-dom": "^6.30.3",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^7.1.0",

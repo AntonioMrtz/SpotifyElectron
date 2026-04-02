@@ -88,6 +88,15 @@ export default function Song({
 
       <div>
         <Popover
+          onClick={(e) => e.stopPropagation()}
+          onContextMenu={(e) => e.stopPropagation()}
+          BackdropProps={{
+            onContextMenu: (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              handleClose();
+            },
+          }}
           id={id}
           open={open}
           onClose={handleClose}

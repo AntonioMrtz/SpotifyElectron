@@ -167,6 +167,15 @@ export default function StickyHeader({ handleLogout }: PropsStickyHeader) {
 
       <div>
         <Popover
+          onClick={(e) => e.stopPropagation()}
+          onContextMenu={(e) => e.stopPropagation()}
+          BackdropProps={{
+            onContextMenu: (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              handleCloseContextMenu();
+            },
+          }}
           id={id}
           open={open}
           onClose={handleCloseContextMenu}

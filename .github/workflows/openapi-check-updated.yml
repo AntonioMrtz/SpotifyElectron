@@ -3,6 +3,9 @@ name: Check OpenAPI schema is updated
 on:
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   check-openapi-schema-is-updated:
     runs-on: ubuntu-latest

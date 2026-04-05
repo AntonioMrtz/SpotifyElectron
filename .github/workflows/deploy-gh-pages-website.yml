@@ -5,6 +5,10 @@ on:
     types: [closed]
   workflow_dispatch:
 
+permissions:
+  contents: read
+  repository_dispatch: write
+
 jobs:
   trigger-action:
     runs-on: ubuntu-latest

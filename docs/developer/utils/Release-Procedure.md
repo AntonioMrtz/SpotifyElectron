@@ -31,6 +31,10 @@ class AppInfo:
     ...
 ```
 
+### Security file
+
+Update supported versions based on the new release
+
 ## 2. Generate release Github
 
 * Generate release in [Github releases](https://github.com/AntonioMrtz/SpotifyElectron/releases/new)

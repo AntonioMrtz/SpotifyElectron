@@ -3,6 +3,9 @@ name: ESLint Check
 on:
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   run-frontend-lint:
     runs-on: ubuntu-latest

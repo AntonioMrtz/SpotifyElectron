@@ -44,7 +44,7 @@ Update supported versions based on the new release
 ## 3. Package app
 
 * Follow [packaging guide](../frontend/Package-app.md) using production backend URL and architecture.
-* Upload the following to [Github releases](https://github.com/AntonioMrtz/SpotifyElectron/releases):
+* Upload the following to [Github releases](https://github.com/AntonioMrtz/SpotifyElectron/releases) using `scripts/generate_release_data.sh`:
   * `.exe` Windows executable
   * `AppImage` file
   * `spotify-electron.desktop`

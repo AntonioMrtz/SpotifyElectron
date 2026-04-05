@@ -1,5 +1,4 @@
 import { createRoot } from 'react-dom/client';
-import { HashRouter } from 'react-router-dom';
 import { initializeI18n } from 'i18n/i18n';
 // Import bootstrap before app and custom styles so own code it's not overrided
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -17,9 +16,7 @@ initializeI18n()
   .then(() => {
     return root.render(
       <StrictMode>
-        <HashRouter>
-          <App />
-        </HashRouter>
+        <App />
       </StrictMode>,
     );
   })

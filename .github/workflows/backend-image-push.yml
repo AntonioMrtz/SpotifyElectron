@@ -17,6 +17,9 @@ on:
         required: true
         default: 'v0.00'
 
+permissions:
+  contents: read
+
 jobs:
   build-and-push-image:
     runs-on: ubuntu-latest

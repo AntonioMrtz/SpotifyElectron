@@ -1,10 +1,10 @@
 import '@testing-library/jest-dom';
-import '@testing-library/jest-dom/extend-expect';
 import { render } from '@testing-library/react';
 import PlayerServerless from 'components/footer/Player/PlayerServerless';
 import Global from 'global/global';
 import UserType from 'utils/role';
-import { act } from 'react-test-renderer';
+import { act } from 'react';
+
 import getMockHeaders from 'utils/mockHeaders';
 
 import * as TokenModule from 'utils/token';

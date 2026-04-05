@@ -44,9 +44,9 @@ export default function UserProfile({
             userName,
           );
         setPlaybackHistory(playbackHistoryData);
-      } catch (error) {
+      } catch (err) {
         setPlaybackHistory([]);
-        console.log(`Unable to get playback history from user ${id}`);
+        console.log(`Unable to get playback history from user ${id} | ${err}`);
       }
     };
     const loadSongsFromArtist = async (artistName: string) => {
@@ -55,9 +55,9 @@ export default function UserProfile({
           await ArtistsService.getArtistSongsArtistsNameSongsGet(artistName);
 
         setUploadedSongs(artistSongsData);
-      } catch (error) {
+      } catch (err) {
         setPlaybackHistory([]);
-        console.log(`Unable to get playback history from user ${id}`);
+        console.log(`Unable to get playback history from user ${id} | ${err}`);
       }
     };
     const handleLoadProfile = async (userName: string) => {

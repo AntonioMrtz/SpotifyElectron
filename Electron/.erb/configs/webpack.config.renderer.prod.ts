@@ -45,7 +45,7 @@ const configuration: webpack.Configuration = {
           {
             loader: 'css-loader',
             options: {
-              modules: true,
+              esModule: false,
               sourceMap: true,
               importLoaders: 1,
             },
@@ -53,11 +53,6 @@ const configuration: webpack.Configuration = {
 
         ],
         include: /\.module\.css$/,
-      },
-      {
-        test: /\.s?(a|c)ss$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader'],
-        exclude: /\.module\.css$/,
       },
       // Fonts
       {

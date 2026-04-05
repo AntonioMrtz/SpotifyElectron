@@ -1,10 +1,10 @@
 import '@testing-library/jest-dom';
-import '@testing-library/jest-dom/extend-expect';
-import { act, fireEvent, render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
+import { act } from 'react';
+
 import ContextMenuSong from 'components/AdvancedUIComponents/ContextMenu/Song/ContextMenuSong';
 import Global from 'global/global';
 import UserType from 'utils/role';
-import * as router from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
 import getMockHeaders from 'utils/mockHeaders';
 import * as TokenModule from 'utils/token';
@@ -35,10 +35,6 @@ const playlistDTOMockFetch = {
   owner: userName,
   song_names: [],
 };
-
-const navigate = jest.fn();
-
-jest.spyOn(router, 'useNavigate').mockImplementation(() => navigate);
 
 jest.spyOn(TokenModule, 'getTokenUsername').mockReturnValue(userName);
 jest.spyOn(TokenModule, 'getTokenRole').mockReturnValue(roleUser);

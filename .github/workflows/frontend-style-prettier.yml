@@ -3,6 +3,9 @@ name: Prettier Check
 on:
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   run-frontend-style-check:
     runs-on: ubuntu-latest

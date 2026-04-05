@@ -1,6 +1,10 @@
 name: Ruff lint check
+
 on:
   pull_request:
+
+permissions:
+  contents: read
 
 jobs:
   ruff-lint-check:

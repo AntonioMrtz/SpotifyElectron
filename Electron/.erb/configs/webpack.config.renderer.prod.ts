@@ -39,23 +39,26 @@ const configuration: webpack.Configuration = {
   module: {
     rules: [
       {
-        test: /\.s?(a|c)ss$/,
+        test: /\.module\.css$/,
         use: [
           MiniCssExtractPlugin.loader,
           {
             loader: 'css-loader',
             options: {
-              modules: true,
+              esModule: false,
+              modules: {
+                namedExport: false,
+                exportLocalsConvention: 'as-is',
+              },
               sourceMap: true,
               importLoaders: 1,
             },
           },
 
         ],
-        include: /\.module\.css$/,
       },
       {
-        test: /\.s?(a|c)ss$/,
+        test: /\.css$/,
         use: [MiniCssExtractPlugin.loader, 'css-loader'],
         exclude: /\.module\.css$/,
       },

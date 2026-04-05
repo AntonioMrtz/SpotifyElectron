@@ -59,6 +59,25 @@ const userMockFetch = {
 jest.spyOn(TokenModule, 'getTokenUsername').mockReturnValue(userName);
 jest.spyOn(TokenModule, 'getTokenRole').mockReturnValue(roleUser);
 
+interface PlaylistDTO {
+  name: string;
+  photo: string;
+  description: string;
+  upload_date: string;
+  owner: string;
+  song_names: string[];
+}
+
+interface UserMock {
+  name: string;
+  photo: string;
+  register_date: string;
+  password: string;
+  playback_history: string[];
+  playlists: string[];
+  saved_playlists: string[];
+}
+
 test('Playlist user role get all info', async () => {
   global.fetch = jest.fn((url: string) => {
     if (
@@ -104,7 +123,6 @@ test('Playlist user role get all info', async () => {
       });
     }
 
-    // In case the URL doesn't match, return a rejected promise
     return Promise.reject(new Error(`Unhandled URL in fetch mock: ${url}`));
   }) as jest.Mock;
 
@@ -130,27 +148,43 @@ test('Playlist user role get all info', async () => {
 });
 
 test('Playlist user role hit like button', async () => {
+  const currentUser = 'differentUser';
+  jest.spyOn(TokenModule, 'getTokenUsername').mockReturnValue(currentUser);
+
+  const mockPlaylist: PlaylistDTO = {
+    name: playlistName,
+    photo: 'playlist',
+    description: 'des',
+    upload_date: 'date',
+    owner: 'originalOwner',
+    song_names: [songName],
+  };
+
+  const mockUser: UserMock = {
+    name: currentUser,
+    photo: 'photo',
+    register_date: 'date',
+    password: 'hashpassword',
+    playback_history: [songName],
+    playlists: [],
+    saved_playlists: [],
+  };
+
   global.fetch = jest.fn((url: string, options: any) => {
-    if (
-      url === `${Global.backendBaseUrl}/playlists/${playlistDTOMockFetch.name}`
-    ) {
+    if (url === `${Global.backendBaseUrl}/playlists/${mockPlaylist.name}`) {
       return Promise.resolve({
-        json: () => playlistDTOMockFetch,
+        json: () => mockPlaylist,
         status: 200,
         ok: true,
         headers: getMockHeaders(),
-      }).catch((error) => {
-        console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}/artists/${artistMockFetch.name}`) {
+    if (url === `${Global.backendBaseUrl}/users/${currentUser}`) {
       return Promise.resolve({
-        json: () => artistMockFetch,
+        json: () => mockUser,
         status: 200,
         ok: true,
         headers: getMockHeaders(),
-      }).catch((error) => {
-        console.log(error);
       });
     }
     if (url === `${Global.backendBaseUrl}/songs/metadata/${songName}`) {
@@ -159,13 +193,11 @@ test('Playlist user role hit like button', async () => {
         status: 200,
         ok: true,
         headers: getMockHeaders(),
-      }).catch((error) => {
-        console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}/users/${userMockFetch.name}`) {
+    if (url === `${Global.backendBaseUrl}/artists/${artistMockFetch.name}`) {
       return Promise.resolve({
-        json: () => userMockFetch,
+        json: () => artistMockFetch,
         status: 200,
         ok: true,
         headers: getMockHeaders(),
@@ -186,7 +218,7 @@ test('Playlist user role hit like button', async () => {
 
     if (
       url ===
-        `${Global.backendBaseUrl}/users/${userMockFetch.name}/saved_playlists?playlist_name=${playlistName}` &&
+        `${Global.backendBaseUrl}/users/${currentUser}/saved_playlists?playlist_name=${playlistName}` &&
       options.method === 'PATCH'
     ) {
       return Promise.resolve({
@@ -201,7 +233,7 @@ test('Playlist user role hit like button', async () => {
 
     if (
       url ===
-        `${Global.backendBaseUrl}/users/${userMockFetch.name}/saved_playlists?playlist_name=${playlistName}` &&
+        `${Global.backendBaseUrl}/users/${currentUser}/saved_playlists?playlist_name=${playlistName}` &&
       options.method === 'DELETE'
     ) {
       return Promise.resolve({
@@ -213,14 +245,12 @@ test('Playlist user role hit like button', async () => {
         console.log(error);
       });
     }
-
-    // In case the URL doesn't match, return a rejected promise
     return Promise.reject(new Error(`Unhandled URL in fetch mock: ${url}`));
   }) as jest.Mock;
 
   const component = await act(() => {
     return render(
-      <MemoryRouter initialEntries={[`/playlist/${playlistDTOMockFetch.name}`]}>
+      <MemoryRouter initialEntries={[`/playlist/${mockPlaylist.name}`]}>
         <NowPlayingContextProvider>
           <Routes>
             <Route
@@ -233,10 +263,10 @@ test('Playlist user role hit like button', async () => {
     );
   });
 
+  const likeButton = component.container.querySelector('#playlist-like-button');
+  expect(likeButton).toBeInTheDocument();
+
   await act(async () => {
-    const likeButton = component.container.querySelector(
-      '#playlist-like-button',
-    );
     if (likeButton) {
       fireEvent.click(likeButton);
     }
@@ -249,27 +279,43 @@ test('Playlist user role hit like button', async () => {
 });
 
 test('Playlist user role get unlike button', async () => {
+  const currentUser = 'differentUser';
+  jest.spyOn(TokenModule, 'getTokenUsername').mockReturnValue(currentUser);
+
+  const mockPlaylist: PlaylistDTO = {
+    name: playlistName,
+    photo: 'playlist',
+    description: 'des',
+    upload_date: 'date',
+    owner: 'originalOwner',
+    song_names: [songName],
+  };
+
+  const mockUser: UserMock = {
+    name: currentUser,
+    photo: 'photo',
+    register_date: 'date',
+    password: 'hashpassword',
+    playback_history: [songName],
+    playlists: [],
+    saved_playlists: [playlistName],
+  };
+
   global.fetch = jest.fn((url: string, options: any) => {
-    if (
-      url === `${Global.backendBaseUrl}/playlists/${playlistDTOMockFetch.name}`
-    ) {
+    if (url === `${Global.backendBaseUrl}/playlists/${mockPlaylist.name}`) {
       return Promise.resolve({
-        json: () => playlistDTOMockFetch,
+        json: () => mockPlaylist,
         status: 200,
         ok: true,
         headers: getMockHeaders(),
-      }).catch((error) => {
-        console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}/artists/${artistMockFetch.name}`) {
+    if (url === `${Global.backendBaseUrl}/users/${currentUser}`) {
       return Promise.resolve({
-        json: () => artistMockFetch,
+        json: () => mockUser,
         status: 200,
         ok: true,
         headers: getMockHeaders(),
-      }).catch((error) => {
-        console.log(error);
       });
     }
     if (url === `${Global.backendBaseUrl}/songs/metadata/${songName}`) {
@@ -278,13 +324,11 @@ test('Playlist user role get unlike button', async () => {
         status: 200,
         ok: true,
         headers: getMockHeaders(),
-      }).catch((error) => {
-        console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}/users/${userMockFetch.name}`) {
+    if (url === `${Global.backendBaseUrl}/artists/${artistMockFetch.name}`) {
       return Promise.resolve({
-        json: () => userMockFetch,
+        json: () => artistMockFetch,
         status: 200,
         ok: true,
         headers: getMockHeaders(),
@@ -305,7 +349,7 @@ test('Playlist user role get unlike button', async () => {
 
     if (
       url ===
-        `${Global.backendBaseUrl}/users/${userMockFetch.name}/saved_playlists?playlist_name=${playlistName}` &&
+        `${Global.backendBaseUrl}/users/${currentUser}/saved_playlists?playlist_name=${playlistName}` &&
       options.method === 'PATCH'
     ) {
       return Promise.resolve({
@@ -320,7 +364,7 @@ test('Playlist user role get unlike button', async () => {
 
     if (
       url ===
-        `${Global.backendBaseUrl}/users/${userMockFetch.name}/saved_playlists?playlist_name=${playlistName}` &&
+        `${Global.backendBaseUrl}/users/${currentUser}/saved_playlists?playlist_name=${playlistName}` &&
       options.method === 'DELETE'
     ) {
       return Promise.resolve({
@@ -333,13 +377,12 @@ test('Playlist user role get unlike button', async () => {
       });
     }
 
-    // In case the URL doesn't match, return a rejected promise
     return Promise.reject(new Error(`Unhandled URL in fetch mock: ${url}`));
   }) as jest.Mock;
 
   const component = await act(() => {
     return render(
-      <MemoryRouter initialEntries={[`/playlist/${playlistDTOMockFetch.name}`]}>
+      <MemoryRouter initialEntries={[`/playlist/${mockPlaylist.name}`]}>
         <NowPlayingContextProvider>
           <Routes>
             <Route
@@ -352,10 +395,12 @@ test('Playlist user role get unlike button', async () => {
     );
   });
 
+  const unlikeButton = component.container.querySelector(
+    '#playlist-unlike-button',
+  );
+  expect(unlikeButton).toBeInTheDocument();
+
   await act(async () => {
-    const unlikeButton = component.container.querySelector(
-      '#playlist-unlike-button',
-    );
     if (unlikeButton) {
       fireEvent.click(unlikeButton);
     }
@@ -366,27 +411,45 @@ test('Playlist user role get unlike button', async () => {
 });
 
 test('Playlist user role update playlist', async () => {
-  global.fetch = jest.fn((url: string, options: any) => {
-    if (
-      url === `${Global.backendBaseUrl}/playlists/${playlistDTOMockFetch.name}`
-    ) {
+  const currentUser = 'differentUser';
+  jest.spyOn(TokenModule, 'getTokenUsername').mockReturnValue(currentUser);
+
+  // Mock playlist data with different owner
+  const mockPlaylist: PlaylistDTO = {
+    name: playlistName,
+    photo: 'playlist',
+    description: 'des',
+    upload_date: 'date',
+    owner: currentUser,
+    song_names: [songName],
+  };
+
+  // Mock user data
+  const mockUser: UserMock = {
+    name: currentUser,
+    photo: 'photo',
+    register_date: 'date',
+    password: 'hashpassword',
+    playback_history: [songName],
+    playlists: [],
+    saved_playlists: [],
+  };
+
+  global.fetch = jest.fn((url: string) => {
+    if (url === `${Global.backendBaseUrl}/playlists/${mockPlaylist.name}`) {
       return Promise.resolve({
-        json: () => playlistDTOMockFetch,
+        json: () => mockPlaylist,
         status: 200,
         ok: true,
         headers: getMockHeaders(),
-      }).catch((error) => {
-        console.log(error);
       });
     }
-    if (url === `${Global.backendBaseUrl}/artists/${artistMockFetch.name}`) {
+    if (url === `${Global.backendBaseUrl}/users/${currentUser}`) {
       return Promise.resolve({
-        json: () => artistMockFetch,
+        json: () => mockUser,
         status: 200,
         ok: true,
         headers: getMockHeaders(),
-      }).catch((error) => {
-        console.log(error);
       });
     }
     if (url === `${Global.backendBaseUrl}/songs/metadata/${songName}`) {
@@ -395,18 +458,6 @@ test('Playlist user role update playlist', async () => {
         status: 200,
         ok: true,
         headers: getMockHeaders(),
-      }).catch((error) => {
-        console.log(error);
-      });
-    }
-    if (url === `${Global.backendBaseUrl}/users/${userMockFetch.name}`) {
-      return Promise.resolve({
-        json: () => userMockFetch,
-        status: 200,
-        ok: true,
-        headers: getMockHeaders(),
-      }).catch((error) => {
-        console.log(error);
       });
     }
     if (url === `${Global.backendBaseUrl}/playlists/${playlistName}`) {
@@ -415,41 +466,8 @@ test('Playlist user role update playlist', async () => {
         status: 204,
         ok: true,
         headers: getMockHeaders(),
-      }).catch((error) => {
-        console.log(`${error}`);
       });
     }
-
-    if (
-      url ===
-        `${Global.backendBaseUrl}/users/${userMockFetch.name}/saved_playlists?playlist_name=${playlistName}` &&
-      options.method === 'PATCH'
-    ) {
-      return Promise.resolve({
-        json: () => {},
-        status: 204,
-        ok: true,
-        headers: getMockHeaders(),
-      }).catch((error) => {
-        console.log(error);
-      });
-    }
-
-    if (
-      url ===
-        `${Global.backendBaseUrl}/users/${userMockFetch.name}/saved_playlists?playlist_name=${playlistName}` &&
-      options.method === 'DELETE'
-    ) {
-      return Promise.resolve({
-        json: () => {},
-        status: 202,
-        ok: true,
-        headers: getMockHeaders(),
-      }).catch((error) => {
-        console.log(error);
-      });
-    }
-
     if (
       url ===
       `${Global.backendBaseUrl}/playlists/${playlistName}?photo=&description=description`
@@ -459,8 +477,6 @@ test('Playlist user role update playlist', async () => {
         status: 204,
         ok: true,
         headers: getMockHeaders(),
-      }).catch((error) => {
-        console.log(error);
       });
     }
     return Promise.reject(new Error(`Unhandled URL in fetch mock: ${url}`));
@@ -470,7 +486,7 @@ test('Playlist user role update playlist', async () => {
 
   const component = await act(() => {
     return render(
-      <MemoryRouter initialEntries={[`/playlist/${playlistDTOMockFetch.name}`]}>
+      <MemoryRouter initialEntries={[`/playlist/${mockPlaylist.name}`]}>
         <NowPlayingContextProvider>
           <Routes>
             <Route
@@ -490,12 +506,12 @@ test('Playlist user role update playlist', async () => {
     }
   });
 
-  const inputName = component.getByPlaceholderText(
+  const inputDescription = component.getByPlaceholderText(
     t('playlist.description-placeholder'),
   );
 
   await act(async () => {
-    fireEvent.change(inputName, {
+    fireEvent.change(inputDescription, {
       target: { value: 'description' },
     });
   });
@@ -510,4 +526,53 @@ test('Playlist user role update playlist', async () => {
   });
 
   expect(refreshSidebarData).toHaveBeenCalledTimes(1);
+});
+
+test('Playlist owner should not see like buttons', async () => {
+  const ownerName = 'ownerUser';
+  jest.spyOn(TokenModule, 'getTokenUsername').mockReturnValue(ownerName);
+
+  const mockPlaylist: PlaylistDTO = {
+    name: playlistName,
+    photo: 'playlist',
+    description: 'des',
+    upload_date: 'date',
+    owner: ownerName,
+    song_names: [songName],
+  };
+
+  global.fetch = jest.fn((url: string) => {
+    if (url === `${Global.backendBaseUrl}/playlists/${mockPlaylist.name}`) {
+      return Promise.resolve({
+        json: () => mockPlaylist,
+        status: 200,
+        ok: true,
+        headers: getMockHeaders(),
+      });
+    }
+
+    return Promise.reject(new Error(`Unhandled URL in fetch mock: ${url}`));
+  }) as jest.Mock;
+
+  const component = await act(() => {
+    return render(
+      <MemoryRouter initialEntries={[`/playlist/${mockPlaylist.name}`]}>
+        <NowPlayingContextProvider>
+          <Routes>
+            <Route
+              path="/playlist/:id"
+              element={<Playlist refreshSidebarData={jest.fn()} />}
+            />
+          </Routes>
+        </NowPlayingContextProvider>
+      </MemoryRouter>,
+    );
+  });
+
+  const likeButton = component.container.querySelector('#playlist-like-button');
+  const unlikeButton = component.container.querySelector(
+    '#playlist-unlike-button',
+  );
+  expect(likeButton).not.toBeInTheDocument();
+  expect(unlikeButton).not.toBeInTheDocument();
 });

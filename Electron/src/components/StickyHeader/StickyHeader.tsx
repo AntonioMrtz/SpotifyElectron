@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import Global from 'global/global';
 import { getTokenUsername } from 'utils/token';
 import Popover, { PopoverPosition } from '@mui/material/Popover';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
 import ContextMenuProfile from 'components/AdvancedUIComponents/ContextMenu/Profile/ContextMenuProfile';
 import useFetchGetUser from 'hooks/useFetchGetUser';
 import { useNowPlayingContext } from 'hooks/useNowPlayingContext';
@@ -167,15 +168,15 @@ export default function StickyHeader({ handleLogout }: PropsStickyHeader) {
 
       <div>
         <Popover
+          key={
+            anchorPosition
+              ? `${anchorPosition.top}-${anchorPosition.left}`
+              : 'popover'
+          }
           onClick={(e) => e.stopPropagation()}
           onContextMenu={(e) => e.stopPropagation()}
-          BackdropProps={{
-            onContextMenu: (e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              handleCloseContextMenu();
-            },
-          }}
+          hideBackdrop
+          disableScrollLock
           id={id}
           open={open}
           onClose={handleCloseContextMenu}
@@ -190,18 +191,27 @@ export default function StickyHeader({ handleLogout }: PropsStickyHeader) {
             horizontal: 'left',
           }}
           sx={{
+            pointerEvents: 'none',
             '& .MuiPaper-root': {
               backgroundColor: 'var(--hover-white)',
+              pointerEvents: 'auto',
             },
-            '& . MuiPopover-root': {
+            '& .MuiPopover-root': {
               zIndex: '1000',
             },
           }}
         >
-          <ContextMenuProfile
-            handleLogout={logOut}
-            handleClose={handleCloseContextMenu}
-          />
+          <ClickAwayListener
+            onClickAway={handleCloseContextMenu}
+            mouseEvent="onPointerDown"
+          >
+            <div>
+              <ContextMenuProfile
+                handleLogout={logOut}
+                handleClose={handleCloseContextMenu}
+              />
+            </div>
+          </ClickAwayListener>
         </Popover>
       </div>
     </header>

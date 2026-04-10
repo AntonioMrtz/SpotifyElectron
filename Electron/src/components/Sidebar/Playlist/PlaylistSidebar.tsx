@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import Popover, { PopoverPosition } from '@mui/material/Popover';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
 import { useEffect, useState, MouseEvent } from 'react';
 import ContextMenuPlaylist from 'components/AdvancedUIComponents/ContextMenu/Playlist/ContextMenuPlaylist';
 import { PropsPlaylistCardSidebar } from 'types/playlist';
@@ -71,15 +72,15 @@ export default function PlaylistSidebar({
       </div>
       <div>
         <Popover
+          key={
+            anchorPosition
+              ? `${anchorPosition.top}-${anchorPosition.left}`
+              : 'popover'
+          }
           onClick={(e) => e.stopPropagation()}
           onContextMenu={(e) => e.stopPropagation()}
-          BackdropProps={{
-            onContextMenu: (e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              handleClose();
-            },
-          }}
+          hideBackdrop
+          disableScrollLock
           id={id}
           open={open}
           onClose={handleClose}
@@ -94,21 +95,30 @@ export default function PlaylistSidebar({
             horizontal: 'left',
           }}
           sx={{
+            pointerEvents: 'none',
             '& .MuiPaper-root': {
               backgroundColor: 'var(--hover-white)',
+              pointerEvents: 'auto',
             },
-            '& . MuiPopover-root': {
+            '& .MuiPopover-root': {
               zIndex: '1000',
             },
           }}
         >
-          <ContextMenuPlaylist
-            playlistName={name}
-            handleCloseParent={handleClose}
-            owner={owner}
-            refreshPlaylistData={() => {}}
-            refreshSidebarData={refreshSidebarData}
-          />
+          <ClickAwayListener
+            onClickAway={handleClose}
+            mouseEvent="onPointerDown"
+          >
+            <div>
+              <ContextMenuPlaylist
+                playlistName={name}
+                handleCloseParent={handleClose}
+                owner={owner}
+                refreshPlaylistData={() => {}}
+                refreshSidebarData={refreshSidebarData}
+              />
+            </div>
+          </ClickAwayListener>
         </Popover>
       </div>
     </button>

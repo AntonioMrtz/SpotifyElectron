@@ -31,11 +31,11 @@ ipcMain.handle('copy-to-clipboard', async (event, dataToClipboard) => {
 });
 
 ipcMain.handle('load-previous-url', async () => {
-  mainWindow?.webContents.goBack();
+  mainWindow?.webContents.navigationHistory.goBack();
 });
 
 ipcMain.handle('load-forward-url', async () => {
-  mainWindow?.webContents.goForward();
+  mainWindow?.webContents.navigationHistory.goBack();
 });
 
 ipcMain.handle('handle-url-change', async () => {

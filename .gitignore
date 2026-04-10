@@ -164,6 +164,7 @@ release_temp/
 #python
 __pycache__
 venv
+.venv
 htmlcov
 .coverage
 

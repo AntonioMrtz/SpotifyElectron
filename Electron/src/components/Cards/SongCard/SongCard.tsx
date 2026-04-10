@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import ContextMenuSong from 'components/AdvancedUIComponents/ContextMenu/Song/ContextMenuSong';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Popover, { PopoverPosition } from '@mui/material/Popover';
 import { useNavigate } from 'react-router-dom';
 import { PropsSongCard } from 'types/song';
@@ -90,15 +91,15 @@ export default function SongCard({
       </div>
       <div>
         <Popover
+          key={
+            anchorPosition
+              ? `${anchorPosition.top}-${anchorPosition.left}`
+              : 'popover'
+          }
           onClick={(e) => e.stopPropagation()}
           onContextMenu={(e) => e.stopPropagation()}
-          BackdropProps={{
-            onContextMenu: (e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              handleClose();
-            },
-          }}
+          hideBackdrop
+          disableScrollLock
           id={id}
           open={open}
           onClose={handleClose}
@@ -113,22 +114,31 @@ export default function SongCard({
             horizontal: 'left',
           }}
           sx={{
+            pointerEvents: 'none',
             '& .MuiPaper-root': {
               backgroundColor: 'var(--hover-white)',
+              pointerEvents: 'auto',
             },
-            '& . MuiPopover-root': {
+            '& .MuiPopover-root': {
               zIndex: '1000',
             },
           }}
         >
-          <ContextMenuSong
-            songName={name}
-            artistName={artist}
-            playlistName=""
-            handleCloseParent={handleClose}
-            refreshPlaylistData={() => {}}
-            refreshSidebarData={refreshSidebarData}
-          />
+          <ClickAwayListener
+            onClickAway={handleClose}
+            mouseEvent="onPointerDown"
+          >
+            <div>
+              <ContextMenuSong
+                songName={name}
+                artistName={artist}
+                playlistName=""
+                handleCloseParent={handleClose}
+                refreshPlaylistData={() => {}}
+                refreshSidebarData={() => {}}
+              />
+            </div>
+          </ClickAwayListener>
         </Popover>
       </div>
     </>

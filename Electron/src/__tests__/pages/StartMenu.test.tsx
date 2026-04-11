@@ -220,6 +220,31 @@ describe('StartMenu Component', () => {
     expect(setIsSigningUpMock).toHaveBeenCalledWith(true);
   });
 
+  test('toggles password visibility when clicking the toggle button', async () => {
+    await act(async () => {
+      render(
+        <StartMenu
+          setIsLogged={setIsLoggedMock}
+          setIsSigningUp={setIsSigningUpMock}
+        />,
+      );
+    });
+
+    const passwordInput = screen.getByPlaceholderText(
+      t('startMenu.form-password'),
+    );
+    expect(passwordInput).toHaveAttribute('type', 'password');
+
+    const toggleButton = screen.getByLabelText('Show password');
+    fireEvent.click(toggleButton);
+
+    expect(passwordInput).toHaveAttribute('type', 'text');
+    expect(screen.getByLabelText('Hide password')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByLabelText('Hide password'));
+    expect(passwordInput).toHaveAttribute('type', 'password');
+  });
+
   test('change language from english to spanish', async () => {
     await act(async () => {
       render(

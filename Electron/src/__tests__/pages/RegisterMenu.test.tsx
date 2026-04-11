@@ -275,6 +275,38 @@ describe('RegisterMenu Component', () => {
     expect(mockSetIsSigningUp).toHaveBeenCalledWith(false);
   });
 
+  test('toggles password visibility for password field', () => {
+    const component = render(
+      <RegisterMenu setIsSigningUp={jest.fn()} />,
+    );
+
+    const passwordInput = component.getByPlaceholderText(
+      t('registerMenu.form-password'),
+    );
+    expect(passwordInput).toHaveAttribute('type', 'password');
+
+    const toggleButtons = component.getAllByLabelText('Show password');
+    fireEvent.click(toggleButtons[0]);
+
+    expect(passwordInput).toHaveAttribute('type', 'text');
+  });
+
+  test('toggles password visibility for confirm password field', () => {
+    const component = render(
+      <RegisterMenu setIsSigningUp={jest.fn()} />,
+    );
+
+    const confirmPasswordInput = component.getByPlaceholderText(
+      t('registerMenu.form-password-repeat'),
+    );
+    expect(confirmPasswordInput).toHaveAttribute('type', 'password');
+
+    const toggleButtons = component.getAllByLabelText('Show password');
+    fireEvent.click(toggleButtons[1]);
+
+    expect(confirmPasswordInput).toHaveAttribute('type', 'text');
+  });
+
   test('Change to login menu', () => {
     const mockSetIsSigningUp = jest.fn();
 

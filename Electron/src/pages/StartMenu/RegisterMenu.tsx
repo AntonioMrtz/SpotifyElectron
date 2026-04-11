@@ -43,6 +43,10 @@ export default function RegisterMenu({ setIsSigningUp }: PropsRegisterMenu) {
     null,
   );
 
+  /* Password visibility */
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   /* Loading state */
   const [loading, setLoading] = useState(false);
 
@@ -199,33 +203,55 @@ export default function RegisterMenu({ setIsSigningUp }: PropsRegisterMenu) {
               className="d-flex flex-column justify-content-start"
             >
               {t('registerMenu.form-password')}
-              <input
-                type="password"
-                name="password"
-                id="password"
-                placeholder={t('registerMenu.form-password')}
-                onChange={handleChange}
-                disabled={loading}
-                spellCheck={false}
-                required
-              />
+              <div className={styles.passwordInputWrapper}>
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  name="password"
+                  id="password"
+                  placeholder={t('registerMenu.form-password')}
+                  onChange={handleChange}
+                  disabled={loading}
+                  spellCheck={false}
+                  required
+                />
+                <button
+                  type="button"
+                  className={styles.passwordToggleButton}
+                  onClick={() => setShowPassword(!showPassword)}
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                  disabled={loading}
+                >
+                  {showPassword ? '🙈' : '👁'}
+                </button>
+              </div>
             </label>
 
             <label
-              htmlFor="password"
+              htmlFor="confirmpassword"
               className="d-flex flex-column justify-content-start"
             >
               {t('registerMenu.form-password-repeat')}
-              <input
-                type="password"
-                name="confirmpassword"
-                id="confirmpassword"
-                placeholder={t('registerMenu.form-password-repeat')}
-                onChange={handleChange}
-                disabled={loading}
-                spellCheck={false}
-                required
-              />
+              <div className={styles.passwordInputWrapper}>
+                <input
+                  type={showConfirmPassword ? 'text' : 'password'}
+                  name="confirmpassword"
+                  id="confirmpassword"
+                  placeholder={t('registerMenu.form-password-repeat')}
+                  onChange={handleChange}
+                  disabled={loading}
+                  spellCheck={false}
+                  required
+                />
+                <button
+                  type="button"
+                  className={styles.passwordToggleButton}
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
+                  disabled={loading}
+                >
+                  {showConfirmPassword ? '🙈' : '👁'}
+                </button>
+              </div>
             </label>
           </div>
 

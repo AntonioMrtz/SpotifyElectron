@@ -34,6 +34,9 @@ export default function StartMenu({
   setIsLogged,
   setIsSigningUp,
 }: PropsStartMenu) {
+  /* Password visibility */
+  const [showPassword, setShowPassword] = useState(false);
+
   /* Popover */
   const [isOpenPopover, setisOpenPopover] = useState(false);
   const [propsPopOver, setPropsPopOver] = useState<PropsInfoPopover | null>(
@@ -283,16 +286,27 @@ export default function StartMenu({
               className="d-flex flex-column justify-content-start"
             >
               {t('startMenu.form-password')}
-              <input
-                type="password"
-                name="password"
-                id="password"
-                placeholder={t('startMenu.form-password')}
-                onChange={handleChange}
-                disabled={loginLoading}
-                spellCheck={false}
-                required
-              />
+              <div className={styles.passwordInputWrapper}>
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  name="password"
+                  id="password"
+                  placeholder={t('startMenu.form-password')}
+                  onChange={handleChange}
+                  disabled={loginLoading}
+                  spellCheck={false}
+                  required
+                />
+                <button
+                  type="button"
+                  className={styles.passwordToggleButton}
+                  onClick={() => setShowPassword(!showPassword)}
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                  disabled={loginLoading}
+                >
+                  {showPassword ? '🙈' : '👁'}
+                </button>
+              </div>
             </label>
 
             <button

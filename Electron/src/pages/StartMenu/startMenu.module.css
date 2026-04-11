@@ -142,6 +142,38 @@
   opacity: 50%;
 }
 
+.passwordInputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.passwordInputWrapper input {
+  width: 100%;
+  padding-right: 2.5rem;
+}
+
+.passwordToggleButton {
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  font-size: 1rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.passwordToggleButton:disabled {
+  opacity: 50%;
+  cursor: not-allowed;
+}
+
 @media (max-width: 1336px) {
   .contentWrapper h1 {
     margin-bottom: 2rem !important;

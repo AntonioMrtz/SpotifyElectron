@@ -556,8 +556,6 @@ export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
           }
           onClick={(e) => e.stopPropagation()}
           onContextMenu={(e) => e.stopPropagation()}
-          hideBackdrop
-          disableScrollLock
           id={id}
           open={open}
           onClose={handleCloseContextMenu}

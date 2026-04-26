@@ -12,7 +12,7 @@ export default function SongCard({
   name,
   artist,
   photo,
-  refreshSidebarData,
+  // refreshSidebarData,
 }: PropsSongCard) {
   const { changeSongName } = useNowPlayingContext();
 
@@ -99,7 +99,6 @@ export default function SongCard({
           onClick={(e) => e.stopPropagation()}
           onContextMenu={(e) => e.stopPropagation()}
           hideBackdrop
-          disableScrollLock
           id={id}
           open={open}
           onClose={handleClose}

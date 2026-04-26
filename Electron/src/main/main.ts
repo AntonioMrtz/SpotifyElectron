@@ -35,13 +35,13 @@ ipcMain.handle('load-previous-url', async () => {
 });
 
 ipcMain.handle('load-forward-url', async () => {
-  mainWindow?.webContents.navigationHistory.goBack();
+  mainWindow?.webContents.navigationHistory.goForward();
 });
 
 ipcMain.handle('handle-url-change', async () => {
   const eventResponse: Global.HandleUrlChangeResponse = {
-    canGoBack: mainWindow?.webContents.canGoBack(),
-    canGoForward: mainWindow?.webContents.canGoForward(),
+    canGoBack: mainWindow?.webContents.navigationHistory.canGoBack(),
+    canGoForward: mainWindow?.webContents.navigationHistory.canGoForward(),
   };
 
   return eventResponse;

@@ -184,7 +184,6 @@ Me gustaría expresar mi más sincero agradecimiento a las siguientes personas p
                  <sub><b>yajathb</b></sub>
              </a>
          </td>
-         <td></td>
     </tr>
 </table>
 

@@ -240,6 +240,5 @@ We're actively looking for new contributors 🙌. Feel free to check our [CONTRI
                  <sub><b>yajathb</b></sub>
              </a>
         </td>
-        <td></td>
     </tr>
 </table>

@@ -12,7 +12,6 @@ export default function SongCard({
   name,
   artist,
   photo,
-  // refreshSidebarData,
 }: PropsSongCard) {
   const { changeSongName } = useNowPlayingContext();
 

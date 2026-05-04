@@ -8,11 +8,7 @@ import { useNowPlayingContext } from 'hooks/useNowPlayingContext';
 import styles from '../cards.module.css';
 import defaultThumbnailPlaylist from '../../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 
-export default function SongCard({
-  name,
-  artist,
-  photo,
-}: PropsSongCard) {
+export default function SongCard({ name, artist, photo }: PropsSongCard) {
   const { changeSongName } = useNowPlayingContext();
 
   const navigate = useNavigate();

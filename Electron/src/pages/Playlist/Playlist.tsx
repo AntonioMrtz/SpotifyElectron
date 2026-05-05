@@ -27,6 +27,7 @@ interface PropsPlaylist {
 }
 
 export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
+  const isOwner = true;
   const { changeSongName } = useNowPlayingContext();
 
   const [mainColorThumbnail, setMainColorThumbnail] = useState('');
@@ -521,6 +522,7 @@ export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
             >
               {t('playlist.plays')}
             </span>
+            {isOwner && <span>Date Added</span>}
             <span className={` d-flex justify-content-end ${styles.gridItem}`}>
               <i className="fa-regular fa-clock" />
             </span>
@@ -540,6 +542,8 @@ export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
                   handleSongCliked={changeSongName}
                   refreshPlaylistData={refreshPlaylistData}
                   refreshSidebarData={refreshSidebarData}
+                  dateAdded={undefined}
+                  isOwner={true}
                 />
               );
             })}

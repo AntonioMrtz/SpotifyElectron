@@ -9,4 +9,6 @@ export interface PropsSongs {
   /* Refresh data on playlist menu after a modification */
   refreshPlaylistData: Function;
   refreshSidebarData: () => void;
+  dateAdded?: string;
+  isOwner?: boolean;
 }

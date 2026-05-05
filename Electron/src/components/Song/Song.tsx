@@ -15,6 +15,8 @@ export default function Song({
   streams,
   handleSongCliked,
   refreshPlaylistData,
+  dateAdded,
+  isOwner,
   refreshSidebarData,
 }: PropsSongs) {
   const navigate = useNavigate();
@@ -85,6 +87,11 @@ export default function Song({
       <span className={` d-flex justify-content-end ${styles.gridItem}`}>
         {secondsToMinutesSeconds(secondsDuration)}
       </span>
+      {isOwner && (
+        <span className={`d-flex justify-content-end ${styles.gridItem}`}>
+          {dateAdded ? new Date(dateAdded).toLocaleDateString() : '—'}
+        </span>
+      )}
 
       <div>
         <Popover

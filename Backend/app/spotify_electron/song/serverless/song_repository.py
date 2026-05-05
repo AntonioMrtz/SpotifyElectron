@@ -5,6 +5,7 @@ When the song file is not needed, and only the metadata is required use base son
 """
 
 import app.spotify_electron.song.serverless.providers.song_collection_provider as provider
+from datetime import datetime
 from app.logging.logging_constants import (
     LOGGING_SONG_SERVERLESS_REPOSITORY,
 )
@@ -91,6 +92,7 @@ async def create_song(  # noqa: D417
                 genre=str(genre.value),
                 photo=photo,
                 streams=0,
+                date_added=datetime.utcnow().isoformat(),
             ),
         )
 

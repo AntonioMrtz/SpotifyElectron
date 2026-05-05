@@ -21,6 +21,7 @@ import styles from './playlist.module.css';
 import { UsersService } from '../../swagger/api/services/UsersService';
 import { PlaylistsService } from '../../swagger/api/services/PlaylistsService';
 import { SongsService } from '../../swagger/api/services/SongsService';
+import { useAuthContext } from 'hooks/useAuthContext';
 
 interface PropsPlaylist {
   refreshSidebarData: () => void;
@@ -79,10 +80,12 @@ export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
   };
 
   const loadPlaylistLikedStatus = async () => {
-    const username = getTokenUsername();
+    const { username } = useAuthContext();
 
     try {
       // TODO simplify query to obtain the result directly
+
+      if (!username) return;
 
       const userData: UserProps =
         await UsersService.getUserUsersNameGet(username);

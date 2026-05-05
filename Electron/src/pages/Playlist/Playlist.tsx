@@ -236,6 +236,7 @@ export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
                   propsSong.artistName = songData.artist;
                   propsSong.secondsDuration = songData.seconds_duration;
                   propsSong.streams = songData.streams;
+                  propsSong.dateAdded = songData.date_added;
 
                   resolve(propsSong);
                   return propsSong;
@@ -542,7 +543,7 @@ export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
                   handleSongCliked={changeSongName}
                   refreshPlaylistData={refreshPlaylistData}
                   refreshSidebarData={refreshSidebarData}
-                  dateAdded={undefined}
+                  dateAdded={song.dateAdded}
                   isOwner={true}
                 />
               );

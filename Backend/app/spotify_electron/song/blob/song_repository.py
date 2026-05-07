@@ -7,6 +7,7 @@ When the song file is not needed, and only the metadata is required use base son
 """
 
 from motor.motor_asyncio import AsyncIOMotorGridOut
+from datetime import datetime
 
 import app.spotify_electron.song.blob.providers.song_collection_provider as provider
 from app.logging.logging_constants import LOGGING_SONG_BLOB_REPOSITORY
@@ -91,26 +92,35 @@ async def create_song(  # noqa: PLR0917
     try:
         gridfs_collection = provider.get_gridfs_song_collection()
 
-        song = SongMetadataDocument(
-            artist=artist,
-            seconds_duration=seconds_duration,
-            genre=str(genre.value),
-            photo=photo,
-            streams=0,
-            url=f"/stream/{name}",
-        )
+        metadata = {
+            "artist": artist,
+            "seconds_duration": seconds_duration,
+            "genre": str(genre.value),
+            "photo": photo,
+            "streams": 0,
+            "date_added": datetime.utcnow().isoformat(),
+        }
+
         result = await gridfs_collection.upload_from_stream(
-            filename=name, source=file, metadata=song
+            filename=name,
+            source=file,
+            metadata=metadata
         )
+
         validate_song_create(str(result))
+
     except SongCreateError as exception:
         song_repository_logger.exception(f"Error inserting Song {name} in database")
         raise SongRepositoryError from exception
+
     except SongRepositoryError as exception:
-        song_repository_logger.exception(f"Unexpected error inserting song {song} in database")
+        song_repository_logger.exception(
+            f"Unexpected error inserting song {name} in database"
+        )
         raise SongRepositoryError from exception
+
     else:
-        song_repository_logger.info(f"Song added to repository: {song}")
+        song_repository_logger.info(f"Song added to repository: {metadata}")
 
 
 async def get_song_data(name: str) -> AsyncIOMotorGridOut:

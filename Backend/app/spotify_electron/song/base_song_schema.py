@@ -3,15 +3,15 @@ It contains Base DAO/DTO objects both for Metadata and Song containing
 the song resource.
 """
 
+from typing import TypedDict, Optional
 from abc import ABC
 from dataclasses import dataclass
-from typing import TypedDict
 
 from app.exceptions.base_exceptions_schema import SpotifyElectronError
 from app.spotify_electron.genre.genre_schema import Genre
 
 
-class BaseSongMetadataDocument(TypedDict):
+class BaseSongMetadataDocument(TypedDict, total=False):
     """Represents song metadata in the persistence layer"""
 
     photo: str
@@ -19,6 +19,7 @@ class BaseSongMetadataDocument(TypedDict):
     seconds_duration: int
     genre: str
     streams: int
+    date_added: Optional[str]
 
 
 class BaseSongDocument(TypedDict):
@@ -54,12 +55,13 @@ class BaseSongDTO(ABC):
 
 @dataclass
 class SongMetadataDAO(BaseSongDAO):
-    """Represents Song metadata in the persistence transfering layer"""
+    date_added: Optional[str] = None   
 
 
 @dataclass
 class SongMetadataDTO(BaseSongDTO):
     """Represents Song metadata in the endpoints transfering layer"""
+    date_added: Optional[str] = None
 
 
 def get_song_metadata_dao_from_document(
@@ -77,13 +79,14 @@ def get_song_metadata_dao_from_document(
         SongMetadataDAO Object
     """
     return SongMetadataDAO(
-        name=song_name,
-        photo=document["photo"],
-        artist=document["artist"],
-        seconds_duration=document["seconds_duration"],
-        genre=Genre(document["genre"]),
-        streams=document["streams"],
-    )
+    name=song_name,
+    photo=document["photo"],
+    artist=document["artist"],
+    seconds_duration=document["seconds_duration"],
+    genre=Genre(document["genre"]),
+    streams=document["streams"],
+    date_added=document.get("date_added"),
+)
 
 
 def get_song_metadata_dto_from_dao(song_dao: SongMetadataDAO) -> SongMetadataDTO:
@@ -96,13 +99,14 @@ def get_song_metadata_dto_from_dao(song_dao: SongMetadataDAO) -> SongMetadataDTO
         the song metadata
     """
     return SongMetadataDTO(
-        name=song_dao.name,
-        photo=song_dao.photo,
-        artist=song_dao.artist,
-        seconds_duration=song_dao.seconds_duration,
-        genre=song_dao.genre,
-        streams=song_dao.streams,
-    )
+    name=song_dao.name,
+    photo=song_dao.photo,
+    artist=song_dao.artist,
+    seconds_duration=song_dao.seconds_duration,
+    genre=song_dao.genre,
+    streams=song_dao.streams,
+    date_added=song_dao.date_added,
+)
 
 
 class SongRepositoryError(SpotifyElectronError):

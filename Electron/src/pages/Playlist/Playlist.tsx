@@ -9,6 +9,7 @@ import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import ContextMenuPlaylist from 'components/AdvancedUIComponents/ContextMenu/Playlist/ContextMenuPlaylist';
 import Popover, { PopoverPosition } from '@mui/material/Popover';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
 import { secondsToHoursAndMinutesFormatted } from 'utils/date';
 import { TextField } from '@mui/material';
 import { inputStyle } from 'styles/mui5/styles';
@@ -548,6 +549,13 @@ export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
 
       <div>
         <Popover
+          key={
+            anchorPosition
+              ? `${anchorPosition.top}-${anchorPosition.left}`
+              : 'popover'
+          }
+          onClick={(e) => e.stopPropagation()}
+          onContextMenu={(e) => e.stopPropagation()}
           id={id}
           open={open}
           onClose={handleCloseContextMenu}
@@ -562,21 +570,27 @@ export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
             horizontal: 'left',
           }}
           sx={{
+            pointerEvents: 'none',
             '& .MuiPaper-root': {
               backgroundColor: 'var(--hover-white)',
-            },
-            '& . MuiPopover-root': {
-              zIndex: '1000',
+              pointerEvents: 'auto',
             },
           }}
         >
-          <ContextMenuPlaylist
-            playlistName={playlistName}
-            owner={owner}
-            handleCloseParent={handleCloseContextMenu}
-            refreshPlaylistData={refreshPlaylistData}
-            refreshSidebarData={refreshSidebarData}
-          />
+          <ClickAwayListener
+            onClickAway={handleCloseContextMenu}
+            mouseEvent="onPointerDown"
+          >
+            <div>
+              <ContextMenuPlaylist
+                playlistName={playlistName}
+                owner={owner}
+                handleCloseParent={handleCloseContextMenu}
+                refreshPlaylistData={refreshPlaylistData}
+                refreshSidebarData={refreshSidebarData}
+              />
+            </div>
+          </ClickAwayListener>
         </Popover>
       </div>
 

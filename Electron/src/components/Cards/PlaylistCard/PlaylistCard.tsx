@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, MouseEvent, useEffect } from 'react';
 import ContextMenuPlaylist from 'components/AdvancedUIComponents/ContextMenu/Playlist/ContextMenuPlaylist';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Popover, { PopoverPosition } from '@mui/material/Popover';
 import { PropsPlaylistCard } from 'types/playlist';
 import styles from '../cards.module.css';
@@ -127,6 +128,15 @@ export default function PlaylistCard({
       </Link>
       <div>
         <Popover
+          key={
+            anchorPosition
+              ? `${anchorPosition.top}-${anchorPosition.left}`
+              : 'popover'
+          }
+          onClick={(e) => e.stopPropagation()}
+          onContextMenu={(e) => e.stopPropagation()}
+          hideBackdrop
+          disableScrollLock
           id={id}
           open={open}
           onClose={handleCloseContextMenu}
@@ -141,21 +151,27 @@ export default function PlaylistCard({
             horizontal: 'left',
           }}
           sx={{
+            pointerEvents: 'none',
             '& .MuiPaper-root': {
               backgroundColor: 'var(--hover-white)',
-            },
-            '& . MuiPopover-root': {
-              zIndex: '1000',
+              pointerEvents: 'auto',
             },
           }}
         >
-          <ContextMenuPlaylist
-            playlistName={name}
-            handleCloseParent={handleCloseContextMenu}
-            owner={owner}
-            refreshPlaylistData={() => {}}
-            refreshSidebarData={refreshSidebarData}
-          />
+          <ClickAwayListener
+            onClickAway={handleCloseContextMenu}
+            mouseEvent="onPointerDown"
+          >
+            <div>
+              <ContextMenuPlaylist
+                playlistName={name}
+                owner={owner}
+                handleCloseParent={handleCloseContextMenu}
+                refreshPlaylistData={() => {}}
+                refreshSidebarData={refreshSidebarData}
+              />
+            </div>
+          </ClickAwayListener>
         </Popover>
       </div>
     </>

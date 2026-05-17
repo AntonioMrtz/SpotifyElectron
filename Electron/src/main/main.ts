@@ -31,17 +31,17 @@ ipcMain.handle('copy-to-clipboard', async (event, dataToClipboard) => {
 });
 
 ipcMain.handle('load-previous-url', async () => {
-  mainWindow?.webContents.goBack();
+  mainWindow?.webContents.navigationHistory.goBack();
 });
 
 ipcMain.handle('load-forward-url', async () => {
-  mainWindow?.webContents.goForward();
+  mainWindow?.webContents.navigationHistory.goForward();
 });
 
 ipcMain.handle('handle-url-change', async () => {
   const eventResponse: Global.HandleUrlChangeResponse = {
-    canGoBack: mainWindow?.webContents.canGoBack(),
-    canGoForward: mainWindow?.webContents.canGoForward(),
+    canGoBack: mainWindow?.webContents.navigationHistory.canGoBack(),
+    canGoForward: mainWindow?.webContents.navigationHistory.canGoForward(),
   };
 
   return eventResponse;

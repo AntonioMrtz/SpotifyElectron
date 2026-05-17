@@ -233,8 +233,12 @@ We're actively looking for new contributors 🙌. Feel free to check our [CONTRI
                  <sub><b>Nikhil034</b></sub>
              </a>
          </td>
-         <td></td>
-         <td></td>
+        <td align="center">
+             <a href="https://github.com/yajathb">
+                 <img src="https://avatars.githubusercontent.com/u/66492618?v=4" width="90" alt="yajathb" />
+                 <br />
+                 <sub><b>yajathb</b></sub>
+             </a>
+        </td>
     </tr>
- 
 </table>

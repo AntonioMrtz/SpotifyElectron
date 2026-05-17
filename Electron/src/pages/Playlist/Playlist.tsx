@@ -2,7 +2,6 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { ChangeEvent, FormEvent, useEffect, useState, MouseEvent } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { getTokenUsername } from 'utils/token';
 import { PropsSongs } from 'components/Sidebar/types/propsSongs';
 import { FastAverageColor } from 'fast-average-color';
 import Modal from '@mui/material/Modal';
@@ -15,6 +14,7 @@ import { inputStyle } from 'styles/mui5/styles';
 import { useNowPlayingContext } from 'hooks/useNowPlayingContext';
 import { t } from 'i18next';
 import { UserProps } from 'types/user';
+import { useAuthContext } from 'hooks/useAuthContext';
 import defaultThumbnailPlaylist from '../../assets/imgs/DefaultThumbnailPlaylist.jpg';
 import Song from '../../components/Song/Song';
 import styles from './playlist.module.css';
@@ -28,6 +28,7 @@ interface PropsPlaylist {
 
 export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
   const { changeSongName } = useNowPlayingContext();
+  const { username } = useAuthContext();
 
   const [mainColorThumbnail, setMainColorThumbnail] = useState('');
 
@@ -79,10 +80,10 @@ export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
   };
 
   const loadPlaylistLikedStatus = async () => {
-    const username = getTokenUsername();
-
     try {
       // TODO simplify query to obtain the result directly
+
+      if (!username) return;
 
       const userData: UserProps =
         await UsersService.getUserUsersNameGet(username);
@@ -102,7 +103,7 @@ export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
   };
 
   const handleLike = async () => {
-    const username = getTokenUsername();
+    if (!username) return;
 
     if (liked === false) {
       try {
@@ -455,7 +456,7 @@ export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
               style={{ color: 'var(--primary-green)', fontSize: '3rem' }}
             />
           </button>
-          {owner !== getTokenUsername() && (
+          {owner !== username && (
             <>
               <button
                 type="button"
@@ -580,7 +581,7 @@ export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
         </Popover>
       </div>
 
-      {owner === getTokenUsername() && (
+      {owner === username && (
         <Modal
           className=""
           open={openModalUpdatePlaylist}

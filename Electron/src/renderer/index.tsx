@@ -7,6 +7,7 @@ import { StrictMode } from 'react';
 import App from './App';
 import './index.css';
 import initOpenAPIClient from '../swagger/openAPIClientInit';
+import { AuthProvider } from '../hooks/useAuthContext';
 
 initOpenAPIClient();
 const container = document.getElementById('root') as HTMLElement;
@@ -16,7 +17,9 @@ initializeI18n()
   .then(() => {
     return root.render(
       <StrictMode>
-        <App />
+        <AuthProvider>
+          <App />
+        </AuthProvider>
       </StrictMode>,
     );
   })

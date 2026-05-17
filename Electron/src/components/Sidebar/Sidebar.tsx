@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { getTokenUsername } from 'utils/token';
+import { useAuthContext } from 'hooks/useAuthContext';
 import LoadingCircle from 'components/AdvancedUIComponents/LoadingCircle/LoadingCircle';
 import { t } from 'i18next';
 import styles from './sidebar.module.css';
@@ -77,10 +77,10 @@ export default function Sidebar({
     setSelectedPlaylist(name); // Actualizar el estado cuando se hace clic en una playlist
   };
 
-  const userName = getTokenUsername();
+  const { username } = useAuthContext();
 
   const { playlists, loading } = useFetchGetUserRelevantPlaylists(
-    userName,
+    username ?? '',
     refreshSidebarTriggerValue,
   );
 

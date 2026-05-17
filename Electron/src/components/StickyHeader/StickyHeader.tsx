@@ -196,9 +196,6 @@ export default function StickyHeader({ handleLogout }: PropsStickyHeader) {
               backgroundColor: 'var(--hover-white)',
               pointerEvents: 'auto',
             },
-            '& .MuiPopover-root': {
-              zIndex: '1000',
-            },
           }}
         >
           <ClickAwayListener

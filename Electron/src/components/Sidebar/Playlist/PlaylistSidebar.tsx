@@ -70,57 +70,34 @@ export default function PlaylistSidebar({
         <label style={{ textAlign: 'start' }}>{name}</label>
         <p style={{ textAlign: 'start' }}>{t('common.playlist')}</p>
       </div>
-      <div>
-        <Popover
-          key={
-            anchorPosition
-              ? `${anchorPosition.top}-${anchorPosition.left}`
-              : 'popover'
-          }
-          onClick={(e) => e.stopPropagation()}
-          onContextMenu={(e) => e.stopPropagation()}
-          hideBackdrop
-          disableScrollLock
-          id={id}
-          open={open}
-          onClose={handleClose}
-          anchorReference="anchorPosition"
-          anchorPosition={anchorPosition as PopoverPosition}
-          anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'left',
-          }}
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'left',
-          }}
-          sx={{
-            pointerEvents: 'none',
-            '& .MuiPaper-root': {
-              backgroundColor: 'var(--hover-white)',
-              pointerEvents: 'auto',
-            },
-            '& .MuiPopover-root': {
-              zIndex: '1000',
-            },
-          }}
-        >
-          <ClickAwayListener
-            onClickAway={handleClose}
-            mouseEvent="onPointerDown"
-          >
-            <div>
-              <ContextMenuPlaylist
-                playlistName={name}
-                handleCloseParent={handleClose}
-                owner={owner}
-                refreshPlaylistData={() => {}}
-                refreshSidebarData={refreshSidebarData}
-              />
-            </div>
-          </ClickAwayListener>
-        </Popover>
-      </div>
+      <Popover
+        id={id}
+        open={open}
+        onClose={handleClose}
+        anchorReference="anchorPosition"
+        anchorPosition={anchorPosition as PopoverPosition}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'left',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'left',
+        }}
+        sx={{
+          '& .MuiPaper-root': {
+            backgroundColor: 'var(--hover-white)',
+          },
+        }}
+      >
+        <ContextMenuPlaylist
+          playlistName={name}
+          handleCloseParent={handleClose}
+          owner={owner}
+          refreshPlaylistData={() => {}}
+          refreshSidebarData={refreshSidebarData}
+        />
+      </Popover>
     </button>
   );
 }

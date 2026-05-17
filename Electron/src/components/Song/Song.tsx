@@ -117,9 +117,6 @@ export default function Song({
               backgroundColor: 'var(--hover-white)',
               pointerEvents: 'auto',
             },
-            '& .MuiPopover-root': {
-              zIndex: '1000',
-            },
           }}
         >
           <ClickAwayListener

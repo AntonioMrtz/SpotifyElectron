@@ -575,9 +575,6 @@ export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
               backgroundColor: 'var(--hover-white)',
               pointerEvents: 'auto',
             },
-            '& .MuiPopover-root': {
-              zIndex: '1000',
-            },
           }}
         >
           <ClickAwayListener

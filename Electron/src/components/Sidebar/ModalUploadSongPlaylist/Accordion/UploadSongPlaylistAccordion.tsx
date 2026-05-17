@@ -1,4 +1,10 @@
-import { ChangeEvent, FormEvent, useState, useEffect } from 'react';
+import {
+  ChangeEvent,
+  FormEvent,
+  useState,
+  useEffect,
+  useCallback,
+} from 'react';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -6,7 +12,7 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import LibraryMusicRoundedIcon from '@mui/icons-material/LibraryMusicRounded';
 import AudiotrackIcon from '@mui/icons-material/Audiotrack';
-import { getTokenRole } from 'utils/token';
+import { useAuthContext } from 'hooks/useAuthContext';
 import { InfoPopoverType } from 'components/AdvancedUIComponents/InfoPopOver/types/InfoPopover';
 import ConfirmationModal from 'components/AdvancedUIComponents/InfoPopOver/InfoPopover';
 import UserType from 'utils/role';
@@ -57,19 +63,19 @@ export default function UploadSongPlaylistAccordion({
 
   const [isArtist, setIsArtist] = useState(false);
 
-  const checkIsArtist = async () => {
-    const role = getTokenRole();
+  const { role } = useAuthContext();
 
+  const checkIsArtist = useCallback(async () => {
     if (role === UserType.ARTIST) {
       setIsArtist(true);
     } else {
       setIsArtist(false);
     }
-  };
+  }, [role]);
 
   useEffect(() => {
     checkIsArtist();
-  }, []);
+  }, [checkIsArtist]);
 
   /* Confirmation Modal */
 

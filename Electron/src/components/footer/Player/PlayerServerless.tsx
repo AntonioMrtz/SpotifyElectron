@@ -6,7 +6,7 @@ import {
   useCallback,
 } from 'react';
 import Global from 'global/global';
-import { getTokenUsername } from 'utils/token';
+import { useAuthContext } from 'hooks/useAuthContext';
 import { SongsService } from 'swagger/api/services/SongsService';
 import { UsersService } from 'swagger/api/services/UsersService';
 import styles from './player.module.css';
@@ -88,17 +88,16 @@ export default function PlayerServerless({
     }
   };
 
+  const { username } = useAuthContext();
   const handleUpdatePlaybackHistory = async () => {
-    const userName = getTokenUsername();
-
     try {
       await UsersService.patchPlaybackHistoryUsersNamePlaybackHistoryPatch(
-        userName,
+        username ?? '',
         songName,
       );
     } catch (err) {
       console.log(
-        `Unable to update User ${userName} playback history with Son ${songName}`,
+        `Unable to update User ${username} playback history with Son ${songName}`,
       );
       console.log(err);
     }

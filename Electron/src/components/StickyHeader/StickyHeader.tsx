@@ -1,7 +1,7 @@
 import { useEffect, useState, MouseEvent } from 'react';
 import { useLocation } from 'react-router-dom';
 import Global from 'global/global';
-import { getTokenUsername } from 'utils/token';
+import { useAuthContext } from 'hooks/useAuthContext';
 import Popover, { PopoverPosition } from '@mui/material/Popover';
 import ContextMenuProfile from 'components/AdvancedUIComponents/ContextMenu/Profile/ContextMenuProfile';
 import useFetchGetUser from 'hooks/useFetchGetUser';
@@ -17,8 +17,8 @@ interface PropsStickyHeader {
 export default function StickyHeader({ handleLogout }: PropsStickyHeader) {
   const { changeSongName } = useNowPlayingContext();
 
-  const username = getTokenUsername();
-  const { user } = useFetchGetUser(username);
+  const { username } = useAuthContext();
+  const { user } = useFetchGetUser(username ?? '');
   const [profileIcon, setProfileIcon] = useState(defaultThumbnailPlaylist);
 
   const [visibleBackground, setVisibleBackground] = useState({});

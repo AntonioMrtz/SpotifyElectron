@@ -1,5 +1,13 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useMemo,
+  ReactNode,
+} from 'react';
 import { getTokenUsername } from 'utils/token';
+import { TOKEN_KEY, ROLE_KEY } from '../constants/auth';
 
 type AuthContextType = {
   username: string | null;
@@ -14,25 +22,27 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [username, setUsername] = useState<string | null>(getTokenUsername());
   const [token, setToken] = useState<string | null>(
-    localStorage.getItem('token')
+    localStorage.getItem(TOKEN_KEY),
   );
   const [role, setRole] = useState<string | null>(
-    localStorage.getItem('role')
+    localStorage.getItem(ROLE_KEY),
   );
   // Global authentication context provider
   useEffect(() => {
-
     setUsername(getTokenUsername());
-  
   }, [token]);
 
-  const setAuthData = (username: string, token: string, role: string) => {
-    setUsername(username);
-    setToken(token);
-    setRole(role);
+  const setAuthData = (
+    newUsername: string,
+    newToken: string,
+    newRole: string,
+  ) => {
+    setUsername(newUsername);
+    setToken(newToken);
+    setRole(newRole);
 
-    localStorage.setItem('token', token);
-    localStorage.setItem('role', role);
+    localStorage.setItem(TOKEN_KEY, newToken);
+    localStorage.setItem(ROLE_KEY, newRole);
   };
 
   const logout = () => {
@@ -40,15 +50,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setToken(null);
     setRole(null);
 
-    localStorage.removeItem('token');
-    localStorage.removeItem('role');
+    localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(ROLE_KEY);
   };
 
-  return (
-    <AuthContext.Provider value={{ username, token, role, setAuthData, logout }}>
-      {children}
-    </AuthContext.Provider>
+  const value = useMemo(
+    () => ({
+      username,
+      token,
+      role,
+      setAuthData,
+      logout,
+    }),
+    [username, token, role],
   );
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export function useAuthContext() {

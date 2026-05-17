@@ -1,4 +1,3 @@
-import { AuthProvider } from '../hooks/useAuthContext';
 import { createRoot } from 'react-dom/client';
 import { initializeI18n } from 'i18n/i18n';
 // Import bootstrap before app and custom styles so own code it's not overrided
@@ -8,6 +7,7 @@ import { StrictMode } from 'react';
 import App from './App';
 import './index.css';
 import initOpenAPIClient from '../swagger/openAPIClientInit';
+import { AuthProvider } from '../hooks/useAuthContext';
 
 initOpenAPIClient();
 const container = document.getElementById('root') as HTMLElement;

@@ -69,39 +69,34 @@ export default function PlaylistSidebar({
         <label style={{ textAlign: 'start' }}>{name}</label>
         <p style={{ textAlign: 'start' }}>{t('common.playlist')}</p>
       </div>
-      <div>
-        <Popover
-          id={id}
-          open={open}
-          onClose={handleClose}
-          anchorReference="anchorPosition"
-          anchorPosition={anchorPosition as PopoverPosition}
-          anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'left',
-          }}
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'left',
-          }}
-          sx={{
-            '& .MuiPaper-root': {
-              backgroundColor: 'var(--hover-white)',
-            },
-            '& . MuiPopover-root': {
-              zIndex: '1000',
-            },
-          }}
-        >
-          <ContextMenuPlaylist
-            playlistName={name}
-            handleCloseParent={handleClose}
-            owner={owner}
-            refreshPlaylistData={() => {}}
-            refreshSidebarData={refreshSidebarData}
-          />
-        </Popover>
-      </div>
+      <Popover
+        id={id}
+        open={open}
+        onClose={handleClose}
+        anchorReference="anchorPosition"
+        anchorPosition={anchorPosition as PopoverPosition}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'left',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'left',
+        }}
+        sx={{
+          '& .MuiPaper-root': {
+            backgroundColor: 'var(--hover-white)',
+          },
+        }}
+      >
+        <ContextMenuPlaylist
+          playlistName={name}
+          handleCloseParent={handleClose}
+          owner={owner}
+          refreshPlaylistData={() => {}}
+          refreshSidebarData={refreshSidebarData}
+        />
+      </Popover>
     </button>
   );
 }

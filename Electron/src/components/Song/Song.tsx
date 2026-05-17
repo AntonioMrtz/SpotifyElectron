@@ -105,9 +105,6 @@ export default function Song({
             '& .MuiPaper-root': {
               backgroundColor: 'var(--hover-white)',
             },
-            '& . MuiPopover-root': {
-              zIndex: '1000',
-            },
           }}
         >
           <ContextMenuSong

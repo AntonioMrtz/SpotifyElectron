@@ -144,9 +144,6 @@ export default function PlaylistCard({
             '& .MuiPaper-root': {
               backgroundColor: 'var(--hover-white)',
             },
-            '& . MuiPopover-root': {
-              zIndex: '1000',
-            },
           }}
         >
           <ContextMenuPlaylist

@@ -558,9 +558,6 @@ export default function Playlist({ refreshSidebarData }: PropsPlaylist) {
             '& .MuiPaper-root': {
               backgroundColor: 'var(--hover-white)',
             },
-            '& . MuiPopover-root': {
-              zIndex: '1000',
-            },
           }}
         >
           <ContextMenuPlaylist

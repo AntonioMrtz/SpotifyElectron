@@ -184,9 +184,6 @@ export default function StickyHeader({ handleLogout }: PropsStickyHeader) {
             '& .MuiPaper-root': {
               backgroundColor: 'var(--hover-white)',
             },
-            '& . MuiPopover-root': {
-              zIndex: '1000',
-            },
           }}
         >
           <ContextMenuProfile
